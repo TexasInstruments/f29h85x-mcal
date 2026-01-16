@@ -22,8 +22,6 @@
 #ifndef OS_CFG_H
 #define OS_CFG_H
 
-#include "Std_Types.h"
-#include "Mcal_Lib_Cpu.h"
 
 #ifdef __cplusplus
 extern "C" {

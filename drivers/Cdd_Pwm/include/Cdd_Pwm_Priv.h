@@ -31,7 +31,6 @@ extern "C" {
  *********************************************************************************************************************/
 #include "Cdd_Pwm.h"
 #include "hw_epwm.h"
-#include "Os.h"
 #include "hw_sysctl.h"
 #include "hw_types.h"
 #include "hw_memmap.h"

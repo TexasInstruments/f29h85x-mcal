@@ -26,6 +26,7 @@
 #include "Cdd_Ecap.h"
 #include "Cdd_Ecap_Priv.h"
 #include "Mcal_Lib_Cpu.h"
+#include "Os.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)

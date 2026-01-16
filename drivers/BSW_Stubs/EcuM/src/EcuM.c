@@ -24,6 +24,14 @@
  * Header Files
  *********************************************************************************************************************/
 #include "EcuM.h"
+#include "hw_types.h"
+#include "hw_pipe.h"
+#include "hw_memmap.h"
+#include "hw_cputimer.h"
+#include "hw_ints.h"
+#include "hw_sysctl.h"
+#include "Mcal_Lib_Cpu.h"
+#include "Os.h" 
 
 /*********************************************************************************************************************
  * Version Check (if required)

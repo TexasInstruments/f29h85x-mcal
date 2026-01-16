@@ -76,14 +76,15 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
-typedef uint8  uint8_t;  /* This standard AUTOSAR type shall be of 8 bit unsigned. */
-typedef uint16 uint16_t; /* This standard AUTOSAR type shall be of 16 bit unsigned. */
-typedef uint32 uint32_t; /* This standard AUTOSAR type shall be of 32 bit unsigned. */
-typedef uint64 uint64_t; /* This standard AUTOSAR type shall be of 64 bit unsigned. */
-typedef sint8  int8_t;   /* This standard AUTOSAR type shall be of 8 bit signed. */
-typedef sint16 int16_t;  /* This standard AUTOSAR type shall be of 16 bit signed. */
-typedef sint32 int32_t;  /* This standard AUTOSAR type shall be of 32 bit signed. */
-typedef sint64 int64_t;  /* This standard AUTOSAR type shall be of 64 bit signed. */
+typedef uint8   uint8_t;   /* This standard AUTOSAR type shall be of 8 bit unsigned. */
+typedef uint16  uint16_t;  /* This standard AUTOSAR type shall be of 16 bit unsigned. */
+typedef uint32  uint32_t;  /* This standard AUTOSAR type shall be of 32 bit unsigned. */
+typedef uint64  uint64_t;  /* This standard AUTOSAR type shall be of 64 bit unsigned. */
+typedef sint8   int8_t;    /* This standard AUTOSAR type shall be of 8 bit signed. */
+typedef sint16  int16_t;   /* This standard AUTOSAR type shall be of 16 bit signed. */
+typedef sint32  int32_t;   /* This standard AUTOSAR type shall be of 32 bit signed. */
+typedef sint64  int64_t;   /* This standard AUTOSAR type shall be of 64 bit signed. */
+typedef float32 float32_t; /* This standard AUTOSAR type shall be of 32 bit float. */
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/

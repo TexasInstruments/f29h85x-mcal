@@ -32,9 +32,6 @@ extern "C" {
 #include "hw_ecap.h"
 #include "hw_types.h"
 #include "Mcal_Lib.h"
-#if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
-#include "Det.h"
-#endif
 
 /*********************************************************************************************************************
  * Version Check (if required)

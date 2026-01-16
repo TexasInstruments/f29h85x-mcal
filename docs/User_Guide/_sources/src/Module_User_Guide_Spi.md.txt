@@ -86,6 +86,9 @@ maximum speed of the I/O buffers used on the SPI pins. See the device data sheet
 **SWS_BSW_00042** : Detection of Development Errors: The detection and reporting of Development errors shall be performed only if the configuration parameter for detection of Development errors is set
 >Partial Non Compliance Reason : Few Null pointer input parameter checks are needed irrespective of Development errors is set, to handle MISRA requirement.
 
+**SWS_Spi_00263** : Chip Select shall be handled during Job transmission and shall be released at the end of it. This Chip Select handling shall be done according to the Job configuration parameters.
+>Partial Non Compliance Reason : When peripheral engine is used, the CS might be pulled to idle state even in between channel transfer after every 8 bit or 16 bit transfer. This is a hardware limitation where the CS line cannot be controlled to stay at the active state throughout the job transfer. As a workaround, GPIO can be used as a CS so that the GPIO acts as a CS and remains in the active state throughout the job completion. This will be handled by the SPI driver and is configurable using the configuration parameter SpiCsSelection.
+
 ### Source files
 
 📦f29h85x_mcal\
@@ -1253,7 +1256,7 @@ The example application demonstrates use of Spi module, the list below identifie
 
 ##### Sample Log of Spi_Example_Sync_AsyncTransfer
 
-```{literalinclude} Assets/text/Spi_Example_Sync_AsyncTransfer.txt
+```{literalinclude} Assets/text/Spi/F29H85x/Spi_Example_Sync_AsyncTransfer.txt
 ```
 
 #### Spi_Example_AsyncTransfer_Interrupt
@@ -1285,7 +1288,7 @@ The example application demonstrates use of Spi module, the list below identifie
 
 ##### Sample Log of Spi_Example_AsyncTransfer_Interrupt
 
-```{literalinclude} Assets/text/Spi_Example_AsyncTransfer_Interrupt.txt
+```{literalinclude} Assets/text/Spi/F29H85x/Spi_Example_AsyncTransfer_Interrupt.txt
 ```
 
 #### Spi_Example_SyncTransfer
@@ -1317,7 +1320,7 @@ The example application demonstrates use of Spi module, the list below identifie
 
 ##### Sample Log of Spi_Example_SyncTransfer
 
-```{literalinclude} Assets/text/Spi_Example_SyncTransfer.txt
+```{literalinclude} Assets/text/Spi/F29H85x/Spi_Example_SyncTransfer.txt
 ```
 
 #### Spi_Example_External_Loopback
@@ -1377,7 +1380,7 @@ Note: To visualize the CPU3 source file (in debug mode), load the CPU3.out by cl
 
 ##### Sample Log of Spi_Example_External_Loopback
 
-```{literalinclude} Assets/text/Spi_Example_External_Loopback.txt
+```{literalinclude} Assets/text/Spi/F29H85x/Spi_Example_External_Loopback.txt
 ```
 
 #### File Structure

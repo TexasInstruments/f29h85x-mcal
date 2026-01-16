@@ -1889,14 +1889,14 @@ Can_ProcessLine1ISR(Can_ControllerInstance canInstance, uint32 lineSelect)
             (void)Dem_SetEventStatus(CAN_E_HARDWARE_ERROR, DEM_EVENT_STATUS_PREFAILED);
         }
 #endif
-        /* Process dedicated Rx buffer interrupt */
+        /* Process FIFO0 Rx interrupt */
         if ((uint32)MCAN_IR_RF0N_MASK == (intrStatus & (uint32)MCAN_IR_RF0N_MASK))
         {
             /* Identify the Hoh associated with Fifo 0 */
             loopIdx    = canController->canFDMsgRamConfig.canRxFifoToHohMapping[0];
             canMailbox = &(Can_DriverObjPtr->canMailbox[loopIdx]);
-            if ((canController->canControllerConfig.CanTxProcessing == CAN_INTERRUPT) ||
-                ((canController->canControllerConfig.CanTxProcessing == CAN_MIXED) &&
+            if ((canController->canControllerConfig.CanRxProcessing == CAN_INTERRUPT) ||
+                ((canController->canControllerConfig.CanRxProcessing == CAN_MIXED) &&
                  (canMailbox->mailBoxConfig.CanHardwareObjectUsesPolling == FALSE)))
             {
                 Can_ReadRxFIFOPriv(canController, canMailbox, loopIdx, &fifo0Status);
@@ -1908,14 +1908,14 @@ Can_ProcessLine1ISR(Can_ControllerInstance canInstance, uint32 lineSelect)
             /* Identify the Hoh associated with Fifo 1 */
             loopIdx    = canController->canFDMsgRamConfig.canRxFifoToHohMapping[1];
             canMailbox = &(Can_DriverObjPtr->canMailbox[loopIdx]);
-            if ((canController->canControllerConfig.CanTxProcessing == CAN_INTERRUPT) ||
-                ((canController->canControllerConfig.CanTxProcessing == CAN_MIXED) &&
+            if ((canController->canControllerConfig.CanRxProcessing == CAN_INTERRUPT) ||
+                ((canController->canControllerConfig.CanRxProcessing == CAN_MIXED) &&
                  (canMailbox->mailBoxConfig.CanHardwareObjectUsesPolling == FALSE)))
             {
                 Can_ReadRxFIFOPriv(canController, canMailbox, loopIdx, &fifo1Status);
             }
         }
-        /* Process FIFO0 Rx interrupt*/
+        /* Process dedicated Rx buffer interrupt*/
         if ((uint32)MCAN_IR_DRX_MASK == (intrStatus & (uint32)MCAN_IR_DRX_MASK))
         {
             for (buffIdx = 0; buffIdx < (uint8)KMAX_RX_MB_PER_CONTROLLER; buffIdx++)
@@ -1930,8 +1930,8 @@ Can_ProcessLine1ISR(Can_ControllerInstance canInstance, uint32 lineSelect)
                     if (CAN_RECEIVE == canMailbox->mailBoxConfig.CanObjectType)
                     {
                         /* Chcek if Hoh is expected to be read in interrupt */
-                        if ((canController->canControllerConfig.CanTxProcessing == CAN_INTERRUPT) ||
-                            ((canController->canControllerConfig.CanTxProcessing == CAN_MIXED) &&
+                        if ((canController->canControllerConfig.CanRxProcessing == CAN_INTERRUPT) ||
+                            ((canController->canControllerConfig.CanRxProcessing == CAN_MIXED) &&
                              (canMailbox->mailBoxConfig.CanHardwareObjectUsesPolling == FALSE)))
                         {
                             /* Read dedicated message buffer */
@@ -2881,11 +2881,14 @@ static FUNC(Can_ControllerOperationMode, CAN_CODE) Can_GetOpModePriv(uint32 base
 static FUNC(void, CAN_CODE) Can_SetOpModePriv(uint32 baseAddr, Can_ControllerOperationMode cntrMode)
 {
     MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_CCCR, MCAN_CCCR_INIT, cntrMode);
-    VAR(uint32, AUTOMATIC) elapsedCount = (uint32)0;
+    VAR(McalLib_TickType, AUTOMATIC) startCount   = (McalLib_TickType)0;
+    VAR(McalLib_TickType, AUTOMATIC) elapsedCount = (McalLib_TickType)0;
+    McalLib_GetCounterValue(&startCount);
     do
     {
         /* TI_COVERAGE_GAP_START [Line/Region/Branch Coverage] This cannot be covered can't simulate
          * Hardware IP Errors */
+        McalLib_GetElapsedValue(&startCount, &elapsedCount);
         if (CAN_CFG_TIMEOUT_DURATION_CYCLES <= elapsedCount)
         {
 #if (CAN_CFG_DEM_ENABLE == STD_ON)

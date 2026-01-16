@@ -31,6 +31,7 @@
 #include "string.h"
 #include "Det.h"
 #include "Std_Types.h"
+#include "Mcal_Lib_Cpu.h"
 #include "Os.h"
 #include "EcuM.h"
 #include "Port_Cfg.h"

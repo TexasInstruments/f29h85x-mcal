@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.04.00
+                01.04.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -321,6 +321,10 @@ maximum speed of the I/O buffers used on the SPI pins. See the device data sheet
 <p><strong>SWS_BSW_00042</strong> : Detection of Development Errors: The detection and reporting of Development errors shall be performed only if the configuration parameter for detection of Development errors is set</p>
 <blockquote>
 <div><p>Partial Non Compliance Reason : Few Null pointer input parameter checks are needed irrespective of Development errors is set, to handle MISRA requirement.</p>
+</div></blockquote>
+<p><strong>SWS_Spi_00263</strong> : Chip Select shall be handled during Job transmission and shall be released at the end of it. This Chip Select handling shall be done according to the Job configuration parameters.</p>
+<blockquote>
+<div><p>Partial Non Compliance Reason : When peripheral engine is used, the CS might be pulled to idle state even in between channel transfer after every 8 bit or 16 bit transfer. This is a hardware limitation where the CS line cannot be controlled to stay at the active state throughout the job transfer. As a workaround, GPIO can be used as a CS so that the GPIO acts as a CS and remains in the active state throughout the job completion. This will be handled by the SPI driver and is configurable using the configuration parameter SpiCsSelection.</p>
 </div></blockquote>
 </section>
 </section>
@@ -3442,8 +3446,8 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Dec 20, 2025.
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2026, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Jan 16, 2026.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -3460,7 +3464,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.04.00
+       Current Version: 01.04.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

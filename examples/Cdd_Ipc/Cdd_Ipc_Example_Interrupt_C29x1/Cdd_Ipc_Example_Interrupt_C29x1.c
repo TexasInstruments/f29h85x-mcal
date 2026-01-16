@@ -45,6 +45,7 @@
 #include "AppUtils.h"
 #include "DeviceSupport.h"
 #include <string.h>
+#include "Mcal_Lib.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)

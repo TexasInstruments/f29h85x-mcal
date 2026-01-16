@@ -25,7 +25,6 @@
  *********************************************************************************************************************/
 #include "Cdd_Ecap.h"
 #include "hw_memmap.h"
-#include "Std_Types.h"
 #ifdef __cplusplus
 
 extern "C" {

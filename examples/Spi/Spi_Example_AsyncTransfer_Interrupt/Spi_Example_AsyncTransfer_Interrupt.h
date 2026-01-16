@@ -31,6 +31,7 @@
 #include "Mcal_Lib.h"
 #include "hw_spi.h"
 #include "Spi.h"
+#include "Os.h"
 #include "EcuM.h"
 #include "AppUtils.h"
 #include "DeviceSupport.h"

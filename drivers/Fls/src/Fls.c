@@ -27,13 +27,9 @@
  * Header Files
  *********************************************************************************************************************/
 #include "Fls.h"
-#include "SchM_Fls.h"
-#include "Fls_Cbk.h"
 #include "Fls_Priv.h"
-
-#if (STD_ON == FLS_DEV_ERROR_DETECT)
 #include "Det.h"
-#endif /* STD_ON == FLS_DEV_ERROR_DETECT */
+#include "SchM_Fls.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)

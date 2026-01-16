@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright [!"substring-before($date,'-')"!] Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -22,8 +22,6 @@
 #ifndef OS_CFG_H
 #define OS_CFG_H
 
-#include "Std_Types.h"
-#include "Mcal_Lib_Cpu.h"
 
 #ifdef __cplusplus
 extern "C" {
