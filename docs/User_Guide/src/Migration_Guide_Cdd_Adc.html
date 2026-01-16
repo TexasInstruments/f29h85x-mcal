@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.10. CDD ADC Module Migration &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.11. CDD ECAP Module Migration" href="Migration_Guide_Cdd_Ecap.html" />
+    <link rel="prev" title="5.9. WDG Module Migration" href="Migration_Guide_Wdg.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.04.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_ResourceAllocator.html">5.1. Resource Allocator Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Can.html">5.2. CAN Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Gpt.html">5.3. GPT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Fls.html">5.4. FLS Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Lin.html">5.5. LIN Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Mcu.html">5.6. MCU Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Port.html">5.7. Port Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Spi.html">5.8. SPI Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Wdg.html">5.9. WDG Module Migration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.10. CDD ADC Module Migration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-01-i-e-release-v01-03-00-migration">5.10.1. v03.00.00 (i.e release v01.04.00) from v02.00.01 (i.e release v01.03.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#summary">5.10.1.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-resource-allocator-introduction-and-hardware-unit-configuration-updates">5.10.1.2. Change 1: Resource Allocator Introduction and Hardware Unit Configuration Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-sdk-based-dma-integration-optional">5.10.1.3. Change 2: SDK-Based DMA Integration (Optional)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-3-symbolic-name-uniqueness-requirements">5.10.1.4. Change 3: Symbolic Name Uniqueness Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#v02-00-00-i-e-release-v01-02-00-from-v01-00-00-i-e-release-v01-01-00-migration">5.10.2. v02.00.00 (i.e release v01.02.00) from v01.00.00 (i.e release v01.01.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">5.10.2.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-ar-element-name-change-in-generated-xdm-file">5.10.2.2. Change 1: AR-ELEMENT Name Change in Generated .xdm File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-module-configuration-path-update-in-generated-xdm-file">5.10.2.3. Change 2: MODULE-CONFIGURATION Path Update in Generated .xdm File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-3-reference-path-updates-in-generated-xdm-file">5.10.2.4. Change 3: Reference Path Updates in Generated .xdm File</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ecap.html">5.11. CDD ECAP Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ipc.html">5.12. CDD IPC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Sent.html">5.13. CDD SENT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Pwm.html">5.14. CDD PWM Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Uart.html">5.15. CDD UART Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Xbar.html">5.16. CDD XBAR Module Migration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="MigrationGuide_list.html"><span class="section-number">5. </span>Migration Guide</a> &raquo;</li>
+      <li><span class="section-number">5.10. </span>CDD ADC Module Migration</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cdd-adc-module-migration">
+<h1><span class="section-number">5.10. </span>CDD ADC Module Migration<a class="headerlink" href="#cdd-adc-module-migration" title="Link to this heading"></a></h1>
+<p><strong>Migration Approach:</strong> Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.</p>
+<section id="v03-00-00-i-e-release-v01-04-00-from-v02-00-01-i-e-release-v01-03-00-migration">
+<h2><span class="section-number">5.10.1. </span>v03.00.00 (i.e release v01.04.00) from v02.00.01 (i.e release v01.03.00) Migration<a class="headerlink" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-01-i-e-release-v01-03-00-migration" title="Link to this heading"></a></h2>
+<section id="summary">
+<h3><span class="section-number">5.10.1.1. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h3>
+<p>Version v03.00.00 introduces <strong>Resource Allocator as a mandatory architectural foundation</strong> and SDK-based DMA integration. This represents a fundamental shift from direct parameter configuration to centralized resource management:</p>
+<ol class="arabic simple">
+<li><p><strong>Resource Allocator Introduction and Hardware Unit Configuration Updates</strong>: Resource Allocator becomes mandatory with CddAdcHwUnit configurations updated to reference Resource Allocator instances</p></li>
+<li><p><strong>SDK-Based DMA Integration</strong>: Optional DMA integration for efficient ADC result transfers</p></li>
+<li><p><strong>Symbolic Name Uniqueness Requirements</strong>: Enhanced validation requires unique symbolic names across configurations</p></li>
+</ol>
+<p><strong>PREREQUISITE:</strong> Complete <a class="reference internal" href="Migration_Guide_ResourceAllocator.html#module-setup-and-configuration"><span class="std std-ref">Resource Allocator Setup</span></a> before proceeding.</p>
+</section>
+<section id="change-1-resource-allocator-introduction-and-hardware-unit-configuration-updates">
+<h3><span class="section-number">5.10.1.2. </span>Change 1: Resource Allocator Introduction and Hardware Unit Configuration Updates<a class="headerlink" href="#change-1-resource-allocator-introduction-and-hardware-unit-configuration-updates" title="Link to this heading"></a></h3>
+<section id="description">
+<h4><span class="section-number">5.10.1.2.1. </span>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h4>
+<p>Resource Allocator becomes a mandatory architectural foundation for the CDD ADC module, with CddAdcHwUnit configurations updated to reference Resource Allocator instances. This represents a fundamental shift from direct parameter configuration to centralized resource management, where CDD ADC instances are allocated through Resource Allocator and then referenced by hardware unit configurations.</p>
+</section>
+<section id="old-vs-new-configuration">
+<h4><span class="section-number">5.10.1.2.2. </span>Old vs New Configuration<a class="headerlink" href="#old-vs-new-configuration" title="Link to this heading"></a></h4>
+<p><strong>Previous Configuration (v02.00.01):</strong>
+Direct parameter selection was used without Resource Allocator dependency.</p>
+<figure class="align-center" id="id12">
+<a class="reference internal image-reference" href="../_images/02_01_cdd_adc_module_old_config.png"><img alt="Old CDD ADC Config" src="../_images/02_01_cdd_adc_module_old_config.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.38 </span><span class="caption-text">v02.00.01: Direct ADC hardware unit parameter selection</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>New Configuration (v03.00.00):</strong>
+CDD ADC hardware unit configurations now reference instances allocated through Resource Allocator.</p>
+<figure class="align-center" id="id13">
+<a class="reference internal image-reference" href="../_images/02_03_cdd_adc_module_select_instance.png"><img alt="Select CDD ADC Instance" src="../_images/02_03_cdd_adc_module_select_instance.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.39 </span><span class="caption-text">v03.00.00: Set CddAdcHwInstanceRef to point to the corresponding Cdd_AdcAllocatedInstance in Resource Allocator</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="migration-actions">
+<h4><span class="section-number">5.10.1.2.3. </span>Migration Actions<a class="headerlink" href="#migration-actions" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Setup Resource Allocator:</strong> Follow <a class="reference internal" href="Migration_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Setup</span></a></p></li>
+<li><p><strong>Navigate to Context:</strong> Navigate to <strong>ResourceAllocatorGeneral → Context → Cdd_Adc</strong> and add CDD ADC allocator:</p></li>
+</ol>
+<figure class="align-center" id="id14">
+<a class="reference internal image-reference" href="../_images/01_01_cdd_adc_module_add_allocator.png"><img alt="Add CDD ADC Allocator" src="../_images/01_01_cdd_adc_module_add_allocator.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.40 </span><span class="caption-text">Navigate to Context and add CDD ADC allocator</span><a class="headerlink" href="#id14" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="3">
+<li><p><strong>Add CDD ADC Instance:</strong> Add Cdd_AdcAllocatedInstance entries for each ADC instance your application requires:</p></li>
+</ol>
+<figure class="align-center" id="id15">
+<a class="reference internal image-reference" href="../_images/01_02_cdd_adc_module_add_instance.png"><img alt="Add CDD ADC Instance" src="../_images/01_02_cdd_adc_module_add_instance.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.41 </span><span class="caption-text">Add Cdd_AdcAllocatedInstance entries for each ADC instance your application requires</span><a class="headerlink" href="#id15" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="4">
+<li><p><strong>Configure ADC Instance:</strong> Configure the InstanceName, Frame, and BaseAddr for each allocated instance:</p></li>
+</ol>
+<figure class="align-center" id="id16">
+<a class="reference internal image-reference" href="../_images/01_03_cdd_adc_module_select_instance.png"><img alt="Configure CDD ADC Instance" src="../_images/01_03_cdd_adc_module_select_instance.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.42 </span><span class="caption-text">Configure the InstanceName, Frame, and BaseAddr for each allocated instance</span><a class="headerlink" href="#id16" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="5">
+<li><p><strong>Configure Safety Checker Instance (Optional):</strong> If your application requires safety-critical ADC monitoring, configure CddAdcSafetyCheckerInstance:</p></li>
+</ol>
+<figure class="align-center" id="id17">
+<a class="reference internal image-reference" href="../_images/01_05_cdd_adc_module_safety_checker_instance.png"><img alt="Configure CDD ADC Safety Checker Instance" src="../_images/01_05_cdd_adc_module_safety_checker_instance.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.43 </span><span class="caption-text">Configure CddAdcSafetyCheckerInstance for safety-critical applications (e.g., ADCSAFETYCHECK1)</span><a class="headerlink" href="#id17" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="6">
+<li><p><strong>Configure Checker Interrupt Event Instance (Optional):</strong> If your application requires interrupt-based safety monitoring, configure CddAdcCheckerInterruptEvtInstance:</p></li>
+</ol>
+<figure class="align-center" id="id18">
+<a class="reference internal image-reference" href="../_images/01_06_cdd_adc_module_checker_interrupt_evt_instance.png"><img alt="Configure CDD ADC Checker Interrupt Event Instance" src="../_images/01_06_cdd_adc_module_checker_interrupt_evt_instance.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.44 </span><span class="caption-text">Configure CddAdcCheckerInterruptEvtInstance for interrupt-based safety monitoring (e.g., ADCSAFETYCHECKINIEVT1)</span><a class="headerlink" href="#id18" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="7">
+<li><p><strong>Complete Configuration:</strong> Finalize CDD ADC instance allocation:</p></li>
+</ol>
+<figure class="align-center" id="id19">
+<a class="reference internal image-reference" href="../_images/01_04_cdd_adc_module_final_config.png"><img alt="Final CDD ADC Configuration" src="../_images/01_04_cdd_adc_module_final_config.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.45 </span><span class="caption-text">Complete CDD ADC instance allocation</span><a class="headerlink" href="#id19" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="8">
+<li><p><strong>Navigate to CddAdcHwUnit:</strong> Navigate to <strong>Cdd → CddAdcHwUnit</strong> and update configurations to reference the CDD ADC instances allocated in Resource Allocator</p></li>
+<li><p><strong>Open Hardware Unit Configuration:</strong> Access the CddAdcHwUnit configuration that needs to be updated</p></li>
+<li><p><strong>Set Instance Reference:</strong> Set CddAdcHwInstanceRef to point to the corresponding Cdd_AdcAllocatedInstance in Resource Allocator</p></li>
+<li><p><strong>Verify Automatic Derivation:</strong> Confirm that the CddAdcHwInstance parameter is now automatically derived from the Resource Allocator reference</p></li>
+</ol>
+</section>
+</section>
+<section id="change-2-sdk-based-dma-integration-optional">
+<h3><span class="section-number">5.10.1.3. </span>Change 2: SDK-Based DMA Integration (Optional)<a class="headerlink" href="#change-2-sdk-based-dma-integration-optional" title="Link to this heading"></a></h3>
+<section id="id1">
+<h4><span class="section-number">5.10.1.3.1. </span>Description<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>Version v03.00.00 introduces SDK-based DMA integration for efficient ADC result transfers without CPU intervention. This is an optional feature that can be enabled for improved performance in applications that require high-speed ADC data transfer.</p>
+</section>
+<section id="old-vs-new-dma-configuration">
+<h4><span class="section-number">5.10.1.3.2. </span>Old vs New DMA Configuration<a class="headerlink" href="#old-vs-new-dma-configuration" title="Link to this heading"></a></h4>
+<p><strong>Previous Configuration (v02.00.01):</strong>
+No DMA integration available for ADC result transfers.</p>
+<p><strong>New Configuration (v03.00.00):</strong>
+Optional SDK-based DMA integration with CddAdcEnableDma parameter.</p>
+<figure class="align-center" id="id20">
+<a class="reference internal image-reference" href="../_images/03_01_cdd_adc_module_add_group_instance.png"><img alt="Add DMA Configuration" src="../_images/03_01_cdd_adc_module_add_group_instance.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.46 </span><span class="caption-text">Add CddAdcGroup configuration for DMA</span><a class="headerlink" href="#id20" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id21">
+<a class="reference internal image-reference" href="../_images/03_02_cdd_adc_module_configure_dma_params.png"><img alt="Configure DMA Parameters" src="../_images/03_02_cdd_adc_module_configure_dma_params.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.47 </span><span class="caption-text">Configure CddAdcEnableDma parameter for ADC groups</span><a class="headerlink" href="#id21" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="id2">
+<h4><span class="section-number">5.10.1.3.3. </span>Migration Actions<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Evaluate DMA Requirement:</strong> Determine if your application requires DMA for ADC result transfers for improved performance</p></li>
+<li><p><strong>Enable DMA (Optional):</strong> If using DMA for ADC result transfers, enable <code class="docutils literal notranslate"><span class="pre">CddAdcEnableDma</span></code> in the group configuration</p></li>
+<li><p><strong>Configure SDK DMA:</strong> Configure the DMA channel in the SDK/system configuration on the application side. Refer to <a class="reference internal" href="Module_User_Guide_Cdd_Adc.html#adc-dma-integration-guide"><span class="std std-ref">ADC + DMA Integration Guide</span></a> for detailed integration steps and <a class="reference internal" href="Module_User_Guide_Cdd_Adc.html#examples"><span class="std std-ref">DMA Transfer Example</span></a> for implementation examples</p></li>
+<li><p><strong>Ensure Memory Alignment:</strong> Ensure proper memory alignment for DMA buffers to prevent transfer issues</p></li>
+</ol>
+</section>
+</section>
+<section id="change-3-symbolic-name-uniqueness-requirements">
+<h3><span class="section-number">5.10.1.4. </span>Change 3: Symbolic Name Uniqueness Requirements<a class="headerlink" href="#change-3-symbolic-name-uniqueness-requirements" title="Link to this heading"></a></h3>
+<section id="id3">
+<h4><span class="section-number">5.10.1.4.1. </span>Description<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<p>Version v03.00.00 introduces enhanced validation that requires symbolic names to be unique across configurations. When migrating from v02.00.00 to v03.00.00, EB Tresos will generate validation errors if symbolic names are not unique. This is in accordance with [SWS_BSW_00200].</p>
+</section>
+<section id="old-vs-new-validation-requirements">
+<h4><span class="section-number">5.10.1.4.2. </span>Old vs New Validation Requirements<a class="headerlink" href="#old-vs-new-validation-requirements" title="Link to this heading"></a></h4>
+<p><strong>Uniqueness Requirements:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>v02.00.01</p></th>
+<th class="head"><p>v03.00.00</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>CddAdcGroup (container name)</strong></p></td>
+<td><p>No uniqueness constraint</p></td>
+<td><p>Must be unique across all HW units</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>CddAdcPpbConfig (container name)</strong></p></td>
+<td><p>No uniqueness constraint</p></td>
+<td><p>Must be unique across all HW units</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CddAdcHwInstanceRef</strong></p></td>
+<td><p>No uniqueness constraint</p></td>
+<td><p>Must be unique across all containers</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>CddAdcGlbSwTrigId</strong></p></td>
+<td><p>No uniqueness constraint</p></td>
+<td><p>Must be unique across all containers</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CddAdcCheckerInstanceRef</strong></p></td>
+<td><p>No uniqueness constraint</p></td>
+<td><p>Must be unique across all containers</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>CddAdcCheckerIntEvtInstanceRef</strong></p></td>
+<td><p>No uniqueness constraint</p></td>
+<td><p>Must be unique across all containers</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id4">
+<h4><span class="section-number">5.10.1.4.3. </span>Migration Actions<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Review Container Names:</strong> Check all CddAdcGroup and CddAdcPpbConfig container names for uniqueness across all HW units</p></li>
+<li><p><strong>Review Instance References:</strong> Ensure CddAdcHwInstanceRef, CddAdcCheckerInstanceRef, and CddAdcCheckerIntEvtInstanceRef are unique across all containers</p></li>
+<li><p><strong>Review Trigger IDs:</strong> Verify CddAdcGlbSwTrigId values are unique across all containers</p></li>
+<li><p><strong>Resolve Conflicts:</strong> Update any duplicate symbolic names to ensure uniqueness and avoid validation errors during migration</p></li>
+<li><p><strong>Validate Configuration:</strong> Run validation in EB Tresos to confirm all symbolic names are now unique</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Resource Allocator module must be configured before the CDD ADC module to ensure correct instance availability. For more details on Resource Allocator configuration, see the Resource Allocator Module User Guide.</p>
+</div>
+</section>
+</section>
+</section>
+<section id="v02-00-00-i-e-release-v01-02-00-from-v01-00-00-i-e-release-v01-01-00-migration">
+<h2><span class="section-number">5.10.2. </span>v02.00.00 (i.e release v01.02.00) from v01.00.00 (i.e release v01.01.00) Migration<a class="headerlink" href="#v02-00-00-i-e-release-v01-02-00-from-v01-00-00-i-e-release-v01-01-00-migration" title="Link to this heading"></a></h2>
+<section id="id5">
+<h3><span class="section-number">5.10.2.1. </span>Summary<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>Version v02.00.00 introduces schema compatibility updates to align with updated plugin structure and reference paths:</p>
+<ol class="arabic simple">
+<li><p><strong>AR-ELEMENT Name Change</strong>: Generated .xdm file AR-ELEMENT name requires updating for schema compatibility</p></li>
+<li><p><strong>MODULE-CONFIGURATION Path Update</strong>: Generated .xdm file MODULE-CONFIGURATION definition path requires updating</p></li>
+<li><p><strong>Reference Path Updates</strong>: Generated .xdm file reference paths require updating due to schema structure changes</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The CDD ADC v2.0.0 plugin contains updated schema definitions that are not backward compatible with v1.0.0 generated configurations. To use existing v1.0.0 configurations with the v2.0.0 plugin, the <strong>generated .xdm files</strong> (created by EB Tresos from your configuration) must be updated.</p>
+</div>
+</section>
+<section id="change-1-ar-element-name-change-in-generated-xdm-file">
+<h3><span class="section-number">5.10.2.2. </span>Change 1: AR-ELEMENT Name Change in Generated .xdm File<a class="headerlink" href="#change-1-ar-element-name-change-in-generated-xdm-file" title="Link to this heading"></a></h3>
+<section id="id6">
+<h4><span class="section-number">5.10.2.2.1. </span>Description<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<p>When upgrading from v1.0.0 to v2.0.0, the generated .xdm file from EB Tresos contains AR-ELEMENT names that are not compatible with the new plugin schema. The AR-ELEMENT name needs to be updated in the generated .xdm file to ensure compatibility.</p>
+</section>
+<section id="old-vs-new-ar-element-configuration">
+<h4><span class="section-number">5.10.2.2.2. </span>Old vs New AR-ELEMENT Configuration<a class="headerlink" href="#old-vs-new-ar-element-configuration" title="Link to this heading"></a></h4>
+<p><strong>Generated .xdm File AR-ELEMENT Name:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>v01.00.00 Generated .xdm</p></th>
+<th class="head"><p>v02.00.00 Required .xdm</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;d:chc</span> <span class="pre">name=&quot;Cdd_Adc&quot;</span> <span class="pre">type=&quot;AR-ELEMENT&quot;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;d:chc</span> <span class="pre">name=&quot;Cdd&quot;</span> <span class="pre">type=&quot;AR-ELEMENT&quot;</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id7">
+<h4><span class="section-number">5.10.2.2.3. </span>Migration Actions<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Locate Generated .xdm File:</strong> Find your project’s generated .xdm file (created by EB Tresos from your configuration)</p></li>
+<li><p><strong>Open File for Editing:</strong> Open the generated .xdm file in a text editor</p></li>
+<li><p><strong>Find AR-ELEMENT Reference:</strong> Locate the line containing <code class="docutils literal notranslate"><span class="pre">&lt;d:chc</span> <span class="pre">name=&quot;Cdd_Adc&quot;</span> <span class="pre">type=&quot;AR-ELEMENT&quot;</span></code></p></li>
+<li><p><strong>Update AR-ELEMENT Name:</strong> Change the AR-ELEMENT name from <code class="docutils literal notranslate"><span class="pre">Cdd_Adc</span></code> to <code class="docutils literal notranslate"><span class="pre">Cdd</span></code></p></li>
+<li><p><strong>Save File:</strong> Save the updated .xdm file</p></li>
+</ol>
+</section>
+</section>
+<section id="change-2-module-configuration-path-update-in-generated-xdm-file">
+<h3><span class="section-number">5.10.2.3. </span>Change 2: MODULE-CONFIGURATION Path Update in Generated .xdm File<a class="headerlink" href="#change-2-module-configuration-path-update-in-generated-xdm-file" title="Link to this heading"></a></h3>
+<section id="id8">
+<h4><span class="section-number">5.10.2.3.1. </span>Description<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<p>The MODULE-CONFIGURATION definition path in the generated .xdm file needs to be updated to reflect the new schema structure. The path must include the additional <code class="docutils literal notranslate"><span class="pre">Cdd</span></code> component for proper module reference.</p>
+</section>
+<section id="old-vs-new-module-configuration-path">
+<h4><span class="section-number">5.10.2.3.2. </span>Old vs New MODULE-CONFIGURATION Path<a class="headerlink" href="#old-vs-new-module-configuration-path" title="Link to this heading"></a></h4>
+<p><strong>Generated .xdm File MODULE-CONFIGURATION Path:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>v01.00.00 Generated .xdm</p></th>
+<th class="head"><p>v02.00.00 Required .xdm</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;a:a</span> <span class="pre">name=&quot;DEF&quot;</span> <span class="pre">value=&quot;ASPath:/TI_F29H85x/Cdd_Adc&quot;/&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;a:a</span> <span class="pre">name=&quot;DEF&quot;</span> <span class="pre">value=&quot;ASPath:/TI_F29H85x/Cdd_Adc/Cdd&quot;/&gt;</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id9">
+<h4><span class="section-number">5.10.2.3.3. </span>Migration Actions<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Continue Editing .xdm File:</strong> In the same generated .xdm file being edited</p></li>
+<li><p><strong>Find MODULE-CONFIGURATION Path:</strong> Locate the line containing <code class="docutils literal notranslate"><span class="pre">&lt;a:a</span> <span class="pre">name=&quot;DEF&quot;</span> <span class="pre">value=&quot;ASPath:/TI_F29H85x/Cdd_Adc&quot;/&gt;</span></code></p></li>
+<li><p><strong>Update Definition Path:</strong> Change the MODULE-CONFIGURATION path from <code class="docutils literal notranslate"><span class="pre">ASPath:/TI_F29H85x/Cdd_Adc</span></code> to <code class="docutils literal notranslate"><span class="pre">ASPath:/TI_F29H85x/Cdd_Adc/Cdd</span></code></p></li>
+<li><p><strong>Verify Path Structure:</strong> Ensure the updated path includes the additional <code class="docutils literal notranslate"><span class="pre">/Cdd</span></code> component</p></li>
+<li><p><strong>Save Changes:</strong> Save the updated .xdm file</p></li>
+</ol>
+</section>
+</section>
+<section id="change-3-reference-path-updates-in-generated-xdm-file">
+<h3><span class="section-number">5.10.2.4. </span>Change 3: Reference Path Updates in Generated .xdm File<a class="headerlink" href="#change-3-reference-path-updates-in-generated-xdm-file" title="Link to this heading"></a></h3>
+<section id="id10">
+<h4><span class="section-number">5.10.2.4.1. </span>Description<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<p>Any REFERENCE type parameters in the generated .xdm file that refer to other CDD ADC parameters by their schema path must be updated due to the schema structure change. All internal reference paths need to be updated to reflect the new schema hierarchy.</p>
+</section>
+<section id="old-vs-new-reference-paths">
+<h4><span class="section-number">5.10.2.4.2. </span>Old vs New Reference Paths<a class="headerlink" href="#old-vs-new-reference-paths" title="Link to this heading"></a></h4>
+<p><strong>Generated .xdm File Reference Path Example:</strong></p>
+<p>For <code class="docutils literal notranslate"><span class="pre">CddAdcPpbChannel</span></code> references expecting a channel reference:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>v01.00.00 Generated .xdm Reference Path</p></th>
+<th class="head"><p>v02.00.00 Required .xdm Reference Path</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">/Cdd_Adc/Cdd_Adc/CddAdcConfigSet/CddAdcHwUnit_0/CddAdcGroup_0/CddAdcChannel_0</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/Cdd_Adc/Cdd/CddAdcConfigSet/CddAdcHwUnit_0/CddAdcGroup_0/CddAdcChannel_0</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id11">
+<h4><span class="section-number">5.10.2.4.3. </span>Migration Actions<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Continue Editing .xdm File:</strong> In the same generated .xdm file being edited</p></li>
+<li><p><strong>Search for Reference Paths:</strong> Find all REFERENCE type parameters that contain <code class="docutils literal notranslate"><span class="pre">/Cdd_Adc/Cdd_Adc/</span></code> in their paths</p></li>
+<li><p><strong>Update Reference Paths:</strong> Change all occurrences of <code class="docutils literal notranslate"><span class="pre">/Cdd_Adc/Cdd_Adc/</span></code> to <code class="docutils literal notranslate"><span class="pre">/Cdd_Adc/Cdd/</span></code></p></li>
+<li><p><strong>Verify All Updates:</strong> Ensure all reference paths now use the correct schema hierarchy</p></li>
+<li><p><strong>Save Final Changes:</strong> Save the completely updated .xdm file</p></li>
+</ol>
+<p><strong>Generated .xdm File Structure Comparison:</strong></p>
+<p><strong>Before Editing (v01.00.00 Generated .xdm File):</strong></p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;d:lst</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;TOP-LEVEL-PACKAGES&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:ctr</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;Cdd_Adc&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;AR-PACKAGE&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:lst</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;ELEMENTS&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:chc</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;Cdd_Adc&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;AR-ELEMENT&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;MODULE-CONFIGURATION&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:ctr</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;MODULE-CONFIGURATION&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;a:a</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;DEF&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;ASPath:/TI_F29H85x/Cdd_Adc&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<p><strong>After Editing (v02.00.00 Compatible .xdm File):</strong></p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;d:lst</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;TOP-LEVEL-PACKAGES&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:ctr</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;Cdd_Adc&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;AR-PACKAGE&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:lst</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;ELEMENTS&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:chc</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;Cdd&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;AR-ELEMENT&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;MODULE-CONFIGURATION&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:ctr</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;MODULE-CONFIGURATION&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;a:a</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;DEF&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;ASPath:/TI_F29H85x/Cdd_Adc/Cdd&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only the generated .xdm files (created by EB Tresos from your configuration) can be modified. The plugin .xdm files themselves cannot and should not be modified.</p>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Migration_Guide_Wdg.html" class="btn btn-neutral float-left" title="5.9. WDG Module Migration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Migration_Guide_Cdd_Ecap.html" class="btn btn-neutral float-right" title="5.11. CDD ECAP Module Migration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2026, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Jan 16, 2026.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.04.01
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

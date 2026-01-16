@@ -105,11 +105,10 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.15.8. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#migration-guide">4.15.8.1. Migration Guide</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.15.8.2. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddpwmconfigset">4.15.8.3. CddPwmConfigSet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddpwmgeneral">4.15.8.4. CddPwmGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-pwm-module">4.15.8.5. Steps To Configure Cdd_Pwm Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.15.8.1. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddpwmconfigset">4.15.8.2. CddPwmConfigSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddpwmgeneral">4.15.8.3. CddPwmGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-pwm-module">4.15.8.4. Steps To Configure Cdd_Pwm Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.15.9. Examples</a><ul>
@@ -134,9 +133,10 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.19. RTDMA Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">7. AUTOSAR Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
 </ul>
 
         </div>
@@ -1000,75 +1000,14 @@ The detection of development errors is configurable ON/OFF. The switch CDD_PWM_D
 <p>The Cdd_Pwm Driver implementation supports one configuration variant Pre-Compile config. The driver expects generated Cdd_Pwm_Cfg.h to be present as input file.
 The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_Cfg.c</p>
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
-<section id="migration-guide">
-<h3><span class="section-number">4.15.8.1. </span>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h3>
-<p>Migration guides between module versions are detailed below.</p>
-<section id="v03-00-00-from-v02-00-00">
-<h4><span class="section-number">4.15.8.1.1. </span>v03.00.00 from v02.00.00<a class="headerlink" href="#v03-00-00-from-v02-00-00" title="Link to this heading"></a></h4>
-<section id="key-changes">
-<h5><span class="section-number">4.15.8.1.1.1. </span>Key Changes<a class="headerlink" href="#key-changes" title="Link to this heading"></a></h5>
-<ol class="arabic simple">
-<li><p><strong>Resource Allocator Based Approach</strong></p>
-<ul class="simple">
-<li><p>The CDD PWM module now uses the Resource Allocator for device, package, and variant configuration</p></li>
-<li><p>Users must configure PWM instances through the Resource Allocator module before configuring the CDD PWM driver</p></li>
-<li><p>See the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a> for details</p></li>
-</ul>
-</li>
-<li><p><strong>PWM Channel Symbolic Name Generation Fix</strong></p>
-<ul class="simple">
-<li><p>Fixed the PWM channel’s symbolic name generation logic in the Cfg.h template file</p></li>
-<li><p>This ensures correct symbolic names are generated for PWM channels in the configuration header file</p></li>
-</ul>
-</li>
-<li><p><strong>HRPWM Calibration Instance Configuration Support</strong></p>
-<ul class="simple">
-<li><p>Added support for HRPWM (High-Resolution PWM) calibration instance configuration in the CDD PWM driver</p></li>
-<li><p>Users can now configure HRPWM calibration instances through the <code class="docutils literal notranslate"><span class="pre">CddPwmHrpwmCalibrationConfig</span></code> container in advanced mode</p></li>
-</ul>
-</li>
-</ol>
-</section>
-<section id="migration-steps">
-<h5><span class="section-number">4.15.8.1.1.2. </span>Migration Steps<a class="headerlink" href="#migration-steps" title="Link to this heading"></a></h5>
-<ol class="arabic simple">
-<li><p><strong>Add Resource Allocator Module</strong></p>
-<ul class="simple">
-<li><p>Add and configure the Resource Allocator module in your EB Tresos project</p></li>
-</ul>
-</li>
-<li><p><strong>Allocate PWM Instances</strong></p>
-<ul class="simple">
-<li><p>Allocate the required PWM instances (EPWM1, EPWM2, etc.) to the appropriate context in the Resource Allocator</p></li>
-</ul>
-</li>
-<li><p><strong>Configure HRPWM (If Applicable)</strong></p>
-<ul class="simple">
-<li><p>If using HRPWM features in advanced mode, configure the HRPWM calibration instances in the Resource Allocator and reference them in the CDD PWM configuration</p></li>
-</ul>
-</li>
-<li><p><strong>Regenerate Configuration</strong></p>
-<ul class="simple">
-<li><p>Regenerate the configuration files to get the corrected symbolic names in Cfg.h</p></li>
-</ul>
-</li>
-<li><p><strong>Rebuild Application</strong></p>
-<ul class="simple">
-<li><p>Rebuild your application with the updated configuration</p></li>
-</ul>
-</li>
-</ol>
-</section>
-</section>
-</section>
 <section id="configuration-parameters">
-<h3><span class="section-number">4.15.8.2. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.15.8.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
 </section>
 <section id="cddpwmconfigset">
-<h3><span class="section-number">4.15.8.3. </span>CddPwmConfigSet<a class="headerlink" href="#cddpwmconfigset" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.15.8.2. </span>CddPwmConfigSet<a class="headerlink" href="#cddpwmconfigset" title="Link to this heading"></a></h3>
 <p>This container contains the configuration parameters and sub containers of the AUTOSAR Pwm instance.</p>
 <section id="cddpwmadvancedmode">
-<h4><span class="section-number">4.15.8.3.1. </span>CddPwmAdvancedMode<a class="headerlink" href="#cddpwmadvancedmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.15.8.2.1. </span>CddPwmAdvancedMode<a class="headerlink" href="#cddpwmadvancedmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1101,10 +1040,10 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmhwunitconfig">
-<h4><span class="section-number">4.15.8.3.2. </span>CddPwmHwUnitConfig<a class="headerlink" href="#cddpwmhwunitconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.15.8.2.2. </span>CddPwmHwUnitConfig<a class="headerlink" href="#cddpwmhwunitconfig" title="Link to this heading"></a></h4>
 <p>Configuration of an individual PWM instance.</p>
 <section id="cddpwminstance">
-<h5><span class="section-number">4.15.8.3.2.1. </span>CddPwmInstance<a class="headerlink" href="#cddpwminstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.1. </span>CddPwmInstance<a class="headerlink" href="#cddpwminstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1137,7 +1076,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmhwid">
-<h5><span class="section-number">4.15.8.3.2.2. </span>CddPwmHwId<a class="headerlink" href="#cddpwmhwid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.2. </span>CddPwmHwId<a class="headerlink" href="#cddpwmhwid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1170,7 +1109,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmemulationmode">
-<h5><span class="section-number">4.15.8.3.2.3. </span>CddPwmEmulationMode<a class="headerlink" href="#cddpwmemulationmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.3. </span>CddPwmEmulationMode<a class="headerlink" href="#cddpwmemulationmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1215,7 +1154,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmclockdivider">
-<h5><span class="section-number">4.15.8.3.2.4. </span>CddPwmClockDivider<a class="headerlink" href="#cddpwmclockdivider" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.4. </span>CddPwmClockDivider<a class="headerlink" href="#cddpwmclockdivider" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1251,7 +1190,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmhighspeedclockdivider">
-<h5><span class="section-number">4.15.8.3.2.5. </span>CddPwmHighSpeedClockDivider<a class="headerlink" href="#cddpwmhighspeedclockdivider" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.5. </span>CddPwmHighSpeedClockDivider<a class="headerlink" href="#cddpwmhighspeedclockdivider" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1287,7 +1226,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmfrequency">
-<h5><span class="section-number">4.15.8.3.2.6. </span>CddPwmFrequency<a class="headerlink" href="#cddpwmfrequency" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.6. </span>CddPwmFrequency<a class="headerlink" href="#cddpwmfrequency" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1326,7 +1265,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwminterruptenable">
-<h5><span class="section-number">4.15.8.3.2.7. </span>CddPwmInterruptEnable<a class="headerlink" href="#cddpwminterruptenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.7. </span>CddPwmInterruptEnable<a class="headerlink" href="#cddpwminterruptenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1359,7 +1298,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwminterruptcategory">
-<h5><span class="section-number">4.15.8.3.2.8. </span>CddPwmInterruptCategory<a class="headerlink" href="#cddpwminterruptcategory" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.8. </span>CddPwmInterruptCategory<a class="headerlink" href="#cddpwminterruptcategory" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1395,7 +1334,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwminterruptnotification">
-<h5><span class="section-number">4.15.8.3.2.9. </span>CddPwmInterruptNotification<a class="headerlink" href="#cddpwminterruptnotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.9. </span>CddPwmInterruptNotification<a class="headerlink" href="#cddpwminterruptnotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1437,7 +1376,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmtripzoneinterruptenable">
-<h5><span class="section-number">4.15.8.3.2.10. </span>CddPwmTripZoneInterruptEnable<a class="headerlink" href="#cddpwmtripzoneinterruptenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.10. </span>CddPwmTripZoneInterruptEnable<a class="headerlink" href="#cddpwmtripzoneinterruptenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1479,7 +1418,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmtripzoneinterruptcategory">
-<h5><span class="section-number">4.15.8.3.2.11. </span>CddPwmTripZoneInterruptCategory<a class="headerlink" href="#cddpwmtripzoneinterruptcategory" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.11. </span>CddPwmTripZoneInterruptCategory<a class="headerlink" href="#cddpwmtripzoneinterruptcategory" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1524,7 +1463,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmtripzonenotification">
-<h5><span class="section-number">4.15.8.3.2.12. </span>CddPwmTripZoneNotification<a class="headerlink" href="#cddpwmtripzonenotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.12. </span>CddPwmTripZoneNotification<a class="headerlink" href="#cddpwmtripzonenotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1566,7 +1505,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmoutputclass">
-<h5><span class="section-number">4.15.8.3.2.13. </span>CddPwmOutputClass<a class="headerlink" href="#cddpwmoutputclass" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.13. </span>CddPwmOutputClass<a class="headerlink" href="#cddpwmoutputclass" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1611,7 +1550,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmdefaultperiod">
-<h5><span class="section-number">4.15.8.3.2.14. </span>CddPwmDefaultPeriod<a class="headerlink" href="#cddpwmdefaultperiod" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.14. </span>CddPwmDefaultPeriod<a class="headerlink" href="#cddpwmdefaultperiod" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1659,7 +1598,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmsymmetry">
-<h5><span class="section-number">4.15.8.3.2.15. </span>CddPwmSymmetry<a class="headerlink" href="#cddpwmsymmetry" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.15. </span>CddPwmSymmetry<a class="headerlink" href="#cddpwmsymmetry" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1704,7 +1643,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwminstanceref">
-<h5><span class="section-number">4.15.8.3.2.16. </span>CddPwmInstanceRef<a class="headerlink" href="#cddpwminstanceref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.16. </span>CddPwmInstanceRef<a class="headerlink" href="#cddpwminstanceref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1734,7 +1673,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmmcuclockreferencepoint">
-<h5><span class="section-number">4.15.8.3.2.17. </span>CddPwmMcuClockReferencePoint<a class="headerlink" href="#cddpwmmcuclockreferencepoint" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.2.17. </span>CddPwmMcuClockReferencePoint<a class="headerlink" href="#cddpwmmcuclockreferencepoint" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1765,10 +1704,10 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </section>
 </section>
 <section id="cddpwmoutputchannel">
-<h4><span class="section-number">4.15.8.3.3. </span>CddPwmOutputChannel<a class="headerlink" href="#cddpwmoutputchannel" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.15.8.2.3. </span>CddPwmOutputChannel<a class="headerlink" href="#cddpwmoutputchannel" title="Link to this heading"></a></h4>
 <p>Configuration of output channel A or B.</p>
 <section id="cddpwmchannel">
-<h5><span class="section-number">4.15.8.3.3.1. </span>CddPwmChannel<a class="headerlink" href="#cddpwmchannel" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.3.1. </span>CddPwmChannel<a class="headerlink" href="#cddpwmchannel" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1804,7 +1743,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmpolarity">
-<h5><span class="section-number">4.15.8.3.3.2. </span>CddPwmPolarity<a class="headerlink" href="#cddpwmpolarity" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.3.2. </span>CddPwmPolarity<a class="headerlink" href="#cddpwmpolarity" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1849,7 +1788,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmidlestate">
-<h5><span class="section-number">4.15.8.3.3.3. </span>CddPwmIdleState<a class="headerlink" href="#cddpwmidlestate" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.3.3. </span>CddPwmIdleState<a class="headerlink" href="#cddpwmidlestate" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1885,7 +1824,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmdefaultdutycycle">
-<h5><span class="section-number">4.15.8.3.3.4. </span>CddPwmDefaultDutyCycle<a class="headerlink" href="#cddpwmdefaultdutycycle" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.3.4. </span>CddPwmDefaultDutyCycle<a class="headerlink" href="#cddpwmdefaultdutycycle" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1933,7 +1872,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmdefaultdutycycleinpercentage">
-<h5><span class="section-number">4.15.8.3.3.5. </span>CddPwmDefaultDutyCycleInPercentage<a class="headerlink" href="#cddpwmdefaultdutycycleinpercentage" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.3.5. </span>CddPwmDefaultDutyCycleInPercentage<a class="headerlink" href="#cddpwmdefaultdutycycleinpercentage" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1982,10 +1921,10 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </section>
 </section>
 <section id="cddpwmxlinkconfig">
-<h4><span class="section-number">4.15.8.3.4. </span>CddPwmXlinkConfig<a class="headerlink" href="#cddpwmxlinkconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.15.8.2.4. </span>CddPwmXlinkConfig<a class="headerlink" href="#cddpwmxlinkconfig" title="Link to this heading"></a></h4>
 <p>Xlink configuration for a frame.</p>
 <section id="cddpwmxlinkid">
-<h5><span class="section-number">4.15.8.3.4.1. </span>CddPwmXlinkId<a class="headerlink" href="#cddpwmxlinkid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.4.1. </span>CddPwmXlinkId<a class="headerlink" href="#cddpwmxlinkid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2018,7 +1957,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmxlinkinstanceref">
-<h5><span class="section-number">4.15.8.3.4.2. </span>CddPwmXlinkInstanceRef<a class="headerlink" href="#cddpwmxlinkinstanceref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.4.2. </span>CddPwmXlinkInstanceRef<a class="headerlink" href="#cddpwmxlinkinstanceref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2049,10 +1988,10 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </section>
 </section>
 <section id="cddpwmlinkhwunit">
-<h4><span class="section-number">4.15.8.3.5. </span>CddPwmLinkHwUnit<a class="headerlink" href="#cddpwmlinkhwunit" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.15.8.2.5. </span>CddPwmLinkHwUnit<a class="headerlink" href="#cddpwmlinkhwunit" title="Link to this heading"></a></h4>
 <p>Xlink configuration for a frame.</p>
 <section id="cddpwmhwunit">
-<h5><span class="section-number">4.15.8.3.5.1. </span>CddPwmHwUnit<a class="headerlink" href="#cddpwmhwunit" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.5.1. </span>CddPwmHwUnit<a class="headerlink" href="#cddpwmhwunit" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2083,14 +2022,14 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </section>
 </section>
 <section id="cddpwmhrpwmcalibrationconfig">
-<h4><span class="section-number">4.15.8.3.6. </span>CddPwmHrpwmCalibrationConfig<a class="headerlink" href="#cddpwmhrpwmcalibrationconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.15.8.2.6. </span>CddPwmHrpwmCalibrationConfig<a class="headerlink" href="#cddpwmhrpwmcalibrationconfig" title="Link to this heading"></a></h4>
 <p>Hrpwm calibration instance configuration for a frame.</p>
 </section>
 <section id="cddpwmhrpwmcalconfig">
-<h4><span class="section-number">4.15.8.3.7. </span>CddPwmHrpwmCalConfig<a class="headerlink" href="#cddpwmhrpwmcalconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.15.8.2.7. </span>CddPwmHrpwmCalConfig<a class="headerlink" href="#cddpwmhrpwmcalconfig" title="Link to this heading"></a></h4>
 <p>Hrpwm calibration instance configuration for a frame.</p>
 <section id="cddpwmhrpwmcalinstanceid">
-<h5><span class="section-number">4.15.8.3.7.1. </span>CddPwmHrpwmCalInstanceId<a class="headerlink" href="#cddpwmhrpwmcalinstanceid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.7.1. </span>CddPwmHrpwmCalInstanceId<a class="headerlink" href="#cddpwmhrpwmcalinstanceid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2123,7 +2062,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmhrpwmcalinstanceref">
-<h5><span class="section-number">4.15.8.3.7.2. </span>CddPwmHrpwmCalInstanceRef<a class="headerlink" href="#cddpwmhrpwmcalinstanceref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.15.8.2.7.2. </span>CddPwmHrpwmCalInstanceRef<a class="headerlink" href="#cddpwmhrpwmcalinstanceref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2155,10 +2094,10 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </section>
 </section>
 <section id="cddpwmgeneral">
-<h3><span class="section-number">4.15.8.4. </span>CddPwmGeneral<a class="headerlink" href="#cddpwmgeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.15.8.3. </span>CddPwmGeneral<a class="headerlink" href="#cddpwmgeneral" title="Link to this heading"></a></h3>
 <p>General configuration (parameters) of the PWM Driver software module.</p>
 <section id="cddpwmdeverrordetect">
-<h4><span class="section-number">4.15.8.4.1. </span>CddPwmDevErrorDetect<a class="headerlink" href="#cddpwmdeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.15.8.3.1. </span>CddPwmDevErrorDetect<a class="headerlink" href="#cddpwmdeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2191,7 +2130,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmdeinitapi">
-<h4><span class="section-number">4.15.8.4.2. </span>CddPwmDeInitApi<a class="headerlink" href="#cddpwmdeinitapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.15.8.3.2. </span>CddPwmDeInitApi<a class="headerlink" href="#cddpwmdeinitapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2233,7 +2172,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmnotificationsupported">
-<h4><span class="section-number">4.15.8.4.3. </span>CddPwmNotificationSupported<a class="headerlink" href="#cddpwmnotificationsupported" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.15.8.3.3. </span>CddPwmNotificationSupported<a class="headerlink" href="#cddpwmnotificationsupported" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2266,7 +2205,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmversioninfoapi">
-<h4><span class="section-number">4.15.8.4.4. </span>CddPwmVersionInfoApi<a class="headerlink" href="#cddpwmversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.15.8.3.4. </span>CddPwmVersionInfoApi<a class="headerlink" href="#cddpwmversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2299,7 +2238,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmsetdutycycle">
-<h4><span class="section-number">4.15.8.4.5. </span>CddPwmSetDutyCycle<a class="headerlink" href="#cddpwmsetdutycycle" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.15.8.3.5. </span>CddPwmSetDutyCycle<a class="headerlink" href="#cddpwmsetdutycycle" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2341,7 +2280,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </table>
 </section>
 <section id="cddpwmsetoutputtoidle">
-<h4><span class="section-number">4.15.8.4.6. </span>CddPwmSetOutputToIdle<a class="headerlink" href="#cddpwmsetoutputtoidle" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.15.8.3.6. </span>CddPwmSetOutputToIdle<a class="headerlink" href="#cddpwmsetoutputtoidle" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2384,7 +2323,7 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 </section>
 </section>
 <section id="steps-to-configure-cdd-pwm-module">
-<h3><span class="section-number">4.15.8.5. </span>Steps To Configure Cdd_Pwm Module<a class="headerlink" href="#steps-to-configure-cdd-pwm-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.15.8.4. </span>Steps To Configure Cdd_Pwm Module<a class="headerlink" href="#steps-to-configure-cdd-pwm-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool, load Cdd_Pwm module. Only Precompile Config Variant is supported.</p></li>
 <li><p>Configure the required parameters.</p></li>

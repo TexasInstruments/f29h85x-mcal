@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.15. CDD UART Module Migration &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.16. CDD XBAR Module Migration" href="Migration_Guide_Cdd_Xbar.html" />
+    <link rel="prev" title="5.14. CDD PWM Module Migration" href="Migration_Guide_Cdd_Pwm.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.04.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_ResourceAllocator.html">5.1. Resource Allocator Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Can.html">5.2. CAN Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Gpt.html">5.3. GPT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Fls.html">5.4. FLS Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Lin.html">5.5. LIN Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Mcu.html">5.6. MCU Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Port.html">5.7. Port Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Spi.html">5.8. SPI Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Wdg.html">5.9. WDG Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Adc.html">5.10. CDD ADC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ecap.html">5.11. CDD ECAP Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ipc.html">5.12. CDD IPC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Sent.html">5.13. CDD SENT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Pwm.html">5.14. CDD PWM Module Migration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.15. CDD UART Module Migration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration">5.15.1. v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#summary">5.15.1.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-resource-allocator-introduction-and-uart-instance-configuration-updates">5.15.1.2. Change 1: Resource Allocator Introduction and UART Instance Configuration Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#v02-00-00-i-e-release-v01-03-00-from-v01-00-00-i-e-release-v01-02-00-migration">5.15.2. v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">5.15.2.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-uart-instance-name-changes">5.15.2.2. Change 1: UART Instance Name Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-clock-frequency-selection-updates">5.15.2.3. Change 2: Clock Frequency Selection Updates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Xbar.html">5.16. CDD XBAR Module Migration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="MigrationGuide_list.html"><span class="section-number">5. </span>Migration Guide</a> &raquo;</li>
+      <li><span class="section-number">5.15. </span>CDD UART Module Migration</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cdd-uart-module-migration">
+<h1><span class="section-number">5.15. </span>CDD UART Module Migration<a class="headerlink" href="#cdd-uart-module-migration" title="Link to this heading"></a></h1>
+<p><strong>Migration Approach:</strong> Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.</p>
+<section id="v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration">
+<h2><span class="section-number">5.15.1. </span>v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration<a class="headerlink" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration" title="Link to this heading"></a></h2>
+<section id="summary">
+<h3><span class="section-number">5.15.1.1. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h3>
+<p>Version v03.00.00 introduces <strong>Resource Allocator as a mandatory architectural foundation</strong>. This represents a fundamental shift from direct parameter configuration to centralized resource management:</p>
+<ol class="arabic simple">
+<li><p><strong>Resource Allocator Introduction and UART Instance Configuration Updates</strong>: Resource Allocator becomes mandatory with CDD UART configurations updated to reference Resource Allocator instances</p></li>
+</ol>
+<p><strong>PREREQUISITE:</strong> Complete <a class="reference internal" href="Migration_Guide_ResourceAllocator.html#module-setup-and-configuration"><span class="std std-ref">Resource Allocator Setup</span></a> before proceeding.</p>
+</section>
+<section id="change-1-resource-allocator-introduction-and-uart-instance-configuration-updates">
+<h3><span class="section-number">5.15.1.2. </span>Change 1: Resource Allocator Introduction and UART Instance Configuration Updates<a class="headerlink" href="#change-1-resource-allocator-introduction-and-uart-instance-configuration-updates" title="Link to this heading"></a></h3>
+<section id="description">
+<h4><span class="section-number">5.15.1.2.1. </span>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h4>
+<p>Resource Allocator becomes a mandatory architectural foundation for the CDD UART module, with CDD UART configurations updated to reference Resource Allocator instances. This represents a fundamental shift from direct parameter configuration to centralized resource management, where CDD UART instances are allocated through Resource Allocator and then referenced by UART unit configurations.</p>
+</section>
+<section id="old-vs-new-configuration">
+<h4><span class="section-number">5.15.1.2.2. </span>Old vs New Configuration<a class="headerlink" href="#old-vs-new-configuration" title="Link to this heading"></a></h4>
+<p><strong>Previous Configuration (v02.00.00):</strong>
+Direct parameter selection was used without Resource Allocator dependency.</p>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../_images/05_01_cdd_uart_module_old_config.png"><img alt="Old CDD UART Config" src="../_images/05_01_cdd_uart_module_old_config.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.69 </span><span class="caption-text">v02.00.00: Direct UART instance parameter selection</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>New Configuration (v03.00.00):</strong>
+CDD UART configurations now reference instances allocated through Resource Allocator.</p>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../_images/05_03_cdd_uart_module_select_instance.png"><img alt="Select CDD UART Instance" src="../_images/05_03_cdd_uart_module_select_instance.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.70 </span><span class="caption-text">v03.00.00: Set CddUartInstanceRef to point to the corresponding Cdd_UartAllocatedInstance in Resource Allocator</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="migration-actions">
+<h4><span class="section-number">5.15.1.2.3. </span>Migration Actions<a class="headerlink" href="#migration-actions" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Setup Resource Allocator:</strong> Follow <a class="reference internal" href="Migration_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Setup</span></a></p></li>
+<li><p><strong>Navigate to Context:</strong> Navigate to <strong>ResourceAllocatorGeneral → Context → Cdd_Uart</strong> and add CDD UART allocator:</p></li>
+</ol>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="../_images/04_01_cdd_uart_module_add_allocator.png"><img alt="Add CDD UART Allocator" src="../_images/04_01_cdd_uart_module_add_allocator.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.71 </span><span class="caption-text">Navigate to Context and add CDD UART allocator</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="3">
+<li><p><strong>Add CDD UART Instance:</strong> Add Cdd_UartAllocatedInstance entries for each UART instance your application requires:</p></li>
+</ol>
+<figure class="align-center" id="id9">
+<a class="reference internal image-reference" href="../_images/04_02_cdd_uart_module_add_instance.png"><img alt="Add CDD UART Instance" src="../_images/04_02_cdd_uart_module_add_instance.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.72 </span><span class="caption-text">Add Cdd_UartAllocatedInstance entries for each UART instance your application requires</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="4">
+<li><p><strong>Configure UART Instance:</strong> Configure the InstanceName, Frame, and BaseAddr for each allocated instance:</p></li>
+</ol>
+<figure class="align-center" id="id10">
+<a class="reference internal image-reference" href="../_images/04_03_cdd_uart_module_select_instance.png"><img alt="Configure CDD UART Instance" src="../_images/04_03_cdd_uart_module_select_instance.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.73 </span><span class="caption-text">Configure the InstanceName, Frame, and BaseAddr for each allocated instance</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="5">
+<li><p><strong>Complete Configuration:</strong> Finalize CDD UART instance allocation</p></li>
+<li><p><strong>Navigate to CddUartUnit:</strong> Navigate to <strong>Cdd → CddUartUnit</strong> and update configurations to reference the CDD UART instances allocated in Resource Allocator</p></li>
+<li><p><strong>Open UART Unit Configuration:</strong> Access the CddUartUnit configuration that needs to be updated</p></li>
+<li><p><strong>Set Instance Reference:</strong> Set CddUartInstanceRef to point to the corresponding Cdd_UartAllocatedInstance in Resource Allocator</p></li>
+<li><p><strong>Verify Automatic Derivation:</strong> Confirm that the CddUartBaseAddress parameter is now automatically derived from the Resource Allocator reference</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Resource Allocator module must be configured before the CDD UART module to ensure correct instance availability. For more details on Resource Allocator configuration, see the Resource Allocator Module User Guide.</p>
+</div>
+</section>
+</section>
+</section>
+<section id="v02-00-00-i-e-release-v01-03-00-from-v01-00-00-i-e-release-v01-02-00-migration">
+<h2><span class="section-number">5.15.2. </span>v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration<a class="headerlink" href="#v02-00-00-i-e-release-v01-03-00-from-v01-00-00-i-e-release-v01-02-00-migration" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3><span class="section-number">5.15.2.1. </span>Summary<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>Version v02.00.00 introduces updated UART instance names and changes clock frequency selection from hardcoded values to MCU system clock references:</p>
+<ol class="arabic simple">
+<li><p><strong>UART Instance Name Changes</strong>: UART instance naming convention updates for consistency and compatibility</p></li>
+<li><p><strong>Clock Frequency Selection Updates</strong>: Clock frequency configuration changed from hardcoded values to MCU system clock references</p></li>
+</ol>
+</section>
+<section id="change-1-uart-instance-name-changes">
+<h3><span class="section-number">5.15.2.2. </span>Change 1: UART Instance Name Changes<a class="headerlink" href="#change-1-uart-instance-name-changes" title="Link to this heading"></a></h3>
+<section id="id2">
+<h4><span class="section-number">5.15.2.2.1. </span>Description<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<p>Version v02.00.00 updates UART instance names for consistency and compatibility with the updated plugin architecture. The plugin will automatically identify and flag incompatible UART instance configurations that need to be updated.</p>
+</section>
+<section id="old-vs-new-instance-configuration">
+<h4><span class="section-number">5.15.2.2.2. </span>Old vs New Instance Configuration<a class="headerlink" href="#old-vs-new-instance-configuration" title="Link to this heading"></a></h4>
+<p><strong>Configuration Compatibility:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>v01.00.00</p></th>
+<th class="head"><p>v02.00.00</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Old UART instance naming convention</p></td>
+<td><p>Updated naming convention for plugin compatibility</p></td>
+</tr>
+<tr class="row-odd"><td><p>Direct instance name configuration</p></td>
+<td><p>Plugin-validated instance name selection</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Migration Requirements:</strong></p>
+<ul class="simple">
+<li><p>UART instance values must be chosen from the updated plugin options</p></li>
+<li><p>Plugin automatically flags incompatible configurations</p></li>
+<li><p>All UART instances require reconfiguration with new naming conventions</p></li>
+</ul>
+</section>
+<section id="id3">
+<h4><span class="section-number">5.15.2.2.3. </span>Migration Actions<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Open Configuration:</strong> Open your existing configuration in the latest plugin version</p></li>
+<li><p><strong>Identify Incompatible Configurations:</strong> The plugin will automatically identify and flag incompatible UART instance configurations that need to be updated</p></li>
+<li><p><strong>Configure UART Instances:</strong> Configure the corresponding UART instances by choosing values from the updated plugin options</p></li>
+<li><p><strong>Verify All Instances:</strong> Ensure all UART instances used in your application are properly configured with the new naming conventions</p></li>
+<li><p><strong>Validate Configuration:</strong> Confirm that all UART instance configurations are compatible with the v02.00.00 plugin requirements</p></li>
+</ol>
+</section>
+</section>
+<section id="change-2-clock-frequency-selection-updates">
+<h3><span class="section-number">5.15.2.3. </span>Change 2: Clock Frequency Selection Updates<a class="headerlink" href="#change-2-clock-frequency-selection-updates" title="Link to this heading"></a></h3>
+<section id="id4">
+<h4><span class="section-number">5.15.2.3.1. </span>Description<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<p>Version v02.00.00 changes clock frequency selection from hardcoded values to MCU system clock references. This change improves integration with the MCU module and ensures consistent clock configuration across the system.</p>
+</section>
+<section id="old-vs-new-clock-configuration">
+<h4><span class="section-number">5.15.2.3.2. </span>Old vs New Clock Configuration<a class="headerlink" href="#old-vs-new-clock-configuration" title="Link to this heading"></a></h4>
+<p><strong>Clock Frequency Configuration:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>v01.00.00</p></th>
+<th class="head"><p>v02.00.00</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Hardcoded clock frequency values</p></td>
+<td><p>MCU system clock references</p></td>
+</tr>
+<tr class="row-odd"><td><p>Static frequency configuration</p></td>
+<td><p>Dynamic clock frequency from MCU module</p></td>
+</tr>
+<tr class="row-even"><td><p>Manual clock value entry</p></td>
+<td><p>Automatic derivation from MCU configuration</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id5">
+<h4><span class="section-number">5.15.2.3.3. </span>Migration Actions<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Run Auto-Calculate Wizard:</strong> Execute the auto-calculate wizard to update the UART base address with new clock references</p></li>
+<li><p><strong>Update Clock Configuration:</strong> Update UART clock frequency configuration to reference MCU system clock instead of hardcoded values</p></li>
+<li><p><strong>Verify MCU Integration:</strong> Ensure clock frequency settings align with your MCU configuration</p></li>
+<li><p><strong>Validate Clock Settings:</strong> Confirm that all UART clock configurations properly reference the MCU system clock</p></li>
+<li><p><strong>Test Clock Functionality:</strong> Verify that UART operations work correctly with the new clock frequency configuration</p></li>
+</ol>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Migration_Guide_Cdd_Pwm.html" class="btn btn-neutral float-left" title="5.14. CDD PWM Module Migration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Migration_Guide_Cdd_Xbar.html" class="btn btn-neutral float-right" title="5.16. CDD XBAR Module Migration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2026, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Jan 16, 2026.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.04.01
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

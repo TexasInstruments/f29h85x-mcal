@@ -1,0 +1,43 @@
+# GPT Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v02.00.00 (i.e release v01.03.00) from v01.00.02 (i.e release v01.02.00) Migration
+
+### Summary
+
+Version v02.00.00 introduces configuration structure name changes to comply with AUTOSAR requirement TPS_ECUC_08011:
+
+1. **Configuration Structure Name Change**: GPT configuration structure name updated for AUTOSAR TPS_ECUC_08011 compliance
+
+### Change 1: Configuration Structure Name Change
+
+#### Description
+
+Version v02.00.00 changes the configuration structure name for AUTOSAR TPS_ECUC_08011 compliance. This change ensures compliance with AUTOSAR naming conventions and requires updates to application code that references the GPT configuration structure.
+
+#### Old vs New Configuration Structure
+
+**Configuration Structure Name Mapping:**
+
+| v01.00.02 and older | v02.00.00 |
+|---------------------|-----------|
+| `Gpt_ConfigSetptr` | `Gpt_Config` |
+
+**Code Examples:**
+
+```c
+// v01.00.02 and older
+Gpt_Init(&Gpt_ConfigSetptr);
+
+// v02.00.00
+Gpt_Init(&Gpt_Config);
+```
+
+#### Migration Actions
+
+1. **Search Application Code:** Find all references to `Gpt_ConfigSetptr` in your application code
+2. **Replace Structure Name:** Update all references from `Gpt_ConfigSetptr` to `Gpt_Config`
+3. **Update Function Calls:** Ensure all GPT initialization calls use the new structure name
+4. **Update Upper Modules:** Update any upper module that references the configuration structures to use the new structure name
+5. **Verify Compilation:** Clean build and verify no compilation errors related to GPT configuration structure

@@ -1,0 +1,127 @@
+# Port Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
+
+### Summary
+
+Version v03.00.00 introduces **Resource Allocator as a mandatory architectural foundation**. This represents a fundamental shift from direct parameter configuration to centralized resource management with device-specific pin configurations:
+
+1. **Resource Allocator Introduction and Device Variant Centralization**: Resource Allocator becomes mandatory with device variant selection moved from Port module to centralized Resource Allocator
+
+**PREREQUISITE:** Complete [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md#module-setup-and-configuration) before proceeding.
+
+### Change 1: Resource Allocator Introduction and Device Variant Centralization
+
+#### Description
+
+Resource Allocator becomes a mandatory architectural foundation for the Port module, with device variant selection moved to centralized resource management. Resource Allocator determines available pins and mux options, while device-specific pin configurations, mux modes, and package information are now derived from Resource Allocator settings.
+
+#### Old vs New Configuration
+
+**Previous Configuration (v02.00.00):**
+Direct device variant selection was used within Port module configuration.
+
+```{figure} Assets/images/migration/port_module/02_01_port_module_old_config.png
+:alt: Old Port Config
+:align: center
+:width: 80%
+
+v02.00.00: PortDeviceVariant configured within Port module
+```
+
+**New Configuration (v03.00.00):**
+Port module automatically reads device variant information from Resource Allocator to determine available pins and mux options.
+
+```{figure} Assets/images/migration/port_module/02_02_port_module_new_config.png
+:alt: New Port Config
+:align: center
+:width: 80%
+
+v03.00.00: Port module configuration without PortDeviceVariant - device settings now derived from Resource Allocator
+```
+
+**Parameter Source Changes:**
+
+| Parameter | v02.00.00 | v03.00.00 |
+|-----------|-----------|-----------|
+| **Device Variant** | Configured in Port module | Derived from Resource Allocator |
+| **Pin Availability** | Based on Port module device settings | Automatically filtered by Resource Allocator |
+| **Mux Modes** | Configured in Port module | Centralized in Resource Allocator |
+| **Package Information** | Direct configuration in Port | Derived from Resource Allocator |
+
+#### Migration Actions
+
+1. **Setup Resource Allocator:** Follow [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md) with Device, Variant, and Package parameters
+2. **Navigate to Port Configuration:** Navigate to **Port → PortContainer → PortPin**
+3. **Verify Pin Configurations:** Ensure all pin-related parameters reference the correct Resource Allocator data and available pin options are automatically filtered based on Resource Allocator device settings
+
+```{NOTE}
+The Resource Allocator module must be configured before the Port module to ensure correct pin availability filtering. Device-specific pin configurations, mux modes, and package information are now derived from the Resource Allocator settings.
+```
+
+## v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration
+
+### Summary
+
+Version v02.00.00 introduces major changes that require attention when migrating from v01.01.00 or any older versions:
+
+1. **Port Pin Name Changes**: PortPinName and PortPinPeripheralSignal naming conventions updated, affecting configuration compatibility
+2. **Configuration Structure Name Change**: Port configuration structure name updated for AUTOSAR TPS_ECUC_08011 compliance
+
+### Change 1: Port Pin Name Changes
+
+#### Description
+
+Version v02.00.00 updates `PortPinName` and `PortPinPeripheralSignal` naming conventions, impacting configuration parameters. Port configurations from v01.01.00 or older versions are not directly compatible with v02.00.00 due to these naming changes.
+
+#### Old vs New Pin Naming
+
+**Pin Naming Convention Changes:**
+
+| Aspect | v01.01.00 and older | v02.00.00 |
+|--------|---------------------|-----------|
+| **PortPinName and PortPinPeripheralSignal** | Old naming convention | Updated naming convention |
+| **Configuration Compatibility** | Direct compatibility | **Not compatible** - requires reconfiguration |
+| **Plugin Handling** | N/A | Automatically flags incompatible configurations |
+
+#### Migration Actions
+
+1. **Open Configuration:** Open your existing configuration in the latest plugin version
+2. **Identify Incompatible Configurations:** The plugin will automatically flag incompatible pin configurations
+3. **Reconfigure Pins:** Configure pins using the new naming convention by choosing values from the plugin
+4. **Verify All Configurations:** Verify and update all affected pin configurations
+
+### Change 2: Configuration Structure Name Change
+
+#### Description
+
+Version v02.00.00 changes the configuration structure name for AUTOSAR TPS_ECUC_08011 compliance, requiring updates to application code that references the Port configuration structure.
+
+#### Old vs New Configuration Structure
+
+**Configuration Structure Name Mapping:**
+
+| v01.01.00 and older | v02.00.00 |
+|---------------------|-----------|
+| `Port_PortConfigSet` | `Port_Config` |
+
+**Code Examples:**
+
+```c
+// v01.01.00 and older
+Port_Init(&Port_PortConfigSet);
+
+// v02.00.00
+Port_Init(&Port_Config);
+```
+
+#### Migration Actions
+
+1. **Search Application Code:** Find all references to `Port_PortConfigSet` in your application code
+2. **Replace Structure Name:** Update all references from `Port_PortConfigSet` to `Port_Config`
+3. **Update Function Calls:** Ensure all Port initialization calls use the new structure name
+4. **Update Upper Modules:** Update any upper modules that reference the configuration structures to use the new structure name
+5. **Verify Compilation:** Clean build and verify no compilation errors related to Port configuration structure
+

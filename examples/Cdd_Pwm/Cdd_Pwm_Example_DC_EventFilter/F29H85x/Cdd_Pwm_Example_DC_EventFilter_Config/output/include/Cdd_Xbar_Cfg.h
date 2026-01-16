@@ -50,7 +50,7 @@ extern "C" {
 /** \brief CDD XBar configuration Minor Version */
 #define CDD_XBAR_CFG_MINOR_VERSION                (0U)
 /** \brief CDD XBar configuration Patch Version */
-#define CDD_XBAR_CFG_PATCH_VERSION                (0U)
+#define CDD_XBAR_CFG_PATCH_VERSION                (1U)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros

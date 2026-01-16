@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.12. CDD IPC Module Migration &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.13. CDD SENT Module Migration" href="Migration_Guide_Cdd_Sent.html" />
+    <link rel="prev" title="5.11. CDD ECAP Module Migration" href="Migration_Guide_Cdd_Ecap.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.04.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_ResourceAllocator.html">5.1. Resource Allocator Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Can.html">5.2. CAN Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Gpt.html">5.3. GPT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Fls.html">5.4. FLS Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Lin.html">5.5. LIN Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Mcu.html">5.6. MCU Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Port.html">5.7. Port Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Spi.html">5.8. SPI Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Wdg.html">5.9. WDG Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Adc.html">5.10. CDD ADC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ecap.html">5.11. CDD ECAP Module Migration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.12. CDD IPC Module Migration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#v02-00-00-i-e-release-v01-04-00-from-v01-00-02-i-e-release-v01-03-00-migration">5.12.1. v02.00.00 (i.e release v01.04.00) from v01.00.02 (i.e release v01.03.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#summary">5.12.1.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-resource-allocator-introduction-with-local-core-context-centralization">5.12.1.2. Change 1: Resource Allocator Introduction with Local Core Context Centralization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-configuration-filtering-updates">5.12.1.3. Change 2: Configuration Filtering Updates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Sent.html">5.13. CDD SENT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Pwm.html">5.14. CDD PWM Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Uart.html">5.15. CDD UART Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Xbar.html">5.16. CDD XBAR Module Migration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="MigrationGuide_list.html"><span class="section-number">5. </span>Migration Guide</a> &raquo;</li>
+      <li><span class="section-number">5.12. </span>CDD IPC Module Migration</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cdd-ipc-module-migration">
+<h1><span class="section-number">5.12. </span>CDD IPC Module Migration<a class="headerlink" href="#cdd-ipc-module-migration" title="Link to this heading"></a></h1>
+<p><strong>Migration Approach:</strong> Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.</p>
+<section id="v02-00-00-i-e-release-v01-04-00-from-v01-00-02-i-e-release-v01-03-00-migration">
+<h2><span class="section-number">5.12.1. </span>v02.00.00 (i.e release v01.04.00) from v01.00.02 (i.e release v01.03.00) Migration<a class="headerlink" href="#v02-00-00-i-e-release-v01-04-00-from-v01-00-02-i-e-release-v01-03-00-migration" title="Link to this heading"></a></h2>
+<section id="summary">
+<h3><span class="section-number">5.12.1.1. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h3>
+<p>Version v02.00.00 introduces <strong>Resource Allocator as a mandatory architectural foundation</strong> and local core context centralization. This represents a fundamental shift from direct parameter configuration to centralized resource management:</p>
+<ol class="arabic simple">
+<li><p><strong>Resource Allocator Introduction with Local Core Context Centralization</strong>: Resource Allocator becomes mandatory with local core context moved from CDD IPC to Resource Allocator</p></li>
+<li><p><strong>Configuration Filtering Updates</strong>: Remote core and instance options automatically filtered based on Resource Allocator context</p></li>
+</ol>
+<p><strong>PREREQUISITE:</strong> Complete <a class="reference internal" href="Migration_Guide_ResourceAllocator.html#module-setup-and-configuration"><span class="std std-ref">Resource Allocator Setup</span></a> before proceeding.</p>
+</section>
+<section id="change-1-resource-allocator-introduction-with-local-core-context-centralization">
+<h3><span class="section-number">5.12.1.2. </span>Change 1: Resource Allocator Introduction with Local Core Context Centralization<a class="headerlink" href="#change-1-resource-allocator-introduction-with-local-core-context-centralization" title="Link to this heading"></a></h3>
+<section id="description">
+<h4><span class="section-number">5.12.1.2.1. </span>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h4>
+<p>Resource Allocator becomes a mandatory architectural foundation for the CDD IPC module with local core context centralization. The local core context is moved from CDD IPC module configuration to the Resource Allocator CurrentContext parameter, providing centralized context management across all modules.</p>
+</section>
+<section id="old-vs-new-configuration">
+<h4><span class="section-number">5.12.1.2.2. </span>Old vs New Configuration<a class="headerlink" href="#old-vs-new-configuration" title="Link to this heading"></a></h4>
+<p><strong>Previous Configuration (v01.00.02):</strong>
+Local core context was set directly within CDD IPC module configuration.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/01_01_cdd_ipc_module_old_context_config.png"><img alt="Old IPC Context Configuration" src="../_images/01_01_cdd_ipc_module_old_context_config.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.53 </span><span class="caption-text">v01.00.02: Local core context was set directly within CDD IPC module configuration</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>New Configuration (v02.00.00):</strong>
+Context is now centralized in Resource Allocator, replacing direct IPC context configuration.</p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/01_04_cdd_ipc_module_new_ra_context.png"><img alt="New RA Context Configuration" src="../_images/01_04_cdd_ipc_module_new_ra_context.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.54 </span><span class="caption-text">v02.00.00: Context is now set in Resource Allocator, replacing direct IPC context configuration</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="migration-actions">
+<h4><span class="section-number">5.12.1.2.3. </span>Migration Actions<a class="headerlink" href="#migration-actions" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Setup Resource Allocator:</strong> Follow <a class="reference internal" href="Migration_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Setup</span></a></p></li>
+<li><p><strong>Configure Local Core Context:</strong> Navigate to <strong>ResourceAllocatorGeneral → General</strong> and configure the CurrentContext parameter to specify your local core</p></li>
+<li><p><strong>Remove Direct IPC Context:</strong> The local core context configuration is no longer available within the CDD IPC module - it is now automatically determined from Resource Allocator</p></li>
+<li><p><strong>Verify Context Integration:</strong> Ensure the Resource Allocator CurrentContext parameter correctly reflects your local core configuration</p></li>
+</ol>
+</section>
+</section>
+<section id="change-2-configuration-filtering-updates">
+<h3><span class="section-number">5.12.1.3. </span>Change 2: Configuration Filtering Updates<a class="headerlink" href="#change-2-configuration-filtering-updates" title="Link to this heading"></a></h3>
+<section id="id1">
+<h4><span class="section-number">5.12.1.3.1. </span>Description<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>Version v02.00.00 introduces automatic configuration filtering where remote core options and TX/RX instance selections are automatically filtered based on the local core context from Resource Allocator. This eliminates invalid configuration combinations and ensures context consistency.</p>
+</section>
+<section id="old-vs-new-configuration-filtering">
+<h4><span class="section-number">5.12.1.3.2. </span>Old vs New Configuration Filtering<a class="headerlink" href="#old-vs-new-configuration-filtering" title="Link to this heading"></a></h4>
+<p><strong>Previous Configuration (v01.00.02):</strong>
+Remote core selection and TX/RX instances were configured directly without context-based filtering.</p>
+<p><strong>New Configuration (v02.00.00):</strong>
+Remote core options and instance selections are automatically filtered based on Resource Allocator context.</p>
+</section>
+<section id="id2">
+<h4><span class="section-number">5.12.1.3.3. </span>Migration Actions<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Verify Remote Core Filtering:</strong> Navigate to CDD IPC configuration and observe that remote core options are automatically filtered based on Resource Allocator context:</p></li>
+</ol>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../_images/01_05_cdd_ipc_module_new_remote_filtered.png"><img alt="New IPC Remote Core Filtered" src="../_images/01_05_cdd_ipc_module_new_remote_filtered.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.55 </span><span class="caption-text">Remote core options are automatically filtered based on Resource Allocator context</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="2">
+<li><p><strong>Review TX/RX Instance Filtering:</strong> Verify that CddIpcTxInstance and CddIpcRxInstance options are automatically filtered based on local core context:</p></li>
+</ol>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../_images/01_06_cdd_ipc_module_new_instance_filtered.png"><img alt="New IPC Instance Filtered" src="../_images/01_06_cdd_ipc_module_new_instance_filtered.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.56 </span><span class="caption-text">CddIpcTxInstance and CddIpcRxInstance options are automatically filtered based on local core context from Resource Allocator</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="3">
+<li><p><strong>Configure Valid Options:</strong> Select remote core and TX/RX instances from the automatically filtered options that are valid for your local core context</p></li>
+<li><p><strong>Validate Configuration:</strong> Ensure all selected configurations are compatible with the context-based filtering rules</p></li>
+</ol>
+<p><strong>Configuration Benefits:</strong></p>
+<ul class="simple">
+<li><p>Automatic filtering eliminates invalid configuration combinations</p></li>
+<li><p>Context consistency ensured across Resource Allocator and CDD IPC modules</p></li>
+<li><p>Simplified configuration process with reduced manual validation requirements</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Resource Allocator module must be configured before the CDD IPC module to ensure correct context-based filtering. Local core selection is now automatically determined based on the CurrentContext parameter configured in the Resource Allocator.</p>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Migration_Guide_Cdd_Ecap.html" class="btn btn-neutral float-left" title="5.11. CDD ECAP Module Migration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Migration_Guide_Cdd_Sent.html" class="btn btn-neutral float-right" title="5.13. CDD SENT Module Migration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2026, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Jan 16, 2026.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.04.01
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

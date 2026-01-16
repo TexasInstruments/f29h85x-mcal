@@ -1,0 +1,48 @@
+# MCU Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration
+
+### Summary
+
+Version v02.00.00 introduces configuration structure name changes to comply with AUTOSAR requirement TPS_ECUC_08011:
+
+1. **Configuration Structure Name Change**: MCU configuration structure names updated for AUTOSAR TPS_ECUC_08011 compliance
+
+### Change 1: Configuration Structure Name Change
+
+#### Description
+
+Version v02.00.00 changes the configuration structure names for AUTOSAR TPS_ECUC_08011 compliance. This change ensures compliance with AUTOSAR naming conventions and requires updates to application code that references the MCU configuration structures. The specific structure names depend on the clock source being used in your configuration.
+
+#### Old vs New Configuration Structure
+
+**Configuration Structure Name Mapping:**
+
+| v01.01.00 and older | v02.00.00 |
+|---------------------|-----------|
+| `McuConf*` | `Mcu_Config*` |
+
+```{NOTE}
+The name of the configuration structures depends on the clock source being used.
+```
+
+**Code Examples:**
+
+```c
+// v01.01.00 and older
+Mcu_Init(&McuConf*);
+
+// v02.00.00
+Mcu_Init(&Mcu_Config*);
+```
+
+#### Migration Actions
+
+1. **Identify Current Structure Names:** Determine the exact configuration structure names used in your project based on your clock source configuration
+2. **Search Application Code:** Find all references to `McuConf*` patterns in your application code
+3. **Replace Structure Names:** Update all references from `McuConf*` pattern to `Mcu_Config*` pattern
+4. **Update Function Calls:** Ensure all MCU initialization calls use the new structure names
+5. **Update Upper Modules:** Update any upper modules that reference the MCU configuration structures to use the new structure names
+6. **Verify Compilation:** Clean build and verify no compilation errors related to MCU configuration structures

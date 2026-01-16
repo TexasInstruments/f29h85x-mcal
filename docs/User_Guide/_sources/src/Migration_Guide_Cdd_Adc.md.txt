@@ -1,0 +1,294 @@
+# CDD ADC Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v03.00.00 (i.e release v01.04.00) from v02.00.01 (i.e release v01.03.00) Migration
+
+### Summary
+
+Version v03.00.00 introduces **Resource Allocator as a mandatory architectural foundation** and SDK-based DMA integration. This represents a fundamental shift from direct parameter configuration to centralized resource management:
+
+1. **Resource Allocator Introduction and Hardware Unit Configuration Updates**: Resource Allocator becomes mandatory with CddAdcHwUnit configurations updated to reference Resource Allocator instances
+2. **SDK-Based DMA Integration**: Optional DMA integration for efficient ADC result transfers
+3. **Symbolic Name Uniqueness Requirements**: Enhanced validation requires unique symbolic names across configurations
+
+**PREREQUISITE:** Complete [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md#module-setup-and-configuration) before proceeding.
+
+### Change 1: Resource Allocator Introduction and Hardware Unit Configuration Updates
+
+#### Description
+
+Resource Allocator becomes a mandatory architectural foundation for the CDD ADC module, with CddAdcHwUnit configurations updated to reference Resource Allocator instances. This represents a fundamental shift from direct parameter configuration to centralized resource management, where CDD ADC instances are allocated through Resource Allocator and then referenced by hardware unit configurations.
+
+#### Old vs New Configuration
+
+**Previous Configuration (v02.00.01):**
+Direct parameter selection was used without Resource Allocator dependency.
+
+```{figure} Assets/images/migration/cdd_adc_module/02_01_cdd_adc_module_old_config.png
+:alt: Old CDD ADC Config
+:align: center
+:width: 80%
+
+v02.00.01: Direct ADC hardware unit parameter selection
+```
+
+**New Configuration (v03.00.00):**
+CDD ADC hardware unit configurations now reference instances allocated through Resource Allocator.
+
+```{figure} Assets/images/migration/cdd_adc_module/02_03_cdd_adc_module_select_instance.png
+:alt: Select CDD ADC Instance
+:align: center
+:width: 80%
+
+v03.00.00: Set CddAdcHwInstanceRef to point to the corresponding Cdd_AdcAllocatedInstance in Resource Allocator
+```
+
+#### Migration Actions
+
+1. **Setup Resource Allocator:** Follow [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md)
+
+2. **Navigate to Context:** Navigate to **ResourceAllocatorGeneral → Context → Cdd_Adc** and add CDD ADC allocator:
+
+```{figure} Assets/images/migration/cdd_adc_module/01_01_cdd_adc_module_add_allocator.png
+:alt: Add CDD ADC Allocator
+:align: center
+:width: 80%
+
+Navigate to Context and add CDD ADC allocator
+```
+
+3. **Add CDD ADC Instance:** Add Cdd_AdcAllocatedInstance entries for each ADC instance your application requires:
+
+```{figure} Assets/images/migration/cdd_adc_module/01_02_cdd_adc_module_add_instance.png
+:alt: Add CDD ADC Instance
+:align: center
+:width: 80%
+
+Add Cdd_AdcAllocatedInstance entries for each ADC instance your application requires
+```
+
+4. **Configure ADC Instance:** Configure the InstanceName, Frame, and BaseAddr for each allocated instance:
+
+```{figure} Assets/images/migration/cdd_adc_module/01_03_cdd_adc_module_select_instance.png
+:alt: Configure CDD ADC Instance
+:align: center
+:width: 80%
+
+Configure the InstanceName, Frame, and BaseAddr for each allocated instance
+```
+
+5. **Configure Safety Checker Instance (Optional):** If your application requires safety-critical ADC monitoring, configure CddAdcSafetyCheckerInstance:
+
+```{figure} Assets/images/migration/cdd_adc_module/01_05_cdd_adc_module_safety_checker_instance.png
+:alt: Configure CDD ADC Safety Checker Instance
+:align: center
+:width: 80%
+
+Configure CddAdcSafetyCheckerInstance for safety-critical applications (e.g., ADCSAFETYCHECK1)
+```
+
+6. **Configure Checker Interrupt Event Instance (Optional):** If your application requires interrupt-based safety monitoring, configure CddAdcCheckerInterruptEvtInstance:
+
+```{figure} Assets/images/migration/cdd_adc_module/01_06_cdd_adc_module_checker_interrupt_evt_instance.png
+:alt: Configure CDD ADC Checker Interrupt Event Instance
+:align: center
+:width: 80%
+
+Configure CddAdcCheckerInterruptEvtInstance for interrupt-based safety monitoring (e.g., ADCSAFETYCHECKINIEVT1)
+```
+
+7. **Complete Configuration:** Finalize CDD ADC instance allocation:
+
+```{figure} Assets/images/migration/cdd_adc_module/01_04_cdd_adc_module_final_config.png
+:alt: Final CDD ADC Configuration
+:align: center
+:width: 80%
+
+Complete CDD ADC instance allocation
+```
+
+8. **Navigate to CddAdcHwUnit:** Navigate to **Cdd → CddAdcHwUnit** and update configurations to reference the CDD ADC instances allocated in Resource Allocator
+
+9. **Open Hardware Unit Configuration:** Access the CddAdcHwUnit configuration that needs to be updated
+
+10. **Set Instance Reference:** Set CddAdcHwInstanceRef to point to the corresponding Cdd_AdcAllocatedInstance in Resource Allocator
+
+11. **Verify Automatic Derivation:** Confirm that the CddAdcHwInstance parameter is now automatically derived from the Resource Allocator reference
+
+### Change 2: SDK-Based DMA Integration (Optional)
+
+#### Description
+
+Version v03.00.00 introduces SDK-based DMA integration for efficient ADC result transfers without CPU intervention. This is an optional feature that can be enabled for improved performance in applications that require high-speed ADC data transfer.
+
+#### Old vs New DMA Configuration
+
+**Previous Configuration (v02.00.01):**
+No DMA integration available for ADC result transfers.
+
+**New Configuration (v03.00.00):**
+Optional SDK-based DMA integration with CddAdcEnableDma parameter.
+
+```{figure} Assets/images/migration/cdd_adc_module/03_01_cdd_adc_module_add_group_instance.png
+:alt: Add DMA Configuration
+:align: center
+:width: 80%
+
+Add CddAdcGroup configuration for DMA
+```
+
+```{figure} Assets/images/migration/cdd_adc_module/03_02_cdd_adc_module_configure_dma_params.png
+:alt: Configure DMA Parameters
+:align: center
+:width: 80%
+
+Configure CddAdcEnableDma parameter for ADC groups
+```
+
+#### Migration Actions
+
+1. **Evaluate DMA Requirement:** Determine if your application requires DMA for ADC result transfers for improved performance
+2. **Enable DMA (Optional):** If using DMA for ADC result transfers, enable `CddAdcEnableDma` in the group configuration
+3. **Configure SDK DMA:** Configure the DMA channel in the SDK/system configuration on the application side. Refer to [ADC + DMA Integration Guide](Module_User_Guide_Cdd_Adc.md#adc--dma-integration-guide) for detailed integration steps and [DMA Transfer Example](Module_User_Guide_Cdd_Adc.md#examples) for implementation examples
+4. **Ensure Memory Alignment:** Ensure proper memory alignment for DMA buffers to prevent transfer issues
+
+### Change 3: Symbolic Name Uniqueness Requirements
+
+#### Description
+
+Version v03.00.00 introduces enhanced validation that requires symbolic names to be unique across configurations. When migrating from v02.00.00 to v03.00.00, EB Tresos will generate validation errors if symbolic names are not unique. This is in accordance with [SWS_BSW_00200].
+
+#### Old vs New Validation Requirements
+
+**Uniqueness Requirements:**
+
+| Parameter | v02.00.01 | v03.00.00 |
+|-----------|-----------|-----------|
+| **CddAdcGroup (container name)** | No uniqueness constraint | Must be unique across all HW units |
+| **CddAdcPpbConfig (container name)** | No uniqueness constraint | Must be unique across all HW units |
+| **CddAdcHwInstanceRef** | No uniqueness constraint | Must be unique across all containers |
+| **CddAdcGlbSwTrigId** | No uniqueness constraint | Must be unique across all containers |
+| **CddAdcCheckerInstanceRef** | No uniqueness constraint | Must be unique across all containers |
+| **CddAdcCheckerIntEvtInstanceRef** | No uniqueness constraint | Must be unique across all containers |
+
+#### Migration Actions
+
+1. **Review Container Names:** Check all CddAdcGroup and CddAdcPpbConfig container names for uniqueness across all HW units
+2. **Review Instance References:** Ensure CddAdcHwInstanceRef, CddAdcCheckerInstanceRef, and CddAdcCheckerIntEvtInstanceRef are unique across all containers
+3. **Review Trigger IDs:** Verify CddAdcGlbSwTrigId values are unique across all containers
+4. **Resolve Conflicts:** Update any duplicate symbolic names to ensure uniqueness and avoid validation errors during migration
+5. **Validate Configuration:** Run validation in EB Tresos to confirm all symbolic names are now unique
+
+```{NOTE}
+The Resource Allocator module must be configured before the CDD ADC module to ensure correct instance availability. For more details on Resource Allocator configuration, see the Resource Allocator Module User Guide.
+```
+
+
+## v02.00.00 (i.e release v01.02.00) from v01.00.00 (i.e release v01.01.00) Migration
+
+### Summary
+
+Version v02.00.00 introduces schema compatibility updates to align with updated plugin structure and reference paths:
+
+1. **AR-ELEMENT Name Change**: Generated .xdm file AR-ELEMENT name requires updating for schema compatibility
+2. **MODULE-CONFIGURATION Path Update**: Generated .xdm file MODULE-CONFIGURATION definition path requires updating
+3. **Reference Path Updates**: Generated .xdm file reference paths require updating due to schema structure changes
+
+```{NOTE}
+The CDD ADC v2.0.0 plugin contains updated schema definitions that are not backward compatible with v1.0.0 generated configurations. To use existing v1.0.0 configurations with the v2.0.0 plugin, the **generated .xdm files** (created by EB Tresos from your configuration) must be updated.
+```
+
+### Change 1: AR-ELEMENT Name Change in Generated .xdm File
+
+#### Description
+
+When upgrading from v1.0.0 to v2.0.0, the generated .xdm file from EB Tresos contains AR-ELEMENT names that are not compatible with the new plugin schema. The AR-ELEMENT name needs to be updated in the generated .xdm file to ensure compatibility.
+
+#### Old vs New AR-ELEMENT Configuration
+
+**Generated .xdm File AR-ELEMENT Name:**
+
+| v01.00.00 Generated .xdm | v02.00.00 Required .xdm |
+|---------------------------|---------------------------|
+| `<d:chc name="Cdd_Adc" type="AR-ELEMENT"` | `<d:chc name="Cdd" type="AR-ELEMENT"` |
+
+#### Migration Actions
+
+1. **Locate Generated .xdm File:** Find your project's generated .xdm file (created by EB Tresos from your configuration)
+2. **Open File for Editing:** Open the generated .xdm file in a text editor
+3. **Find AR-ELEMENT Reference:** Locate the line containing `<d:chc name="Cdd_Adc" type="AR-ELEMENT"`
+4. **Update AR-ELEMENT Name:** Change the AR-ELEMENT name from `Cdd_Adc` to `Cdd`
+5. **Save File:** Save the updated .xdm file
+
+### Change 2: MODULE-CONFIGURATION Path Update in Generated .xdm File
+
+#### Description
+
+The MODULE-CONFIGURATION definition path in the generated .xdm file needs to be updated to reflect the new schema structure. The path must include the additional `Cdd` component for proper module reference.
+
+#### Old vs New MODULE-CONFIGURATION Path
+
+**Generated .xdm File MODULE-CONFIGURATION Path:**
+
+| v01.00.00 Generated .xdm | v02.00.00 Required .xdm |
+|---------------------------|---------------------------|
+| `<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Adc"/>` | `<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Adc/Cdd"/>` |
+
+#### Migration Actions
+
+1. **Continue Editing .xdm File:** In the same generated .xdm file being edited
+2. **Find MODULE-CONFIGURATION Path:** Locate the line containing `<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Adc"/>`
+3. **Update Definition Path:** Change the MODULE-CONFIGURATION path from `ASPath:/TI_F29H85x/Cdd_Adc` to `ASPath:/TI_F29H85x/Cdd_Adc/Cdd`
+4. **Verify Path Structure:** Ensure the updated path includes the additional `/Cdd` component
+5. **Save Changes:** Save the updated .xdm file
+
+### Change 3: Reference Path Updates in Generated .xdm File
+
+#### Description
+
+Any REFERENCE type parameters in the generated .xdm file that refer to other CDD ADC parameters by their schema path must be updated due to the schema structure change. All internal reference paths need to be updated to reflect the new schema hierarchy.
+
+#### Old vs New Reference Paths
+
+**Generated .xdm File Reference Path Example:**
+
+For `CddAdcPpbChannel` references expecting a channel reference:
+
+| v01.00.00 Generated .xdm Reference Path | v02.00.00 Required .xdm Reference Path |
+|-------------------------------------------|-------------------------------------------|
+| `/Cdd_Adc/Cdd_Adc/CddAdcConfigSet/CddAdcHwUnit_0/CddAdcGroup_0/CddAdcChannel_0` | `/Cdd_Adc/Cdd/CddAdcConfigSet/CddAdcHwUnit_0/CddAdcGroup_0/CddAdcChannel_0` |
+
+#### Migration Actions
+
+1. **Continue Editing .xdm File:** In the same generated .xdm file being edited
+2. **Search for Reference Paths:** Find all REFERENCE type parameters that contain `/Cdd_Adc/Cdd_Adc/` in their paths
+3. **Update Reference Paths:** Change all occurrences of `/Cdd_Adc/Cdd_Adc/` to `/Cdd_Adc/Cdd/`
+4. **Verify All Updates:** Ensure all reference paths now use the correct schema hierarchy
+5. **Save Final Changes:** Save the completely updated .xdm file
+
+**Generated .xdm File Structure Comparison:**
+
+**Before Editing (v01.00.00 Generated .xdm File):**
+```xml
+<d:lst type="TOP-LEVEL-PACKAGES">
+<d:ctr name="Cdd_Adc" type="AR-PACKAGE">
+<d:lst type="ELEMENTS">
+<d:chc name="Cdd_Adc" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+<d:ctr type="MODULE-CONFIGURATION">
+<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Adc"/>
+```
+
+**After Editing (v02.00.00 Compatible .xdm File):**
+```xml
+<d:lst type="TOP-LEVEL-PACKAGES">
+<d:ctr name="Cdd_Adc" type="AR-PACKAGE">
+<d:lst type="ELEMENTS">
+<d:chc name="Cdd" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+<d:ctr type="MODULE-CONFIGURATION">
+<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Adc/Cdd"/>
+```
+
+```{NOTE}
+Only the generated .xdm files (created by EB Tresos from your configuration) can be modified. The plugin .xdm files themselves cannot and should not be modified.
+```

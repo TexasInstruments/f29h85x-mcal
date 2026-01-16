@@ -1,0 +1,103 @@
+# CDD IPC Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v02.00.00 (i.e release v01.04.00) from v01.00.02 (i.e release v01.03.00) Migration
+
+### Summary
+
+Version v02.00.00 introduces **Resource Allocator as a mandatory architectural foundation** and local core context centralization. This represents a fundamental shift from direct parameter configuration to centralized resource management:
+
+1. **Resource Allocator Introduction with Local Core Context Centralization**: Resource Allocator becomes mandatory with local core context moved from CDD IPC to Resource Allocator
+2. **Configuration Filtering Updates**: Remote core and instance options automatically filtered based on Resource Allocator context
+
+**PREREQUISITE:** Complete [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md#module-setup-and-configuration) before proceeding.
+
+### Change 1: Resource Allocator Introduction with Local Core Context Centralization
+
+#### Description
+
+Resource Allocator becomes a mandatory architectural foundation for the CDD IPC module with local core context centralization. The local core context is moved from CDD IPC module configuration to the Resource Allocator CurrentContext parameter, providing centralized context management across all modules.
+
+#### Old vs New Configuration
+
+**Previous Configuration (v01.00.02):**
+Local core context was set directly within CDD IPC module configuration.
+
+```{figure} Assets/images/migration/cdd_ipc_module/01_01_cdd_ipc_module_old_context_config.png
+:alt: Old IPC Context Configuration
+:align: center
+:width: 80%
+
+v01.00.02: Local core context was set directly within CDD IPC module configuration
+```
+
+**New Configuration (v02.00.00):**
+Context is now centralized in Resource Allocator, replacing direct IPC context configuration.
+
+```{figure} Assets/images/migration/cdd_ipc_module/01_04_cdd_ipc_module_new_ra_context.png
+:alt: New RA Context Configuration
+:align: center
+:width: 80%
+
+v02.00.00: Context is now set in Resource Allocator, replacing direct IPC context configuration
+```
+
+#### Migration Actions
+
+1. **Setup Resource Allocator:** Follow [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md)
+
+2. **Configure Local Core Context:** Navigate to **ResourceAllocatorGeneral → General** and configure the CurrentContext parameter to specify your local core
+
+3. **Remove Direct IPC Context:** The local core context configuration is no longer available within the CDD IPC module - it is now automatically determined from Resource Allocator
+
+4. **Verify Context Integration:** Ensure the Resource Allocator CurrentContext parameter correctly reflects your local core configuration
+
+### Change 2: Configuration Filtering Updates
+
+#### Description
+
+Version v02.00.00 introduces automatic configuration filtering where remote core options and TX/RX instance selections are automatically filtered based on the local core context from Resource Allocator. This eliminates invalid configuration combinations and ensures context consistency.
+
+#### Old vs New Configuration Filtering
+
+**Previous Configuration (v01.00.02):**
+Remote core selection and TX/RX instances were configured directly without context-based filtering.
+
+**New Configuration (v02.00.00):**
+Remote core options and instance selections are automatically filtered based on Resource Allocator context.
+
+#### Migration Actions
+
+1. **Verify Remote Core Filtering:** Navigate to CDD IPC configuration and observe that remote core options are automatically filtered based on Resource Allocator context:
+
+```{figure} Assets/images/migration/cdd_ipc_module/01_05_cdd_ipc_module_new_remote_filtered.png
+:alt: New IPC Remote Core Filtered
+:align: center
+:width: 80%
+
+Remote core options are automatically filtered based on Resource Allocator context
+```
+
+2. **Review TX/RX Instance Filtering:** Verify that CddIpcTxInstance and CddIpcRxInstance options are automatically filtered based on local core context:
+
+```{figure} Assets/images/migration/cdd_ipc_module/01_06_cdd_ipc_module_new_instance_filtered.png
+:alt: New IPC Instance Filtered
+:align: center
+:width: 80%
+
+CddIpcTxInstance and CddIpcRxInstance options are automatically filtered based on local core context from Resource Allocator
+```
+
+3. **Configure Valid Options:** Select remote core and TX/RX instances from the automatically filtered options that are valid for your local core context
+
+4. **Validate Configuration:** Ensure all selected configurations are compatible with the context-based filtering rules
+
+**Configuration Benefits:**
+- Automatic filtering eliminates invalid configuration combinations
+- Context consistency ensured across Resource Allocator and CDD IPC modules
+- Simplified configuration process with reduced manual validation requirements
+
+```{NOTE}
+The Resource Allocator module must be configured before the CDD IPC module to ensure correct context-based filtering. Local core selection is now automatically determined based on the CurrentContext parameter configured in the Resource Allocator.
+```

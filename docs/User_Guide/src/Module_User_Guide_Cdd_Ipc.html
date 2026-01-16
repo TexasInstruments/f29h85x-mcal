@@ -110,12 +110,11 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.14.9. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#migration-guide">4.14.9.1. Migration Guide</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.14.9.2. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddipcconfig">4.14.9.3. CddIpcConfig</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddcomstackcontribution">4.14.9.4. CddComStackContribution</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddipcgeneral">4.14.9.5. CddIpcGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-ipc-module">4.14.9.6. Steps To Configure Cdd Ipc Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.14.9.1. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddipcconfig">4.14.9.2. CddIpcConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddcomstackcontribution">4.14.9.3. CddComStackContribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddipcgeneral">4.14.9.4. CddIpcGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-ipc-module">4.14.9.5. Steps To Configure Cdd Ipc Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.14.10. Examples</a><ul>
@@ -137,9 +136,10 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.19. RTDMA Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">7. AUTOSAR Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
 </ul>
 
         </div>
@@ -599,86 +599,17 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 <p class="admonition-title">Note</p>
 <p>Refer section <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#getting-started-with-eb-tresos"><span class="std std-ref">Getting Started with EB Tresos</span></a> of Chapter <strong>MCAL Configuration and EB Tresos</strong> for more information on how to load plugin and generate the configuration files.</p>
 </div>
-<section id="migration-guide">
-<h3><span class="section-number">4.14.9.1. </span>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h3>
-<p>Migration guides between module versions are detailed below.</p>
-<section id="v02-00-00-from-v01-00-02">
-<h4><span class="section-number">4.14.9.1.1. </span>v02.00.00 from v01.00.02<a class="headerlink" href="#v02-00-00-from-v01-00-02" title="Link to this heading"></a></h4>
-<section id="key-changes">
-<h5><span class="section-number">4.14.9.1.1.1. </span>Key Changes<a class="headerlink" href="#key-changes" title="Link to this heading"></a></h5>
-<ol class="arabic simple">
-<li><p><strong>Resource Allocator Based Approach</strong></p>
-<ul class="simple">
-<li><p>The CDD IPC module now integrates with the Resource Allocator module for centralized device, package, and variant configuration</p></li>
-<li><p>IPC instance and remote core configurations are now derived from the Resource Allocator settings</p></li>
-</ul>
-</li>
-<li><p><strong>LocalCore Selection Moved to Resource Allocator</strong></p>
-<ul class="simple">
-<li><p>The local core selection (which determines the current CPU context for IPC communication) has been moved from the CDD IPC module configuration to the Resource Allocator module</p></li>
-<li><p>The local core is now automatically determined based on the <code class="docutils literal notranslate"><span class="pre">CurrentContext</span></code> parameter configured in the Resource Allocator</p></li>
-<li><p>This affects:</p>
-<ul>
-<li><p>Remote core selection (<code class="docutils literal notranslate"><span class="pre">CddIpcRemoteCore</span></code>) - available remote cores are now filtered based on the current context</p></li>
-<li><p>TX/RX instance selection (<code class="docutils literal notranslate"><span class="pre">CddIpcTxInstance</span></code>, <code class="docutils literal notranslate"><span class="pre">CddIpcRxInstance</span></code>) - available instances are now determined by the local core context from Resource Allocator</p></li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-</section>
-<section id="migration-steps">
-<h5><span class="section-number">4.14.9.1.1.2. </span>Migration Steps<a class="headerlink" href="#migration-steps" title="Link to this heading"></a></h5>
-<ol class="arabic simple">
-<li><p><strong>Add Resource Allocator Module</strong></p>
-<ul class="simple">
-<li><p>If not already present, add the Resource Allocator module to your EB Tresos project configuration</p></li>
-</ul>
-</li>
-<li><p><strong>Configure CurrentContext in Resource Allocator</strong></p>
-<ul class="simple">
-<li><p>Configure the <code class="docutils literal notranslate"><span class="pre">CurrentContext</span></code> parameter in the Resource Allocator module to specify which CPU core is hosting the MCAL/AUTOSAR stack</p></li>
-<li><p>This replaces the previous local core selection in CDD IPC</p></li>
-</ul>
-</li>
-<li><p><strong>Update CDD IPC Configuration</strong></p>
-<ul class="simple">
-<li><p>Open the CDD IPC module configuration in EB Tresos</p></li>
-<li><p>The remote core options and IPC instance selections will now be automatically filtered based on the Resource Allocator’s <code class="docutils literal notranslate"><span class="pre">CurrentContext</span></code> setting</p></li>
-</ul>
-</li>
-<li><p><strong>Verify Remote Core Configuration</strong></p>
-<ul class="simple">
-<li><p>Ensure that the <code class="docutils literal notranslate"><span class="pre">CddIpcRemoteCore</span></code> selections are valid for the configured current context</p></li>
-<li><p>The available remote cores will be automatically determined based on the local core</p></li>
-</ul>
-</li>
-<li><p><strong>Regenerate Configuration</strong></p>
-<ul class="simple">
-<li><p>Save the configuration and regenerate all configuration files</p></li>
-</ul>
-</li>
-<li><p><strong>Rebuild Application</strong></p>
-<ul class="simple">
-<li><p>Rebuild your application with the updated configuration files</p></li>
-</ul>
-</li>
-</ol>
-<p>For more details on Resource Allocator configuration, refer to the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a>.</p>
-</section>
-</section>
-</section>
 <section id="configuration-parameters">
-<h3><span class="section-number">4.14.9.2. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.14.9.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
 </section>
 <section id="cddipcconfig">
-<h3><span class="section-number">4.14.9.3. </span>CddIpcConfig<a class="headerlink" href="#cddipcconfig" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.14.9.2. </span>CddIpcConfig<a class="headerlink" href="#cddipcconfig" title="Link to this heading"></a></h3>
 <p>This container contains the configuration parameters and sub containers of the Cdd_Ipc module.</p>
 <section id="cddipcremotecoreconfig">
-<h4><span class="section-number">4.14.9.3.1. </span>CddIpcRemoteCoreConfig<a class="headerlink" href="#cddipcremotecoreconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.14.9.2.1. </span>CddIpcRemoteCoreConfig<a class="headerlink" href="#cddipcremotecoreconfig" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the remote cores.</p>
 <section id="cddipcremotecore">
-<h5><span class="section-number">4.14.9.3.1.1. </span>CddIpcRemoteCore<a class="headerlink" href="#cddipcremotecore" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.2.1.1. </span>CddIpcRemoteCore<a class="headerlink" href="#cddipcremotecore" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -715,10 +646,10 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </section>
 </section>
 <section id="cddipctxinstanceconfig">
-<h4><span class="section-number">4.14.9.3.2. </span>CddIpcTxInstanceConfig<a class="headerlink" href="#cddipctxinstanceconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.14.9.2.2. </span>CddIpcTxInstanceConfig<a class="headerlink" href="#cddipctxinstanceconfig" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the CddIpc Instances.</p>
 <section id="cddipctxinstance">
-<h5><span class="section-number">4.14.9.3.2.1. </span>CddIpcTxInstance<a class="headerlink" href="#cddipctxinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.2.2.1. </span>CddIpcTxInstance<a class="headerlink" href="#cddipctxinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -754,11 +685,11 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipctxchannelconfig">
-<h5><span class="section-number">4.14.9.3.2.2. </span>CddIpcTxChannelConfig<a class="headerlink" href="#cddipctxchannelconfig" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.2.2.2. </span>CddIpcTxChannelConfig<a class="headerlink" href="#cddipctxchannelconfig" title="Link to this heading"></a></h5>
 <p>This container contains the configuration parameters of the CddIpc channels.</p>
 </section>
 <section id="cddipctxchannelid">
-<h5><span class="section-number">4.14.9.3.2.3. </span>CddIpcTxChannelId<a class="headerlink" href="#cddipctxchannelid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.2.2.3. </span>CddIpcTxChannelId<a class="headerlink" href="#cddipctxchannelid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -797,7 +728,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipctxprocessing">
-<h5><span class="section-number">4.14.9.3.2.4. </span>CddIpcTxProcessing<a class="headerlink" href="#cddipctxprocessing" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.2.2.4. </span>CddIpcTxProcessing<a class="headerlink" href="#cddipctxprocessing" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -833,7 +764,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipctxglobalchannelid">
-<h5><span class="section-number">4.14.9.3.2.5. </span>CddIpcTxGlobalChannelId<a class="headerlink" href="#cddipctxglobalchannelid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.2.2.5. </span>CddIpcTxGlobalChannelId<a class="headerlink" href="#cddipctxglobalchannelid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -875,7 +806,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipctxpduid">
-<h5><span class="section-number">4.14.9.3.2.6. </span>CddIpcTxPduID<a class="headerlink" href="#cddipctxpduid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.2.2.6. </span>CddIpcTxPduID<a class="headerlink" href="#cddipctxpduid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -909,10 +840,10 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </section>
 </section>
 <section id="cddipcrxinstanceconfig">
-<h4><span class="section-number">4.14.9.3.3. </span>CddIpcRxInstanceConfig<a class="headerlink" href="#cddipcrxinstanceconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.14.9.2.3. </span>CddIpcRxInstanceConfig<a class="headerlink" href="#cddipcrxinstanceconfig" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the CddIpc Instances.</p>
 <section id="cddipcrxinstance">
-<h5><span class="section-number">4.14.9.3.3.1. </span>CddIpcRxInstance<a class="headerlink" href="#cddipcrxinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.2.3.1. </span>CddIpcRxInstance<a class="headerlink" href="#cddipcrxinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -948,7 +879,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipcinterupttype">
-<h5><span class="section-number">4.14.9.3.3.2. </span>CddIpcInteruptType<a class="headerlink" href="#cddipcinterupttype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.2.3.2. </span>CddIpcInteruptType<a class="headerlink" href="#cddipcinterupttype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -984,11 +915,11 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipcrxchannelconfig">
-<h5><span class="section-number">4.14.9.3.3.3. </span>CddIpcRxChannelConfig<a class="headerlink" href="#cddipcrxchannelconfig" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.2.3.3. </span>CddIpcRxChannelConfig<a class="headerlink" href="#cddipcrxchannelconfig" title="Link to this heading"></a></h5>
 <p>This container contains the configuration parameters of the CddIpc channels.</p>
 </section>
 <section id="cddipcrxchannelid">
-<h5><span class="section-number">4.14.9.3.3.4. </span>CddIpcRxChannelId<a class="headerlink" href="#cddipcrxchannelid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.2.3.4. </span>CddIpcRxChannelId<a class="headerlink" href="#cddipcrxchannelid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1027,7 +958,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipcusercallbackfunction">
-<h5><span class="section-number">4.14.9.3.3.5. </span>CddIpcUserCallbackFunction<a class="headerlink" href="#cddipcusercallbackfunction" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.2.3.5. </span>CddIpcUserCallbackFunction<a class="headerlink" href="#cddipcusercallbackfunction" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1063,7 +994,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipcrxglobalchannelid">
-<h5><span class="section-number">4.14.9.3.3.6. </span>CddIpcRxGlobalChannelId<a class="headerlink" href="#cddipcrxglobalchannelid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.2.3.6. </span>CddIpcRxGlobalChannelId<a class="headerlink" href="#cddipcrxglobalchannelid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1105,7 +1036,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipcrxpduid">
-<h5><span class="section-number">4.14.9.3.3.7. </span>CddIpcRxPduID<a class="headerlink" href="#cddipcrxpduid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.2.3.7. </span>CddIpcRxPduID<a class="headerlink" href="#cddipcrxpduid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1140,17 +1071,17 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </section>
 </section>
 <section id="cddcomstackcontribution">
-<h3><span class="section-number">4.14.9.4. </span>CddComStackContribution<a class="headerlink" href="#cddcomstackcontribution" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.14.9.3. </span>CddComStackContribution<a class="headerlink" href="#cddcomstackcontribution" title="Link to this heading"></a></h3>
 <p>Contribution of COM Stack modules.</p>
 <section id="cddpdurlowerlayercontribution">
-<h4><span class="section-number">4.14.9.4.1. </span>CddPduRLowerLayerContribution<a class="headerlink" href="#cddpdurlowerlayercontribution" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.14.9.3.1. </span>CddPduRLowerLayerContribution<a class="headerlink" href="#cddpdurlowerlayercontribution" title="Link to this heading"></a></h4>
 <p>Parameters that are necessary for the configuration of a Complex Driver that serves as the LowerLayer of the Pdu Router module.</p>
 </section>
 <section id="cddpdurlowerlayerrxpdu">
-<h4><span class="section-number">4.14.9.4.2. </span>CddPduRLowerLayerRxPdu<a class="headerlink" href="#cddpdurlowerlayerrxpdu" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.14.9.3.2. </span>CddPduRLowerLayerRxPdu<a class="headerlink" href="#cddpdurlowerlayerrxpdu" title="Link to this heading"></a></h4>
 <p>This container specifies Rx PDUs that are exchanged between the CDD and the standardized BSW module.</p>
 <section id="cddpdurapitype">
-<h5><span class="section-number">4.14.9.4.2.1. </span>CddPduRApiType<a class="headerlink" href="#cddpdurapitype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.3.2.1. </span>CddPduRApiType<a class="headerlink" href="#cddpdurapitype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1183,7 +1114,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddpdurlowerlayerhandleid">
-<h5><span class="section-number">4.14.9.4.2.2. </span>CddPduRLowerLayerHandleId<a class="headerlink" href="#cddpdurlowerlayerhandleid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.3.2.2. </span>CddPduRLowerLayerHandleId<a class="headerlink" href="#cddpdurlowerlayerhandleid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1219,7 +1150,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipcpdurhandle">
-<h5><span class="section-number">4.14.9.4.2.3. </span>CddIpcPduRHandle<a class="headerlink" href="#cddipcpdurhandle" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.3.2.3. </span>CddIpcPduRHandle<a class="headerlink" href="#cddipcpdurhandle" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1255,7 +1186,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddpdurlowerlayerpduref">
-<h5><span class="section-number">4.14.9.4.2.4. </span>CddPduRLowerLayerPduRef<a class="headerlink" href="#cddpdurlowerlayerpduref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.3.2.4. </span>CddPduRLowerLayerPduRef<a class="headerlink" href="#cddpdurlowerlayerpduref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1280,10 +1211,10 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </section>
 </section>
 <section id="cddpdurlowerlayertxpdu">
-<h4><span class="section-number">4.14.9.4.3. </span>CddPduRLowerLayerTxPdu<a class="headerlink" href="#cddpdurlowerlayertxpdu" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.14.9.3.3. </span>CddPduRLowerLayerTxPdu<a class="headerlink" href="#cddpdurlowerlayertxpdu" title="Link to this heading"></a></h4>
 <p>This container specifies Tx PDUs that are exchanged between the CDD and the standardized BSW module.</p>
 <section id="id1">
-<h5><span class="section-number">4.14.9.4.3.1. </span>CddPduRApiType<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.3.3.1. </span>CddPduRApiType<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1316,7 +1247,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="id2">
-<h5><span class="section-number">4.14.9.4.3.2. </span>CddPduRLowerLayerHandleId<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.3.3.2. </span>CddPduRLowerLayerHandleId<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1352,7 +1283,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="id3">
-<h5><span class="section-number">4.14.9.4.3.3. </span>CddPduRLowerLayerPduRef<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.14.9.3.3.3. </span>CddPduRLowerLayerPduRef<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1378,10 +1309,10 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </section>
 </section>
 <section id="cddipcgeneral">
-<h3><span class="section-number">4.14.9.5. </span>CddIpcGeneral<a class="headerlink" href="#cddipcgeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.14.9.4. </span>CddIpcGeneral<a class="headerlink" href="#cddipcgeneral" title="Link to this heading"></a></h3>
 <p>Contains the general configuration parameters of the module.</p>
 <section id="cddipcdeverrordetect">
-<h4><span class="section-number">4.14.9.5.1. </span>CddIpcDevErrorDetect<a class="headerlink" href="#cddipcdeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.14.9.4.1. </span>CddIpcDevErrorDetect<a class="headerlink" href="#cddipcdeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1414,7 +1345,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipcversioninfoapi">
-<h4><span class="section-number">4.14.9.5.2. </span>CddIpcVersionInfoApi<a class="headerlink" href="#cddipcversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.14.9.4.2. </span>CddIpcVersionInfoApi<a class="headerlink" href="#cddipcversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1447,7 +1378,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipcintegrationwithasrcomstackenable">
-<h4><span class="section-number">4.14.9.5.3. </span>CddIpcIntegrationWithAsrComStackEnable<a class="headerlink" href="#cddipcintegrationwithasrcomstackenable" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.14.9.4.3. </span>CddIpcIntegrationWithAsrComStackEnable<a class="headerlink" href="#cddipcintegrationwithasrcomstackenable" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1480,7 +1411,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipcreservedinstances">
-<h4><span class="section-number">4.14.9.5.4. </span>CddIpcReservedInstances<a class="headerlink" href="#cddipcreservedinstances" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.14.9.4.4. </span>CddIpcReservedInstances<a class="headerlink" href="#cddipcreservedinstances" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1519,7 +1450,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipcmainfunctionreadperiod">
-<h4><span class="section-number">4.14.9.5.5. </span>CddIpcMainFunctionReadPeriod<a class="headerlink" href="#cddipcmainfunctionreadperiod" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.14.9.4.5. </span>CddIpcMainFunctionReadPeriod<a class="headerlink" href="#cddipcmainfunctionreadperiod" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1558,7 +1489,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cddipctimeoutduration">
-<h4><span class="section-number">4.14.9.5.6. </span>CddIpcTimeoutDuration<a class="headerlink" href="#cddipctimeoutduration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.14.9.4.6. </span>CddIpcTimeoutDuration<a class="headerlink" href="#cddipctimeoutduration" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1598,7 +1529,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </section>
 </section>
 <section id="steps-to-configure-cdd-ipc-module">
-<h3><span class="section-number">4.14.9.6. </span>Steps To Configure Cdd Ipc Module<a class="headerlink" href="#steps-to-configure-cdd-ipc-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.14.9.5. </span>Steps To Configure Cdd Ipc Module<a class="headerlink" href="#steps-to-configure-cdd-ipc-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool, load Cdd_Ipc module. Select the Precompile Config Variant.</p></li>
 <li><p>Configure the required parameters.</p></li>

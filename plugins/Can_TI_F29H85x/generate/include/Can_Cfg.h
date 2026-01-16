@@ -296,6 +296,14 @@ extern boolean [!"CanGeneral/CanLPduReceiveCalloutFunction"!](Can_HwHandleType H
  *****************************************************************************/
 #define CAN_WAKEUP_POLLING                   [!IF "$wakeuppoll = 0"!](STD_OFF)[!ELSE!](STD_ON)[!ENDIF!]
 
+
+/*****************************************************************************
+ *
+ * \brief Enable/Disable Can Trigger Transmit.
+ *
+ *****************************************************************************/
+#define CAN_TRIGGER_TRANSMIT_ENABLE          [!IF "count(CanConfigSet/CanHardwareObject/*[CanTriggerTransmitEnable = 'true']) > 0"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+
 /*****************************************************************************
  *
  * \brief Defines for symbolic names for the CanHardwareObjectIds 

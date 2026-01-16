@@ -314,57 +314,6 @@ The Fls can be configured as **Post-Build** or **Pre-Compile** variant, using EB
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
 
-#### Migration Guide
-
-Migration guides between module versions are detailed below.
-
-##### v03.00.00 from v02.00.00
-
-###### Key Changes
-
-1. **Resource Allocator Based Approach**
-   * The FLS module now integrates with the Resource Allocator module for centralized device, package, and variant configuration
-   * Flash memory parameters such as total size are now derived from the Resource Allocator configuration instead of being directly configured in the FLS module
-
-2. **FlsDeviceVariant Selection Moved to Resource Allocator**
-   * The device variant selection (which determines flash memory size and characteristics) has been moved from the FLS module configuration to the Resource Allocator module
-   * The `FlsTotalSize` parameter now automatically retrieves its value from the Resource Allocator configuration
-
-###### Migration Steps
-
-1. **Add Resource Allocator Module**
-   * If not already present, add the Resource Allocator module to your EB Tresos project configuration
-
-2. **Configure Device Variant in Resource Allocator**
-   * Configure the device variant and package selection in the Resource Allocator module
-   * This will automatically determine the flash memory size and other device-specific parameters
-
-3. **Update FLS Configuration**
-   * Open the FLS module configuration in EB Tresos
-   * The `FlsTotalSize` parameter will now be automatically populated based on the Resource Allocator configuration
-   * Verify that the flash parameters are correctly derived
-
-4. **Rebuild Application**
-   * Rebuild your application with the updated configuration files
-
-For more details on Resource Allocator configuration, refer to the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md).
-
-##### v02.00.00 from v01.01.00 or any older versions
-
-In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
-In case of Post build variant, upper modules that call the Fls_Init function will need to use the new configuration structure name. For example:
-
-```c
-/* Old code (v01.01.00 or any older versions) */
-Fls_Init(&Fls_FlsConfigSet);
-
-/* New code (v02.00.00) */
-Fls_Init(&Fls_Config);
-```
-
-This change ensures compliance with AUTOSAR naming conventions.
-
-To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.
 
 #### Configuration Parameters
 

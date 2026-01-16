@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.16. CDD XBAR Module Migration &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6. API guide" href="api_guide.html" />
+    <link rel="prev" title="5.15. CDD UART Module Migration" href="Migration_Guide_Cdd_Uart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.04.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_ResourceAllocator.html">5.1. Resource Allocator Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Can.html">5.2. CAN Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Gpt.html">5.3. GPT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Fls.html">5.4. FLS Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Lin.html">5.5. LIN Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Mcu.html">5.6. MCU Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Port.html">5.7. Port Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Spi.html">5.8. SPI Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Wdg.html">5.9. WDG Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Adc.html">5.10. CDD ADC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ecap.html">5.11. CDD ECAP Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ipc.html">5.12. CDD IPC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Sent.html">5.13. CDD SENT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Pwm.html">5.14. CDD PWM Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Uart.html">5.15. CDD UART Module Migration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.16. CDD XBAR Module Migration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-02-i-e-release-v01-03-00-migration">5.16.1. v03.00.00 (i.e release v01.04.00) from v02.00.02 (i.e release v01.03.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#summary">5.16.1.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-resource-allocator-introduction">5.16.1.2. Change 1: Resource Allocator Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-api-parameter-updates">5.16.1.3. Change 2: API Parameter Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#v02-00-00-i-e-release-v01-03-00-from-v01-00-00-i-e-release-v01-02-00-migration">5.16.2. v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">5.16.2.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-ar-element-name-change-in-generated-xdm-file">5.16.2.2. Change 1: AR-ELEMENT Name Change in Generated .xdm File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-module-configuration-path-update-in-generated-xdm-file">5.16.2.3. Change 2: MODULE-CONFIGURATION Path Update in Generated .xdm File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-3-reference-path-updates-in-generated-xdm-file">5.16.2.4. Change 3: Reference Path Updates in Generated .xdm File</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="MigrationGuide_list.html"><span class="section-number">5. </span>Migration Guide</a> &raquo;</li>
+      <li><span class="section-number">5.16. </span>CDD XBAR Module Migration</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cdd-xbar-module-migration">
+<h1><span class="section-number">5.16. </span>CDD XBAR Module Migration<a class="headerlink" href="#cdd-xbar-module-migration" title="Link to this heading"></a></h1>
+<p><strong>Migration Approach:</strong> Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.</p>
+<section id="v03-00-00-i-e-release-v01-04-00-from-v02-00-02-i-e-release-v01-03-00-migration">
+<h2><span class="section-number">5.16.1. </span>v03.00.00 (i.e release v01.04.00) from v02.00.02 (i.e release v01.03.00) Migration<a class="headerlink" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-02-i-e-release-v01-03-00-migration" title="Link to this heading"></a></h2>
+<section id="summary">
+<h3><span class="section-number">5.16.1.1. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h3>
+<p>Version v03.00.00 introduces <strong>Resource Allocator as a mandatory architectural foundation</strong> and restructures API configuration parameters. This represents a fundamental shift from direct parameter configuration to centralized resource management:</p>
+<ol class="arabic simple">
+<li><p><strong>Resource Allocator Introduction</strong>: Resource Allocator becomes mandatory for CDD XBAR module configuration with device variant setup</p></li>
+<li><p><strong>API Parameter Updates</strong>: XBAR API configuration parameters restructured for improved functionality and compliance</p></li>
+</ol>
+<p><strong>PREREQUISITE:</strong> Complete <a class="reference internal" href="Migration_Guide_ResourceAllocator.html#module-setup-and-configuration"><span class="std std-ref">Resource Allocator Setup</span></a> before proceeding.</p>
+</section>
+<section id="change-1-resource-allocator-introduction">
+<h3><span class="section-number">5.16.1.2. </span>Change 1: Resource Allocator Introduction<a class="headerlink" href="#change-1-resource-allocator-introduction" title="Link to this heading"></a></h3>
+<section id="description">
+<h4><span class="section-number">5.16.1.2.1. </span>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h4>
+<p>Resource Allocator becomes a mandatory architectural foundation for the CDD XBAR module. Device variant configuration and XBAR resource management is moved to centralized resource allocation where Resource Allocator determines available XBAR resources based on device configuration.</p>
+</section>
+<section id="old-vs-new-configuration">
+<h4><span class="section-number">5.16.1.2.2. </span>Old vs New Configuration<a class="headerlink" href="#old-vs-new-configuration" title="Link to this heading"></a></h4>
+<p><strong>Previous Configuration (v02.00.02):</strong>
+Direct parameter configuration was used without Resource Allocator dependency.</p>
+<p><strong>New Configuration (v03.00.00):</strong>
+XBAR resources and device configuration now managed through Resource Allocator.</p>
+<figure class="align-center" id="id10">
+<a class="reference internal image-reference" href="../_images/01_02_cdd_xbar_module_configure_device.png"><img alt="Configure CDD XBAR Device" src="../_images/01_02_cdd_xbar_module_configure_device.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.74 </span><span class="caption-text">v03.00.00: Configure device variant in Resource Allocator for XBAR resources</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="migration-actions">
+<h4><span class="section-number">5.16.1.2.3. </span>Migration Actions<a class="headerlink" href="#migration-actions" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Setup Resource Allocator:</strong> Follow <a class="reference internal" href="Migration_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Setup</span></a></p></li>
+<li><p><strong>Navigate to Context:</strong> Navigate to <strong>ResourceAllocatorGeneral → Context → Cdd_Xbar</strong> and configure the device variant:</p></li>
+</ol>
+<figure class="align-center" id="id11">
+<a class="reference internal image-reference" href="../_images/01_01_cdd_xbar_module_add_resource_allocator.png"><img alt="Add CDD XBAR Resource Allocator" src="../_images/01_01_cdd_xbar_module_add_resource_allocator.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.75 </span><span class="caption-text">Add Resource Allocator and configure device variant for CDD XBAR</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="3">
+<li><p><strong>Configure Device Variant:</strong> Set up device variant configuration in Resource Allocator for XBAR resources</p></li>
+<li><p><strong>Verify Resource Availability:</strong> Ensure XBAR resources are properly allocated based on device configuration</p></li>
+</ol>
+</section>
+</section>
+<section id="change-2-api-parameter-updates">
+<h3><span class="section-number">5.16.1.3. </span>Change 2: API Parameter Updates<a class="headerlink" href="#change-2-api-parameter-updates" title="Link to this heading"></a></h3>
+<section id="id1">
+<h4><span class="section-number">5.16.1.3.1. </span>Description<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>Version v03.00.00 restructures API configuration parameters for improved functionality and compliance. The API parameter structure is enhanced to provide better control and integration with Resource Allocator-managed resources.</p>
+</section>
+<section id="old-vs-new-api-configuration">
+<h4><span class="section-number">5.16.1.3.2. </span>Old vs New API Configuration<a class="headerlink" href="#old-vs-new-api-configuration" title="Link to this heading"></a></h4>
+<p><strong>Previous Configuration (v02.00.02):</strong>
+Direct API parameter configuration with basic structure.</p>
+<p><strong>New Configuration (v03.00.00):</strong>
+Enhanced parameter structure for better control with Resource Allocator integration.</p>
+</section>
+<section id="id2">
+<h4><span class="section-number">5.16.1.3.3. </span>Migration Actions<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Review API Configuration:</strong> Navigate to CDD XBAR configuration and review the updated API parameters:</p></li>
+</ol>
+<figure class="align-center" id="id12">
+<a class="reference internal image-reference" href="../_images/03_01_cdd_xbar_module_api_updates.png"><img alt="CDD XBAR API Updates" src="../_images/03_01_cdd_xbar_module_api_updates.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.76 </span><span class="caption-text">Updated XBAR API parameters and configuration structure</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="2">
+<li><p><strong>Update Parameter Structure:</strong> Configure XBAR API parameters using the enhanced structure for better control</p></li>
+<li><p><strong>Verify Resource Allocator Integration:</strong> Ensure all XBAR resources are properly managed through Resource Allocator</p></li>
+<li><p><strong>Validate Configuration:</strong> Confirm that API configurations are compatible with Resource Allocator-managed resources</p></li>
+</ol>
+<p><strong>Parameter Restructuring Benefits:</strong></p>
+<ul class="simple">
+<li><p>Enhanced parameter structure for better control</p></li>
+<li><p>Improved integration with Resource Allocator-managed resources</p></li>
+<li><p>Device variant centralization for consistent resource management</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Resource Allocator module must be configured before the CDD XBAR module to ensure correct resource availability. Device variant configuration in Resource Allocator determines available XBAR resources for the current context.</p>
+</div>
+</section>
+</section>
+</section>
+<section id="v02-00-00-i-e-release-v01-03-00-from-v01-00-00-i-e-release-v01-02-00-migration">
+<h2><span class="section-number">5.16.2. </span>v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration<a class="headerlink" href="#v02-00-00-i-e-release-v01-03-00-from-v01-00-00-i-e-release-v01-02-00-migration" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3><span class="section-number">5.16.2.1. </span>Summary<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>Version v02.00.00 introduces schema compatibility updates to align with updated plugin structure and reference paths, following AUTOSAR CDD naming conventions:</p>
+<ol class="arabic simple">
+<li><p><strong>AR-ELEMENT Name Change</strong>: Generated .xdm file AR-ELEMENT name requires updating for schema compatibility</p></li>
+<li><p><strong>MODULE-CONFIGURATION Path Update</strong>: Generated .xdm file MODULE-CONFIGURATION definition path requires updating</p></li>
+<li><p><strong>Reference Path Updates</strong>: Generated .xdm file reference paths require updating due to schema structure changes</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The CDD XBAR v2.0.0 plugin contains updated schema definitions that are not backward compatible with v1.0.0 generated configurations. To use existing v1.0.0 configurations with the v2.0.0 plugin, the <strong>generated .xdm files</strong> (created by EB Tresos from your configuration) must be updated.</p>
+</div>
+</section>
+<section id="change-1-ar-element-name-change-in-generated-xdm-file">
+<h3><span class="section-number">5.16.2.2. </span>Change 1: AR-ELEMENT Name Change in Generated .xdm File<a class="headerlink" href="#change-1-ar-element-name-change-in-generated-xdm-file" title="Link to this heading"></a></h3>
+<section id="id4">
+<h4><span class="section-number">5.16.2.2.1. </span>Description<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<p>When upgrading from v1.0.0 to v2.0.0, the generated .xdm file from EB Tresos contains AR-ELEMENT names that are not compatible with the new plugin schema. The AR-ELEMENT name needs to be updated in the generated .xdm file to ensure compatibility.</p>
+</section>
+<section id="old-vs-new-ar-element-configuration">
+<h4><span class="section-number">5.16.2.2.2. </span>Old vs New AR-ELEMENT Configuration<a class="headerlink" href="#old-vs-new-ar-element-configuration" title="Link to this heading"></a></h4>
+<p><strong>Generated .xdm File AR-ELEMENT Name:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>v01.00.00 Generated .xdm</p></th>
+<th class="head"><p>v02.00.00 Required .xdm</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;d:chc</span> <span class="pre">name=&quot;Cdd_Xbar&quot;</span> <span class="pre">type=&quot;AR-ELEMENT&quot;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;d:chc</span> <span class="pre">name=&quot;Cdd&quot;</span> <span class="pre">type=&quot;AR-ELEMENT&quot;</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id5">
+<h4><span class="section-number">5.16.2.2.3. </span>Migration Actions<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Locate Generated .xdm File:</strong> Find your project’s generated .xdm file (created by EB Tresos from your configuration)</p></li>
+<li><p><strong>Open File for Editing:</strong> Open the generated .xdm file in a text editor</p></li>
+<li><p><strong>Find AR-ELEMENT Reference:</strong> Locate the line containing <code class="docutils literal notranslate"><span class="pre">&lt;d:chc</span> <span class="pre">name=&quot;Cdd_Xbar&quot;</span> <span class="pre">type=&quot;AR-ELEMENT&quot;</span></code></p></li>
+<li><p><strong>Update AR-ELEMENT Name:</strong> Change the AR-ELEMENT name from <code class="docutils literal notranslate"><span class="pre">Cdd_Xbar</span></code> to <code class="docutils literal notranslate"><span class="pre">Cdd</span></code></p></li>
+<li><p><strong>Save File:</strong> Save the updated .xdm file</p></li>
+</ol>
+</section>
+</section>
+<section id="change-2-module-configuration-path-update-in-generated-xdm-file">
+<h3><span class="section-number">5.16.2.3. </span>Change 2: MODULE-CONFIGURATION Path Update in Generated .xdm File<a class="headerlink" href="#change-2-module-configuration-path-update-in-generated-xdm-file" title="Link to this heading"></a></h3>
+<section id="id6">
+<h4><span class="section-number">5.16.2.3.1. </span>Description<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<p>The MODULE-CONFIGURATION definition path in the generated .xdm file needs to be updated to reflect the new schema structure. The path must include the additional <code class="docutils literal notranslate"><span class="pre">Cdd</span></code> component for proper module reference.</p>
+</section>
+<section id="old-vs-new-module-configuration-path">
+<h4><span class="section-number">5.16.2.3.2. </span>Old vs New MODULE-CONFIGURATION Path<a class="headerlink" href="#old-vs-new-module-configuration-path" title="Link to this heading"></a></h4>
+<p><strong>Generated .xdm File MODULE-CONFIGURATION Path:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>v01.00.00 Generated .xdm</p></th>
+<th class="head"><p>v02.00.00 Required .xdm</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;a:a</span> <span class="pre">name=&quot;DEF&quot;</span> <span class="pre">value=&quot;ASPath:/TI_F29H85x/Cdd_Xbar&quot;/&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;a:a</span> <span class="pre">name=&quot;DEF&quot;</span> <span class="pre">value=&quot;ASPath:/TI_F29H85x/Cdd_Xbar/Cdd&quot;/&gt;</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id7">
+<h4><span class="section-number">5.16.2.3.3. </span>Migration Actions<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Continue Editing .xdm File:</strong> In the same generated .xdm file being edited</p></li>
+<li><p><strong>Find MODULE-CONFIGURATION Path:</strong> Locate the line containing <code class="docutils literal notranslate"><span class="pre">&lt;a:a</span> <span class="pre">name=&quot;DEF&quot;</span> <span class="pre">value=&quot;ASPath:/TI_F29H85x/Cdd_Xbar&quot;/&gt;</span></code></p></li>
+<li><p><strong>Update Definition Path:</strong> Change the MODULE-CONFIGURATION path from <code class="docutils literal notranslate"><span class="pre">ASPath:/TI_F29H85x/Cdd_Xbar</span></code> to <code class="docutils literal notranslate"><span class="pre">ASPath:/TI_F29H85x/Cdd_Xbar/Cdd</span></code></p></li>
+<li><p><strong>Verify Path Structure:</strong> Ensure the updated path includes the additional <code class="docutils literal notranslate"><span class="pre">/Cdd</span></code> component</p></li>
+<li><p><strong>Save Changes:</strong> Save the updated .xdm file</p></li>
+</ol>
+</section>
+</section>
+<section id="change-3-reference-path-updates-in-generated-xdm-file">
+<h3><span class="section-number">5.16.2.4. </span>Change 3: Reference Path Updates in Generated .xdm File<a class="headerlink" href="#change-3-reference-path-updates-in-generated-xdm-file" title="Link to this heading"></a></h3>
+<section id="id8">
+<h4><span class="section-number">5.16.2.4.1. </span>Description<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<p>Any REFERENCE type parameters in the generated .xdm file that refer to other CDD XBAR parameters by their schema path must be updated due to the schema structure change. All internal reference paths need to be updated to reflect the new schema hierarchy.</p>
+</section>
+<section id="old-vs-new-reference-paths">
+<h4><span class="section-number">5.16.2.4.2. </span>Old vs New Reference Paths<a class="headerlink" href="#old-vs-new-reference-paths" title="Link to this heading"></a></h4>
+<p><strong>Generated .xdm File Reference Path Example:</strong></p>
+<p>For any reference parameters expecting reference to an XBAR configuration:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>v01.00.00 Generated .xdm Reference Path</p></th>
+<th class="head"><p>v02.00.00 Required .xdm Reference Path</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">/Cdd_Xbar/Cdd_Xbar/CddXbarConfigSet/...</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/Cdd_Xbar/Cdd/CddXbarConfigSet/...</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id9">
+<h4><span class="section-number">5.16.2.4.3. </span>Migration Actions<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Continue Editing .xdm File:</strong> In the same generated .xdm file being edited</p></li>
+<li><p><strong>Search for Reference Paths:</strong> Find all REFERENCE type parameters that contain <code class="docutils literal notranslate"><span class="pre">/Cdd_Xbar/Cdd_Xbar/</span></code> in their paths</p></li>
+<li><p><strong>Update Reference Paths:</strong> Change all occurrences of <code class="docutils literal notranslate"><span class="pre">/Cdd_Xbar/Cdd_Xbar/</span></code> to <code class="docutils literal notranslate"><span class="pre">/Cdd_Xbar/Cdd/</span></code></p></li>
+<li><p><strong>Verify All Updates:</strong> Ensure all reference paths now use the correct schema hierarchy</p></li>
+<li><p><strong>Save Final Changes:</strong> Save the completely updated .xdm file</p></li>
+</ol>
+<p><strong>Generated .xdm File Structure Comparison:</strong></p>
+<p><strong>Before Editing (v01.00.00 Generated .xdm File):</strong></p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;d:lst</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;TOP-LEVEL-PACKAGES&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:ctr</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;Cdd_Xbar&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;AR-PACKAGE&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:lst</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;ELEMENTS&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:chc</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;Cdd_Xbar&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;AR-ELEMENT&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;MODULE-CONFIGURATION&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:ctr</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;MODULE-CONFIGURATION&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;a:a</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;DEF&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;ASPath:/TI_F29H85x/Cdd_Xbar&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<p><strong>After Editing (v02.00.00 Compatible .xdm File):</strong></p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;d:lst</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;TOP-LEVEL-PACKAGES&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:ctr</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;Cdd_Xbar&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;AR-PACKAGE&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:lst</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;ELEMENTS&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:chc</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;Cdd&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;AR-ELEMENT&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;MODULE-CONFIGURATION&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;d:ctr</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;MODULE-CONFIGURATION&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;a:a</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;DEF&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;ASPath:/TI_F29H85x/Cdd_Xbar/Cdd&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only the generated .xdm files (created by EB Tresos from your configuration) can be modified. The plugin .xdm files themselves cannot and should not be modified.</p>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Migration_Guide_Cdd_Uart.html" class="btn btn-neutral float-left" title="5.15. CDD UART Module Migration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api_guide.html" class="btn btn-neutral float-right" title="6. API guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2026, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Jan 16, 2026.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.04.01
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

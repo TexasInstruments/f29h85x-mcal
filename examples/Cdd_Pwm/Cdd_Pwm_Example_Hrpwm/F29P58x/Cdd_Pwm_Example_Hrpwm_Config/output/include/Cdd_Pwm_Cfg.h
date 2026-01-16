@@ -47,7 +47,7 @@ extern "C" {
 /* CDD CDD_PWM Driver Configuration SW Version Info */
 
 #define CDD_PWM_CFG_MAJOR_VERSION           (3U)
-#define CDD_PWM_CFG_MINOR_VERSION           (0U)
+#define CDD_PWM_CFG_MINOR_VERSION           (1U)
 #define CDD_PWM_CFG_PATCH_VERSION           (0U)
 
 /* CDD_PWM Build Variant. Pre-compile build Variants */

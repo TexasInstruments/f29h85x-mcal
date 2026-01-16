@@ -29,8 +29,6 @@
  *********************************************************************************************************************/
 #include "Can.h"
 #include "Can_Priv.h"
-#include "Can_Cfg.h"
-#include "EcuM_Cbk.h"
 #include "hw_sysctl.h"
 #include "Os.h"
 #if (CAN_CFG_DEM_ENABLE == STD_ON)
@@ -38,7 +36,6 @@
 #endif
 #include "Det.h"
 #include "CanIf_Cbk.h"
-#include "Mcal_Lib.h"
 #include "Mcal_Lib_RegAccess.h"
 #include "SchM_Can.h"
 

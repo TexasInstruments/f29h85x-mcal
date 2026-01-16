@@ -1,0 +1,360 @@
+# CAN Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
+
+### Summary
+
+Version v3.00.00 introduces fundamental architectural changes that shift from direct parameter configuration to centralized resource management:
+
+1. **Resource Allocator Introduction**: Resource Allocator becomes mandatory for all CAN module configuration
+2. **Controller Name Updates**: Controller naming convention changes from numeric (MCAN1, MCAN2) to alphabetic (MCANA, MCANB)
+3. **ISR Name Updates**: Interrupt Service Routine names updated to match new controller naming pattern
+
+**PREREQUISITE:** Complete [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md#module-setup-and-configuration) before proceeding.
+
+### Change 1: Resource Allocator Introduction
+
+#### Description
+
+Resource Allocator becomes a mandatory architectural foundation, replacing direct parameter configuration with centralized resource management. This represents a fundamental shift in how CAN controllers are configured and referenced.
+
+#### Old vs New Configuration
+
+**Previous Configuration (v02.00.00):**
+
+```{figure} Assets/images/migration/can_module/02_00_can_module_old_config.png
+:alt: Open CAN Controller
+:align: center
+:width: 80%
+
+v02.00.00: Direct controller parameter selection with CanControllerInstance as MCAN1 and CanControllerBaseAddress in hexadecimal format (0x60020000)
+```
+
+**New Configuration (v03.00.00):**
+
+```{figure} Assets/images/migration/can_module/02_01_can_module_select_instance.png
+:alt: Select CAN Instance
+:align: center
+:width: 80%
+
+v03.00.00: Select CAN instance from ResourceAllocator reference (MCANA, MCANB, etc.)
+```
+
+#### Migration Actions
+
+1. **Setup Resource Allocator:** Follow [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md)
+
+2. **Navigate to Context:** Navigate to **ResourceAllocatorGeneral → Context → Can** and add CAN allocator:
+
+```{figure} Assets/images/migration/can_module/01_01_can_module_add_allocator.png
+:alt: Add CAN Allocator
+:align: center
+:width: 80%
+
+Navigate to Context and add CAN allocator
+```
+
+3. **Add CAN Instance:** Add CanAllocatedInstance with new naming convention:
+
+```{figure} Assets/images/migration/can_module/01_02_can_module_add_instance.png
+:alt: Add CAN Instance
+:align: center
+:width: 80%
+
+Add CanAllocatedInstance with new naming (MCANA, MCANB, etc.)
+```
+
+4. **Configure CAN Instance:** Configure CAN instances with new controller names:
+
+```{figure} Assets/images/migration/can_module/01_03_can_module_select_instance.png
+:alt: Configure CAN Instance
+:align: center
+:width: 80%
+
+Configure CAN instances with new controller names
+```
+
+5. **Complete Configuration:** Finalize CAN instance allocation:
+
+```{figure} Assets/images/migration/can_module/01_04_can_module_final_config.png
+:alt: Final CAN Configuration
+:align: center
+:width: 80%
+
+Complete CAN instance allocation (MCANA, MCANB, MCANC)
+```
+
+6. **Navigate to CanController:** Navigate to **Can → CanController** and update configurations to reference the CAN instances allocated in Resource Allocator
+
+7. **Open Controller Configuration:** Access the CanController configuration that needs to be updated
+
+8. **Set Instance Reference:** Set CanControllerInstanceRef to point to the corresponding CanAllocatedInstance in Resource Allocator
+
+9. **Verify Automatic Derivation:** Confirm that the CanControllerBaseAddress parameter is now automatically derived from the Resource Allocator reference
+
+### Change 2: Controller Name Updates
+
+#### Description
+
+Controller naming convention changes from numeric identifiers (MCAN1, MCAN2, etc.) to alphabetic identifiers (MCANA, MCANB, etc.) to align with Resource Allocator requirements and improve naming consistency.
+
+#### Old vs New Names
+
+**Controller Name Mapping:**
+
+| v02.00.00 | v03.00.00 | Hardware |
+|-----------|-----------|----------|
+| MCAN1 | MCANA | MCAN_A |
+| MCAN2 | MCANB | MCAN_B |
+| MCAN3 | MCANC | MCAN_C |
+| MCAN4 | MCAND | MCAN_D |
+| MCAN5 | MCANE | MCAN_E |
+| MCAN6 | MCANF | MCAN_F |
+
+#### Migration Actions
+
+**No additional action required.** Controller name updates are automatically handled when following the Resource Allocator setup steps in Change 1. The controller naming convention changes from numeric identifiers (MCAN1, MCAN2) to alphabetic identifiers (MCANA, MCANB) are applied automatically through the Resource Allocator configuration.
+
+If you have used the old controller names in the application code, please change them to match the new naming convention.
+
+### Change 3: ISR Name Updates
+
+#### Description of Change
+
+Interrupt Service Routine (ISR) names are updated to match the new controller naming pattern, changing from numeric-based naming to alphabetic-based naming for consistency.
+
+#### Old vs New ISR Names
+
+**ISR Name Mapping:**
+
+| v02.00.00 ISR | v03.00.00 ISR | Type |
+|---------------|---------------|------|
+| Can_1_Int1ISR | Can_A_Int1ISR | Interrupt 1 |
+| Can_1_WakeUpISR | Can_A_WakeUpISR | Wake-up |
+| Can_2_Int1ISR | Can_B_Int1ISR | Interrupt 1 |
+| Can_2_WakeUpISR | Can_B_WakeUpISR | Wake-up |
+
+**Naming Pattern:** `Can_{Number}_` → `Can_{Letter}_`
+
+#### Migration Actions
+
+1. **Update Application Code:** Search and replace ISR references in your application code following the new naming pattern
+2. **Update Interrupt Vector Table:** Ensure interrupt vector table references use the new ISR names
+3. **Verify ISR Functionality:** Test interrupt handling after migration to confirm proper operation
+
+
+
+## v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration
+
+### Summary
+
+Version v2.00.00 introduces redefinition of BASIC and FULL hardware object parameters with AUTOSAR-compliant constraints and behavior changes:
+
+1. **Hardware Object Parameter Redefinition**: BASIC and FULL hardware object parameters are redefined with enforced AUTOSAR-compliant constraints and new memory limitations
+2. **Application Code Update**: Configuration structure name change for AUTOSAR TPS_ECUC_08011 compliance
+
+### Change 1: Hardware Object Parameter Redefinition
+
+#### Description
+
+Version v2.00.00 redefines BASIC and FULL hardware object parameters with enforced AUTOSAR-compliant constraints. This change introduces specific hardware utilization patterns and memory constraints that were not enforced in previous versions.
+
+#### Old vs New Parameter Definitions
+
+**CanHandleType Parameter Changes:**
+
+| Handle Type | v01.01.00 | v02.00.00 |
+|-------------|-----------------------------------|-----------------------------------|
+| **FULL** | • Not used by driver | • Hardware dedicated buffer is used |
+| **BASIC** | • Not used by driver | • For TRANSMIT messages, Tx FIFO is used<br>• For RECEIVE messages, Rx FIFO or FIFO1 is used |
+
+**CanHwObjectCount Parameter Changes:**
+
+| Configuration | v01.01.00 | v02.00.00 |
+|---------------|-----------------------------------|-----------------------------------|
+| **CanHwObjectCount = 1** | • Uses hardware dedicated buffer<br>• **Restriction:** Not allowed for BASIC objects | • Uses hardware dedicated buffer<br>• **Recommended:** Use for FULL objects only<br>• **Warning:** Allowed for BASIC objects but not recommended |
+| **CanHwObjectCount > 1** | • Uses hardware FIFO<br>• **Allowed:** For both BASIC and FULL objects<br>• Represents FIFO depth<br>• Tx FIFO for TRANSMIT messages<br>• Rx FIFO for RECEIVE messages<br>• Combined depth when multiple objects use FIFO | • Uses hardware FIFO<br>• **Allowed:** For BASIC objects only<br>• Represents FIFO depth<br>• Tx FIFO for TRANSMIT messages<br>• Rx FIFO for RECEIVE messages<br>• Combined depth when multiple objects use FIFO |
+
+**Message RAM Memory Area Constraints:**
+
+| Constraint | v01.01.00 | v02.00.00 |
+|------------|-----------|-----------|
+| **Standard filters** | No constraint | Maximum 128 (1 word each) |
+| **Extended filters** | No constraint | Maximum 64 (2 word each) |
+| **Dedicated Tx buffers** | Maximum 32 | Maximum 32 (4/18 word each) |
+| **Tx FIFO** | No constraint on FIFO count<br>Maximum 32 entries | Maximum 32 entries (4/18 word each entry)<br>Combined FIFO and entries: 32 max |
+| **Dedicated Rx buffers** | Maximum 64 | Maximum 64 (4/18 word each) |
+| **Rx FIFO** | Maximum 64 entries | Maximum 64 entries (4/18 word each)<br>Maximum 2 Rx FIFOs<br>Maximum 2 entries per FIFO1 |
+| **Total RAM area** | No constraint | 1024 words total for all components |
+| **Message size** | Size varies | **4 words** (CanFDMode enabled)<br>**18 words** (CanFDMode disabled) |
+
+```{NOTE}
+These constraints are added as per hardware capacity per controller so that EB Tresos can give error when wrong configurations are added. This helps to avoid message RAM memory overflow. Refer to TRM for details.
+```
+
+#### Migration Actions
+
+1. **Navigate to Hardware Objects:** Navigate to **Can → CanHardwareObject** and add hardware object instances as needed for your application:
+
+```{figure} Assets/images/migration/can_module/03_01_can_module_add_hw_instance.png
+:alt: Add Hardware Object Instance
+:align: center
+:width: 80%
+
+Add hardware object instance for BASIC/FULL configuration
+```
+
+2. **Configure CanHandleType:** Configure each hardware object with appropriate **CanHandleType** (BASIC or FULL):
+
+```{figure} Assets/images/migration/can_module/03_02_can_module_basic_or_full.png
+:alt: Select BASIC or FULL Type
+:align: center
+:width: 80%
+
+Select BASIC or FULL object type with new constraint definitions
+```
+
+**CanHandleType Configuration Guidelines:**
+
+| Handle Type | Configuration | Hardware Usage |
+|-------------|---------------|----------------|
+| **FULL** | Use dedicated buffer in hardware | Individual dedicated buffer per object |
+| **BASIC** | Use FIFO in hardware | Shared FIFO (1 Tx FIFO, 2 Rx FIFOs available) |
+
+**Hardware Limitations:**
+- Maximum 1 Tx BASIC object
+- Maximum 2 Rx BASIC objects
+
+3. **Set CanHwObjectCount:** Configure based on handle type:
+
+| Handle Type | CanHwObjectCount | Usage | Limits |
+|-------------|------------------|-------|---------|
+| **FULL** | **1** (recommended) | Dedicated buffer | - |
+| **BASIC** | **> 1** | FIFO depth | Tx FIFO: max 32<br>Rx FIFO: max 64 |
+
+**FIFO Usage Pattern:**
+- **TRANSMIT messages:** Use Tx FIFO
+- **RECEIVE messages:** Use Rx FIFO
+- **Multiple objects:** Share combined FIFO depth
+
+4. **Configure Message Filters:** Setup message filters within new RAM constraints:
+
+```{figure} Assets/images/migration/can_module/03_03_can_module_add_filter.png
+:alt: Add Message Filter
+:align: center
+:width: 80%
+
+Configure message filters with new RAM constraints
+```
+
+```{figure} Assets/images/migration/can_module/03_04_can_module_configure_filter.png
+:alt: Configure Filter Parameters
+:align: center
+:width: 80%
+
+Set filter parameters within new limits
+```
+
+**Message RAM Memory Constraints to Follow:**
+
+| Constraint Type | Maximum Limit | Word Size | Action Required |
+|----------------|---------------|-----------|-----------------|
+| **Standard filters** | 128 filters | 1 word each | Configure CanStandardObject within allowed limit. EB Tresos will prompt error if exceeded |
+| **Extended filters** | 64 filters | 2 words each | Stay within limit during configuration |
+| **Dedicated Tx buffers** | 32 buffers | 4/18 words each | Monitor total usage |
+| **Tx FIFO entries** | 32 entries total | 4/18 words each | Combined FIFO and entries max: 32 |
+| **Dedicated Rx buffers** | 64 buffers | 4/18 words each | Monitor total usage |
+| **Rx FIFO entries** | 64 entries max | 4/18 words each | Max 2 Rx FIFOs, Max 2 entries per FIFO1 |
+| **Total RAM area** | 1024 words | Combined total | All components together must not exceed 1024 words |
+
+**Message Size Reference:**
+- **4 words** if parameter CanFDMode is enabled
+- **18 words** if parameter CanFDMode is disabled
+
+5. **Verify All Constraints:** Ensure all configurations stay within the new memory limits to avoid EB Tresos configuration errors and message RAM memory overflow. Refer to TRM for additional details.
+
+### Change 2: Application Code Update
+
+#### Description
+
+Version v2.00.00 changes the configuration structure name for AUTOSAR TPS_ECUC_08011 compliance, requiring updates to application code that references the CAN configuration structure.
+
+#### Old vs New Configuration Structure
+
+**Configuration Structure Name Mapping:**
+
+| v01.01.00 | v02.00.00 |
+|-----------|-----------|
+| `Can_CanConfigSet` | `Can_Config` |
+
+**Code Examples:**
+
+```c
+// v01.01.00
+Can_Init(&Can_CanConfigSet);
+
+// v02.00.00
+Can_Init(&Can_Config);
+```
+
+#### Migration Actions
+
+1. **Search Application Code:** Find all references to `Can_CanConfigSet` in your application code
+2. **Replace Structure Name:** Update all references from `Can_CanConfigSet` to `Can_Config`
+3. **Update Function Calls:** Ensure all CAN initialization calls use the new structure name
+4. **Verify Compilation:** Clean build and verify no compilation errors related to CAN configuration structure
+
+
+## v01.01.00 (i.e release v01.02.00) from v01.00.01 (i.e release v01.01.00) Migration
+
+### Summary
+
+Version v01.01.00 introduces a clock reference parameter update to remove dependency between CAN and OS modules for timeout calculation:
+
+1. **Clock Reference Parameter Update**: CanOsCounterRef parameter replaced with CanSysClockRef to eliminate CAN-OS module dependency
+
+### Change 1: Clock Reference Parameter Update
+
+#### Description
+
+The **CanOsCounterRef** parameter used as tick reference to calculate CAN_CFG_TIMEOUT_DURATION is replaced with **CanSysClockRef**. This change removes dependency between CAN and OS modules by referencing the system clock directly from MCU instead of OS counter.
+
+#### Old vs New Clock Configuration
+
+**Parameter Name Change:**
+
+| v01.00.01 | v01.01.00 |
+|-----------|-----------|
+| `CanOsCounterRef` | `CanSysClockRef` |
+
+**Previous Configuration (v01.00.01):**
+
+```{figure} Assets/images/migration/can_module/00_01_can_module_old_clock_config.png
+:alt: Old CAN Clock Config
+:align: center
+:width: 80%
+
+v01.00.01: CanOsCounterRef parameter used as tick reference for timeout calculation
+```
+
+**New Configuration (v01.01.00):**
+
+```{figure} Assets/images/migration/can_module/00_02_can_module_new_clock_config.png
+:alt: New CAN Clock Config
+:align: center
+:width: 80%
+
+v01.01.00: CanSysClockRef parameter references MCU system clock directly
+```
+
+#### Migration Actions
+
+1. **Navigate to CAN Configuration:** Open CAN module configuration in EB Tresos
+2. **Remove OS Counter Dependency:** The CanOsCounterRef parameter is no longer available in the GUI
+3. **Configure System Clock Reference:** Use the new **CanSysClockRef** parameter to refer to system clock in MCU module
+4. **Verify Clock Frequency:** Ensure the clock frequency matches your MCU system clock configuration
+5. **Update Timeout Calculation:** CAN_CFG_TIMEOUT_DURATION is now calculated based on the MCU system clock frequency
+
+**Benefits:** This change eliminates dependency between CAN and OS modules, provides more direct and reliable timeout calculation based on system clock, and simplifies configuration by using MCU system clock directly.

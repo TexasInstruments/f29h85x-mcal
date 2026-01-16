@@ -1,0 +1,220 @@
+# LIN Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
+
+### Summary
+
+Version v03.00.00 introduces **Resource Allocator as a mandatory architectural foundation**, updates instance naming for consistency, adds new configuration parameters, and renames existing parameters for improved clarity:
+
+1. **Resource Allocator Introduction**: Resource Allocator becomes mandatory for all LIN module configuration
+2. **Instance Name Updates**: LIN instance naming convention changes for consistency (LIN_INSTANCE_A → LIN_A)
+3. **New Configuration Parameter**: LinWakeupId parameter added in LinGeneral container
+4. **Parameter Rename**: SysClockRef renamed to LinSysClockRef for improved naming consistency
+
+**PREREQUISITE:** Complete [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md#module-setup-and-configuration) before proceeding.
+
+### Change 1: Resource Allocator Introduction
+
+#### Description
+
+Resource Allocator becomes a mandatory architectural foundation for the LIN module. The LIN module now integrates with the Resource Allocator module for device, package, and variant configuration. LIN instance configuration parameters are now derived from the Resource Allocator, and available LIN instances are dynamically determined based on the device configuration in the Resource Allocator.
+
+#### Old vs New Configuration
+
+**Previous Configuration (v02.00.00):**
+Direct parameter selection was used without Resource Allocator dependency.
+
+```{figure} Assets/images/migration/lin_module/02_01_lin_module_old_config.png
+:alt: Old LIN Config
+:align: center
+:width: 80%
+
+v02.00.00: Direct LIN instance parameter selection with LIN_INSTANCE_A naming
+```
+
+**New Configuration (v03.00.00):**
+LIN configurations now reference the LIN instances allocated through Resource Allocator.
+
+```{figure} Assets/images/migration/lin_module/02_03_lin_module_select_instance.png
+:alt: Select LIN Instance
+:align: center
+:width: 80%
+
+v03.00.00: Set LinInstanceRef to point to the corresponding LinAllocatedInstance in Resource Allocator (LIN_A, LIN_B)
+```
+
+#### Migration Actions
+
+1. **Setup Resource Allocator:** Follow [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md)
+
+2. **Navigate to Context:** Navigate to **ResourceAllocatorGeneral → Context → Lin** and add LIN allocator:
+
+```{figure} Assets/images/migration/lin_module/01_01_lin_module_add_allocator.png
+:alt: Add LIN Allocator
+:align: center
+:width: 80%
+
+Navigate to Context and add LIN allocator
+```
+
+3. **Add LIN Instance:** Add LinAllocatedInstance entries for each LIN instance your application requires:
+
+```{figure} Assets/images/migration/lin_module/01_02_lin_module_add_instance.png
+:alt: Add LIN Instance
+:align: center
+:width: 80%
+
+Add LinAllocatedInstance entries for each LIN instance your application requires
+```
+
+4. **Configure LIN Instance:** Configure the InstanceName, Frame, and BaseAddr for each allocated instance with new naming:
+
+```{figure} Assets/images/migration/lin_module/01_03_lin_module_select_instance.png
+:alt: Configure LIN Instance
+:align: center
+:width: 80%
+
+Configure the InstanceName, Frame, and BaseAddr for each allocated instance with new naming (LIN_A, LIN_B)
+```
+
+5. **Complete Configuration:** Finalize LIN instance allocation:
+
+```{figure} Assets/images/migration/lin_module/01_04_lin_module_final_config.png
+:alt: Final LIN Configuration
+:align: center
+:width: 80%
+
+Complete LIN instance allocation
+```
+
+6. **Navigate to LinController:** Navigate to **Lin → LinController** and update configurations to reference the LIN instances allocated in Resource Allocator
+
+7. **Open Controller Configuration:** Access the LinController configuration that needs to be updated
+
+8. **Set Instance Reference:** Set LinInstanceRef to point to the corresponding LinAllocatedInstance in Resource Allocator (LIN_A, LIN_B)
+
+9. **Verify Automatic Derivation:** Confirm that the LinInstanceId parameter is now automatically derived from the Resource Allocator reference
+
+### Change 2: Instance Name Updates
+
+#### Description
+
+LIN instance names have been updated for consistency. The naming convention changes from descriptive instance names to simplified alphabetic identifiers that align with Resource Allocator requirements and improve naming consistency across modules.
+
+#### Old vs New Instance Names
+
+**Instance Name Mapping:**
+
+| v02.00.00 | v03.00.00 |
+|-----------|-----------|
+| LIN_INSTANCE_A | LIN_A |
+| LIN_INSTANCE_B | LIN_B |
+
+#### Migration Actions
+
+**No additional action required.** Instance name updates are automatically handled when following the Resource Allocator setup steps in Change 1. The controller naming convention changes from old identifiers to the updated identifiers are applied automatically through the Resource Allocator configuration.
+
+If you have used the old instance names in the application code, please change them to match the new naming convention.
+
+```{NOTE}
+Most applications using standard LIN APIs will not require code changes, as the changes are primarily in configuration and instance naming conventions.
+```
+
+### Change 3: New Configuration Parameter (LinWakeupId)
+
+#### Description
+
+A new parameter **LinWakeupId** has been added in the LinGeneral container. This parameter specifies the LIN ID used to transmit a header instead of a wakeup signal due to hardware constraints, providing more flexibility in wakeup signal handling.
+
+#### Old vs New Parameter Configuration
+
+**New Parameter Added:**
+
+| Parameter | v02.00.00 | v03.00.00 |
+|-----------|-----------|-----------|
+| **LinWakeupId** | Not available | Added in LinGeneral container |
+
+**Parameter Details:**
+- **Purpose:** Specifies the LIN ID used to transmit a header instead of a wakeup signal due to hardware constraints
+- **Default value:** 63 (0x3F)
+- **Valid range:** 0 to 63
+- **Location:** LinGeneral container
+
+#### Migration Actions
+
+1. **Navigate to LinGeneral Container:** Open LinGeneral container in EB Tresos
+2. **Configure LinWakeupId Parameter:** Set the **LinWakeupId** parameter with an unused LIN ID in your network (0-63)
+   - This ID will be used for wakeup signal transmission instead of the standard wakeup signal
+   - Default value is 63 (0x3F), adjust based on your network requirements
+3. **Verify Network Compatibility:** Ensure the selected LIN ID does not conflict with other IDs in your LIN network
+
+### Change 4: Parameter Rename (SysClockRef → LinSysClockRef)
+
+#### Description
+
+The system clock reference parameter has been renamed from **SysClockRef** to **LinSysClockRef** for improved naming consistency and better module identification.
+
+#### Old vs New Parameter Names
+
+**Parameter Name Mapping:**
+
+| v02.00.00 | v03.00.00 |
+|-----------|-----------|
+| SysClockRef | LinSysClockRef |
+
+```{figure} Assets/images/migration/lin_module/03_01_lin_module_configure_parameters.png
+:alt: Configure Parameters
+:align: center
+:width: 80%
+
+Configure LinWakeupId parameter and observe LinSysClockRef parameter rename in LinGeneral container
+```
+
+#### Migration Actions
+
+1. **Observe Automatic Rename:** **SysClockRef** has been automatically renamed to **LinSysClockRef** in EB Tresos
+2. **Update External References:** If you have external scripts or tools referencing **SysClockRef**, update them to use **LinSysClockRef**
+3. **Verify Configuration:** No configuration changes required in EB Tresos for this parameter - the rename is handled automatically
+
+
+## v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration
+
+### Summary
+
+Version v02.00.00 introduces AUTOSAR compliance for configuration structure naming according to requirement TPS_ECUC_08011:
+
+1. **Configuration Structure Name Change**: LIN configuration structure name updated for AUTOSAR TPS_ECUC_08011 compliance
+
+### Change 1: Configuration Structure Name Change
+
+#### Description
+
+Version v02.00.00 changes the configuration structure name for AUTOSAR TPS_ECUC_08011 compliance. This change ensures compliance with AUTOSAR naming conventions and requires updates to application code that references the LIN configuration structure.
+
+#### Old vs New Configuration Structure
+
+**Configuration Structure Name Mapping:**
+
+| v01.01.00 | v02.00.00 |
+|-----------|-----------|
+| `Lin_LinGlobalConfig` | `Lin_Config` |
+
+**Code Examples:**
+
+```c
+// v01.01.00 or any older versions
+Lin_Init(&Lin_LinGlobalConfig);
+
+// v02.00.00
+Lin_Init(&Lin_Config);
+```
+
+#### Migration Actions
+
+1. **Search Application Code:** Find all references to `Lin_LinGlobalConfig` in your application code
+2. **Replace Structure Name:** Update all references from `Lin_LinGlobalConfig` to `Lin_Config`
+3. **Update Function Calls:** Ensure all LIN initialization calls use the new structure name
+4. **Update Upper Modules:** Update any upper modules that reference the configuration structures to use the new structure name
+5. **Verify Compilation:** Clean build and verify no compilation errors related to LIN configuration structure

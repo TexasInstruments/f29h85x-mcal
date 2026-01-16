@@ -52,7 +52,7 @@ extern "C" {
 #define CDD_IPC_CFG_MAJOR_VERSION                (2U)
 
 /** \brief CDD Ipc configuration Minor Version */
-#define CDD_IPC_CFG_MINOR_VERSION                (0U)
+#define CDD_IPC_CFG_MINOR_VERSION                (1U)
 
 /** \brief CDD Ipc configuration Patch Version */
 #define CDD_IPC_CFG_PATCH_VERSION                (0U)

@@ -103,11 +103,10 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.10.10. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#migration-guide">4.10.10.1. Migration Guide</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.10.10.2. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#wdgdemeventparameterrefs">4.10.10.3. WdgDemEventParameterRefs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#wdggeneral">4.10.10.4. WdgGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-wdg-module">4.10.10.5. Steps To Configure Wdg Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.10.10.1. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wdgdemeventparameterrefs">4.10.10.2. WdgDemEventParameterRefs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wdggeneral">4.10.10.3. WdgGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-wdg-module">4.10.10.4. Steps To Configure Wdg Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.10.11. Examples</a><ul>
@@ -129,9 +128,10 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.19. RTDMA Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">7. AUTOSAR Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
 </ul>
 
         </div>
@@ -468,29 +468,11 @@ To set the window minimum, write the desired minimum watchdog count to the WDWCR
 <p>The Wdg Driver implementation supports multiple configuration variants, namely Wdg Post-Build config and Pre-Compile config. The driver expects generated <strong>Wdg_Cfg.h</strong> to be present as input file.
 The associated Wdg driver configuration generated source files are <strong>Wdg_Cfg.c</strong> or <strong>Wdg_Lcfg.c</strong> or <strong>Wdg_PBcfg.c</strong></p>
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
-<section id="migration-guide">
-<h3><span class="section-number">4.10.10.1. </span>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h3>
-<p>Migration guides between module versions are detailed below.</p>
-<section id="v02-00-00-from-v01-00-01-or-any-older-versions">
-<h4><span class="section-number">4.10.10.1.1. </span>v02.00.00 from v01.00.01 or any older versions<a class="headerlink" href="#v02-00-00-from-v01-00-01-or-any-older-versions" title="Link to this heading"></a></h4>
-<p>In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
-In case of Post build variant, upper modules that call the Wdg_Init function will need to use the new configuration structure name. For example:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Old code (v01.00.01 or any older versions) */</span>
-<span class="n">Wdg_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Wdg_ConfigSetptr</span><span class="p">);</span>
-
-<span class="cm">/* New code (v02.00.00) */</span>
-<span class="n">Wdg_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Wdg_Config</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>This change ensures compliance with AUTOSAR naming conventions.</p>
-<p>To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.</p>
-</section>
-</section>
 <section id="configuration-parameters">
-<h3><span class="section-number">4.10.10.2. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.10.10.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
 </section>
 <section id="wdgdemeventparameterrefs">
-<h3><span class="section-number">4.10.10.3. </span>WdgDemEventParameterRefs<a class="headerlink" href="#wdgdemeventparameterrefs" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.10.10.2. </span>WdgDemEventParameterRefs<a class="headerlink" href="#wdgdemeventparameterrefs" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -541,10 +523,10 @@ In case of Post build variant, upper modules that call the Wdg_Init function wil
 </table>
 </section>
 <section id="wdggeneral">
-<h3><span class="section-number">4.10.10.4. </span>WdgGeneral<a class="headerlink" href="#wdggeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.10.10.3. </span>WdgGeneral<a class="headerlink" href="#wdggeneral" title="Link to this heading"></a></h3>
 <p>All general parameters of the watchdog driver are collected here.</p>
 <section id="wdgdeverrordetect">
-<h4><span class="section-number">4.10.10.4.1. </span>WdgDevErrorDetect<a class="headerlink" href="#wdgdeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.10.10.3.1. </span>WdgDevErrorDetect<a class="headerlink" href="#wdgdeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -583,7 +565,7 @@ In case of Post build variant, upper modules that call the Wdg_Init function wil
 </table>
 </section>
 <section id="wdgdisableallowed">
-<h4><span class="section-number">4.10.10.4.2. </span>WdgDisableAllowed<a class="headerlink" href="#wdgdisableallowed" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.10.10.3.2. </span>WdgDisableAllowed<a class="headerlink" href="#wdgdisableallowed" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -622,7 +604,7 @@ In case of Post build variant, upper modules that call the Wdg_Init function wil
 </table>
 </section>
 <section id="wdgindex">
-<h4><span class="section-number">4.10.10.4.3. </span>WdgIndex<a class="headerlink" href="#wdgindex" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.10.10.3.3. </span>WdgIndex<a class="headerlink" href="#wdgindex" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -667,7 +649,7 @@ In case of Post build variant, upper modules that call the Wdg_Init function wil
 </table>
 </section>
 <section id="wdginitialtimeout">
-<h4><span class="section-number">4.10.10.4.4. </span>WdgInitialTimeout<a class="headerlink" href="#wdginitialtimeout" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.10.10.3.4. </span>WdgInitialTimeout<a class="headerlink" href="#wdginitialtimeout" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -712,7 +694,7 @@ In case of Post build variant, upper modules that call the Wdg_Init function wil
 </table>
 </section>
 <section id="wdgmaxtimeout">
-<h4><span class="section-number">4.10.10.4.5. </span>WdgMaxTimeout<a class="headerlink" href="#wdgmaxtimeout" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.10.10.3.5. </span>WdgMaxTimeout<a class="headerlink" href="#wdgmaxtimeout" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -745,10 +727,10 @@ In case of Post build variant, upper modules that call the Wdg_Init function wil
 <td><p>VARIANT-PRE-COMPILE</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Default-value</strong></p></td>
-<td><p>6.6</p></td>
+<td><p>6.684672000000001</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Max-value</strong></p></td>
-<td><p>6.6</p></td>
+<td><p>7.0</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Min-value</strong></p></td>
 <td><p>0.0</p></td>
@@ -757,7 +739,7 @@ In case of Post build variant, upper modules that call the Wdg_Init function wil
 </table>
 </section>
 <section id="wdgrunarea">
-<h4><span class="section-number">4.10.10.4.6. </span>WdgRunArea<a class="headerlink" href="#wdgrunarea" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.10.10.3.6. </span>WdgRunArea<a class="headerlink" href="#wdgrunarea" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -799,7 +781,7 @@ In case of Post build variant, upper modules that call the Wdg_Init function wil
 </table>
 </section>
 <section id="wdgtriggerlocation">
-<h4><span class="section-number">4.10.10.4.7. </span>WdgTriggerLocation<a class="headerlink" href="#wdgtriggerlocation" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.10.10.3.7. </span>WdgTriggerLocation<a class="headerlink" href="#wdgtriggerlocation" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -838,7 +820,7 @@ In case of Post build variant, upper modules that call the Wdg_Init function wil
 </table>
 </section>
 <section id="wdgversioninfoapi">
-<h4><span class="section-number">4.10.10.4.8. </span>WdgVersionInfoApi<a class="headerlink" href="#wdgversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.10.10.3.8. </span>WdgVersionInfoApi<a class="headerlink" href="#wdgversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -881,7 +863,7 @@ In case of Post build variant, upper modules that call the Wdg_Init function wil
 </section>
 </section>
 <section id="steps-to-configure-wdg-module">
-<h3><span class="section-number">4.10.10.5. </span>Steps To Configure Wdg Module<a class="headerlink" href="#steps-to-configure-wdg-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.10.10.4. </span>Steps To Configure Wdg Module<a class="headerlink" href="#steps-to-configure-wdg-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool, load Wdg and Dem modules. Select the Config Variant ( Precompile/Post-Build/Link-Time)</p></li>
 <li><p>Open DEM module plugin and register DEM event “WDG_E_DISABLE_REJECTED” &amp; “WDG_E_MODE_FAILED” to report extended production errors</p></li>

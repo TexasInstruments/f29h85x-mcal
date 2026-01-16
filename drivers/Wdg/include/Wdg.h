@@ -54,7 +54,7 @@ extern "C" {
 /** \brief Driver Implementation Minor Version. */
 #define WDG_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version. */
-#define WDG_SW_PATCH_VERSION (0U)
+#define WDG_SW_PATCH_VERSION (1U)
 
 /*********************************************************************************************************************
  * Defines for WDG Driver AUTOSAR version used for compatibility checks.

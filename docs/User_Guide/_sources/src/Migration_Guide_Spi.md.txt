@@ -1,0 +1,246 @@
+# SPI Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
+
+### Summary
+
+Version v03.00.00 introduces **Resource Allocator as a mandatory architectural foundation**. This represents a fundamental shift from direct parameter configuration to centralized resource management:
+
+1. **Resource Allocator Introduction**: Resource Allocator becomes mandatory for all SPI module configuration
+2. **Instance Name Updates**: SPI instance naming convention changes from descriptive names to simplified identifiers
+3. **Hardware Unit Configuration Updates**: SpiHwUnit references updated to use Resource Allocator instances
+4. **External Device Configuration Updates**: SpiExternalDevice configurations updated to reference allocated instances
+
+**PREREQUISITE:** Complete [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md#module-setup-and-configuration) before proceeding.
+
+### Change 1: Resource Allocator Introduction
+
+#### Description
+
+Resource Allocator becomes a mandatory architectural foundation, replacing direct parameter configuration with centralized resource management. This represents a fundamental shift in how SPI controllers are configured and referenced, with available SPI instances now determined by Resource Allocator configuration.
+
+#### Old vs New Configuration
+
+**Previous Configuration (v02.00.00):**
+Direct parameter selection was used without Resource Allocator dependency.
+
+```{figure} Assets/images/migration/spi_module/02_01_spi_module_old_hwunit_config.png
+:alt: Old SPI Config
+:align: center
+:width: 80%
+
+v02.00.00: Direct SPI unit parameter selection with SPI_UNIT_SPIA format
+```
+
+**New Configuration (v03.00.00):**
+SPI hardware unit configurations now reference the SPI instances allocated through Resource Allocator.
+
+```{figure} Assets/images/migration/spi_module/02_04_spi_module_select_instance.png
+:alt: Select SPI Instance
+:align: center
+:width: 80%
+
+v03.00.00: Select SPI instance from ResourceAllocator reference
+```
+
+#### Migration Actions
+
+1. **Setup Resource Allocator:** Follow [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md)
+
+2. **Navigate to Context:** Navigate to **ResourceAllocatorGeneral → Context → Spi** and add SPI allocator:
+
+```{figure} Assets/images/migration/spi_module/01_01_spi_module_add_allocator.png
+:alt: Add SPI Allocator
+:align: center
+:width: 80%
+
+Navigate to Context and add SPI allocator
+```
+
+3. **Add SPI Instance:** Add SpiAllocatedInstance with new naming convention:
+
+```{figure} Assets/images/migration/spi_module/01_02_spi_module_add_instance.png
+:alt: Add SPI Instance
+:align: center
+:width: 80%
+
+Add SpiAllocatedInstance with new naming (SPIA, SPIB, etc.)
+```
+
+4. **Configure SPI Instance:** Configure SPI instances with new controller names:
+
+```{figure} Assets/images/migration/spi_module/01_03_spi_module_select_instance.png
+:alt: Configure SPI Instance
+:align: center
+:width: 80%
+
+Configure SPI instances with new controller names
+```
+
+5. **Complete Configuration:** Finalize SPI instance allocation:
+
+```{figure} Assets/images/migration/spi_module/01_04_spi_module_final_config.png
+:alt: Final SPI Configuration
+:align: center
+:width: 80%
+
+Complete SPI instance allocation (SPIA, SPIB, SPIC, SPID)
+```
+
+6. **Navigate to SpiHwUnit:** Navigate to **Spi → SpiHwUnit** and update configurations to reference the SPI instances allocated in Resource Allocator
+
+7. **Open Hardware Unit Configuration:** Access the SpiHwUnit configuration that needs to be updated
+
+8. **Set Instance Reference:** Set SpiHwUnitType to point to the corresponding SpiAllocatedInstance in Resource Allocator (SPIA, SPIB, SPIC, SPID)
+
+9. **Verify Automatic Derivation:** Confirm that the SPI hardware unit parameters are now automatically derived from the Resource Allocator reference
+
+### Change 2: Instance Name Updates
+
+#### Description
+
+SPI instance naming convention changes from descriptive names to simplified identifiers. The new naming pattern removes the "SPI_UNIT_" prefix for consistency across modules and improved Resource Allocator integration.
+
+#### Old vs New Instance Names
+
+**Instance Name Mapping:**
+
+| v02.00.00 | v03.00.00 | Hardware |
+|-----------|-----------|----------|
+| SPI_UNIT_SPIA | SPIA | SPI_A |
+| SPI_UNIT_SPIB | SPIB | SPI_B |
+| SPI_UNIT_SPIC | SPIC | SPI_C |
+| SPI_UNIT_SPID | SPID | SPI_D |
+
+**Naming Pattern:** `SPI_UNIT_{NAME}` → `{NAME}`
+
+```{NOTE}
+ISR names are unaffected by this change.
+```
+
+#### Migration Actions
+
+**No additional action required.** Controller name updates are automatically handled when following the Resource Allocator setup steps in Change 1. The controller naming convention changes from old identifiers (MCASPI_UNIT_SPIAN1, SPI_UNIT_SPIB) to updated identifiers (SPIA, SPIB) are applied automatically through the Resource Allocator configuration.
+
+If you have used the old controller names in the application code, please change them to match the new naming convention.
+
+### Change 3: Hardware Unit Configuration Updates
+
+#### Description
+
+SpiHwUnit configurations are updated to reference SPI instances allocated through Resource Allocator instead of using direct instance names. The SpiHwUnitType parameter now references the Resource Allocator's SpiAllocatedInstance.
+
+#### Old vs New Hardware Unit Configuration
+
+**Previous Configuration (v02.00.00):**
+Direct SPI unit parameter selection with SPI_UNIT_SPIA format.
+
+```{figure} Assets/images/migration/spi_module/02_01_spi_module_old_hwunit_config.png
+:alt: Old SPI Config
+:align: center
+:width: 80%
+
+v02.00.00: Direct SPI unit parameter selection with SPI_UNIT_SPIA format
+```
+
+**New Configuration (v03.00.00):**
+SpiHwUnitType parameter now references Resource Allocator's SpiAllocatedInstance.
+
+
+```{figure} Assets/images/migration/spi_module/02_04_spi_module_select_instance.png
+:alt: Select SPI Instance
+:align: center
+:width: 80%
+
+v03.00.00: Select SPI instance from ResourceAllocator reference
+```
+
+#### Migration Actions
+
+1. **Navigate to SpiHwUnit:** Navigate to **Spi → SpiHwUnit** and update configurations to use the SPI instances allocated in Resource Allocator
+2. **Open Hardware Unit Configuration:** Access the SpiHwUnit configuration that needs to be updated
+3. **Set Instance Reference:** Set SpiHwUnitType parameter to reference the Resource Allocator's SpiAllocatedInstance instead of using direct instance names
+4. **Verify Automatic Derivation:** Ensure all hardware unit configurations properly reference the allocated SPI instances and parameters are automatically derived from the Resource Allocator reference
+
+### Change 4: External Device Configuration Updates
+
+#### Description
+
+SpiExternalDevice configurations are updated to reference SPI instances allocated through Resource Allocator and ensure compatibility with the new instance allocation system. External devices must now reference valid allocated instances from Resource Allocator.
+
+#### Old vs New External Device Configuration
+
+**Previous Configuration (v02.00.00):**
+SpiExternalDevice used direct SPI unit parameter selection.
+
+```{figure} Assets/images/migration/spi_module/02_02_spi_module_old_extdevice_config.png
+:alt: Old SPI Config
+:align: center
+:width: 80%
+
+v02.00.00: SpiExternalDevice with direct SPI unit parameter selection with SPI_UNIT_SPIA format
+```
+
+**New Configuration (v03.00.00):**
+SpiExternalDevice configurations reference allocated instances from Resource Allocator.
+
+```{figure} Assets/images/migration/spi_module/03_02_spi_module_configure_external_device.png
+:alt: Configure External Device
+:align: center
+:width: 80%
+
+Configure external device with the SPI instance configured in Resource Allocator
+```
+
+#### Migration Actions
+
+1. **Navigate to SpiExternalDevice:** Navigate to **Spi → SpiExternalDevice** and verify configurations reference valid allocated instances
+2. **Add External Device:** Add SpiExternalDevice configuration as needed for your application
+3. **Configure Device Instance:** Configure external device with the SPI instance configured in Resource Allocator
+4. **Verify Compatibility:** Ensure all external device configurations properly reference allocated SPI instances from Resource Allocator
+
+```{NOTE}
+The Resource Allocator module must be configured before the SPI module to ensure correct instance availability. Available SPI instances are determined by the Resource Allocator's SpiAllocatedInstance configuration for the current context.
+```
+
+## v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration
+
+### Summary
+
+Version v02.00.00 introduces configuration structure name changes to comply with AUTOSAR requirement TPS_ECUC_08011:
+
+1. **Configuration Structure Name Change**: SPI configuration structure name updated for AUTOSAR TPS_ECUC_08011 compliance
+
+### Change 1: Configuration Structure Name Change
+
+#### Description
+
+Version v02.00.00 changes the configuration structure name for AUTOSAR TPS_ECUC_08011 compliance. This change ensures compliance with AUTOSAR naming conventions and requires updates to application code that references the SPI configuration structure.
+
+#### Old vs New Configuration Structure
+
+**Configuration Structure Name Mapping:**
+
+| v01.01.00 and older | v02.00.00 |
+|---------------------|-----------|
+| `Spi_ConfigObj` | `Spi_Config` |
+
+**Code Examples:**
+
+```c
+// v01.01.00 and older
+Spi_Init(&Spi_ConfigObj);
+
+// v02.00.00
+Spi_Init(&Spi_Config);
+```
+
+#### Migration Actions
+
+1. **Search Application Code:** Find all references to `Spi_ConfigObj` in your application code
+2. **Replace Structure Name:** Update all references from `Spi_ConfigObj` to `Spi_Config`
+3. **Update Function Calls:** Ensure all SPI initialization calls use the new structure name
+4. **Update Upper Modules:** Update any upper modules that reference the configuration structures to use the new structure name
+5. **Verify Compilation:** Clean build and verify no compilation errors related to SPI configuration structure

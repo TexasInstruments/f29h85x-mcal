@@ -101,11 +101,10 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.8.10. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#migration-guide">4.8.10.1. Migration Guide</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.8.10.2. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#portconfigset">4.8.10.3. PortConfigSet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#portgeneral">4.8.10.4. PortGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-port-module">4.8.10.5. Steps To Configure Port Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.8.10.1. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#portconfigset">4.8.10.2. PortConfigSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#portgeneral">4.8.10.3. PortGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-port-module">4.8.10.4. Steps To Configure Port Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.8.11. Examples</a><ul>
@@ -130,9 +129,10 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.19. RTDMA Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">7. AUTOSAR Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
 </ul>
 
         </div>
@@ -601,128 +601,17 @@ The associated Port driver configuration generated source files are <strong>Port
 <p class="admonition-title">Note</p>
 <p>Refer section <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#getting-started-with-eb-tresos"><span class="std std-ref">Getting Started with EB Tresos</span></a> of Chapter <strong>MCAL Configuration and EB Tresos</strong> for more information on how to load plugin and generate the configuration files.</p>
 </div>
-<section id="migration-guide">
-<h3><span class="section-number">4.8.10.1. </span>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h3>
-<p>Migration guides between module versions are detailed below.</p>
-<section id="v03-00-00-from-v02-00-00">
-<h4><span class="section-number">4.8.10.1.1. </span>v03.00.00 from v02.00.00<a class="headerlink" href="#v03-00-00-from-v02-00-00" title="Link to this heading"></a></h4>
-<section id="key-changes">
-<h5><span class="section-number">4.8.10.1.1.1. </span>Key Changes<a class="headerlink" href="#key-changes" title="Link to this heading"></a></h5>
-<ol class="arabic simple">
-<li><p><strong>Resource Allocator Based Approach</strong></p>
-<ul class="simple">
-<li><p>The Port module now integrates with the Resource Allocator module for centralized device, package, and variant configuration</p></li>
-<li><p>Device-specific pin configurations, mux modes, and package information are now derived from the Resource Allocator settings</p></li>
-<li><p>All pin-related parameters (PortPinName, PortPinPeripheral, PortPinPeripheralInstance, PortPinPeripheralSignal, PortPhysicalPinId, etc.) now reference Resource Allocator data</p></li>
-</ul>
-</li>
-<li><p><strong>PortDeviceVariant Moved to Resource Allocator</strong></p>
-<ul class="simple">
-<li><p>The device variant selection has been moved from the Port module to the Resource Allocator module</p></li>
-<li><p>Users must now configure the device variant in the Resource Allocator’s <code class="docutils literal notranslate"><span class="pre">ResourceAllocatorGeneral</span></code> container using the <code class="docutils literal notranslate"><span class="pre">Device</span></code>, <code class="docutils literal notranslate"><span class="pre">Variant</span></code>, and <code class="docutils literal notranslate"><span class="pre">Package</span></code> parameters</p></li>
-<li><p>The Port module automatically reads the device variant information from Resource Allocator to determine available pins and mux options</p></li>
-</ul>
-</li>
-</ol>
-</section>
-<section id="migration-steps">
-<h5><span class="section-number">4.8.10.1.1.2. </span>Migration Steps<a class="headerlink" href="#migration-steps" title="Link to this heading"></a></h5>
-<ol class="arabic simple">
-<li><p><strong>Add Resource Allocator Module</strong></p>
-<ul class="simple">
-<li><p>Add the Resource Allocator module to your EB Tresos project if not already present</p></li>
-</ul>
-</li>
-<li><p><strong>Configure Device Settings in Resource Allocator</strong></p>
-<ul class="simple">
-<li><p>Open the Resource Allocator module configuration</p></li>
-<li><p>Configure <code class="docutils literal notranslate"><span class="pre">Device</span></code>, <code class="docutils literal notranslate"><span class="pre">Variant</span></code>, and <code class="docutils literal notranslate"><span class="pre">Package</span></code> parameters in <code class="docutils literal notranslate"><span class="pre">ResourceAllocatorGeneral</span></code> container</p></li>
-<li><p>This replaces the previous PortDeviceVariant configuration</p></li>
-</ul>
-</li>
-<li><p><strong>Update Port Configuration</strong></p>
-<ul class="simple">
-<li><p>Open the Port module configuration</p></li>
-<li><p>The available pin options will now be filtered based on Resource Allocator settings</p></li>
-<li><p>Verify that all pin configurations are valid for the selected device/package</p></li>
-</ul>
-</li>
-<li><p><strong>Regenerate Configuration</strong></p>
-<ul class="simple">
-<li><p>Generate the configuration files after updating both modules</p></li>
-</ul>
-</li>
-<li><p><strong>Rebuild Application</strong></p>
-<ul class="simple">
-<li><p>Rebuild the application with the updated configuration</p></li>
-</ul>
-</li>
-</ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The Resource Allocator module must be configured before the Port module to ensure correct pin availability filtering. Refer to the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a> for detailed configuration instructions.</p>
-</div>
-</section>
-</section>
-<section id="v02-00-00-from-v01-01-01-or-any-older-versions">
-<h4><span class="section-number">4.8.10.1.2. </span>v02.00.00 from v01.01.01 or any older versions<a class="headerlink" href="#v02-00-00-from-v01-01-01-or-any-older-versions" title="Link to this heading"></a></h4>
-<p>In version v02.00.00, there are two major changes that require attention when migrating from v01.01.01 or any older versions:</p>
-<p><strong>Port Pin Name Changes</strong></p>
-<p>In this version, the names of the range of values of the PortPinName and PortPinPeripheralSignal got updated, which impacts the values of other configuration parameters as well, because the range of values of other parameters are computed using these parameters. This is the most visible change and affects a large number of port pin configurations. Due to these naming changes, Port configurations created with v01.01.01 or older versions are not directly compatible with v02.00.00.</p>
-<p>When migrating existing configurations:</p>
-<ul class="simple">
-<li><p>Open your existing configuration in the latest plugin version</p></li>
-<li><p>The plugin will automatically flag incompatible pin configurations</p></li>
-<li><p>Configure the corresponding pins in the new naming convention by choosing values from the plugin</p></li>
-<li><p>Verify and update all affected pin configurations</p></li>
-<li><p>In order to migrate to the latest version, the values of PortPinName and PortPinPeripheralSignal need to be chosen from the plugin</p></li>
-</ul>
-<p><strong>Configuration Structure Name Change</strong></p>
-<p>The name of the generated configuration structure has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
-In case of Post build variant, upper modules that call the Port_Init function will need to use the new configuration structure name. For example:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Old code (v01.01.01 or any older versions) */</span>
-<span class="n">Port_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Port_PortConfigSet</span><span class="p">);</span>
-
-<span class="cm">/* New code (v02.00.00) */</span>
-<span class="n">Port_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Port_Config</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>This change ensures compliance with AUTOSAR naming conventions.</p>
-<p><strong>Required Actions for Migration</strong></p>
-<p>To successfully migrate to v02.00.00:</p>
-<ul class="simple">
-<li><p>Reconfigure existing Port configurations using the latest plugin</p></li>
-<li><p>Update all port pin references to match the new naming convention</p></li>
-<li><p>Update any upper module that references the configuration structures to use the new structure name</p></li>
-<li><p>Verify all pin configurations after migration</p></li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>It is recommended to completely reconfigure your Port settings using the v02.00.00 plugin rather than attempting to manually update existing configurations, as both the pin naming changes and configuration structure changes are extensive.
-```</p>
-<p class="rubric" id="configuration-precautions">Configuration Precautions</p>
-<ul class="simple">
-<li><p>For any peripheral pin configuration, make sure to set correct pad configurations or else it will result in unexpected behavior of the module.</p></li>
-<li><p>Similarly in case of Pin Mode Changeable support, make sure to set proper pad configurations for the supported pins.</p></li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>More details related to Configuration precautions can be found in Safety Manual.</p>
-</div>
-</div>
-</section>
-</section>
 <section id="configuration-parameters">
-<h3><span class="section-number">4.8.10.2. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.8.10.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
 </section>
 <section id="portconfigset">
-<h3><span class="section-number">4.8.10.3. </span>PortConfigSet<a class="headerlink" href="#portconfigset" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.8.10.2. </span>PortConfigSet<a class="headerlink" href="#portconfigset" title="Link to this heading"></a></h3>
 <p>This container contains the configuration parameters and sub containers of the AUTOSAR Port module.</p>
 <section id="portcontainer">
-<h4><span class="section-number">4.8.10.3.1. </span>PortContainer<a class="headerlink" href="#portcontainer" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.2.1. </span>PortContainer<a class="headerlink" href="#portcontainer" title="Link to this heading"></a></h4>
 <p>Container collecting the PortPins.</p>
 <section id="portnumberofportpins">
-<h5><span class="section-number">4.8.10.3.1.1. </span>PortNumberOfPortPins<a class="headerlink" href="#portnumberofportpins" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.1.1. </span>PortNumberOfPortPins<a class="headerlink" href="#portnumberofportpins" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -755,7 +644,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 <td><p>1</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Max-value</strong></p></td>
-<td><p>1</p></td>
+<td><p>256</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Min-value</strong></p></td>
 <td><p>1</p></td>
@@ -765,10 +654,10 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </section>
 </section>
 <section id="portpin">
-<h4><span class="section-number">4.8.10.3.2. </span>PortPin<a class="headerlink" href="#portpin" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.2.2. </span>PortPin<a class="headerlink" href="#portpin" title="Link to this heading"></a></h4>
 <p>Configuration of the individual port pins.</p>
 <section id="portpinperipheral">
-<h5><span class="section-number">4.8.10.3.2.1. </span>PortPinPeripheral<a class="headerlink" href="#portpinperipheral" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.1. </span>PortPinPeripheral<a class="headerlink" href="#portpinperipheral" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -807,7 +696,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpinperipheralinstance">
-<h5><span class="section-number">4.8.10.3.2.2. </span>PortPinPeripheralInstance<a class="headerlink" href="#portpinperipheralinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.2. </span>PortPinPeripheralInstance<a class="headerlink" href="#portpinperipheralinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -846,7 +735,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpinperipheralsignal">
-<h5><span class="section-number">4.8.10.3.2.3. </span>PortPinPeripheralSignal<a class="headerlink" href="#portpinperipheralsignal" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.3. </span>PortPinPeripheralSignal<a class="headerlink" href="#portpinperipheralsignal" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -885,7 +774,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portphysicalpinid">
-<h5><span class="section-number">4.8.10.3.2.4. </span>PortPhysicalPinId<a class="headerlink" href="#portphysicalpinid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.4. </span>PortPhysicalPinId<a class="headerlink" href="#portphysicalpinid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -924,7 +813,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpinname">
-<h5><span class="section-number">4.8.10.3.2.5. </span>PortPinName<a class="headerlink" href="#portpinname" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.5. </span>PortPinName<a class="headerlink" href="#portpinname" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -963,7 +852,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpinid">
-<h5><span class="section-number">4.8.10.3.2.6. </span>PortPinId<a class="headerlink" href="#portpinid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.6. </span>PortPinId<a class="headerlink" href="#portpinid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1005,7 +894,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portanalogmode">
-<h5><span class="section-number">4.8.10.3.2.7. </span>PortAnalogMode<a class="headerlink" href="#portanalogmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.7. </span>PortAnalogMode<a class="headerlink" href="#portanalogmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1044,7 +933,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpininitialmode">
-<h5><span class="section-number">4.8.10.3.2.8. </span>PortPinInitialMode<a class="headerlink" href="#portpininitialmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.8. </span>PortPinInitialMode<a class="headerlink" href="#portpininitialmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1083,7 +972,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpindirection">
-<h5><span class="section-number">4.8.10.3.2.9. </span>PortPinDirection<a class="headerlink" href="#portpindirection" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.9. </span>PortPinDirection<a class="headerlink" href="#portpindirection" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1122,7 +1011,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpindirectionchangeable">
-<h5><span class="section-number">4.8.10.3.2.10. </span>PortPinDirectionChangeable<a class="headerlink" href="#portpindirectionchangeable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.10. </span>PortPinDirectionChangeable<a class="headerlink" href="#portpindirectionchangeable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1158,7 +1047,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpinpadconfig">
-<h5><span class="section-number">4.8.10.3.2.11. </span>PortPinPadConfig<a class="headerlink" href="#portpinpadconfig" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.11. </span>PortPinPadConfig<a class="headerlink" href="#portpinpadconfig" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1197,7 +1086,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpinpullupconfig">
-<h5><span class="section-number">4.8.10.3.2.12. </span>PortPinPullUpConfig<a class="headerlink" href="#portpinpullupconfig" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.12. </span>PortPinPullUpConfig<a class="headerlink" href="#portpinpullupconfig" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1233,7 +1122,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpinqualificationmode">
-<h5><span class="section-number">4.8.10.3.2.13. </span>PortPinQualificationMode<a class="headerlink" href="#portpinqualificationmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.13. </span>PortPinQualificationMode<a class="headerlink" href="#portpinqualificationmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1272,7 +1161,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpinqualificationperiod">
-<h5><span class="section-number">4.8.10.3.2.14. </span>PortPinQualificationPeriod<a class="headerlink" href="#portpinqualificationperiod" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.14. </span>PortPinQualificationPeriod<a class="headerlink" href="#portpinqualificationperiod" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1314,7 +1203,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpinlevelvalue">
-<h5><span class="section-number">4.8.10.3.2.15. </span>PortPinLevelValue<a class="headerlink" href="#portpinlevelvalue" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.15. </span>PortPinLevelValue<a class="headerlink" href="#portpinlevelvalue" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1353,7 +1242,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpincoreselect">
-<h5><span class="section-number">4.8.10.3.2.16. </span>PortPinCoreSelect<a class="headerlink" href="#portpincoreselect" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.16. </span>PortPinCoreSelect<a class="headerlink" href="#portpincoreselect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1392,7 +1281,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portenablewakeuppinlpm">
-<h5><span class="section-number">4.8.10.3.2.17. </span>PortEnableWakeUpPinLPM<a class="headerlink" href="#portenablewakeuppinlpm" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.17. </span>PortEnableWakeUpPinLPM<a class="headerlink" href="#portenablewakeuppinlpm" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1428,7 +1317,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpinmode">
-<h5><span class="section-number">4.8.10.3.2.18. </span>PortPinMode<a class="headerlink" href="#portpinmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.18. </span>PortPinMode<a class="headerlink" href="#portpinmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1476,7 +1365,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portpinmodechangeable">
-<h5><span class="section-number">4.8.10.3.2.19. </span>PortPinModeChangeable<a class="headerlink" href="#portpinmodechangeable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.2.19. </span>PortPinModeChangeable<a class="headerlink" href="#portpinmodechangeable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1514,10 +1403,10 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </section>
 </section>
 <section id="portgeneral">
-<h3><span class="section-number">4.8.10.4. </span>PortGeneral<a class="headerlink" href="#portgeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.8.10.3. </span>PortGeneral<a class="headerlink" href="#portgeneral" title="Link to this heading"></a></h3>
 <p>Module wide configuration parameters of the PORT driver.</p>
 <section id="portdeverrordetect">
-<h4><span class="section-number">4.8.10.4.1. </span>PortDevErrorDetect<a class="headerlink" href="#portdeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.1. </span>PortDevErrorDetect<a class="headerlink" href="#portdeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1553,7 +1442,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portsetpindirectionapi">
-<h4><span class="section-number">4.8.10.4.2. </span>PortSetPinDirectionApi<a class="headerlink" href="#portsetpindirectionapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.2. </span>PortSetPinDirectionApi<a class="headerlink" href="#portsetpindirectionapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1589,7 +1478,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portsetpinmodeapi">
-<h4><span class="section-number">4.8.10.4.3. </span>PortSetPinModeApi<a class="headerlink" href="#portsetpinmodeapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.3. </span>PortSetPinModeApi<a class="headerlink" href="#portsetpinmodeapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1625,7 +1514,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </table>
 </section>
 <section id="portversioninfoapi">
-<h4><span class="section-number">4.8.10.4.4. </span>PortVersionInfoApi<a class="headerlink" href="#portversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.4. </span>PortVersionInfoApi<a class="headerlink" href="#portversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1669,7 +1558,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 </section>
 </section>
 <section id="steps-to-configure-port-module">
-<h3><span class="section-number">4.8.10.5. </span>Steps To Configure Port Module<a class="headerlink" href="#steps-to-configure-port-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.8.10.4. </span>Steps To Configure Port Module<a class="headerlink" href="#steps-to-configure-port-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool and Select the Config Variant ( Precompile/Post-Build)</p></li>
 <li><p>Go to Port Container tab and create a new container</p></li>

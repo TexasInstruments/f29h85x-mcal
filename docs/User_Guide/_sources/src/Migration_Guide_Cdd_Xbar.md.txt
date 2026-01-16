@@ -1,0 +1,215 @@
+# CDD XBAR Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v03.00.00 (i.e release v01.04.00) from v02.00.02 (i.e release v01.03.00) Migration
+
+### Summary
+
+Version v03.00.00 introduces **Resource Allocator as a mandatory architectural foundation** and restructures API configuration parameters. This represents a fundamental shift from direct parameter configuration to centralized resource management:
+
+1. **Resource Allocator Introduction**: Resource Allocator becomes mandatory for CDD XBAR module configuration with device variant setup
+2. **API Parameter Updates**: XBAR API configuration parameters restructured for improved functionality and compliance
+
+**PREREQUISITE:** Complete [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md#module-setup-and-configuration) before proceeding.
+
+### Change 1: Resource Allocator Introduction
+
+#### Description
+
+Resource Allocator becomes a mandatory architectural foundation for the CDD XBAR module. Device variant configuration and XBAR resource management is moved to centralized resource allocation where Resource Allocator determines available XBAR resources based on device configuration.
+
+#### Old vs New Configuration
+
+**Previous Configuration (v02.00.02):**
+Direct parameter configuration was used without Resource Allocator dependency.
+
+**New Configuration (v03.00.00):**
+XBAR resources and device configuration now managed through Resource Allocator.
+
+```{figure} Assets/images/migration/cdd_xbar_module/01_02_cdd_xbar_module_configure_device.png
+:alt: Configure CDD XBAR Device
+:align: center
+:width: 80%
+
+v03.00.00: Configure device variant in Resource Allocator for XBAR resources
+```
+
+#### Migration Actions
+
+1. **Setup Resource Allocator:** Follow [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md)
+
+2. **Navigate to Context:** Navigate to **ResourceAllocatorGeneral → Context → Cdd_Xbar** and configure the device variant:
+
+```{figure} Assets/images/migration/cdd_xbar_module/01_01_cdd_xbar_module_add_resource_allocator.png
+:alt: Add CDD XBAR Resource Allocator
+:align: center
+:width: 80%
+
+Add Resource Allocator and configure device variant for CDD XBAR
+```
+
+3. **Configure Device Variant:** Set up device variant configuration in Resource Allocator for XBAR resources
+
+4. **Verify Resource Availability:** Ensure XBAR resources are properly allocated based on device configuration
+
+### Change 2: API Parameter Updates
+
+#### Description
+
+Version v03.00.00 restructures API configuration parameters for improved functionality and compliance. The API parameter structure is enhanced to provide better control and integration with Resource Allocator-managed resources.
+
+#### Old vs New API Configuration
+
+**Previous Configuration (v02.00.02):**
+Direct API parameter configuration with basic structure.
+
+**New Configuration (v03.00.00):**
+Enhanced parameter structure for better control with Resource Allocator integration.
+
+#### Migration Actions
+
+1. **Review API Configuration:** Navigate to CDD XBAR configuration and review the updated API parameters:
+
+```{figure} Assets/images/migration/cdd_xbar_module/03_01_cdd_xbar_module_api_updates.png
+:alt: CDD XBAR API Updates
+:align: center
+:width: 80%
+
+Updated XBAR API parameters and configuration structure
+```
+
+2. **Update Parameter Structure:** Configure XBAR API parameters using the enhanced structure for better control
+
+3. **Verify Resource Allocator Integration:** Ensure all XBAR resources are properly managed through Resource Allocator
+
+4. **Validate Configuration:** Confirm that API configurations are compatible with Resource Allocator-managed resources
+
+**Parameter Restructuring Benefits:**
+- Enhanced parameter structure for better control
+- Improved integration with Resource Allocator-managed resources
+- Device variant centralization for consistent resource management
+
+```{NOTE}
+The Resource Allocator module must be configured before the CDD XBAR module to ensure correct resource availability. Device variant configuration in Resource Allocator determines available XBAR resources for the current context.
+```
+
+## v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration
+
+### Summary
+
+Version v02.00.00 introduces schema compatibility updates to align with updated plugin structure and reference paths, following AUTOSAR CDD naming conventions:
+
+1. **AR-ELEMENT Name Change**: Generated .xdm file AR-ELEMENT name requires updating for schema compatibility
+2. **MODULE-CONFIGURATION Path Update**: Generated .xdm file MODULE-CONFIGURATION definition path requires updating
+3. **Reference Path Updates**: Generated .xdm file reference paths require updating due to schema structure changes
+
+```{NOTE}
+The CDD XBAR v2.0.0 plugin contains updated schema definitions that are not backward compatible with v1.0.0 generated configurations. To use existing v1.0.0 configurations with the v2.0.0 plugin, the **generated .xdm files** (created by EB Tresos from your configuration) must be updated.
+```
+
+### Change 1: AR-ELEMENT Name Change in Generated .xdm File
+
+#### Description
+
+When upgrading from v1.0.0 to v2.0.0, the generated .xdm file from EB Tresos contains AR-ELEMENT names that are not compatible with the new plugin schema. The AR-ELEMENT name needs to be updated in the generated .xdm file to ensure compatibility.
+
+#### Old vs New AR-ELEMENT Configuration
+
+**Generated .xdm File AR-ELEMENT Name:**
+
+| v01.00.00 Generated .xdm | v02.00.00 Required .xdm |
+|--------------------------|-------------------------|
+| `<d:chc name="Cdd_Xbar" type="AR-ELEMENT"` | `<d:chc name="Cdd" type="AR-ELEMENT"` |
+
+#### Migration Actions
+
+1. **Locate Generated .xdm File:** Find your project's generated .xdm file (created by EB Tresos from your configuration)
+
+2. **Open File for Editing:** Open the generated .xdm file in a text editor
+
+3. **Find AR-ELEMENT Reference:** Locate the line containing `<d:chc name="Cdd_Xbar" type="AR-ELEMENT"`
+
+4. **Update AR-ELEMENT Name:** Change the AR-ELEMENT name from `Cdd_Xbar` to `Cdd`
+
+5. **Save File:** Save the updated .xdm file
+
+### Change 2: MODULE-CONFIGURATION Path Update in Generated .xdm File
+
+#### Description
+
+The MODULE-CONFIGURATION definition path in the generated .xdm file needs to be updated to reflect the new schema structure. The path must include the additional `Cdd` component for proper module reference.
+
+#### Old vs New MODULE-CONFIGURATION Path
+
+**Generated .xdm File MODULE-CONFIGURATION Path:**
+
+| v01.00.00 Generated .xdm | v02.00.00 Required .xdm |
+|--------------------------|-------------------------|
+| `<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Xbar"/>` | `<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Xbar/Cdd"/>` |
+
+#### Migration Actions
+
+1. **Continue Editing .xdm File:** In the same generated .xdm file being edited
+
+2. **Find MODULE-CONFIGURATION Path:** Locate the line containing `<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Xbar"/>`
+
+3. **Update Definition Path:** Change the MODULE-CONFIGURATION path from `ASPath:/TI_F29H85x/Cdd_Xbar` to `ASPath:/TI_F29H85x/Cdd_Xbar/Cdd`
+
+4. **Verify Path Structure:** Ensure the updated path includes the additional `/Cdd` component
+
+5. **Save Changes:** Save the updated .xdm file
+
+### Change 3: Reference Path Updates in Generated .xdm File
+
+#### Description
+
+Any REFERENCE type parameters in the generated .xdm file that refer to other CDD XBAR parameters by their schema path must be updated due to the schema structure change. All internal reference paths need to be updated to reflect the new schema hierarchy.
+
+#### Old vs New Reference Paths
+
+**Generated .xdm File Reference Path Example:**
+
+For any reference parameters expecting reference to an XBAR configuration:
+
+| v01.00.00 Generated .xdm Reference Path | v02.00.00 Required .xdm Reference Path |
+|------------------------------------------|------------------------------------------|
+| `/Cdd_Xbar/Cdd_Xbar/CddXbarConfigSet/...` | `/Cdd_Xbar/Cdd/CddXbarConfigSet/...` |
+
+#### Migration Actions
+
+1. **Continue Editing .xdm File:** In the same generated .xdm file being edited
+
+2. **Search for Reference Paths:** Find all REFERENCE type parameters that contain `/Cdd_Xbar/Cdd_Xbar/` in their paths
+
+3. **Update Reference Paths:** Change all occurrences of `/Cdd_Xbar/Cdd_Xbar/` to `/Cdd_Xbar/Cdd/`
+
+4. **Verify All Updates:** Ensure all reference paths now use the correct schema hierarchy
+
+5. **Save Final Changes:** Save the completely updated .xdm file
+
+**Generated .xdm File Structure Comparison:**
+
+**Before Editing (v01.00.00 Generated .xdm File):**
+```xml
+<d:lst type="TOP-LEVEL-PACKAGES">
+<d:ctr name="Cdd_Xbar" type="AR-PACKAGE">
+<d:lst type="ELEMENTS">
+<d:chc name="Cdd_Xbar" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+<d:ctr type="MODULE-CONFIGURATION">
+<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Xbar"/>
+```
+
+**After Editing (v02.00.00 Compatible .xdm File):**
+```xml
+<d:lst type="TOP-LEVEL-PACKAGES">
+<d:ctr name="Cdd_Xbar" type="AR-PACKAGE">
+<d:lst type="ELEMENTS">
+<d:chc name="Cdd" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+<d:ctr type="MODULE-CONFIGURATION">
+<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Xbar/Cdd"/>
+```
+
+```{NOTE}
+Only the generated .xdm files (created by EB Tresos from your configuration) can be modified. The plugin .xdm files themselves cannot and should not be modified.
+```

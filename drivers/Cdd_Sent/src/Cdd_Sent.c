@@ -44,11 +44,11 @@
 #error "AUTOSAR Version Numbers of CDD_SENT are different"
 #endif
 
-#if ((CDD_SENT_SW_MAJOR_VERSION != (3U)) || (CDD_SENT_SW_MINOR_VERSION != (0U)))
+#if ((CDD_SENT_SW_MAJOR_VERSION != (3U)) || (CDD_SENT_SW_MINOR_VERSION != (1U)))
 #error "Version numbers of Cdd_Sent.c and Cdd_Sent.h are inconsistent!"
 #endif
 
-#if ((CDD_SENT_CFG_MAJOR_VERSION != (3U)) || (CDD_SENT_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_SENT_CFG_MAJOR_VERSION != (3U)) || (CDD_SENT_CFG_MINOR_VERSION != (1U)))
 #error "Version numbers of Cdd_Sent.c and Cdd_Sent_Cfg.h are inconsistent!"
 #endif
 /*********************************************************************************************************************

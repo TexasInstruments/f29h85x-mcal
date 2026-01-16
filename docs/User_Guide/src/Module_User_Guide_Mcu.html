@@ -100,11 +100,10 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.7.10. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#migration-guide">4.7.10.1. Migration Guide</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.7.10.2. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mcugeneralconfiguration">4.7.10.3. McuGeneralConfiguration</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mcumoduleconfiguration">4.7.10.4. McuModuleConfiguration</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-mcu-module">4.7.10.5. Steps To Configure Mcu Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.7.10.1. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcugeneralconfiguration">4.7.10.2. McuGeneralConfiguration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcumoduleconfiguration">4.7.10.3. McuModuleConfiguration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-mcu-module">4.7.10.4. Steps To Configure Mcu Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.7.11. Examples</a><ul>
@@ -131,9 +130,10 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.19. RTDMA Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">7. AUTOSAR Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
 </ul>
 
         </div>
@@ -606,36 +606,14 @@ For MCU Module, data consistency and exclusive access to critical sections are r
 The associated Mcu driver configuration generated source files are <strong>Mcu_Cfg.c</strong> or
 <strong>Mcu_PBcfg.c</strong></p>
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
-<section id="migration-guide">
-<h3><span class="section-number">4.7.10.1. </span>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h3>
-<p>Migration guides between module versions are detailed below.</p>
-<section id="v02-00-00-from-v01-01-00-or-any-older-versions">
-<h4><span class="section-number">4.7.10.1.1. </span>v02.00.00 from v01.01.00 or any older versions<a class="headerlink" href="#v02-00-00-from-v01-01-00-or-any-older-versions" title="Link to this heading"></a></h4>
-<p>In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
-In case of Post build variant, upper modules that call the Mcu_Init function will need to use the new configuration structure name. For example:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Old code (v01.01.00 or any older versions) */</span>
-<span class="n">Mcu_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">McuConf</span><span class="o">*</span><span class="p">);</span>
-
-<span class="cm">/* New code (v02.00.00) */</span>
-<span class="n">Mcu_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Mcu_Config</span><span class="o">*</span><span class="p">);</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The name of the configuration structures depends on the clock source being used.</p>
-</div>
-<p>This change ensures compliance with AUTOSAR naming conventions.</p>
-<p>To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.</p>
-</section>
-</section>
 <section id="configuration-parameters">
-<h3><span class="section-number">4.7.10.2. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.10.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
 </section>
 <section id="mcugeneralconfiguration">
-<h3><span class="section-number">4.7.10.3. </span>McuGeneralConfiguration<a class="headerlink" href="#mcugeneralconfiguration" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.10.2. </span>McuGeneralConfiguration<a class="headerlink" href="#mcugeneralconfiguration" title="Link to this heading"></a></h3>
 <p>This container contains the configuration (parameters) of the MCU driver.</p>
 <section id="mcudeverrordetect">
-<h4><span class="section-number">4.7.10.3.1. </span>McuDevErrorDetect<a class="headerlink" href="#mcudeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.2.1. </span>McuDevErrorDetect<a class="headerlink" href="#mcudeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -671,7 +649,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuclockconfiglockcriticalregisters">
-<h4><span class="section-number">4.7.10.3.2. </span>McuClockConfigLockCriticalRegisters<a class="headerlink" href="#mcuclockconfiglockcriticalregisters" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.2.2. </span>McuClockConfigLockCriticalRegisters<a class="headerlink" href="#mcuclockconfiglockcriticalregisters" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -707,7 +685,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcucpuperipheralconfiglockcriticalregisters">
-<h4><span class="section-number">4.7.10.3.3. </span>McuCpuPeripheralConfigLockCriticalRegisters<a class="headerlink" href="#mcucpuperipheralconfiglockcriticalregisters" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.2.3. </span>McuCpuPeripheralConfigLockCriticalRegisters<a class="headerlink" href="#mcucpuperipheralconfiglockcriticalregisters" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -743,7 +721,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcucpusystemlockcriticalregisters">
-<h4><span class="section-number">4.7.10.3.4. </span>McuCpuSystemLockCriticalRegisters<a class="headerlink" href="#mcucpusystemlockcriticalregisters" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.2.4. </span>McuCpuSystemLockCriticalRegisters<a class="headerlink" href="#mcucpusystemlockcriticalregisters" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -779,7 +757,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcugetramstateapi">
-<h4><span class="section-number">4.7.10.3.5. </span>McuGetRamStateApi<a class="headerlink" href="#mcugetramstateapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.2.5. </span>McuGetRamStateApi<a class="headerlink" href="#mcugetramstateapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -815,7 +793,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuinitclock">
-<h4><span class="section-number">4.7.10.3.6. </span>McuInitClock<a class="headerlink" href="#mcuinitclock" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.2.6. </span>McuInitClock<a class="headerlink" href="#mcuinitclock" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -851,7 +829,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcunopll">
-<h4><span class="section-number">4.7.10.3.7. </span>McuNoPll<a class="headerlink" href="#mcunopll" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.2.7. </span>McuNoPll<a class="headerlink" href="#mcunopll" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -887,7 +865,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperformresetapi">
-<h4><span class="section-number">4.7.10.3.8. </span>McuPerformResetApi<a class="headerlink" href="#mcuperformresetapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.2.8. </span>McuPerformResetApi<a class="headerlink" href="#mcuperformresetapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -923,7 +901,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuversioninfoapi">
-<h4><span class="section-number">4.7.10.3.9. </span>McuVersionInfoApi<a class="headerlink" href="#mcuversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.2.9. </span>McuVersionInfoApi<a class="headerlink" href="#mcuversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -960,10 +938,10 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </section>
 </section>
 <section id="mcumoduleconfiguration">
-<h3><span class="section-number">4.7.10.4. </span>McuModuleConfiguration<a class="headerlink" href="#mcumoduleconfiguration" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.10.3. </span>McuModuleConfiguration<a class="headerlink" href="#mcumoduleconfiguration" title="Link to this heading"></a></h3>
 <p>This container contains the configuration (parameters) of the MCU driver</p>
 <section id="mcuclocksrcfailurenotification">
-<h4><span class="section-number">4.7.10.4.1. </span>McuClockSrcFailureNotification<a class="headerlink" href="#mcuclocksrcfailurenotification" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.1. </span>McuClockSrcFailureNotification<a class="headerlink" href="#mcuclocksrcfailurenotification" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1002,7 +980,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcunumberofmcumodes">
-<h4><span class="section-number">4.7.10.4.2. </span>McuNumberOfMcuModes<a class="headerlink" href="#mcunumberofmcumodes" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.2. </span>McuNumberOfMcuModes<a class="headerlink" href="#mcunumberofmcumodes" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1044,7 +1022,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuramsectors">
-<h4><span class="section-number">4.7.10.4.3. </span>McuRamSectors<a class="headerlink" href="#mcuramsectors" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.3. </span>McuRamSectors<a class="headerlink" href="#mcuramsectors" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1086,7 +1064,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuresetsetting">
-<h4><span class="section-number">4.7.10.4.4. </span>McuResetSetting<a class="headerlink" href="#mcuresetsetting" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.4. </span>McuResetSetting<a class="headerlink" href="#mcuresetsetting" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1140,10 +1118,10 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuclocksettingconfig">
-<h4><span class="section-number">4.7.10.4.5. </span>McuClockSettingConfig<a class="headerlink" href="#mcuclocksettingconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.5. </span>McuClockSettingConfig<a class="headerlink" href="#mcuclocksettingconfig" title="Link to this heading"></a></h4>
 <p>This container contains the configuration (parameters) for the Clock settings of the MCU.  Please see MCU031 for more information on the MCU clock settings.</p>
 <section id="mcuclocksettingid">
-<h5><span class="section-number">4.7.10.4.5.1. </span>McuClockSettingId<a class="headerlink" href="#mcuclocksettingid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.5.1. </span>McuClockSettingId<a class="headerlink" href="#mcuclocksettingid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1186,10 +1164,10 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </section>
 </section>
 <section id="mcuclockreferencepoint">
-<h4><span class="section-number">4.7.10.4.6. </span>McuClockReferencePoint<a class="headerlink" href="#mcuclockreferencepoint" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.6. </span>McuClockReferencePoint<a class="headerlink" href="#mcuclockreferencepoint" title="Link to this heading"></a></h4>
 <p>This container defines a reference point in the Mcu Clock tree. It defines the frequency which then can be used by other modules as an input value. Lower multiplicity is 1, as even in the simplest case (only one frequency is used), there is one frequency to be defined.</p>
 <section id="mcuclockreferencepointfrequency">
-<h5><span class="section-number">4.7.10.4.6.1. </span>McuClockReferencePointFrequency<a class="headerlink" href="#mcuclockreferencepointfrequency" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.6.1. </span>McuClockReferencePointFrequency<a class="headerlink" href="#mcuclockreferencepointfrequency" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1232,10 +1210,10 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </section>
 </section>
 <section id="mcuclkconfig">
-<h4><span class="section-number">4.7.10.4.7. </span>McuClkConfig<a class="headerlink" href="#mcuclkconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.7. </span>McuClkConfig<a class="headerlink" href="#mcuclkconfig" title="Link to this heading"></a></h4>
 <p>Device specific clock settings</p>
 <section id="mcuclocksource">
-<h5><span class="section-number">4.7.10.4.7.1. </span>McuClockSource<a class="headerlink" href="#mcuclocksource" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.7.1. </span>McuClockSource<a class="headerlink" href="#mcuclocksource" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1274,7 +1252,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuexternalclkfreq">
-<h5><span class="section-number">4.7.10.4.7.2. </span>McuExternalClkFreq<a class="headerlink" href="#mcuexternalclkfreq" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.7.2. </span>McuExternalClkFreq<a class="headerlink" href="#mcuexternalclkfreq" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1316,7 +1294,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcusysclkdiv">
-<h5><span class="section-number">4.7.10.4.7.3. </span>McuSysClkDiv<a class="headerlink" href="#mcusysclkdiv" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.7.3. </span>McuSysClkDiv<a class="headerlink" href="#mcusysclkdiv" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1358,7 +1336,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuhsmclkdiv">
-<h5><span class="section-number">4.7.10.4.7.4. </span>McuHsmClkDiv<a class="headerlink" href="#mcuhsmclkdiv" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.7.4. </span>McuHsmClkDiv<a class="headerlink" href="#mcuhsmclkdiv" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1397,7 +1375,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuepwmclkdiv">
-<h5><span class="section-number">4.7.10.4.7.5. </span>McuEpwmClkDiv<a class="headerlink" href="#mcuepwmclkdiv" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.7.5. </span>McuEpwmClkDiv<a class="headerlink" href="#mcuepwmclkdiv" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1436,7 +1414,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuemifclkdiv">
-<h5><span class="section-number">4.7.10.4.7.6. </span>McuEmifClkDiv<a class="headerlink" href="#mcuemifclkdiv" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.7.6. </span>McuEmifClkDiv<a class="headerlink" href="#mcuemifclkdiv" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1476,10 +1454,10 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </section>
 </section>
 <section id="mculinclkconfig">
-<h4><span class="section-number">4.7.10.4.8. </span>McuLinClkConfig<a class="headerlink" href="#mculinclkconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.8. </span>McuLinClkConfig<a class="headerlink" href="#mculinclkconfig" title="Link to this heading"></a></h4>
 <p>Device specific Lin clock settings</p>
 <section id="mculininstance">
-<h5><span class="section-number">4.7.10.4.8.1. </span>McuLinInstance<a class="headerlink" href="#mculininstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.8.1. </span>McuLinInstance<a class="headerlink" href="#mculininstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1518,7 +1496,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mculinclkdiv">
-<h5><span class="section-number">4.7.10.4.8.2. </span>McuLinClkDiv<a class="headerlink" href="#mculinclkdiv" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.8.2. </span>McuLinClkDiv<a class="headerlink" href="#mculinclkdiv" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1558,10 +1536,10 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </section>
 </section>
 <section id="mcumcanclkconfig">
-<h4><span class="section-number">4.7.10.4.9. </span>McuMCanClkConfig<a class="headerlink" href="#mcumcanclkconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.9. </span>McuMCanClkConfig<a class="headerlink" href="#mcumcanclkconfig" title="Link to this heading"></a></h4>
 <p>Device specific MCan clock settings</p>
 <section id="mcumcaninstance">
-<h5><span class="section-number">4.7.10.4.9.1. </span>McuMCanInstance<a class="headerlink" href="#mcumcaninstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.9.1. </span>McuMCanInstance<a class="headerlink" href="#mcumcaninstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1600,7 +1578,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcumcanclocksource">
-<h5><span class="section-number">4.7.10.4.9.2. </span>McuMCanClockSource<a class="headerlink" href="#mcumcanclocksource" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.9.2. </span>McuMCanClockSource<a class="headerlink" href="#mcumcanclocksource" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1639,7 +1617,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcumcanclkdiv">
-<h5><span class="section-number">4.7.10.4.9.3. </span>McuMCanClkDiv<a class="headerlink" href="#mcumcanclkdiv" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.9.3. </span>McuMCanClkDiv<a class="headerlink" href="#mcumcanclkdiv" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1679,10 +1657,10 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </section>
 </section>
 <section id="mcucputimerclkconfig">
-<h4><span class="section-number">4.7.10.4.10. </span>McuCpuTimerClkConfig<a class="headerlink" href="#mcucputimerclkconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.10. </span>McuCpuTimerClkConfig<a class="headerlink" href="#mcucputimerclkconfig" title="Link to this heading"></a></h4>
 <p>Device specific CPU Timer clock settings</p>
 <section id="mcucputimer2clocksource">
-<h5><span class="section-number">4.7.10.4.10.1. </span>McuCpuTimer2ClockSource<a class="headerlink" href="#mcucputimer2clocksource" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.10.1. </span>McuCpuTimer2ClockSource<a class="headerlink" href="#mcucputimer2clocksource" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1721,7 +1699,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcucputimer2clkdiv">
-<h5><span class="section-number">4.7.10.4.10.2. </span>McuCpuTimer2ClkDiv<a class="headerlink" href="#mcucputimer2clkdiv" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.10.2. </span>McuCpuTimer2ClkDiv<a class="headerlink" href="#mcucputimer2clkdiv" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1764,10 +1742,10 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </section>
 </section>
 <section id="mcuexternalclkoutconfig">
-<h4><span class="section-number">4.7.10.4.11. </span>McuExternalClkOutConfig<a class="headerlink" href="#mcuexternalclkoutconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.11. </span>McuExternalClkOutConfig<a class="headerlink" href="#mcuexternalclkoutconfig" title="Link to this heading"></a></h4>
 <p>Device specific External clock output settings</p>
 <section id="mcuexternalclockout">
-<h5><span class="section-number">4.7.10.4.11.1. </span>McuExternalClockOut<a class="headerlink" href="#mcuexternalclockout" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.11.1. </span>McuExternalClockOut<a class="headerlink" href="#mcuexternalclockout" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1803,7 +1781,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuexternalclockoutsource">
-<h5><span class="section-number">4.7.10.4.11.2. </span>McuExternalClockOutSource<a class="headerlink" href="#mcuexternalclockoutsource" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.11.2. </span>McuExternalClockOutSource<a class="headerlink" href="#mcuexternalclockoutsource" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1845,7 +1823,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuexternalclkoutdiv">
-<h5><span class="section-number">4.7.10.4.11.3. </span>McuExternalClkOutDiv<a class="headerlink" href="#mcuexternalclkoutdiv" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.11.3. </span>McuExternalClkOutDiv<a class="headerlink" href="#mcuexternalclkoutdiv" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1888,10 +1866,10 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </section>
 </section>
 <section id="mcuethercatclkconfig">
-<h4><span class="section-number">4.7.10.4.12. </span>McuEthercatClkConfig<a class="headerlink" href="#mcuethercatclkconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.12. </span>McuEthercatClkConfig<a class="headerlink" href="#mcuethercatclkconfig" title="Link to this heading"></a></h4>
 <p>Device specific Ethercat clock settings</p>
 <section id="mcuethercatphyclkenable">
-<h5><span class="section-number">4.7.10.4.12.1. </span>McuEthercatPhyClkEnable<a class="headerlink" href="#mcuethercatphyclkenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.12.1. </span>McuEthercatPhyClkEnable<a class="headerlink" href="#mcuethercatphyclkenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1930,7 +1908,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuethercatclkdiv">
-<h5><span class="section-number">4.7.10.4.12.2. </span>McuEthercatClkDiv<a class="headerlink" href="#mcuethercatclkdiv" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.12.2. </span>McuEthercatClkDiv<a class="headerlink" href="#mcuethercatclkdiv" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1970,10 +1948,10 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </section>
 </section>
 <section id="mcupllconfig">
-<h4><span class="section-number">4.7.10.4.13. </span>McuPllConfig<a class="headerlink" href="#mcupllconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.13. </span>McuPllConfig<a class="headerlink" href="#mcupllconfig" title="Link to this heading"></a></h4>
 <p>Device specific PLL settings</p>
 <section id="mcupllrefdiv">
-<h5><span class="section-number">4.7.10.4.13.1. </span>McuPLLRefDiv<a class="headerlink" href="#mcupllrefdiv" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.13.1. </span>McuPLLRefDiv<a class="headerlink" href="#mcupllrefdiv" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2015,7 +1993,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcupllintmult">
-<h5><span class="section-number">4.7.10.4.13.2. </span>McuPLLIntMult<a class="headerlink" href="#mcupllintmult" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.13.2. </span>McuPLLIntMult<a class="headerlink" href="#mcupllintmult" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2057,7 +2035,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuplloutdiv">
-<h5><span class="section-number">4.7.10.4.13.3. </span>McuPLLOutDiv<a class="headerlink" href="#mcuplloutdiv" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.13.3. </span>McuPLLOutDiv<a class="headerlink" href="#mcuplloutdiv" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2100,7 +2078,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </section>
 </section>
 <section id="mcuperipheralclock0">
-<h4><span class="section-number">4.7.10.4.14. </span>McuPeripheralClock0<a class="headerlink" href="#mcuperipheralclock0" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.14. </span>McuPeripheralClock0<a class="headerlink" href="#mcuperipheralclock0" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2136,7 +2114,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock1">
-<h4><span class="section-number">4.7.10.4.15. </span>McuPeripheralClock1<a class="headerlink" href="#mcuperipheralclock1" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.15. </span>McuPeripheralClock1<a class="headerlink" href="#mcuperipheralclock1" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2172,7 +2150,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock2">
-<h4><span class="section-number">4.7.10.4.16. </span>McuPeripheralClock2<a class="headerlink" href="#mcuperipheralclock2" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.16. </span>McuPeripheralClock2<a class="headerlink" href="#mcuperipheralclock2" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2208,7 +2186,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock3">
-<h4><span class="section-number">4.7.10.4.17. </span>McuPeripheralClock3<a class="headerlink" href="#mcuperipheralclock3" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.17. </span>McuPeripheralClock3<a class="headerlink" href="#mcuperipheralclock3" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2244,7 +2222,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock4">
-<h4><span class="section-number">4.7.10.4.18. </span>McuPeripheralClock4<a class="headerlink" href="#mcuperipheralclock4" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.18. </span>McuPeripheralClock4<a class="headerlink" href="#mcuperipheralclock4" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2280,7 +2258,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock6">
-<h4><span class="section-number">4.7.10.4.19. </span>McuPeripheralClock6<a class="headerlink" href="#mcuperipheralclock6" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.19. </span>McuPeripheralClock6<a class="headerlink" href="#mcuperipheralclock6" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2316,7 +2294,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock7">
-<h4><span class="section-number">4.7.10.4.20. </span>McuPeripheralClock7<a class="headerlink" href="#mcuperipheralclock7" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.20. </span>McuPeripheralClock7<a class="headerlink" href="#mcuperipheralclock7" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2352,7 +2330,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock8">
-<h4><span class="section-number">4.7.10.4.21. </span>McuPeripheralClock8<a class="headerlink" href="#mcuperipheralclock8" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.21. </span>McuPeripheralClock8<a class="headerlink" href="#mcuperipheralclock8" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2388,7 +2366,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock9">
-<h4><span class="section-number">4.7.10.4.22. </span>McuPeripheralClock9<a class="headerlink" href="#mcuperipheralclock9" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.22. </span>McuPeripheralClock9<a class="headerlink" href="#mcuperipheralclock9" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2424,7 +2402,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock10">
-<h4><span class="section-number">4.7.10.4.23. </span>McuPeripheralClock10<a class="headerlink" href="#mcuperipheralclock10" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.23. </span>McuPeripheralClock10<a class="headerlink" href="#mcuperipheralclock10" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2460,7 +2438,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock13">
-<h4><span class="section-number">4.7.10.4.24. </span>McuPeripheralClock13<a class="headerlink" href="#mcuperipheralclock13" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.24. </span>McuPeripheralClock13<a class="headerlink" href="#mcuperipheralclock13" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2496,7 +2474,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock14">
-<h4><span class="section-number">4.7.10.4.25. </span>McuPeripheralClock14<a class="headerlink" href="#mcuperipheralclock14" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.25. </span>McuPeripheralClock14<a class="headerlink" href="#mcuperipheralclock14" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2532,7 +2510,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock16">
-<h4><span class="section-number">4.7.10.4.26. </span>McuPeripheralClock16<a class="headerlink" href="#mcuperipheralclock16" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.26. </span>McuPeripheralClock16<a class="headerlink" href="#mcuperipheralclock16" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2568,7 +2546,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock17">
-<h4><span class="section-number">4.7.10.4.27. </span>McuPeripheralClock17<a class="headerlink" href="#mcuperipheralclock17" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.27. </span>McuPeripheralClock17<a class="headerlink" href="#mcuperipheralclock17" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2604,7 +2582,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock18">
-<h4><span class="section-number">4.7.10.4.28. </span>McuPeripheralClock18<a class="headerlink" href="#mcuperipheralclock18" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.28. </span>McuPeripheralClock18<a class="headerlink" href="#mcuperipheralclock18" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2640,7 +2618,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock19">
-<h4><span class="section-number">4.7.10.4.29. </span>McuPeripheralClock19<a class="headerlink" href="#mcuperipheralclock19" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.29. </span>McuPeripheralClock19<a class="headerlink" href="#mcuperipheralclock19" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2676,7 +2654,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock20">
-<h4><span class="section-number">4.7.10.4.30. </span>McuPeripheralClock20<a class="headerlink" href="#mcuperipheralclock20" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.30. </span>McuPeripheralClock20<a class="headerlink" href="#mcuperipheralclock20" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2712,7 +2690,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock21">
-<h4><span class="section-number">4.7.10.4.31. </span>McuPeripheralClock21<a class="headerlink" href="#mcuperipheralclock21" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.31. </span>McuPeripheralClock21<a class="headerlink" href="#mcuperipheralclock21" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2748,7 +2726,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock23">
-<h4><span class="section-number">4.7.10.4.32. </span>McuPeripheralClock23<a class="headerlink" href="#mcuperipheralclock23" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.32. </span>McuPeripheralClock23<a class="headerlink" href="#mcuperipheralclock23" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2784,7 +2762,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock25">
-<h4><span class="section-number">4.7.10.4.33. </span>McuPeripheralClock25<a class="headerlink" href="#mcuperipheralclock25" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.33. </span>McuPeripheralClock25<a class="headerlink" href="#mcuperipheralclock25" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2820,7 +2798,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock27">
-<h4><span class="section-number">4.7.10.4.34. </span>McuPeripheralClock27<a class="headerlink" href="#mcuperipheralclock27" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.34. </span>McuPeripheralClock27<a class="headerlink" href="#mcuperipheralclock27" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2856,7 +2834,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock28">
-<h4><span class="section-number">4.7.10.4.35. </span>McuPeripheralClock28<a class="headerlink" href="#mcuperipheralclock28" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.35. </span>McuPeripheralClock28<a class="headerlink" href="#mcuperipheralclock28" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2892,7 +2870,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock30">
-<h4><span class="section-number">4.7.10.4.36. </span>McuPeripheralClock30<a class="headerlink" href="#mcuperipheralclock30" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.36. </span>McuPeripheralClock30<a class="headerlink" href="#mcuperipheralclock30" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2928,7 +2906,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuperipheralclock32">
-<h4><span class="section-number">4.7.10.4.37. </span>McuPeripheralClock32<a class="headerlink" href="#mcuperipheralclock32" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.37. </span>McuPeripheralClock32<a class="headerlink" href="#mcuperipheralclock32" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2964,7 +2942,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcudemeventparameterrefs">
-<h4><span class="section-number">4.7.10.4.38. </span>McuDemEventParameterRefs<a class="headerlink" href="#mcudemeventparameterrefs" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.38. </span>McuDemEventParameterRefs<a class="headerlink" href="#mcudemeventparameterrefs" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3009,10 +2987,10 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcumodesettingconf">
-<h4><span class="section-number">4.7.10.4.39. </span>McuModeSettingConf<a class="headerlink" href="#mcumodesettingconf" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.39. </span>McuModeSettingConf<a class="headerlink" href="#mcumodesettingconf" title="Link to this heading"></a></h4>
 <p>This container contains the configuration (parameters) for the Mode setting of the MCU.  Please see MCU035 for more information on the MCU mode settings.</p>
 <section id="mcumode">
-<h5><span class="section-number">4.7.10.4.39.1. </span>McuMode<a class="headerlink" href="#mcumode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.39.1. </span>McuMode<a class="headerlink" href="#mcumode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3054,7 +3032,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuqualperiod">
-<h5><span class="section-number">4.7.10.4.39.2. </span>McuQualPeriod<a class="headerlink" href="#mcuqualperiod" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.39.2. </span>McuQualPeriod<a class="headerlink" href="#mcuqualperiod" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3099,7 +3077,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuenablewdwakeup">
-<h5><span class="section-number">4.7.10.4.39.3. </span>McuEnableWDWakeup<a class="headerlink" href="#mcuenablewdwakeup" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.39.3. </span>McuEnableWDWakeup<a class="headerlink" href="#mcuenablewdwakeup" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3139,10 +3117,10 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </section>
 </section>
 <section id="mcuramsectorsettingconf">
-<h4><span class="section-number">4.7.10.4.40. </span>McuRamSectorSettingConf<a class="headerlink" href="#mcuramsectorsettingconf" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.10.3.40. </span>McuRamSectorSettingConf<a class="headerlink" href="#mcuramsectorsettingconf" title="Link to this heading"></a></h4>
 <p>This container contains the configuration (parameters) for the RAM Sector setting. Please see MCU030 for more information on RAM sec-tor settings.</p>
 <section id="mcuramdefaultvalue">
-<h5><span class="section-number">4.7.10.4.40.1. </span>McuRamDefaultValue<a class="headerlink" href="#mcuramdefaultvalue" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.40.1. </span>McuRamDefaultValue<a class="headerlink" href="#mcuramdefaultvalue" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3184,7 +3162,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuramsectionbaseaddress">
-<h5><span class="section-number">4.7.10.4.40.2. </span>McuRamSectionBaseAddress<a class="headerlink" href="#mcuramsectionbaseaddress" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.40.2. </span>McuRamSectionBaseAddress<a class="headerlink" href="#mcuramsectionbaseaddress" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3226,7 +3204,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuramsectionsize">
-<h5><span class="section-number">4.7.10.4.40.3. </span>McuRamSectionSize<a class="headerlink" href="#mcuramsectionsize" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.40.3. </span>McuRamSectionSize<a class="headerlink" href="#mcuramsectionsize" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3268,7 +3246,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </table>
 </section>
 <section id="mcuramsectionwritesize">
-<h5><span class="section-number">4.7.10.4.40.4. </span>McuRamSectionWriteSize<a class="headerlink" href="#mcuramsectionwritesize" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.7.10.3.40.4. </span>McuRamSectionWriteSize<a class="headerlink" href="#mcuramsectionwritesize" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3315,7 +3293,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 </section>
 </section>
 <section id="steps-to-configure-mcu-module">
-<h3><span class="section-number">4.7.10.5. </span>Steps To Configure Mcu Module<a class="headerlink" href="#steps-to-configure-mcu-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.10.4. </span>Steps To Configure Mcu Module<a class="headerlink" href="#steps-to-configure-mcu-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool, load Mcu and Dem modules. Select the Config Variant ( Precompile/Post-Build)</p></li>
 <li><p>Open DEM module plugin and register DEM event “MCU_E_CLOCK_FAILURE” to report extended production error if there are any clock failures</p></li>

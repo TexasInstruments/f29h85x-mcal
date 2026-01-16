@@ -32,12 +32,12 @@
  * Version Check (if required)
  *********************************************************************************************************************/
 /** \brief Version checking - cfg.c and .h */
-#if ((CDD_I2C_SW_MAJOR_VERSION != (1U)) || (CDD_I2C_SW_MINOR_VERSION != (0U)))
+#if ((CDD_I2C_SW_MAJOR_VERSION != (1U)) || (CDD_I2C_SW_MINOR_VERSION != (1U)))
   #error "Version numbers of Cdd_I2c_Cfg.c and Cdd_I2c.h are inconsistent!"
 #endif
 
 /** \brief Version checking - cfg.c and cfg.h */
-#if ((CDD_I2C_CFG_MAJOR_VERSION != (1U)) || (CDD_I2C_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_I2C_CFG_MAJOR_VERSION != (1U)) || (CDD_I2C_CFG_MINOR_VERSION != (1U)))
     #error "Version numbers of Cdd_I2c_Cfg.c and Cdd_I2c_Cfg.h are inconsistent!"
 #endif
 

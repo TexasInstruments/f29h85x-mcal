@@ -34,11 +34,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CDD_IPC_SW_MAJOR_VERSION != (2U)) || (CDD_IPC_SW_MINOR_VERSION != (0U)))
+#if ((CDD_IPC_SW_MAJOR_VERSION != (2U)) || (CDD_IPC_SW_MINOR_VERSION != (1U)))
     #error "Version numbers of Cdd_Ipc.c and Cdd_Ipc.h are inconsistent!"
 #endif
 
-#if ((CDD_IPC_CFG_MAJOR_VERSION != (2U)) || (CDD_IPC_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_IPC_CFG_MAJOR_VERSION != (2U)) || (CDD_IPC_CFG_MINOR_VERSION != (1U)))
     #error "Version numbers of Cdd_Ipc_Cfg.c and Cdd_Ipc_Cfg.h are inconsistent!"
 #endif
 

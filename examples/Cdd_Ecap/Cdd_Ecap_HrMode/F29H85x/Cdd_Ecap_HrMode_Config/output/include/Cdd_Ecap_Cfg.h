@@ -45,7 +45,7 @@ extern "C" {
 /* CDD ECAP Driver Configuration SW Version Info */
 
 #define CDD_ECAP_CFG_MAJOR_VERSION           (3U)
-#define CDD_ECAP_CFG_MINOR_VERSION           (0U)
+#define CDD_ECAP_CFG_MINOR_VERSION           (1U)
 #define CDD_ECAP_CFG_PATCH_VERSION           (0U)
 
 /* Macro to define the number of channels configured */

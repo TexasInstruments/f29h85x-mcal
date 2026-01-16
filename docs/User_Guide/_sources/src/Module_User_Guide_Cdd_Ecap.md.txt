@@ -369,40 +369,6 @@ The generated configuration files should not be modified manually. The config to
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
 
-#### Migration Guide
-
-##### v03.00.00 from v02.00.00
-
-###### Key Changes
-
-1. **Resource Allocator Based Approach**
-   - The CDD ECAP module now integrates with the Resource Allocator module for centralized device, package, and variant configuration
-   - ECAP channel configurations (`CddEcapChannelRef`) now reference Resource Allocator's allocated ECAP instances
-   - Available ECAP instances are determined by the Resource Allocator's `Cdd_EcapAllocatedInstance` configuration for the current context
-   - The maximum number of ECAP channels is now dynamically determined from Resource Allocator
-
-###### Migration Steps
-
-1. **Add Resource Allocator Module**
-   - Add the Resource Allocator module to your EB Tresos project if not already present
-
-2. **Configure ECAP Instances in Resource Allocator**
-   - In Resource Allocator, configure the `Cdd_EcapAllocatedInstance` entries for each ECAP instance your application requires
-   - Set the appropriate `InstanceName` (e.g., ECAP1, ECAP2, etc.) 
-
-3. **Update CDD ECAP Configuration**
-   - Update `CddEcapChannelRef` in each `CddEcapChannel` to reference the corresponding Resource Allocator's `Cdd_EcapAllocatedInstance`
-   - The `CddEcapChannelId` will be automatically derived from the Resource Allocator's instance name
-
-4. **Verify Instance References**
-   - Ensure all ECAP channel references point to valid Resource Allocator allocated instances
-   - Verify that the allocated instances match your hardware requirements
-
-5. **Regenerate Configuration**
-   - Regenerate the configuration files using EB Tresos
-
-6. **Rebuild Application**
-   - Rebuild your application with the updated configuration
 
 #### Configuration Parameters
 

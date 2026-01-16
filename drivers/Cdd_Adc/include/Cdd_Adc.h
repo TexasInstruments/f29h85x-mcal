@@ -49,7 +49,7 @@ extern "C" {
 /** \brief Driver Implementation Minor Version */
 #define CDD_ADC_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_ADC_SW_PATCH_VERSION (0U)
+#define CDD_ADC_SW_PATCH_VERSION (1U)
 
 /*  Defines for CDD_ADC Driver AUTOSAR version used for compatibility checks. */
 /** \brief AUTOSAR Major version specification implemented by CDD_ADC Driver*/

@@ -46,7 +46,7 @@ extern "C" {
 
 /** \brief CDDSENT Driver Configuration SW Version Info.*/
 #define CDD_SENT_CFG_MAJOR_VERSION    (3U) //!< CDDSENT configuration Major Version.
-#define CDD_SENT_CFG_MINOR_VERSION    (0U) //!< CDDSENT configuration Minor Version.
+#define CDD_SENT_CFG_MINOR_VERSION    (1U) //!< CDDSENT configuration Minor Version.
 #define CDD_SENT_CFG_PATCH_VERSION    (0U) //!< CDDSENT configuration Patch Version.
 
 /*

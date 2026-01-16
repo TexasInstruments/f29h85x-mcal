@@ -269,42 +269,6 @@ The generated configuration files should not be modified manually. The config to
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
 
-#### Migration Guide
-
-Migration guides between module versions are detailed below.
-
-##### v02.00.00 from v01.00.00
-
-###### Key Changes
-
-1. **UART Instance Name Changes**
-   * The names of the UART instance got updated, which impacts the values of other configuration parameters as well
-   * The range of values of other parameters are computed using these parameters
-   * Due to these naming changes, UART configurations created with v01.00.00 or older versions are not directly compatible with v02.00.00
-
-2. **UART Clock Frequency Selection**
-   * The UART Clock frequency must be referenced to the Mcu system clock
-   * In older releases, the clock frequency was hardcoded
-
-###### Migration Steps
-
-1. **Open Existing Configuration**
-   * Open your existing configuration in the latest plugin version
-   * The plugin will automatically flag incompatible UART instance configurations
-
-2. **Update UART Instance Names**
-   * Configure the corresponding UART with the instance name by choosing values from the plugin
-   * In order to migrate to the latest version, the values of UART instance need to be chosen from the plugin
-
-3. **Update UART Base Address**
-   * Run the auto-calculate wizard to update the UART base address
-   * Verify and update all affected configurations
-
-4. **Regenerate Configuration**
-   * Save the configuration and regenerate the configuration files
-
-5. **Rebuild Application**
-   * Rebuild your application with the updated configuration
 
 #### Configuration Parameters
 

@@ -645,43 +645,6 @@ The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_C
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
 
-#### Migration Guide
-
-Migration guides between module versions are detailed below.
-
-##### v03.00.00 from v02.00.00
-
-###### Key Changes
-
-1. **Resource Allocator Based Approach**
-   * The CDD PWM module now uses the Resource Allocator for device, package, and variant configuration
-   * Users must configure PWM instances through the Resource Allocator module before configuring the CDD PWM driver
-   * See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details
-
-2. **PWM Channel Symbolic Name Generation Fix**
-   * Fixed the PWM channel's symbolic name generation logic in the Cfg.h template file
-   * This ensures correct symbolic names are generated for PWM channels in the configuration header file
-
-3. **HRPWM Calibration Instance Configuration Support**
-   * Added support for HRPWM (High-Resolution PWM) calibration instance configuration in the CDD PWM driver
-   * Users can now configure HRPWM calibration instances through the `CddPwmHrpwmCalibrationConfig` container in advanced mode
-
-###### Migration Steps
-
-1. **Add Resource Allocator Module**
-   * Add and configure the Resource Allocator module in your EB Tresos project
-
-2. **Allocate PWM Instances**
-   * Allocate the required PWM instances (EPWM1, EPWM2, etc.) to the appropriate context in the Resource Allocator
-
-3. **Configure HRPWM (If Applicable)**
-   * If using HRPWM features in advanced mode, configure the HRPWM calibration instances in the Resource Allocator and reference them in the CDD PWM configuration
-
-4. **Regenerate Configuration**
-   * Regenerate the configuration files to get the corrected symbolic names in Cfg.h
-
-5. **Rebuild Application**
-   * Rebuild your application with the updated configuration
 
 #### Configuration Parameters
 

@@ -101,12 +101,11 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.9.10. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#migration-guide">4.9.10.1. Migration Guide</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.9.10.2. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#spidemeventparameterrefs">4.9.10.3. SpiDemEventParameterRefs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#spidriver">4.9.10.4. SpiDriver</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#spigeneral">4.9.10.5. SpiGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-spi-module">4.9.10.6. Steps To Configure Spi Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.9.10.1. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spidemeventparameterrefs">4.9.10.2. SpiDemEventParameterRefs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spidriver">4.9.10.3. SpiDriver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spigeneral">4.9.10.4. SpiGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-spi-module">4.9.10.5. Steps To Configure Spi Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.9.11. Examples</a><ul>
@@ -131,9 +130,10 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.19. RTDMA Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">7. AUTOSAR Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
 </ul>
 
         </div>
@@ -608,96 +608,11 @@ The detection of development errors is configurable (ON / OFF), The switch SPI_C
 The driver expects generated <strong>Spi_Cfg.h</strong> to be present as input file.
 The associated Spi driver configuration generated source files are <strong>Spi_LCfg.c</strong> if Link-Time variant is selected and <strong>Spi_PBcfg.c</strong> if Post-Build config variant is selected, only <strong>Spi_Cfg.c</strong> if Pre-Compile variant is selected</p>
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
-<section id="migration-guide">
-<h3><span class="section-number">4.9.10.1. </span>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h3>
-<p>Migration guides between module versions are detailed below.</p>
-<section id="v03-00-00-from-v02-00-00">
-<h4><span class="section-number">4.9.10.1.1. </span>v03.00.00 from v02.00.00<a class="headerlink" href="#v03-00-00-from-v02-00-00" title="Link to this heading"></a></h4>
-<section id="key-changes">
-<h5><span class="section-number">4.9.10.1.1.1. </span>Key Changes<a class="headerlink" href="#key-changes" title="Link to this heading"></a></h5>
-<ol class="arabic simple">
-<li><p><strong>Resource Allocator Based Approach</strong></p>
-<ul class="simple">
-<li><p>The SPI module now integrates with the Resource Allocator module for centralized device, package, and variant configuration</p></li>
-<li><p>SPI hardware unit configurations (<code class="docutils literal notranslate"><span class="pre">SpiHwUnit</span></code>, <code class="docutils literal notranslate"><span class="pre">SpiHwUnitConfig</span></code>) now reference Resource Allocator’s allocated SPI instances</p></li>
-<li><p>Available SPI instances are determined by the Resource Allocator’s <code class="docutils literal notranslate"><span class="pre">SpiAllocatedInstance</span></code> configuration for the current context</p></li>
-</ul>
-</li>
-<li><p><strong>Instance Name Changes</strong></p>
-<ul class="simple">
-<li><p>The SPI instance naming convention has been updated in the configuration</p></li>
-<li><p>Instance names have changed from <code class="docutils literal notranslate"><span class="pre">SPI_UNIT_SPIA</span></code> format to <code class="docutils literal notranslate"><span class="pre">SPIA</span></code> format (e.g., <code class="docutils literal notranslate"><span class="pre">SPI_UNIT_SPIA</span></code> → <code class="docutils literal notranslate"><span class="pre">SPIA</span></code>, <code class="docutils literal notranslate"><span class="pre">SPI_UNIT_SPIB</span></code> → <code class="docutils literal notranslate"><span class="pre">SPIB</span></code>, etc.)</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">SpiHwUnitType</span></code> parameter now references the Resource Allocator’s <code class="docutils literal notranslate"><span class="pre">SpiAllocatedInstance</span></code> instead of using direct instance names</p></li>
-<li><p>ISR names are unaffected by this change</p></li>
-</ul>
-</li>
-</ol>
-</section>
-<section id="migration-steps">
-<h5><span class="section-number">4.9.10.1.1.2. </span>Migration Steps<a class="headerlink" href="#migration-steps" title="Link to this heading"></a></h5>
-<ol class="arabic simple">
-<li><p><strong>Add Resource Allocator Module</strong></p>
-<ul class="simple">
-<li><p>Add the Resource Allocator module to your EB Tresos project if not already present</p></li>
-</ul>
-</li>
-<li><p><strong>Configure SPI Instances in Resource Allocator</strong></p>
-<ul class="simple">
-<li><p>Open the Resource Allocator module configuration</p></li>
-<li><p>Navigate to the Context container for your target CPU</p></li>
-<li><p>Add <code class="docutils literal notranslate"><span class="pre">SpiAllocatedInstance</span></code> entries for each SPI instance your application requires</p></li>
-<li><p>Configure the <code class="docutils literal notranslate"><span class="pre">InstanceName</span></code>, <code class="docutils literal notranslate"><span class="pre">Frame</span></code>, and <code class="docutils literal notranslate"><span class="pre">BaseAddr</span></code> for each allocated instance</p></li>
-</ul>
-</li>
-<li><p><strong>Update SPI Configuration</strong></p>
-<ul class="simple">
-<li><p>Open the SPI module configuration</p></li>
-<li><p>Update <code class="docutils literal notranslate"><span class="pre">SpiHwUnitConfig</span></code> to reference the Resource Allocator’s allocated instances via <code class="docutils literal notranslate"><span class="pre">SpiHwUnitType</span></code></p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">SpiHwUnit</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">SpiExternalDevice</span></code> will now show only instances allocated in Resource Allocator</p></li>
-</ul>
-</li>
-<li><p><strong>Verify Instance References</strong></p>
-<ul class="simple">
-<li><p>Ensure all SPI external device configurations reference valid allocated instances</p></li>
-</ul>
-</li>
-<li><p><strong>Regenerate Configuration</strong></p>
-<ul class="simple">
-<li><p>Generate the configuration files after updating both modules</p></li>
-</ul>
-</li>
-<li><p><strong>Rebuild Application</strong></p>
-<ul class="simple">
-<li><p>Rebuild the application with the updated configuration</p></li>
-</ul>
-</li>
-</ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The Resource Allocator module must be configured before the SPI module to ensure correct instance availability. Refer to the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a> for detailed configuration instructions.</p>
-</div>
-</section>
-</section>
-<section id="v02-00-00-from-v01-01-01-or-any-older-versions">
-<h4><span class="section-number">4.9.10.1.2. </span>v02.00.00 from v01.01.01 or any older versions<a class="headerlink" href="#v02-00-00-from-v01-01-01-or-any-older-versions" title="Link to this heading"></a></h4>
-<p>In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
-In case of Post build variant, upper modules that call the Spi_Init function will need to use the new configuration structure name. For example:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Old code (v01.01.01 or any older versions) */</span>
-<span class="n">Spi_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Spi_ConfigObj</span><span class="p">);</span>
-
-<span class="cm">/* New code (v02.00.00) */</span>
-<span class="n">Spi_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Spi_Config</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>This change ensures compliance with AUTOSAR naming conventions.</p>
-<p>To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.</p>
-</section>
-</section>
 <section id="configuration-parameters">
-<h3><span class="section-number">4.9.10.2. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.9.10.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
 </section>
 <section id="spidemeventparameterrefs">
-<h3><span class="section-number">4.9.10.3. </span>SpiDemEventParameterRefs<a class="headerlink" href="#spidemeventparameterrefs" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.9.10.2. </span>SpiDemEventParameterRefs<a class="headerlink" href="#spidemeventparameterrefs" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -748,10 +663,10 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spidriver">
-<h3><span class="section-number">4.9.10.4. </span>SpiDriver<a class="headerlink" href="#spidriver" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.9.10.3. </span>SpiDriver<a class="headerlink" href="#spidriver" title="Link to this heading"></a></h3>
 <p>This container contains the configuration parameters and sub containers of the AUTOSAR Spi module.</p>
 <section id="spimaxchannel">
-<h4><span class="section-number">4.9.10.4.1. </span>SpiMaxChannel<a class="headerlink" href="#spimaxchannel" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.3.1. </span>SpiMaxChannel<a class="headerlink" href="#spimaxchannel" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -796,7 +711,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spimaxjob">
-<h4><span class="section-number">4.9.10.4.2. </span>SpiMaxJob<a class="headerlink" href="#spimaxjob" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.3.2. </span>SpiMaxJob<a class="headerlink" href="#spimaxjob" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -841,7 +756,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spimaxsequence">
-<h4><span class="section-number">4.9.10.4.3. </span>SpiMaxSequence<a class="headerlink" href="#spimaxsequence" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.3.3. </span>SpiMaxSequence<a class="headerlink" href="#spimaxsequence" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -886,7 +801,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spisequencetimeout">
-<h4><span class="section-number">4.9.10.4.4. </span>SpiSequenceTimeOut<a class="headerlink" href="#spisequencetimeout" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.3.4. </span>SpiSequenceTimeOut<a class="headerlink" href="#spisequencetimeout" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -931,7 +846,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spicounterclockref">
-<h4><span class="section-number">4.9.10.4.5. </span>SpiCounterClockRef<a class="headerlink" href="#spicounterclockref" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.3.5. </span>SpiCounterClockRef<a class="headerlink" href="#spicounterclockref" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -967,10 +882,10 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spichannel">
-<h4><span class="section-number">4.9.10.4.6. </span>SpiChannel<a class="headerlink" href="#spichannel" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.3.6. </span>SpiChannel<a class="headerlink" href="#spichannel" title="Link to this heading"></a></h4>
 <p>All data needed to configure one SPI-channel</p>
 <section id="spichannelid">
-<h5><span class="section-number">4.9.10.4.6.1. </span>SpiChannelId<a class="headerlink" href="#spichannelid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.6.1. </span>SpiChannelId<a class="headerlink" href="#spichannelid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1015,7 +930,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spichanneltype">
-<h5><span class="section-number">4.9.10.4.6.2. </span>SpiChannelType<a class="headerlink" href="#spichanneltype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.6.2. </span>SpiChannelType<a class="headerlink" href="#spichanneltype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1057,7 +972,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spidatawidth">
-<h5><span class="section-number">4.9.10.4.6.3. </span>SpiDataWidth<a class="headerlink" href="#spidatawidth" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.6.3. </span>SpiDataWidth<a class="headerlink" href="#spidatawidth" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1102,7 +1017,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spidefaultdata">
-<h5><span class="section-number">4.9.10.4.6.4. </span>SpiDefaultData<a class="headerlink" href="#spidefaultdata" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.6.4. </span>SpiDefaultData<a class="headerlink" href="#spidefaultdata" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1162,7 +1077,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spiebmaxlength">
-<h5><span class="section-number">4.9.10.4.6.5. </span>SpiEbMaxLength<a class="headerlink" href="#spiebmaxlength" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.6.5. </span>SpiEbMaxLength<a class="headerlink" href="#spiebmaxlength" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1207,7 +1122,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spiibnbuffers">
-<h5><span class="section-number">4.9.10.4.6.6. </span>SpiIbNBuffers<a class="headerlink" href="#spiibnbuffers" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.6.6. </span>SpiIbNBuffers<a class="headerlink" href="#spiibnbuffers" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1252,7 +1167,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spitransferstart">
-<h5><span class="section-number">4.9.10.4.6.7. </span>SpiTransferStart<a class="headerlink" href="#spitransferstart" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.6.7. </span>SpiTransferStart<a class="headerlink" href="#spitransferstart" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1295,10 +1210,10 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </section>
 </section>
 <section id="spijob">
-<h4><span class="section-number">4.9.10.4.7. </span>SpiJob<a class="headerlink" href="#spijob" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.3.7. </span>SpiJob<a class="headerlink" href="#spijob" title="Link to this heading"></a></h4>
 <p>All data needed to configure one SPI-Job, amongst others the connection between the internal SPI unit and the special settings for an external device is done.</p>
 <section id="spihwunitsynchronous">
-<h5><span class="section-number">4.9.10.4.7.1. </span>SpiHwUnitSynchronous<a class="headerlink" href="#spihwunitsynchronous" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.7.1. </span>SpiHwUnitSynchronous<a class="headerlink" href="#spihwunitsynchronous" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1355,7 +1270,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spijobendnotification">
-<h5><span class="section-number">4.9.10.4.7.2. </span>SpiJobEndNotification<a class="headerlink" href="#spijobendnotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.7.2. </span>SpiJobEndNotification<a class="headerlink" href="#spijobendnotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1409,7 +1324,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spijobid">
-<h5><span class="section-number">4.9.10.4.7.3. </span>SpiJobId<a class="headerlink" href="#spijobid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.7.3. </span>SpiJobId<a class="headerlink" href="#spijobid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1454,7 +1369,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spijobpriority">
-<h5><span class="section-number">4.9.10.4.7.4. </span>SpiJobPriority<a class="headerlink" href="#spijobpriority" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.7.4. </span>SpiJobPriority<a class="headerlink" href="#spijobpriority" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1499,7 +1414,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spideviceassignment">
-<h5><span class="section-number">4.9.10.4.7.5. </span>SpiDeviceAssignment<a class="headerlink" href="#spideviceassignment" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.7.5. </span>SpiDeviceAssignment<a class="headerlink" href="#spideviceassignment" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1536,10 +1451,10 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </section>
 </section>
 <section id="spichannellist">
-<h4><span class="section-number">4.9.10.4.8. </span>SpiChannelList<a class="headerlink" href="#spichannellist" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.3.8. </span>SpiChannelList<a class="headerlink" href="#spichannellist" title="Link to this heading"></a></h4>
 <p>References to SPI channels and their order within the Job.</p>
 <section id="spichannelindex">
-<h5><span class="section-number">4.9.10.4.8.1. </span>SpiChannelIndex<a class="headerlink" href="#spichannelindex" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.8.1. </span>SpiChannelIndex<a class="headerlink" href="#spichannelindex" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1584,7 +1499,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spichannelassignment">
-<h5><span class="section-number">4.9.10.4.8.2. </span>SpiChannelAssignment<a class="headerlink" href="#spichannelassignment" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.8.2. </span>SpiChannelAssignment<a class="headerlink" href="#spichannelassignment" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1621,10 +1536,10 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </section>
 </section>
 <section id="spisequence">
-<h4><span class="section-number">4.9.10.4.9. </span>SpiSequence<a class="headerlink" href="#spisequence" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.3.9. </span>SpiSequence<a class="headerlink" href="#spisequence" title="Link to this heading"></a></h4>
 <p>All data needed to configure one SPI-sequence</p>
 <section id="spiinterruptiblesequence">
-<h5><span class="section-number">4.9.10.4.9.1. </span>SpiInterruptibleSequence<a class="headerlink" href="#spiinterruptiblesequence" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.9.1. </span>SpiInterruptibleSequence<a class="headerlink" href="#spiinterruptiblesequence" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1663,7 +1578,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spiseqendnotification">
-<h5><span class="section-number">4.9.10.4.9.2. </span>SpiSeqEndNotification<a class="headerlink" href="#spiseqendnotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.9.2. </span>SpiSeqEndNotification<a class="headerlink" href="#spiseqendnotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1717,7 +1632,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spisequenceid">
-<h5><span class="section-number">4.9.10.4.9.3. </span>SpiSequenceId<a class="headerlink" href="#spisequenceid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.9.3. </span>SpiSequenceId<a class="headerlink" href="#spisequenceid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1762,7 +1677,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spijobassignment">
-<h5><span class="section-number">4.9.10.4.9.4. </span>SpiJobAssignment<a class="headerlink" href="#spijobassignment" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.9.4. </span>SpiJobAssignment<a class="headerlink" href="#spijobassignment" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1814,10 +1729,10 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </section>
 </section>
 <section id="spiexternaldevice">
-<h4><span class="section-number">4.9.10.4.10. </span>SpiExternalDevice<a class="headerlink" href="#spiexternaldevice" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.3.10. </span>SpiExternalDevice<a class="headerlink" href="#spiexternaldevice" title="Link to this heading"></a></h4>
 <p>The communication settings of an external device. Closely linked to SpiJob.</p>
 <section id="spiexternaldeviceid">
-<h5><span class="section-number">4.9.10.4.10.1. </span>SpiExternalDeviceId<a class="headerlink" href="#spiexternaldeviceid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.10.1. </span>SpiExternalDeviceId<a class="headerlink" href="#spiexternaldeviceid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1862,7 +1777,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spibaudrate">
-<h5><span class="section-number">4.9.10.4.10.2. </span>SpiBaudrate<a class="headerlink" href="#spibaudrate" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.10.2. </span>SpiBaudrate<a class="headerlink" href="#spibaudrate" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1907,7 +1822,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spiclkdivider">
-<h5><span class="section-number">4.9.10.4.10.3. </span>SpiclkDivider<a class="headerlink" href="#spiclkdivider" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.10.3. </span>SpiclkDivider<a class="headerlink" href="#spiclkdivider" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1952,7 +1867,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spicsidentifier">
-<h5><span class="section-number">4.9.10.4.10.4. </span>SpiCsIdentifier<a class="headerlink" href="#spicsidentifier" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.10.4. </span>SpiCsIdentifier<a class="headerlink" href="#spicsidentifier" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1991,7 +1906,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spicspolarity">
-<h5><span class="section-number">4.9.10.4.10.5. </span>SpiCsPolarity<a class="headerlink" href="#spicspolarity" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.10.5. </span>SpiCsPolarity<a class="headerlink" href="#spicspolarity" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2033,7 +1948,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spicsselection">
-<h5><span class="section-number">4.9.10.4.10.6. </span>SpiCsSelection<a class="headerlink" href="#spicsselection" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.10.6. </span>SpiCsSelection<a class="headerlink" href="#spicsselection" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2090,7 +2005,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spidatashiftedge">
-<h5><span class="section-number">4.9.10.4.10.7. </span>SpiDataShiftEdge<a class="headerlink" href="#spidatashiftedge" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.10.7. </span>SpiDataShiftEdge<a class="headerlink" href="#spidatashiftedge" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2132,7 +2047,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spienablecs">
-<h5><span class="section-number">4.9.10.4.10.8. </span>SpiEnableCs<a class="headerlink" href="#spienablecs" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.10.8. </span>SpiEnableCs<a class="headerlink" href="#spienablecs" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2171,7 +2086,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spihwunit">
-<h5><span class="section-number">4.9.10.4.10.9. </span>SpiHwUnit<a class="headerlink" href="#spihwunit" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.10.9. </span>SpiHwUnit<a class="headerlink" href="#spihwunit" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2213,7 +2128,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spishiftclockidlelevel">
-<h5><span class="section-number">4.9.10.4.10.10. </span>SpiShiftClockIdleLevel<a class="headerlink" href="#spishiftclockidlelevel" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.10.10. </span>SpiShiftClockIdleLevel<a class="headerlink" href="#spishiftclockidlelevel" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2255,7 +2170,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spidataworddelay">
-<h5><span class="section-number">4.9.10.4.10.11. </span>SpiDataWordDelay<a class="headerlink" href="#spidataworddelay" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.10.11. </span>SpiDataWordDelay<a class="headerlink" href="#spidataworddelay" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2300,7 +2215,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spisysclockref">
-<h5><span class="section-number">4.9.10.4.10.12. </span>SpiSysClockRef<a class="headerlink" href="#spisysclockref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.10.12. </span>SpiSysClockRef<a class="headerlink" href="#spisysclockref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2336,7 +2251,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spicsgpioref">
-<h5><span class="section-number">4.9.10.4.10.13. </span>SpiCsGpioRef<a class="headerlink" href="#spicsgpioref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.10.13. </span>SpiCsGpioRef<a class="headerlink" href="#spicsgpioref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2388,10 +2303,10 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </section>
 </section>
 <section id="spihwunitconfig">
-<h4><span class="section-number">4.9.10.4.11. </span>SpiHwUnitConfig<a class="headerlink" href="#spihwunitconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.3.11. </span>SpiHwUnitConfig<a class="headerlink" href="#spihwunitconfig" title="Link to this heading"></a></h4>
 <p>HW Unit configurations</p>
 <section id="spihighspeedmode">
-<h5><span class="section-number">4.9.10.4.11.1. </span>SpiHighSpeedMode<a class="headerlink" href="#spihighspeedmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.11.1. </span>SpiHighSpeedMode<a class="headerlink" href="#spihighspeedmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2430,7 +2345,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spiloopbackmode">
-<h5><span class="section-number">4.9.10.4.11.2. </span>SpiLoopBackMode<a class="headerlink" href="#spiloopbackmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.11.2. </span>SpiLoopBackMode<a class="headerlink" href="#spiloopbackmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2469,7 +2384,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spififomodeenable">
-<h5><span class="section-number">4.9.10.4.11.3. </span>SpiFifoModeEnable<a class="headerlink" href="#spififomodeenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.11.3. </span>SpiFifoModeEnable<a class="headerlink" href="#spififomodeenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2508,7 +2423,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spiirqtype">
-<h5><span class="section-number">4.9.10.4.11.4. </span>SpiIrqType<a class="headerlink" href="#spiirqtype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.11.4. </span>SpiIrqType<a class="headerlink" href="#spiirqtype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2550,7 +2465,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spihwunittype">
-<h5><span class="section-number">4.9.10.4.11.5. </span>SpiHwUnitType<a class="headerlink" href="#spihwunittype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.9.10.3.11.5. </span>SpiHwUnitType<a class="headerlink" href="#spihwunittype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2588,10 +2503,10 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </section>
 </section>
 <section id="spigeneral">
-<h3><span class="section-number">4.9.10.5. </span>SpiGeneral<a class="headerlink" href="#spigeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.9.10.4. </span>SpiGeneral<a class="headerlink" href="#spigeneral" title="Link to this heading"></a></h3>
 <p>General configuration settings for SPI-Handler</p>
 <section id="spicancelapi">
-<h4><span class="section-number">4.9.10.5.1. </span>SpiCancelApi<a class="headerlink" href="#spicancelapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.4.1. </span>SpiCancelApi<a class="headerlink" href="#spicancelapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2630,7 +2545,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spichannelbuffersallowed">
-<h4><span class="section-number">4.9.10.5.2. </span>SpiChannelBuffersAllowed<a class="headerlink" href="#spichannelbuffersallowed" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.4.2. </span>SpiChannelBuffersAllowed<a class="headerlink" href="#spichannelbuffersallowed" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2675,7 +2590,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spichannelinternalbuffermaxlength">
-<h4><span class="section-number">4.9.10.5.3. </span>SpiChannelInternalBufferMaxLength<a class="headerlink" href="#spichannelinternalbuffermaxlength" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.4.3. </span>SpiChannelInternalBufferMaxLength<a class="headerlink" href="#spichannelinternalbuffermaxlength" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2720,7 +2635,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spideverrordetect">
-<h4><span class="section-number">4.9.10.5.4. </span>SpiDevErrorDetect<a class="headerlink" href="#spideverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.4.4. </span>SpiDevErrorDetect<a class="headerlink" href="#spideverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2759,7 +2674,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spihwstatusapi">
-<h4><span class="section-number">4.9.10.5.5. </span>SpiHwStatusApi<a class="headerlink" href="#spihwstatusapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.4.5. </span>SpiHwStatusApi<a class="headerlink" href="#spihwstatusapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2798,7 +2713,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spiinterruptibleseqallowed">
-<h4><span class="section-number">4.9.10.5.6. </span>SpiInterruptibleSeqAllowed<a class="headerlink" href="#spiinterruptibleseqallowed" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.4.6. </span>SpiInterruptibleSeqAllowed<a class="headerlink" href="#spiinterruptibleseqallowed" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2837,7 +2752,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spileveldelivered">
-<h4><span class="section-number">4.9.10.5.7. </span>SpiLevelDelivered<a class="headerlink" href="#spileveldelivered" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.4.7. </span>SpiLevelDelivered<a class="headerlink" href="#spileveldelivered" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2882,7 +2797,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spimainfunctionperiod">
-<h4><span class="section-number">4.9.10.5.8. </span>SpiMainFunctionPeriod<a class="headerlink" href="#spimainfunctionperiod" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.4.8. </span>SpiMainFunctionPeriod<a class="headerlink" href="#spimainfunctionperiod" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2942,7 +2857,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spisupportconcurrentsynctransmit">
-<h4><span class="section-number">4.9.10.5.9. </span>SpiSupportConcurrentSyncTransmit<a class="headerlink" href="#spisupportconcurrentsynctransmit" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.4.9. </span>SpiSupportConcurrentSyncTransmit<a class="headerlink" href="#spisupportconcurrentsynctransmit" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2981,7 +2896,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spiusercallbackheaderfile">
-<h4><span class="section-number">4.9.10.5.10. </span>SpiUserCallbackHeaderFile<a class="headerlink" href="#spiusercallbackheaderfile" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.4.10. </span>SpiUserCallbackHeaderFile<a class="headerlink" href="#spiusercallbackheaderfile" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3035,7 +2950,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </table>
 </section>
 <section id="spiversioninfoapi">
-<h4><span class="section-number">4.9.10.5.11. </span>SpiVersionInfoApi<a class="headerlink" href="#spiversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.9.10.4.11. </span>SpiVersionInfoApi<a class="headerlink" href="#spiversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3078,7 +2993,7 @@ In case of Post build variant, upper modules that call the Spi_Init function wil
 </section>
 </section>
 <section id="steps-to-configure-spi-module">
-<h3><span class="section-number">4.9.10.6. </span>Steps To Configure Spi Module<a class="headerlink" href="#steps-to-configure-spi-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.9.10.5. </span>Steps To Configure Spi Module<a class="headerlink" href="#steps-to-configure-spi-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool and load Port, Mcu, Ecum, Os, Dem and Spi modules</p></li>
 <li><p>Open PORT module plugin and configure required pins as MISO, MOSI, CLK, CS.</p></li>

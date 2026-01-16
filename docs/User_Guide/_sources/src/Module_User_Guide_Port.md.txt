@@ -300,101 +300,6 @@ The generated configuration files should not be modified manually. The config to
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
 
-#### Migration Guide
-
-Migration guides between module versions are detailed below.
-
-##### v03.00.00 from v02.00.00
-
-###### Key Changes
-
-1. **Resource Allocator Based Approach**
-   * The Port module now integrates with the Resource Allocator module for centralized device, package, and variant configuration
-   * Device-specific pin configurations, mux modes, and package information are now derived from the Resource Allocator settings
-   * All pin-related parameters (PortPinName, PortPinPeripheral, PortPinPeripheralInstance, PortPinPeripheralSignal, PortPhysicalPinId, etc.) now reference Resource Allocator data
-
-2. **PortDeviceVariant Moved to Resource Allocator**
-   * The device variant selection has been moved from the Port module to the Resource Allocator module
-   * Users must now configure the device variant in the Resource Allocator's `ResourceAllocatorGeneral` container using the `Device`, `Variant`, and `Package` parameters
-   * The Port module automatically reads the device variant information from Resource Allocator to determine available pins and mux options
-
-###### Migration Steps
-
-1. **Add Resource Allocator Module**
-   * Add the Resource Allocator module to your EB Tresos project if not already present
-
-2. **Configure Device Settings in Resource Allocator**
-   * Open the Resource Allocator module configuration
-   * Configure `Device`, `Variant`, and `Package` parameters in `ResourceAllocatorGeneral` container
-   * This replaces the previous PortDeviceVariant configuration
-
-3. **Update Port Configuration**
-   * Open the Port module configuration
-   * The available pin options will now be filtered based on Resource Allocator settings
-   * Verify that all pin configurations are valid for the selected device/package
-
-4. **Regenerate Configuration**
-   * Generate the configuration files after updating both modules
-   
-5. **Rebuild Application**
-   * Rebuild the application with the updated configuration
-
-```{NOTE}
-The Resource Allocator module must be configured before the Port module to ensure correct pin availability filtering. Refer to the [Resource Allocator Module User Guide](./Module_User_Guide_ResourceAllocator.md) for detailed configuration instructions.
-```
-
-##### v02.00.00 from v01.01.01 or any older versions
-
-In version v02.00.00, there are two major changes that require attention when migrating from v01.01.01 or any older versions:
-
-**Port Pin Name Changes**
-
-In this version, the names of the range of values of the PortPinName and PortPinPeripheralSignal got updated, which impacts the values of other configuration parameters as well, because the range of values of other parameters are computed using these parameters. This is the most visible change and affects a large number of port pin configurations. Due to these naming changes, Port configurations created with v01.01.01 or older versions are not directly compatible with v02.00.00.
-
-When migrating existing configurations:
-
-* Open your existing configuration in the latest plugin version
-* The plugin will automatically flag incompatible pin configurations
-* Configure the corresponding pins in the new naming convention by choosing values from the plugin
-* Verify and update all affected pin configurations
-* In order to migrate to the latest version, the values of PortPinName and PortPinPeripheralSignal need to be chosen from the plugin
-
-**Configuration Structure Name Change**
-
-The name of the generated configuration structure has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
-In case of Post build variant, upper modules that call the Port_Init function will need to use the new configuration structure name. For example:
-
-```c
-/* Old code (v01.01.01 or any older versions) */
-Port_Init(&Port_PortConfigSet);
-
-/* New code (v02.00.00) */
-Port_Init(&Port_Config);
-```
-
-This change ensures compliance with AUTOSAR naming conventions.
-
-**Required Actions for Migration**
-
-To successfully migrate to v02.00.00:
-
-* Reconfigure existing Port configurations using the latest plugin
-* Update all port pin references to match the new naming convention
-* Update any upper module that references the configuration structures to use the new structure name
-* Verify all pin configurations after migration
-
-```{NOTE}
-It is recommended to completely reconfigure your Port settings using the v02.00.00 plugin rather than attempting to manually update existing configurations, as both the pin naming changes and configuration structure changes are extensive.
-    ```
-
-#### Configuration Precautions
-
-* For any peripheral pin configuration, make sure to set correct pad configurations or else it will result in unexpected behavior of the module.
-* Similarly in case of Pin Mode Changeable support, make sure to set proper pad configurations for the supported pins.
-
-```{NOTE}
-More details related to Configuration precautions can be found in Safety Manual.
-```
 
 #### Configuration Parameters
 
@@ -418,7 +323,7 @@ Container collecting the PortPins.
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | 1 |
-| **Max-value** | 1 |
+| **Max-value** | 256 |
 | **Min-value** | 1 |
 
 ##### PortPin

@@ -1,0 +1,125 @@
+# FLS Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
+
+### Summary
+
+Version v03.00.00 introduces **Resource Allocator as a mandatory architectural foundation** and moves flash device configuration to centralized resource management. This represents a fundamental shift from direct parameter configuration to Resource Allocator-derived settings:
+
+1. **Resource Allocator Introduction**: Resource Allocator becomes mandatory for FLS module configuration with device variant setup
+2. **Flash Parameter Derivation**: FlsTotalSize and flash characteristics are now automatically derived from Resource Allocator configuration
+
+**PREREQUISITE:** Complete [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md#module-setup-and-configuration) before proceeding.
+
+### Change 1: Resource Allocator Introduction
+
+#### Description
+
+Resource Allocator becomes a mandatory architectural foundation for the FLS module. The flash device configuration is moved to centralized resource management where device variant and package selection in Resource Allocator determines flash memory size and characteristics.
+
+#### Old vs New Configuration
+
+**Previous Configuration (v02.00.00):**
+Direct flash parameter configuration was used with manual FlsTotalSize and device variant selection.
+
+```{figure} Assets/images/migration/fls_module/02_01_fls_module_old_config.png
+:alt: Old FLS Config
+:align: center
+:width: 80%
+
+v02.00.00: Direct FlsTotalSize and device variant parameter configuration
+```
+
+**New Configuration (v03.00.00):**
+FLS parameters are automatically derived from Resource Allocator configuration.
+
+```{figure} Assets/images/migration/fls_module/02_02_fls_module_new_config.png
+:alt: New FLS Config
+:align: center
+:width: 80%
+
+v03.00.00: FlsTotalSize parameter is automatically populated based on Resource Allocator device variant configuration
+```
+
+#### Migration Actions
+
+1. **Setup Resource Allocator:** Follow [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md)
+
+2. **Configure Device Variant:** Navigate to **ResourceAllocatorGeneral → General** and configure device settings:
+
+```{figure} Assets/images/migration/fls_module/01_01_fls_module_configure_device_variant.png
+:alt: Configure Device Variant
+:align: center
+:width: 80%
+
+Configure device variant and package selection - this determines flash memory size and characteristics
+```
+
+### Change 2: Flash Parameter Derivation
+
+#### Description
+
+FlsTotalSize and other flash characteristics are now automatically derived from the Resource Allocator configuration instead of requiring manual configuration. This ensures consistency and eliminates configuration errors related to flash memory specifications.
+
+#### Old vs New Parameter Configuration
+
+**Parameter Derivation Changes:**
+
+| Parameter | v02.00.00 | v03.00.00 |
+|-----------|-----------|-----------|
+| **FlsTotalSize** | Manual configuration required | Automatically derived from Resource Allocator device variant |
+| **Flash Characteristics** | Device variant selected in FLS module | Derived from Resource Allocator configuration |
+| **Device Settings** | Direct configuration in FLS | Centralized in Resource Allocator |
+
+#### Migration Actions
+
+1. **Navigate to FLS Module:** Open the **Fls** module configuration in EB Tresos
+2. **Verify Automatic Configuration:** Confirm that flash parameters are correctly derived from Resource Allocator
+3. **Remove Manual Settings:** Any previously manual FlsTotalSize or device variant settings are now handled automatically
+4. **Validate Parameters:** Ensure the automatically populated FlsTotalSize matches your device specifications
+
+```{NOTE}
+The Resource Allocator module must be configured before the FLS module to ensure correct flash parameter availability. For more details on Resource Allocator configuration, see the Resource Allocator Module User Guide.
+```
+
+## v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration
+
+### Summary
+
+Version v02.00.00 introduces AUTOSAR compliance for configuration structure naming according to requirement TPS_ECUC_08011:
+
+1. **Configuration Structure Name Change**: FLS configuration structure name updated for AUTOSAR TPS_ECUC_08011 compliance
+
+### Change 1: Configuration Structure Name Change
+
+#### Description
+
+Version v02.00.00 changes the configuration structure name for AUTOSAR TPS_ECUC_08011 compliance. This change ensures compliance with AUTOSAR naming conventions and requires updates to application code that references the FLS configuration structure.
+
+#### Old vs New Configuration Structure
+
+**Configuration Structure Name Mapping:**
+
+| v01.01.00 | v02.00.00 |
+|-----------|-----------|
+| `Fls_FlsConfigSet` | `Fls_Config` |
+
+**Code Examples:**
+
+```c
+// v01.01.00 or any older versions
+Fls_Init(&Fls_FlsConfigSet);
+
+// v02.00.00
+Fls_Init(&Fls_Config);
+```
+
+#### Migration Actions
+
+1. **Search Application Code:** Find all references to `Fls_FlsConfigSet` in your application code
+2. **Replace Structure Name:** Update all references from `Fls_FlsConfigSet` to `Fls_Config`
+3. **Update Function Calls:** Ensure all FLS initialization calls use the new structure name
+4. **Update Upper Modules:** Update any upper modules that reference the configuration structures to use the new structure name
+5. **Verify Compilation:** Clean build and verify no compilation errors related to FLS configuration structure

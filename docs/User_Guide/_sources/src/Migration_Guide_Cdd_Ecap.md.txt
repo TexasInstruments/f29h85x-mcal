@@ -1,0 +1,156 @@
+# CDD ECAP Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
+
+### Summary
+
+Version v03.00.00 introduces **Resource Allocator as a mandatory architectural foundation**. This represents a fundamental shift from direct parameter configuration to centralized resource management:
+
+1. **Resource Allocator Introduction and Channel Configuration Updates**: Resource Allocator becomes mandatory with CDD ECAP channel configurations updated to reference Resource Allocator instances
+
+**PREREQUISITE:** Complete [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md#module-setup-and-configuration) before proceeding.
+
+### Change 1: Resource Allocator Introduction and Channel Configuration Updates
+
+#### Description
+
+Resource Allocator becomes a mandatory architectural foundation for the CDD ECAP module, with CDD ECAP channel configurations updated to reference Resource Allocator instances. This represents a fundamental shift from direct parameter configuration to centralized resource management, where CDD ECAP instances are allocated through Resource Allocator and then referenced by channel configurations.
+
+#### Old vs New Configuration
+
+**Previous Configuration (v02.00.00):**
+Direct parameter selection was used without Resource Allocator dependency.
+
+```{figure} Assets/images/migration/cdd_ecap_module/02_01_cdd_ecap_module_old_config.png
+:alt: Old CDD ECAP Config
+:align: center
+:width: 80%
+
+v02.00.00: Direct ECAP channel parameter selection
+```
+
+**New Configuration (v03.00.00):**
+CDD ECAP channel configurations now reference instances allocated through Resource Allocator.
+
+```{figure} Assets/images/migration/cdd_ecap_module/02_03_cdd_ecap_module_select_instance.png
+:alt: Select CDD ECAP Instance
+:align: center
+:width: 80%
+
+v03.00.00: Update CddEcapChannelRef to reference the corresponding Resource Allocator's Cdd_EcapAllocatedInstance
+```
+
+#### Migration Actions
+
+1. **Setup Resource Allocator:** Follow [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md)
+
+2. **Navigate to Context:** Navigate to **ResourceAllocatorGeneral → Context → Cdd_Ecap** and add CDD ECAP allocator:
+
+```{figure} Assets/images/migration/cdd_ecap_module/01_01_cdd_ecap_module_add_allocator.png
+:alt: Add CDD ECAP Allocator
+:align: center
+:width: 80%
+
+Navigate to Context and add CDD ECAP allocator
+```
+
+3. **Add CDD ECAP Instance:** Add Cdd_EcapAllocatedInstance entries for each ECAP instance your application requires:
+
+```{figure} Assets/images/migration/cdd_ecap_module/01_02_cdd_ecap_module_add_instance.png
+:alt: Add CDD ECAP Instance
+:align: center
+:width: 80%
+
+Add Cdd_EcapAllocatedInstance entries for each ECAP instance your application requires
+```
+
+4. **Configure ECAP Instance:** Set the appropriate InstanceName for each allocated instance:
+
+```{figure} Assets/images/migration/cdd_ecap_module/01_03_cdd_ecap_module_select_instance.png
+:alt: Configure CDD ECAP Instance
+:align: center
+:width: 80%
+
+Set the appropriate InstanceName (e.g., ECAP1, ECAP2, etc.)
+```
+
+5. **Complete Configuration:** Finalize CDD ECAP instance allocation
+
+6. **Navigate to CddEcapChannel:** Navigate to **Cdd → CddEcapChannel** and update configurations to reference the CDD ECAP instances allocated in Resource Allocator
+
+7. **Open Channel Configuration:** Access the CddEcapChannel configuration that needs to be updated
+
+8. **Set Instance Reference:** Set CddEcapChannelRef to point to the corresponding Cdd_EcapAllocatedInstance in Resource Allocator
+
+9. **Verify Automatic Derivation:** Confirm that the CddEcapChannelId parameter is now automatically derived from the Resource Allocator reference
+
+```{NOTE}
+The Resource Allocator module must be configured before the CDD ECAP module to ensure correct instance availability. Available ECAP instances are determined by the Resource Allocator's Cdd_EcapAllocatedInstance configuration for the current context.
+```
+
+## v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration
+
+### Summary
+
+Version v02.00.00 introduces new parameters for enhanced functionality and high-resolution capture capabilities while maintaining backward compatibility for basic ECAP operations:
+
+1. **Emulation Mode Support**: CddEcapEmulationMode parameter added for debug scenarios
+2. **High-Resolution Mode Features**: CddEcapHREnable and CddEcapHRConfigApi parameters added for finer capture resolution
+
+### Change 1: Emulation Mode Support
+
+#### Description
+
+Version v02.00.00 introduces emulation mode support for debug scenarios through the new CddEcapEmulationMode parameter. This parameter controls ECAP behavior during debug and emulation operations.
+
+#### Old vs New Parameter Configuration
+
+**New Parameter Added:**
+
+| Parameter | v01.00.00 | v02.00.00 |
+|-----------|-----------|-----------|
+| **CddEcapEmulationMode** | Not available | Added for debug/emulation control |
+
+**Parameter Details:**
+- **Purpose:** Controls ECAP behavior during debug/emulation scenarios
+- **Location:** CddEcapChannel container
+- **Configuration:** Required for debug setup compatibility
+
+#### Migration Actions
+
+1. **Navigate to CddEcapChannel:** Open CddEcapChannel container in EB Tresos
+2. **Configure Emulation Mode:** Set the **CddEcapEmulationMode** parameter as required for your debug setup
+3. **Verify Debug Compatibility:** Ensure the emulation mode setting matches your development and debug environment requirements
+
+### Change 2: High-Resolution Mode Features
+
+#### Description
+
+Version v02.00.00 introduces high-resolution (HR) mode capabilities for finer capture resolution through two new parameters: CddEcapHREnable and CddEcapHRConfigApi. These features are optional and provide enhanced capture precision when required.
+
+#### Old vs New Parameter Configuration
+
+**New Parameters Added:**
+
+| Parameter | v01.00.00 | v02.00.00 |
+|-----------|-----------|-----------|
+| **CddEcapHREnable** | Not available | Added for high-resolution capture functionality |
+| **CddEcapHRConfigApi** | Not available | Added for high-resolution API functions |
+
+**Parameter Details:**
+- **CddEcapHREnable:** Enable high-resolution mode for finer capture resolution
+- **CddEcapHRConfigApi:** Enable/disable high-resolution API functions
+- **Usage:** Optional features - only enable if high-resolution capture is needed
+
+#### Migration Actions
+
+1. **Evaluate HR Requirements:** Determine if your application requires high-resolution capture functionality
+2. **Enable HR Mode (Optional):** If finer capture resolution is needed, enable **CddEcapHREnable** parameter
+3. **Enable HR APIs (Optional):** If high-resolution API functions are required, enable **CddEcapHRConfigApi** parameter
+4. **Maintain Compatibility:** For applications not requiring HR features, leave parameters in default configuration to ensure backward compatibility
+
+```{IMPORTANT}
+For users migrating from v1.0.0 to v2.0.0 who do not require High-Resolution Mode features or Emulation Mode support, the default configurations ensure backward compatibility and will not affect your current working setup.
+```

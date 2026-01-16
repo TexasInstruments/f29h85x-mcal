@@ -109,12 +109,11 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.16.10. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#migration-guide">4.16.10.1. Migration Guide</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.16.10.2. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddsentconfig">4.16.10.3. CddSentConfig</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddcomstackcontribution">4.16.10.4. CddComStackContribution</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddsentgeneral">4.16.10.5. CddSentGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-sent-module">4.16.10.6. Steps To Configure Cdd_Sent Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.16.10.1. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddsentconfig">4.16.10.2. CddSentConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddcomstackcontribution">4.16.10.3. CddComStackContribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddsentgeneral">4.16.10.4. CddSentGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-sent-module">4.16.10.5. Steps To Configure Cdd_Sent Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.16.11. Examples</a><ul>
@@ -130,9 +129,10 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.19. RTDMA Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">7. AUTOSAR Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
 </ul>
 
         </div>
@@ -618,106 +618,17 @@ Cdd_Sent driver functions will exhibit undefined behavior.</p>
 <p>The Cdd_Sent Driver implementation supports one configuration variant Pre-Compile config. The driver expects generated Cdd_Sent_Cfg.h to be present as input file.
 The associated Cdd_Sent driver configuration generated source files are Cdd_Sent_Cfg.c</p>
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
-<section id="migration-guide">
-<h3><span class="section-number">4.16.10.1. </span>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h3>
-<p>Migration guides between module versions are detailed below.</p>
-<section id="v3-0-0-from-v2-0-0">
-<h4><span class="section-number">4.16.10.1.1. </span>v3.0.0 from v2.0.0<a class="headerlink" href="#v3-0-0-from-v2-0-0" title="Link to this heading"></a></h4>
-<p>This section describes the changes required when migrating from CDD SENT driver version 2.0.0 to version 3.0.0.</p>
-<section id="key-changes">
-<h5><span class="section-number">4.16.10.1.1.1. </span>Key Changes<a class="headerlink" href="#key-changes" title="Link to this heading"></a></h5>
-<ol class="arabic simple">
-<li><p><strong>Resource Allocator Based Approach</strong></p>
-<ul class="simple">
-<li><p>The CDD SENT module now uses the Resource Allocator for device, package, and variant configuration</p></li>
-<li><p>SENT instance selection is now done through <code class="docutils literal notranslate"><span class="pre">CddSentInstanceRef</span></code> which references the Resource Allocator’s allocated instances</p></li>
-<li><p>Base address (<code class="docutils literal notranslate"><span class="pre">CddSentBaseAddress</span></code>) is automatically derived from the Resource Allocator configuration</p></li>
-<li><p>See the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a> for details on configuring device-specific settings</p></li>
-</ul>
-</li>
-<li><p><strong>DEM Configuration Parameter Name Change</strong></p>
-<ul class="simple">
-<li><p>The DEM event parameter reference name has been changed for consistency with module naming conventions</p></li>
-<li><p><strong>Old name:</strong> <code class="docutils literal notranslate"><span class="pre">CDD_E_HARDWARE_ERROR</span></code></p></li>
-<li><p><strong>New name:</strong> <code class="docutils literal notranslate"><span class="pre">CDD_SENT_E_HARDWARE_ERROR</span></code></p></li>
-</ul>
-</li>
-</ol>
-</section>
-<section id="migration-steps">
-<h5><span class="section-number">4.16.10.1.1.2. </span>Migration Steps<a class="headerlink" href="#migration-steps" title="Link to this heading"></a></h5>
-<ol class="arabic simple">
-<li><p><strong>Update Resource Allocator Configuration</strong></p>
-<ul class="simple">
-<li><p>Configure the Resource Allocator module with the required SENT instances</p></li>
-<li><p>Allocate SENT instances to the appropriate CPU context</p></li>
-</ul>
-</li>
-<li><p><strong>Update CDD SENT Configuration</strong></p>
-<ul class="simple">
-<li><p>Open the CDD SENT module configuration in EB Tresos</p></li>
-<li><p>For each <code class="docutils literal notranslate"><span class="pre">CddSentController</span></code>, set the <code class="docutils literal notranslate"><span class="pre">CddSentInstanceRef</span></code> to reference the appropriate allocated instance from Resource Allocator</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">CddSentBaseAddress</span></code> will be automatically populated based on the Resource Allocator configuration</p></li>
-</ul>
-</li>
-<li><p><strong>Update DEM Configuration References</strong></p>
-<ul class="simple">
-<li><p>If DEM error reporting is enabled, update the DEM event parameter reference</p></li>
-<li><p>Change references from <code class="docutils literal notranslate"><span class="pre">CDD_E_HARDWARE_ERROR</span></code> to <code class="docutils literal notranslate"><span class="pre">CDD_SENT_E_HARDWARE_ERROR</span></code></p></li>
-<li><p>Update any application code that references this DEM event parameter name</p></li>
-</ul>
-</li>
-<li><p><strong>Regenerate Configuration</strong></p>
-<ul class="simple">
-<li><p>Save the configuration and regenerate the configuration files</p></li>
-</ul>
-</li>
-<li><p><strong>Rebuild Application</strong></p>
-<ul class="simple">
-<li><p>Rebuild your application with the updated configuration</p></li>
-</ul>
-</li>
-</ol>
-</section>
-</section>
-<section id="v2-0-0-from-v1-0-0">
-<h4><span class="section-number">4.16.10.1.2. </span>v2.0.0 from v1.0.0<a class="headerlink" href="#v2-0-0-from-v1-0-0" title="Link to this heading"></a></h4>
-<p>To align with AUTOSAR CDD naming convention, we have named Module Name as Cdd and apiServicePrefix as Cdd_Sent. This results in change in schema as described below.</p>
-<p>To make v1.0.0 Sent schema(generated .xdm file) compatible with v2.0.0 below changes are required:</p>
-<ol class="arabic simple">
-<li><p>Change ‘AR-ELEMENT’ name from Cdd_Sent to Cdd.</p></li>
-<li><p>Update MODULE-CONFIGURATION path from ‘ASPath:/TI_F29H85x/Cdd_Sent’ to ‘ASPath:/TI_F29H85x/Cdd_Sent/Cdd’.</p></li>
-</ol>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>Earlier<span class="w"> </span>schema:
-<span class="nt">&lt;d:lst</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;TOP-LEVEL-PACKAGES&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;d:ctr</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;Cdd_Sent&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;AR-PACKAGE&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;d:lst</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;ELEMENTS&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;d:chc</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;Cdd_Sent&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;AR-ELEMENT&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;MODULE-CONFIGURATION&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;d:ctr</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;MODULE-CONFIGURATION&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;a:a</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;DEF&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;ASPath:/TI_F29H85x/Cdd_Sent&quot;</span><span class="nt">/&gt;</span>
-
-Modified<span class="w"> </span>new<span class="w"> </span>schema:
-<span class="nt">&lt;d:lst</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;TOP-LEVEL-PACKAGES&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;d:ctr</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;Cdd_Sent&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;AR-PACKAGE&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;d:lst</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;ELEMENTS&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;d:chc</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;Cdd&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;AR-ELEMENT&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;MODULE-CONFIGURATION&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;d:ctr</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;MODULE-CONFIGURATION&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;a:a</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;DEF&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;ASPath:/TI_F29H85x/Cdd_Sent/Cdd&quot;</span><span class="nt">/&gt;</span>
-</pre></div>
-</div>
-</section>
-</section>
 <section id="configuration-parameters">
-<h3><span class="section-number">4.16.10.2. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.16.10.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
 </section>
 <section id="cddsentconfig">
-<h3><span class="section-number">4.16.10.3. </span>CddSentConfig<a class="headerlink" href="#cddsentconfig" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.16.10.2. </span>CddSentConfig<a class="headerlink" href="#cddsentconfig" title="Link to this heading"></a></h3>
 <p>This container contains the configuration parameters and sub containers of the CddSent module.</p>
 <section id="cddsentcontroller">
-<h4><span class="section-number">4.16.10.3.1. </span>CddSentController<a class="headerlink" href="#cddsentcontroller" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.2.1. </span>CddSentController<a class="headerlink" href="#cddsentcontroller" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the CddSent HW units.</p>
 <section id="cddsentbaseaddress">
-<h5><span class="section-number">4.16.10.3.1.1. </span>CddSentBaseAddress<a class="headerlink" href="#cddsentbaseaddress" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.1. </span>CddSentBaseAddress<a class="headerlink" href="#cddsentbaseaddress" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -750,7 +661,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsenthwunitid">
-<h5><span class="section-number">4.16.10.3.1.2. </span>CddSentHWUnitId<a class="headerlink" href="#cddsenthwunitid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.2. </span>CddSentHWUnitId<a class="headerlink" href="#cddsenthwunitid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -789,7 +700,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentclocktick">
-<h5><span class="section-number">4.16.10.3.1.3. </span>CddSentClockTick<a class="headerlink" href="#cddsentclocktick" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.3. </span>CddSentClockTick<a class="headerlink" href="#cddsentclocktick" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -828,7 +739,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentinterrupttype">
-<h5><span class="section-number">4.16.10.3.1.4. </span>CddSentInterruptType<a class="headerlink" href="#cddsentinterrupttype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.4. </span>CddSentInterruptType<a class="headerlink" href="#cddsentinterrupttype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -864,7 +775,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentcrctype">
-<h5><span class="section-number">4.16.10.3.1.5. </span>CddSentCRCType<a class="headerlink" href="#cddsentcrctype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.5. </span>CddSentCRCType<a class="headerlink" href="#cddsentcrctype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -900,7 +811,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentcrcwidth">
-<h5><span class="section-number">4.16.10.3.1.6. </span>CddSentCRCWidth<a class="headerlink" href="#cddsentcrcwidth" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.6. </span>CddSentCRCWidth<a class="headerlink" href="#cddsentcrcwidth" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -936,7 +847,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentcrcwithstatus">
-<h5><span class="section-number">4.16.10.3.1.7. </span>CddSentCRCWithStatus<a class="headerlink" href="#cddsentcrcwithstatus" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.7. </span>CddSentCRCWithStatus<a class="headerlink" href="#cddsentcrcwithstatus" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -972,7 +883,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentdatanibblescount">
-<h5><span class="section-number">4.16.10.3.1.8. </span>CddSentDataNibblesCount<a class="headerlink" href="#cddsentdatanibblescount" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.8. </span>CddSentDataNibblesCount<a class="headerlink" href="#cddsentdatanibblescount" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1008,7 +919,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentfifotriggerlevel">
-<h5><span class="section-number">4.16.10.3.1.9. </span>CddSentFIFOTriggerLevel<a class="headerlink" href="#cddsentfifotriggerlevel" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.9. </span>CddSentFIFOTriggerLevel<a class="headerlink" href="#cddsentfifotriggerlevel" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1053,7 +964,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentusercallbackfunction">
-<h5><span class="section-number">4.16.10.3.1.10. </span>CddSentUserCallbackFunction<a class="headerlink" href="#cddsentusercallbackfunction" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.10. </span>CddSentUserCallbackFunction<a class="headerlink" href="#cddsentusercallbackfunction" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1086,7 +997,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentusererrorcallbackfunction">
-<h5><span class="section-number">4.16.10.3.1.11. </span>CddSentUserErrorCallbackFunction<a class="headerlink" href="#cddsentusererrorcallbackfunction" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.11. </span>CddSentUserErrorCallbackFunction<a class="headerlink" href="#cddsentusererrorcallbackfunction" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1119,7 +1030,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentsynctimeout">
-<h5><span class="section-number">4.16.10.3.1.12. </span>CddSentSyncTimeout<a class="headerlink" href="#cddsentsynctimeout" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.12. </span>CddSentSyncTimeout<a class="headerlink" href="#cddsentsynctimeout" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1158,7 +1069,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentglitchfilter">
-<h5><span class="section-number">4.16.10.3.1.13. </span>CddSentGlitchFilter<a class="headerlink" href="#cddsentglitchfilter" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.13. </span>CddSentGlitchFilter<a class="headerlink" href="#cddsentglitchfilter" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1197,7 +1108,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtp">
-<h5><span class="section-number">4.16.10.3.1.14. </span>CddSentMTP<a class="headerlink" href="#cddsentmtp" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.14. </span>CddSentMTP<a class="headerlink" href="#cddsentmtp" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1230,7 +1141,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentglobalwaittime">
-<h5><span class="section-number">4.16.10.3.1.15. </span>CddSentGlobalWaitTime<a class="headerlink" href="#cddsentglobalwaittime" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.15. </span>CddSentGlobalWaitTime<a class="headerlink" href="#cddsentglobalwaittime" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1278,7 +1189,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentaccepterrordata">
-<h5><span class="section-number">4.16.10.3.1.16. </span>CddSentAcceptErrorData<a class="headerlink" href="#cddsentaccepterrordata" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.16. </span>CddSentAcceptErrorData<a class="headerlink" href="#cddsentaccepterrordata" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1311,7 +1222,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentenabletimestamp">
-<h5><span class="section-number">4.16.10.3.1.17. </span>CddSentEnableTimeStamp<a class="headerlink" href="#cddsentenabletimestamp" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.17. </span>CddSentEnableTimeStamp<a class="headerlink" href="#cddsentenabletimestamp" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1344,7 +1255,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentinstanceref">
-<h5><span class="section-number">4.16.10.3.1.18. </span>CddSentInstanceRef<a class="headerlink" href="#cddsentinstanceref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.18. </span>CddSentInstanceRef<a class="headerlink" href="#cddsentinstanceref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1374,7 +1285,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentcpuclockref">
-<h5><span class="section-number">4.16.10.3.1.19. </span>CddSentCpuClockRef<a class="headerlink" href="#cddsentcpuclockref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.1.19. </span>CddSentCpuClockRef<a class="headerlink" href="#cddsentcpuclockref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1405,10 +1316,10 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </section>
 </section>
 <section id="cddsentchannelobject">
-<h4><span class="section-number">4.16.10.3.2. </span>CddSentChannelObject<a class="headerlink" href="#cddsentchannelobject" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.2.2. </span>CddSentChannelObject<a class="headerlink" href="#cddsentchannelobject" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the CddSent channel object</p>
 <section id="cddsentsensortype">
-<h5><span class="section-number">4.16.10.3.2.1. </span>CddSentSensorType<a class="headerlink" href="#cddsentsensortype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.2.1. </span>CddSentSensorType<a class="headerlink" href="#cddsentsensortype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1444,7 +1355,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentchanneltype">
-<h5><span class="section-number">4.16.10.3.2.2. </span>CddSentChannelType<a class="headerlink" href="#cddsentchanneltype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.2.2. </span>CddSentChannelType<a class="headerlink" href="#cddsentchanneltype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1480,7 +1391,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentchannelobjectid">
-<h5><span class="section-number">4.16.10.3.2.3. </span>CddSentChannelObjectID<a class="headerlink" href="#cddsentchannelobjectid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.2.3. </span>CddSentChannelObjectID<a class="headerlink" href="#cddsentchannelobjectid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1519,7 +1430,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmessageid">
-<h5><span class="section-number">4.16.10.3.2.4. </span>CddSentMessageID<a class="headerlink" href="#cddsentmessageid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.2.4. </span>CddSentMessageID<a class="headerlink" href="#cddsentmessageid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1567,7 +1478,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentpduid">
-<h5><span class="section-number">4.16.10.3.2.5. </span>CddSentPduID<a class="headerlink" href="#cddsentpduid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.2.5. </span>CddSentPduID<a class="headerlink" href="#cddsentpduid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1607,10 +1518,10 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </section>
 </section>
 <section id="cddsentexternaldeviceconfig">
-<h4><span class="section-number">4.16.10.3.3. </span>CddSentExternalDeviceConfig<a class="headerlink" href="#cddsentexternaldeviceconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.2.3. </span>CddSentExternalDeviceConfig<a class="headerlink" href="#cddsentexternaldeviceconfig" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the CddSent MTP triggers.</p>
 <section id="cddsentmtpsensortype">
-<h5><span class="section-number">4.16.10.3.3.1. </span>CddSentMTPSensorType<a class="headerlink" href="#cddsentmtpsensortype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.1. </span>CddSentMTPSensorType<a class="headerlink" href="#cddsentmtpsensortype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1646,7 +1557,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentsensortriggersource">
-<h5><span class="section-number">4.16.10.3.3.2. </span>CddSentSensorTriggerSource<a class="headerlink" href="#cddsentsensortriggersource" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.2. </span>CddSentSensorTriggerSource<a class="headerlink" href="#cddsentsensortriggersource" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1682,7 +1593,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtpsensorenable">
-<h5><span class="section-number">4.16.10.3.3.3. </span>CddSentMTPSensorEnable<a class="headerlink" href="#cddsentmtpsensorenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.3. </span>CddSentMTPSensorEnable<a class="headerlink" href="#cddsentmtpsensorenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1715,7 +1626,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtpsensorcompare1">
-<h5><span class="section-number">4.16.10.3.3.4. </span>CddSentMTPSensorCompare1<a class="headerlink" href="#cddsentmtpsensorcompare1" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.4. </span>CddSentMTPSensorCompare1<a class="headerlink" href="#cddsentmtpsensorcompare1" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1754,7 +1665,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtpsensorcompare2">
-<h5><span class="section-number">4.16.10.3.3.5. </span>CddSentMTPSensorCompare2<a class="headerlink" href="#cddsentmtpsensorcompare2" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.5. </span>CddSentMTPSensorCompare2<a class="headerlink" href="#cddsentmtpsensorcompare2" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1793,7 +1704,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtpsensorcompare3">
-<h5><span class="section-number">4.16.10.3.3.6. </span>CddSentMTPSensorCompare3<a class="headerlink" href="#cddsentmtpsensorcompare3" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.6. </span>CddSentMTPSensorCompare3<a class="headerlink" href="#cddsentmtpsensorcompare3" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1832,7 +1743,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtpsensorcompare4">
-<h5><span class="section-number">4.16.10.3.3.7. </span>CddSentMTPSensorCompare4<a class="headerlink" href="#cddsentmtpsensorcompare4" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.7. </span>CddSentMTPSensorCompare4<a class="headerlink" href="#cddsentmtpsensorcompare4" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1871,7 +1782,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtpsensorcompare5">
-<h5><span class="section-number">4.16.10.3.3.8. </span>CddSentMTPSensorCompare5<a class="headerlink" href="#cddsentmtpsensorcompare5" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.8. </span>CddSentMTPSensorCompare5<a class="headerlink" href="#cddsentmtpsensorcompare5" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1910,7 +1821,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtpsensorcompare6">
-<h5><span class="section-number">4.16.10.3.3.9. </span>CddSentMTPSensorCompare6<a class="headerlink" href="#cddsentmtpsensorcompare6" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.9. </span>CddSentMTPSensorCompare6<a class="headerlink" href="#cddsentmtpsensorcompare6" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1949,7 +1860,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtpsensorcompare7">
-<h5><span class="section-number">4.16.10.3.3.10. </span>CddSentMTPSensorCompare7<a class="headerlink" href="#cddsentmtpsensorcompare7" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.10. </span>CddSentMTPSensorCompare7<a class="headerlink" href="#cddsentmtpsensorcompare7" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1988,7 +1899,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtpsensorcompare8">
-<h5><span class="section-number">4.16.10.3.3.11. </span>CddSentMTPSensorCompare8<a class="headerlink" href="#cddsentmtpsensorcompare8" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.11. </span>CddSentMTPSensorCompare8<a class="headerlink" href="#cddsentmtpsensorcompare8" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2027,7 +1938,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtpsensorcompare9">
-<h5><span class="section-number">4.16.10.3.3.12. </span>CddSentMTPSensorCompare9<a class="headerlink" href="#cddsentmtpsensorcompare9" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.12. </span>CddSentMTPSensorCompare9<a class="headerlink" href="#cddsentmtpsensorcompare9" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2066,7 +1977,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtpsensorcompare10">
-<h5><span class="section-number">4.16.10.3.3.13. </span>CddSentMTPSensorCompare10<a class="headerlink" href="#cddsentmtpsensorcompare10" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.13. </span>CddSentMTPSensorCompare10<a class="headerlink" href="#cddsentmtpsensorcompare10" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2114,7 +2025,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtpsensorperiod">
-<h5><span class="section-number">4.16.10.3.3.14. </span>CddSentMTPSensorPeriod<a class="headerlink" href="#cddsentmtpsensorperiod" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.14. </span>CddSentMTPSensorPeriod<a class="headerlink" href="#cddsentmtpsensorperiod" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2153,7 +2064,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtpsensortimeout">
-<h5><span class="section-number">4.16.10.3.3.15. </span>CddSentMTPSensorTimeout<a class="headerlink" href="#cddsentmtpsensortimeout" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.15. </span>CddSentMTPSensorTimeout<a class="headerlink" href="#cddsentmtpsensortimeout" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2201,7 +2112,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentexternaldeviceid">
-<h5><span class="section-number">4.16.10.3.3.16. </span>CddSentExternalDeviceID<a class="headerlink" href="#cddsentexternaldeviceid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.16. </span>CddSentExternalDeviceID<a class="headerlink" href="#cddsentexternaldeviceid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2249,7 +2160,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentmtpsensorpduid">
-<h5><span class="section-number">4.16.10.3.3.17. </span>CddSentMTPSensorPduID<a class="headerlink" href="#cddsentmtpsensorpduid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.2.3.17. </span>CddSentMTPSensorPduID<a class="headerlink" href="#cddsentmtpsensorpduid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2289,7 +2200,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </section>
 </section>
 <section id="cddsentfifointerrupts">
-<h4><span class="section-number">4.16.10.3.4. </span>CddSentFIFOInterrupts<a class="headerlink" href="#cddsentfifointerrupts" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.2.4. </span>CddSentFIFOInterrupts<a class="headerlink" href="#cddsentfifointerrupts" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2331,7 +2242,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentslowchannelinterrupts">
-<h4><span class="section-number">4.16.10.3.5. </span>CddSentSlowChannelInterrupts<a class="headerlink" href="#cddsentslowchannelinterrupts" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.2.5. </span>CddSentSlowChannelInterrupts<a class="headerlink" href="#cddsentslowchannelinterrupts" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2364,7 +2275,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentfastchannelcrcerrorinterrupts">
-<h4><span class="section-number">4.16.10.3.6. </span>CddSentFastChannelCRCErrorInterrupts<a class="headerlink" href="#cddsentfastchannelcrcerrorinterrupts" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.2.6. </span>CddSentFastChannelCRCErrorInterrupts<a class="headerlink" href="#cddsentfastchannelcrcerrorinterrupts" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2397,7 +2308,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentfastchannelframeerrorinterrupts">
-<h4><span class="section-number">4.16.10.3.7. </span>CddSentFastChannelFrameErrorInterrupts<a class="headerlink" href="#cddsentfastchannelframeerrorinterrupts" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.2.7. </span>CddSentFastChannelFrameErrorInterrupts<a class="headerlink" href="#cddsentfastchannelframeerrorinterrupts" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2430,7 +2341,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsenttimeouterrorinterrupts">
-<h4><span class="section-number">4.16.10.3.8. </span>CddSentTimeoutErrorInterrupts<a class="headerlink" href="#cddsenttimeouterrorinterrupts" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.2.8. </span>CddSentTimeoutErrorInterrupts<a class="headerlink" href="#cddsenttimeouterrorinterrupts" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2463,7 +2374,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentoverflowerrorinterrupts">
-<h4><span class="section-number">4.16.10.3.9. </span>CddSentOverflowErrorInterrupts<a class="headerlink" href="#cddsentoverflowerrorinterrupts" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.2.9. </span>CddSentOverflowErrorInterrupts<a class="headerlink" href="#cddsentoverflowerrorinterrupts" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2496,7 +2407,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentsyncerrorinterrupts">
-<h4><span class="section-number">4.16.10.3.10. </span>CddSentSyncErrorInterrupts<a class="headerlink" href="#cddsentsyncerrorinterrupts" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.2.10. </span>CddSentSyncErrorInterrupts<a class="headerlink" href="#cddsentsyncerrorinterrupts" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2530,17 +2441,17 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </section>
 </section>
 <section id="cddcomstackcontribution">
-<h3><span class="section-number">4.16.10.4. </span>CddComStackContribution<a class="headerlink" href="#cddcomstackcontribution" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.16.10.3. </span>CddComStackContribution<a class="headerlink" href="#cddcomstackcontribution" title="Link to this heading"></a></h3>
 <p>Contribution of COM Stack modules.</p>
 <section id="cddpdurlowerlayercontribution">
-<h4><span class="section-number">4.16.10.4.1. </span>CddPduRLowerLayerContribution<a class="headerlink" href="#cddpdurlowerlayercontribution" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.3.1. </span>CddPduRLowerLayerContribution<a class="headerlink" href="#cddpdurlowerlayercontribution" title="Link to this heading"></a></h4>
 <p>Parameters that are necessary for the configuration of a Complex Driver that serves as the LowerLayer of the Pdu Router module.</p>
 </section>
 <section id="cddpdurlowerlayerrxpdu">
-<h4><span class="section-number">4.16.10.4.2. </span>CddPduRLowerLayerRxPdu<a class="headerlink" href="#cddpdurlowerlayerrxpdu" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.3.2. </span>CddPduRLowerLayerRxPdu<a class="headerlink" href="#cddpdurlowerlayerrxpdu" title="Link to this heading"></a></h4>
 <p>This container specifies Rx PDUs that are exchanged between the CDD and the standardized BSW module.</p>
 <section id="cddpdurapitype">
-<h5><span class="section-number">4.16.10.4.2.1. </span>CddPduRApiType<a class="headerlink" href="#cddpdurapitype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.3.2.1. </span>CddPduRApiType<a class="headerlink" href="#cddpdurapitype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2585,7 +2496,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddpdurlowerlayerhandleid">
-<h5><span class="section-number">4.16.10.4.2.2. </span>CddPduRLowerLayerHandleId<a class="headerlink" href="#cddpdurlowerlayerhandleid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.3.2.2. </span>CddPduRLowerLayerHandleId<a class="headerlink" href="#cddpdurlowerlayerhandleid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2633,7 +2544,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentpdurhandle">
-<h5><span class="section-number">4.16.10.4.2.3. </span>CddSentPduRHandle<a class="headerlink" href="#cddsentpdurhandle" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.3.2.3. </span>CddSentPduRHandle<a class="headerlink" href="#cddsentpdurhandle" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2675,7 +2586,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddpdurlowerlayerpduref">
-<h5><span class="section-number">4.16.10.4.2.4. </span>CddPduRLowerLayerPduRef<a class="headerlink" href="#cddpdurlowerlayerpduref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.3.2.4. </span>CddPduRLowerLayerPduRef<a class="headerlink" href="#cddpdurlowerlayerpduref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2706,10 +2617,10 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </section>
 </section>
 <section id="cddpdurlowerlayertxpdu">
-<h4><span class="section-number">4.16.10.4.3. </span>CddPduRLowerLayerTxPdu<a class="headerlink" href="#cddpdurlowerlayertxpdu" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.3.3. </span>CddPduRLowerLayerTxPdu<a class="headerlink" href="#cddpdurlowerlayertxpdu" title="Link to this heading"></a></h4>
 <p>This container specifies Tx PDUs that are exchanged between the CDD and the standardized BSW module.</p>
 <section id="id1">
-<h5><span class="section-number">4.16.10.4.3.1. </span>CddPduRApiType<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.3.3.1. </span>CddPduRApiType<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2754,7 +2665,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="id2">
-<h5><span class="section-number">4.16.10.4.3.2. </span>CddPduRLowerLayerHandleId<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.3.3.2. </span>CddPduRLowerLayerHandleId<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2802,7 +2713,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="id3">
-<h5><span class="section-number">4.16.10.4.3.3. </span>CddPduRLowerLayerPduRef<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.10.3.3.3. </span>CddPduRLowerLayerPduRef<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2834,10 +2745,10 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </section>
 </section>
 <section id="cddsentgeneral">
-<h3><span class="section-number">4.16.10.5. </span>CddSentGeneral<a class="headerlink" href="#cddsentgeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.16.10.4. </span>CddSentGeneral<a class="headerlink" href="#cddsentgeneral" title="Link to this heading"></a></h3>
 <p>Contains the general configuration parameters of the module.</p>
 <section id="cddinstanceid">
-<h4><span class="section-number">4.16.10.5.1. </span>CddInstanceId<a class="headerlink" href="#cddinstanceid" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.4.1. </span>CddInstanceId<a class="headerlink" href="#cddinstanceid" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2876,7 +2787,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentdeverrordetect">
-<h4><span class="section-number">4.16.10.5.2. </span>CddSentDevErrorDetect<a class="headerlink" href="#cddsentdeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.4.2. </span>CddSentDevErrorDetect<a class="headerlink" href="#cddsentdeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2909,7 +2820,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentversioninfoapi">
-<h4><span class="section-number">4.16.10.5.3. </span>CddSentVersionInfoApi<a class="headerlink" href="#cddsentversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.4.3. </span>CddSentVersionInfoApi<a class="headerlink" href="#cddsentversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2942,7 +2853,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </table>
 </section>
 <section id="cddsentintegrationwithasrcomstackenable">
-<h4><span class="section-number">4.16.10.5.4. </span>CddSentIntegrationWithAsrComStackEnable<a class="headerlink" href="#cddsentintegrationwithasrcomstackenable" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.10.4.4. </span>CddSentIntegrationWithAsrComStackEnable<a class="headerlink" href="#cddsentintegrationwithasrcomstackenable" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2980,7 +2891,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </section>
 </section>
 <section id="steps-to-configure-cdd-sent-module">
-<h3><span class="section-number">4.16.10.6. </span>Steps To Configure Cdd_Sent Module<a class="headerlink" href="#steps-to-configure-cdd-sent-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.16.10.5. </span>Steps To Configure Cdd_Sent Module<a class="headerlink" href="#steps-to-configure-cdd-sent-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool, load Cdd_Sent module. Select the Precompile Config Variant.</p></li>
 <li><p>Configure the required parameters.</p></li>

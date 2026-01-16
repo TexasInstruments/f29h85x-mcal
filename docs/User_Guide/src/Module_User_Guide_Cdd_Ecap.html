@@ -111,11 +111,10 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.12.9. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#migration-guide">4.12.9.1. Migration Guide</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.12.9.2. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddecapconfigset">4.12.9.3. CddEcapConfigSet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddecapgeneral">4.12.9.4. CddEcapGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-ecap-module">4.12.9.5. Steps To Configure Cdd Ecap Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.12.9.1. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddecapconfigset">4.12.9.2. CddEcapConfigSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddecapgeneral">4.12.9.3. CddEcapGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-ecap-module">4.12.9.4. Steps To Configure Cdd Ecap Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.12.10. Examples</a><ul>
@@ -139,9 +138,10 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.19. RTDMA Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">7. AUTOSAR Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
 </ul>
 
         </div>
@@ -738,74 +738,17 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 <p class="admonition-title">Note</p>
 <p>Refer section <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#getting-started-with-eb-tresos"><span class="std std-ref">Getting Started with EB Tresos</span></a> of Chapter <strong>MCAL Configuration and EB Tresos</strong> for more information on how to load plugin and generate the configuration files.</p>
 </div>
-<section id="migration-guide">
-<h3><span class="section-number">4.12.9.1. </span>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h3>
-<section id="v03-00-00-from-v02-00-00">
-<h4><span class="section-number">4.12.9.1.1. </span>v03.00.00 from v02.00.00<a class="headerlink" href="#v03-00-00-from-v02-00-00" title="Link to this heading"></a></h4>
-<section id="key-changes">
-<h5><span class="section-number">4.12.9.1.1.1. </span>Key Changes<a class="headerlink" href="#key-changes" title="Link to this heading"></a></h5>
-<ol class="arabic simple">
-<li><p><strong>Resource Allocator Based Approach</strong></p>
-<ul class="simple">
-<li><p>The CDD ECAP module now integrates with the Resource Allocator module for centralized device, package, and variant configuration</p></li>
-<li><p>ECAP channel configurations (<code class="docutils literal notranslate"><span class="pre">CddEcapChannelRef</span></code>) now reference Resource Allocator’s allocated ECAP instances</p></li>
-<li><p>Available ECAP instances are determined by the Resource Allocator’s <code class="docutils literal notranslate"><span class="pre">Cdd_EcapAllocatedInstance</span></code> configuration for the current context</p></li>
-<li><p>The maximum number of ECAP channels is now dynamically determined from Resource Allocator</p></li>
-</ul>
-</li>
-</ol>
-</section>
-<section id="migration-steps">
-<h5><span class="section-number">4.12.9.1.1.2. </span>Migration Steps<a class="headerlink" href="#migration-steps" title="Link to this heading"></a></h5>
-<ol class="arabic simple">
-<li><p><strong>Add Resource Allocator Module</strong></p>
-<ul class="simple">
-<li><p>Add the Resource Allocator module to your EB Tresos project if not already present</p></li>
-</ul>
-</li>
-<li><p><strong>Configure ECAP Instances in Resource Allocator</strong></p>
-<ul class="simple">
-<li><p>In Resource Allocator, configure the <code class="docutils literal notranslate"><span class="pre">Cdd_EcapAllocatedInstance</span></code> entries for each ECAP instance your application requires</p></li>
-<li><p>Set the appropriate <code class="docutils literal notranslate"><span class="pre">InstanceName</span></code> (e.g., ECAP1, ECAP2, etc.)</p></li>
-</ul>
-</li>
-<li><p><strong>Update CDD ECAP Configuration</strong></p>
-<ul class="simple">
-<li><p>Update <code class="docutils literal notranslate"><span class="pre">CddEcapChannelRef</span></code> in each <code class="docutils literal notranslate"><span class="pre">CddEcapChannel</span></code> to reference the corresponding Resource Allocator’s <code class="docutils literal notranslate"><span class="pre">Cdd_EcapAllocatedInstance</span></code></p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">CddEcapChannelId</span></code> will be automatically derived from the Resource Allocator’s instance name</p></li>
-</ul>
-</li>
-<li><p><strong>Verify Instance References</strong></p>
-<ul class="simple">
-<li><p>Ensure all ECAP channel references point to valid Resource Allocator allocated instances</p></li>
-<li><p>Verify that the allocated instances match your hardware requirements</p></li>
-</ul>
-</li>
-<li><p><strong>Regenerate Configuration</strong></p>
-<ul class="simple">
-<li><p>Regenerate the configuration files using EB Tresos</p></li>
-</ul>
-</li>
-<li><p><strong>Rebuild Application</strong></p>
-<ul class="simple">
-<li><p>Rebuild your application with the updated configuration</p></li>
-</ul>
-</li>
-</ol>
-</section>
-</section>
-</section>
 <section id="configuration-parameters">
-<h3><span class="section-number">4.12.9.2. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.12.9.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
 </section>
 <section id="cddecapconfigset">
-<h3><span class="section-number">4.12.9.3. </span>CddEcapConfigSet<a class="headerlink" href="#cddecapconfigset" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.12.9.2. </span>CddEcapConfigSet<a class="headerlink" href="#cddecapconfigset" title="Link to this heading"></a></h3>
 <p>This container contains the configuration parameters and sub containers of the AUTOSAR CddEcap module.</p>
 <section id="cddecapchannel">
-<h4><span class="section-number">4.12.9.3.1. </span>CddEcapChannel<a class="headerlink" href="#cddecapchannel" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.12.9.2.1. </span>CddEcapChannel<a class="headerlink" href="#cddecapchannel" title="Link to this heading"></a></h4>
 <p>Configuration of an individual CDD ECAP channel.</p>
 <section id="cddecapchannelid">
-<h5><span class="section-number">4.12.9.3.1.1. </span>CddEcapChannelId<a class="headerlink" href="#cddecapchannelid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.1.1. </span>CddEcapChannelId<a class="headerlink" href="#cddecapchannelid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -838,7 +781,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapemulationmode">
-<h5><span class="section-number">4.12.9.3.1.2. </span>CddEcapEmulationMode<a class="headerlink" href="#cddecapemulationmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.1.2. </span>CddEcapEmulationMode<a class="headerlink" href="#cddecapemulationmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -874,7 +817,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapdefaultstartedge">
-<h5><span class="section-number">4.12.9.3.1.3. </span>CddEcapDefaultStartEdge<a class="headerlink" href="#cddecapdefaultstartedge" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.1.3. </span>CddEcapDefaultStartEdge<a class="headerlink" href="#cddecapdefaultstartedge" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -910,7 +853,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapinputselect">
-<h5><span class="section-number">4.12.9.3.1.4. </span>CddEcapInputSelect<a class="headerlink" href="#cddecapinputselect" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.1.4. </span>CddEcapInputSelect<a class="headerlink" href="#cddecapinputselect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -946,7 +889,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapirqtype">
-<h5><span class="section-number">4.12.9.3.1.5. </span>CddEcapIrqType<a class="headerlink" href="#cddecapirqtype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.1.5. </span>CddEcapIrqType<a class="headerlink" href="#cddecapirqtype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -982,7 +925,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapmeasurementmode">
-<h5><span class="section-number">4.12.9.3.1.6. </span>CddEcapMeasurementMode<a class="headerlink" href="#cddecapmeasurementmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.1.6. </span>CddEcapMeasurementMode<a class="headerlink" href="#cddecapmeasurementmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1018,7 +961,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapprescaler">
-<h5><span class="section-number">4.12.9.3.1.7. </span>CddEcapPrescaler<a class="headerlink" href="#cddecapprescaler" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.1.7. </span>CddEcapPrescaler<a class="headerlink" href="#cddecapprescaler" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1054,7 +997,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapclkfrequency">
-<h5><span class="section-number">4.12.9.3.1.8. </span>CddEcapClkFrequency<a class="headerlink" href="#cddecapclkfrequency" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.1.8. </span>CddEcapClkFrequency<a class="headerlink" href="#cddecapclkfrequency" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1093,7 +1036,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecaphrenable">
-<h5><span class="section-number">4.12.9.3.1.9. </span>CddEcapHREnable<a class="headerlink" href="#cddecaphrenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.1.9. </span>CddEcapHREnable<a class="headerlink" href="#cddecaphrenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1126,7 +1069,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapchannelref">
-<h5><span class="section-number">4.12.9.3.1.10. </span>CddEcapChannelRef<a class="headerlink" href="#cddecapchannelref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.1.10. </span>CddEcapChannelRef<a class="headerlink" href="#cddecapchannelref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1156,7 +1099,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapfunctionalclock">
-<h5><span class="section-number">4.12.9.3.1.11. </span>CddEcapFunctionalClock<a class="headerlink" href="#cddecapfunctionalclock" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.1.11. </span>CddEcapFunctionalClock<a class="headerlink" href="#cddecapfunctionalclock" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1187,10 +1130,10 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </section>
 </section>
 <section id="cddecapsignalmeasurement">
-<h4><span class="section-number">4.12.9.3.2. </span>CddEcapSignalMeasurement<a class="headerlink" href="#cddecapsignalmeasurement" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.12.9.2.2. </span>CddEcapSignalMeasurement<a class="headerlink" href="#cddecapsignalmeasurement" title="Link to this heading"></a></h4>
 <p>This container contains the configuration (parameters) in case the measurement mode is “CddEcapSignalMeasurement”</p>
 <section id="cddecapsignalmeasurementproperty">
-<h5><span class="section-number">4.12.9.3.2.1. </span>CddEcapSignalMeasurementProperty<a class="headerlink" href="#cddecapsignalmeasurementproperty" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.2.1. </span>CddEcapSignalMeasurementProperty<a class="headerlink" href="#cddecapsignalmeasurementproperty" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1227,10 +1170,10 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </section>
 </section>
 <section id="cddecaptimestampmeasurement">
-<h4><span class="section-number">4.12.9.3.3. </span>CddEcapTimestampMeasurement<a class="headerlink" href="#cddecaptimestampmeasurement" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.12.9.2.3. </span>CddEcapTimestampMeasurement<a class="headerlink" href="#cddecaptimestampmeasurement" title="Link to this heading"></a></h4>
 <p>This container contains the configuration (parameters) in case the measurement mode is “CddEcapTimestamp”</p>
 <section id="cddecaptimestampmeasurementproperty">
-<h5><span class="section-number">4.12.9.3.3.1. </span>CddEcapTimestampMeasurementProperty<a class="headerlink" href="#cddecaptimestampmeasurementproperty" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.3.1. </span>CddEcapTimestampMeasurementProperty<a class="headerlink" href="#cddecaptimestampmeasurementproperty" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1266,7 +1209,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecaptimestampnotification">
-<h5><span class="section-number">4.12.9.3.3.2. </span>CddEcapTimestampNotification<a class="headerlink" href="#cddecaptimestampnotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.3.2. </span>CddEcapTimestampNotification<a class="headerlink" href="#cddecaptimestampnotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1309,10 +1252,10 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </section>
 </section>
 <section id="cddecapsignaledgedetection">
-<h4><span class="section-number">4.12.9.3.4. </span>CddEcapSignalEdgeDetection<a class="headerlink" href="#cddecapsignaledgedetection" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.12.9.2.4. </span>CddEcapSignalEdgeDetection<a class="headerlink" href="#cddecapsignaledgedetection" title="Link to this heading"></a></h4>
 <p>This container contains the configuration (parameters) in case the measurement mode is “CddEcapSignalEdgeDetection”</p>
 <section id="cddecapsignalnotification">
-<h5><span class="section-number">4.12.9.3.4.1. </span>CddEcapSignalNotification<a class="headerlink" href="#cddecapsignalnotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.12.9.2.4.1. </span>CddEcapSignalNotification<a class="headerlink" href="#cddecapsignalnotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1356,10 +1299,10 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </section>
 </section>
 <section id="cddecapgeneral">
-<h3><span class="section-number">4.12.9.4. </span>CddEcapGeneral<a class="headerlink" href="#cddecapgeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.12.9.3. </span>CddEcapGeneral<a class="headerlink" href="#cddecapgeneral" title="Link to this heading"></a></h3>
 <p>Configuration of general CDD ECAP parameters.</p>
 <section id="cddecapdeverrordetect">
-<h4><span class="section-number">4.12.9.4.1. </span>CddEcapDevErrorDetect<a class="headerlink" href="#cddecapdeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.12.9.3.1. </span>CddEcapDevErrorDetect<a class="headerlink" href="#cddecapdeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1392,7 +1335,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapdeinitapi">
-<h4><span class="section-number">4.12.9.4.2. </span>CddEcapDeInitApi<a class="headerlink" href="#cddecapdeinitapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.12.9.3.2. </span>CddEcapDeInitApi<a class="headerlink" href="#cddecapdeinitapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1425,7 +1368,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapedgecountapi">
-<h4><span class="section-number">4.12.9.4.3. </span>CddEcapEdgeCountApi<a class="headerlink" href="#cddecapedgecountapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.12.9.3.3. </span>CddEcapEdgeCountApi<a class="headerlink" href="#cddecapedgecountapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1458,7 +1401,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapedgedetectapi">
-<h4><span class="section-number">4.12.9.4.4. </span>CddEcapEdgeDetectApi<a class="headerlink" href="#cddecapedgedetectapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.12.9.3.4. </span>CddEcapEdgeDetectApi<a class="headerlink" href="#cddecapedgedetectapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1491,7 +1434,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapgetdutycyclevaluesapi">
-<h4><span class="section-number">4.12.9.4.5. </span>CddEcapGetDutyCycleValuesApi<a class="headerlink" href="#cddecapgetdutycyclevaluesapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.12.9.3.5. </span>CddEcapGetDutyCycleValuesApi<a class="headerlink" href="#cddecapgetdutycyclevaluesapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1524,7 +1467,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapgetinputstateapi">
-<h4><span class="section-number">4.12.9.4.6. </span>CddEcapGetInputStateApi<a class="headerlink" href="#cddecapgetinputstateapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.12.9.3.6. </span>CddEcapGetInputStateApi<a class="headerlink" href="#cddecapgetinputstateapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1557,7 +1500,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapgettimeelapsedapi">
-<h4><span class="section-number">4.12.9.4.7. </span>CddEcapGetTimeElapsedApi<a class="headerlink" href="#cddecapgettimeelapsedapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.12.9.3.7. </span>CddEcapGetTimeElapsedApi<a class="headerlink" href="#cddecapgettimeelapsedapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1590,7 +1533,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapgetversioninfoapi">
-<h4><span class="section-number">4.12.9.4.8. </span>CddEcapGetVersionInfoApi<a class="headerlink" href="#cddecapgetversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.12.9.3.8. </span>CddEcapGetVersionInfoApi<a class="headerlink" href="#cddecapgetversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1623,7 +1566,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapsignalmeasurementapi">
-<h4><span class="section-number">4.12.9.4.9. </span>CddEcapSignalMeasurementApi<a class="headerlink" href="#cddecapsignalmeasurementapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.12.9.3.9. </span>CddEcapSignalMeasurementApi<a class="headerlink" href="#cddecapsignalmeasurementapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1656,7 +1599,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecaptimestampapi">
-<h4><span class="section-number">4.12.9.4.10. </span>CddEcapTimestampApi<a class="headerlink" href="#cddecaptimestampapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.12.9.3.10. </span>CddEcapTimestampApi<a class="headerlink" href="#cddecaptimestampapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1690,7 +1633,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </section>
 </section>
 <section id="steps-to-configure-cdd-ecap-module">
-<h3><span class="section-number">4.12.9.5. </span>Steps To Configure Cdd Ecap Module<a class="headerlink" href="#steps-to-configure-cdd-ecap-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.12.9.4. </span>Steps To Configure Cdd Ecap Module<a class="headerlink" href="#steps-to-configure-cdd-ecap-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool, load Cdd_Ecap module. Select the Precompile Config Variant.</p></li>
 <li><p>Configure the required parameters.</p></li>

@@ -1,0 +1,241 @@
+# CDD SENT Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v03.00.00 (i.e release v01.04.00) from v02.00.01 (i.e release v01.03.00) Migration
+
+### Summary
+
+Version v03.00.00 introduces **Resource Allocator as a mandatory architectural foundation** and updates DEM configuration parameter naming. This represents a fundamental shift from direct parameter configuration to centralized resource management:
+
+1. **Resource Allocator Introduction and Controller Configuration Updates**: Resource Allocator becomes mandatory with CDD SENT controller configurations updated to reference Resource Allocator instances
+2. **DEM Configuration Parameter Update**: DEM event parameter reference name changed for consistency with module naming conventions
+
+**PREREQUISITE:** Complete [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md#module-setup-and-configuration) before proceeding.
+
+### Change 1: Resource Allocator Introduction and Controller Configuration Updates
+
+#### Description
+
+Resource Allocator becomes a mandatory architectural foundation for the CDD SENT module, with CDD SENT controller configurations updated to reference Resource Allocator instances. This represents a fundamental shift from direct parameter configuration to centralized resource management, where CDD SENT instances are allocated through Resource Allocator and then referenced by controller configurations.
+
+#### Old vs New Configuration
+
+**Previous Configuration (v02.00.01):**
+Direct parameter selection was used without Resource Allocator dependency.
+
+```{figure} Assets/images/migration/cdd_sent_module/02_01_cdd_sent_module_old_config.png
+:alt: Old CDD SENT Config
+:align: center
+:width: 80%
+
+v02.00.01: Direct SENT controller parameter selection
+```
+
+**New Configuration (v03.00.00):**
+CDD SENT configurations now reference instances allocated through Resource Allocator.
+
+```{figure} Assets/images/migration/cdd_sent_module/02_03_cdd_sent_module_select_instance.png
+:alt: Select CDD SENT Instance
+:align: center
+:width: 80%
+
+v03.00.00: Set CddSentInstanceRef to point to the corresponding Cdd_SentAllocatedInstance in Resource Allocator
+```
+
+#### Migration Actions
+
+1. **Setup Resource Allocator:** Follow [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md)
+
+2. **Navigate to Context:** Navigate to **ResourceAllocatorGeneral → Context → Cdd_Sent** and add CDD SENT allocator:
+
+```{figure} Assets/images/migration/cdd_sent_module/01_01_cdd_sent_module_add_allocator.png
+:alt: Add CDD SENT Allocator
+:align: center
+:width: 80%
+
+Navigate to Context and add CDD SENT allocator
+```
+
+3. **Add CDD SENT Instance:** Add Cdd_SentAllocatedInstance entries for each SENT instance your application requires:
+
+```{figure} Assets/images/migration/cdd_sent_module/01_02_cdd_sent_module_add_instance.png
+:alt: Add CDD SENT Instance
+:align: center
+:width: 80%
+
+Add Cdd_SentAllocatedInstance entries for each SENT instance your application requires
+```
+
+4. **Configure SENT Instance:** Configure the InstanceName, Frame, and BaseAddr for each allocated instance:
+
+```{figure} Assets/images/migration/cdd_sent_module/01_03_cdd_sent_module_select_instance.png
+:alt: Configure CDD SENT Instance
+:align: center
+:width: 80%
+
+Configure the InstanceName, Frame, and BaseAddr for each allocated instance
+```
+
+5. **Complete Configuration:** Finalize CDD SENT instance allocation
+
+6. **Navigate to CddSentController:** Navigate to **Cdd → CddSentController** and update configurations to reference the CDD SENT instances allocated in Resource Allocator
+
+7. **Open Controller Configuration:** Access the CddSentController configuration that needs to be updated
+
+8. **Set Instance Reference:** Set CddSentInstanceRef to point to the corresponding Cdd_SentAllocatedInstance in Resource Allocator
+
+9. **Verify Automatic Derivation:** Confirm that the CddSentBaseAddress parameter is now automatically derived from the Resource Allocator reference
+
+### Change 2: DEM Configuration Parameter Update
+
+#### Description
+
+Version v03.00.00 updates the DEM event parameter reference name for consistency with module naming conventions. The DEM event parameter is renamed to include the module-specific prefix for better identification and naming consistency.
+
+#### Old vs New DEM Parameter Names
+
+**DEM Event Parameter Name Mapping:**
+
+| v02.00.01 | v03.00.00 |
+|-----------|-----------|
+| `CDD_E_HARDWARE_ERROR` | `CDD_SENT_E_HARDWARE_ERROR` |
+
+**Parameter Details:**
+- **Purpose:** DEM event parameter for hardware error reporting
+- **Change:** Added module-specific prefix for better identification
+- **Usage:** If DEM error reporting is enabled in your configuration
+
+#### Migration Actions
+
+1. **Check DEM Configuration:** Determine if DEM error reporting is enabled in your CDD SENT configuration
+
+2. **Update DEM Event Reference:** If DEM error reporting is enabled, update the DEM event parameter reference from `CDD_E_HARDWARE_ERROR` to `CDD_SENT_E_HARDWARE_ERROR`
+
+3. **Update Application Code:** If your application code directly references this DEM event parameter name, update all references to use the new naming convention
+
+4. **Verify DEM Integration:** Ensure DEM error reporting functionality works correctly with the updated parameter name
+
+```{NOTE}
+The Resource Allocator module must be configured before the CDD SENT module to ensure correct instance availability. For more details on Resource Allocator configuration, see the Resource Allocator Module User Guide.
+```
+
+## v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration
+
+### Summary
+
+Version v02.00.00 introduces schema compatibility updates to align with updated plugin structure and reference paths:
+
+1. **AR-ELEMENT Name Change**: Generated .xdm file AR-ELEMENT name requires updating for schema compatibility
+2. **MODULE-CONFIGURATION Path Update**: Generated .xdm file MODULE-CONFIGURATION definition path requires updating
+3. **Reference Path Updates**: Generated .xdm file reference paths require updating due to schema structure changes
+
+```{NOTE}
+The CDD SENT v2.0.0 plugin contains updated schema definitions that are not backward compatible with v1.0.0 generated configurations. To use existing v1.0.0 configurations with the v2.0.0 plugin, the **generated .xdm files** (created by EB Tresos from your configuration) must be updated.
+```
+
+### Change 1: AR-ELEMENT Name Change in Generated .xdm File
+
+#### Description
+
+When upgrading from v1.0.0 to v2.0.0, the generated .xdm file from EB Tresos contains AR-ELEMENT names that are not compatible with the new plugin schema. The AR-ELEMENT name needs to be updated in the generated .xdm file to ensure compatibility.
+
+#### Old vs New AR-ELEMENT Configuration
+
+**Generated .xdm File AR-ELEMENT Name:**
+
+| v01.00.00 Generated .xdm | v02.00.00 Required .xdm |
+|--------------------------|-------------------------|
+| `<d:chc name="Cdd_Sent" type="AR-ELEMENT"` | `<d:chc name="Cdd" type="AR-ELEMENT"` |
+
+#### Migration Actions
+
+1. **Locate Generated .xdm File:** Find your project's generated .xdm file (created by EB Tresos from your configuration)
+
+2. **Open File for Editing:** Open the generated .xdm file in a text editor
+
+3. **Find AR-ELEMENT Reference:** Locate the line containing `<d:chc name="Cdd_Sent" type="AR-ELEMENT"`
+
+4. **Update AR-ELEMENT Name:** Change the AR-ELEMENT name from `Cdd_Sent` to `Cdd`
+
+5. **Save File:** Save the updated .xdm file
+
+### Change 2: MODULE-CONFIGURATION Path Update in Generated .xdm File
+
+#### Description
+
+The MODULE-CONFIGURATION definition path in the generated .xdm file needs to be updated to reflect the new schema structure. The path must include the additional `Cdd` component for proper module reference.
+
+#### Old vs New MODULE-CONFIGURATION Path
+
+**Generated .xdm File MODULE-CONFIGURATION Path:**
+
+| v01.00.00 Generated .xdm | v02.00.00 Required .xdm |
+|--------------------------|-------------------------|
+| `<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Sent"/>` | `<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Sent/Cdd"/>` |
+
+#### Migration Actions
+
+1. **Continue Editing .xdm File:** In the same generated .xdm file being edited
+
+2. **Find MODULE-CONFIGURATION Path:** Locate the line containing `<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Sent"/>`
+
+3. **Update Definition Path:** Change the MODULE-CONFIGURATION path from `ASPath:/TI_F29H85x/Cdd_Sent` to `ASPath:/TI_F29H85x/Cdd_Sent/Cdd`
+
+4. **Verify Path Structure:** Ensure the updated path includes the additional `/Cdd` component
+
+5. **Save Changes:** Save the updated .xdm file
+
+### Change 3: Reference Path Updates in Generated .xdm File
+
+#### Description
+
+Any REFERENCE type parameters in the generated .xdm file that refer to other CDD SENT parameters by their schema path must be updated due to the schema structure change. All internal reference paths need to be updated to reflect the new schema hierarchy.
+
+#### Old vs New Reference Paths
+
+**Generated .xdm File Reference Path Example:**
+
+For any reference parameters expecting reference to a SENT configuration:
+
+| v01.00.00 Generated .xdm Reference Path | v02.00.00 Required .xdm Reference Path |
+|------------------------------------------|------------------------------------------|
+| `/Cdd_Sent/Cdd_Sent/CddSentConfigSet/...` | `/Cdd_Sent/Cdd/CddSentConfigSet/...` |
+
+#### Migration Actions
+
+1. **Continue Editing .xdm File:** In the same generated .xdm file being edited
+
+2. **Search for Reference Paths:** Find all REFERENCE type parameters that contain `/Cdd_Sent/Cdd_Sent/` in their paths
+
+3. **Update Reference Paths:** Change all occurrences of `/Cdd_Sent/Cdd_Sent/` to `/Cdd_Sent/Cdd/`
+
+4. **Verify All Updates:** Ensure all reference paths now use the correct schema hierarchy
+
+5. **Save Final Changes:** Save the completely updated .xdm file
+
+**Generated .xdm File Structure Comparison:**
+
+**Before Editing (v01.00.00 Generated .xdm File):**
+```xml
+<d:lst type="TOP-LEVEL-PACKAGES">
+<d:ctr name="Cdd_Sent" type="AR-PACKAGE">
+<d:lst type="ELEMENTS">
+<d:chc name="Cdd_Sent" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+<d:ctr type="MODULE-CONFIGURATION">
+<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Sent"/>
+```
+
+**After Editing (v02.00.00 Compatible .xdm File):**
+```xml
+<d:lst type="TOP-LEVEL-PACKAGES">
+<d:ctr name="Cdd_Sent" type="AR-PACKAGE">
+<d:lst type="ELEMENTS">
+<d:chc name="Cdd" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+<d:ctr type="MODULE-CONFIGURATION">
+<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Sent/Cdd"/>
+```
+
+```{NOTE}
+Only the generated .xdm files (created by EB Tresos from your configuration) can be modified. The plugin .xdm files themselves cannot and should not be modified.
+```

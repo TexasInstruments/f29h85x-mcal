@@ -53,7 +53,7 @@ extern "C" {
  /** \brief Can configuration Major Version. */
 #define CAN_CFG_MAJOR_VERSION    (3U) 
 /** \brief Can configuration Minor Version. */
-#define CAN_CFG_MINOR_VERSION    (0U)
+#define CAN_CFG_MINOR_VERSION    (1U)
 /** \brief Can configuration Patch Version. */
 #define CAN_CFG_PATCH_VERSION    (0U)
 
@@ -247,6 +247,14 @@ extern "C" {
  *
  *****************************************************************************/
 #define CAN_WAKEUP_POLLING                   (STD_ON)
+
+
+/*****************************************************************************
+ *
+ * \brief Enable/Disable Can Trigger Transmit.
+ *
+ *****************************************************************************/
+#define CAN_TRIGGER_TRANSMIT_ENABLE          (STD_OFF)
 
 /*****************************************************************************
  *

@@ -38,12 +38,10 @@ extern "C" {
  *********************************************************************************************************************/
 /*Design: MCAL-22834 */
 #include "ComStack_Types.h"
-
 /*Design: MCAL-22833, MCAL-22832 */
 #include "Can_GeneralTypes.h"
-#include "CanIf_Cbk.h"
 #include "Can_Cfg.h"
-
+/*Design: MCAL-22836 */
 #include "EcuM_Cbk.h"
 
 /*********************************************************************************************************************
@@ -60,7 +58,7 @@ extern "C" {
 /** \brief  Driver Implementation Major Version. */
 #define CAN_SW_MAJOR_VERSION (3U)
 /** \brief  Driver Implementation Minor Version. */
-#define CAN_SW_MINOR_VERSION (0U)
+#define CAN_SW_MINOR_VERSION (1U)
 /** \brief  Driver Implementation Patch Version. */
 #define CAN_SW_PATCH_VERSION (0U)
 

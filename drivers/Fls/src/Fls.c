@@ -41,12 +41,12 @@
 #endif
 
 /* AUTOSAR version information check has to match definition in header file */
-#if ((FLS_SW_MAJOR_VERSION != (3U)) || (FLS_SW_MINOR_VERSION != (0U)))
+#if ((FLS_SW_MAJOR_VERSION != (3U)) || (FLS_SW_MINOR_VERSION != (1U)))
 #error "Fls: Software Version Numbers are inconsistent!!"
 #endif
 
 /* AUTOSAR version information check has to match definition in FLS_Cfg.h file */
-#if ((FLS_CFG_MAJOR_VERSION != (3U)) || (FLS_CFG_MINOR_VERSION != (0U)))
+#if ((FLS_CFG_MAJOR_VERSION != (3U)) || (FLS_CFG_MINOR_VERSION != (1U)))
 #error "Version numbers of Fls.c and Fls_Cfg.h are inconsistent!"
 #endif
 /*********************************************************************************************************************

@@ -62,7 +62,7 @@ extern "C" {
 /** \brief Fls configuration Major Version */
 #define FLS_CFG_MAJOR_VERSION           (3U)
 /** \brief Fls configuration Minor Version */
-#define FLS_CFG_MINOR_VERSION           (0U)
+#define FLS_CFG_MINOR_VERSION           (1U)
 /** \brief Fls configuration Patch Version */
 #define FLS_CFG_PATCH_VERSION           (0U)
 /* @} */

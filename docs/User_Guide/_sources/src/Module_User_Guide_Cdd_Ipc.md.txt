@@ -290,49 +290,6 @@ The generated configuration files should not be modified manually. The config to
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
 
-#### Migration Guide
-
-Migration guides between module versions are detailed below.
-
-##### v02.00.00 from v01.00.02
-
-###### Key Changes
-
-1. **Resource Allocator Based Approach**
-   * The CDD IPC module now integrates with the Resource Allocator module for centralized device, package, and variant configuration
-   * IPC instance and remote core configurations are now derived from the Resource Allocator settings
-
-2. **LocalCore Selection Moved to Resource Allocator**
-   * The local core selection (which determines the current CPU context for IPC communication) has been moved from the CDD IPC module configuration to the Resource Allocator module
-   * The local core is now automatically determined based on the `CurrentContext` parameter configured in the Resource Allocator
-   * This affects:
-     * Remote core selection (`CddIpcRemoteCore`) - available remote cores are now filtered based on the current context
-     * TX/RX instance selection (`CddIpcTxInstance`, `CddIpcRxInstance`) - available instances are now determined by the local core context from Resource Allocator
-
-###### Migration Steps
-
-1. **Add Resource Allocator Module**
-   * If not already present, add the Resource Allocator module to your EB Tresos project configuration
-
-2. **Configure CurrentContext in Resource Allocator**
-   * Configure the `CurrentContext` parameter in the Resource Allocator module to specify which CPU core is hosting the MCAL/AUTOSAR stack
-   * This replaces the previous local core selection in CDD IPC
-
-3. **Update CDD IPC Configuration**
-   * Open the CDD IPC module configuration in EB Tresos
-   * The remote core options and IPC instance selections will now be automatically filtered based on the Resource Allocator's `CurrentContext` setting
-
-4. **Verify Remote Core Configuration**
-   * Ensure that the `CddIpcRemoteCore` selections are valid for the configured current context
-   * The available remote cores will be automatically determined based on the local core
-
-5. **Regenerate Configuration**
-   * Save the configuration and regenerate all configuration files
-
-6. **Rebuild Application**
-   * Rebuild your application with the updated configuration files
-
-For more details on Resource Allocator configuration, refer to the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md).
 
 #### Configuration Parameters
 

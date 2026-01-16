@@ -31,12 +31,12 @@
  * Version Check (if required)
  *********************************************************************************************************************/
 #if ((CDD_PWM_SW_MAJOR_VERSION != (3U)) \
-    || (CDD_PWM_SW_MINOR_VERSION != (0U)))
+    || (CDD_PWM_SW_MINOR_VERSION != (1U)))
   #error "Version numbers of Cdd_Pwm_Cfg.c and Cdd_Pwm.h are inconsistent!"
 #endif
 
 #if ( (CDD_PWM_CFG_MAJOR_VERSION != (3U)) \
-    ||(CDD_PWM_CFG_MINOR_VERSION != (0U)))
+    ||(CDD_PWM_CFG_MINOR_VERSION != (1U)))
   #error "Version numbers of Cdd_Pwm_Cfg.c and Cdd_Pwm_Cfg.h are inconsistent!"
 #endif
 

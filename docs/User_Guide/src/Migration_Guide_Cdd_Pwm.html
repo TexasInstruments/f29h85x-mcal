@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.14. CDD PWM Module Migration &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.15. CDD UART Module Migration" href="Migration_Guide_Cdd_Uart.html" />
+    <link rel="prev" title="5.13. CDD SENT Module Migration" href="Migration_Guide_Cdd_Sent.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.04.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_ResourceAllocator.html">5.1. Resource Allocator Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Can.html">5.2. CAN Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Gpt.html">5.3. GPT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Fls.html">5.4. FLS Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Lin.html">5.5. LIN Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Mcu.html">5.6. MCU Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Port.html">5.7. Port Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Spi.html">5.8. SPI Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Wdg.html">5.9. WDG Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Adc.html">5.10. CDD ADC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ecap.html">5.11. CDD ECAP Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ipc.html">5.12. CDD IPC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Sent.html">5.13. CDD SENT Module Migration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.14. CDD PWM Module Migration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration">5.14.1. v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#summary">5.14.1.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-resource-allocator-introduction-and-pwm-instance-configuration-updates">5.14.1.2. Change 1: Resource Allocator Introduction and PWM Instance Configuration Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-hrpwm-configuration-support">5.14.1.3. Change 2: HRPWM Configuration Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-3-symbolic-name-uniqueness-requirements">5.14.1.4. Change 3: Symbolic Name Uniqueness Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#v02-00-00-i-e-release-v01-03-00-from-v01-00-00-i-e-release-v01-02-00-migration">5.14.2. v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">5.14.2.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-parameter-renaming">5.14.2.2. Change 1: Parameter Renaming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-advanced-mode-features">5.14.2.3. Change 2: Advanced Mode Features</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Uart.html">5.15. CDD UART Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Xbar.html">5.16. CDD XBAR Module Migration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="MigrationGuide_list.html"><span class="section-number">5. </span>Migration Guide</a> &raquo;</li>
+      <li><span class="section-number">5.14. </span>CDD PWM Module Migration</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cdd-pwm-module-migration">
+<h1><span class="section-number">5.14. </span>CDD PWM Module Migration<a class="headerlink" href="#cdd-pwm-module-migration" title="Link to this heading"></a></h1>
+<p><strong>Migration Approach:</strong> Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.</p>
+<section id="v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration">
+<h2><span class="section-number">5.14.1. </span>v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration<a class="headerlink" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration" title="Link to this heading"></a></h2>
+<section id="summary">
+<h3><span class="section-number">5.14.1.1. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h3>
+<p>Version v03.00.00 introduces <strong>Resource Allocator as a mandatory architectural foundation</strong>, fixes PWM channel symbolic name generation, and adds HRPWM calibration instance configuration support. This represents a fundamental shift from direct parameter configuration to centralized resource management:</p>
+<ol class="arabic simple">
+<li><p><strong>Resource Allocator Introduction and PWM Instance Configuration Updates</strong>: Resource Allocator becomes mandatory with CDD PWM configurations updated to reference Resource Allocator instances</p></li>
+<li><p><strong>HRPWM Configuration Support</strong>: Optional HRPWM calibration instance configuration support added</p></li>
+<li><p><strong>Symbolic Name Uniqueness Requirements</strong>: Enhanced validation requires unique symbolic names across configurations</p></li>
+</ol>
+<p><strong>PREREQUISITE:</strong> Complete <a class="reference internal" href="Migration_Guide_ResourceAllocator.html#module-setup-and-configuration"><span class="std std-ref">Resource Allocator Setup</span></a> before proceeding.</p>
+</section>
+<section id="change-1-resource-allocator-introduction-and-pwm-instance-configuration-updates">
+<h3><span class="section-number">5.14.1.2. </span>Change 1: Resource Allocator Introduction and PWM Instance Configuration Updates<a class="headerlink" href="#change-1-resource-allocator-introduction-and-pwm-instance-configuration-updates" title="Link to this heading"></a></h3>
+<section id="description">
+<h4><span class="section-number">5.14.1.2.1. </span>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h4>
+<p>Resource Allocator becomes a mandatory architectural foundation for the CDD PWM module, with CDD PWM configurations updated to reference Resource Allocator instances. This represents a fundamental shift from direct parameter configuration to centralized resource management, where CDD PWM instances are allocated through Resource Allocator and then referenced by PWM unit configurations.</p>
+</section>
+<section id="old-vs-new-configuration">
+<h4><span class="section-number">5.14.1.2.2. </span>Old vs New Configuration<a class="headerlink" href="#old-vs-new-configuration" title="Link to this heading"></a></h4>
+<p><strong>Previous Configuration (v02.00.00):</strong>
+Direct parameter selection was used without Resource Allocator dependency.</p>
+<figure class="align-center" id="id10">
+<a class="reference internal image-reference" href="../_images/02_01_cdd_pwm_module_old_config.png"><img alt="Old CDD PWM Config" src="../_images/02_01_cdd_pwm_module_old_config.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.62 </span><span class="caption-text">v02.00.00: Direct PWM instance parameter selection</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>New Configuration (v03.00.00):</strong>
+CDD PWM configurations now reference instances allocated through Resource Allocator.</p>
+<figure class="align-center" id="id11">
+<a class="reference internal image-reference" href="../_images/02_03_cdd_pwm_module_select_instance.png"><img alt="Select CDD PWM Instance" src="../_images/02_03_cdd_pwm_module_select_instance.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.63 </span><span class="caption-text">v03.00.00: Set CddPwmInstanceRef to point to the corresponding Cdd_PwmAllocatedInstance in Resource Allocator</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="migration-actions">
+<h4><span class="section-number">5.14.1.2.3. </span>Migration Actions<a class="headerlink" href="#migration-actions" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Setup Resource Allocator:</strong> Follow <a class="reference internal" href="Migration_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Setup</span></a></p></li>
+<li><p><strong>Navigate to Context:</strong> Navigate to <strong>ResourceAllocatorGeneral → Context → Cdd_Pwm</strong> and add CDD PWM allocator:</p></li>
+</ol>
+<figure class="align-center" id="id12">
+<a class="reference internal image-reference" href="../_images/01_01_cdd_pwm_module_add_allocator.png"><img alt="Add CDD PWM Allocator" src="../_images/01_01_cdd_pwm_module_add_allocator.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.64 </span><span class="caption-text">Navigate to Context and add CDD PWM allocator</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="3">
+<li><p><strong>Add CDD PWM Instance:</strong> Add Cdd_PwmAllocatedInstance entries for each PWM instance your application requires:</p></li>
+</ol>
+<figure class="align-center" id="id13">
+<a class="reference internal image-reference" href="../_images/01_02_cdd_pwm_module_add_instance.png"><img alt="Add CDD PWM Instance" src="../_images/01_02_cdd_pwm_module_add_instance.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.65 </span><span class="caption-text">Add Cdd_PwmAllocatedInstance entries for each PWM instance your application requires</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="4">
+<li><p><strong>Configure PWM Instance:</strong> Configure the InstanceName, Frame, and BaseAddr for each allocated instance:</p></li>
+</ol>
+<figure class="align-center" id="id14">
+<a class="reference internal image-reference" href="../_images/01_03_cdd_pwm_module_select_instance.png"><img alt="Configure CDD PWM Instance" src="../_images/01_03_cdd_pwm_module_select_instance.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.66 </span><span class="caption-text">Configure the InstanceName, Frame, and BaseAddr for each allocated instance</span><a class="headerlink" href="#id14" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="5">
+<li><p><strong>Complete Configuration:</strong> Finalize CDD PWM instance allocation</p></li>
+<li><p><strong>Navigate to CddPwmUnit:</strong> Navigate to <strong>Cdd → CddPwmUnit</strong> and update configurations to reference the CDD PWM instances allocated in Resource Allocator</p></li>
+<li><p><strong>Open PWM Unit Configuration:</strong> Access the CddPwmUnit configuration that needs to be updated</p></li>
+<li><p><strong>Set Instance Reference:</strong> Set CddPwmInstanceRef to point to the corresponding Cdd_PwmAllocatedInstance in Resource Allocator</p></li>
+<li><p><strong>Verify Automatic Derivation:</strong> Confirm that the CddPwmBaseAddress parameter is now automatically derived from the Resource Allocator reference</p></li>
+</ol>
+</section>
+</section>
+<section id="change-2-hrpwm-configuration-support">
+<h3><span class="section-number">5.14.1.3. </span>Change 2: HRPWM Configuration Support<a class="headerlink" href="#change-2-hrpwm-configuration-support" title="Link to this heading"></a></h3>
+<section id="id1">
+<h4><span class="section-number">5.14.1.3.1. </span>Description<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>Version v03.00.00 adds optional HRPWM (High-Resolution PWM) calibration instance configuration support for advanced PWM applications. This feature allows configuration of HRPWM calibration instances through the Resource Allocator and referencing them in CDD PWM configuration.</p>
+</section>
+<section id="old-vs-new-hrpwm-configuration">
+<h4><span class="section-number">5.14.1.3.2. </span>Old vs New HRPWM Configuration<a class="headerlink" href="#old-vs-new-hrpwm-configuration" title="Link to this heading"></a></h4>
+<p><strong>Previous Configuration (v02.00.00):</strong>
+Limited HRPWM configuration options without calibration instance support.</p>
+<p><strong>New Configuration (v03.00.00):</strong>
+Optional HRPWM calibration instance configuration through CddPwmHrpwmCalibrationConfig container in advanced mode.</p>
+</section>
+<section id="id2">
+<h4><span class="section-number">5.14.1.3.3. </span>Migration Actions<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Evaluate HRPWM Requirements:</strong> Determine if your application requires HRPWM (High-Resolution PWM) features</p></li>
+<li><p><strong>Configure HrCal in Resource Allocator:</strong> If using HRPWM features, configure HrCal allocation in Resource Allocator first:</p>
+<ul class="simple">
+<li><p>Navigate to <strong>ResourceAllocatorGeneral → Context → Cdd_Pwm → CddPwmHrpwmCalInstance</strong></p></li>
+<li><p>Add CddPwmHrpwmCalInstance allocator entries for each calibration instance required</p></li>
+<li><p>Configure the InstanceName and calibration parameters for each allocated CddPwmHrpwmCalInstance instance</p></li>
+</ul>
+</li>
+</ol>
+<figure class="align-center" id="id15">
+<a class="reference internal image-reference" href="../_images/03_01_cdd_pwm_module_configure_hrcal_ra.png"><img alt="Configure HrCal in Resource Allocator" src="../_images/03_01_cdd_pwm_module_configure_hrcal_ra.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.67 </span><span class="caption-text">Configure HrCal allocation in Resource Allocator for HRPWM calibration support</span><a class="headerlink" href="#id15" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="3">
+<li><p><strong>Enable Advanced Mode:</strong> Enable advanced mode in the CDD PWM configuration to access HRPWM features. Refer to <a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html#advanced-mode"><span class="std std-ref">Advanced Mode</span></a> for detailed information on advanced features and APIs</p></li>
+<li><p><strong>Configure HRPWM Calibration:</strong> Configure HRPWM calibration instances through the CddPwmHrpwmCalibrationConfig container and reference the CddPwmHrpwmCalInstance instances from Resource Allocator:</p></li>
+</ol>
+<figure class="align-center" id="id16">
+<a class="reference internal image-reference" href="../_images/03_02_cdd_pwm_module_configure_hrpwm.png"><img alt="Configure HRPWM" src="../_images/03_02_cdd_pwm_module_configure_hrpwm.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.68 </span><span class="caption-text">Configure HRPWM calibration instances and reference HrCal instances from Resource Allocator</span><a class="headerlink" href="#id16" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="5">
+<li><p><strong>Verify Calibration Settings:</strong> Ensure proper calibration settings for high-resolution PWM operation and that HrCal instances are properly referenced</p></li>
+</ol>
+</section>
+</section>
+<section id="change-3-symbolic-name-uniqueness-requirements">
+<h3><span class="section-number">5.14.1.4. </span>Change 3: Symbolic Name Uniqueness Requirements<a class="headerlink" href="#change-3-symbolic-name-uniqueness-requirements" title="Link to this heading"></a></h3>
+<section id="id3">
+<h4><span class="section-number">5.14.1.4.1. </span>Description<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<p>Version v03.00.00 introduces enhanced validation that requires symbolic names to be unique across configurations. When migrating from v02.00.00 to v03.00.00, EB Tresos will generate validation errors if symbolic names are not unique.</p>
+</section>
+<section id="old-vs-new-validation-requirements">
+<h4><span class="section-number">5.14.1.4.2. </span>Old vs New Validation Requirements<a class="headerlink" href="#old-vs-new-validation-requirements" title="Link to this heading"></a></h4>
+<p><strong>Uniqueness Requirements:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>v02.00.00</p></th>
+<th class="head"><p>v03.00.00</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>CddPwmOutputChannel (container name)</strong></p></td>
+<td><p>No uniqueness constraint</p></td>
+<td><p>Must be unique across all HW units</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>CddPwmXlinkInstanceRef</strong></p></td>
+<td><p>No uniqueness constraint</p></td>
+<td><p>Must be unique across all containers</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CddPwmHrpwmCalInstanceRef</strong></p></td>
+<td><p>No uniqueness constraint</p></td>
+<td><p>Must be unique across all containers</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id4">
+<h4><span class="section-number">5.14.1.4.3. </span>Migration Actions<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Review Container Names:</strong> Check all CddPwmOutputChannel container names for uniqueness across all HW units</p></li>
+<li><p><strong>Review Instance References:</strong> Ensure CddPwmXlinkInstanceRef and CddPwmHrpwmCalInstanceRef are unique across all containers</p></li>
+<li><p><strong>Resolve Conflicts:</strong> Update any duplicate symbolic names to ensure uniqueness and avoid validation errors during migration</p></li>
+<li><p><strong>Validate Configuration:</strong> Run validation in EB Tresos to confirm all symbolic names are now unique</p></li>
+<li><p><strong>Regenerate Configuration:</strong> Generate configuration files to get the corrected symbolic names in Cfg.h</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Resource Allocator module must be configured before the CDD PWM module to ensure correct instance availability. For more details on Resource Allocator configuration, see the Resource Allocator Module User Guide.</p>
+</div>
+</section>
+</section>
+</section>
+<section id="v02-00-00-i-e-release-v01-03-00-from-v01-00-00-i-e-release-v01-02-00-migration">
+<h2><span class="section-number">5.14.2. </span>v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration<a class="headerlink" href="#v02-00-00-i-e-release-v01-03-00-from-v01-00-00-i-e-release-v01-02-00-migration" title="Link to this heading"></a></h2>
+<section id="id5">
+<h3><span class="section-number">5.14.2.1. </span>Summary<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>Version v02.00.00 introduces parameter name updates, new advanced features, and enhanced functionality while maintaining backward compatibility for basic PWM operations:</p>
+<ol class="arabic simple">
+<li><p><strong>Parameter Renaming</strong>: Existing parameters renamed for clarity and consistency as initialization/default values</p></li>
+<li><p><strong>Advanced Mode Features</strong>: Introduction of Advanced Mode with Trip Zone protection, Xlink synchronization, and enhanced emulation support</p></li>
+</ol>
+</section>
+<section id="change-1-parameter-renaming">
+<h3><span class="section-number">5.14.2.2. </span>Change 1: Parameter Renaming<a class="headerlink" href="#change-1-parameter-renaming" title="Link to this heading"></a></h3>
+<section id="id6">
+<h4><span class="section-number">5.14.2.2.1. </span>Description<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<p>Version v02.00.00 renames existing parameters to better reflect their purpose as initialization/default values and improves naming consistency across the module. This change clarifies that these parameters represent initial configuration values written during PWM initialization.</p>
+</section>
+<section id="old-vs-new-parameter-names">
+<h4><span class="section-number">5.14.2.2.2. </span>Old vs New Parameter Names<a class="headerlink" href="#old-vs-new-parameter-names" title="Link to this heading"></a></h4>
+<p><strong>Parameter Name Mapping:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>v01.00.00</p></th>
+<th class="head"><p>v02.00.00</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CddPwmPeriod</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CddPwmDefaultPeriod</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CddPwmDutyCycle</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CddPwmDefaultDutyCycle</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CddPwmDutyCycleInPercentage</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CddPwmDefaultDutyCycleInPercentage</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CddPwmNotification</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CddPwmInterruptNotification</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameter Details:</strong></p>
+<ul class="simple">
+<li><p><strong>CddPwmDefaultPeriod:</strong> Period value for initialization, written to TBPRD register</p></li>
+<li><p><strong>CddPwmDefaultDutyCycle:</strong> Duty cycle value for initialization</p></li>
+<li><p><strong>CddPwmDefaultDutyCycleInPercentage:</strong> Duty cycle in percentage (0-100%)</p></li>
+<li><p><strong>CddPwmInterruptNotification:</strong> PWM interrupt callback function</p></li>
+</ul>
+</section>
+<section id="id7">
+<h4><span class="section-number">5.14.2.2.3. </span>Migration Actions<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Update Parameter Names:</strong> Update the following parameter names in your PWM configuration:</p>
+<ul class="simple">
+<li><p>Rename <code class="docutils literal notranslate"><span class="pre">CddPwmPeriod</span></code> → <code class="docutils literal notranslate"><span class="pre">CddPwmDefaultPeriod</span></code></p></li>
+<li><p>Rename <code class="docutils literal notranslate"><span class="pre">CddPwmDutyCycle</span></code> → <code class="docutils literal notranslate"><span class="pre">CddPwmDefaultDutyCycle</span></code></p></li>
+<li><p>Rename <code class="docutils literal notranslate"><span class="pre">CddPwmDutyCycleInPercentage</span></code> → <code class="docutils literal notranslate"><span class="pre">CddPwmDefaultDutyCycleInPercentage</span></code></p></li>
+<li><p>Rename <code class="docutils literal notranslate"><span class="pre">CddPwmNotification</span></code> → <code class="docutils literal notranslate"><span class="pre">CddPwmInterruptNotification</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>Verify Configuration Values:</strong> Ensure all renamed parameters retain their intended configuration values</p></li>
+<li><p><strong>Update Documentation:</strong> Update any project documentation that references the old parameter names</p></li>
+</ol>
+</section>
+</section>
+<section id="change-2-advanced-mode-features">
+<h3><span class="section-number">5.14.2.3. </span>Change 2: Advanced Mode Features<a class="headerlink" href="#change-2-advanced-mode-features" title="Link to this heading"></a></h3>
+<section id="id8">
+<h4><span class="section-number">5.14.2.3.1. </span>Description<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<p>Version v02.00.00 introduces Advanced Mode with Trip Zone protection and Xlink synchronization features, along with enhanced emulation mode support. These features provide fault protection capabilities and PWM synchronization for advanced applications.</p>
+</section>
+<section id="old-vs-new-feature-configuration">
+<h4><span class="section-number">5.14.2.3.2. </span>Old vs New Feature Configuration<a class="headerlink" href="#old-vs-new-feature-configuration" title="Link to this heading"></a></h4>
+<p><strong>New Parameters Added:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>v01.00.00</p></th>
+<th class="head"><p>v02.00.00</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>CddPwmEmulationMode</strong></p></td>
+<td><p>Not available</p></td>
+<td><p>Controls PWM behavior during debug/emulation</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>CddPwmAdvancedMode</strong></p></td>
+<td><p>Not available</p></td>
+<td><p>Enable for Trip Zone protection and Xlink synchronization features</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CddPwmTripZoneInterruptEnable</strong></p></td>
+<td><p>Not available</p></td>
+<td><p>Enable trip zone interrupt for fault protection</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>CddPwmTripZoneInterruptCategory</strong></p></td>
+<td><p>Not available</p></td>
+<td><p>Trip zone interrupt category (CAT1/CAT2)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CddPwmTripZoneNotification</strong></p></td>
+<td><p>Not available</p></td>
+<td><p>Callback function for trip zone events</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>New Containers Added:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Container</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>CddPwmXlinkConfig</strong></p></td>
+<td><p>Configure PWM cross-linking for frame synchronization</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>CddPwmLinkHwUnit</strong></p></td>
+<td><p>Link multiple PWM hardware units together</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id9">
+<h4><span class="section-number">5.14.2.3.3. </span>Migration Actions<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Configure Emulation Mode:</strong> Set <code class="docutils literal notranslate"><span class="pre">CddPwmEmulationMode</span></code> as required for your debug setup</p></li>
+<li><p><strong>Enable Advanced Mode (Optional):</strong> If you need Trip Zone or Xlink synchronization features, enable <code class="docutils literal notranslate"><span class="pre">CddPwmAdvancedMode</span></code>. Refer to <a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html#advanced-mode"><span class="std std-ref">Advanced Mode</span></a> for detailed information on Trip Zone protection, Xlink synchronization, and other advanced features</p></li>
+<li><p><strong>Configure Trip Zone Protection (Optional):</strong> If fault protection is required, configure the Trip Zone parameters:</p>
+<ul class="simple">
+<li><p>Enable <code class="docutils literal notranslate"><span class="pre">CddPwmTripZoneInterruptEnable</span></code> for trip zone interrupts</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">CddPwmTripZoneInterruptCategory</span></code> (CAT1/CAT2) as appropriate</p></li>
+<li><p>Configure <code class="docutils literal notranslate"><span class="pre">CddPwmTripZoneNotification</span></code> callback function for trip zone events</p></li>
+</ul>
+</li>
+<li><p><strong>Configure Xlink Synchronization (Optional):</strong> If PWM synchronization is needed, configure the Xlink containers:</p>
+<ul class="simple">
+<li><p>Add and configure <code class="docutils literal notranslate"><span class="pre">CddPwmXlinkConfig</span></code> for cross-linking setup</p></li>
+<li><p>Add and configure <code class="docutils literal notranslate"><span class="pre">CddPwmLinkHwUnit</span></code> to link multiple PWM hardware units</p></li>
+</ul>
+</li>
+<li><p><strong>Maintain Backward Compatibility:</strong> For applications not requiring Advanced Mode features, leave parameters in default configuration to ensure backward compatibility</p></li>
+</ol>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>For users migrating from v1.0.0 to v2.0.0 who do not require Advanced Mode features, the default configurations ensure backward compatibility and will not affect your current working setup.</p>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Migration_Guide_Cdd_Sent.html" class="btn btn-neutral float-left" title="5.13. CDD SENT Module Migration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Migration_Guide_Cdd_Uart.html" class="btn btn-neutral float-right" title="5.15. CDD UART Module Migration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2026, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Jan 16, 2026.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.04.01
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

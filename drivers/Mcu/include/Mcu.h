@@ -57,7 +57,7 @@ extern "C" {
 /** \brief Driver Implementation Minor Version. */
 #define MCU_SW_MINOR_VERSION (1U)
 /** \brief Driver Implementation Patch Version. */
-#define MCU_SW_PATCH_VERSION (0U)
+#define MCU_SW_PATCH_VERSION (1U)
 
 /*********************************************************************************************************************
  * Defines for MCU Driver AUTOSAR version used for compatibility checks.

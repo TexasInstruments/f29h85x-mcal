@@ -1,0 +1,67 @@
+# Resource Allocator Module
+
+**Release Version:** 01.04.00
+**Module Version:** 1.00.00
+
+The Resource Allocator module is introduced in MCAL release 01.04.00 as a mandatory foundational configuration module. It centralizes hardware resource management and provides device-specific configuration to all MCAL modules. Resource Allocator is not available in earlier versions.
+
+The Resource Allocator is a **configuration-only module** introduced in MCAL release 01.04.00 as the mandatory foundation for hardware resource management.
+
+## Module Setup and Configuration
+
+### Step 1: Add ResourceAllocator Module to Project
+
+1. Open EB Tresos Studio with your project
+2. Right-click on the project in Project Explorer
+3. Select **"Add/Remove Software Modules"**
+4. In the Available Modules list, locate **"ResourceAllocator"**
+5. Select ResourceAllocator and click **"Add"**
+6. Click **"Finish"** to add the module to your project
+
+```{NOTE}
+User shall load the ResourceAllocator module with [recommended configuration for your device variant](https://software-dl.ti.com/C2000/docs/mcal/F29H85x/latest/src/Module_User_Guide_ResourceAllocator.html#selecting-a-recommended-configuration).
+```
+
+```{figure} Assets/images/migration/resource_allocator/01_01_resource_allocator_add_module.png
+:alt: Add ResourceAllocator module
+:align: center
+:width: 80%
+
+Add ResourceAllocator module to project
+```
+
+### Step 2: Configure ResourceAllocator General Settings
+
+**Navigation Path:** ResourceAllocator → ResourceAllocatorGeneral
+
+**Device Configuration Parameters:**
+- **Device**: Select your F29H85x device (e.g., F29H859DU_Q1)
+- **Variant**: Select device variant (e.g., F29H859DU6_Q)
+- **Package**: Select appropriate package (e.g., F29H859DU6_Q_144RFS)
+
+```{figure} Assets/images/migration/resource_allocator/01_02_resource_allocator_general_config.png
+:alt: ResourceAllocator General Settings
+:align: center
+:width: 80%
+
+Configure ResourceAllocator device, package, and context settings
+```
+
+### Context Selection
+
+Execution context defines which CPU core handles MCAL module operations. Context_0 is a user-defined name that can be customized.
+
+As AUTOSAR is expected to run on CPU1, only CPU1 can be selected here. In future support will be added to define non-AUTOSAR context.
+
+**Configuration:**
+Navigate to **ResourceAllocatorGeneral → Context** and configure **Context_0**.
+
+```{figure} Assets/images/migration/resource_allocator/01_03_resource_allocator_context.png
+:alt: Context Configuration
+:align: center
+:width: 80%
+
+Configure CurrentContext - Context_0 is a user-defined name
+```
+
+All MCAL modules will operate on the configured context.

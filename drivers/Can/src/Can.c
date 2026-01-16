@@ -33,9 +33,6 @@
 #include "SchM_Can.h"
 #include "Can_Priv.h"
 
-/*Design: MCAL-22836 */
-#include "EcuM_Cbk.h"
-
 #if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
 #include "Det.h"
 #endif
@@ -56,11 +53,11 @@
 #error "AUTOSAR Version Numbers of Can are different"
 #endif
 
-#if ((CAN_SW_MAJOR_VERSION != (3U)) || (CAN_SW_MINOR_VERSION != (0U)))
+#if ((CAN_SW_MAJOR_VERSION != (3U)) || (CAN_SW_MINOR_VERSION != (1U)))
 #error "Version numbers of Can.c and Can.h are inconsistent!"
 #endif
 
-#if ((CAN_CFG_MAJOR_VERSION != (3U)) || (CAN_CFG_MINOR_VERSION != (0U)))
+#if ((CAN_CFG_MAJOR_VERSION != (3U)) || (CAN_CFG_MINOR_VERSION != (1U)))
 #error "Version numbers of Can.c and Can_Cfg.h are inconsistent!"
 #endif
 /*********************************************************************************************************************
@@ -1185,6 +1182,7 @@ static FUNC(Std_ReturnType, CAN_CODE)
 
     if (msgController < (uint8)KMAX_CONTROLLER)
     {
+#if (CAN_TRIGGER_TRANSMIT_ENABLE == STD_ON)
         if (TRUE == Can_DriverObj.canMailbox[mailbox].mailBoxConfig.CanTriggerTransmitEnable)
         {
             if (((uint8 *)NULL_PTR == pduInfo->sdu) &&
@@ -1196,17 +1194,21 @@ static FUNC(Std_ReturnType, CAN_CODE)
                 returnValue     = E_OK;
             }
         }
-        else if ((uint8 *)NULL_PTR != pduInfo->sdu)
-        {
-            returnValue = E_OK;
-        }
         else
-        {
-#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
-            (void)Det_ReportError((uint16)CAN_MODULE_ID, (uint8)CAN_INSTANCE_ID, (uint8)CAN_SID_WRITE,
-                                  (uint8)CAN_E_PARAM_POINTER);
 #endif
-            returnValue = E_NOT_OK;
+        {
+            if ((uint8 *)NULL_PTR != pduInfo->sdu)
+            {
+                returnValue = E_OK;
+            }
+            else
+            {
+#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
+                (void)Det_ReportError((uint16)CAN_MODULE_ID, (uint8)CAN_INSTANCE_ID, (uint8)CAN_SID_WRITE,
+                                      (uint8)CAN_E_PARAM_POINTER);
+#endif
+                returnValue = E_NOT_OK;
+            }
         }
     }
 

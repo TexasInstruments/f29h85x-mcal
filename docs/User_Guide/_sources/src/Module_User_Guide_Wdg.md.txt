@@ -216,27 +216,6 @@ The associated Wdg driver configuration generated source files are **Wdg_Cfg.c**
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
 
-#### Migration Guide
-
-Migration guides between module versions are detailed below.
-
-##### v02.00.00 from v01.00.01 or any older versions
-
-In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
-In case of Post build variant, upper modules that call the Wdg_Init function will need to use the new configuration structure name. For example:
-
-```c
-/* Old code (v01.00.01 or any older versions) */
-Wdg_Init(&Wdg_ConfigSetptr);
-
-/* New code (v02.00.00) */
-Wdg_Init(&Wdg_Config);
-```
-
-This change ensures compliance with AUTOSAR naming conventions.
-
-To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.
-
 #### Configuration Parameters
 
 
@@ -334,8 +313,8 @@ All general parameters of the watchdog driver are collected here.
 | Link-Time | VARIANT-LINK-TIME |
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | 6.6 |
-| **Max-value** | 6.6 |
+| **Default-value** | 6.684672000000001 |
+| **Max-value** | 7.0 |
 | **Min-value** | 0.0 |
 
 ##### WdgRunArea

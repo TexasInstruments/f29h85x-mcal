@@ -41,11 +41,11 @@
 #endif
 
 /* vendor specific version information check */
-#if ((CDD_PWM_SW_MAJOR_VERSION != (3U)) || (CDD_PWM_SW_MINOR_VERSION != (0U)))
+#if ((CDD_PWM_SW_MAJOR_VERSION != (3U)) || (CDD_PWM_SW_MINOR_VERSION != (1U)))
 #error "Version numbers of Cdd_Pwm.c and Cdd_Pwm.h are not matching!"
 #endif
 
-#if ((CDD_PWM_CFG_MAJOR_VERSION != (3U)) || (CDD_PWM_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_PWM_CFG_MAJOR_VERSION != (3U)) || (CDD_PWM_CFG_MINOR_VERSION != (1U)))
 #error "Version numbers of Cdd_Pwm.c and Cdd_Pwm_Cfg.h are not matching!"
 #endif
 

@@ -94,11 +94,10 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.4.9. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#migration-guide">4.4.9.1. Migration Guide</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.4.9.2. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#flsconfigset">4.4.9.3. FlsConfigSet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#flsgeneral">4.4.9.4. FlsGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-fls-module">4.4.9.5. Steps To Configure Fls Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.4.9.1. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flsconfigset">4.4.9.2. FlsConfigSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flsgeneral">4.4.9.3. FlsGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-fls-module">4.4.9.4. Steps To Configure Fls Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.4.10. Examples</a><ul>
@@ -128,9 +127,10 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.19. RTDMA Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">7. AUTOSAR Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
 </ul>
 
         </div>
@@ -791,81 +791,14 @@ module DET.</p>
 </tbody>
 </table>
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
-<section id="migration-guide">
-<h3><span class="section-number">4.4.9.1. </span>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h3>
-<p>Migration guides between module versions are detailed below.</p>
-<section id="v03-00-00-from-v02-00-00">
-<h4><span class="section-number">4.4.9.1.1. </span>v03.00.00 from v02.00.00<a class="headerlink" href="#v03-00-00-from-v02-00-00" title="Link to this heading"></a></h4>
-<section id="key-changes">
-<h5><span class="section-number">4.4.9.1.1.1. </span>Key Changes<a class="headerlink" href="#key-changes" title="Link to this heading"></a></h5>
-<ol class="arabic simple">
-<li><p><strong>Resource Allocator Based Approach</strong></p>
-<ul class="simple">
-<li><p>The FLS module now integrates with the Resource Allocator module for centralized device, package, and variant configuration</p></li>
-<li><p>Flash memory parameters such as total size are now derived from the Resource Allocator configuration instead of being directly configured in the FLS module</p></li>
-</ul>
-</li>
-<li><p><strong>FlsDeviceVariant Selection Moved to Resource Allocator</strong></p>
-<ul class="simple">
-<li><p>The device variant selection (which determines flash memory size and characteristics) has been moved from the FLS module configuration to the Resource Allocator module</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">FlsTotalSize</span></code> parameter now automatically retrieves its value from the Resource Allocator configuration</p></li>
-</ul>
-</li>
-</ol>
-</section>
-<section id="migration-steps">
-<h5><span class="section-number">4.4.9.1.1.2. </span>Migration Steps<a class="headerlink" href="#migration-steps" title="Link to this heading"></a></h5>
-<ol class="arabic simple">
-<li><p><strong>Add Resource Allocator Module</strong></p>
-<ul class="simple">
-<li><p>If not already present, add the Resource Allocator module to your EB Tresos project configuration</p></li>
-</ul>
-</li>
-<li><p><strong>Configure Device Variant in Resource Allocator</strong></p>
-<ul class="simple">
-<li><p>Configure the device variant and package selection in the Resource Allocator module</p></li>
-<li><p>This will automatically determine the flash memory size and other device-specific parameters</p></li>
-</ul>
-</li>
-<li><p><strong>Update FLS Configuration</strong></p>
-<ul class="simple">
-<li><p>Open the FLS module configuration in EB Tresos</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">FlsTotalSize</span></code> parameter will now be automatically populated based on the Resource Allocator configuration</p></li>
-<li><p>Verify that the flash parameters are correctly derived</p></li>
-</ul>
-</li>
-<li><p><strong>Rebuild Application</strong></p>
-<ul class="simple">
-<li><p>Rebuild your application with the updated configuration files</p></li>
-</ul>
-</li>
-</ol>
-<p>For more details on Resource Allocator configuration, refer to the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a>.</p>
-</section>
-</section>
-<section id="v02-00-00-from-v01-01-00-or-any-older-versions">
-<h4><span class="section-number">4.4.9.1.2. </span>v02.00.00 from v01.01.00 or any older versions<a class="headerlink" href="#v02-00-00-from-v01-01-00-or-any-older-versions" title="Link to this heading"></a></h4>
-<p>In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
-In case of Post build variant, upper modules that call the Fls_Init function will need to use the new configuration structure name. For example:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Old code (v01.01.00 or any older versions) */</span>
-<span class="n">Fls_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Fls_FlsConfigSet</span><span class="p">);</span>
-
-<span class="cm">/* New code (v02.00.00) */</span>
-<span class="n">Fls_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Fls_Config</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>This change ensures compliance with AUTOSAR naming conventions.</p>
-<p>To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.</p>
-</section>
-</section>
 <section id="configuration-parameters">
-<h3><span class="section-number">4.4.9.2. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
 </section>
 <section id="flsconfigset">
-<h3><span class="section-number">4.4.9.3. </span>FlsConfigSet<a class="headerlink" href="#flsconfigset" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.2. </span>FlsConfigSet<a class="headerlink" href="#flsconfigset" title="Link to this heading"></a></h3>
 <p>Container for runtime configuration parameters of the flash driver.</p>
 <section id="flsacerase">
-<h4><span class="section-number">4.4.9.3.1. </span>FlsAcErase<a class="headerlink" href="#flsacerase" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.1. </span>FlsAcErase<a class="headerlink" href="#flsacerase" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -907,7 +840,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsacwrite">
-<h4><span class="section-number">4.4.9.3.2. </span>FlsAcWrite<a class="headerlink" href="#flsacwrite" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.2. </span>FlsAcWrite<a class="headerlink" href="#flsacwrite" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -949,7 +882,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flscallcycle">
-<h4><span class="section-number">4.4.9.3.3. </span>FlsCallCycle<a class="headerlink" href="#flscallcycle" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.3. </span>FlsCallCycle<a class="headerlink" href="#flscallcycle" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -991,7 +924,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsdefaultmode">
-<h4><span class="section-number">4.4.9.3.4. </span>FlsDefaultMode<a class="headerlink" href="#flsdefaultmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.4. </span>FlsDefaultMode<a class="headerlink" href="#flsdefaultmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1030,7 +963,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsjobendnotification">
-<h4><span class="section-number">4.4.9.3.5. </span>FlsJobEndNotification<a class="headerlink" href="#flsjobendnotification" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.5. </span>FlsJobEndNotification<a class="headerlink" href="#flsjobendnotification" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1078,7 +1011,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsjoberrornotification">
-<h4><span class="section-number">4.4.9.3.6. </span>FlsJobErrorNotification<a class="headerlink" href="#flsjoberrornotification" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.6. </span>FlsJobErrorNotification<a class="headerlink" href="#flsjoberrornotification" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1126,7 +1059,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsmaxreadfastmode">
-<h4><span class="section-number">4.4.9.3.7. </span>FlsMaxReadFastMode<a class="headerlink" href="#flsmaxreadfastmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.7. </span>FlsMaxReadFastMode<a class="headerlink" href="#flsmaxreadfastmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1168,7 +1101,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsmaxwritefastmode">
-<h4><span class="section-number">4.4.9.3.8. </span>FlsMaxWriteFastMode<a class="headerlink" href="#flsmaxwritefastmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.8. </span>FlsMaxWriteFastMode<a class="headerlink" href="#flsmaxwritefastmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1210,7 +1143,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsmaxreadnormalmode">
-<h4><span class="section-number">4.4.9.3.9. </span>FlsMaxReadNormalMode<a class="headerlink" href="#flsmaxreadnormalmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.9. </span>FlsMaxReadNormalMode<a class="headerlink" href="#flsmaxreadnormalmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1252,7 +1185,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsmaxwritenormalmode">
-<h4><span class="section-number">4.4.9.3.10. </span>FlsMaxWriteNormalMode<a class="headerlink" href="#flsmaxwritenormalmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.10. </span>FlsMaxWriteNormalMode<a class="headerlink" href="#flsmaxwritenormalmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1294,7 +1227,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsprotection">
-<h4><span class="section-number">4.4.9.3.11. </span>FlsProtection<a class="headerlink" href="#flsprotection" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.11. </span>FlsProtection<a class="headerlink" href="#flsprotection" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1336,7 +1269,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="fls-cmdweprota">
-<h4><span class="section-number">4.4.9.3.12. </span>Fls_CMDWEPROTA<a class="headerlink" href="#fls-cmdweprota" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.12. </span>Fls_CMDWEPROTA<a class="headerlink" href="#fls-cmdweprota" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1378,7 +1311,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="fls-cmdweprotb">
-<h4><span class="section-number">4.4.9.3.13. </span>Fls_CMDWEPROTB<a class="headerlink" href="#fls-cmdweprotb" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.13. </span>Fls_CMDWEPROTB<a class="headerlink" href="#fls-cmdweprotb" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1420,10 +1353,10 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsexternaldriver">
-<h4><span class="section-number">4.4.9.3.14. </span>FlsExternalDriver<a class="headerlink" href="#flsexternaldriver" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.14. </span>FlsExternalDriver<a class="headerlink" href="#flsexternaldriver" title="Link to this heading"></a></h4>
 <p>This container is present for external Flash drivers only. Internal Flash drivers do not use the parameter listed in this container, hence its multiplicity is 0 for internal drivers. Currently, not supported as only internal flash is present.</p>
 <section id="flsspireference">
-<h5><span class="section-number">4.4.9.3.14.1. </span>FlsSpiReference<a class="headerlink" href="#flsspireference" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.14.1. </span>FlsSpiReference<a class="headerlink" href="#flsspireference" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1469,14 +1402,14 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </section>
 </section>
 <section id="flssectorlist">
-<h4><span class="section-number">4.4.9.3.15. </span>FlsSectorList<a class="headerlink" href="#flssectorlist" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.15. </span>FlsSectorList<a class="headerlink" href="#flssectorlist" title="Link to this heading"></a></h4>
 <p>List of flashable sectors and pages.</p>
 </section>
 <section id="flssector">
-<h4><span class="section-number">4.4.9.3.16. </span>FlsSector<a class="headerlink" href="#flssector" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.16. </span>FlsSector<a class="headerlink" href="#flssector" title="Link to this heading"></a></h4>
 <p>Configuration description of a flashable sector</p>
 <section id="flsnumberofsectors">
-<h5><span class="section-number">4.4.9.3.16.1. </span>FlsNumberOfSectors<a class="headerlink" href="#flsnumberofsectors" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.16.1. </span>FlsNumberOfSectors<a class="headerlink" href="#flsnumberofsectors" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1518,7 +1451,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flspagesize">
-<h5><span class="section-number">4.4.9.3.16.2. </span>FlsPageSize<a class="headerlink" href="#flspagesize" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.16.2. </span>FlsPageSize<a class="headerlink" href="#flspagesize" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1560,7 +1493,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flssectorsize">
-<h5><span class="section-number">4.4.9.3.16.3. </span>FlsSectorSize<a class="headerlink" href="#flssectorsize" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.16.3. </span>FlsSectorSize<a class="headerlink" href="#flssectorsize" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1602,7 +1535,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flssectorstartaddress">
-<h5><span class="section-number">4.4.9.3.16.4. </span>FlsSectorStartaddress<a class="headerlink" href="#flssectorstartaddress" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.16.4. </span>FlsSectorStartaddress<a class="headerlink" href="#flssectorstartaddress" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1646,10 +1579,10 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </section>
 </section>
 <section id="flsgeneral">
-<h3><span class="section-number">4.4.9.4. </span>FlsGeneral<a class="headerlink" href="#flsgeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.3. </span>FlsGeneral<a class="headerlink" href="#flsgeneral" title="Link to this heading"></a></h3>
 <p>Container for general parameters of the flash driver. These parameters are always pre-compile.</p>
 <section id="flsacloadonjobstart">
-<h4><span class="section-number">4.4.9.4.1. </span>FlsAcLoadOnJobStart<a class="headerlink" href="#flsacloadonjobstart" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.1. </span>FlsAcLoadOnJobStart<a class="headerlink" href="#flsacloadonjobstart" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1685,7 +1618,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsbaseaddress">
-<h4><span class="section-number">4.4.9.4.2. </span>FlsBaseAddress<a class="headerlink" href="#flsbaseaddress" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.2. </span>FlsBaseAddress<a class="headerlink" href="#flsbaseaddress" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1727,7 +1660,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flstotalsize">
-<h4><span class="section-number">4.4.9.4.3. </span>FlsTotalSize<a class="headerlink" href="#flstotalsize" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.3. </span>FlsTotalSize<a class="headerlink" href="#flstotalsize" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1769,7 +1702,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsnumbanks">
-<h4><span class="section-number">4.4.9.4.4. </span>FlsNumBanks<a class="headerlink" href="#flsnumbanks" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.4. </span>FlsNumBanks<a class="headerlink" href="#flsnumbanks" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1811,7 +1744,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flssectorsizeinbytes">
-<h4><span class="section-number">4.4.9.4.5. </span>FlsSectorSizeInBytes<a class="headerlink" href="#flssectorsizeinbytes" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.5. </span>FlsSectorSizeInBytes<a class="headerlink" href="#flssectorsizeinbytes" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1853,7 +1786,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsblankcheckapi">
-<h4><span class="section-number">4.4.9.4.6. </span>FlsBlankCheckApi<a class="headerlink" href="#flsblankcheckapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.6. </span>FlsBlankCheckApi<a class="headerlink" href="#flsblankcheckapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1889,7 +1822,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flscancelapi">
-<h4><span class="section-number">4.4.9.4.7. </span>FlsCancelApi<a class="headerlink" href="#flscancelapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.7. </span>FlsCancelApi<a class="headerlink" href="#flscancelapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1925,7 +1858,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flscompareapi">
-<h4><span class="section-number">4.4.9.4.8. </span>FlsCompareApi<a class="headerlink" href="#flscompareapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.8. </span>FlsCompareApi<a class="headerlink" href="#flscompareapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1961,7 +1894,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsdeverrordetect">
-<h4><span class="section-number">4.4.9.4.9. </span>FlsDevErrorDetect<a class="headerlink" href="#flsdeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.9. </span>FlsDevErrorDetect<a class="headerlink" href="#flsdeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1997,7 +1930,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsdriverindex">
-<h4><span class="section-number">4.4.9.4.10. </span>FlsDriverIndex<a class="headerlink" href="#flsdriverindex" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.10. </span>FlsDriverIndex<a class="headerlink" href="#flsdriverindex" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2039,7 +1972,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flseraseverificationenabled">
-<h4><span class="section-number">4.4.9.4.11. </span>FlsEraseVerificationEnabled<a class="headerlink" href="#flseraseverificationenabled" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.11. </span>FlsEraseVerificationEnabled<a class="headerlink" href="#flseraseverificationenabled" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2075,7 +2008,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsgetjobresultapi">
-<h4><span class="section-number">4.4.9.4.12. </span>FlsGetJobResultApi<a class="headerlink" href="#flsgetjobresultapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.12. </span>FlsGetJobResultApi<a class="headerlink" href="#flsgetjobresultapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2111,7 +2044,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsgetstatusapi">
-<h4><span class="section-number">4.4.9.4.13. </span>FlsGetStatusApi<a class="headerlink" href="#flsgetstatusapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.13. </span>FlsGetStatusApi<a class="headerlink" href="#flsgetstatusapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2147,7 +2080,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flssetmodeapi">
-<h4><span class="section-number">4.4.9.4.14. </span>FlsSetModeApi<a class="headerlink" href="#flssetmodeapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.14. </span>FlsSetModeApi<a class="headerlink" href="#flssetmodeapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2183,7 +2116,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flstimeoutsupervisionenabled">
-<h4><span class="section-number">4.4.9.4.15. </span>FlsTimeoutSupervisionEnabled<a class="headerlink" href="#flstimeoutsupervisionenabled" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.15. </span>FlsTimeoutSupervisionEnabled<a class="headerlink" href="#flstimeoutsupervisionenabled" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2219,7 +2152,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsversioninfoapi">
-<h4><span class="section-number">4.4.9.4.16. </span>FlsVersionInfoApi<a class="headerlink" href="#flsversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.16. </span>FlsVersionInfoApi<a class="headerlink" href="#flsversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2255,7 +2188,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flswriteverificationenabled">
-<h4><span class="section-number">4.4.9.4.17. </span>FlsWriteVerificationEnabled<a class="headerlink" href="#flswriteverificationenabled" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.17. </span>FlsWriteVerificationEnabled<a class="headerlink" href="#flswriteverificationenabled" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2291,7 +2224,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flswaitstates">
-<h4><span class="section-number">4.4.9.4.18. </span>FlsWaitStates<a class="headerlink" href="#flswaitstates" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.18. </span>FlsWaitStates<a class="headerlink" href="#flswaitstates" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2333,7 +2266,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flscpuclockref">
-<h4><span class="section-number">4.4.9.4.19. </span>FlsCpuClockRef<a class="headerlink" href="#flscpuclockref" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.19. </span>FlsCpuClockRef<a class="headerlink" href="#flscpuclockref" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2370,7 +2303,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </section>
 </section>
 <section id="steps-to-configure-fls-module">
-<h3><span class="section-number">4.4.9.5. </span>Steps To Configure Fls Module<a class="headerlink" href="#steps-to-configure-fls-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.4. </span>Steps To Configure Fls Module<a class="headerlink" href="#steps-to-configure-fls-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool and load Mcu, Os, Dem and Fls modules.</p></li>
 <li><p>Open Mcu and Dem Module to Configure Clock and Dem Error for Mcu and Fls.</p></li>
@@ -2379,7 +2312,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 <li><p>Save the configuration and generate the configuration.</p></li>
 </ol>
 <section id="standard-configuration">
-<h4><span class="section-number">4.4.9.5.1. </span>Standard Configuration<a class="headerlink" href="#standard-configuration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.1. </span>Standard Configuration<a class="headerlink" href="#standard-configuration" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Standard Parameters</strong></p></th>
@@ -2544,7 +2477,7 @@ of the flash driver’s job processing function in normal mode.</p></td>
 </table>
 </section>
 <section id="ip-specific-configuration">
-<h4><span class="section-number">4.4.9.5.2. </span>IP Specific Configuration<a class="headerlink" href="#ip-specific-configuration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.2. </span>IP Specific Configuration<a class="headerlink" href="#ip-specific-configuration" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Standard Parameters</strong></p></th>

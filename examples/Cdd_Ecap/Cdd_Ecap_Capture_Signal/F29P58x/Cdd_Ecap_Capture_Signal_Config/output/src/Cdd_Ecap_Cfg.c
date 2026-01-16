@@ -34,11 +34,11 @@ extern "C" {
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
-  #if ((CDD_ECAP_SW_MAJOR_VERSION != (3U)) ||(CDD_ECAP_SW_MINOR_VERSION != (0U)))
+  #if ((CDD_ECAP_SW_MAJOR_VERSION != (3U)) ||(CDD_ECAP_SW_MINOR_VERSION != (1U)))
   #error "Version numbers of Cdd_Ecap_Cfg.c and Cdd_Ecap.h are inconsistent!"
 #endif
 
- #if ((CDD_ECAP_CFG_MAJOR_VERSION != (3U)) ||(CDD_ECAP_CFG_MINOR_VERSION != (0U)))
+ #if ((CDD_ECAP_CFG_MAJOR_VERSION != (3U)) ||(CDD_ECAP_CFG_MINOR_VERSION != (1U)))
   #error "Version numbers of Cdd_Ecap_Cfg.c and Cdd_Ecap_Cfg.h are inconsistent!"
 #endif
 

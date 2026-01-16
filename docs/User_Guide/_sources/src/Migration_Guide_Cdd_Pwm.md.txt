@@ -1,0 +1,257 @@
+# CDD PWM Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
+
+### Summary
+
+Version v03.00.00 introduces **Resource Allocator as a mandatory architectural foundation**, fixes PWM channel symbolic name generation, and adds HRPWM calibration instance configuration support. This represents a fundamental shift from direct parameter configuration to centralized resource management:
+
+1. **Resource Allocator Introduction and PWM Instance Configuration Updates**: Resource Allocator becomes mandatory with CDD PWM configurations updated to reference Resource Allocator instances
+2. **HRPWM Configuration Support**: Optional HRPWM calibration instance configuration support added
+3. **Symbolic Name Uniqueness Requirements**: Enhanced validation requires unique symbolic names across configurations
+
+**PREREQUISITE:** Complete [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md#module-setup-and-configuration) before proceeding.
+
+### Change 1: Resource Allocator Introduction and PWM Instance Configuration Updates
+
+#### Description
+
+Resource Allocator becomes a mandatory architectural foundation for the CDD PWM module, with CDD PWM configurations updated to reference Resource Allocator instances. This represents a fundamental shift from direct parameter configuration to centralized resource management, where CDD PWM instances are allocated through Resource Allocator and then referenced by PWM unit configurations.
+
+#### Old vs New Configuration
+
+**Previous Configuration (v02.00.00):**
+Direct parameter selection was used without Resource Allocator dependency.
+
+```{figure} Assets/images/migration/cdd_pwm_module/02_01_cdd_pwm_module_old_config.png
+:alt: Old CDD PWM Config
+:align: center
+:width: 80%
+
+v02.00.00: Direct PWM instance parameter selection
+```
+
+**New Configuration (v03.00.00):**
+CDD PWM configurations now reference instances allocated through Resource Allocator.
+
+```{figure} Assets/images/migration/cdd_pwm_module/02_03_cdd_pwm_module_select_instance.png
+:alt: Select CDD PWM Instance
+:align: center
+:width: 80%
+
+v03.00.00: Set CddPwmInstanceRef to point to the corresponding Cdd_PwmAllocatedInstance in Resource Allocator
+```
+
+#### Migration Actions
+
+1. **Setup Resource Allocator:** Follow [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md)
+
+2. **Navigate to Context:** Navigate to **ResourceAllocatorGeneral → Context → Cdd_Pwm** and add CDD PWM allocator:
+
+```{figure} Assets/images/migration/cdd_pwm_module/01_01_cdd_pwm_module_add_allocator.png
+:alt: Add CDD PWM Allocator
+:align: center
+:width: 80%
+
+Navigate to Context and add CDD PWM allocator
+```
+
+3. **Add CDD PWM Instance:** Add Cdd_PwmAllocatedInstance entries for each PWM instance your application requires:
+
+```{figure} Assets/images/migration/cdd_pwm_module/01_02_cdd_pwm_module_add_instance.png
+:alt: Add CDD PWM Instance
+:align: center
+:width: 80%
+
+Add Cdd_PwmAllocatedInstance entries for each PWM instance your application requires
+```
+
+4. **Configure PWM Instance:** Configure the InstanceName, Frame, and BaseAddr for each allocated instance:
+
+```{figure} Assets/images/migration/cdd_pwm_module/01_03_cdd_pwm_module_select_instance.png
+:alt: Configure CDD PWM Instance
+:align: center
+:width: 80%
+
+Configure the InstanceName, Frame, and BaseAddr for each allocated instance
+```
+
+5. **Complete Configuration:** Finalize CDD PWM instance allocation
+
+6. **Navigate to CddPwmUnit:** Navigate to **Cdd → CddPwmUnit** and update configurations to reference the CDD PWM instances allocated in Resource Allocator
+
+7. **Open PWM Unit Configuration:** Access the CddPwmUnit configuration that needs to be updated
+
+8. **Set Instance Reference:** Set CddPwmInstanceRef to point to the corresponding Cdd_PwmAllocatedInstance in Resource Allocator
+
+9. **Verify Automatic Derivation:** Confirm that the CddPwmBaseAddress parameter is now automatically derived from the Resource Allocator reference
+
+### Change 2: HRPWM Configuration Support
+
+#### Description
+
+Version v03.00.00 adds optional HRPWM (High-Resolution PWM) calibration instance configuration support for advanced PWM applications. This feature allows configuration of HRPWM calibration instances through the Resource Allocator and referencing them in CDD PWM configuration.
+
+#### Old vs New HRPWM Configuration
+
+**Previous Configuration (v02.00.00):**
+Limited HRPWM configuration options without calibration instance support.
+
+**New Configuration (v03.00.00):**
+Optional HRPWM calibration instance configuration through CddPwmHrpwmCalibrationConfig container in advanced mode.
+
+#### Migration Actions
+
+1. **Evaluate HRPWM Requirements:** Determine if your application requires HRPWM (High-Resolution PWM) features
+
+2. **Configure HrCal in Resource Allocator:** If using HRPWM features, configure HrCal allocation in Resource Allocator first:
+
+   - Navigate to **ResourceAllocatorGeneral → Context → Cdd_Pwm → CddPwmHrpwmCalInstance**
+   - Add CddPwmHrpwmCalInstance allocator entries for each calibration instance required
+   - Configure the InstanceName and calibration parameters for each allocated CddPwmHrpwmCalInstance instance
+
+```{figure} Assets/images/migration/cdd_pwm_module/03_01_cdd_pwm_module_configure_hrcal_ra.png
+:alt: Configure HrCal in Resource Allocator
+:align: center
+:width: 80%
+
+Configure HrCal allocation in Resource Allocator for HRPWM calibration support
+```
+
+3. **Enable Advanced Mode:** Enable advanced mode in the CDD PWM configuration to access HRPWM features. Refer to [Advanced Mode](Module_User_Guide_Cdd_Pwm.md#advanced-mode) for detailed information on advanced features and APIs
+
+4. **Configure HRPWM Calibration:** Configure HRPWM calibration instances through the CddPwmHrpwmCalibrationConfig container and reference the CddPwmHrpwmCalInstance instances from Resource Allocator:
+
+```{figure} Assets/images/migration/cdd_pwm_module/03_02_cdd_pwm_module_configure_hrpwm.png
+:alt: Configure HRPWM
+:align: center
+:width: 80%
+
+Configure HRPWM calibration instances and reference HrCal instances from Resource Allocator
+```
+
+5. **Verify Calibration Settings:** Ensure proper calibration settings for high-resolution PWM operation and that HrCal instances are properly referenced
+
+### Change 3: Symbolic Name Uniqueness Requirements
+
+#### Description
+
+Version v03.00.00 introduces enhanced validation that requires symbolic names to be unique across configurations. When migrating from v02.00.00 to v03.00.00, EB Tresos will generate validation errors if symbolic names are not unique.
+
+#### Old vs New Validation Requirements
+
+**Uniqueness Requirements:**
+
+| Parameter | v02.00.00 | v03.00.00 |
+|-----------|-----------|-----------|
+| **CddPwmOutputChannel (container name)** | No uniqueness constraint | Must be unique across all HW units |
+| **CddPwmXlinkInstanceRef** | No uniqueness constraint | Must be unique across all containers |
+| **CddPwmHrpwmCalInstanceRef** | No uniqueness constraint | Must be unique across all containers |
+
+#### Migration Actions
+
+1. **Review Container Names:** Check all CddPwmOutputChannel container names for uniqueness across all HW units
+
+2. **Review Instance References:** Ensure CddPwmXlinkInstanceRef and CddPwmHrpwmCalInstanceRef are unique across all containers
+
+3. **Resolve Conflicts:** Update any duplicate symbolic names to ensure uniqueness and avoid validation errors during migration
+
+4. **Validate Configuration:** Run validation in EB Tresos to confirm all symbolic names are now unique
+
+5. **Regenerate Configuration:** Generate configuration files to get the corrected symbolic names in Cfg.h
+
+```{NOTE}
+The Resource Allocator module must be configured before the CDD PWM module to ensure correct instance availability. For more details on Resource Allocator configuration, see the Resource Allocator Module User Guide.
+```
+
+## v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration
+
+### Summary
+
+Version v02.00.00 introduces parameter name updates, new advanced features, and enhanced functionality while maintaining backward compatibility for basic PWM operations:
+
+1. **Parameter Renaming**: Existing parameters renamed for clarity and consistency as initialization/default values
+2. **Advanced Mode Features**: Introduction of Advanced Mode with Trip Zone protection, Xlink synchronization, and enhanced emulation support
+
+### Change 1: Parameter Renaming
+
+#### Description
+
+Version v02.00.00 renames existing parameters to better reflect their purpose as initialization/default values and improves naming consistency across the module. This change clarifies that these parameters represent initial configuration values written during PWM initialization.
+
+#### Old vs New Parameter Names
+
+**Parameter Name Mapping:**
+
+| v01.00.00 | v02.00.00 |
+|-----------|-----------|
+| `CddPwmPeriod` | `CddPwmDefaultPeriod` |
+| `CddPwmDutyCycle` | `CddPwmDefaultDutyCycle` |
+| `CddPwmDutyCycleInPercentage` | `CddPwmDefaultDutyCycleInPercentage` |
+| `CddPwmNotification` | `CddPwmInterruptNotification` |
+
+**Parameter Details:**
+- **CddPwmDefaultPeriod:** Period value for initialization, written to TBPRD register
+- **CddPwmDefaultDutyCycle:** Duty cycle value for initialization
+- **CddPwmDefaultDutyCycleInPercentage:** Duty cycle in percentage (0-100%)
+- **CddPwmInterruptNotification:** PWM interrupt callback function
+
+#### Migration Actions
+
+1. **Update Parameter Names:** Update the following parameter names in your PWM configuration:
+   - Rename `CddPwmPeriod` → `CddPwmDefaultPeriod`
+   - Rename `CddPwmDutyCycle` → `CddPwmDefaultDutyCycle`
+   - Rename `CddPwmDutyCycleInPercentage` → `CddPwmDefaultDutyCycleInPercentage`
+   - Rename `CddPwmNotification` → `CddPwmInterruptNotification`
+
+2. **Verify Configuration Values:** Ensure all renamed parameters retain their intended configuration values
+
+3. **Update Documentation:** Update any project documentation that references the old parameter names
+
+### Change 2: Advanced Mode Features
+
+#### Description
+
+Version v02.00.00 introduces Advanced Mode with Trip Zone protection and Xlink synchronization features, along with enhanced emulation mode support. These features provide fault protection capabilities and PWM synchronization for advanced applications.
+
+#### Old vs New Feature Configuration
+
+**New Parameters Added:**
+
+| Parameter | v01.00.00 | v02.00.00 |
+|-----------|-----------|-----------|
+| **CddPwmEmulationMode** | Not available | Controls PWM behavior during debug/emulation |
+| **CddPwmAdvancedMode** | Not available | Enable for Trip Zone protection and Xlink synchronization features |
+| **CddPwmTripZoneInterruptEnable** | Not available | Enable trip zone interrupt for fault protection |
+| **CddPwmTripZoneInterruptCategory** | Not available | Trip zone interrupt category (CAT1/CAT2) |
+| **CddPwmTripZoneNotification** | Not available | Callback function for trip zone events |
+
+**New Containers Added:**
+
+| Container | Description |
+|-----------|-------------|
+| **CddPwmXlinkConfig** | Configure PWM cross-linking for frame synchronization |
+| **CddPwmLinkHwUnit** | Link multiple PWM hardware units together |
+
+#### Migration Actions
+
+1. **Configure Emulation Mode:** Set `CddPwmEmulationMode` as required for your debug setup
+
+2. **Enable Advanced Mode (Optional):** If you need Trip Zone or Xlink synchronization features, enable `CddPwmAdvancedMode`. Refer to [Advanced Mode](Module_User_Guide_Cdd_Pwm.md#advanced-mode) for detailed information on Trip Zone protection, Xlink synchronization, and other advanced features
+
+3. **Configure Trip Zone Protection (Optional):** If fault protection is required, configure the Trip Zone parameters:
+   - Enable `CddPwmTripZoneInterruptEnable` for trip zone interrupts
+   - Set `CddPwmTripZoneInterruptCategory` (CAT1/CAT2) as appropriate
+   - Configure `CddPwmTripZoneNotification` callback function for trip zone events
+
+4. **Configure Xlink Synchronization (Optional):** If PWM synchronization is needed, configure the Xlink containers:
+   - Add and configure `CddPwmXlinkConfig` for cross-linking setup
+   - Add and configure `CddPwmLinkHwUnit` to link multiple PWM hardware units
+
+5. **Maintain Backward Compatibility:** For applications not requiring Advanced Mode features, leave parameters in default configuration to ensure backward compatibility
+
+```{IMPORTANT}
+For users migrating from v1.0.0 to v2.0.0 who do not require Advanced Mode features, the default configurations ensure backward compatibility and will not affect your current working setup.
+```

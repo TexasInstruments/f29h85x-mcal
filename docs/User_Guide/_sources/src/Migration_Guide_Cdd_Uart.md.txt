@@ -1,0 +1,160 @@
+# CDD UART Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
+
+### Summary
+
+Version v03.00.00 introduces **Resource Allocator as a mandatory architectural foundation**. This represents a fundamental shift from direct parameter configuration to centralized resource management:
+
+1. **Resource Allocator Introduction and UART Instance Configuration Updates**: Resource Allocator becomes mandatory with CDD UART configurations updated to reference Resource Allocator instances
+
+**PREREQUISITE:** Complete [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md#module-setup-and-configuration) before proceeding.
+
+### Change 1: Resource Allocator Introduction and UART Instance Configuration Updates
+
+#### Description
+
+Resource Allocator becomes a mandatory architectural foundation for the CDD UART module, with CDD UART configurations updated to reference Resource Allocator instances. This represents a fundamental shift from direct parameter configuration to centralized resource management, where CDD UART instances are allocated through Resource Allocator and then referenced by UART unit configurations.
+
+#### Old vs New Configuration
+
+**Previous Configuration (v02.00.00):**
+Direct parameter selection was used without Resource Allocator dependency.
+
+```{figure} Assets/images/migration/cdd_uart_module/05_01_cdd_uart_module_old_config.png
+:alt: Old CDD UART Config
+:align: center
+:width: 80%
+
+v02.00.00: Direct UART instance parameter selection
+```
+
+**New Configuration (v03.00.00):**
+CDD UART configurations now reference instances allocated through Resource Allocator.
+
+```{figure} Assets/images/migration/cdd_uart_module/05_03_cdd_uart_module_select_instance.png
+:alt: Select CDD UART Instance
+:align: center
+:width: 80%
+
+v03.00.00: Set CddUartInstanceRef to point to the corresponding Cdd_UartAllocatedInstance in Resource Allocator
+```
+
+#### Migration Actions
+
+1. **Setup Resource Allocator:** Follow [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md)
+
+2. **Navigate to Context:** Navigate to **ResourceAllocatorGeneral → Context → Cdd_Uart** and add CDD UART allocator:
+
+```{figure} Assets/images/migration/cdd_uart_module/04_01_cdd_uart_module_add_allocator.png
+:alt: Add CDD UART Allocator
+:align: center
+:width: 80%
+
+Navigate to Context and add CDD UART allocator
+```
+
+3. **Add CDD UART Instance:** Add Cdd_UartAllocatedInstance entries for each UART instance your application requires:
+
+```{figure} Assets/images/migration/cdd_uart_module/04_02_cdd_uart_module_add_instance.png
+:alt: Add CDD UART Instance
+:align: center
+:width: 80%
+
+Add Cdd_UartAllocatedInstance entries for each UART instance your application requires
+```
+
+4. **Configure UART Instance:** Configure the InstanceName, Frame, and BaseAddr for each allocated instance:
+
+```{figure} Assets/images/migration/cdd_uart_module/04_03_cdd_uart_module_select_instance.png
+:alt: Configure CDD UART Instance
+:align: center
+:width: 80%
+
+Configure the InstanceName, Frame, and BaseAddr for each allocated instance
+```
+
+5. **Complete Configuration:** Finalize CDD UART instance allocation
+
+6. **Navigate to CddUartUnit:** Navigate to **Cdd → CddUartUnit** and update configurations to reference the CDD UART instances allocated in Resource Allocator
+
+7. **Open UART Unit Configuration:** Access the CddUartUnit configuration that needs to be updated
+
+8. **Set Instance Reference:** Set CddUartInstanceRef to point to the corresponding Cdd_UartAllocatedInstance in Resource Allocator
+
+9. **Verify Automatic Derivation:** Confirm that the CddUartBaseAddress parameter is now automatically derived from the Resource Allocator reference
+
+```{NOTE}
+The Resource Allocator module must be configured before the CDD UART module to ensure correct instance availability. For more details on Resource Allocator configuration, see the Resource Allocator Module User Guide.
+```
+
+## v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration
+
+### Summary
+
+Version v02.00.00 introduces updated UART instance names and changes clock frequency selection from hardcoded values to MCU system clock references:
+
+1. **UART Instance Name Changes**: UART instance naming convention updates for consistency and compatibility
+2. **Clock Frequency Selection Updates**: Clock frequency configuration changed from hardcoded values to MCU system clock references
+
+### Change 1: UART Instance Name Changes
+
+#### Description
+
+Version v02.00.00 updates UART instance names for consistency and compatibility with the updated plugin architecture. The plugin will automatically identify and flag incompatible UART instance configurations that need to be updated.
+
+#### Old vs New Instance Configuration
+
+**Configuration Compatibility:**
+
+| v01.00.00 | v02.00.00 |
+|-----------|-----------|
+| Old UART instance naming convention | Updated naming convention for plugin compatibility |
+| Direct instance name configuration | Plugin-validated instance name selection |
+
+**Migration Requirements:**
+- UART instance values must be chosen from the updated plugin options
+- Plugin automatically flags incompatible configurations
+- All UART instances require reconfiguration with new naming conventions
+
+#### Migration Actions
+
+1. **Open Configuration:** Open your existing configuration in the latest plugin version
+
+2. **Identify Incompatible Configurations:** The plugin will automatically identify and flag incompatible UART instance configurations that need to be updated
+
+3. **Configure UART Instances:** Configure the corresponding UART instances by choosing values from the updated plugin options
+
+4. **Verify All Instances:** Ensure all UART instances used in your application are properly configured with the new naming conventions
+
+5. **Validate Configuration:** Confirm that all UART instance configurations are compatible with the v02.00.00 plugin requirements
+
+### Change 2: Clock Frequency Selection Updates
+
+#### Description
+
+Version v02.00.00 changes clock frequency selection from hardcoded values to MCU system clock references. This change improves integration with the MCU module and ensures consistent clock configuration across the system.
+
+#### Old vs New Clock Configuration
+
+**Clock Frequency Configuration:**
+
+| v01.00.00 | v02.00.00 |
+|-----------|-----------|
+| Hardcoded clock frequency values | MCU system clock references |
+| Static frequency configuration | Dynamic clock frequency from MCU module |
+| Manual clock value entry | Automatic derivation from MCU configuration |
+
+#### Migration Actions
+
+1. **Run Auto-Calculate Wizard:** Execute the auto-calculate wizard to update the UART base address with new clock references
+
+2. **Update Clock Configuration:** Update UART clock frequency configuration to reference MCU system clock instead of hardcoded values
+
+3. **Verify MCU Integration:** Ensure clock frequency settings align with your MCU configuration
+
+4. **Validate Clock Settings:** Confirm that all UART clock configurations properly reference the MCU system clock
+
+5. **Test Clock Functionality:** Verify that UART operations work correctly with the new clock frequency configuration

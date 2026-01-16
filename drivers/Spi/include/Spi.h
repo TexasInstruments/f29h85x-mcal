@@ -52,7 +52,7 @@ extern "C" {
 /** \brief Driver Implementation Major Version. */
 #define SPI_SW_MAJOR_VERSION (3U)
 /** \brief Driver Implementation Minor Version. */
-#define SPI_SW_MINOR_VERSION (0U)
+#define SPI_SW_MINOR_VERSION (1U)
 /** \brief Driver Implementation Patch Version. */
 #define SPI_SW_PATCH_VERSION (0U)
 
