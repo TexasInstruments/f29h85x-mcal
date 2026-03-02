@@ -470,6 +470,15 @@ Example:
 <td><p>1. Call Fls_f29Compare() with a ramAddr that is not 32-bit aligned (e.g. 8-bit aligned). <br>2. Observe that execution crashes in Fls_priv.c in Fls_F29Compare() at P2VAR(uint32, AUTOMATIC, FLS_APPL_DATA) pu32CheckValueBuffer = (uint32 *)Fls_DrvObj.ramAddr;</p></td>
 <td><p>Removed the illegal conversion and appropriately internally handle the 8-bit pointer.</p></td>
 </tr>
+<tr class="row-odd"><td><p>MCAL-35789</p></td>
+<td><p>Fls</p></td>
+<td><p>S1-Critical</p></td>
+<td><p>FLS: Flash API initialization fails due to missing semaphore handling in FlashAPIInit</p></td>
+<td><p>C29xMCAL_01.04.01</p></td>
+<td><p>The Flash API may not be properly initialized, which can cause flash operations to fail or produce unexpected errors.</p></td>
+<td><p>1. Call FlashAPIInit without claiming flash semaphore. <br>2. Observe FLC_MMR_Access error. <br>3. Release flash semaphore without claiming it first. <br>4. Observe SSU MMR Error for FMSTAT clear register.</p></td>
+<td><p>Added semaphore claim and release calls before and after the Flash initialization function.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
