@@ -112,9 +112,9 @@ Dio_PinReadPriv(Dio_ChannelType channelId)
     VAR(Dio_LevelType, AUTOMATIC) status;
     P2VAR(volatile uint32, AUTOMATIC, REGSPACE) gpio_data_reg;
 
-    gpio_data_reg = (uint32 *)((uint32 *)GPIODATA_BASE + ((channelId / DIO_PORT_WIDTH) * GPIO_DATA_REGS_STEP));
+    gpio_data_reg = (uint32 *)((uint32 *)GPIODATA_BASE + ((channelId / DIO_PORT_WIDTH) * DIO_DATA_REGS_STEP));
 
-    reg_val = ((gpio_data_reg[GPIO_DATA_INDEX] >> (channelId % DIO_PORT_WIDTH)) & (uint32)0x1U);
+    reg_val = ((gpio_data_reg[DIO_DATA_INDEX] >> (channelId % DIO_PORT_WIDTH)) & (uint32)0x1U);
 
     status = ((uint32)0U != reg_val) ? (Dio_LevelType)STD_HIGH : (Dio_LevelType)STD_LOW;
 
@@ -128,17 +128,17 @@ Dio_PinWritePriv(Dio_ChannelType channelId, Dio_LevelType channelVal)
     P2VAR(volatile uint32, AUTOMATIC, REGSPACE) gpio_data_reg;
     VAR(uint32, AUTOMATIC) pin_mask_val;
 
-    gpio_data_reg = (uint32 *)((uint32 *)GPIODATA_BASE + ((channelId / DIO_PORT_WIDTH) * GPIO_DATA_REGS_STEP));
+    gpio_data_reg = (uint32 *)((uint32 *)GPIODATA_BASE + ((channelId / DIO_PORT_WIDTH) * DIO_DATA_REGS_STEP));
     pin_mask_val  = (uint32)1U << (channelId % DIO_PORT_WIDTH);
 
     /*  Writing 0 to either SET or CLEAR register has no effect */
     if (((Dio_LevelType)STD_LOW) == channelVal)
     {
-        gpio_data_reg[GPIO_CLEAR_INDEX] = pin_mask_val;
+        gpio_data_reg[DIO_CLEAR_INDEX] = pin_mask_val;
     }
     else
     {
-        gpio_data_reg[GPIO_SET_INDEX] = pin_mask_val;
+        gpio_data_reg[DIO_SET_INDEX] = pin_mask_val;
     }
 }
 
@@ -154,12 +154,12 @@ Dio_WritePortDataPriv(Dio_PortType portId, Dio_PortLevelType portValue)
     clear_bits = ~portValue;
 
     /* Get the starting address of the port's registers and write to DATA. */
-    gpio_data_reg = (uint32 *)((uint32 *)GPIODATA_BASE + ((uint32)portId * GPIO_DATA_REGS_STEP));
+    gpio_data_reg = (uint32 *)((uint32 *)GPIODATA_BASE + ((uint32)portId * DIO_DATA_REGS_STEP));
     /* Writing 1 will clear the bit and Writing 0 has no effect. */
-    gpio_data_reg[GPIO_CLEAR_INDEX] = clear_bits;
+    gpio_data_reg[DIO_CLEAR_INDEX] = clear_bits;
 
     /* Writing 1 will set the bit and Writing 0 has no effect. */
-    gpio_data_reg[GPIO_SET_INDEX] = set_bits;
+    gpio_data_reg[DIO_SET_INDEX] = set_bits;
 }
 
 /* Design: MCAL-22682,MCAL-22517,MCAL-22518,MCAL-22519 */
@@ -175,13 +175,13 @@ Dio_WriteChannelGroupPriv(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA
     clear_bits = ((~level << ChannelGroupIdPtr->offset) & ChannelGroupIdPtr->mask);
 
     /* Get the starting address of the port's registers and write to DATA. */
-    gpio_data_reg = (uint32 *)((uint32 *)GPIODATA_BASE + ((uint32)ChannelGroupIdPtr->port * GPIO_DATA_REGS_STEP));
+    gpio_data_reg = (uint32 *)((uint32 *)GPIODATA_BASE + ((uint32)ChannelGroupIdPtr->port * DIO_DATA_REGS_STEP));
 
     /* Writing 1 will clear the bit and Writing 0 has no effect. */
-    gpio_data_reg[GPIO_CLEAR_INDEX] = clear_bits;
+    gpio_data_reg[DIO_CLEAR_INDEX] = clear_bits;
 
     /* Writing 1 will set the bit and Writing 0 has no effect. */
-    gpio_data_reg[GPIO_SET_INDEX] = set_bits;
+    gpio_data_reg[DIO_SET_INDEX] = set_bits;
 }
 
 /* Design: MCAL-22524,MCAL-22515 */
@@ -191,11 +191,11 @@ Dio_PinFlipVal(Dio_ChannelType ChannelId)
     P2VAR(volatile uint32, AUTOMATIC, REGSPACE) gpioDataReg;
     VAR(uint32, AUTOMATIC) pinMaskVal;
 
-    gpioDataReg = (uint32 *)((uint32 *)GPIODATA_BASE + ((ChannelId / DIO_PORT_WIDTH) * GPIO_DATA_REGS_STEP));
+    gpioDataReg = (uint32 *)((uint32 *)GPIODATA_BASE + ((ChannelId / DIO_PORT_WIDTH) * DIO_DATA_REGS_STEP));
 
     pinMaskVal = (uint32)1U << (ChannelId % DIO_PORT_WIDTH);
 
-    gpioDataReg[GPIO_TOGGLE_INDEX] = pinMaskVal;
+    gpioDataReg[DIO_TOGGLE_INDEX] = pinMaskVal;
 }
 
 /* Design: MCAL-22522,MCAL-22516 */
@@ -204,10 +204,10 @@ Dio_ReadPortDataPriv(Dio_PortType PortId, Dio_PortLevelType *PortValue)
 {
     P2VAR(volatile uint32, AUTOMATIC, REGSPACE) gpioDataReg;
     /* Get the starting address of the registers. */
-    gpioDataReg = (uint32 *)((uint32 *)GPIODATA_BASE + ((uint32)PortId * GPIO_DATA_REGS_STEP));
+    gpioDataReg = (uint32 *)((uint32 *)GPIODATA_BASE + ((uint32)PortId * DIO_DATA_REGS_STEP));
 
     /* Return the data of the port. */
-    *PortValue = gpioDataReg[GPIO_DATA_INDEX];
+    *PortValue = gpioDataReg[DIO_DATA_INDEX];
 }
 /*********************************************************************************************************************
  *  Local Functions Definition

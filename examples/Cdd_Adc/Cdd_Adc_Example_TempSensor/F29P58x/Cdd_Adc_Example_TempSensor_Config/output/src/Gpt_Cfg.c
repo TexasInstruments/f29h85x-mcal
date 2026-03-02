@@ -98,7 +98,7 @@ static CONST(Gpt_ChannelConfigType, GPT_CONFIG_DATA) Gpt_ChannelConfiguration[1]
  */
 CONST(Gpt_ConfigType, GPT_CONST) Gpt_Config =
 {
-    .ChannelCfgPtr = ((Gpt_ChannelConfigType *) &Gpt_ChannelConfiguration[0]), /* Pointer to Channel Configuration. */
+    .ChannelCfgPtr = ((const Gpt_ChannelConfigType *) &Gpt_ChannelConfiguration[0]), /* Pointer to Channel Configuration. */
 };
 
 /*********************************************************************************************************************

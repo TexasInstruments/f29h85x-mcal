@@ -1,0 +1,135 @@
+<?xml version='1.0'?>
+<datamodel version="8.0" 
+           xmlns="http://www.tresos.de/_projects/DataModel2/18/root.xsd" 
+           xmlns:a="http://www.tresos.de/_projects/DataModel2/18/attribute.xsd" 
+           xmlns:v="http://www.tresos.de/_projects/DataModel2/06/schema.xsd" 
+           xmlns:d="http://www.tresos.de/_projects/DataModel2/06/data.xsd">
+
+  <d:ctr type="AUTOSAR" factory="autosar" 
+         xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd" 
+         xmlns:ce="http://www.tresos.de/_projects/DataModel2/18/childenable.xsd" 
+         xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd" 
+         xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd" 
+         xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd" 
+         xmlns:mt="http://www.tresos.de/_projects/DataModel2/11/multitest.xsd"  
+         xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
+    <d:lst type="TOP-LEVEL-PACKAGES">
+      <d:ctr name="Wdg" type="AR-PACKAGE">
+        <d:lst type="ELEMENTS">
+          <d:chc name="Wdg" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+            <d:ctr type="MODULE-CONFIGURATION">
+              <a:a name="DEF" value="ASPath:/TI_F29H85x/Wdg"/>
+              <d:var name="IMPLEMENTATION_CONFIG_VARIANT" type="ENUMERATION" 
+                     value="VariantPostBuild">
+                <a:a name="IMPORTER_INFO" value="@DEF"/>
+              </d:var>
+              <d:ctr name="WdgDemEventParameterRefs" type="IDENTIFIABLE">
+                <a:a name="ENABLE" value="true"/>
+                <d:ref name="WDG_E_DISABLE_REJECTED" type="REFERENCE" 
+                       value="ASPath:/Dem/Dem/DemConfigSet/WDG_E_DISABLE_REJECTED">
+                  <a:a name="ENABLE" value="true"/>
+                </d:ref>
+                <d:ref name="WDG_E_MODE_FAILED" type="REFERENCE" 
+                       value="ASPath:/Dem/Dem/DemConfigSet/WDG_E_MODE_FAILED">
+                  <a:a name="ENABLE" value="true"/>
+                </d:ref>
+              </d:ctr>
+              <d:ctr name="WdgGeneral" type="IDENTIFIABLE">
+                <d:var name="WdgDevErrorDetect" type="BOOLEAN" value="true">
+                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                </d:var>
+                <d:var name="WdgDisableAllowed" type="BOOLEAN" value="true"/>
+                <d:var name="WdgIndex" type="INTEGER" value="0">
+                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                </d:var>
+                <d:var name="WdgInitialTimeout" type="FLOAT" 
+                       value="0.013107200000000001">
+                  <a:a name="IMPORTER_INFO">
+                    <a:v>@DEF</a:v>
+                    <a:v>@CALC</a:v>
+                  </a:a>
+                </d:var>
+                <d:var name="WdgMaxTimeout" type="FLOAT" 
+                       value="3.3423360000000004">
+                  <a:a name="IMPORTER_INFO">
+                    <a:v>@DEF</a:v>
+                    <a:v>@CALC</a:v>
+                  </a:a>
+                </d:var>
+                <d:var name="WdgRunArea" type="ENUMERATION" value="RAM">
+                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                </d:var>
+                <d:var name="WdgTriggerLocation" type="FUNCTION-NAME" 
+                       value="NULL_PTR">
+                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                </d:var>
+                <d:var name="WdgVersionInfoApi" type="BOOLEAN" value="true">
+                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                </d:var>
+              </d:ctr>
+              <d:ctr name="WdgPublishedInformation" type="IDENTIFIABLE">
+                <d:var name="WdgTriggerMode" type="ENUMERATION" 
+                       value="WDG_WINDOW">
+                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                </d:var>
+              </d:ctr>
+              <d:ctr name="WdgSettingsConfig" type="IDENTIFIABLE">
+                <d:var name="WdgDefaultMode" type="ENUMERATION" 
+                       value="WDGIF_SLOW_MODE">
+                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                </d:var>
+                <d:ctr name="WdgExternalConfiguration" type="IDENTIFIABLE">
+                  <a:a name="ENABLE" value="false"/>
+                  <d:ref name="WdgExternalContainerRef" type="REFERENCE" >
+                    <a:a name="ENABLE" value="false"/>
+                    <a:a name="IMPORTER_INFO" value="@DEF"/>
+                  </d:ref>
+                </d:ctr>
+                <d:ctr name="WdgSettingsFast" type="IDENTIFIABLE">
+                  <d:var name="WdgPredivider" type="ENUMERATION" 
+                         value="WDG_PREDIV_4096"/>
+                  <d:var name="WdgPrescaler" type="ENUMERATION" 
+                         value="WDG_PRESCALE_16"/>
+                  <d:var name="WdgTimeout" type="FLOAT" 
+                         value="1671.1680000000001">
+                    <a:a name="IMPORTER_INFO">
+                      <a:v>@DEF</a:v>
+                      <a:v>@CALC</a:v>
+                    </a:a>
+                  </d:var>
+                  <d:var name="WdgReaction" type="ENUMERATION" 
+                         value="WDG_GENERATE_RESET"/>
+                  <d:var name="WdgThresholdValue" type="INTEGER" value="0">
+                    <a:a name="IMPORTER_INFO" value="@DEF"/>
+                  </d:var>
+                </d:ctr>
+                <d:ctr name="WdgSettingsOff" type="IDENTIFIABLE"/>
+                <d:ctr name="WdgSettingsSlow" type="IDENTIFIABLE">
+                  <d:var name="WdgPredivider" type="ENUMERATION" 
+                         value="WDG_PREDIV_4096">
+                    <a:a name="IMPORTER_INFO" value="@DEF"/>
+                  </d:var>
+                  <d:var name="WdgPrescaler" type="ENUMERATION" 
+                         value="WDG_PRESCALE_32"/>
+                  <d:var name="WdgTimeout" type="FLOAT" 
+                         value="3342.3360000000002">
+                    <a:a name="IMPORTER_INFO">
+                      <a:v>@DEF</a:v>
+                      <a:v>@CALC</a:v>
+                    </a:a>
+                  </d:var>
+                  <d:var name="WdgReaction" type="ENUMERATION" 
+                         value="WDG_GENERATE_RESET"/>
+                  <d:var name="WdgThresholdValue" type="INTEGER" value="0">
+                    <a:a name="IMPORTER_INFO" value="@DEF"/>
+                  </d:var>
+                </d:ctr>
+              </d:ctr>
+            </d:ctr>
+          </d:chc>
+        </d:lst>
+      </d:ctr>
+    </d:lst>
+  </d:ctr>
+
+</datamodel>

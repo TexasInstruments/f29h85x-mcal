@@ -4,10 +4,11 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.16. CDD SENT Module &mdash; Documentation for F29H85x</title>
+  <title>5.16. CDD SENT Module &mdash; Documentation for F29H85x</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx-design.min.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -17,13 +18,14 @@
         <script src="../_static/documentation_options.js?v=4a3566fb"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script src="../_static/js/theme.js"></script>
 
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4.17. CDD XBAR Module" href="Module_User_Guide_Cdd_Xbar.html" />
-    <link rel="prev" title="4.15. CDD PWM Module" href="Module_User_Guide_Cdd_Pwm.html" /> 
+    <link rel="next" title="5.17. CDD XBAR Module" href="Module_User_Guide_Cdd_Xbar.html" />
+    <link rel="prev" title="5.15. CDD PWM Module" href="Module_User_Guide_Cdd_Pwm.html" /> 
 </head>
 
 <body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
@@ -47,7 +49,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.04.01
+                01.05.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -59,80 +61,81 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_ResourceAllocator.html">4.1. Resource Allocator Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Can.html">4.2. CAN Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.3. DIO Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Fls.html">4.4. FLS Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.5. GPT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">4.6. LIN Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.7. MCU Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Port.html">4.8. PORT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">4.9. SPI Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.10. WDG Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.11. CDD ADC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">4.12. CDD ECAP Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">4.13. CDD I2C Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">4.14. CDD IPC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">4.15. CDD PWM Module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.16. CDD SENT Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.16.1. Acronyms and Definitions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#introduction">4.16.2. Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.16.3. Functional Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.16.4. Hardware Features</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.16.4.1. Hardware Features supported</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">4.16.4.2. Not supported Features</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.16.4.3. Non compliance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 01.05.00 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">2. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">3. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ModuleUserGuide_list.html">5. Module User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_ResourceAllocator.html">5.1. Resource Allocator Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Can.html">5.2. CAN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">5.3. DIO Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Fls.html">5.4. FLS Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">5.5. GPT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">5.6. LIN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">5.7. MCU Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Port.html">5.8. PORT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">5.9. SPI Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">5.10. WDG Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">5.11. CDD ADC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">5.12. CDD ECAP Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">5.13. CDD I2C Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">5.14. CDD IPC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">5.15. CDD PWM Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.16. CDD SENT Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">5.16.1. Acronyms and Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">5.16.2. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-overview">5.16.3. Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-features">5.16.4. Hardware Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">5.16.4.1. Hardware Features supported</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">5.16.4.2. Not supported Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-compliance">5.16.4.3. Non compliance</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#source-files">4.16.5. Source files</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.16.6. Module requirements</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.16.6.1. Memory Mapping</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scheduling">4.16.6.2. Scheduling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.16.6.3. Error handling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#error-codes">4.16.6.4. Error codes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source-files">5.16.5. Source files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-requirements">5.16.6. Module requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">5.16.6.1. Memory Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling">5.16.6.2. Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">5.16.6.3. Error handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-codes">5.16.6.4. Error codes</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#safety-mechanism">4.16.7. Safety Mechanism</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.16.8. Used resources</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.16.8.1. Interrupt Handling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.16.8.2. Instance support</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.16.8.3. Hardware-Software Mapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#safety-mechanism">5.16.7. Safety Mechanism</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#used-resources">5.16.8. Used resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">5.16.8.1. Interrupt Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instance-support">5.16.8.2. Instance support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">5.16.8.3. Hardware-Software Mapping</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.16.9. Integration description</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.16.9.1. Dependent modules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#resource-allocator">4.16.9.2. Resource Allocator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-description">5.16.9. Integration description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">5.16.9.1. Dependent modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resource-allocator">5.16.9.2. Resource Allocator</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#configuration">4.16.10. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.16.10.1. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddsentconfig">4.16.10.2. CddSentConfig</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddcomstackcontribution">4.16.10.3. CddComStackContribution</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddsentgeneral">4.16.10.4. CddSentGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-sent-module">4.16.10.5. Steps To Configure Cdd_Sent Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">5.16.10. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">5.16.10.1. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddsentconfig">5.16.10.2. CddSentConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddcomstackcontribution">5.16.10.3. CddComStackContribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddsentgeneral">5.16.10.4. CddSentGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-sent-module">5.16.10.5. Steps To Configure Cdd_Sent Module</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#examples">4.16.11. Examples</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#cdd-sent-standard">4.16.11.1. Cdd_Sent_standard</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cdd-sent-mtp-externaltrigger-source">4.16.11.2. Cdd_Sent_Mtp_ExternalTrigger_Source</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.16.11.3. File Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">5.16.11. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-sent-standard">5.16.11.1. Cdd_Sent_standard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-sent-mtp-externaltrigger-source">5.16.11.2. Cdd_Sent_Mtp_ExternalTrigger_Source</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">5.16.11.3. File Structure</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.17. CDD XBAR Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.18. CDD UART Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.19. RTDMA Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">5.17. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">5.18. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">5.19. RTDMA Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">5. Migration Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_guide.html">6. API guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">7. Key Performance and Memory Consumption Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">8. AUTOSAR Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">6. Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">7. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">8. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">9. AUTOSAR Integration Guide</a></li>
 </ul>
 
         </div>
@@ -149,8 +152,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="ModuleUserGuide_list.html"><span class="section-number">4. </span>Module User Guide</a> &raquo;</li>
-      <li><span class="section-number">4.16. </span>CDD SENT Module</li>
+          <li><a href="ModuleUserGuide_list.html"><span class="section-number">5. </span>Module User Guide</a> &raquo;</li>
+      <li><span class="section-number">5.16. </span>CDD SENT Module</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -160,9 +163,9 @@
            <div itemprop="articleBody">
              
   <section id="cdd-sent-module">
-<h1><span class="section-number">4.16. </span>CDD SENT Module<a class="headerlink" href="#cdd-sent-module" title="Link to this heading"></a></h1>
+<h1><span class="section-number">5.16. </span>CDD SENT Module<a class="headerlink" href="#cdd-sent-module" title="Link to this heading"></a></h1>
 <section id="acronyms-and-definitions">
-<h2><span class="section-number">4.16.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.16.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Abbreviation/Term</p></th>
@@ -216,13 +219,13 @@
 </table>
 </section>
 <section id="introduction">
-<h2><span class="section-number">4.16.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.16.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>SENT stands for  Single Edge Nibble Transmission. The SENT protocol is unidirectional and uses single wire between two or more points to transmit signals from one or more sensors to a controller. This protocol can transmit high resolution data at a low cost to the system. The SENT module utilizes a Master Trigger Pulse Generator to control and receive data from one or more sensors, using a configurable pulse signal. The received data can be stored directly into memory or a FIFO and read by the CPU or RTDMA.</p>
 <p>SENT driver is part of complex device drivers which receive the data from the sensors and send the RX indication, support both fast channel and slow channel.</p>
 <figure class="align-center" id="id4">
 <img alt="CDD_SENT MCAL AUTOSAR" src="../_images/Cdd_Sent_Autosar_MCAL.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.67 </span><span class="caption-text">CDD_SENT MCAL AUTOSAR</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 5.67 </span><span class="caption-text">CDD_SENT MCAL AUTOSAR</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>This document details AUTOSAR BSW CDD_SENT module implementation</p>
@@ -246,7 +249,7 @@
 </table>
 </section>
 <section id="functional-overview">
-<h2><span class="section-number">4.16.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.16.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
 <p>F29X supports two modes of the SENT :</p>
 <p><strong>Standard SENT</strong>:</p>
 <ul class="simple">
@@ -264,9 +267,9 @@ Sent is communication protocol implemented in the Cdd Sent driver. Similar to ot
 Cdd Sent is a driver. This driver can directly act as a lower layer module for PduR without needing an interface layer in between. Integration of Cdd Sent driver with AUTOSAR com stack is optional and can be enabled by configuration parameter CddSentIntegrationWithAsrComStackEnable. When it is enabled, Cdd Sent driver is responsible to call the receive indication to PduR and PduR is responsible to call transmit function to Cdd Sent. In order to achieve this, correct handle Ids should be configured in both Cdd Sent and PduR. Please refer to the explanation of Cdd_Sent_Transmit() and PduR_Cdd_Sent_RxIndication() in Cdd Sent driver.</p>
 </section>
 <section id="hardware-features">
-<h2><span class="section-number">4.16.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.16.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
 <section id="hardware-features-supported">
-<h3><span class="section-number">4.16.4.1. </span>Hardware Features supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.4.1. </span>Hardware Features supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
 <p>The SENT module includes the following features:</p>
 <ul class="simple">
 <li><p>Based on SAE J2716 (J2716 January 2010 and J2716 April 2016)</p></li>
@@ -308,23 +311,23 @@ Cdd Sent is a driver. This driver can directly act as a lower layer module for P
 <figure class="align-center" id="id5">
 <img alt="Cdd_Sent Block diagram" src="../_images/Cdd_Sent_Block_Diagram.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.68 </span><span class="caption-text">Cdd_Sent Block Diagram</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 5.68 </span><span class="caption-text">Cdd_Sent Block Diagram</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="not-supported-features">
-<h3><span class="section-number">4.16.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>DMA</p></li>
 </ul>
 </section>
 <section id="non-compliance">
-<h3><span class="section-number">4.16.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
 <p>None</p>
 </section>
 </section>
 <section id="source-files">
-<h2><span class="section-number">4.16.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.16.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />
@@ -354,34 +357,34 @@ Cdd Sent is a driver. This driver can directly act as a lower layer module for P
 <figure class="align-center" id="id6">
 <img alt="Cdd_Sent Header File Structure" src="../_images/Cdd_Sent_Header_File_Structure.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.69 </span><span class="caption-text">Cdd_Sent Header File Structure</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 5.69 </span><span class="caption-text">Cdd_Sent Header File Structure</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="module-requirements">
-<h2><span class="section-number">4.16.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.16.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
 <section id="memory-mapping">
-<h3><span class="section-number">4.16.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
 <p>Will be added in later release</p>
 </section>
 <section id="scheduling">
-<h3><span class="section-number">4.16.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
 <p>None</p>
 </section>
 <section id="error-handling">
-<h3><span class="section-number">4.16.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
 <section id="development-error-reporting">
-<h4><span class="section-number">4.16.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
 <p>Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.</p>
 </section>
 <section id="extended-production-error-reporting">
-<h4><span class="section-number">4.16.6.3.2. </span>Extended Production Error Reporting<a class="headerlink" href="#extended-production-error-reporting" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.6.3.2. </span>Extended Production Error Reporting<a class="headerlink" href="#extended-production-error-reporting" title="Link to this heading"></a></h4>
 <p>Extended production errors are reported to the DEM using the service Dem_SetEventStatus(),
 when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.</p>
 </section>
 </section>
 <section id="error-codes">
-<h3><span class="section-number">4.16.6.4. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.6.4. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Type of Error</p></th>
@@ -411,7 +414,7 @@ when enabled. The driver interface contains the MACRO declaration of the error c
 </section>
 </section>
 <section id="safety-mechanism">
-<h2><span class="section-number">4.16.7. </span>Safety Mechanism<a class="headerlink" href="#safety-mechanism" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.16.7. </span>Safety Mechanism<a class="headerlink" href="#safety-mechanism" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>TI Diagnostic Unique Identifier</p></th>
@@ -472,9 +475,9 @@ when enabled. The driver interface contains the MACRO declaration of the error c
 </div>
 </section>
 <section id="used-resources">
-<h2><span class="section-number">4.16.8. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.16.8. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
 <section id="interrupt-handling">
-<h3><span class="section-number">4.16.8.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.8.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
 <p>Cdd_Sent driver provides ISR. The interrupt vector lines to be used is configurable in Cdd_Sent driver.
 The ISR functionality is implemented in the file Cdd_Sent_Irq.c.</p>
 <table class="docutils align-default">
@@ -517,7 +520,7 @@ The ISR functionality is implemented in the file Cdd_Sent_Irq.c.</p>
 </div>
 </section>
 <section id="instance-support">
-<h3><span class="section-number">4.16.8.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.8.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>CPU instances</p></th>
@@ -538,22 +541,22 @@ The ISR functionality is implemented in the file Cdd_Sent_Irq.c.</p>
 </table>
 </section>
 <section id="hardware-software-mapping">
-<h3><span class="section-number">4.16.8.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.8.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
 <p>Below image shows Cdd_Sent driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.</p>
 <figure class="align-center" id="id7">
 <img alt="Cdd_Sent HW/SW Mapping" src="../_images/Cdd_Sent_Hw_Sw_Mapping.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.70 </span><span class="caption-text">Cdd_Sent HW/SW Mapping</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 5.70 </span><span class="caption-text">Cdd_Sent HW/SW Mapping</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 </section>
 <section id="integration-description">
-<h2><span class="section-number">4.16.9. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.16.9. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
 <section id="dependent-modules">
-<h3><span class="section-number">4.16.9.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.9.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
 <section id="pdur">
-<h4><span class="section-number">4.16.9.1.1. </span>PduR<a class="headerlink" href="#pdur" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.9.1.1. </span>PduR<a class="headerlink" href="#pdur" title="Link to this heading"></a></h4>
 <p>The PDU Router module provides services for routing of routing Protocol Data Units(I-PDUs) between various communication modules, ensuring seamless data transfer across different communication protocols.When the Cdd_Sent module receives sensor data, it encapsulates the data into PDUs and sends them to the PduR with PDU id’s. The PduR then routes these PDUs to the appropriate higher-layer modules. User need to configure configure PDUs in ECUC. Cdd_Sent will generate symbolic names for those PDUs in Cdd_Sent module.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -569,33 +572,33 @@ The ISR functionality is implemented in the file Cdd_Sent_Irq.c.</p>
 </div>
 </section>
 <section id="det">
-<h4><span class="section-number">4.16.9.1.2. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.9.1.2. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
 <p>This implementation depends on the DET in order to report development errors.
 The detection of development errors is configurable (ON / OFF), The switch CDD_SENT_CFG_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.</p>
 </section>
 <section id="dem">
-<h4><span class="section-number">4.16.9.1.3. </span>DEM<a class="headerlink" href="#dem" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.9.1.3. </span>DEM<a class="headerlink" href="#dem" title="Link to this heading"></a></h4>
 <p>This implementation depends on the DEM in order to report Extended production errors and can be turned OFF. The switch CDD_SENT_CFG_DEM_ENABLE will activate or deactivate the detection of all extended production errors. If hardware failure notification is enabled in the configuration set and a hardware source failure error occurs, the error code CDD_E_HARDWARE_ERROR shall be reported.</p>
 </section>
 <section id="mcu">
-<h4><span class="section-number">4.16.9.1.4. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.9.1.4. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
 <p>MCU Module is required to initialize all the clock to be used by different peripherals.</p>
 </section>
 <section id="port">
-<h4><span class="section-number">4.16.9.1.5. </span>Port<a class="headerlink" href="#port" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.9.1.5. </span>Port<a class="headerlink" href="#port" title="Link to this heading"></a></h4>
 <p>The Port module configures the port pins used for the SENT driver as input. Hence, the Port driver has to be initialized prior to the use of SENT functions. Otherwise
 Cdd_Sent driver functions will exhibit undefined behavior.</p>
 </section>
 <section id="os">
-<h4><span class="section-number">4.16.9.1.6. </span>OS<a class="headerlink" href="#os" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.9.1.6. </span>OS<a class="headerlink" href="#os" title="Link to this heading"></a></h4>
 <p>The Cdd_Sent driver uses interrupts and therefore there is a dependency on the OS, which configures the interrupt sources.</p>
 </section>
 </section>
 <section id="resource-allocator">
-<h3><span class="section-number">4.16.9.2. </span>Resource Allocator<a class="headerlink" href="#resource-allocator" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.9.2. </span>Resource Allocator<a class="headerlink" href="#resource-allocator" title="Link to this heading"></a></h3>
 <p>The SENT module references the Resource Allocator for device, package, and variant configuration. See the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a> for details on configuring device-specific settings.</p>
 <section id="resource-allocator-usage-example">
-<h4><span class="section-number">4.16.9.2.1. </span>Resource Allocator Usage Example<a class="headerlink" href="#resource-allocator-usage-example" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.9.2.1. </span>Resource Allocator Usage Example<a class="headerlink" href="#resource-allocator-usage-example" title="Link to this heading"></a></h4>
 <p>To allocate SENT1 to CPU1 using FRAME0:</p>
 <ol class="arabic simple">
 <li><p>In the Resource Allocator configuration, create a new Sent instance allocation</p></li>
@@ -614,21 +617,21 @@ Cdd_Sent driver functions will exhibit undefined behavior.</p>
 </section>
 </section>
 <section id="configuration">
-<h2><span class="section-number">4.16.10. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.16.10. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>The Cdd_Sent Driver implementation supports one configuration variant Pre-Compile config. The driver expects generated Cdd_Sent_Cfg.h to be present as input file.
 The associated Cdd_Sent driver configuration generated source files are Cdd_Sent_Cfg.c</p>
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
 <section id="configuration-parameters">
-<h3><span class="section-number">4.16.10.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.10.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
 </section>
 <section id="cddsentconfig">
-<h3><span class="section-number">4.16.10.2. </span>CddSentConfig<a class="headerlink" href="#cddsentconfig" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.10.2. </span>CddSentConfig<a class="headerlink" href="#cddsentconfig" title="Link to this heading"></a></h3>
 <p>This container contains the configuration parameters and sub containers of the CddSent module.</p>
 <section id="cddsentcontroller">
-<h4><span class="section-number">4.16.10.2.1. </span>CddSentController<a class="headerlink" href="#cddsentcontroller" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.2.1. </span>CddSentController<a class="headerlink" href="#cddsentcontroller" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the CddSent HW units.</p>
 <section id="cddsentbaseaddress">
-<h5><span class="section-number">4.16.10.2.1.1. </span>CddSentBaseAddress<a class="headerlink" href="#cddsentbaseaddress" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.1. </span>CddSentBaseAddress<a class="headerlink" href="#cddsentbaseaddress" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -661,7 +664,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsenthwunitid">
-<h5><span class="section-number">4.16.10.2.1.2. </span>CddSentHWUnitId<a class="headerlink" href="#cddsenthwunitid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.2. </span>CddSentHWUnitId<a class="headerlink" href="#cddsenthwunitid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -700,7 +703,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentclocktick">
-<h5><span class="section-number">4.16.10.2.1.3. </span>CddSentClockTick<a class="headerlink" href="#cddsentclocktick" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.3. </span>CddSentClockTick<a class="headerlink" href="#cddsentclocktick" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -739,7 +742,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentinterrupttype">
-<h5><span class="section-number">4.16.10.2.1.4. </span>CddSentInterruptType<a class="headerlink" href="#cddsentinterrupttype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.4. </span>CddSentInterruptType<a class="headerlink" href="#cddsentinterrupttype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -775,7 +778,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentcrctype">
-<h5><span class="section-number">4.16.10.2.1.5. </span>CddSentCRCType<a class="headerlink" href="#cddsentcrctype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.5. </span>CddSentCRCType<a class="headerlink" href="#cddsentcrctype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -811,7 +814,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentcrcwidth">
-<h5><span class="section-number">4.16.10.2.1.6. </span>CddSentCRCWidth<a class="headerlink" href="#cddsentcrcwidth" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.6. </span>CddSentCRCWidth<a class="headerlink" href="#cddsentcrcwidth" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -847,7 +850,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentcrcwithstatus">
-<h5><span class="section-number">4.16.10.2.1.7. </span>CddSentCRCWithStatus<a class="headerlink" href="#cddsentcrcwithstatus" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.7. </span>CddSentCRCWithStatus<a class="headerlink" href="#cddsentcrcwithstatus" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -883,7 +886,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentdatanibblescount">
-<h5><span class="section-number">4.16.10.2.1.8. </span>CddSentDataNibblesCount<a class="headerlink" href="#cddsentdatanibblescount" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.8. </span>CddSentDataNibblesCount<a class="headerlink" href="#cddsentdatanibblescount" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -919,7 +922,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentfifotriggerlevel">
-<h5><span class="section-number">4.16.10.2.1.9. </span>CddSentFIFOTriggerLevel<a class="headerlink" href="#cddsentfifotriggerlevel" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.9. </span>CddSentFIFOTriggerLevel<a class="headerlink" href="#cddsentfifotriggerlevel" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -964,7 +967,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentusercallbackfunction">
-<h5><span class="section-number">4.16.10.2.1.10. </span>CddSentUserCallbackFunction<a class="headerlink" href="#cddsentusercallbackfunction" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.10. </span>CddSentUserCallbackFunction<a class="headerlink" href="#cddsentusercallbackfunction" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -997,7 +1000,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentusererrorcallbackfunction">
-<h5><span class="section-number">4.16.10.2.1.11. </span>CddSentUserErrorCallbackFunction<a class="headerlink" href="#cddsentusererrorcallbackfunction" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.11. </span>CddSentUserErrorCallbackFunction<a class="headerlink" href="#cddsentusererrorcallbackfunction" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1030,7 +1033,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentsynctimeout">
-<h5><span class="section-number">4.16.10.2.1.12. </span>CddSentSyncTimeout<a class="headerlink" href="#cddsentsynctimeout" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.12. </span>CddSentSyncTimeout<a class="headerlink" href="#cddsentsynctimeout" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1069,7 +1072,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentglitchfilter">
-<h5><span class="section-number">4.16.10.2.1.13. </span>CddSentGlitchFilter<a class="headerlink" href="#cddsentglitchfilter" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.13. </span>CddSentGlitchFilter<a class="headerlink" href="#cddsentglitchfilter" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1108,7 +1111,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtp">
-<h5><span class="section-number">4.16.10.2.1.14. </span>CddSentMTP<a class="headerlink" href="#cddsentmtp" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.14. </span>CddSentMTP<a class="headerlink" href="#cddsentmtp" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1141,7 +1144,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentglobalwaittime">
-<h5><span class="section-number">4.16.10.2.1.15. </span>CddSentGlobalWaitTime<a class="headerlink" href="#cddsentglobalwaittime" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.15. </span>CddSentGlobalWaitTime<a class="headerlink" href="#cddsentglobalwaittime" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1189,7 +1192,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentaccepterrordata">
-<h5><span class="section-number">4.16.10.2.1.16. </span>CddSentAcceptErrorData<a class="headerlink" href="#cddsentaccepterrordata" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.16. </span>CddSentAcceptErrorData<a class="headerlink" href="#cddsentaccepterrordata" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1222,7 +1225,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentenabletimestamp">
-<h5><span class="section-number">4.16.10.2.1.17. </span>CddSentEnableTimeStamp<a class="headerlink" href="#cddsentenabletimestamp" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.17. </span>CddSentEnableTimeStamp<a class="headerlink" href="#cddsentenabletimestamp" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1255,7 +1258,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentinstanceref">
-<h5><span class="section-number">4.16.10.2.1.18. </span>CddSentInstanceRef<a class="headerlink" href="#cddsentinstanceref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.18. </span>CddSentInstanceRef<a class="headerlink" href="#cddsentinstanceref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1285,7 +1288,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentcpuclockref">
-<h5><span class="section-number">4.16.10.2.1.19. </span>CddSentCpuClockRef<a class="headerlink" href="#cddsentcpuclockref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.1.19. </span>CddSentCpuClockRef<a class="headerlink" href="#cddsentcpuclockref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1316,10 +1319,10 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </section>
 </section>
 <section id="cddsentchannelobject">
-<h4><span class="section-number">4.16.10.2.2. </span>CddSentChannelObject<a class="headerlink" href="#cddsentchannelobject" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.2.2. </span>CddSentChannelObject<a class="headerlink" href="#cddsentchannelobject" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the CddSent channel object</p>
 <section id="cddsentsensortype">
-<h5><span class="section-number">4.16.10.2.2.1. </span>CddSentSensorType<a class="headerlink" href="#cddsentsensortype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.2.1. </span>CddSentSensorType<a class="headerlink" href="#cddsentsensortype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1355,7 +1358,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentchanneltype">
-<h5><span class="section-number">4.16.10.2.2.2. </span>CddSentChannelType<a class="headerlink" href="#cddsentchanneltype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.2.2. </span>CddSentChannelType<a class="headerlink" href="#cddsentchanneltype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1391,7 +1394,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentchannelobjectid">
-<h5><span class="section-number">4.16.10.2.2.3. </span>CddSentChannelObjectID<a class="headerlink" href="#cddsentchannelobjectid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.2.3. </span>CddSentChannelObjectID<a class="headerlink" href="#cddsentchannelobjectid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1430,7 +1433,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmessageid">
-<h5><span class="section-number">4.16.10.2.2.4. </span>CddSentMessageID<a class="headerlink" href="#cddsentmessageid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.2.4. </span>CddSentMessageID<a class="headerlink" href="#cddsentmessageid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1478,7 +1481,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentpduid">
-<h5><span class="section-number">4.16.10.2.2.5. </span>CddSentPduID<a class="headerlink" href="#cddsentpduid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.2.5. </span>CddSentPduID<a class="headerlink" href="#cddsentpduid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1518,10 +1521,10 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </section>
 </section>
 <section id="cddsentexternaldeviceconfig">
-<h4><span class="section-number">4.16.10.2.3. </span>CddSentExternalDeviceConfig<a class="headerlink" href="#cddsentexternaldeviceconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.2.3. </span>CddSentExternalDeviceConfig<a class="headerlink" href="#cddsentexternaldeviceconfig" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the CddSent MTP triggers.</p>
 <section id="cddsentmtpsensortype">
-<h5><span class="section-number">4.16.10.2.3.1. </span>CddSentMTPSensorType<a class="headerlink" href="#cddsentmtpsensortype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.1. </span>CddSentMTPSensorType<a class="headerlink" href="#cddsentmtpsensortype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1557,7 +1560,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentsensortriggersource">
-<h5><span class="section-number">4.16.10.2.3.2. </span>CddSentSensorTriggerSource<a class="headerlink" href="#cddsentsensortriggersource" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.2. </span>CddSentSensorTriggerSource<a class="headerlink" href="#cddsentsensortriggersource" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1593,7 +1596,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtpsensorenable">
-<h5><span class="section-number">4.16.10.2.3.3. </span>CddSentMTPSensorEnable<a class="headerlink" href="#cddsentmtpsensorenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.3. </span>CddSentMTPSensorEnable<a class="headerlink" href="#cddsentmtpsensorenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1626,7 +1629,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtpsensorcompare1">
-<h5><span class="section-number">4.16.10.2.3.4. </span>CddSentMTPSensorCompare1<a class="headerlink" href="#cddsentmtpsensorcompare1" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.4. </span>CddSentMTPSensorCompare1<a class="headerlink" href="#cddsentmtpsensorcompare1" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1665,7 +1668,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtpsensorcompare2">
-<h5><span class="section-number">4.16.10.2.3.5. </span>CddSentMTPSensorCompare2<a class="headerlink" href="#cddsentmtpsensorcompare2" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.5. </span>CddSentMTPSensorCompare2<a class="headerlink" href="#cddsentmtpsensorcompare2" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1704,7 +1707,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtpsensorcompare3">
-<h5><span class="section-number">4.16.10.2.3.6. </span>CddSentMTPSensorCompare3<a class="headerlink" href="#cddsentmtpsensorcompare3" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.6. </span>CddSentMTPSensorCompare3<a class="headerlink" href="#cddsentmtpsensorcompare3" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1743,7 +1746,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtpsensorcompare4">
-<h5><span class="section-number">4.16.10.2.3.7. </span>CddSentMTPSensorCompare4<a class="headerlink" href="#cddsentmtpsensorcompare4" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.7. </span>CddSentMTPSensorCompare4<a class="headerlink" href="#cddsentmtpsensorcompare4" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1782,7 +1785,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtpsensorcompare5">
-<h5><span class="section-number">4.16.10.2.3.8. </span>CddSentMTPSensorCompare5<a class="headerlink" href="#cddsentmtpsensorcompare5" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.8. </span>CddSentMTPSensorCompare5<a class="headerlink" href="#cddsentmtpsensorcompare5" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1821,7 +1824,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtpsensorcompare6">
-<h5><span class="section-number">4.16.10.2.3.9. </span>CddSentMTPSensorCompare6<a class="headerlink" href="#cddsentmtpsensorcompare6" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.9. </span>CddSentMTPSensorCompare6<a class="headerlink" href="#cddsentmtpsensorcompare6" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1860,7 +1863,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtpsensorcompare7">
-<h5><span class="section-number">4.16.10.2.3.10. </span>CddSentMTPSensorCompare7<a class="headerlink" href="#cddsentmtpsensorcompare7" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.10. </span>CddSentMTPSensorCompare7<a class="headerlink" href="#cddsentmtpsensorcompare7" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1899,7 +1902,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtpsensorcompare8">
-<h5><span class="section-number">4.16.10.2.3.11. </span>CddSentMTPSensorCompare8<a class="headerlink" href="#cddsentmtpsensorcompare8" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.11. </span>CddSentMTPSensorCompare8<a class="headerlink" href="#cddsentmtpsensorcompare8" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1938,7 +1941,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtpsensorcompare9">
-<h5><span class="section-number">4.16.10.2.3.12. </span>CddSentMTPSensorCompare9<a class="headerlink" href="#cddsentmtpsensorcompare9" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.12. </span>CddSentMTPSensorCompare9<a class="headerlink" href="#cddsentmtpsensorcompare9" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1977,7 +1980,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtpsensorcompare10">
-<h5><span class="section-number">4.16.10.2.3.13. </span>CddSentMTPSensorCompare10<a class="headerlink" href="#cddsentmtpsensorcompare10" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.13. </span>CddSentMTPSensorCompare10<a class="headerlink" href="#cddsentmtpsensorcompare10" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2025,7 +2028,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtpsensorperiod">
-<h5><span class="section-number">4.16.10.2.3.14. </span>CddSentMTPSensorPeriod<a class="headerlink" href="#cddsentmtpsensorperiod" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.14. </span>CddSentMTPSensorPeriod<a class="headerlink" href="#cddsentmtpsensorperiod" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2064,7 +2067,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtpsensortimeout">
-<h5><span class="section-number">4.16.10.2.3.15. </span>CddSentMTPSensorTimeout<a class="headerlink" href="#cddsentmtpsensortimeout" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.15. </span>CddSentMTPSensorTimeout<a class="headerlink" href="#cddsentmtpsensortimeout" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2112,7 +2115,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentexternaldeviceid">
-<h5><span class="section-number">4.16.10.2.3.16. </span>CddSentExternalDeviceID<a class="headerlink" href="#cddsentexternaldeviceid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.16. </span>CddSentExternalDeviceID<a class="headerlink" href="#cddsentexternaldeviceid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2160,7 +2163,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentmtpsensorpduid">
-<h5><span class="section-number">4.16.10.2.3.17. </span>CddSentMTPSensorPduID<a class="headerlink" href="#cddsentmtpsensorpduid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.2.3.17. </span>CddSentMTPSensorPduID<a class="headerlink" href="#cddsentmtpsensorpduid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2200,7 +2203,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </section>
 </section>
 <section id="cddsentfifointerrupts">
-<h4><span class="section-number">4.16.10.2.4. </span>CddSentFIFOInterrupts<a class="headerlink" href="#cddsentfifointerrupts" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.2.4. </span>CddSentFIFOInterrupts<a class="headerlink" href="#cddsentfifointerrupts" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2242,7 +2245,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentslowchannelinterrupts">
-<h4><span class="section-number">4.16.10.2.5. </span>CddSentSlowChannelInterrupts<a class="headerlink" href="#cddsentslowchannelinterrupts" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.2.5. </span>CddSentSlowChannelInterrupts<a class="headerlink" href="#cddsentslowchannelinterrupts" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2275,7 +2278,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentfastchannelcrcerrorinterrupts">
-<h4><span class="section-number">4.16.10.2.6. </span>CddSentFastChannelCRCErrorInterrupts<a class="headerlink" href="#cddsentfastchannelcrcerrorinterrupts" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.2.6. </span>CddSentFastChannelCRCErrorInterrupts<a class="headerlink" href="#cddsentfastchannelcrcerrorinterrupts" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2308,7 +2311,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentfastchannelframeerrorinterrupts">
-<h4><span class="section-number">4.16.10.2.7. </span>CddSentFastChannelFrameErrorInterrupts<a class="headerlink" href="#cddsentfastchannelframeerrorinterrupts" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.2.7. </span>CddSentFastChannelFrameErrorInterrupts<a class="headerlink" href="#cddsentfastchannelframeerrorinterrupts" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2341,7 +2344,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsenttimeouterrorinterrupts">
-<h4><span class="section-number">4.16.10.2.8. </span>CddSentTimeoutErrorInterrupts<a class="headerlink" href="#cddsenttimeouterrorinterrupts" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.2.8. </span>CddSentTimeoutErrorInterrupts<a class="headerlink" href="#cddsenttimeouterrorinterrupts" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2374,7 +2377,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentoverflowerrorinterrupts">
-<h4><span class="section-number">4.16.10.2.9. </span>CddSentOverflowErrorInterrupts<a class="headerlink" href="#cddsentoverflowerrorinterrupts" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.2.9. </span>CddSentOverflowErrorInterrupts<a class="headerlink" href="#cddsentoverflowerrorinterrupts" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2407,7 +2410,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentsyncerrorinterrupts">
-<h4><span class="section-number">4.16.10.2.10. </span>CddSentSyncErrorInterrupts<a class="headerlink" href="#cddsentsyncerrorinterrupts" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.2.10. </span>CddSentSyncErrorInterrupts<a class="headerlink" href="#cddsentsyncerrorinterrupts" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2441,17 +2444,17 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </section>
 </section>
 <section id="cddcomstackcontribution">
-<h3><span class="section-number">4.16.10.3. </span>CddComStackContribution<a class="headerlink" href="#cddcomstackcontribution" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.10.3. </span>CddComStackContribution<a class="headerlink" href="#cddcomstackcontribution" title="Link to this heading"></a></h3>
 <p>Contribution of COM Stack modules.</p>
 <section id="cddpdurlowerlayercontribution">
-<h4><span class="section-number">4.16.10.3.1. </span>CddPduRLowerLayerContribution<a class="headerlink" href="#cddpdurlowerlayercontribution" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.3.1. </span>CddPduRLowerLayerContribution<a class="headerlink" href="#cddpdurlowerlayercontribution" title="Link to this heading"></a></h4>
 <p>Parameters that are necessary for the configuration of a Complex Driver that serves as the LowerLayer of the Pdu Router module.</p>
 </section>
 <section id="cddpdurlowerlayerrxpdu">
-<h4><span class="section-number">4.16.10.3.2. </span>CddPduRLowerLayerRxPdu<a class="headerlink" href="#cddpdurlowerlayerrxpdu" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.3.2. </span>CddPduRLowerLayerRxPdu<a class="headerlink" href="#cddpdurlowerlayerrxpdu" title="Link to this heading"></a></h4>
 <p>This container specifies Rx PDUs that are exchanged between the CDD and the standardized BSW module.</p>
 <section id="cddpdurapitype">
-<h5><span class="section-number">4.16.10.3.2.1. </span>CddPduRApiType<a class="headerlink" href="#cddpdurapitype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.3.2.1. </span>CddPduRApiType<a class="headerlink" href="#cddpdurapitype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2496,7 +2499,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddpdurlowerlayerhandleid">
-<h5><span class="section-number">4.16.10.3.2.2. </span>CddPduRLowerLayerHandleId<a class="headerlink" href="#cddpdurlowerlayerhandleid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.3.2.2. </span>CddPduRLowerLayerHandleId<a class="headerlink" href="#cddpdurlowerlayerhandleid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2544,7 +2547,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentpdurhandle">
-<h5><span class="section-number">4.16.10.3.2.3. </span>CddSentPduRHandle<a class="headerlink" href="#cddsentpdurhandle" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.3.2.3. </span>CddSentPduRHandle<a class="headerlink" href="#cddsentpdurhandle" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2586,7 +2589,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddpdurlowerlayerpduref">
-<h5><span class="section-number">4.16.10.3.2.4. </span>CddPduRLowerLayerPduRef<a class="headerlink" href="#cddpdurlowerlayerpduref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.3.2.4. </span>CddPduRLowerLayerPduRef<a class="headerlink" href="#cddpdurlowerlayerpduref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2617,10 +2620,10 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </section>
 </section>
 <section id="cddpdurlowerlayertxpdu">
-<h4><span class="section-number">4.16.10.3.3. </span>CddPduRLowerLayerTxPdu<a class="headerlink" href="#cddpdurlowerlayertxpdu" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.3.3. </span>CddPduRLowerLayerTxPdu<a class="headerlink" href="#cddpdurlowerlayertxpdu" title="Link to this heading"></a></h4>
 <p>This container specifies Tx PDUs that are exchanged between the CDD and the standardized BSW module.</p>
 <section id="id1">
-<h5><span class="section-number">4.16.10.3.3.1. </span>CddPduRApiType<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.3.3.1. </span>CddPduRApiType<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2665,7 +2668,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="id2">
-<h5><span class="section-number">4.16.10.3.3.2. </span>CddPduRLowerLayerHandleId<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.3.3.2. </span>CddPduRLowerLayerHandleId<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2713,7 +2716,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="id3">
-<h5><span class="section-number">4.16.10.3.3.3. </span>CddPduRLowerLayerPduRef<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.16.10.3.3.3. </span>CddPduRLowerLayerPduRef<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2745,10 +2748,10 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </section>
 </section>
 <section id="cddsentgeneral">
-<h3><span class="section-number">4.16.10.4. </span>CddSentGeneral<a class="headerlink" href="#cddsentgeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.10.4. </span>CddSentGeneral<a class="headerlink" href="#cddsentgeneral" title="Link to this heading"></a></h3>
 <p>Contains the general configuration parameters of the module.</p>
 <section id="cddinstanceid">
-<h4><span class="section-number">4.16.10.4.1. </span>CddInstanceId<a class="headerlink" href="#cddinstanceid" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.4.1. </span>CddInstanceId<a class="headerlink" href="#cddinstanceid" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2787,7 +2790,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentdeverrordetect">
-<h4><span class="section-number">4.16.10.4.2. </span>CddSentDevErrorDetect<a class="headerlink" href="#cddsentdeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.4.2. </span>CddSentDevErrorDetect<a class="headerlink" href="#cddsentdeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2820,7 +2823,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentversioninfoapi">
-<h4><span class="section-number">4.16.10.4.3. </span>CddSentVersionInfoApi<a class="headerlink" href="#cddsentversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.4.3. </span>CddSentVersionInfoApi<a class="headerlink" href="#cddsentversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2853,7 +2856,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </table>
 </section>
 <section id="cddsentintegrationwithasrcomstackenable">
-<h4><span class="section-number">4.16.10.4.4. </span>CddSentIntegrationWithAsrComStackEnable<a class="headerlink" href="#cddsentintegrationwithasrcomstackenable" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.10.4.4. </span>CddSentIntegrationWithAsrComStackEnable<a class="headerlink" href="#cddsentintegrationwithasrcomstackenable" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2891,7 +2894,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </section>
 </section>
 <section id="steps-to-configure-cdd-sent-module">
-<h3><span class="section-number">4.16.10.5. </span>Steps To Configure Cdd_Sent Module<a class="headerlink" href="#steps-to-configure-cdd-sent-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.10.5. </span>Steps To Configure Cdd_Sent Module<a class="headerlink" href="#steps-to-configure-cdd-sent-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool, load Cdd_Sent module. Select the Precompile Config Variant.</p></li>
 <li><p>Configure the required parameters.</p></li>
@@ -2900,12 +2903,12 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </section>
 </section>
 <section id="examples">
-<h2><span class="section-number">4.16.11. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.16.11. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 <p>The example application demonstrates use of Cdd_Sent module, the list below identifies key steps performed in the example.</p>
 <section id="cdd-sent-standard">
-<h3><span class="section-number">4.16.11.1. </span>Cdd_Sent_standard<a class="headerlink" href="#cdd-sent-standard" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.11.1. </span>Cdd_Sent_standard<a class="headerlink" href="#cdd-sent-standard" title="Link to this heading"></a></h3>
 <section id="overview-of-cdd-sent-standard">
-<h4><span class="section-number">4.16.11.1.1. </span>Overview Of Cdd_Sent_standard<a class="headerlink" href="#overview-of-cdd-sent-standard" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.11.1.1. </span>Overview Of Cdd_Sent_standard<a class="headerlink" href="#overview-of-cdd-sent-standard" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Cdd_Sent_standard</p>
 <ul>
@@ -2922,7 +2925,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </ul>
 </section>
 <section id="setup-required-to-run-cdd-sent-standard">
-<h4><span class="section-number">4.16.11.1.2. </span>Setup required to run Cdd_Sent_standard<a class="headerlink" href="#setup-required-to-run-cdd-sent-standard" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.11.1.2. </span>Setup required to run Cdd_Sent_standard<a class="headerlink" href="#setup-required-to-run-cdd-sent-standard" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Install Code Composer Studio(CCS) latest version</p></li>
 <li><p>Install latest C29 compiler</p></li>
@@ -2933,19 +2936,19 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 <figure class="align-center" id="id8">
 <img alt="Cdd_Sent HW Setup" src="../_images/Sent_Hardware_Setup.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.71 </span><span class="caption-text">Cdd_Sent HW Setup</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 5.71 </span><span class="caption-text">Cdd_Sent HW Setup</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="how-to-run-cdd-sent-standard">
-<h4><span class="section-number">4.16.11.1.3. </span>How to run Cdd_Sent_standard<a class="headerlink" href="#how-to-run-cdd-sent-standard" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.11.1.3. </span>How to run Cdd_Sent_standard<a class="headerlink" href="#how-to-run-cdd-sent-standard" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Open CCS and import Cdd_Sent_standard Example</p></li>
 <li><p>Build project and start debug project</p></li>
 </ul>
 </section>
 <section id="sample-log-of-cdd-sent-standard">
-<h4><span class="section-number">4.16.11.1.4. </span>Sample Log of Cdd_Sent_standard<a class="headerlink" href="#sample-log-of-cdd-sent-standard" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.11.1.4. </span>Sample Log of Cdd_Sent_standard<a class="headerlink" href="#sample-log-of-cdd-sent-standard" title="Link to this heading"></a></h4>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Cdd_Sent</span><span class="w"> </span><span class="n">Driver</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Starts</span><span class="o">!!!</span>
 <span class="n">Cdd_Sent</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
 <span class="o">---------------------</span>
@@ -2974,14 +2977,14 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </div>
 </section>
 <section id="how-to-run-cdd-sent-mtpmode">
-<h4><span class="section-number">4.16.11.1.5. </span>How to run Cdd_Sent_MtpMode<a class="headerlink" href="#how-to-run-cdd-sent-mtpmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.11.1.5. </span>How to run Cdd_Sent_MtpMode<a class="headerlink" href="#how-to-run-cdd-sent-mtpmode" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Open CCS and import Cdd_Sent_MtpMode Example</p></li>
 <li><p>Build project and start debug project</p></li>
 </ul>
 </section>
 <section id="sample-log-of-cdd-sent-mtpmode">
-<h4><span class="section-number">4.16.11.1.6. </span>Sample Log of Cdd_Sent_MtpMode<a class="headerlink" href="#sample-log-of-cdd-sent-mtpmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.11.1.6. </span>Sample Log of Cdd_Sent_MtpMode<a class="headerlink" href="#sample-log-of-cdd-sent-mtpmode" title="Link to this heading"></a></h4>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Cdd_Sent</span><span class="w"> </span><span class="n">Driver</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Starts</span><span class="o">!!!</span>
 <span class="n">Cdd_Sent</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
 <span class="o">---------------------</span>
@@ -3009,9 +3012,9 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </section>
 </section>
 <section id="cdd-sent-mtp-externaltrigger-source">
-<h3><span class="section-number">4.16.11.2. </span>Cdd_Sent_Mtp_ExternalTrigger_Source<a class="headerlink" href="#cdd-sent-mtp-externaltrigger-source" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.11.2. </span>Cdd_Sent_Mtp_ExternalTrigger_Source<a class="headerlink" href="#cdd-sent-mtp-externaltrigger-source" title="Link to this heading"></a></h3>
 <section id="overview-of-cdd-sent-mtp-externaltrigger-source">
-<h4><span class="section-number">4.16.11.2.1. </span>Overview of Cdd_Sent_Mtp_ExternalTrigger_Source<a class="headerlink" href="#overview-of-cdd-sent-mtp-externaltrigger-source" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.11.2.1. </span>Overview of Cdd_Sent_Mtp_ExternalTrigger_Source<a class="headerlink" href="#overview-of-cdd-sent-mtp-externaltrigger-source" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Cdd_Sent_Mtp_ExternalTrigger_Source</p>
 <ul>
@@ -3050,7 +3053,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </ul>
 </section>
 <section id="setup-required-to-run-cdd-sent-mtp-externaltrigger-source">
-<h4><span class="section-number">4.16.11.2.2. </span>Setup required to run Cdd_Sent_Mtp_ExternalTrigger_Source<a class="headerlink" href="#setup-required-to-run-cdd-sent-mtp-externaltrigger-source" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.11.2.2. </span>Setup required to run Cdd_Sent_Mtp_ExternalTrigger_Source<a class="headerlink" href="#setup-required-to-run-cdd-sent-mtp-externaltrigger-source" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Install Code Composer Studio (CCS) latest version</p></li>
 <li><p>Install latest C29 compiler</p></li>
@@ -3060,14 +3063,14 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </ul>
 </section>
 <section id="how-to-run-cdd-sent-mtp-externaltrigger-source">
-<h4><span class="section-number">4.16.11.2.3. </span>How to run Cdd_Sent_Mtp_ExternalTrigger_Source<a class="headerlink" href="#how-to-run-cdd-sent-mtp-externaltrigger-source" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.11.2.3. </span>How to run Cdd_Sent_Mtp_ExternalTrigger_Source<a class="headerlink" href="#how-to-run-cdd-sent-mtp-externaltrigger-source" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Open CCS and import Cdd_Sent_Mtp_ExternalTrigger_Source</p></li>
 <li><p>Build project and start debug project</p></li>
 </ul>
 </section>
 <section id="sample-log-of-cdd-sent-mtp-externaltrigger-source">
-<h4><span class="section-number">4.16.11.2.4. </span>Sample Log of Cdd_Sent_Mtp_ExternalTrigger_Source<a class="headerlink" href="#sample-log-of-cdd-sent-mtp-externaltrigger-source" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.16.11.2.4. </span>Sample Log of Cdd_Sent_Mtp_ExternalTrigger_Source<a class="headerlink" href="#sample-log-of-cdd-sent-mtp-externaltrigger-source" title="Link to this heading"></a></h4>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Cdd_Sent</span><span class="w"> </span><span class="n">Driver</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Starts</span><span class="o">!!!</span>
 <span class="n">Cdd_Sent</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
 <span class="o">---------------------</span>
@@ -3101,7 +3104,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 </section>
 </section>
 <section id="file-structure">
-<h3><span class="section-number">4.16.11.3. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.16.11.3. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />
@@ -3189,16 +3192,15 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Module_User_Guide_Cdd_Pwm.html" class="btn btn-neutral float-left" title="4.15. CDD PWM Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Module_User_Guide_Cdd_Xbar.html" class="btn btn-neutral float-right" title="4.17. CDD XBAR Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Module_User_Guide_Cdd_Pwm.html" class="btn btn-neutral float-left" title="5.15. CDD PWM Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Module_User_Guide_Cdd_Xbar.html" class="btn btn-neutral float-right" title="5.17. CDD XBAR Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2026, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jan 16, 2026.
-      </span><br>
+        <br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
     </p>
@@ -3214,7 +3216,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.04.01
+       Current Version: 01.05.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

@@ -254,7 +254,7 @@ FUNC(void, GPT_CODE) Gpt_EnableIntPriv(const Gpt_ChannelConfigType *ChannelObj)
 FUNC(void, GPT_CODE) Gpt_DisableIntPriv(const Gpt_ChannelConfigType *ChannelObj)
 {
     /* Clear the TIE bit of TCR register to diable the interrupt */
-    HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TCR)) &= ~((uint16)CPUTIMER_TCR_TIE);
+    HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TCR)) &= (uint16) ~(CPUTIMER_TCR_TIE);
 
     return;
 }

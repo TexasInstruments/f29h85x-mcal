@@ -289,18 +289,18 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_InitClock(Mcu_ClockType ClockSetting)
             /* Locks all Cpu Peripheral configuration registers */
             Mcu_LockCpuPeripheralConfigRegisters();
 #endif
-            if (return_value == E_OK)
-            {
-                SchM_Enter_Mcu_MCU_EXCLUSIVE_AREA_0();
-                /* System clock will be the input clock provided, as PLL is not enabled here. */
-                Mcu_sysClock = Mcu_calClock.input_clock;
-                SchM_Exit_Mcu_MCU_EXCLUSIVE_AREA_0();
-#if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
-                /* Set Clock Init Done flag */
-                Mcu_ClockInitDone = TRUE;
-#endif
-            }
             Mcu_ReportClockFailure(return_value);
+        }
+        if (return_value == E_OK)
+        {
+            SchM_Enter_Mcu_MCU_EXCLUSIVE_AREA_0();
+            /* System clock will be the input clock provided, as PLL is not enabled here. */
+            Mcu_sysClock = Mcu_calClock.input_clock;
+            SchM_Exit_Mcu_MCU_EXCLUSIVE_AREA_0();
+#if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
+            /* Set Clock Init Done flag */
+            Mcu_ClockInitDone = TRUE;
+#endif
         }
     }
     return (return_value);

@@ -793,7 +793,6 @@ Std_ReturnType Can_HwUnitWakeupPriv(Can_ControllerObjType *controllerObj, Can_Ca
 /** \brief This function will check if desired Tx mailbox is free.
  *
  * \param[in] mailboxCfg Pointer to Mailbox structure.
- * \param[in] canController Pointer to Can controller Config structure.
  * \param[in] msgObj HW object in the controller.
  * \pre Can module must be initialized
  * \post None
@@ -803,13 +802,11 @@ Std_ReturnType Can_HwUnitWakeupPriv(Can_ControllerObjType *controllerObj, Can_Ca
  * \retval CAN_BUSY - If message is already pending.
  *
  *****************************************************************************/
-Std_ReturnType Can_GetFreeTxMsgObjPriv(const Can_MailboxType *mailboxCfg, const Can_ControllerObjType *canController,
-                                       uint8 *msgObj);
+Std_ReturnType Can_GetFreeTxMsgObjPriv(const Can_MailboxType *mailboxCfg, uint8 *msgObj);
 
 /** \brief This function will write into the Transmit Mailbox.
  *
  * \param[in] mailboxCfg Pointer to Mailbox structure.
- * \param[in] controllerObj Pointer to Can controller Config structure.s
  * \param[in] messageBox HW object in the controller.
  * \param[in] pduInfo Pointer to SDU user memory, DLC and Identifier.
  * \pre Can module must be initialized
@@ -818,8 +815,7 @@ Std_ReturnType Can_GetFreeTxMsgObjPriv(const Can_MailboxType *mailboxCfg, const 
  * \retval None
  *
  *****************************************************************************/
-void Can_WriteTxMailboxPriv(const Can_MailboxType *mailboxCfg, Can_ControllerObjType *controllerObj, uint8 messageBox,
-                            const Can_PduType *pduInfo);
+void Can_WriteTxMailboxPriv(const Can_MailboxType *mailboxCfg, uint8 messageBox, const Can_PduType *pduInfo);
 
 /** \brief This function will poll for Tx confirmation.
  *
@@ -1103,7 +1099,6 @@ Can_CheckControllerConfigPriv(P2CONST(Can_ConfigType, AUTOMATIC, CAN_CONST) Conf
  * \param[in] loopCnt Tx number of buffer elements.
  * \param[in] buffNum Tx number of buffer and FIFO elements.
  * \param[in] canController Pointer to Can controller config parameters.
- * \param[in] canMailbox Message RAM Configuration parameters.
  * \pre None
  * \post None
  * \return None
@@ -1112,8 +1107,7 @@ Can_CheckControllerConfigPriv(P2CONST(Can_ConfigType, AUTOMATIC, CAN_CONST) Conf
  *****************************************************************************/
 FUNC(void, CAN_CODE)
 Can_HwUnitTxConfirmationPriv(uint8 loopCnt, uint8 buffNum,
-                             P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canController,
-                             P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox);
+                             P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canController);
 
 /** \brief This API will update data in the Message RAM.
  *

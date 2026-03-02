@@ -865,14 +865,13 @@ Cdd_Pwm_PrivGetTimeBaseCounterOverflowStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC
  * This function enables/disables EPWM XLINK for the specified EPWM instance
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
- * \param[in] Select        Enable/Disable select
  * \pre None
  * \post None
  * \return None
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
-Cdd_Pwm_PrivConfigureEpwmXLink(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
+Cdd_Pwm_PrivConfigureEpwmXLink(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Clear max time base counter event
  *
@@ -4096,7 +4095,7 @@ Cdd_Pwm_PrivSelectXbarInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivSetLutDecX(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                        VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
-                       VAR(Cdd_Pwm_LutDecXType, AUTOMATIC) Decx, VAR(uint16, AUTOMATIC) Force);
+                       VAR(Cdd_Pwm_LutDecXType, AUTOMATIC) Decx, VAR(boolean, AUTOMATIC) Force);
 
 /** \brief Diode Emulation logic related APIs
  *

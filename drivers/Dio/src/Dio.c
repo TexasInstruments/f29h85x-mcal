@@ -42,11 +42,11 @@
 #error "AUTOSAR Version Numbers of Dio are different"
 #endif
 
-#if ((DIO_SW_MAJOR_VERSION != (1U)) || (DIO_SW_MINOR_VERSION != (0U)))
+#if ((DIO_SW_MAJOR_VERSION != (1U)) || (DIO_SW_MINOR_VERSION != (1U)))
 #error "Version numbers of Dio.c and Dio.h are inconsistent!"
 #endif
 
-#if ((DIO_CFG_MAJOR_VERSION != (1U)) || (DIO_CFG_MINOR_VERSION != (0U)))
+#if ((DIO_CFG_MAJOR_VERSION != (1U)) || (DIO_CFG_MINOR_VERSION != (1U)))
 #error "Version numbers of Dio.c and Dio_Cfg.h are inconsistent!"
 #endif
 /*********************************************************************************************************************
@@ -108,9 +108,11 @@ Dio_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, DIO_APPL_DATA) Versioni
 }
 #endif
 
+// clang-format off
 /* Design:
  * MCAL-22536,MCAL-22439,MCAL-22440,MCAL-22453,MCAL-22455,MCAL-22458,MCAL-22454,MCAL-22464,MCAL-22467,
  * Design: MCAL-22441,MCAL-22552,MCAL-22460,MCAL-22479 */
+// clang-format on
 FUNC(Dio_LevelType, DIO_CODE)
 Dio_ReadChannel(Dio_ChannelType ChannelId)
 {
@@ -133,9 +135,11 @@ Dio_ReadChannel(Dio_ChannelType ChannelId)
     return (Level);
 }
 
+// clang-format off
 /* Design: MCAL-22536, MCAL-22439, MCAL-22440, MCAL-22445, MCAL-22446, MCAL-22447, MCAL-22480,
- * MCAL-22481,MCAL-22482, Design: MCAL-22449, MCAL-22441, MCAL-22448, MCAL-22464, MCAL-22467,
- * MCAL-22552, MCAL-22460 */
+ * Design: MCAL-22481,MCAL-22482, MCAL-22449, MCAL-22441, MCAL-22448, MCAL-22464, MCAL-22467,
+ * Design: MCAL-22552, MCAL-22460 */
+// clang-format on
 FUNC(void, DIO_CODE)
 Dio_WriteChannel(Dio_ChannelType ChannelId, Dio_LevelType Level)
 {
@@ -153,8 +157,10 @@ Dio_WriteChannel(Dio_ChannelType ChannelId, Dio_LevelType Level)
     }
 }
 
+// clang-format off
 /* Design: MCAL-22536,MCAL-22439,MCAL-22440,MCAL-22453,MCAL-22456,MCAL-22483,MCAL-22484,MCAL-22454,
- *  Design: MCAL-22465,MCAL-22552,MCAL-22461,MCAL-22441,MCAL-22514 */
+ * Design: MCAL-22465,MCAL-22552,MCAL-22461,MCAL-22441,MCAL-22514 */
+// clang-format on
 FUNC(Dio_PortLevelType, DIO_CODE)
 Dio_ReadPort(Dio_PortType PortId)
 {
@@ -178,10 +184,10 @@ Dio_ReadPort(Dio_PortType PortId)
     return (portVal);
 }
 
+// clang-format off
 /* Design: MCAL-22485,MCAL-22439,MCAL-22440,MCAL-22445,MCAL-22446,MCAL-22447,MCAL-22451,MCAL-22486,
- * Design:
- * MCAL-22487,MCAL-22488,MCAL-22536,MCAL-22450,MCAL-22448,MCAL-22465,MCAL-22552,MCAL-22461,MCAL-22514
- */
+ * Design: MCAL-22487,MCAL-22488,MCAL-22536,MCAL-22450,MCAL-22448,MCAL-22465,MCAL-22552,MCAL-22461,MCAL-22514 */
+// clang-format on
 FUNC(void, DIO_CODE)
 Dio_WritePort(Dio_PortType PortId, Dio_PortLevelType Level)
 {
@@ -200,9 +206,11 @@ Dio_WritePort(Dio_PortType PortId, Dio_PortLevelType Level)
     }
 }
 
+// clang-format off
 /* Design:
  * MCAL-22439,MCAL-22440,MCAL-22453,MCAL-22457,MCAL-22489,MCAL-22535,MCAL-22536,MCAL-22454,MCAL-22441,
- * Design: MCAL-22466,MCAL-22463,MCAL-22552,MCAL-22462,MCAL-22490,MCAL-22491  */
+ * Design: MCAL-22466,MCAL-22463,MCAL-22552,MCAL-22462,MCAL-22490,MCAL-22491 */
+// clang-format on
 FUNC(Dio_PortLevelType, DIO_CODE)
 Dio_ReadChannelGroup(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) ChannelGroupIdPtr)
 {
@@ -232,10 +240,11 @@ Dio_ReadChannelGroup(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) Cha
     return (portLevelVal);
 }
 
+// clang-format off
 /* Design:
  * MCAL-22439,MCAL-22440,MCAL-22445,MCAL-22446,MCAL-22447,MCAL-22492,MCAL-22493,MCAL-22535,MCAL-22536,
- * Design: MCAL-22495,MCAL-22494,MCAL-22452,MCAL-22462,MCAL-22463,MCAL-22552,MCAL-22448,MCAL-22466
- */
+ * Design: MCAL-22495,MCAL-22494,MCAL-22452,MCAL-22462,MCAL-22463,MCAL-22552,MCAL-22448,MCAL-22466 */
+// clang-format on
 FUNC(void, DIO_CODE)
 Dio_WriteChannelGroup(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) ChannelGroupIdPtr,
                       Dio_PortLevelType Level)
@@ -261,9 +270,11 @@ Dio_WriteChannelGroup(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) Ch
 }
 
 #if (STD_ON == DIO_FLIP_CHANNEL_API)
+// clang-format off
 /* Design:
  * MCAL-22439,MCAL-22440,MCAL-22445,MCAL-22446,MCAL-22447,MCAL-22497,MCAL-22498,MCAL-22499,MCAL-22536,
  * Design: MCAL-22441,MCAL-22454,MCAL-22448,MCAL-22464,MCAL-22467,MCAL-22460,MCAL-22552 */
+// clang-format on
 FUNC(Dio_LevelType, DIO_CODE)
 Dio_FlipChannel(Dio_ChannelType ChannelId)
 {

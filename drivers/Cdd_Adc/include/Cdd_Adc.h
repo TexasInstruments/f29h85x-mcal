@@ -121,11 +121,8 @@ extern "C" {
 /** \brief API service called with invalid resolution */
 #define CDD_ADC_E_INVALID_RESOLUTION ((uint8)0x23U) /* Design: MCAL-31162 */
 
-/** \brief API service called with invalid interrupt ID */
-#define CDD_ADC_E_INVALID_INTERRUPT_ID ((uint8)0x24U)
-
-/** \brief API service called with invalid interrupt ID */
-#define CDD_ADC_E_WRONG_PROCESSING_MODE ((uint8)0x25U)
+/** \brief API service called for groups configured in DMA mode */
+#define CDD_ADC_E_WRONG_PROCESSING_MODE ((uint8)0x25U) /* Design: MCAL-31117 */
 
 /** \brief API service called for group with wrong trigger source type */
 #define CDD_ADC_E_WRONG_TRIGG_TYPE ((uint8)0x26U) /* Design: MCAL-31155 */
@@ -190,7 +187,7 @@ extern "C" {
 #define CDD_ADC_SID_INTERNAL_TEST_NODE ((uint8)0x1BU)
 /** \brief Cdd_Adc_UpdateStatus() service ID */
 #define CDD_ADC_SID_UPDATE_STATUS_THROUGH_DMA ((uint8)0x1CU)
-/** \brief Cdd_Adc_EnablePpbNotification() API Service ID */
+/** \brief Cdd_Adc_ConfigurePpbNotification() API Service ID */
 #define CDD_ADC_SID_CONFIGURE_PPB_NOTIFICATION ((uint8)0x1DU)
 
 /*********************************************************************************************************************
@@ -295,6 +292,7 @@ typedef struct
 /** \brief PPB unit config type */
 typedef struct Cdd_Adc_PpbUnitCfgTag
 {
+    /* Design: MCAL-31135 */
     /** \brief  ADC HW Unit PPB ID */
     Cdd_Adc_PpbIdType ppb_id;
     /** \brief  Soc number associated with the PPB */
@@ -302,9 +300,9 @@ typedef struct Cdd_Adc_PpbUnitCfgTag
     /** \brief  Index of the hardware unit in the array of the hardware units */
     uint8             hwunitindex;
     /** \brief  offset due to external sensors and signal resources*/
-    uint32            ppb_caloffset;
+    uint16            ppb_caloffset;
     /** \brief  Reference offset */
-    uint32            ppb_refoffset;
+    uint16            ppb_refoffset;
     /** \brief  Determines delta enable, two's complement, absolute enable, cycle by cycle enable
      * functionality */
     uint16            ppbresconfig;
@@ -322,6 +320,7 @@ typedef struct Cdd_Adc_PpbUnitCfgTag
 #endif
     /** \brief  ppb sample count limit*/
     uint16  ppbcountlimit;
+    /* Design: MCAL-31144 */
     /** \brief  shift value for automatic averaging and sync input select, OSINTSEL and COMPSEL*/
     uint16  ppbcfg2;
     /** \brief  Trip filter enable */
@@ -357,6 +356,7 @@ typedef struct Cdd_Adc_TrigRepCfgTag
 {
     /** \brief  ADC hardware unit index */
     uint8                    hwunit_index;
+    /* Design: MCAL-31126 */
     /** \brief  Trigger repeater instance ID */
     Cdd_Adc_RepeaterType     repeater_instance;
     /** \brief  Trigger repeater mode */
@@ -395,6 +395,7 @@ typedef struct Cdd_Adc_GroupCfgTag
     Cdd_Adc_GroupConvModeType    conversion_mode;
     /** \brief  Determines the trigger source (hw or sw trigger) */
     Cdd_Adc_TriggerSrcType       trigsrc_type;
+    /* Design: MCAL-31123 */
     /** \brief  0 refers to software trigger other than zero refers hardware triggers */
     Cdd_Adc_TriggerType          trigger_src;
     /** \brief  Defines the type of the groups buffer */
@@ -417,12 +418,17 @@ typedef struct Cdd_Adc_GroupCfgTag
 /** \brief Hardware unit config type */
 typedef struct Cdd_Adc_HwUnitCfgTag
 {
-    Cdd_Adc_HwUnitType      hwunit_id;   /*!< \brief  ADC HW unit base addr */
-    Cdd_Adc_PrescaleType    prescale;    /*!< \brief  ADC HW unit prescale*/
-    Cdd_Adc_ResolutionType  resolution;  /*!< \brief  ADC HW Unit resolution */
-    Cdd_Adc_SignalModeType  signal_mode; /*!< \brief  ADC HW Unit signal mode*/
+    Cdd_Adc_HwUnitType      hwunit_id; /*!< \brief  ADC HW unit base addr */
+    /* Design: MCAL-31129 */
+    Cdd_Adc_PrescaleType    prescale; /*!< \brief  ADC HW unit prescale*/
+    /* Design: MCAL-31115 */
+    Cdd_Adc_ResolutionType  resolution; /*!< \brief  ADC HW Unit resolution */
+    /* Design: MCAL-31130 */
+    Cdd_Adc_SignalModeType  signal_mode; /*!< \brief  ADC HW Unit signal mode */
+    /* Design: MCAL-31131 */
     Cdd_Adc_RefVoltType     voltref;     /*!< \brief  ADC HW Unit Voltage reference */
     Cdd_Adc_RefModeType     voltrefmode; /*!< \brief  ADC HW Unit signal reference */
+    /* Design: MCAL-31133 */
     /** \brief  Adc hardwrae unit Soc priority number. Based on this RoundRobin, high priority are
      * decided */
     Cdd_Adc_SocPriorityType socpriority;
@@ -435,6 +441,7 @@ typedef struct Cdd_Adc_HwUnitCfgTag
     /** \brief  Last group number for the hardware unit */
     Cdd_Adc_GroupType       lastgroupnum;
 #if (STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)
+    /* Design: MCAL-31143 */
     Cdd_Adc_OsDetectModeType osdetectmode; /*!< \brief ADC Hw Unit OS detect mode */
 #endif
 #if (STD_ON == CDD_ADC_EXTCHSEL_CAPABILITY)

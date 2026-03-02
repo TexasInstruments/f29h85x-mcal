@@ -93,8 +93,6 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase_sub(uint32 actualC
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase(uint32 actualChunkSize);
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase_sub(uint32 actualChunkSize);
 
-static FUNC(Std_ReturnType, FLS_CODE) Fls_GetSectorNumberEnableSectors(uint32 addr, uint32 length);
-
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29Read(uint32 actualChunkSize);
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29Compare(uint32 actualChunkSize);
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29BlankCheck(uint32 actualChunkSize);
@@ -198,7 +196,9 @@ static FUNC(void, FLS_CODE) Fls_PostProcessAndInitiateNextJob(Fls_JobType proces
     }
 }
 
-/* API used to post process and report errors */
+/* API used to post process and report errors
+ * Design: MCAL-30899,
+ */
 static FUNC(void, FLS_CODE) Fls_PostProcessAndReportError(uint8 ApiId, uint8 processFailureType)
 {
     Fls_DrvObj.status  = MEMIF_IDLE;
@@ -288,6 +288,9 @@ static FUNC(void, FLS_CODE) Fls_Process_JobBlankCheck(uint32 chunkSize)
     }
 }
 
+/*
+ * Design: MCAL-30909,
+ */
 static FUNC(void, FLS_CODE) Fls_Process_JobCompare(uint32 chunkSize)
 {
     VAR(Std_ReturnType, AUTOMATIC) retVal = E_OK;
@@ -306,6 +309,9 @@ static FUNC(void, FLS_CODE) Fls_Process_JobCompare(uint32 chunkSize)
     }
 }
 
+/*
+ * Design: MCAL-30908,
+ */
 static FUNC(void, FLS_CODE) Fls_Process_JobRead(uint32 chunkSize)
 {
     VAR(Std_ReturnType, AUTOMATIC) retVal = E_OK;
@@ -326,6 +332,9 @@ static FUNC(void, FLS_CODE) Fls_Process_JobRead(uint32 chunkSize)
     }
 }
 
+/*
+ * Design: MCAL-30903, MCAL-30905, MCAL-30906,
+ */
 static FUNC(void, FLS_CODE) Fls_Process_JobErase(uint32 chunkSize)
 {
     VAR(Std_ReturnType, AUTOMATIC) retVal = E_OK;
@@ -393,6 +402,9 @@ static FUNC(void, FLS_CODE) Fls_Process_JobErase(uint32 chunkSize)
     }
 }
 
+/*
+ * Design: MCAL-30904, MCAL-30905, MCAL-30907,
+ */
 static FUNC(void, FLS_CODE) Fls_Process_JobWrite(uint32 chunkSize)
 {
     VAR(Std_ReturnType, AUTOMATIC) retVal = E_OK;
@@ -490,7 +502,7 @@ static FUNC(void, FLS_CODE) Fls_Process_JobWrite(uint32 chunkSize)
 /*
  *  Function Name: Fls_F29Compare
  *  This function Compares flash memory, if any mismatch return E_NOT_OK
- *
+ *  Design: MCAL-30897,
  *  SRS_Fls_13301
  */
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29Compare(uint32 actualChunkSize)
@@ -500,11 +512,8 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29Compare(uint32 actualChunkSize)
 
     VAR(Std_ReturnType, AUTOMATIC) retVal = E_OK;
 
-    VAR(uint32, AUTOMATIC)
-    u32Length = actualChunkSize / 4U; /* for 32-bit word compare, length should be /4 */
-
-    P2VAR(uint32, AUTOMATIC, FLS_APPL_DATA) pu32CheckValueBuffer = (uint32 *)Fls_DrvObj.ramAddr;
-    P2VAR(uint32, AUTOMATIC, FLS_APPL_DATA) pu32StartAddress     = (uint32 *)Fls_DrvObj.flashAddr;
+    P2VAR(uint8, AUTOMATIC, FLS_APPL_DATA) pu8CheckValueBuffer = Fls_DrvObj.ramAddr;
+    P2VAR(uint32, AUTOMATIC, FLS_APPL_DATA) pu32StartAddress   = (uint32 *)Fls_DrvObj.flashAddr;
 
     /*  compare data. since the minimum number of byte to program is 8 bytes. I change to 4
      *   bytes compare: Fls_Fapi_doVerify()
@@ -515,8 +524,8 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29Compare(uint32 actualChunkSize)
      * u32Length, (uint8 *)pu8CheckValueBuffer, &oFlashStatusWord);
      */
 
-    oReturnCheck =
-        Fls_Fapi_doVerify((uint32 *)pu32StartAddress, u32Length, (uint32 *)pu32CheckValueBuffer, &oFlashStatusWord);
+    oReturnCheck = Fls_Fapi_doVerifyByByte((uint8 *)pu32StartAddress, actualChunkSize, (uint8 *)pu8CheckValueBuffer,
+                                           &oFlashStatusWord);
 
     if (oReturnCheck != E_OK)
     {
@@ -642,24 +651,16 @@ static Std_ReturnType Fls_F29AsyncWrite(uint32 actualChunkSize)
 
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite_sub(uint32 actualSize)
 {
-    VAR(Std_ReturnType, AUTOMATIC) retVal  = E_OK;
-    VAR(Std_ReturnType, AUTOMATIC) retVal2 = E_OK;
-    VAR(Std_ReturnType, AUTOMATIC) oReturnCheck;
-    VAR(Fls_FapiFlashStatus, AUTOMATIC) oFlashStatus;
-
-    VAR(Std_ReturnType, AUTOMATIC) oReturnCheck_STClrCMD;
-    VAR(Std_ReturnType, AUTOMATIC) oReturnCheck_WriteCMD;
+    VAR(Std_ReturnType, AUTOMATIC) retVal            = E_OK;
+    VAR(Fls_FapiFlashStatus, AUTOMATIC) oFlashStatus = 0U;
 
     VAR(MemIf_StatusType, AUTOMATIC) fsmStatus = MEMIF_BUSY;
 
     VAR(uint32, AUTOMATIC) u32StartAddress     = Fls_DrvObj.flashAddr;
     P2VAR(uint8, AUTOMATIC, FLS_APPL_DATA) buf = Fls_DrvObj.ramAddr;
-    VAR(uint32, AUTOMATIC) length              = Fls_DrvObj.length;
 
     /* Fls_DrvObj.FlsMaxWriteNormalMode should be 8 or 16*/
     VAR(uint8, AUTOMATIC) DataBufSizeInBytes = Fls_DrvObj.FlsMaxWriteNormalMode;
-
-    /*VAR(uint8, AUTOMATIC)DataBufSizeInBytes = 8U;*/
 
     static uint16 pre_write_check    = FLS_WRITE_FSM_READY_CHECK;
     static uint16 post_write_check   = FLS_WRITE_FSM_READY_CHECK;
@@ -681,51 +682,33 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite_sub(uint32 actualSize)
         }
         if (pre_write_check == FLS_WRITE_FSM_ISSUE_CMD)
         {
-            pre_write_check       = FLS_WRITE_FSM_STATUS_CHECK;
-            oReturnCheck_STClrCMD = Fls_Fapi_issueAsyncCommand(FLS_FAPI_CLEARSTATUS);
+            pre_write_check = FLS_WRITE_FSM_STATUS_CHECK;
+            Fls_Fapi_issueAsyncCommand();
         }
         if (pre_write_check == FLS_WRITE_FSM_STATUS_CHECK)
         {
             oFlashStatus = Fls_Fapi_getFsmStatus();
             if (oFlashStatus == 0x0U) /* FLS_FAPI_STATUS_SUCCESS*/
             {
-                pre_write_check = FLS_STATUS_CLEAR_CHECK;
+                Fls_U8FlashWriteStage = FLS_DO_SECTOR_UNLOCK;
+                pre_write_check       = FLS_WRITE_FSM_READY_CHECK;
             }
             else
             {
                 fsmStatus = MEMIF_BUSY_INTERNAL;
             }
         }
-        if (pre_write_check == FLS_STATUS_CLEAR_CHECK) /* check return value of Fapi_issueAsyncCommand() */
-        {
-            if (oReturnCheck_STClrCMD == E_OK)
-            {
-                Fls_U8FlashWriteStage = FLS_DO_SECTOR_UNLOCK;
-                pre_write_check       = FLS_WRITE_FSM_READY_CHECK;
-            }
-            else /* FLS_FAPI_ERROR_INVALIDADDRESS, etc*/
-            {
-                retVal = E_NOT_OK;
-            }
-        }
     }
     if (Fls_U8FlashWriteStage == FLS_DO_SECTOR_UNLOCK)
     {
-        retVal2 = Fls_GetSectorNumberEnableSectors(u32StartAddress, length);
-        if (retVal2 == E_OK)
-        {
-            Fls_U8FlashWriteStage = FLS_DO_WRITE_JOB;
-        }
-        else
-        {
-            fsmStatus = MEMIF_BUSY_INTERNAL;
-        }
+        Fls_Fapi_setupBankSectorEnable(FLS_FLASH_NW_O_CMDWEPROTA, Fls_CMD_WE_Protection_A_Mask);
+        Fls_Fapi_setupBankSectorEnable(FLS_FLASH_NW_O_CMDWEPROTB, Fls_CMD_WE_Protection_B_Mask);
+        Fls_U8FlashWriteStage = FLS_DO_WRITE_JOB;
     }
     if (Fls_U8FlashWriteStage == FLS_DO_WRITE_JOB)
     {
         /* DataBufSizeInBytes can be 8 or 16. ALl other values are not allowed */
-        oReturnCheck_WriteCMD =
-            Fls_Fapi_issueProgrammingCommand((uint32 *)u32StartAddress, (uint8 *)buf, (uint8)DataBufSizeInBytes);
+        Fls_Fapi_issueProgrammingCommand((uint32 *)u32StartAddress, (uint8 *)buf, (uint8)DataBufSizeInBytes);
 
         Fls_U8FlashWriteStage = FLS_S_WRITE_POSTCHECK;
         post_write_check      = FLS_WRITE_FSM_READY_CHECK;
@@ -734,27 +717,17 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite_sub(uint32 actualSize)
     {
         if (post_write_check == FLS_WRITE_FSM_READY_CHECK)
         {
-            oReturnCheck = Fls_Fapi_checkFsmForReady();
-            if (oReturnCheck != E_NOT_OK)
+            retVal = Fls_Fapi_checkFsmForReady();
+            if (retVal != E_NOT_OK)
             {
-                post_write_check = FLS_WRITE_CMD_CHECK;
+                post_write_check = FLS_WRITE_FSM_STATUS_CHECK;
             }
             else
             {
                 /* Do noting or wait for a while*/
                 fsmStatus                        = MEMIF_BUSY_INTERNAL;
                 Fls_U32FlsWrite_PostFapiFsmReady = 0x1U;
-            }
-        }
-        if (post_write_check == FLS_WRITE_CMD_CHECK)
-        {
-            if (oReturnCheck_WriteCMD == E_OK)
-            {
-                post_write_check = FLS_WRITE_FSM_STATUS_CHECK;
-            }
-            else /* FLS_FAPI_ERROR_INVALIDADDRESS, etc*/
-            {
-                retVal = E_NOT_OK;
+                retVal                           = E_OK;
             }
         }
         if (post_write_check == FLS_WRITE_FSM_STATUS_CHECK)
@@ -817,27 +790,6 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_Callf29Erase(uint32 chunkSize)
     return retVal;
 }
 
-/* length should be smaller than the size of one bank in this example*/
-static FUNC(Std_ReturnType, FLS_CODE) Fls_GetSectorNumberEnableSectors(uint32 addr, uint32 length)
-{
-    VAR(Std_ReturnType, AUTOMATIC) retVal = E_OK;
-    VAR(Std_ReturnType, AUTOMATIC) oReturnCheckA;
-    VAR(Std_ReturnType, AUTOMATIC) oReturnCheckB;
-
-    oReturnCheckA = Fls_Fapi_setupBankSectorEnable(FLS_FLASH_NW_O_CMDWEPROTA, Fls_CMD_WE_Protection_A_Mask);
-    oReturnCheckB = Fls_Fapi_setupBankSectorEnable(FLS_FLASH_NW_O_CMDWEPROTB, Fls_CMD_WE_Protection_B_Mask);
-
-    if ((oReturnCheckA == E_OK) && (oReturnCheckB == E_OK))
-    {
-        retVal = E_OK;
-    }
-    else
-    {
-        retVal = E_NOT_OK;
-    }
-    return retVal;
-}
-
 /*
  *   Function Name: Fls_F29AsyncSectorErase
  *   Function to perform sector erase in the flash
@@ -878,16 +830,12 @@ static Std_ReturnType Fls_F29AsyncBankErase(uint32 actualChunkSize)
 
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase_sub(uint32 actualSize)
 {
-    VAR(Std_ReturnType, AUTOMATIC) retVal      = E_OK;
-    VAR(Std_ReturnType, AUTOMATIC) retVal2     = E_OK;
-    VAR(MemIf_StatusType, AUTOMATIC) fsmStatus = MEMIF_BUSY;
-    VAR(Fls_FapiFlashStatus, AUTOMATIC) oFlashStatus;
-    VAR(Std_ReturnType, AUTOMATIC) oReturnCheck;
-    VAR(Std_ReturnType, AUTOMATIC) oReturnCheck_AsyncCMD;
-    VAR(volatile Std_ReturnType, AUTOMATIC) oReturnCheck_EraseCMD = E_OK;
-    VAR(uint32, AUTOMATIC) u32StartAddress                        = Fls_DrvObj.flashAddr;
-    VAR(uint32, AUTOMATIC) length                                 = Fls_DrvObj.length;
-    Fls_SectorBankErase_PostFapiFsmReadyDone                      = 0U;
+    VAR(Std_ReturnType, AUTOMATIC) retVal            = E_OK;
+    VAR(MemIf_StatusType, AUTOMATIC) fsmStatus       = MEMIF_BUSY;
+    VAR(Fls_FapiFlashStatus, AUTOMATIC) oFlashStatus = 0U;
+
+    VAR(uint32, AUTOMATIC) u32StartAddress   = Fls_DrvObj.flashAddr;
+    Fls_SectorBankErase_PostFapiFsmReadyDone = 0U;
 
     static uint16 pre_check_sub_function  = FLS_ERASE_FSM_READY_CHECK;
     static uint16 post_check_sub_function = FLS_ERASE_FSM_READY_CHECK;
@@ -897,20 +845,21 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase_sub(uint32 actualS
         if (pre_check_sub_function == FLS_ERASE_FSM_READY_CHECK)
         {
             /* FSM is ready to accept new command*/
-            oReturnCheck = Fls_Fapi_checkFsmForReady();
+            retVal = Fls_Fapi_checkFsmForReady();
 
-            if (oReturnCheck == E_OK)
+            if (retVal == E_OK)
             {
                 pre_check_sub_function = FLS_ERASE_FSM_ISSUE_CMD;
             }
             else
             {
                 fsmStatus = MEMIF_BUSY_INTERNAL; /* Next step is to return to mainFunction()*/
+                retVal    = E_OK;
             }
         }
         if (pre_check_sub_function == FLS_ERASE_FSM_ISSUE_CMD)
         {
-            oReturnCheck_AsyncCMD  = Fls_Fapi_issueAsyncCommand(FLS_FAPI_CLEARSTATUS);
+            Fls_Fapi_issueAsyncCommand();
             pre_check_sub_function = FLS_ERASE_FSM_STATUS_CHECK; /**  next is FSM status checking*/
         }
         if (pre_check_sub_function == FLS_ERASE_FSM_STATUS_CHECK)
@@ -918,68 +867,42 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase_sub(uint32 actualS
             oFlashStatus = Fls_Fapi_getFsmStatus();
             if (oFlashStatus == 0x0U)
             {
-                pre_check_sub_function = FLS_STATUS_CLEAR_CHECK;
+                Fls_U8SectorEraseStage = FLS_DO_SECTOR_UNLOCK;
+                pre_check_sub_function = FLS_ERASE_FSM_READY_CHECK;
             }
             else
             {
                 fsmStatus = MEMIF_BUSY_INTERNAL;
             }
         }
-        if (pre_check_sub_function == FLS_STATUS_CLEAR_CHECK) /** check return value of Fapi_issueAsyncCommand() */
-        {
-            if (oReturnCheck_AsyncCMD == E_OK)
-            {
-                Fls_U8SectorEraseStage = FLS_DO_SECTOR_UNLOCK;
-                pre_check_sub_function = FLS_ERASE_FSM_READY_CHECK;
-            }
-            else /* FLS_FAPI_ERROR_INVALIDADDRESS, etc*/
-            {
-                retVal = E_NOT_OK;
-            }
-        }
     }
     if (Fls_U8SectorEraseStage == FLS_DO_SECTOR_UNLOCK)
     {
-        retVal2 = Fls_GetSectorNumberEnableSectors(u32StartAddress, length);
-        if (retVal2 == E_OK)
-        {
-            Fls_U8SectorEraseStage = FLS_DO_ERASE_JOB;
-        }
-        else
-        {
-            fsmStatus = MEMIF_BUSY_INTERNAL;
-        }
+        Fls_Fapi_setupBankSectorEnable(FLS_FLASH_NW_O_CMDWEPROTA, Fls_CMD_WE_Protection_A_Mask);
+        Fls_Fapi_setupBankSectorEnable(FLS_FLASH_NW_O_CMDWEPROTB, Fls_CMD_WE_Protection_B_Mask);
+
+        Fls_U8SectorEraseStage = FLS_DO_ERASE_JOB;
     }
     if (Fls_U8SectorEraseStage == FLS_DO_ERASE_JOB)
     {
-        oReturnCheck_EraseCMD  = Fls_Fapi_issueAsyncCommandWithAddress(FLS_FAPI_ERASESECTOR, (uint32 *)u32StartAddress);
-        Fls_U8SectorEraseStage = FLS_S_ERASE_POSTCHECK;
+        Fls_Fapi_issueAsyncCommandWithAddress((uint32 *)u32StartAddress);
+        Fls_U8SectorEraseStage  = FLS_S_ERASE_POSTCHECK;
         post_check_sub_function = FLS_ERASE_FSM_READY_CHECK;
     }
     if (Fls_U8SectorEraseStage == FLS_S_ERASE_POSTCHECK)
     {
         if (post_check_sub_function == FLS_ERASE_FSM_READY_CHECK)
         {
-            oReturnCheck = Fls_Fapi_checkFsmForReady();
-            if (oReturnCheck == E_OK)
+            retVal = Fls_Fapi_checkFsmForReady();
+            if (retVal == E_OK)
             {
-                post_check_sub_function = FLS_ERASE_CMD_CHECK;
+                post_check_sub_function = FLS_ERASE_FSM_STATUS_CHECK;
             }
             else
             {
                 /* Do noting or wait for a while*/
                 fsmStatus = MEMIF_BUSY_INTERNAL;
-            }
-        }
-        if (post_check_sub_function == FLS_ERASE_CMD_CHECK)
-        {
-            if (oReturnCheck_EraseCMD == E_OK)
-            {
-                post_check_sub_function = FLS_ERASE_FSM_STATUS_CHECK;
-            }
-            else /* FLS_FAPI_ERROR_INVALIDADDRESS, etc*/
-            {
-                retVal = E_NOT_OK;
+                retVal    = E_OK;
             }
         }
         if (post_check_sub_function == FLS_ERASE_FSM_STATUS_CHECK)
@@ -1008,18 +931,12 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase_sub(uint32 actualS
 /* Function for Flash Bank Erase*/
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase_sub(uint32 actualSize)
 {
-    VAR(Std_ReturnType, AUTOMATIC) retVal      = E_OK;
-    VAR(Std_ReturnType, AUTOMATIC) retVal2     = E_OK;
-    VAR(MemIf_StatusType, AUTOMATIC) fsmStatus = MEMIF_BUSY;
-    VAR(Fls_FapiFlashStatus, AUTOMATIC) oFlashStatus;
-    static VAR(Std_ReturnType, AUTOMATIC) oReturnCheck;
-    VAR(Std_ReturnType, AUTOMATIC) oReturnCheck_STClrCMD   = E_OK;
-    VAR(Std_ReturnType, AUTOMATIC) oReturnCheck_BKEraseCMD = E_OK;
-
-    Fls_SectorBankErase_PostFapiFsmReadyDone = 0U;
+    VAR(Std_ReturnType, AUTOMATIC) retVal            = E_OK;
+    VAR(MemIf_StatusType, AUTOMATIC) fsmStatus       = MEMIF_BUSY;
+    VAR(Fls_FapiFlashStatus, AUTOMATIC) oFlashStatus = 0U;
+    Fls_SectorBankErase_PostFapiFsmReadyDone         = 0U;
 
     VAR(uint32, AUTOMATIC) u32StartAddress = Fls_DrvObj.flashAddr;
-    VAR(uint32, AUTOMATIC) length          = Fls_DrvObj.length;
 
     static uint16 pre_bank_erase_check  = FLS_ERASE_FSM_READY_CHECK;
     static uint16 post_bank_erase_check = FLS_ERASE_FSM_READY_CHECK;
@@ -1029,91 +946,66 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase_sub(uint32 actualSiz
         if (pre_bank_erase_check == FLS_ERASE_FSM_READY_CHECK)
         {
             /* FSM is ready to accept new command*/
-            oReturnCheck = Fls_Fapi_checkFsmForReady(); /* return FapiFlashStatus */
+            retVal = Fls_Fapi_checkFsmForReady(); /* return FapiFlashStatus */
 
-            if (oReturnCheck == E_OK)
+            if (retVal == E_OK)
             {
                 pre_bank_erase_check = FLS_ERASE_FSM_ISSUE_CMD;
             }
             else
             {
                 fsmStatus = MEMIF_BUSY_INTERNAL; /* Next step is to return to mainFunction()*/
+                retVal    = E_OK;
             }
         }
         if (pre_bank_erase_check == FLS_ERASE_FSM_ISSUE_CMD)
         {
-            oReturnCheck_STClrCMD = Fls_Fapi_issueAsyncCommand(FLS_FAPI_CLEARSTATUS);
-            pre_bank_erase_check  = FLS_ERASE_FSM_STATUS_CHECK; /* next is FSM status checking*/
+            Fls_Fapi_issueAsyncCommand();
+            pre_bank_erase_check = FLS_ERASE_FSM_STATUS_CHECK; /* next is FSM status checking*/
         }
         if (pre_bank_erase_check == FLS_ERASE_FSM_STATUS_CHECK)
         {
             oFlashStatus = Fls_Fapi_getFsmStatus();
             if (oFlashStatus == 0x0U)
             {
-                pre_bank_erase_check = FLS_STATUS_CLEAR_CHECK;
+                Fls_U8BankEraseStage = FLS_DO_SECTOR_UNLOCK;
+                pre_bank_erase_check = FLS_ERASE_FSM_READY_CHECK;
             }
             else
             {
                 fsmStatus = MEMIF_BUSY_INTERNAL;
-            }
-        }
-        if (pre_bank_erase_check == FLS_STATUS_CLEAR_CHECK) /* check return value of Fls_Fapi_issueAsyncCommand() */
-        {
-            if (oReturnCheck_STClrCMD == E_OK)
-            {
-                Fls_U8BankEraseStage = FLS_DO_SECTOR_UNLOCK;
-                pre_bank_erase_check = FLS_ERASE_FSM_READY_CHECK;
-            }
-            else /* FLS_FAPI_ERROR_INVALIDADDRESS, etc*/
-            {
-                retVal = E_NOT_OK;
             }
         }
     }
     if (Fls_U8BankEraseStage == FLS_DO_SECTOR_UNLOCK)
     {
-        retVal2 = Fls_GetSectorNumberEnableSectors(u32StartAddress, length);
-        if (retVal2 == E_OK)
-        {
-            Fls_U8BankEraseStage = FLS_DO_ERASE_JOB;
-        }
-        else
-        {
-            fsmStatus = MEMIF_BUSY_INTERNAL;
-        }
+        Fls_Fapi_setupBankSectorEnable(FLS_FLASH_NW_O_CMDWEPROTA, Fls_CMD_WE_Protection_A_Mask);
+        Fls_Fapi_setupBankSectorEnable(FLS_FLASH_NW_O_CMDWEPROTB, Fls_CMD_WE_Protection_B_Mask);
+
+        Fls_U8BankEraseStage = FLS_DO_ERASE_JOB;
     }
 
     if (Fls_U8BankEraseStage == FLS_DO_ERASE_JOB)
     {
-        oReturnCheck_BKEraseCMD = Fls_Fapi_issueBankEraseCommand((uint32 *)(u32StartAddress));
-        Fls_U8BankEraseStage    = FLS_S_ERASE_POSTCHECK;
-        post_bank_erase_check   = FLS_ERASE_FSM_READY_CHECK;
+        Fls_Fapi_issueBankEraseCommand((uint32 *)(u32StartAddress));
+        Fls_U8BankEraseStage  = FLS_S_ERASE_POSTCHECK;
+        post_bank_erase_check = FLS_ERASE_FSM_READY_CHECK;
     }
     if (Fls_U8BankEraseStage == FLS_S_ERASE_POSTCHECK)
     {
         if (post_bank_erase_check == FLS_ERASE_FSM_READY_CHECK)
         {
-            oReturnCheck = Fls_Fapi_checkFsmForReady();
+            retVal = Fls_Fapi_checkFsmForReady();
 
-            if (oReturnCheck == E_OK)
+            if (retVal == E_OK)
             {
-                post_bank_erase_check = FLS_ERASE_CMD_CHECK;
+                post_bank_erase_check = FLS_ERASE_FSM_STATUS_CHECK;
             }
             else
             {
                 /* Do noting or wait for a while*/
                 fsmStatus = MEMIF_BUSY_INTERNAL;
-            }
-        }
-        if (post_bank_erase_check == FLS_ERASE_CMD_CHECK)
-        {
-            if (oReturnCheck_BKEraseCMD == E_OK)
-            {
-                post_bank_erase_check = FLS_ERASE_FSM_STATUS_CHECK;
-            }
-            else /* FLS_FAPI_ERROR_INVALIDADDRESS, etc*/
-            {
-                retVal = E_NOT_OK;
+                retVal    = E_OK;
             }
         }
         if (post_bank_erase_check == FLS_ERASE_FSM_STATUS_CHECK)

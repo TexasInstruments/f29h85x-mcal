@@ -6367,7 +6367,7 @@ Cdd_Pwm_SelectXbarInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_SetLutDecX(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                    VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel, VAR(Cdd_Pwm_LutDecXType, AUTOMATIC) Decx,
-                   VAR(uint16, AUTOMATIC) Force);
+                   VAR(boolean, AUTOMATIC) Force);
 
 /** \brief Diode Emulation logic related APIs
  *

@@ -71,7 +71,7 @@ Dio_LevelType        Dio_ChannelLevel = 0x0;
 /* Dio port level global variable */
 Dio_PortLevelType    Dio_PortLevel = 0x00000000;
 /* Dio channel group */
-Dio_ChannelGroupType Dio_ChannelGroup = {.port = GPIO_PORT_A, .mask = 0xFF00, .offset = 8U};
+Dio_ChannelGroupType Dio_ChannelGroup = {.port = DIO_PORT_A, .mask = 0xFF00, .offset = 8U};
 
 #if (STD_ON == DIO_FLIP_CHANNEL_API)
 /* dio flip channel level */

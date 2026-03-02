@@ -219,6 +219,64 @@ static FUNC(Std_ReturnType, CAN_CODE)
 static FUNC(Std_ReturnType, CAN_CODE)
     Can_WritePrivTriggerTransmit(Can_HwHandleType mailbox, P2VAR(Can_PduType, AUTOMATIC, CAN_DATA) pduInfo);
 
+/** \brief This service is called to get the Icom state
+ *
+ * \param[in, out] returnValue Return value.
+ * \param[in, out] msgController Pointer to controller ID.
+ * \pre None
+ * \post None
+ * \return void
+ *
+ *****************************************************************************/
+static FUNC(void, CAN_CODE) Can_GetIcomActivationPriv(P2VAR(Std_ReturnType, AUTOMATIC, CAN_DATA) returnValue,
+                                                      P2VAR(uint8, AUTOMATIC, CAN_DATA) msgController);
+
+/** \brief This service is called to get the Icom state
+ *
+ * \param[in, out] pduInfo PDU info editable.
+ * \param[in, out] PduInfo Constant PDU info from application
+ * \param[in] Hth Hardware Object handle.
+ * \param[in] msgController Message controller.
+ * \pre None
+ * \post None
+ * \return Std_ReturnType
+ * \retval E_OK: Write command has been accepted.
+ * \retval E_NOT_OK:  error occurred.
+ *
+ *****************************************************************************/
+static FUNC(Std_ReturnType, CAN_CODE) Can_WriteTxHandlerPriv(P2VAR(Can_PduType, AUTOMATIC, CAN_DATA) pduInfo,
+                                                             P2CONST(Can_PduType, AUTOMATIC, CAN_APPL_CONST) PduInfo,
+                                                             Can_HwHandleType Hth, VAR(uint8, AUTOMATIC) msgController);
+
+#if (STD_ON == CAN_TX_POLLING)
+/** \brief This is a helper function to write the CAN message
+ *
+ * \param[in] htrh Hardware Transmit/Receive object.
+ * \param[in] controller controller ID.
+ * \param[in] RWFuncID RW Function ID.
+ * \pre None
+ * \post None
+ * \return void
+ *
+ *****************************************************************************/
+static FUNC(void, CAN_CODE) Can_MainFunction_WriteMsgPriv(VAR(Can_HwHandleType, AUTOMATIC) htrh,
+                                                          VAR(uint8, AUTOMATIC) controller, uint16 RWFuncID);
+#endif
+
+#if (STD_ON == CAN_RX_POLLING)
+/** \brief This is a helper function to read the CAN message
+ *
+ * \param[in] htrh Hardware Transmit/Receive object.
+ * \param[in] controller controller ID.
+ * \param[in] RWFuncID RW Function ID.
+ * \pre None
+ * \post None
+ * \return void
+ *
+ *****************************************************************************/
+static FUNC(void, CAN_CODE) Can_MainFunction_ReadMsgPriv(VAR(Can_HwHandleType, AUTOMATIC) htrh,
+                                                         VAR(uint8, AUTOMATIC) controller, uint16 RWFuncID);
+#endif
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
@@ -623,9 +681,8 @@ Can_SetControllerMode(uint8 Controller, Can_ControllerStateType Transition)
 FUNC(Std_ReturnType, CAN_CODE)
 Can_Write(Can_HwHandleType Hth, P2CONST(Can_PduType, AUTOMATIC, CAN_APPL_CONST) PduInfo)
 {
-    VAR(Std_ReturnType, AUTOMATIC) returnValue      = E_NOT_OK;
-    VAR(uint8, AUTOMATIC) msgController             = (uint8)0U;
-    VAR(uint8, AUTOMATIC) messageBox                = (Can_HwHandleType)0U;
+    VAR(Std_ReturnType, AUTOMATIC) returnValue = E_NOT_OK;
+    VAR(uint8, AUTOMATIC) msgController;
     P2VAR(Can_PduType, AUTOMATIC, CAN_DATA) pduInfo = (Can_PduType *)PduInfo;
 
 #if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
@@ -641,32 +698,10 @@ Can_Write(Can_HwHandleType Hth, P2CONST(Can_PduType, AUTOMATIC, CAN_APPL_CONST) 
             returnValue   = Can_WritePrivTriggerTransmit(Hth, pduInfo);
 
             /* Only for Tx Mailbox */
-            if ((E_OK == returnValue) && (Can_DriverObj.Can_IcomActivation[msgController] == TRUE))
-            {
-                returnValue = (uint8)CAN_BUSY;
-            }
+            Can_GetIcomActivationPriv(&returnValue, &msgController);
             if (E_OK == returnValue)
             {
-                SchM_Enter_Can_CAN_EXCLUSIVE_AREA_1();
-                /* CanSM has triggered a new write after L1 timeout. Stop the BusOff
-                 * recovery. CanSM will trigger a new bus off recovery sequence. */
-                Can_DriverObj.canController[msgController].canBusOffRecoveryStatus = FALSE;
-
-                /* Get the hardware buffer number for HTH*/
-                messageBox = Can_DriverObj.canMailbox[Hth].mailBoxConfig.HwHandle;
-
-                returnValue = Can_GetFreeTxMsgObjPriv(&Can_DriverObj.canMailbox[Hth].mailBoxConfig,
-                                                      &Can_DriverObj.canController[msgController], &messageBox);
-
-                if (E_OK == returnValue)
-                {
-                    Can_WriteTxMailboxPriv(&Can_DriverObj.canMailbox[Hth].mailBoxConfig,
-                                           &Can_DriverObj.canController[msgController], messageBox, pduInfo);
-
-                    /* Store the transmitted Pdu SWPdu Handle for Tx confirmation */
-                    Can_DriverObj.canController[msgController].canTxRxPduId[messageBox] = PduInfo->swPduHandle;
-                }
-                SchM_Exit_Can_CAN_EXCLUSIVE_AREA_1();
+                returnValue = Can_WriteTxHandlerPriv(pduInfo, PduInfo, Hth, msgController);
             }
         }
     }
@@ -691,21 +726,11 @@ Can_MainFunction_Write(uint16 RWFuncID)
         if (TRUE == Can_DriverObj.canController[controller].canControllerConfig.CanControllerActivation)
         {
             /* Write to TRANSMIT Hoh that are mapped to respective RWFuncID */
-            if ((CAN_TRANSMIT == Can_DriverObj.canMailbox[htrh].mailBoxConfig.CanObjectType) &&
-                (RWFuncID == Can_DriverObj.canMailbox[htrh].mailBoxConfig.CanMainFunctionRWPeriodRef.ID))
-            {
-                /* Process TRANSMIT Hoh that are configured to be in polling mode */
-                if ((CAN_POLLING == Can_DriverObj.canController[controller].canControllerConfig.CanTxProcessing) ||
-                    ((CAN_MIXED == Can_DriverObj.canController[controller].canControllerConfig.CanTxProcessing) &&
-                     (TRUE == Can_DriverObj.canMailbox[htrh].mailBoxConfig.CanHardwareObjectUsesPolling)))
-                {
-                    /* Check if transmission is done for respective Hoh */
-                    Can_HwUnitTxDonePollingPriv(&Can_DriverObj.canController[controller],
-                                                &Can_DriverObj.canMailbox[htrh]);
-                }
-            }
+            Can_MainFunction_WriteMsgPriv(htrh, controller, RWFuncID);
         }
     }
+#else /* (STD_OFF == CAN_TX_POLLING) - To suppress MISRA C warning*/
+    (void)RWFuncID;
 #endif
 }
 
@@ -729,21 +754,11 @@ Can_MainFunction_Read(uint16 RWFuncID)
         if (TRUE == Can_DriverObj.canController[controller].canControllerConfig.CanControllerActivation)
         {
             /* Read from RECEIVE Hoh that are mapped to respective RWFuncID */
-            if ((CAN_RECEIVE == Can_DriverObj.canMailbox[htrh].mailBoxConfig.CanObjectType) &&
-                (RWFuncID == Can_DriverObj.canMailbox[htrh].mailBoxConfig.CanMainFunctionRWPeriodRef.ID))
-            {
-                /* Process RECEIVE Hoh that are configured to be in polling mode */
-                if ((CAN_POLLING == Can_DriverObj.canController[controller].canControllerConfig.CanRxProcessing) ||
-                    ((CAN_MIXED == Can_DriverObj.canController[controller].canControllerConfig.CanRxProcessing) &&
-                     (TRUE == Can_DriverObj.canMailbox[htrh].mailBoxConfig.CanHardwareObjectUsesPolling)))
-                {
-                    /* Check if message is received for respective Hoh*/
-                    Can_ReadRxMailboxPriv(&Can_DriverObj.canController[controller], &Can_DriverObj.canMailbox[htrh],
-                                          htrh);
-                }
-            }
+            Can_MainFunction_ReadMsgPriv(htrh, controller, RWFuncID);
         }
     }
+#else /* (STD_OFF == CAN_TX_POLLING) - To suppress MISRA C warning*/
+    (void)RWFuncID;
 #endif
 }
 
@@ -1219,6 +1234,82 @@ static FUNC(Std_ReturnType, CAN_CODE)
 
     return returnValue;
 }
+
+static FUNC(void, CAN_CODE) Can_GetIcomActivationPriv(P2VAR(Std_ReturnType, AUTOMATIC, CAN_DATA) returnValue,
+                                                      P2VAR(uint8, AUTOMATIC, CAN_DATA) msgController)
+{
+    if ((E_OK == *returnValue) && (Can_DriverObj.Can_IcomActivation[*msgController] == TRUE))
+    {
+        *returnValue = (uint8)CAN_BUSY;
+    }
+}
+
+static FUNC(Std_ReturnType, CAN_CODE) Can_WriteTxHandlerPriv(P2VAR(Can_PduType, AUTOMATIC, CAN_DATA) pduInfo,
+                                                             P2CONST(Can_PduType, AUTOMATIC, CAN_APPL_CONST) PduInfo,
+                                                             Can_HwHandleType Hth, VAR(uint8, AUTOMATIC) msgController)
+{
+    Std_ReturnType returnValue;
+    VAR(uint8, AUTOMATIC) messageBox;
+
+    SchM_Enter_Can_CAN_EXCLUSIVE_AREA_1();
+    /* CanSM has triggered a new write after L1 timeout. Stop the BusOff
+     * recovery. CanSM will trigger a new bus off recovery sequence. */
+    Can_DriverObj.canController[msgController].canBusOffRecoveryStatus = FALSE;
+
+    /* Get the hardware buffer number for HTH*/
+    messageBox = Can_DriverObj.canMailbox[Hth].mailBoxConfig.HwHandle;
+
+    returnValue = Can_GetFreeTxMsgObjPriv(&Can_DriverObj.canMailbox[Hth].mailBoxConfig, &messageBox);
+
+    if (E_OK == returnValue)
+    {
+        Can_WriteTxMailboxPriv(&Can_DriverObj.canMailbox[Hth].mailBoxConfig, messageBox, pduInfo);
+
+        /* Store the transmitted Pdu SWPdu Handle for Tx confirmation */
+        Can_DriverObj.canController[msgController].canTxRxPduId[messageBox] = PduInfo->swPduHandle;
+    }
+    SchM_Exit_Can_CAN_EXCLUSIVE_AREA_1();
+
+    return returnValue;
+}
+
+#if (STD_ON == CAN_TX_POLLING)
+static FUNC(void, CAN_CODE) Can_MainFunction_WriteMsgPriv(VAR(Can_HwHandleType, AUTOMATIC) htrh,
+                                                          VAR(uint8, AUTOMATIC) controller, uint16 RWFuncID)
+{
+    if ((CAN_TRANSMIT == Can_DriverObj.canMailbox[htrh].mailBoxConfig.CanObjectType) &&
+        (RWFuncID == Can_DriverObj.canMailbox[htrh].mailBoxConfig.CanMainFunctionRWPeriodRef.ID))
+    {
+        /* Process TRANSMIT Hoh that are configured to be in polling mode */
+        if ((CAN_POLLING == Can_DriverObj.canController[controller].canControllerConfig.CanTxProcessing) ||
+            ((CAN_MIXED == Can_DriverObj.canController[controller].canControllerConfig.CanTxProcessing) &&
+             (TRUE == Can_DriverObj.canMailbox[htrh].mailBoxConfig.CanHardwareObjectUsesPolling)))
+        {
+            /* Check if transmission is done for respective Hoh */
+            Can_HwUnitTxDonePollingPriv(&Can_DriverObj.canController[controller], &Can_DriverObj.canMailbox[htrh]);
+        }
+    }
+}
+#endif
+
+#if (STD_ON == CAN_RX_POLLING)
+static FUNC(void, CAN_CODE) Can_MainFunction_ReadMsgPriv(VAR(Can_HwHandleType, AUTOMATIC) htrh,
+                                                         VAR(uint8, AUTOMATIC) controller, uint16 RWFuncID)
+{
+    if ((CAN_RECEIVE == Can_DriverObj.canMailbox[htrh].mailBoxConfig.CanObjectType) &&
+        (RWFuncID == Can_DriverObj.canMailbox[htrh].mailBoxConfig.CanMainFunctionRWPeriodRef.ID))
+    {
+        /* Process RECEIVE Hoh that are configured to be in polling mode */
+        if ((CAN_POLLING == Can_DriverObj.canController[controller].canControllerConfig.CanRxProcessing) ||
+            ((CAN_MIXED == Can_DriverObj.canController[controller].canControllerConfig.CanRxProcessing) &&
+             (TRUE == Can_DriverObj.canMailbox[htrh].mailBoxConfig.CanHardwareObjectUsesPolling)))
+        {
+            /* Check if message is received for respective Hoh*/
+            Can_ReadRxMailboxPriv(&Can_DriverObj.canController[controller], &Can_DriverObj.canMailbox[htrh], htrh);
+        }
+    }
+}
+#endif
 
 #define CAN_STOP_SEC_CODE
 #include "Can_MemMap.h"

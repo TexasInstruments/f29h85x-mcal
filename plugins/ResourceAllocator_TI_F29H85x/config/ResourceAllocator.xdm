@@ -128,14 +128,16 @@
                   </v:var>
                   <v:ref name="CurrentContext" type="REFERENCE">
                     <a:a name="DESC" value="EN: Selects Current Context to be used for this MCAL instance."/>
-                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                      type="IMPLEMENTATIONCONFIGCLASS">                                                        
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                      type="IMPLEMENTATIONCONFIGCLASS">
                       <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                     </a:a>
                     <a:a name="ORIGIN" value="Texas Instruments"/>
                     <a:a name="SCOPE" value="LOCAL"/>
                     <a:a name="UUID" value="3dd263ac-c22c-4ccb-ba18-f0e8ba5121cc"/>
                     <a:da name="REF" value="ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/Context"/>
+                    <a:da name="INVALID" type="XPath" expr="node:refvalid(.) and (node:value(node:ref(.)/Core) = 'CPU1')"
+                          false="CurrentContext indicates where TI MCAL and CDDs execute. Only CPU1 is supported for TI MCAL and CDDs execution."/>
                   </v:ref>
                   <v:var name="CPU1_Lockstep" type="BOOLEAN">
                     <a:a name="DESC" 
@@ -156,7 +158,7 @@
                   <v:lst name="Context" type="MAP">
                     <a:a name="EDITABLE" type="XPath" expr="node:value(../Mode) = 'SETUP'"/>
                     <a:da name="MIN" value="1"/>
-                    <a:da name="MAX" value="1"/>
+                    <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list(concat('ResourceAllocator_F29H85x.Context_',node:value(../Device)))))&quot;,'1')"/>
                     <v:ctr name="Context" type="IDENTIFIABLE">
                       <a:a name="EDITABLE" type="XPath" expr="node:value(../../Mode) = 'SETUP'"/>
                       <a:a name="DESC"
@@ -167,7 +169,6 @@
                       <a:a name="UUID" value="f931b858-c027-4062-935e-d3a91d8e6bd2"/>
 
                       <v:var name="Core" type="ENUMERATION">
-                        <a:a name="EDITABLE" value="false"/>
                         <a:a name="DESC"
                               value="EN: Selects Core for which this Context is configured."/>
                         <a:a name="IMPLEMENTATIONCONFIGCLASS" 
@@ -204,7 +205,7 @@
                           <v:lst name="CanAllocatedInstance" type="MAP">
                             <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
                             <a:da name="MIN" value="0"/>
-                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.CanInstanceName')))&quot;,'255')"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.CanInstanceName')))&quot;,'6')"/>
                             
                             <v:ctr name="CanAllocatedInstance" type="IDENTIFIABLE">
                               <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
@@ -232,8 +233,34 @@
                                 </a:da>
                               </v:var>
 
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567001"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567002"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
                               <v:var name="Frame" type="ENUMERATION">
-                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
                                 <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -287,7 +314,7 @@
                           <v:lst name="SpiAllocatedInstance" type="MAP">
                             <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
                             <a:da name="MIN" value="0"/>
-                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.SpiInstanceName')))&quot;,'255')"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.SpiInstanceName')))&quot;,'5')"/>
                             
                             <v:ctr name="SpiAllocatedInstance" type="IDENTIFIABLE">
                               <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
@@ -314,8 +341,34 @@
                                 </a:da>
                               </v:var>
 
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567003"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567004"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
                               <v:var name="Frame" type="ENUMERATION">
-                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
                                 <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -369,7 +422,7 @@
                           <v:lst name="LinAllocatedInstance" type="MAP">
                             <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
                             <a:da name="MIN" value="0"/>
-                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.LinInstanceName')))&quot;,'255')"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.LinInstanceName')))&quot;,'2')"/>
                             
                               <v:ctr name="LinAllocatedInstance" type="IDENTIFIABLE">
                                 <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
@@ -396,8 +449,34 @@
                                   </a:da>
                                 </v:var>
 
+                                <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                  <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567005"/>
+                                  <a:da name="DEFAULT" value="true"/>
+                                </v:var>
+
+                                <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                  <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567006"/>
+                                  <a:da name="DEFAULT" value="true"/>
+                                </v:var>
+
                                 <v:var name="Frame" type="ENUMERATION">
-                                  <a:a name="EDITABLE" value="false"/>
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
                                   <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                     <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -472,8 +551,35 @@
                                         false="Every Cdd_Adc instance must be allocated only once."/>
                                 </a:da>
                               </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567007"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567008"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
                               <v:var name="Frame" type="ENUMERATION">
-                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
                                 <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -533,8 +639,35 @@
                                     false="Safety checker instance should be unique"/>
                                 </a:da>
                               </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567009"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567010"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
                               <v:var name="Frame" type="ENUMERATION">
-                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
                                 <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -594,8 +727,35 @@
                                     false="Safety checker instance should be unique"/>
                                 </a:da>
                               </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567011"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567012"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
                               <v:var name="Frame" type="ENUMERATION">
-                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
                                 <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -641,8 +801,35 @@
                               <a:da name="INVALID" type="XPath" expr="not(num:i(count(../../../../../*/Cdd_Adc/*/CddAdcGlobalSoftwareForce/*)) > num:i(1))"
                                 false="Global software force configuration can be configured only once across all CPUs. "/>
                               <a:a name="UUID" value="b0a666c9-6536-482e-abe4-83a6e4d20b22"/>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567013"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567014"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
                               <v:var name="Frame" type="ENUMERATION">
-                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
                                 <a:a name="DESC" value="EN: Selects frmae for global software force registers. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -721,8 +908,34 @@
                                   </a:da>
                                 </v:var>
 
+                                <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                  <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567015"/>
+                                  <a:da name="DEFAULT" value="true"/>
+                                </v:var>
+
+                                <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                  <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567016"/>
+                                  <a:da name="DEFAULT" value="true"/>
+                                </v:var>
+
                                 <v:var name="Frame" type="ENUMERATION">
-                                  <a:a name="EDITABLE" value="false"/>
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
                                   <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                     <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -804,8 +1017,34 @@
                                   </a:da>
                                 </v:var>
 
+                                <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                  <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567017"/>
+                                  <a:da name="DEFAULT" value="true"/>
+                                </v:var>
+
+                                <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                  <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567018"/>
+                                  <a:da name="DEFAULT" value="true"/>
+                                </v:var>
+
                                 <v:var name="Frame" type="ENUMERATION">
-                                  <a:a name="EDITABLE" value="false"/>
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
                                   <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                     <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -882,8 +1121,35 @@
                                         false="Every Cdd_Pwm instance must be allocated only once."/>
                                 </a:da>
                               </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567019"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567020"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
                               <v:var name="Frame" type="ENUMERATION">
-                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
                                 <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -960,8 +1226,35 @@
                                         false="Hrpwm calibration instance ID should be unique"/>
                                 </a:da>
                               </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567021"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567022"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
                               <v:var name="Frame" type="ENUMERATION">
-                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
                                 <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -1013,7 +1306,7 @@
                           <v:lst name="Cdd_SentAllocatedInstance" type="MAP">
                             <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
                             <a:da name="MIN" value="0"/>
-                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_SentInstanceName')))&quot;,'255')"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_SentInstanceName')))&quot;,'6')"/>
                             
                             <v:ctr name="Cdd_SentAllocatedInstance" type="IDENTIFIABLE">
                               <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
@@ -1041,8 +1334,34 @@
                                 </a:da>
                               </v:var>
 
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567023"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567024"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
                               <v:var name="Frame" type="ENUMERATION">
-                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
                                 <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -1096,7 +1415,7 @@
                           <v:lst name="Cdd_UartAllocatedInstance" type="MAP">
                             <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
                             <a:da name="MIN" value="0"/>
-                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_UartInstanceName')))&quot;,'255')"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_UartInstanceName')))&quot;,'6')"/>
                             
                             <v:ctr name="Cdd_UartAllocatedInstance" type="IDENTIFIABLE">
                               <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
@@ -1124,8 +1443,34 @@
                                 </a:da>
                               </v:var>
 
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567025"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567026"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
                               <v:var name="Frame" type="ENUMERATION">
-                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
                                 <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -1157,6 +1502,1641 @@
                                     <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
                                           false="Frame and Base address should match. Please run AutoCalc."/>
 								                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="Cdd_Cmpss" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Cdd_Cmpss" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Cdd_Cmpss module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567890"/>
+                          
+                          <v:lst name="Cdd_CmpssAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_CmpssInstanceName')))&quot;,'12')"/>
+                            
+                            <v:ctr name="Cdd_CmpssAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a Cdd_Cmpss instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="b2c3d4e5-f6a7-8901-bcde-f23456789012"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Cdd_Cmpss instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="c3d4e5f6-a7b8-9012-cdef-345678901234"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_CmpssInstanceName')&quot;,'CMPSS1')"/>
+                                <a:da name="DEFAULT" value="CMPSS1"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Cdd_Cmpss instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567027"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567028"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="d4e5f6a7-b8c9-0123-defa-456789012345"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Cdd_Cmpss instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="e5f6a7b8-c9d0-1234-efab-567890123456"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'CMPSS1_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="Eqep" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Eqep" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Eqep module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="e1f2a3b4-c5d6-7890-efab-123456789012"/>
+                          
+                          <v:lst name="EqepAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.EqepInstanceName')))&quot;,'6')"/>
+                            
+                            <v:ctr name="EqepAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a Eqep instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="f2a3b4c5-d6e7-8901-fabc-234567890123"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Eqep instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a3b4c5d6-e7f8-9012-abcd-345678901234"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.EqepInstanceName')&quot;,'EQEP1')"/>
+                                <a:da name="DEFAULT" value="EQEP1"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Eqep instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567031"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567032"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="b4c5d6e7-f8a9-0123-bcde-456789012345"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Eqep instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="c5d6e7f8-a9b0-1234-cdef-567890123456"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'EQEP1_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="Sdfm" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Sdfm" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Sdfm module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="d6e7f8a9-b0c1-2345-defa-678901234567"/>
+                          
+                          <v:lst name="SdfmAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.SdfmInstanceName')))&quot;,'4')"/>
+                            
+                            <v:ctr name="SdfmAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a Sdfm instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="e7f8a9b0-c1d2-3456-efab-789012345678"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Sdfm instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="f8a9b0c1-d2e3-4567-fabc-890123456789"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.SdfmInstanceName')&quot;,'SDFM1')"/>
+                                <a:da name="DEFAULT" value="SDFM1"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Sdfm instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567033"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567034"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a9b0c1d2-e3f4-5678-abcd-901234567890"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Sdfm instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="b0c1d2e3-f4a5-6789-bcde-012345678901"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'SDFM1_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="Pmbus" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Pmbus" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Pmbus module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="c1d2e3f4-a5b6-7890-cdef-123456789012"/>
+                          
+                          <v:lst name="PmbusAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.PmbusInstanceName')))&quot;,'1')"/>
+                            
+                            <v:ctr name="PmbusAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a Pmbus instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="d2e3f4a5-b6c7-8901-defa-234567890123"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Pmbus instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="e3f4a5b6-c7d8-9012-efab-345678901234"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.PmbusInstanceName')&quot;,'PMBUSA')"/>
+                                <a:da name="DEFAULT" value="PMBUSA"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Pmbus instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567035"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567036"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="f4a5b6c7-d8e9-0123-fabc-456789012345"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Pmbus instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="a5b6c7d8-e9f0-1234-abcd-567890123456"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'PMBUSA_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="Dac" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Dac" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Dac module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="b6c7d8e9-f0a1-2345-bcde-678901234567"/>
+                          
+                          <v:lst name="DacAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.DacInstanceName')))&quot;,'2')"/>
+                            
+                            <v:ctr name="DacAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a Dac instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="c7d8e9f0-a1b2-3456-cdef-789012345678"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Dac instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="d8e9f0a1-b2c3-4567-defa-890123456789"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.DacInstanceName')&quot;,'DACA')"/>
+                                <a:da name="DEFAULT" value="DACA"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Dac instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567037"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567038"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="e9f0a1b2-c3d4-5678-efab-901234567890"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Dac instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="f0a1b2c3-d4e5-6789-fabc-012345678901"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'DACA_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="Clb" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Clb" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Clb module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="a1b2c3d4-e5f6-7891-abcd-123456789012"/>
+                          
+                          <v:lst name="ClbAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.ClbInstanceName')))&quot;,'6')"/>
+                            
+                            <v:ctr name="ClbAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a Clb instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="b2c3d4e5-f6a7-8902-bcde-234567890123"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Clb instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="c3d4e5f6-a7b8-9013-cdef-345678901234"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.ClbInstanceName')&quot;,'CLB1')"/>
+                                <a:da name="DEFAULT" value="CLB1"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Clb instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567039"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567040"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="d4e5f6a7-b8c9-0124-defa-456789012345"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Clb instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="e5f6a7b8-c9d0-1235-efab-567890123456"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'CLB1_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="FsiTx" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="FsiTx" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the FsiTx module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="f6a7b8c9-d0e1-2346-fabc-678901234567"/>
+                          
+                          <v:lst name="FsiTxAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.FsiTxInstanceName')))&quot;,'4')"/>
+                            
+                            <v:ctr name="FsiTxAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a FsiTx instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="a7b8c9d0-e1f2-3457-abcd-789012345678"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the FsiTx instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="b8c9d0e1-f2a3-4568-bcde-890123456789"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.FsiTxInstanceName')&quot;,'FSITXA')"/>
+                                <a:da name="DEFAULT" value="FSITXA"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every FsiTx instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567041"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567042"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="c9d0e1f2-a3b4-5679-cdef-901234567890"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the FsiTx instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="d0e1f2a3-b4c5-6780-defa-012345678901"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'FSITXA_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="FsiRx" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="FsiRx" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the FsiRx module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="e1f2a3b4-c5d6-7891-efab-123456789012"/>
+                          
+                          <v:lst name="FsiRxAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.FsiRxInstanceName')))&quot;,'4')"/>
+                            
+                            <v:ctr name="FsiRxAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a FsiRx instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="f2a3b4c5-d6e7-8902-fabc-234567890123"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the FsiRx instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a3b4c5d6-e7f8-9013-abcd-345678901234"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.FsiRxInstanceName')&quot;,'FSIRXA')"/>
+                                <a:da name="DEFAULT" value="FSIRXA"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every FsiRx instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567043"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567044"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="b4c5d6e7-f8a9-0124-bcde-456789012345"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the FsiRx instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="c5d6e7f8-a9b0-1235-cdef-567890123456"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'FSIRXA_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="Dcc" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Dcc" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Dcc module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="d6e7f8a9-b0c1-2346-defa-678901234567"/>
+                          
+                          <v:lst name="DccAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.DccInstanceName')))&quot;,'1')"/>
+                            
+                            <v:ctr name="DccAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a Dcc instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="e7f8a9b0-c1d2-3457-efab-789012345678"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Dcc instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="f8a9b0c1-d2e3-4568-fabc-890123456789"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.DccInstanceName')&quot;,'DCC1')"/>
+                                <a:da name="DEFAULT" value="DCC1"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Dcc instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567045"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567046"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a9b0c1d2-e3f4-5679-abcd-901234567890"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Dcc instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="b0c1d2e3-f4a5-6780-bcde-012345678901"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'DCC1_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <!-- <v:lst name="Ethercat" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Ethercat" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Ethercat module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="c1d2e3f4-a5b6-7891-cdef-123456789012"/>
+                          
+                          <v:lst name="EthercatAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.EthercatInstanceName')))&quot;,'0')"/>
+                            
+                            <v:ctr name="EthercatAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a Ethercat instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="d2e3f4a5-b6c7-8902-defa-234567890123"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Ethercat instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="e3f4a5b6-c7d8-9013-efab-345678901234"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.EthercatInstanceName')&quot;,'ETHERCATA')"/>
+                                <a:da name="DEFAULT" value="ETHERCATA"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Ethercat instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567047"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567048"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="f4a5b6c7-d8e9-0124-fabc-456789012345"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Ethercat instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="a5b6c7d8-e9f0-1235-abcd-567890123456"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'ETHERCATA_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst> -->
+                      
+                      <v:lst name="Epg" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Epg" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Epg module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="b6c7d8e9-f0a1-2346-bcde-678901234567"/>
+                          
+                          <v:lst name="EpgAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.EpgInstanceName')))&quot;,'1')"/>
+                            
+                            <v:ctr name="EpgAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a Epg instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="c7d8e9f0-a1b2-3457-cdef-789012345678"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Epg instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="d8e9f0a1-b2c3-4568-defa-890123456789"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.EpgInstanceName')&quot;,'EPG1')"/>
+                                <a:da name="DEFAULT" value="EPG1"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Epg instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567049"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567050"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="e9f0a1b2-c3d4-5679-efab-901234567890"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Epg instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="f0a1b2c3-d4e5-6780-fabc-012345678901"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'EPG1_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="Wadi" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Wadi" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Wadi module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="a1b2c3d4-e5f6-7892-abcd-123456789012"/>
+                          
+                          <v:lst name="WadiAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.WadiInstanceName')))&quot;,'2')"/>
+                            
+                            <v:ctr name="WadiAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a Wadi instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="b2c3d4e5-f6a7-8903-bcde-234567890123"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Wadi instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="c3d4e5f6-a7b8-9014-cdef-345678901234"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.WadiInstanceName')&quot;,'WADI1')"/>
+                                <a:da name="DEFAULT" value="WADI1"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Wadi instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567051"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567052"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="d4e5f6a7-b8c9-0125-defa-456789012345"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Wadi instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="e5f6a7b8-c9d0-1236-efab-567890123456"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'WADI1_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="DLTFifoRegs" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="DLTFifoRegs" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the DLTFifoRegs module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="f6a7b8c9-d0e1-2347-fabc-678901234567"/>
+                          
+                          <v:lst name="DLTFifoRegsAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" value="1"/>
+                            
+                            <v:ctr name="DLTFifoRegsAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a DLTFifoRegs instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="a7b8c9d0-e1f2-3458-abcd-789012345678"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the DLTFifoRegs instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="b8c9d0e1-f2a3-4569-bcde-890123456789"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.DLTFifoRegsInstanceName')&quot;,'DLTFIFOREGS')"/>
+                                <a:da name="DEFAULT" value="DLTFIFOREGS"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every DLTFifoRegs instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567053"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567054"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="c9d0e1f2-a3b4-5670-cdef-901234567890"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the DLTFifoRegs instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="d0e1f2a3-b4c5-6781-defa-012345678901"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'DLTFIFOREGS_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="Error_Aggregator" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Error_Aggregator" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Error_Aggregator module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="e1f2a3b4-c5d6-7892-efab-123456789012"/>
+                          
+                          <v:lst name="Error_AggregatorAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" value="1"/>
+                            
+                            <v:ctr name="Error_AggregatorAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a Error_Aggregator instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="f2a3b4c5-d6e7-8903-fabc-234567890123"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Error_Aggregator instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a3b4c5d6-e7f8-9014-abcd-345678901234"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Error_AggregatorInstanceName')&quot;,'ERROR_AGGREGATOR')"/>
+                                <a:da name="DEFAULT" value="ERROR_AGGREGATOR"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Error_Aggregator instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567055"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567056"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="b4c5d6e7-f8a9-0125-bcde-456789012345"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Error_Aggregator instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="c5d6e7f8-a9b0-1236-cdef-567890123456"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'ERROR_AGGREGATOR_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="ESM" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="ESM" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the ESM module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="d6e7f8a9-b0c1-2347-defa-678901234567"/>
+                          
+                          <v:lst name="ESMAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" value="1"/>
+                            
+                            <v:ctr name="ESMAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a ESM instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="e7f8a9b0-c1d2-3458-efab-789012345678"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the ESM instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="f8a9b0c1-d2e3-4569-fabc-890123456789"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.ESMInstanceName')&quot;,'ESM')"/>
+                                <a:da name="DEFAULT" value="ESM"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every ESM instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567057"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567058"/>
+                                <a:da name="DEFAULT" value="true"/>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a9b0c1d2-e3f4-5670-abcd-901234567890"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the ESM instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="b0c1d2e3-f4a5-6781-bcde-012345678901"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'ESM_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                </a:da>
                               </v:var>
                             </v:ctr>
                           </v:lst>
@@ -1200,7 +3180,7 @@
                             <a:da name="DEFAULT" value="OUTPUTXBARFlags"/>
                           </v:var>
                           <v:var name="Frame" type="ENUMERATION">
-                            <a:a name="EDITABLE" value="false"/>
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
                             <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                             <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                               <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -1230,7 +3210,32 @@
                             <a:da name="INVALID" type="XPath">
                                     <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
                                           false="Frame and Base address should match. Please run AutoCalc."/>
-								            </a:da>
+                    </a:da>
+                          </v:var>
+                          <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567801"/>
+                            <a:da name="DEFAULT" value="true"/>
+                          </v:var>
+
+                          <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567802"/>
+                            <a:da name="DEFAULT" value="true"/>
                           </v:var>
                         </v:ctr>
                       </v:lst>
@@ -1258,7 +3263,7 @@
                             <a:da name="DEFAULT" value="INPUTXBARFlags"/>
                           </v:var>
                           <v:var name="Frame" type="ENUMERATION">
-                            <a:a name="EDITABLE" value="false"/>
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
                             <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                             <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                               <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -1289,7 +3294,32 @@
                             <a:da name="INVALID" type="XPath">
                                     <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
                                           false="Frame and Base address should match. Please run AutoCalc."/>
-								            </a:da>
+                    </a:da>
+                          </v:var>
+                          <v:var name="DebugHaltEnabled" type="BOOLEAN">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:a name="DESC" value="EN: Controls whether the peripheral DBGHALT signal is activated when the CPU enters HALT mode"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567803"/>
+                            <a:da name="DEFAULT" value="true"/>
+                          </v:var>
+
+                          <v:var name="StandbyModeEnabled" type="BOOLEAN">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:a name="DESC" value="EN: Controls whether the peripheral clock is gated when the CPU enters STANDBY mode"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567804"/>
+                            <a:da name="DEFAULT" value="true"/>
                           </v:var>
                         </v:ctr>
                       </v:lst>

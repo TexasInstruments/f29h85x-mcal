@@ -86,7 +86,7 @@ CONST(Can_BaudConfigType, CAN_CONFIG_DATA) CanConfigSet_CanController_0_CanContr
 
 CONST(Can_BaudConfigType*, CAN_CONFIG_DATA) CanConfigSet_CanController_0_BaudRateConfigList[1]=
 {
-(Can_BaudConfigType* )   &CanConfigSet_CanController_0_CanControllerBaudrateConfig_0};
+   &CanConfigSet_CanController_0_CanControllerBaudrateConfig_0};
 
 /* Controller structure defined here for all config sets */
 
@@ -110,12 +110,13 @@ CONST(Can_ControllerType, CAN_CONFIG_DATA) CanConfigSet_CanController_0 =
     .CanWakeupSupport = (boolean )FALSE,
     .CanWakeupSourceRef = (EcuM_WakeupSourceType )(0U),
     .CanControllerDefaultBaudrate = (const Can_BaudConfigType* )&CanConfigSet_CanController_0_CanControllerBaudrateConfig_0,
-    .BaudRateConfigList = (const Can_BaudConfigType** )CanConfigSet_CanController_0_BaudRateConfigList,
+    .BaudRateConfigList = &CanConfigSet_CanController_0_BaudRateConfigList[0],
     .CanConfigParam = {
         .CanFDMode = (boolean )FALSE,
         .CanLoopbackMode = (boolean )FALSE,
         .CanTransmitPause = (boolean )FALSE,
         .CanDisableAutomaticRetransmission = (boolean )FALSE,
+        .CanExtendedIDMask = 536870911U,
     }
 };
 
@@ -183,8 +184,8 @@ CONST(Can_IcomConfigType, CAN_CONFIG_DATA) Can_CanIcomConfig_1 =
 /* Overall list of Icom configurations */
 CONST(Can_IcomConfigType*, CAN_CONFIG_DATA) Can_IcomConfigurationList[] =
 {
-    (Can_IcomConfigType* )&Can_CanIcomConfig_0,
-    (Can_IcomConfigType* )&Can_CanIcomConfig_1,
+    &Can_CanIcomConfig_0,
+    &Can_CanIcomConfig_1,
 };
 
 
@@ -192,7 +193,7 @@ CONST(Can_IcomConfigType*, CAN_CONFIG_DATA) Can_IcomConfigurationList[] =
 
 CONST(Can_ControllerType*, CAN_CONFIG_DATA) CanConfigSet_CanController_List[]=
 {
-    (Can_ControllerType* )&CanConfigSet_CanController_0};
+    &CanConfigSet_CanController_0};
 
 /* List of all standard and extended filter elements for all hardware objects */
 CONST(Can_HwFilterType, CAN_CONFIG_DATA) CanHardwareObject_1_CanHwFilter_0 =
@@ -207,7 +208,7 @@ CONST(Can_HwFilterType, CAN_CONFIG_DATA) CanHardwareObject_1_CanHwFilter_0 =
 /* List of all standard and extended filter elements per hardware objects */
 CONST(Can_HwFilterType*, CAN_CONFIG_DATA) CanHardwareObject_1_CanHwFilter_List[] =
 {
-    (Can_HwFilterType*) &CanHardwareObject_1_CanHwFilter_0,
+     &CanHardwareObject_1_CanHwFilter_0,
 };
 
 
@@ -220,13 +221,13 @@ CONST(Can_HwFilterType*, CAN_CONFIG_DATA) CanHardwareObject_1_CanHwFilter_List[]
 
 CONST(Can_MailboxType, CAN_CONFIG_DATA) CanConfigSet_CanHardwareObject_0 =
 {
-    .CanHandleType = (uint8 )CAN_FULL,
+    .CanHandleType = CAN_FULL,
     .CanIdType = (Can_IdType )CAN_MIXED_ID,
     .CanObjectId = (uint16 )0U,
-    .HwHandle = (Can_HwHandleType )0U, /* HwHandle */ /* Tx Message buffer number*/
-    .CanHwObjectCount = (uint16 )1U,
+    .HwHandle = 0U, /* HwHandle */ /* Tx Message buffer number*/
+    .CanHwObjectCount = 1U,
     .CanObjectType = (Can_MailboxDirectionType )CAN_TRANSMIT,
-    .CanControllerRef = (const Can_ControllerType* )&CanConfigSet_CanController_0,
+    .CanControllerRef = &CanConfigSet_CanController_0,
     .CanHwFilterList = NULL_PTR,
     .CanFilterListCount = (uint8)0,
     .CanFdPaddingValue = (uint8 )0U,
@@ -237,14 +238,14 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) CanConfigSet_CanHardwareObject_0 =
 
 CONST(Can_MailboxType, CAN_CONFIG_DATA) CanConfigSet_CanHardwareObject_1 =
 {
-    .CanHandleType = (uint8 )CAN_BASIC,
+    .CanHandleType = CAN_BASIC,
     .CanIdType = (Can_IdType )CAN_STANDARD_ID,
     .CanObjectId = (uint16 )1U,
-    .HwHandle = (Can_HwHandleType )0U, /* HwHandle */ /* Rx FIFO number*/
-    .CanHwObjectCount = (uint16 )2U,
+    .HwHandle = 0U, /* HwHandle */ /* Rx FIFO number*/
+    .CanHwObjectCount = 2U,
     .CanObjectType = (Can_MailboxDirectionType )CAN_RECEIVE,
-    .CanControllerRef = (const Can_ControllerType* )&CanConfigSet_CanController_0,
-    .CanHwFilterList = (const Can_HwFilterType** )&CanHardwareObject_1_CanHwFilter_List,
+    .CanControllerRef = &CanConfigSet_CanController_0,
+    .CanHwFilterList = &CanHardwareObject_1_CanHwFilter_List[0],
     .CanFilterListCount = (uint8)1,
     .CanFdPaddingValue = (uint8 )0U,
     .CanHardwareObjectUsesPolling = (boolean )FALSE,
@@ -256,7 +257,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) CanConfigSet_CanHardwareObject_1 =
 
 CONST(Can_MailboxType*, CAN_CONFIG_DATA) CanConfigSet_CanHardwareObject_List[] =
 {
-(Can_MailboxType* )   &CanConfigSet_CanHardwareObject_0,
+   &CanConfigSet_CanHardwareObject_0,
    &CanConfigSet_CanHardwareObject_1};
 
 
@@ -267,15 +268,15 @@ CONST(Can_MailboxType*, CAN_CONFIG_DATA) CanConfigSet_CanHardwareObject_List[] =
 /*Can Config struct */
 CONST(Can_ConfigType, CAN_CONFIG_DATA) Can_Config =
 {
-    .CanControllerList = (const Can_ControllerType** )CanConfigSet_CanController_List,
-    .MailBoxList = (const Can_MailboxType** )CanConfigSet_CanHardwareObject_List,
+    .CanControllerList = &CanConfigSet_CanController_List[0],
+    .MailBoxList = &CanConfigSet_CanHardwareObject_List[0],
     .MaxMbCnt = (uint16 )2U,
     .CanMaxControllerCount = (uint8 )1U,
     .MaxBaudConfigID = {
-        [0] = (uint32 )0U
+        [0] = 0U
 	},
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
-	.IcomConfigurationList = (const Can_IcomConfigType** )Can_IcomConfigurationList,
+	.IcomConfigurationList = &Can_IcomConfigurationList[0],
 #endif
    
 };

@@ -1,4 +1,3 @@
-
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -67,7 +66,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 {
     .hwunitcfg =
     {
-                
         [0] =
         {
             .hwunit_id = (Cdd_Adc_HwUnitType)CDD_ADCA,
@@ -93,14 +91,13 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 #endif
             .startgroupnum = (Cdd_Adc_GroupType)(0U),
             .lastgroupnum = (Cdd_Adc_GroupType)(0U),
-            .base_addr = (uint32)(ADCA_BASE_FRAME(0U)),            
+            .base_addr = (uint32)(ADCA_BASE_FRAME(0U)),
             .result_baseaddr = (uint32)( ADCARESULT_BASE + (CDD_ADC_RESULTBASEADDR_STEP*0U)),
             .analogrefsel = (uint16)ASYSCTL_ANAREFCTL_ANAREFABSEL,
             .analogrefvoltsel = (uint16)ASYSCTL_ANAREFCTL_ANAREFAB_2P5SEL,
-            .inltrimaddress = ((uint32 *)&McalLib_DeviceCalibrationData.AdcAInlTrim[0U]),
+            .inltrimaddress =((uint32 *)&McalLib_DeviceCalibrationData.AdcAInlTrim[0U]),
             .numadc_inltrim = ((uint8)6U)
         },
-        
         [1] =
         {
             .hwunit_id = (Cdd_Adc_HwUnitType)CDD_ADCB,
@@ -126,14 +123,13 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 #endif
             .startgroupnum = (Cdd_Adc_GroupType)(1U),
             .lastgroupnum = (Cdd_Adc_GroupType)(1U),
-            .base_addr = (uint32)(ADCB_BASE_FRAME(0U)),            
+            .base_addr = (uint32)(ADCB_BASE_FRAME(0U)),
             .result_baseaddr = (uint32)( ADCARESULT_BASE + (CDD_ADC_RESULTBASEADDR_STEP*1U)),
             .analogrefsel = (uint16)ASYSCTL_ANAREFCTL_ANAREFABSEL,
             .analogrefvoltsel = (uint16)ASYSCTL_ANAREFCTL_ANAREFAB_2P5SEL,
-            .inltrimaddress = ((uint32 *)&McalLib_DeviceCalibrationData.AdcBInlTrim[0U]),
+            .inltrimaddress =((uint32 *)&McalLib_DeviceCalibrationData.AdcBInlTrim[0U]),
             .numadc_inltrim = ((uint8)6U)
         },
-        
         [2] =
         {
             .hwunit_id = (Cdd_Adc_HwUnitType)CDD_ADCD,
@@ -159,16 +155,16 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 #endif
             .startgroupnum = (Cdd_Adc_GroupType)(2U),
             .lastgroupnum = (Cdd_Adc_GroupType)(3U),
-            .base_addr = (uint32)(ADCD_BASE_FRAME(0U)),            
+            .base_addr = (uint32)(ADCD_BASE_FRAME(0U)),
             .result_baseaddr = (uint32)( ADCARESULT_BASE + (CDD_ADC_RESULTBASEADDR_STEP*3U)),
             .analogrefsel = (uint16)ASYSCTL_ANAREFCTL_ANAREFCDESEL,
             .analogrefvoltsel = (uint16)ASYSCTL_ANAREFCTL_ANAREFCDE_2P5SEL,
-            .inltrimaddress = ((uint32 *)&McalLib_DeviceCalibrationData.AdcDInlTrim[0U]),
+            .inltrimaddress =((uint32 *)&McalLib_DeviceCalibrationData.AdcDInlTrim[0U]),
             .numadc_inltrim = ((uint8)3U)
-        }        
+        }
     },
     .groupcfg  =
-    {        
+    {
         [0] =
         {
             /* HwunitId: CDD_ADCA */
@@ -191,7 +187,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .lastsocnum = (uint8)(1U),
             .dma_mode = ((boolean)(0U))
         },
-        
         [1] =
         {
             /* HwunitId: CDD_ADCB */
@@ -214,7 +209,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .lastsocnum = (uint8)(1U),
             .dma_mode = ((boolean)(0U))
         },
-        
         [2] =
         {
             /* HwunitId: CDD_ADCD */
@@ -237,7 +231,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .lastsocnum = (uint8)(1U),
             .dma_mode = ((boolean)(0U))
         },
-        
         [3] =
         {
             /* HwunitId: CDD_ADCD */
@@ -259,18 +252,19 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .soc_mask =  (uint32)(12U),
             .lastsocnum = (uint8)(3U),
             .dma_mode = ((boolean)(0U))
-        }        
+        }
     },
+
     .ppbcfg =
-    {                
+    {
         [0] =  
         {
             /* HwunitId: CDD_ADCA */
             .ppb_id = (Cdd_Adc_PpbIdType)(0U),
             .soc_num = (uint8)(0U),
             .hwunitindex = (uint8)(0U),
-            .ppb_caloffset = (uint32)(0U),
-            .ppb_refoffset = (uint32)(0U),
+            .ppb_caloffset = (uint16)(0U),
+            .ppb_refoffset = (uint16)(0U),
             .ppbresconfig = (uint16)((0x0000U) | (((uint16)1U)<<8U) | (((uint16)0U)<<7U) | (((uint16)1U)<<6U) | (((uint16)0U)<<5U)),
             .triplimithi = (sint32)65535,
             .triplimitlow = (sint32)0,
@@ -285,15 +279,14 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .tripfilctl = (uint16)(0x0000U),     
             .tripfilclk = (uint16)(0x0000U)
         },
-
         [1] =  
         {
             /* HwunitId: CDD_ADCB */
             .ppb_id = (Cdd_Adc_PpbIdType)(0U),
             .soc_num = (uint8)(0U),
             .hwunitindex = (uint8)(1U),
-            .ppb_caloffset = (uint32)(0U),
-            .ppb_refoffset = (uint32)(0U),
+            .ppb_caloffset = (uint16)(0U),
+            .ppb_refoffset = (uint16)(0U),
             .ppbresconfig = (uint16)((0x0000U) | (((uint16)0U)<<8U) | (((uint16)0U)<<7U) | (((uint16)0U)<<6U) | (((uint16)0U)<<5U)),
             .triplimithi = (sint32)65535,
             .triplimitlow = (sint32)0,
@@ -308,15 +301,14 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .tripfilctl = (uint16)(0x0000U),     
             .tripfilclk = (uint16)(0x0000U)
         },
-
         [2] =  
         {
             /* HwunitId: CDD_ADCD */
             .ppb_id = (Cdd_Adc_PpbIdType)(0U),
             .soc_num = (uint8)(1U),
             .hwunitindex = (uint8)(2U),
-            .ppb_caloffset = (uint32)(0U),
-            .ppb_refoffset = (uint32)(0U),
+            .ppb_caloffset = (uint16)(0U),
+            .ppb_refoffset = (uint16)(0U),
             .ppbresconfig = (uint16)((0x0000U) | (((uint16)0U)<<8U) | (((uint16)0U)<<7U) | (((uint16)0U)<<6U) | (((uint16)1U)<<5U)),
             .triplimithi = (sint32)100,
             .triplimitlow = (sint32)0,
@@ -333,7 +325,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
         }
     },
     .channelcfg =
-    {        
+    {
         [0] =
         {
             /* HwunitId:CDD_ADCA Group:0 */
@@ -344,7 +336,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 #endif   
             .soc_num =  (uint8)(0U)
         },
-        
         [1] =
         {
             /* HwunitId:CDD_ADCA Group:0 */
@@ -355,7 +346,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 #endif   
             .soc_num =  (uint8)(1U)
         },
-        
         [2] =
         {
             /* HwunitId:CDD_ADCB Group:0 */
@@ -366,7 +356,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 #endif   
             .soc_num =  (uint8)(0U)
         },
-        
         [3] =
         {
             /* HwunitId:CDD_ADCB Group:0 */
@@ -377,7 +366,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 #endif   
             .soc_num =  (uint8)(1U)
         },
-        
         [4] =
         {
             /* HwunitId:CDD_ADCD Group:0 */
@@ -388,7 +376,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 #endif   
             .soc_num =  (uint8)(0U)
         },
-        
         [5] =
         {
             /* HwunitId:CDD_ADCD Group:0 */
@@ -399,7 +386,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 #endif   
             .soc_num =  (uint8)(1U)
         },
-        
         [6] =
         {
             /* HwunitId:CDD_ADCD Group:1 */
@@ -410,7 +396,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 #endif   
             .soc_num =  (uint8)(2U)
         },
-        
         [7] =
         {
             /* HwunitId:CDD_ADCD Group:1 */
@@ -420,7 +405,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .extchannelnum = (uint8)(0U),
 #endif   
             .soc_num =  (uint8)(3U)
-        }        
+        }
     },
     .test_input = (Cdd_Adc_InternalTestNodeType)CDD_ADC_TEST_NODE_NO_CONN
 };

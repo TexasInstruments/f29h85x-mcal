@@ -66,24 +66,6 @@
 #define CDD_ECAP_START_SEC_ISR_CODE
 #include "Cdd_Ecap_MemMap.h"
 
-FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_IntISR_Fun(Cdd_Ecap_ChannelType Cdd_Ecap_Channel)
-{
-#if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
-    uint32 baseAddr = Cdd_Ecap_Config.chCfg[Cdd_Ecap_Channel].base_addr;
-
-    if (CDD_ECAP_STATUS_INIT != Cdd_Ecap_DrvStatus)
-    {
-        /* Disable and Clear Interrupt */
-        Cdd_Ecap_intrDisable(baseAddr, CDD_ECAP_INT_ALL);
-        Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_INT_ALL);
-    }
-    else
-#endif
-    {
-        Cdd_Ecap_ChannelISR(Cdd_Ecap_Channel);
-    }
-}
-
 #if defined(CDD_ECAP_CHANNEL0_INT_ENABLE)
 #if defined(CDD_ECAP_CHANNEL0_INT_ISR_CAT1_RINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ecap_ch0Notify)
@@ -95,7 +77,7 @@ ISR(Cdd_Ecap_ch0Notify)
 #error "Invalid interrupt category for CDD_ECAP_CHANNEL0"
 #endif
 {
-    Cdd_Ecap_IntISR_Fun(CDD_ECAP_CHANNEL0);
+    Cdd_Ecap_ChannelISR(CDD_ECAP_CHANNEL0);
 }
 #endif
 
@@ -110,7 +92,7 @@ ISR(Cdd_Ecap_ch1Notify)
 #error "Invalid interrupt category for CDD_ECAP_CHANNEL1"
 #endif
 {
-    Cdd_Ecap_IntISR_Fun(CDD_ECAP_CHANNEL1);
+    Cdd_Ecap_ChannelISR(CDD_ECAP_CHANNEL1);
 }
 #endif
 
@@ -125,7 +107,7 @@ ISR(Cdd_Ecap_ch2Notify)
 #error "Invalid interrupt category for CDD_ECAP_CHANNEL2"
 #endif
 {
-    Cdd_Ecap_IntISR_Fun(CDD_ECAP_CHANNEL2);
+    Cdd_Ecap_ChannelISR(CDD_ECAP_CHANNEL2);
 }
 #endif
 
@@ -140,7 +122,7 @@ ISR(Cdd_Ecap_ch3Notify)
 #error "Invalid interrupt category for CDD_ECAP_CHANNEL3"
 #endif
 {
-    Cdd_Ecap_IntISR_Fun(CDD_ECAP_CHANNEL3);
+    Cdd_Ecap_ChannelISR(CDD_ECAP_CHANNEL3);
 }
 #endif
 
@@ -155,7 +137,7 @@ ISR(Cdd_Ecap_ch4Notify)
 #error "Invalid interrupt category for CDD_ECAP_CHANNEL4"
 #endif
 {
-    Cdd_Ecap_IntISR_Fun(CDD_ECAP_CHANNEL4);
+    Cdd_Ecap_ChannelISR(CDD_ECAP_CHANNEL4);
 }
 #endif
 
@@ -170,7 +152,7 @@ ISR(Cdd_Ecap_ch5Notify)
 #error "Invalid interrupt category for CDD_ECAP_CHANNEL5"
 #endif
 {
-    Cdd_Ecap_IntISR_Fun(CDD_ECAP_CHANNEL5);
+    Cdd_Ecap_ChannelISR(CDD_ECAP_CHANNEL5);
 }
 #endif
 

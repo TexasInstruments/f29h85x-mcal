@@ -1429,7 +1429,7 @@ Cdd_Pwm_SetInterruptEventCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, 
          * channels. If atleast one of them is already enabled then report a runtime error
          */
         /* In simple mode */
-        if (TRUE == Cdd_Pwm_DrvObj.hwunitobj[InstanceId].notification_enable)
+        if ((uint8)0U != Cdd_Pwm_DrvObj.hwunitobj[InstanceId].notification_enable)
         {
             /* Design: MCAL-33940 */
             /* Report DET error if the channel ID doesn't exist */
@@ -1491,8 +1491,8 @@ Cdd_Pwm_EnableNotification(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId,
         {
             /* Notification is already enabled disable it first before requesting it again for
              * another channel */
-            Det_ReportRuntimeError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_ENABLE_NOTIFICATION,
-                                   CDD_PWM_E_NOTIF_ALREADY_ENABLED);
+            (void)Det_ReportRuntimeError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_ENABLE_NOTIFICATION,
+                                         CDD_PWM_E_NOTIF_ALREADY_ENABLED);
         }
     }
 }
@@ -6911,7 +6911,7 @@ Cdd_Pwm_SelectXbarInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_SetLutDecX(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                    VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel, VAR(Cdd_Pwm_LutDecXType, AUTOMATIC) Decx,
-                   VAR(uint16, AUTOMATIC) Force)
+                   VAR(boolean, AUTOMATIC) Force)
 {
 #if (STD_ON == CDD_PWM_DEV_ERROR_DETECT)
     /* Design: MCAL-34541,MCAL-34542,MCAL-34778 */
@@ -8161,7 +8161,7 @@ Cdd_Pwm_HrpwmSetFallingEdgeDelayLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) In
     {
         /* Design: MCAL-34698 */
         /* Report DET error if the channel ID doesn't exist */
-        (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_HRPWM_REDLOADMODE,
+        (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_HRPWM_FEDLOADMODE,
                               CDD_PWM_E_INVALID_VALUE);
     }
     else
@@ -8263,7 +8263,7 @@ Cdd_Pwm_HrpwmSetHiResXCmpRegValueOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Insta
     {
         /* Design: MCAL-34710 */
         /* Report DET error if the channel ID doesn't exist */
-        (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_HRPWM_XCMPREGVAL,
+        (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_HRPWM_HIRESXCMPREGVAL,
                               CDD_PWM_E_INVALID_VALUE);
     }
     else

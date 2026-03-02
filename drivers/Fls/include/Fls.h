@@ -38,6 +38,9 @@ extern "C" {
 #include "Fls_Cbk.h"
 #include "Fls_Cfg.h"
 
+/*
+ *  Design: MCAL-30889, MCAL-30898
+ */
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
@@ -158,6 +161,10 @@ typedef uint32 Fls_LengthType;
 /** \brief Flash Compare Failediin HW */
 #define FLS_E_COMPARE_FAILED ((uint8)0x04U)
 #endif
+
+/*
+ *  Design: MCAL-30910, MCAL-30911,
+ */
 #ifndef FLS_E_UNEXPECTED_FLASH_ID
 /** \brief Expected HW ID not matched */
 #define FLS_E_UNEXPECTED_FLASH_ID ((uint8)0x05U)

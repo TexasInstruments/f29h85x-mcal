@@ -70,7 +70,7 @@
  /* Design : MCAL-22510, MCAL-22511 */
 CONST(Dio_ChannelGroupType, DIO_CONFIG_DATA) [!"DioChannelGroupIdentification"!] =
 {
-    .port =   ((Dio_PortType) [!"concat('GPIO_PORT_', translate(../../DioPortId, '01234567', 'ABCDEFGH'))"!]),
+    .port =   ((Dio_PortType) [!"concat('DIO_PORT_', translate(../../DioPortId, '01234567', 'ABCDEFGH'))"!]),
     .mask =   ((Dio_PortLevelType) [!"num:inttohex(DioPortMask,8)"!]U),
     .offset = ((uint8) [!"num:i(DioPortOffset)"!]U),
 };

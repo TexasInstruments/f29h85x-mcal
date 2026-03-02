@@ -522,6 +522,8 @@
                                 <a:v>CDD_ADC_ACCESS_MODE_STREAMING</a:v>
                               </a:da>
                               <a:da name="EDITABLE" type="XPath" expr="not((../CddAdcGroupConversionMode = 'CDD_ADC_CONV_MODE_ONESHOT') and (../CddAdcGroupTrigSrcType = 'CDD_ADC_TRIGG_SRC_SW'))"/>  
+                              <a:da name="INVALID" type="XPath" expr="not((node:value(.) = 'CDD_ADC_ACCESS_MODE_STREAMING') and (../CddAdcGroupConversionMode = 'CDD_ADC_CONV_MODE_ONESHOT') and (../CddAdcGroupTrigSrcType = 'CDD_ADC_TRIGG_SRC_SW'))" 
+                                    false="STREAMING access mode is not supported in ONESHOT mode for software triggered groups."/>
                               <a:da name="DEFAULT" value="CDD_ADC_ACCESS_MODE_SINGLE"/>                              
                             </v:var>                                                       
                             <v:var name="CddAdcGroupHwTrigSignal" type="ENUMERATION">
@@ -571,9 +573,13 @@
                               <a:a name="SCOPE" value="LOCAL"/>
                               <a:a name="UUID" 
                                    value="3b755ee5-391d-4f7f-9f5f-1e862f4cc452"/>                             
-                              <a:da name="INVALID" type="Range">
-                                <a:tst expr="&lt;=255"/>
-                                <a:tst expr="&gt;=1"/>
+                              <a:da name="INVALID" type="Multi">
+                                <mt:range>
+                                  <mt:tst expr="&lt;=255"/>
+                                  <mt:tst expr="&gt;=1"/>
+                                </mt:range>
+                                <mt:xpath expr="node:when((../CddAdcGroupAccessMode = 'CDD_ADC_ACCESS_MODE_SINGLE'),(node:value(.) = num:i(1)),'true')"
+                                  false="Group streaming samples count should be 1 for One-shot software trigger single access mode"/>
                               </a:da>
                               <a:da name="EDITABLE" type="XPath" expr="(../CddAdcGroupAccessMode = 'CDD_ADC_ACCESS_MODE_STREAMING')"/>                            
                               <a:da name="DEFAULT" value="1"/>

@@ -90,7 +90,7 @@ if(NOT TARGET AppUtils)
 endif()
 
 if(NOT TARGET DeviceSupport)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/examples/DeviceSupport
                      ${CMAKE_BINARY_DIR}/DeviceSupport)
 endif()
 

@@ -84,12 +84,13 @@ CONST(Can_ControllerType, CAN_CONFIG_DATA) CanConfigSet_CanController_0 =
     .CanWakeupSupport = (boolean )TRUE,
     .CanWakeupSourceRef = (EcuM_WakeupSourceType )(0x00000001U),
     .CanControllerDefaultBaudrate = (const Can_BaudConfigType* )&CanConfigSet_CanController_0_CanControllerBaudrateConfig_0,
-    .BaudRateConfigList = (const Can_BaudConfigType** )CanConfigSet_CanController_0_BaudRateConfigList,
+    .BaudRateConfigList = &CanConfigSet_CanController_0_BaudRateConfigList[0],
     .CanConfigParam = {
         .CanFDMode = (boolean )FALSE,
         .CanLoopbackMode = (boolean )FALSE,
         .CanTransmitPause = (boolean )FALSE,
         .CanDisableAutomaticRetransmission = (boolean )FALSE,
+        .CanExtendedIDMask = 536870911U,
     }
 };
 

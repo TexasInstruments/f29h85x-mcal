@@ -137,7 +137,7 @@ CONST(Can_BaudConfigType, CAN_CONFIG_DATA) [!"../../../../@name"!]_[!"../../@nam
 
 CONST(Can_BaudConfigType*, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!]_BaudRateConfigList[[!"num:i(count(CanControllerBaudrateConfig/*))"!]]=
 {
-(Can_BaudConfigType* )[!LOOP "CanControllerBaudrateConfig/*"!][!WS "3"!]&[!"../../../../@name"!]_[!"../../@name"!]_[!"@name"!][!IF "not(node:islast())"!],[!CR!][!ENDIF!][!ENDLOOP!][!//
+[!LOOP "CanControllerBaudrateConfig/*"!][!WS "3"!]&[!"../../../../@name"!]_[!"../../@name"!]_[!"@name"!][!IF "not(node:islast())"!],[!CR!][!ENDIF!][!ENDLOOP!][!//
 };
 [!ENDLOOP!][!//
 
@@ -169,12 +169,13 @@ CONST(Can_ControllerType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
     .CanWakeupSupport = (boolean )[!IF "CanWakeupSupport ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
     .CanWakeupSourceRef = (EcuM_WakeupSourceType )([!IF "not(node:empty(CanWakeupSourceRef))"!][!"num:inttohex(bit:bitset(0, node:value(node:ref(CanWakeupSourceRef)/EcuMWakeupSourceId)), 8)"!][!ELSE!]0[!ENDIF!]U),
     .CanControllerDefaultBaudrate = (const Can_BaudConfigType* )&[!"../../@name"!]_[!"@name"!]_[!"node:name(node:ref(node:current()/CanControllerDefaultBaudrate))"!],
-    .BaudRateConfigList = (const Can_BaudConfigType** )[!"../../@name"!]_[!"@name"!]_BaudRateConfigList,
+    .BaudRateConfigList = &[!"../../@name"!]_[!"@name"!]_BaudRateConfigList[0],
     .CanConfigParam = {
         .CanFDMode = (boolean )[!IF "CanControllerConfig/CanFDMode ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
         .CanLoopbackMode = (boolean )[!IF "CanControllerConfig/CanLoopbackMode ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
         .CanTransmitPause = (boolean )[!IF "CanControllerConfig/CanTransmitPause ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
         .CanDisableAutomaticRetransmission = (boolean )[!IF "CanControllerConfig/CanDisableAutomaticRetransmission  ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
+        .CanExtendedIDMask =[!"' '"!][!IF "node:exists(CanControllerConfig/CanExtendedIDMask)"!][!"CanControllerConfig/CanExtendedIDMask"!]U[!ELSE!]536870911U[!ENDIF!],
     }
 };
 [!VAR "CanControllerIdIndx" = "$CanControllerIdIndx+1"!][!//
@@ -217,7 +218,7 @@ CONST(Can_IcomConfigType, CAN_CONFIG_DATA) Can_[!"@name"!] =
 CONST(Can_IcomConfigType*, CAN_CONFIG_DATA) Can_IcomConfigurationList[] =
 {
 [!LOOP "CanConfigSet/CanIcom/CanIcomConfig/*"!][!//
-    (Can_IcomConfigType* )&Can_[!"@name"!],
+    &Can_[!"@name"!],
 [!ENDLOOP!][!//
 };
 
@@ -229,7 +230,7 @@ CONST(Can_IcomConfigType*, CAN_CONFIG_DATA) Can_IcomConfigurationList[] =
 CONST(Can_ControllerType*, CAN_CONFIG_DATA) [!"@name"!]_CanController_List[]=
 {
 [!LOOP "CanController/*"!][!//
-    (Can_ControllerType* )&[!"../../@name"!]_[!"@name"!][!IF "not(node:islast())"!],[!CR!][!ENDIF!][!ENDLOOP!]
+    &[!"../../@name"!]_[!"@name"!][!IF "not(node:islast())"!],[!CR!][!ENDIF!][!ENDLOOP!]
 };
 [!ENDLOOP!][!//
 
@@ -256,7 +257,7 @@ CONST(Can_HwFilterType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 CONST(Can_HwFilterType*, CAN_CONFIG_DATA) [!"@name"!]_CanHwFilter_List[] =
 {
 [!LOOP "CanHwFilter/*"!][!//   
-    (Can_HwFilterType*) &[!"../../@name"!]_[!"@name"!],
+     &[!"../../@name"!]_[!"@name"!],
 [!ENDLOOP!][!//
 };
 
@@ -290,15 +291,15 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 {
 [!IF "CanHandleType ='FULL'"!][!//
 [!IF "CanHwObjectCount = '1'"!][!//
-    .CanHandleType = (uint8 )CAN_FULL,
+    .CanHandleType = CAN_FULL,
 [!ELSE!][!//
 [!ERROR "FULL Hardware Object i.e. dedicated message buffer can't have CanHwObjectCount greater than one"!][!//
 [!ENDIF!][!//
 [!ELSE!][!//
 [!IF "CanHwObjectCount > '1'"!][!//
-    .CanHandleType = (uint8 )CAN_BASIC,
+    .CanHandleType = CAN_BASIC,
 [!ELSE!][!//
-    .CanHandleType = (uint8 )CAN_BASIC,
+    .CanHandleType = CAN_BASIC,
 [!WARNING "BASIC Hardware Object i.e. FIFO message buffer is recommended to have CanHwObjectCount greater than one"!][!//
 [!ENDIF!][!//
 [!ENDIF!][!//
@@ -313,42 +314,42 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!IF "CanHandleType = 'FULL'"!][!//
 [!IF "CanObjectType = 'TRANSMIT'"!][!//
 [!IF "'MCANA' =  node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i($TxCnt0)"!]U, /* HwHandle */ /* Tx Message buffer number*/
+    .HwHandle = [!"num:i($TxCnt0)"!]U, /* HwHandle */ /* Tx Message buffer number*/
 [!VAR "TxCnt0" = "$TxCnt0+node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "'MCANB' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i($TxCnt1)"!]U, /* HwHandle */ /* Tx Message buffer number*/
+    .HwHandle = [!"num:i($TxCnt1)"!]U, /* HwHandle */ /* Tx Message buffer number*/
 [!VAR "TxCnt1" = "$TxCnt1+node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "'MCANC' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i($TxCnt2)"!]U, /* HwHandle */ /* Tx Message buffer number*/
+    .HwHandle = [!"num:i($TxCnt2)"!]U, /* HwHandle */ /* Tx Message buffer number*/
 [!VAR "TxCnt2" = "$TxCnt2+node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "'MCAND' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i($TxCnt3)"!]U, /* HwHandle */ /* Tx Message buffer number*/
+    .HwHandle = [!"num:i($TxCnt3)"!]U, /* HwHandle */ /* Tx Message buffer number*/
 [!VAR "TxCnt3" = "$TxCnt3+node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "'MCANE' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i($TxCnt4)"!]U, /* HwHandle */ /* Tx Message buffer number*/
+    .HwHandle = [!"num:i($TxCnt4)"!]U, /* HwHandle */ /* Tx Message buffer number*/
 [!VAR "TxCnt4" = "$TxCnt4+node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "'MCANF' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i($TxCnt5)"!]U, /* HwHandle */ /* Tx Message buffer number*/
+    .HwHandle = [!"num:i($TxCnt5)"!]U, /* HwHandle */ /* Tx Message buffer number*/
 [!VAR "TxCnt5" = "$TxCnt5+node:value(CanHwObjectCount)"!][!//
 [!ENDIF!][!//
 [!ELSE!][!//
 [!IF "'MCANA' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i($RxCnt0)"!]U, /* HwHandle */ /* Rx Message buffer number*/
+    .HwHandle = [!"num:i($RxCnt0)"!]U, /* HwHandle */ /* Rx Message buffer number*/
 [!VAR "RxCnt0" = "$RxCnt0+node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "'MCANB' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i($RxCnt1)"!]U, /* HwHandle */ /* Rx Message buffer number*/
+    .HwHandle = [!"num:i($RxCnt1)"!]U, /* HwHandle */ /* Rx Message buffer number*/
 [!VAR "RxCnt1" = "$RxCnt1+node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "'MCANC' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i($RxCnt2)"!]U, /* HwHandle */ /* Rx Message buffer number*/
+    .HwHandle = [!"num:i($RxCnt2)"!]U, /* HwHandle */ /* Rx Message buffer number*/
 [!VAR "RxCnt2" = "$RxCnt2+node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "'MCAND' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i($RxCnt3)"!]U, /* HwHandle */ /* Rx Message buffer number*/
+    .HwHandle = [!"num:i($RxCnt3)"!]U, /* HwHandle */ /* Rx Message buffer number*/
 [!VAR "RxCnt3" = "$RxCnt3+node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "'MCANE' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i($RxCnt4)"!]U, /* HwHandle */ /* Rx Message buffer number*/
+    .HwHandle = [!"num:i($RxCnt4)"!]U, /* HwHandle */ /* Rx Message buffer number*/
 [!VAR "RxCnt4" = "$RxCnt4+node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "'MCANF' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i($RxCnt5)"!]U, /* HwHandle */ /* Rx Message buffer number*/
+    .HwHandle = [!"num:i($RxCnt5)"!]U, /* HwHandle */ /* Rx Message buffer number*/
 [!VAR "RxCnt5" = "$RxCnt5+node:value(CanHwObjectCount)"!][!//
 [!ENDIF!][!//
 [!ENDIF!][!//
@@ -356,42 +357,42 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!IF "CanObjectType = 'TRANSMIT'"!][!//
 [!IF "'MCANA' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($TxFIFOCnt0) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
+    .HwHandle = [!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
 [!VAR "TxFIFOCnt0" = "$TxFIFOCnt0 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 1 transmit FIFO, hence there can be maximum 1 transmit BASIC Hardware Object"!][!//
 [!ENDIF!][!//
 [!ELSEIF "'MCANB' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($TxFIFOCnt1) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
+    .HwHandle = [!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
 [!VAR "TxFIFOCnt1" = "$TxFIFOCnt1 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 1 transmit FIFO, hence there can be maximum 1 transmit BASIC Hardware Object"!][!//
 [!ENDIF!][!//
 [!ELSEIF "'MCANC' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($TxFIFOCnt2) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
+    .HwHandle = [!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
 [!VAR "TxFIFOCnt2" = "$TxFIFOCnt2 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 1 transmit FIFO, hence there can be maximum 1 transmit BASIC Hardware Object"!][!//
 [!ENDIF!][!//
 [!ELSEIF "'MCAND' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($TxFIFOCnt3) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
+    .HwHandle = [!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
 [!VAR "TxFIFOCnt3" = "$TxFIFOCnt3 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 1 transmit FIFO, hence there can be maximum 1 transmit BASIC Hardware Object"!][!//
 [!ENDIF!][!//
 [!ELSEIF "'MCANE' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($TxFIFOCnt4) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
+    .HwHandle = [!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
 [!VAR "TxFIFOCnt4" = "$TxFIFOCnt4 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 1 transmit FIFO, hence there can be maximum 1 transmit BASIC Hardware Object"!][!//
 [!ENDIF!][!//
 [!ELSEIF "'MCANF' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($TxFIFOCnt5) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
+    .HwHandle = [!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
 [!VAR "TxFIFOCnt5" = "$TxFIFOCnt5 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 1 transmit FIFO, hence there can be maximum 1 transmit BASIC Hardware Object"!][!//
@@ -400,60 +401,60 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!ELSE!][!//
 [!IF "'MCANA' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($RxFIFO0Cnt0) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
+    .HwHandle = [!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO0Cnt0" = "$RxFIFO0Cnt0 + node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "num:i($RxFIFO1Cnt0) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(1)"!]U, /* HwHandle */ /* Rx FIFO number*/
+    .HwHandle = [!"num:i(1)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO1Cnt0" = "$RxFIFO1Cnt0 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 2 receive FIFOs, hence there can be maximum 2 receive BASIC Hardware Objects"!][!//
 [!ENDIF!][!//
 [!ELSEIF "'MCANB' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($RxFIFO0Cnt1) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
+    .HwHandle = [!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO0Cnt1" = "$RxFIFO0Cnt1 + node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "num:i($RxFIFO1Cnt1) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(1)"!]U, /* HwHandle */ /* Rx FIFO number*/
+    .HwHandle = [!"num:i(1)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO1Cnt1" = "$RxFIFO1Cnt1 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 2 receive FIFOs, hence there can be maximum 2 receive BASIC Hardware Objects"!][!//
 [!ENDIF!][!//
 [!ELSEIF "'MCANC' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($RxFIFO0Cnt2) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
+    .HwHandle = [!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO0Cnt2" = "$RxFIFO0Cnt2 + node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "num:i($RxFIFO1Cnt2) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(1)"!]U, /* HwHandle */ /* Rx FIFO number*/
+    .HwHandle = [!"num:i(1)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO1Cnt2" = "$RxFIFO1Cnt2 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 2 receive FIFOs, hence there can be maximum 2 receive BASIC Hardware Objects"!][!//
 [!ENDIF!][!//
 [!ELSEIF "'MCAND' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($RxFIFO0Cnt3) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
+    .HwHandle = [!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO0Cnt3" = "$RxFIFO0Cnt3 + node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "num:i($RxFIFO1Cnt3) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(1)"!]U, /* HwHandle */ /* Rx FIFO number*/
+    .HwHandle = [!"num:i(1)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO1Cnt3" = "$RxFIFO1Cnt3 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 2 receive FIFOs, hence there can be maximum 2 receive BASIC Hardware Objects"!][!//
 [!ENDIF!][!//
 [!ELSEIF "'MCANE' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($RxFIFO0Cnt4) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
+    .HwHandle = [!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO0Cnt4" = "$RxFIFO0Cnt4 + node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "num:i($RxFIFO1Cnt4) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(1)"!]U, /* HwHandle */ /* Rx FIFO number*/
+    .HwHandle = [!"num:i(1)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO1Cnt4" = "$RxFIFO1Cnt4 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 2 receive FIFOs, hence there can be maximum 2 receive BASIC Hardware Objects"!][!//
 [!ENDIF!][!//
 [!ELSEIF "'MCANF' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($RxFIFO0Cnt5) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
+    .HwHandle = [!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO0Cnt5" = "$RxFIFO0Cnt5 + node:value(CanHwObjectCount)"!][!//
 [!ELSEIF "num:i($RxFIFO1Cnt5) = 0"!][!//
-    .HwHandle = (Can_HwHandleType )[!"num:i(1)"!]U, /* HwHandle */ /* Rx FIFO number*/
+    .HwHandle = [!"num:i(1)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO1Cnt5" = "$RxFIFO1Cnt5 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 2 receive FIFOs, hence there can be maximum 2 receive BASIC Hardware Objects"!][!//
@@ -461,13 +462,13 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!ENDIF!][!//
 [!ENDIF!][!//
 [!ENDIF!][!//
-    .CanHwObjectCount = (uint16 )[!"CanHwObjectCount"!]U,
+    .CanHwObjectCount = [!"CanHwObjectCount"!]U,
     .CanObjectType = (Can_MailboxDirectionType )[!IF "CanObjectType = 'TRANSMIT'"!]CAN_TRANSMIT[!ELSE!]CAN_RECEIVE[!ENDIF!],
-    .CanControllerRef = (const Can_ControllerType* )&[!"../../@name"!]_[!"node:name(node:ref(CanControllerRef))"!],
+    .CanControllerRef = &[!"../../@name"!]_[!"node:name(node:ref(CanControllerRef))"!],
 [!IF "CanObjectType = 'TRANSMIT'"!][!//
     .CanHwFilterList = NULL_PTR,
 [!ELSE!][!//
-    .CanHwFilterList = (const Can_HwFilterType** )&[!"@name"!]_CanHwFilter_List,
+    .CanHwFilterList = &[!"@name"!]_CanHwFilter_List[0],
 [!ENDIF!][!//
     .CanFilterListCount = (uint8)[!"num:i(count(CanHwFilter/*))"!],
     .CanFdPaddingValue = (uint8 )[!"CanFdPaddingValue"!]U,
@@ -663,7 +664,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 
 CONST(Can_MailboxType*, CAN_CONFIG_DATA) [!"@name"!]_CanHardwareObject_List[] =
 {
-(Can_MailboxType* )[!LOOP "CanHardwareObject/*"!][!WS "3"!]&[!"../../@name"!]_[!"@name"!][!IF "not(node:islast())"!],[!CR!][!ENDIF!][!ENDLOOP!]
+[!LOOP "CanHardwareObject/*"!][!WS "3"!]&[!"../../@name"!]_[!"@name"!][!IF "not(node:islast())"!],[!CR!][!ENDIF!][!ENDLOOP!]
 };
 [!ENDLOOP!][!//
 [!ENDIF!][!//
@@ -678,17 +679,17 @@ CONST(Can_MailboxType*, CAN_CONFIG_DATA) [!"@name"!]_CanHardwareObject_List[] =
 [!LOOP "CanConfigSet"!][!//
 CONST(Can_ConfigType, CAN_CONFIG_DATA) Can_Config =
 {
-    .CanControllerList = (const Can_ControllerType** )[!"@name"!]_CanController_List,
-    .MailBoxList = (const Can_MailboxType** )[!"@name"!]_CanHardwareObject_List,
+    .CanControllerList = &[!"@name"!]_CanController_List[0],
+    .MailBoxList = &[!"@name"!]_CanHardwareObject_List[0],
     .MaxMbCnt = (uint16 )[!"num:i(count(CanHardwareObject/*))"!]U,
     .CanMaxControllerCount = (uint8 )[!"num:i(count(CanController/*))"!]U,
     .MaxBaudConfigID = {
 [!LOOP "./CanController/*"!][!//
-        [[!"@index"!]] = (uint32 )[!"num:i(num:sub(num:i(count(CanControllerBaudrateConfig/*)),1))"!]U[!IF "not(node:islast())"!],[!ENDIF!][!CR!][!//
+        [[!"@index"!]] = [!"num:i(num:sub(num:i(count(CanControllerBaudrateConfig/*)),1))"!]U[!IF "not(node:islast())"!],[!ENDIF!][!CR!][!//
 [!ENDLOOP!][!//
 	},
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
-	.IcomConfigurationList = (const Can_IcomConfigType** )Can_IcomConfigurationList,
+	.IcomConfigurationList = &Can_IcomConfigurationList[0],
 #endif
    
 };

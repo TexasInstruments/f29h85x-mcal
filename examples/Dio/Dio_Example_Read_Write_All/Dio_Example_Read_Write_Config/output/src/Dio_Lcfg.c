@@ -31,12 +31,12 @@
  * AUTOSAR version information check has to match definition in header file.
  *********************************************************************************************************************/
 #if ((DIO_SW_MAJOR_VERSION != (1U)) \
-    || (DIO_SW_MINOR_VERSION !=(0U)))
+    || (DIO_SW_MINOR_VERSION !=(1U)))
     #error "Version numbers of Dio_Lcfg.c and Dio.h are inconsistent!"
 #endif
 
  #if ((DIO_CFG_MAJOR_VERSION != (1U)) ||\
-    (DIO_CFG_MINOR_VERSION != (0U)))
+    (DIO_CFG_MINOR_VERSION != (1U)))
     #error "Version numbers of Dio_Lcfg.c and Dio_Cfg.h are inconsistent!"
 #endif
 
@@ -66,7 +66,7 @@
  /* Design : MCAL-22510, MCAL-22511 */
 CONST(Dio_ChannelGroupType, DIO_CONFIG_DATA) channelGroup0 =
 {
-    .port =   ((Dio_PortType) GPIO_PORT_A),
+    .port =   ((Dio_PortType) DIO_PORT_A),
     .mask =   ((Dio_PortLevelType) 0x0000ff00U),
     .offset = ((uint8) 8U),
 };

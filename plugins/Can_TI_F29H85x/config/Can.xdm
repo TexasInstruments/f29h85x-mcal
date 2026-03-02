@@ -385,6 +385,29 @@
                              value="19d10a28-9566-4006-9203-383000ef294c"/>
                             <a:da name="DEFAULT" value="false"/>
                           </v:var>
+                          <v:var name="CanExtendedIDMask"
+                               type="INTEGER">
+                          <a:a name="DESC"
+                               value="EN: Defines the value of Extended ID and Mask. Applied globally to all extended ID range filters (EFT=00) on this controller "/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                               type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v class="PostBuild">VariantPostBuild</icc:v>
+                            <icc:v class="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="OPTIONAL" value="true"/>
+                          <a:a name="UUID"
+                               value="b9d2f358-4157-3c55-9755-dc9405d03d7e"/>
+                          <a:da name="EDITABLE" type="XPath" expr="count(as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']/CanConfigSet/CanHardwareObject/*[CanIdType = 'EXTENDED' or CanIdType = 'MIXED']) &gt; 0"/>     
+                          <a:da name="INVALID" type="Range">
+                            <a:tst expr="&lt;=536870911"/>
+                            <a:tst expr="&gt;=0"/>
+                          </a:da>
+                          <a:da name="DEFAULT" value="536870911"/>
+                          </v:var>
                         </v:ctr>
                     <v:lst name="CanControllerBaudrateConfig" type="MAP">
                       <a:da name="MIN" value="1"/>
@@ -1235,9 +1258,9 @@
                       <a:da name="ENABLE" value="false"/>
                     </v:var>
                     <v:ref name="CanControllerRef" type="REFERENCE">
-                      <a:a name="DESC" 
+                      <a:a name="DESC"
                            value="EN: Reference to CAN Controller to which the HOH is associated to."/>
-                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS"
                            type="IMPLEMENTATIONCONFIGCLASS">
                         <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
                         <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -1245,15 +1268,15 @@
                       <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
                       <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="UUID" 
+                      <a:a name="UUID"
                            value="36a8355d-f57c-4575-94a4-91535e165872"/>
-                      <a:da name="REF" 
+                      <a:da name="REF"
                             value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Can/CanConfigSet/CanController"/>
                     </v:ref>
                     <v:ref name="CanMainFunctionRWPeriodRef" type="REFERENCE">
-                      <a:a name="DESC" 
-                           value="EN: Reference to CanMainFunctionPeriod"/>
-                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                      <a:a name="DESC"
+                           value="EN: Reference to CanMainFunctionPeriod. This reference is required when the associated CanController uses POLLING or MIXED mode for CanRxProcessing (for RECEIVE objects) or CanTxProcessing (for TRANSMIT objects)."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS"
                            type="IMPLEMENTATIONCONFIGCLASS">
                               <icc:v mclass="PostBuild">VariantPostBuild</icc:v>
                               <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
@@ -1262,15 +1285,21 @@
                       </a:a>
                       <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      a:a name="POSTBUILDVARIANTMULTIPLICITY" 
+                      <a:a name="POSTBUILDVARIANTMULTIPLICITY"
                                  value="true"/>
                       <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
-                      <a:a name="UUID" 
+                      <a:a name="UUID"
                            value="8ddc0eb0-d780-45f6-94be-d87cdb76d7d8"/>
                       <a:a name="OPTIONAL" value="true"/>
                       <a:da name="ENABLE" value="true"/>
-                      <a:da name="REF" 
+                      <a:da name="REF"
                             value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Can/CanGeneral/CanMainFunctionRWPeriods"/>
+                      <a:da name="INVALID" type="XPath">
+                        <a:tst expr="not(
+                          ((../CanObjectType = 'RECEIVE') and ((node:value(node:ref(../CanControllerRef)/CanRxProcessing) = 'POLLING') or ((node:value(node:ref(../CanControllerRef)/CanRxProcessing) = 'MIXED') and (../CanHardwareObjectUsesPolling = 'true')))) or
+                          ((../CanObjectType = 'TRANSMIT') and ((node:value(node:ref(../CanControllerRef)/CanTxProcessing) = 'POLLING') or ((node:value(node:ref(../CanControllerRef)/CanTxProcessing) = 'MIXED') and (../CanHardwareObjectUsesPolling = 'true'))))
+                        ) or node:refexists(.)" false="CanMainFunctionRWPeriodRef must be configured when the associated CanController uses POLLING mode, or MIXED mode with CanHardwareObjectUsesPolling enabled. Please configure at least one CanMainFunctionRWPeriods under CanGeneral and reference it here."/>
+                      </a:da>
                     </v:ref>
                     <v:lst name="CanHwFilter" type="MAP">
                       <v:ctr name="CanHwFilter" type="IDENTIFIABLE">
@@ -1323,10 +1352,27 @@
                           </a:da>
                           <a:da name="DEFAULT" value="0"/>
                         </v:var>
-                        <v:var name="CanStandardFilterType" 
+                        <v:var name="CanStandardFilterType"
                                type="ENUMERATION">
-                          <a:a name="DESC" 
-                               value="EN: Defines the type of the Standard Filter "/>
+                          <a:a name="DESC"><a:v><![CDATA[
+<html>
+<p>Defines the type of the Hardware Filter. This parameter applies to both Standard Filter Type (SFT) and Extended Filter Type (EFT). Refer TRM section 'Standard Message ID Filter Element' and 'Extended Message ID Filter Element' for more details.</p>
+<p><b>For Standard filter:</b></p>
+<ul>
+<li><b>CAN_RANGE_FILTER:</b> Range filter from SFID1 to SFID2 (SFID2 ≥ SFID1)</li>
+<li><b>CAN_DUAL_ID_FILTER:</b> Dual ID filter for SFID1 or SFID2</li>
+<li><b>CAN_CLASSIC_FILTER:</b> Classic filter: SFID1 = filter, SFID2 = mask</li>
+<li><b>CAN_SFT_FILTER_DISABLED_EFT_RANGE_NO_XIDAM:</b> Filter element disabled</li>
+</ul>
+<p><b>For Extended filter:</b></p>
+<ul>
+<li><b>CAN_RANGE_FILTER:</b> Range filter from EFID1 to EFID2 (EFID2 ≥ EFID1)</li>
+<li><b>CAN_DUAL_ID_FILTER:</b> Dual ID filter for EFID1 or EFID2</li>
+<li><b>CAN_CLASSIC_FILTER:</b> Classic filter: EFID1 = filter, EFID2 = mask</li>
+<li><b>CAN_SFT_FILTER_DISABLED_EFT_RANGE_NO_XIDAM:</b> Range filter from EFID1 to EFID2 (EFID2 ≥ EFID1), XIDAM mask not applied</li>
+</ul>
+</html>
+]]></a:v></a:a>
                           <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                                type="IMPLEMENTATIONCONFIGCLASS">
                             <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
@@ -1343,7 +1389,7 @@
                             <a:v>CAN_RANGE_FILTER</a:v>
                             <a:v>CAN_DUAL_ID_FILTER</a:v>
                             <a:v>CAN_CLASSIC_FILTER</a:v>
-                            <a:v>CAN_FILTER_DISABLED</a:v>
+                            <a:v>CAN_SFT_FILTER_DISABLED_EFT_RANGE_NO_XIDAM</a:v>
                           </a:da>
                           <a:da name="DEFAULT" value="CAN_CLASSIC_FILTER"/>
                         </v:var>

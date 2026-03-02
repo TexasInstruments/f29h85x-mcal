@@ -895,25 +895,59 @@ Refer [AUTOSAR_SWS_FlashDriver section: 10 Configuration specification](https://
 
 #### Overview of Fls_App_Example
 
-* Fls_App_Example
-  * Initializes clock using Mcu_Init()
-  * Initialize Fls using Fls_Init()
-  * Get Fls Version using Fls_GetVersionInfo()
-  * Erase flash sector using Fls_Erase()
-  * Perform the processing of jobs using Fls_MainFunction()
-  * Read the result of the last job using Fls_GetJobResult()
-  * Verify, whether a given memory area has been erased but not (yet) programmed using Fls_BlankCheck()
-  * Write complete flash sector using Fls_Write()
-  * Reads the flash memory using Fls_Read()
-  * Check if the write operation was successful by comparing txBuf_test (hardcoded) with the actual data in flash using Fls_Compare()
-  * Check if the read operation was successful by comparing rxBuf_test (previously read) with the actual data in flash
+* Purpose
+  * Comprehensive flash memory driver test application that validates all FLS (Flash Driver) operations through automated testing
+* Loop Iterations
+  * Executes 500 test iterations (loopCount 0-499)
+  * Each iteration advances the test address by 4096 bytes, wrapping around when reaching device memory limits
+  * Address wrap around occurs at 0x1FFFF (128KB Data Flash) for F29P32x devices, 0x3FFFF (256KB Data Flash) for F29H85x devices, Resets to address 0x0 after exceeding the limit
+* Tests Per Iteration: 66 total tests
+  * 26 fixed tests on the test address
+    * 1 Sector Erase
+    * 1 Blank Check
+    * 6 Incremental Writes (8, 8, 16, 16, 32, 32 bytes at varying offsets)
+    * 6 Compare operations (after each incremental write)
+    * 3 Bulk operations (Erase, Write 4096 bytes, Read 4096 bytes)
+    * 2 Compare operations (write/read verification)
+    * 1 Bank Erase
+    * 1 Blank Check (after bank erase)
+    * 1 Write (after bank erase)
+    * 1 Read (after bank erase)
+    * 2 Compare operations (after bank erase)
+    * 1 Cancel test (intentional failure)
+  * 40 configuration tests (8 tests × 5 sector configurations from FLS_NUMBER_OF_SECTOR_CFG)
+    * Per sector: Read, Sector Erase, BlankCheck, Write, Bank Erase, Write, Read, Compare
+* Total test executions
+  * 66 tests × 500 iterations
+* Flash Operations (per iteration)
+  * Sector Erase - Fls_SetEraseType(FLS_SECTOR_ERASE) + Fls_Erase() to erase 4096-byte test sector
+  * Blank Check - Fls_BlankCheck() to verify sector is properly erased
+  * Incremental Writes - Multiple Fls_Write() calls with varying sizes (8, 16, 32 bytes) at different offsets, each followed by Fls_Compare() for verification
+  * Bulk Operations - Full sector Fls_Erase(), Fls_Write() (4096 bytes), and Fls_Read() with Fls_Compare() verification
+  * Bank Erase - Fls_SetEraseType(FLS_BANK_ERASE) + Fls_Erase() to test bank-level erase, followed by Fls_BlankCheck(), Fls_Write(), Fls_Read(), and Fls_Compare()
+  * Cancel Test - Fls_Erase() immediately followed by Fls_Cancel() to verify job cancellation mechanism (expects one intentional error per iteration)
+  * Configuration Loop - Iterates through all configured flash sectors performing complete sequences: Fls_Read(), Fls_Erase(), Fls_BlankCheck(), Fls_Write(), and Fls_Compare() with both sector and bank erase modes
+* Additional APIs Used
+  * Fls_GetJobResult() - Queries job completion status after operations
+  * Fls_GetStatus() - Checks driver idle state before starting tests
+* Test Counters
+  * Fls_passCnt - Increments on each successful job completion via callback; rolls over at 1000
+  * Fls_errCnt - Increments on each job failure via callback; rolls over at 1000
+  * Expected behavior: One error per iteration due to intentional Fls_Cancel() test
+  * Overall Pass Criteria: Fls_errCnt == 500 (one error per iteration for 500 iterations)  
+* Callback Functionality
+  * Fee_JobEndNotification() - Invoked on successful job completion; sets Fls_JobDoneSuccess flag and increments Fls_passCnt
+  * Fee_JobErrorNotification() - Invoked on job failure; sets Fls_JobDoneError flag and increments Fls_errCnt
+  * FlsApp_main_handling() - Polls Fls_MainFunction() cyclically until callbacks signal completion via flags
+* Test Data
+  * Uses alternating 0xAA/0xBB pattern in 4096-byte transmit buffer for write verification
 
 #### Setup required to run Fls_App_Example
 
 * Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
+* Install latest C29 compiler
 * Connect the hardware and power up
-* Connect the uart set up to check the log on serial console
+* Launch a Serial terminal (at 115200 baud) with the COM port that is connected to the MCU
 
 #### How to run Fls_App_Example
 

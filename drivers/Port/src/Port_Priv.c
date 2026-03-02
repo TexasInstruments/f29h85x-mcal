@@ -194,12 +194,8 @@ Port_SetCntSpConfig(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) Pin
              * Do Nothing
              */
         }
-        /* TI_COVERAGE_GAP_START [Branch Gap] OR Condition short-circuiting nature in
-         * PORT_IS_ANALOG_MODE_SUPPORTED */
         if ((FALSE == PORT_IS_ANALOG_MODE_SUPPORTED(controllerSpecificPtr)) ||
-            ((TRUE == PORT_IS_ANALOG_MODE_SUPPORTED(controllerSpecificPtr)) &&
-             (PORT_ANALOG_DISABLED == controllerSpecificPtr->Port_AnalogMode)))
-        /* TI_COVERAGE_GAP_STOP*/
+            (PORT_ANALOG_DISABLED == controllerSpecificPtr->Port_AnalogMode))
         {
             Port_SetPadConfig(PinConfig->Port_PinId, controllerSpecificPtr->Port_PinPadConfig);
 

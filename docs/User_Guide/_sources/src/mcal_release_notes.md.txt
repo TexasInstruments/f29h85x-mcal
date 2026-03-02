@@ -1,0 +1,313 @@
+# F29H85x-MCAL-SDK 01.05.00 Release Notes
+
+- [Introduction](#introduction)
+- [Quick Start](#quick-start)
+- [Device Support](#device-support)
+- [What Is Supported](#what-is-supported)
+- [What Is Not Supported](#what-is-not-supported)
+- [New In This Release](#new-in-this-release)
+- [Module Version Number](#module-version-number)
+- [Fixed In This Release](#fixed-in-this-release)
+- [Known Issues And Limitations](#known-issues-and-limitations)
+  - [Limitations](#limitations)
+  - [New Known Issues](#new-known-issues)
+  - [Existing Known Issues](#existing-known-issues)
+- [Quality Status](#quality-status)
+- [Dependencies](#dependencies)
+
+## Introduction
+
+F29x MCAL is a cohesive set of tools for AUTOSAR based development on C2000 real-time controllers. It includes device-specific drivers (MCALs), EB Tresos Plugins for configuration, Bare-metal Examples for each driver.
+
+This release is an early adopter release targeted for F29H85x.
+
+## Quick Start
+
+1. **Install Prerequisites:**
+   - Install all tools listed in the [Dependencies](#dependencies) section.
+
+2. **Get Started:**
+   - Refer to the User Guide at `Installer:\docs\User_Guide` (local copy) or [online version](https://software-dl.ti.com/C2000/docs/mcal/F29H85x/01.05.00/index.html)
+   - Refer to the [Migration Guide](https://software-dl.ti.com/C2000/docs/mcal/F29H85x/01.05.00/src/MigrationGuide_list.html) for upgrading from previous versions
+   - Try the bare-metal examples in the `examples/` directory
+
+3. **Get Help:**
+   - Technical Support: [E2E Forum](https://e2e.ti.com/support/microcontrollers/c2000/f/171)
+
+## Device Support
+
+The following devices are supported with this release:
+
+### MCUs
+
+- F29H859DU_Q1
+- F29H859TM_Q1
+- F29H859TU_Q1
+- F29P329SJ_Q1
+- F29P329SM_Q1
+- F29P589DM_Q1
+- F29P589DU_Q1
+
+### Hardware Platforms
+
+- F29H85X-SOM-EVM
+
+## What Is Supported
+
+- MCAL / CDD (AUTOSAR v4.3.1)
+
+| Drivers | Modules |
+| --- | --- |
+| Micro controller Drivers | GPT, MCU, WDG |
+| Communication Driver | CAN, LIN, SPI |
+| I/O Drivers | DIO, PORT |
+| Memory Drivers | FLS |
+| Complex Device Drivers | ADC, XBAR, SENT, IPC, UART, PWM, ECAP, I2C |
+
+- Resource Allocator
+- Reference Code:
+  - Multi-Core startup code
+- Build System:
+  - CMake
+  - CCS Projectspec
+- {bdg-warning}`Beta` AI Agent Enablement
+
+## What Is Not Supported
+
+- Multi-core MCALs as per AUTOSAR 4.3.1.
+
+## New In This Release
+
+<!--
+================================================================================
+TEMPLATE: New Features and Changes
+================================================================================
+Use the following format to document new features, enhancements, and changes:
+
+- MCAL / CDD:
+  - New modules added:
+    1. **<MODULE_NAME>:**
+       - <Feature description>
+       - <Feature description>
+  - Existing modules with enhancements:
+    1. **<MODULE_NAME>:**
+       - <Enhancement description>
+       - Fixed: <Bug fix description>
+  - Existing modules with bug fixes:
+    1. **<MODULE_NAME>:**
+       - Fixed: <Bug fix description>
+
+- Build System:
+  - <Build system change description>
+
+- Documentation:
+  - <Documentation update description>
+
+Example:
+- MCAL / CDD:
+  - New modules added:
+    1. **CDD DMA:**
+       - Added DMA driver with support for memory-to-memory transfers
+       - Added interrupt-based transfer completion notification
+  - Existing modules with enhancements:
+    1. **CAN:**
+       - Added support for CAN FD with bit rate switching
+       - Fixed: Interrupts not processed when CanRxProcessing is INTERRUPT
+    2. **SPI:**
+       - Header inclusion structure is optimized
+================================================================================
+-->
+
+- {bdg-warning}`Beta` AI Agent Enablement:
+  1. **CCS AI Agent Support:**
+     - Added AGENTS.md file to enable AI-assisted development workflows
+     - AI coding agents can automatically create working F29 MCAL example projects
+     - Compatible with CCS v20.05.00
+     - CCS provides additional MCP services (build, debug) that help AI agents catch and fix issues automatically
+     - **Disclaimer:** As with any AI-based tooling, results may vary. The AGENTS.md file will be updated iteratively based on feedback. Always review AI-generated code before use.
+
+- MCAL / CDD:
+  - Existing modules with enhancements:
+    1. **WDG:**
+       - Added new `Wdg_Example_Reset` example demonstrating watchdog timer reset functionality
+       - Example shows watchdog timeout behavior when intentionally not serviced
+
+## Module Version Number
+
+<!--
+================================================================================
+TEMPLATE: Module Version Table
+================================================================================
+Update the version numbers for modules that have changed in this release.
+Follow AUTOSAR versioning rules (see Note section below).
+
+Format: XX.YY.ZZ where:
+- XX = MAJOR_VERSION (incremented when API is not compatible)
+- YY = MINOR_VERSION (incremented when functionality added, still compatible)
+- ZZ = PATCH_VERSION (incremented for bug fixes, fully compatible)
+================================================================================
+-->
+
+| Module | Version |
+| --- | --- |
+| MCU | XX.XX.XX |
+| PORT | XX.XX.XX |
+| DIO | XX.XX.XX |
+| GPT | XX.XX.XX |
+| CAN | XX.XX.XX |
+| WDG | XX.XX.XX |
+| LIN | XX.XX.XX |
+| SPI | XX.XX.XX |
+| FLS | XX.XX.XX |
+| CDD ADC | XX.XX.XX |
+| CDD XBAR | XX.XX.XX |
+| CDD SENT | XX.XX.XX |
+| CDD PWM | XX.XX.XX |
+| CDD ECAP | XX.XX.XX |
+| CDD IPC | XX.XX.XX |
+| CDD UART | XX.XX.XX |
+| CDD I2C | XX.XX.XX |
+
+### Note
+
+We follow Autosar's requirement [SRS_BSW_00321] for versioning of each module:
+
+**5.2.4.10 [SRS_BSW_00321]** The version numbers of AUTOSAR Basic Software Modules shall be enumerated according specific rules
+
+| Type | Description |
+| :--- | :--- |
+| **Type:** | Valid |
+| **Description:** | The version numbers of AUTOSAR Basic Software Modules shall be enumerated according to the following rules:<br>- Increasing a more significant digit of a version number resets all less significant digits<br>- The PATCH_VERSION is incremented if the module is still upwards and downwards compatible (e.g. bug fixed)<br>- The MINOR_VERSION is incremented if the module is still downwards compatible (e.g. valid functionality added)<br>- The MAJOR_VERSION is incremented if the module is not compatible any more (e.g. existing API invalid) |
+| **Rationale:** | Provide unambiguous version identification for each module, provide version cross check as well as basic version retrieval facilities. Compatibility is always visible! |
+| **Use Case:** | Example: ADC module with version 1.14.2 |
+
+## Fixed In This Release
+
+<!--
+================================================================================
+TEMPLATE: Fixed Issues Table
+================================================================================
+Add entries for bugs fixed in this release using the format below.
+
+| Key | Component/s | Severity | Summary | Affected Version | Impact | Steps to Reproduce | Fix Description |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| <JIRA-ID> | <Module name(s)> | <S1-Critical/S2-Major/S3-Minor/S4-Trivial> | <Brief summary of the issue> | <Version where issue exists> | <Description of the impact on users> | <Numbered steps to reproduce the issue> | <Brief description of the fix applied> |
+
+Example:
+| MCAL-12345 | Can | S2-Major | CAN: Message loss in loopback mode | C29xMCAL_01.00.00 | Messages sent in loopback mode are not received, causing test failures. | 1. Configure CAN in loopback mode. 2. Send a message. 3. Observe that the message is not received. | Added proper message buffer handling in loopback mode to ensure messages are correctly routed back to the receive buffer. |
+================================================================================
+-->
+
+| Key | Component/s | Severity | Summary | Affected Version | Impact | Steps to Reproduce | Fix Description |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| MCAL-35980 | Can | S3-Minor | CAN: Configuration validation gap for CanMainFunctionRWPeriod in Polling/Mixed Mode | C29xMCAL_01.00.00 <br>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.02.01 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 | Configurator allows a hardware object mapped to a controller configured entirely in Polling mode to have no schedulable function mapped to it without any warning or error. If such configuration exists, hardware object can't be read or written. | 1. Open EB Tresos configuration tool. <br>2. Create a new Can module configuration. <br>3. Configure a CanController with: CanRxProcessing = POLLING, CanTxProcessing = POLLING. <br>4. Create 2 or more CanHardwareObjects that reference this CanController. <br>5. Do not configure any CanMainFunctionRWPeriodRef in HOH and do not make any entry in CanMainFunctionRWPeriods. <br>6. Generate the configuration. <br>7. Observe that no error is generated despite the invalid configuration. | Added configuration validation check in XDM to detect and report an error when a hardware object set to Polling mode has no CanMainFunctionRWPeriodRef mapped to it. |
+| MCAL-35624 | Dio | S3-Minor | DIO: Dio doesn't follow AUTOSAR naming guidelines for typedefs and macros | C29xMCAL_01.00.00 <br>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.02.01 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 | As AUTOSAR naming convention is not followed, these definitions may conflict with other definitions in an application | Review the static and dynamic files of DIO module | Updated all macros in DIO module to follow AUTOSAR naming conventions (Dio_ prefix for all public symbols). |
+| MCAL-35862 | Fls | S2-Major | FLS: Fls_F29Compare casts a byte aligned pointer to a 32-bit aligned pointer and dereferences it, which is illegal | C29xMCAL_01.04.01 | When Fls_f29Compare() is called with a ramAddr that is not 32-bit aligned (e.g. 8-bit aligned), execution will crash in Fls_priv.c in Fls_F29Compare() due to illegal pointer cast and dereference. | 1. Call Fls_f29Compare() with a ramAddr that is not 32-bit aligned (e.g. 8-bit aligned). <br>2. Observe that execution crashes in Fls_priv.c in Fls_F29Compare() at P2VAR(uint32, AUTOMATIC, FLS_APPL_DATA) pu32CheckValueBuffer = (uint32 *)Fls_DrvObj.ramAddr; | Removed the illegal conversion and appropriately internally handle the 8-bit pointer. |
+
+## Known Issues And Limitations
+
+There are few limitations and known issues associated with this release.
+
+### Limitations
+
+<!--
+================================================================================
+TEMPLATE: Limitations
+================================================================================
+Document any limitations that users should be aware of. Use the format:
+
+- **<Module/Area>:**
+  - <Limitation description>
+
+Example:
+- **CDD ECAP:**
+  - In case of high frequency signals (i.e. 500Khz and above), software overhead in user callback shall be kept to minimum to avoid missing edges.
+- **Test Infrastructure:** Following tests have not been performed due to limitations of available test infrastructure:
+  - **CDD SENT:** Following modes in SENT are not tested:
+    - Enhanced 16-bit Slow Mode.
+================================================================================
+-->
+
+- **CDD ECAP:**
+  - In case of high frequency signals (i.e. 500Khz and above), software overhead in user callback shall be kept to minimum to avoid missing edges.
+
+- **Test Infrastructure:** Following tests have not been performed due to limitations of available test infrastructure:
+  - **CDD SENT:** Following modes in SENT are not tested:
+    - Enhanced 16-bit Slow Mode.
+    - Nibble Count 1,2,3,4,5.
+    - MTP Mode with all 4 sensors connected.
+  - **CDD IPC:** IPC is validated between CPU1 and CPU3. Since, CPU2 is configured in lockstep in our framework; IPC between CPU1 and CPU2 or CPU2 and CPU3 is not validated.
+  - **Fls:** Timeout tests are not performed as FLASH characterization data is not yet available for this device.
+  - **Spi:** Board to board Spi communication validated upto 40MHz. 50MHz have been only tested in loopback mode.
+  - **CDD I2C:** Target mode is not supported.
+
+- **Compiler:**
+  - Link Time optimization is currently not supported.
+
+### New Known Issues
+
+<!--
+================================================================================
+TEMPLATE: New Known Issues Table
+================================================================================
+Add entries for new known issues discovered in this release.
+
+| Key | Component/s | Severity | Summary | Affected Version | Impact | Steps to Reproduce | Workaround |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| <JIRA-ID> | <Module> | <S1-Critical/S2-Major/S3-Minor/S4-Trivial> | <Brief summary> | <Version where issue was found> | <Impact description> | <Numbered steps> | <Workaround description> |
+
+Example:
+| MCAL-12345 | Spi | S2-Major | SPI: DMA transfer fails above 25MHz | C29xMCAL_01.00.00 | DMA-based SPI transfers fail at clock speeds above 25MHz. | 1. Configure SPI with DMA. 2. Set clock to 30MHz. 3. Initiate transfer. 4. Observe failure. | Use polling mode or reduce clock speed to 25MHz or below. |
+================================================================================
+-->
+
+| Key | Component/s | Severity | Summary | Affected Version | Impact | Steps to Reproduce | Workaround |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| - | - | - | - | - | - | - | - |
+
+### Existing Known Issues
+
+<!--
+================================================================================
+TEMPLATE: Existing Known Issues Table
+================================================================================
+Carry forward known issues from previous releases that are still open.
+Move issues to "Fixed In This Release" section when resolved.
+
+| Key | Component/s | Severity | Summary | Affected Version | Impact | Steps to Reproduce | Workaround |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| <JIRA-ID> | <Module> | <S1-Critical/S2-Major/S3-Minor/S4-Trivial> | <Brief summary> | <Version where issue was found> | <Impact description> | <Numbered steps> | <Workaround description> |
+================================================================================
+-->
+
+| Key | Component/s | Severity | Summary | Affected Version | Impact | Steps to Reproduce | Workaround |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| MCAL-35347 | CDD I2C | S2-Major | I2C: Cancel API is not functional | C29xMCAL_01.04.00 | The I2C_Cancel API does not successfully cancel an ongoing I2C transfer, which may cause unexpected behavior in applications relying on transfer cancellation. | 1. Start an I2C transfer.<br>2. Immediately cancel the transfer by invoking the I2C_Cancel API.<br>3. Observe that the cancellation does not take effect. | Do not cancel the ongoing transmission using API. Instead handle this situation in application code. |
+| MCAL-32321 | All | S2-Major | All Modules: Link time optimization is not verified for all modules | C29xMCAL_01.03.00 | Link time optimization (LTO) has not been verified across all modules, which may cause unexpected behavior or build issues if enabled. | 1. Add -flto flag to compiler options.<br>2. Build the MCAL project.<br>3. Run the application and you might observe unexpected behavior. | By default LTO is disabled, user shall not enable it. |
+
+## Quality Status
+
+| Sr. No. | Work Product | Availability | Where to find Artifacts | Current Quality Status |
+| --- | --- | --- | --- | --- |
+| 1 | Dynamic Analysis Report<br>1. MCDC<br>2. Branch<br>3. Region<br>4. Line<br>5. Function | No | CSP | Will be available in future releases. Please refer to device roadmap for details. |
+| 2 | Static Analysis Report<br>1. Static<br>2. HIS<br>3. MISRA-C | Yes | Installer:\*\docs\Static_Analysis | All Mandatory & Critical warnings and errors are resolved. Required and Advisory warnings will be fixed in future releases. |
+| 3 | Test Reports: Test Cases and Test Results | Yes | Installer:\*\docs\Test_Report | All test reports are present in installer. |
+| 4 | Bi-directional Traceability Report<br>1. MRD↔SPS<br>2. SPS↔SW Arch↔SWDesign Doc↔SW Units (Code)<br>3. MRD↔SPS↔Test Case<br>4. Test Case↔Arch Test Case↔Design | No | CSP | Will be available in future releases. Please refer to device roadmap for details. |
+| 5 | Customer Docs: User Guide | Yes | Installer:\*\docs\User_Guide | User Guide is present in installer as well as softwaredl |
+| 6 | SW FMEA | No | CSP | Will be available in future releases. Please refer to device roadmap for details. |
+| 7 | Detailed Design Document | No | CSP | Will be available in future releases. Please refer to device roadmap for details. |
+| 8 | SW Manifest | Yes | Installer:\*\mcal_manifest | SW manifest is present in installer |
+| 9 | Software Product Specification: List of functional, safety requirements for SW components | No | CSP | Will be available in future releases. Please refer to device roadmap for details. |
+| 10 | Architecture Document | No | CSP | Will be available in future releases. Please refer to device roadmap for details. |
+| 11 | SW Safety Manual | No | CSP | Will be available in future releases. Please refer to device roadmap for details. |
+| 12 | Safety Assessment | No | CSP | Will be available in future releases. Please refer to device roadmap for details. |
+
+**Note:** CSP = Compliance Support Package
+
+## Dependencies
+
+This release has dependency on the following tools:
+
+- [CCS](https://www.ti.com/tool/CCSTUDIO) v20.05.00 or above version.
+- [C29Clang Compiler](https://www.ti.com/tool/C2000-CGT) 2.0.0 STS.
+- [EB Tresos](https://www.ti.com/drr/opn/PROCESSOR-SDK-MCAL-EB-TRESOS) (ACG 8.8.12)

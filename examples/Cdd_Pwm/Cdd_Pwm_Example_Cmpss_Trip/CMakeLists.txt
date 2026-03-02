@@ -91,12 +91,12 @@ if(NOT TARGET Cdd_Pwm_Example_Cmpss_Trip_Config)
 endif()
 
 if(NOT TARGET DeviceSupport)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/examples/DeviceSupport
                      ${CMAKE_BINARY_DIR}/DeviceSupport)
 endif()
 
 if(NOT TARGET AppUtils)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../AppUtils
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/examples/AppUtils
                      ${CMAKE_BINARY_DIR}/AppUtils)
 endif()
 
@@ -109,11 +109,11 @@ add_link_options(-Wl,-m=${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.map)
 
 if(BUILD_CONFIGURATION MATCHES "RAM")
     add_link_options(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29h85x_ram_lnk_cpu1_all.cmd
+        ${PROJECT_ROOT_DIRECTORY}/examples/DeviceSupport/LinkerCMD/f29h85x_ram_lnk_cpu1_all.cmd
     )
 else()
     add_link_options(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29h85x_flash_lnk_cpu1.cmd
+        ${PROJECT_ROOT_DIRECTORY}/examples/DeviceSupport/LinkerCMD/f29h85x_flash_lnk_cpu1.cmd
     )
 endif()
 

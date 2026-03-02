@@ -88,7 +88,7 @@ extern "C" {
 #define CDD_PWM_HRPWM_SUPPORTED    (STD_ON)
 
 /* Version info Api macro */
-#define CDD_PWM_VERSION_INFO_API    (STD_OFF)
+#define CDD_PWM_VERSION_INFO_API    (STD_ON)
 
 /* Notification API macro */
 #define CDD_PWM_NOTIFICATION_SUPPORTED    (STD_ON)

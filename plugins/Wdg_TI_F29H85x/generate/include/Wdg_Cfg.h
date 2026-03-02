@@ -269,11 +269,11 @@ typedef struct Wdg_ConfigType_s
     /** \brief Default wdg mode */
     WdgIf_ModeType   Wdg_DefaultMode;
     /** \brief Instance ID */  
-    uint32           Wdg_InstanceId;
+    uint8            Wdg_InstanceId;
     /** \brief Initial timeout  */
-    uint32           Wdg_InitialTimeOut;
+    uint16           Wdg_InitialTimeOut;
     /** \brief Maximum timeout */
-    uint32           Wdg_MaxTimeOut;
+    uint16           Wdg_MaxTimeOut;
     /** \brief Fast mode configuration */
     Wdg_ModeInfoType Wdg_FastModeCfg;
     /** \brief Slow mode configuration */

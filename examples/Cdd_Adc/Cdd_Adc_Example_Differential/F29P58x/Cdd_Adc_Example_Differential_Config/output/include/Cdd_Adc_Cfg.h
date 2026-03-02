@@ -140,7 +140,7 @@ extern "C" {
 #define CDD_ADC_PPB_NOTIF_CAPABILITY_API    (STD_OFF)
 
 /* Version info Api macro */
-#define CDD_ADC_VERSION_INFO_API    (STD_OFF)
+#define CDD_ADC_VERSION_INFO_API    (STD_ON)
 
 
 /* CDD_ADCA hardware unit symbolic name */

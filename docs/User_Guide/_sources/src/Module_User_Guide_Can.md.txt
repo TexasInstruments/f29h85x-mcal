@@ -544,6 +544,25 @@ This container contains CAN Controller specific configuration parameters.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
+###### CanExtendedIDMask
+
+| Item ||
+|--------|---------------|
+| **Name** | CanExtendedIDMask |
+| **Description** | Defines the value of Extended ID and Mask. Applied globally to all extended ID range filters (EFT=00) on this controller  |
+| **Multiplicity-Configuration-Class** | -- |
+| Post-Build Time | VARIANT-POST-BUILD |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 536870911 |
+| **Max-value** | 536870911 |
+| **Min-value** | 0 |
+
 ##### CanControllerBaudrateConfig
 This container contains bit timing related configuration parameters of the CAN controller(s).
 
@@ -1164,12 +1183,12 @@ This container contains the configuration (parameters) of CAN Hardware Objects.
 | Item ||
 |--------|---------------|
 | **Name** | CanMainFunctionRWPeriodRef |
-| **Description** | Reference to CanMainFunctionPeriod |
+| **Description** | Reference to CanMainFunctionPeriod. This reference is required when the associated CanController uses POLLING or MIXED mode for CanRxProcessing (for RECEIVE objects) or CanTxProcessing (for TRANSMIT objects). |
 | **Multiplicity-Configuration-Class** | -- |
 | Post-Build Time | VARIANT-POST-BUILD |
 | Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | AUTOSAR_ECUC |
-| **Post-build-variant-multiplicity** | false |
+| **Post-build-variant-multiplicity** | true |
 | **Post-Build-Variant-Value** | true |
 | **Value-Configuration-Class** | -- |
 | Post-Build-Time | VARIANT-POST-BUILD |
@@ -1213,14 +1232,14 @@ This container is only valid for HRHs and contains the configuration (parameters
 | Item ||
 |--------|---------------|
 | **Name** | CanStandardFilterType |
-| **Description** | Defines the type of the Standard Filter  |
+| **Description** | <html><br><p>Defines the type of the Hardware Filter. This parameter applies to both Standard Filter Type (SFT) and Extended Filter Type (EFT). Refer TRM section 'Standard Message ID Filter Element' and 'Extended Message ID Filter Element' for more details.</p><br><p><b>For Standard filter:</b></p><br><ul><br><li><b>CAN_RANGE_FILTER:</b> Range filter from SFID1 to SFID2 (SFID2 ? SFID1)</li><br><li><b>CAN_DUAL_ID_FILTER:</b> Dual ID filter for SFID1 or SFID2</li><br><li><b>CAN_CLASSIC_FILTER:</b> Classic filter: SFID1 = filter, SFID2 = mask</li><br><li><b>CAN_SFT_FILTER_DISABLED_EFT_RANGE_NO_XIDAM:</b> Filter element disabled</li><br></ul><br><p><b>For Extended filter:</b></p><br><ul><br><li><b>CAN_RANGE_FILTER:</b> Range filter from EFID1 to EFID2 (EFID2 ? EFID1)</li><br><li><b>CAN_DUAL_ID_FILTER:</b> Dual ID filter for EFID1 or EFID2</li><br><li><b>CAN_CLASSIC_FILTER:</b> Classic filter: EFID1 = filter, EFID2 = mask</li><br><li><b>CAN_SFT_FILTER_DISABLED_EFT_RANGE_NO_XIDAM:</b> Range filter from EFID1 to EFID2 (EFID2 ? EFID1), XIDAM mask not applied</li><br></ul><br></html> |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | true |
 | **Value-Configuration-Class** | -- |
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | CAN_CLASSIC_FILTER |
-| **Range** | CAN_RANGE_FILTER<br>CAN_DUAL_ID_FILTER<br>CAN_CLASSIC_FILTER<br>CAN_FILTER_DISABLED |
+| **Range** | CAN_RANGE_FILTER<br>CAN_DUAL_ID_FILTER<br>CAN_CLASSIC_FILTER<br>CAN_SFT_FILTER_DISABLED_EFT_RANGE_NO_XIDAM |
 
 ###### CanEventPin
 

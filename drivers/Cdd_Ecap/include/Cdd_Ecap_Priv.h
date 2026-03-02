@@ -169,6 +169,82 @@ extern volatile uint8 Cdd_Ecap_DrvStatus;
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
+#if (STD_ON == CDD_ECAP_EDGE_DETECT_API)
+/**
+ * \brief   This API processes the edge detection notification for the given channel.
+ *
+ * \param[in]   chNum      Channel number of CDD ECAP
+ * \param[in]   baseAddr   Base address of the ECAP instance
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ **/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EdgeDetect_ProcessNotification(uint8 chNum, uint32 baseAddr);
+#endif
+
+#if ((STD_ON == CDD_ECAP_SIGNAL_MEASUREMENT_API) && (STD_ON == CDD_ECAP_HR_API))
+/**
+ * \brief   This API dispatches the HR signal measurement interrupt to the appropriate handler.
+ *
+ * \param[in]   chNum      Channel number of CDD ECAP
+ * \param[in]   baseAddr   Base address of the ECAP instance
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ **/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurementHr_DispatchIntr(uint8 chNum, uint32 baseAddr);
+/**
+ * \brief   This API processes capture event 1 for HR signal measurement mode.
+ *
+ * \param[in]   chNum      Channel number of CDD ECAP
+ * \param[in]   baseAddr   Base address of the ECAP instance
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ **/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurementHr_ProcessCevt1(uint8 chNum, uint32 baseAddr);
+/**
+ * \brief   This API processes capture event 2 for HR signal measurement mode.
+ *
+ * \param[in]   chNum      Channel number of CDD ECAP
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ **/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurementHr_ProcessCevt2(uint8 chNum);
+/**
+ * \brief   This API processes capture event 3 for HR signal measurement mode.
+ *
+ * \param[in]   chNum      Channel number of CDD ECAP
+ * \param[in]   baseAddr   Base address of the ECAP instance
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ **/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurementHr_ProcessCevt3(uint8 chNum, uint32 baseAddr);
+/**
+ * \brief   This API processes capture event 4 for HR signal measurement mode.
+ *
+ * \param[in]   chNum      Channel number of CDD ECAP
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ **/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurementHr_ProcessCevt4(uint8 chNum);
+#endif
+
 /**
  * \brief   This API will reset CDD ECAP s/w channel object.
  *
@@ -214,6 +290,65 @@ void Cdd_Ecap_HwUnitInit(void);
  *
  **/
 void Cdd_Ecap_SignalMeasurement_Init(Cdd_Ecap_ChannelType Channel);
+
+/**
+ * \brief   This API processes capture event 1 for signal measurement mode.
+ *
+ * \param[in]   chNum      Channel number of CDD ECAP
+ * \param[in]   baseAddr   Base address of the ECAP instance
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ **/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurement_ProcessCevt1(uint8 chNum, uint32 baseAddr);
+/**
+ * \brief   This API processes capture event 2 for signal measurement mode.
+ *
+ * \param[in]   chNum      Channel number of CDD ECAP
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ **/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurement_ProcessCevt2(uint8 chNum);
+/**
+ * \brief   This API processes capture event 3 for signal measurement mode.
+ *
+ * \param[in]   chNum      Channel number of CDD ECAP
+ * \param[in]   baseAddr   Base address of the ECAP instance
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ **/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurement_ProcessCevt3(uint8 chNum, uint32 baseAddr);
+/**
+ * \brief   This API processes capture event 4 for signal measurement mode.
+ *
+ * \param[in]   chNum      Channel number of CDD ECAP
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ **/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurement_ProcessCevt4(uint8 chNum);
+/**
+ * \brief   This API dispatches the signal measurement interrupt to the appropriate handler.
+ *
+ * \param[in]   chNum      Channel number of CDD ECAP
+ * \param[in]   baseAddr   Base address of the ECAP instance
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ **/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurement_DispatchIntr(uint8 chNum, uint32 baseAddr);
 #endif
 
 #if (STD_ON == CDD_ECAP_TIMESTAMP_API)
@@ -254,6 +389,17 @@ void Cdd_Ecap_Timestamp_ISR(Cdd_Ecap_ChannelType Channel);
  *
  **/
 void Cdd_Ecap_TimeStamp_Clear(Cdd_Ecap_ChannelType Channel);
+/**
+ * \brief   This API processes the timestamp notification for the given channel.
+ *
+ * \param[in]   chNum      Channel number of CDD ECAP
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ **/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_Timestamp_ProcessNotification(uint8 chNum);
 #endif
 
 /**
@@ -262,7 +408,6 @@ void Cdd_Ecap_TimeStamp_Clear(Cdd_Ecap_ChannelType Channel);
  * \param[in]   baseAddr      Baseaddress of channel
  * \param[in]   activation    Activation Edge type
  * \param[in]   cntRst        Counter Reset Mode
- * \param[in]   interruptEnable  Interrupt Enable
  * \param[in]   capture       Capture Mode
  * \param[in]   Channel       Channel number
  * \pre None
@@ -272,7 +417,7 @@ void Cdd_Ecap_TimeStamp_Clear(Cdd_Ecap_ChannelType Channel);
  *
  **/
 void Cdd_Ecap_ConfigEcap(uint32 baseAddr, Cdd_Ecap_ActivationType activation, Cdd_Ecap_CounterRstType cntRst,
-                         boolean interruptEnable, Cdd_Ecap_IntrCapSelect capture, uint32 Channel);
+                         Cdd_Ecap_IntrCapSelect capture, uint32 Channel);
 
 /**
  * \brief   This is the Channel ISR
@@ -605,6 +750,19 @@ Cdd_Ecap_HRCAP_getScaleFactor(uint32 baseAddr, Cdd_Ecap_ChannelType Channel);
  *********************************************************************************************************************/
 FUNC(Cdd_Ecap_ChannelHrScaleType, CDD_ECAP_CODE)
 Cdd_Ecap_HRCAP_convertEventTimeStamp(uint32 baseAddr, uint32 timestamp, float32 scaleFactor);
+
+/** \brief Service to check the overflow interrupt status and calculate scalefactor.
+ *
+ * This service checks the overflow interrupt status and calculate scalefactor.
+ *
+ * \param[in] chNum   Channel ID of the specific ECAP instance.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_CheckHrOverFlowStatus(uint8 chNum);
 #endif
 /*********************************************************************************************************************
  * Exported Object Declarations

@@ -192,7 +192,7 @@ Std_ReturnType FlsApp(void)
 
     /********************************************************************************************************************************/
 
-    for (loopCount = 1; loopCount < 500; loopCount++)
+    for (loopCount = 0; loopCount < 500; loopCount++)
     {
 #if defined(Debug_AppPrint)
         AppUtils_Printf(APP_NAME ": Configured operation on flash is from 0x%x address offset till %d bytes!!\n\r",
@@ -757,8 +757,8 @@ Std_ReturnType FlsApp(void)
         AppUtils_Printf(APP_NAME ": \n\r");
         AppUtils_Printf(APP_NAME ": ---------- FLS Sample application Done !! ----------  \n\r");
         AppUtils_Printf(APP_NAME
-                        ": Number of Tests Passed: %d   Number of Tests failed: %d (1 should be "
-                        "happened each loop for Fls_Cancel test)   Loop Number: %d \r\n",
+                        ": Tests Passed: %d (wraps at 1000)   Tests Failed: %d (wraps at 1000, "
+                        "1 expected per loop from Fls_Cancel)   Loop: %d \r\n",
                         Fls_passCnt, Fls_errCnt, loopCount);
         AppUtils_Printf(APP_NAME ": \n\r");
 #endif
@@ -766,6 +766,25 @@ Std_ReturnType FlsApp(void)
          * of this file*/
         /*__asm(" NOP #8");*/
     }  // loop for debug use
+
+#if defined(Debug_AppPrint)
+    AppUtils_Printf(APP_NAME ": \n\r");
+    AppUtils_Printf(APP_NAME ": ========== OVERALL TEST SUMMARY ==========\n\r");
+    if (Fls_errCnt == loopCount)
+    {
+        AppUtils_Printf(APP_NAME ": OVERALL RESULT: PASS\n\r");
+        AppUtils_Printf(APP_NAME ": Error count matches expected value (%d errors for %d iterations)\n\r", Fls_errCnt,
+                        loopCount);
+    }
+    else
+    {
+        AppUtils_Printf(APP_NAME ": OVERALL RESULT: FAIL\n\r");
+        AppUtils_Printf(APP_NAME ": Error count mismatch - Expected: %d, Actual: %d\n\r", loopCount, Fls_errCnt);
+    }
+    AppUtils_Printf(APP_NAME ": ===========================================\n\r");
+    AppUtils_Printf(APP_NAME ": \n\r");
+#endif
+
     return (status);
 }
 
@@ -818,7 +837,7 @@ void Fee_JobEndNotification(void)
     AppUtils_Printf(APP_NAME ": Job Ends: SUCCESS\n\r");
 #endif
     /*Fls_passCnt++;        */
-    if (Fls_passCnt++ > 1000U)
+    if (Fls_passCnt++ >= 1000U)
     {
         Fls_passCnt = 0;
     }
@@ -834,7 +853,7 @@ void Fee_JobErrorNotification(void)
     AppUtils_Printf(APP_NAME ": Job Ends: Error\n\r");
 #endif
     /*Fls_errCnt++; */ /*one expected error from Fls_Cancel()*/
-    if (Fls_errCnt++ > 1000U)
+    if (Fls_errCnt++ >= 1000U)
     {
         Fls_errCnt = 0;
     }

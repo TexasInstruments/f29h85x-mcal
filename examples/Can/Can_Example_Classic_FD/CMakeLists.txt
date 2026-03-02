@@ -2,17 +2,17 @@ project(Can_Example_Classic_FD LANGUAGES C ASM)
 
 if(NOT TARGET hw_include)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/hw_include/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/hw_include/
         ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/hw_include)
 endif()
 
 if(NOT TARGET Can)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/Can/
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Can/
                      ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/Can)
 endif()
 
 if(NOT TARGET Port)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/Port/
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Port/
                      ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/Port)
 endif()
 
@@ -22,70 +22,67 @@ if(NOT TARGET SchM_Mcu)
 endif()
 
 if(NOT TARGET Mcu)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/Mcu/
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Mcu/
                      ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/Mcu)
 endif()
 
 if(NOT TARGET SchM_Port)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/SchM/Port/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Port/
         ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/SchM_Port)
 endif()
 
 if(NOT TARGET Mcal_Lib)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/Mcal_Lib/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/Mcal_Lib/
         ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/Mcal_Lib)
 endif()
 
 if(NOT TARGET AUTOSAR_Types)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/AUTOSAR_Types/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/AUTOSAR_Types/
         ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/AUTOSAR_Types)
 endif()
 
 if(NOT TARGET Det)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/Det/
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/Det/
                      ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/Det)
 endif()
 
 if(NOT TARGET Dem)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/Dem/
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/Dem/
                      ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/Dem)
 endif()
 
 if(NOT TARGET MemMap)
-    add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/MemMap/
-        ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/MemMap)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/MemMap/
+                     ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/MemMap)
 endif()
 
 if(NOT TARGET SchM_Can)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/SchM/Can/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Can/
         ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/SchM_Can)
 endif()
 
 if(NOT TARGET EcuM)
-    add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/EcuM/
-        ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/EcuM)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/EcuM/
+                     ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/EcuM)
 endif()
 
 if(NOT TARGET Os)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/Os/
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/Os/
                      ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/Os)
 endif()
 
 if(NOT TARGET AppUtils)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../AppUtils
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/examples/AppUtils
                      ${CMAKE_BINARY_DIR}/AppUtils)
 endif()
 
 if(NOT TARGET CanIf)
-    add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/CanIf/
-        ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/CanIf)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/CanIf/
+                     ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/CanIf)
 endif()
 
 if(NOT TARGET Can_Example_Classic_FD_Config)
@@ -96,7 +93,7 @@ if(NOT TARGET Can_Example_Classic_FD_Config)
 endif()
 
 if(NOT TARGET DeviceSupport)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/examples/DeviceSupport
                      ${CMAKE_BINARY_DIR}/DeviceSupport)
 endif()
 

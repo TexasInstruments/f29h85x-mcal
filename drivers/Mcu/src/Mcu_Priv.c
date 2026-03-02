@@ -785,7 +785,8 @@ FUNC(void, MCU_CODE) Mcu_ClearReset(Mcu_RawResetType RawResetType)
 FUNC(void, MCU_CODE) Mcu_PerformControllerReset(void)
 {
     /* Perform Simulated External Reset */
-    HWREG(CPUSYS_BASE + SYSCTL_O_SIMRESET) = (SYSCTL_SIMRESET_KEY << SYSCTL_SIMRESET_KEY_S) | SYSCTL_SIMRESET_XRSN;
+    HWREG(CPUSYS_BASE + SYSCTL_O_SIMRESET) =
+        ((uint32)SYSCTL_SIMRESET_KEY << SYSCTL_SIMRESET_KEY_S) | (uint32)SYSCTL_SIMRESET_XRSN;
 }
 
 /*
@@ -1033,14 +1034,14 @@ static FUNC(void, MCU_CODE) Mcu_SetMCanClock(const Mcu_MCanClkConfigType* MCanCl
     bitpos = 5U * (uint8)mcan_inst;
     HWREG(DEVCFG_BASE + SYSCTL_O_MCANCLKDIVSEL) =
         (HWREG(DEVCFG_BASE + SYSCTL_O_MCANCLKDIVSEL) & ~(SYSCTL_MCANCLKDIVSEL_MCANACLKDIV_M << bitpos)) |
-        ((uint16)divider << bitpos);
+        ((uint32)divider << bitpos);
 
     Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_MCANCLKDIVSEL);
 
     /* Configure the clock source */
     bitpos = (uint8)((SYSCTL_CLKSRCCTL2_MCANABCLKSEL_S) + (2U * (uint8)mcan_inst));
     HWREG(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL2) =
-        (HWREG(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL2) & ~(0x3U << bitpos)) | ((uint16)clksrc << bitpos);
+        (HWREG(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL2) & ~(0x3U << bitpos)) | ((uint32)clksrc << bitpos);
 
     Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_CLKSRCCTL2);
 }
@@ -1058,7 +1059,7 @@ static FUNC(void, MCU_CODE) Mcu_SetLinClock(const Mcu_LinClkConfigType* LinClkCf
         /* Configure the LinA clock divider */
         HWREG(DEVCFG_BASE + SYSCTL_O_PERCLKDIVSEL) =
             (HWREG(DEVCFG_BASE + SYSCTL_O_PERCLKDIVSEL) & ~SYSCTL_PERCLKDIVSEL_LINACLKDIV_M) |
-            ((uint32)divider << SYSCTL_PERCLKDIVSEL_LINACLKDIV_S);
+            (((uint32)divider << SYSCTL_PERCLKDIVSEL_LINACLKDIV_S) & SYSCTL_PERCLKDIVSEL_LINACLKDIV_M);
 
         Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_PERCLKDIVSEL);
     }
@@ -1068,7 +1069,7 @@ static FUNC(void, MCU_CODE) Mcu_SetLinClock(const Mcu_LinClkConfigType* LinClkCf
         /* Configure the LinB clock divider */
         HWREG(DEVCFG_BASE + SYSCTL_O_PERCLKDIVSEL) =
             (HWREG(DEVCFG_BASE + SYSCTL_O_PERCLKDIVSEL) & ~SYSCTL_PERCLKDIVSEL_LINBCLKDIV_M) |
-            ((uint32)divider << SYSCTL_PERCLKDIVSEL_LINBCLKDIV_S);
+            (((uint32)divider << SYSCTL_PERCLKDIVSEL_LINBCLKDIV_S) & SYSCTL_PERCLKDIVSEL_LINBCLKDIV_M);
 
         Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_PERCLKDIVSEL);
     }
@@ -1082,12 +1083,14 @@ static FUNC(void, MCU_CODE) Mcu_SetCpuTimerClock(const Mcu_CpuTimerClkConfigType
     /* Select Cpu Timer 2 Clock Source */
     HWREGH(CPUSYS_BASE + SYSCTL_O_TMR2CLKCTL) =
         (HWREGH(CPUSYS_BASE + SYSCTL_O_TMR2CLKCTL) & (uint16) ~(SYSCTL_TMR2CLKCTL_TMR2CLKSRCSEL_M)) |
-        ((uint16)(CpuTimerClkCfg->Mcu_CpuTimer2ClkSource) << (uint16)SYSCTL_TMR2CLKCTL_TMR2CLKSRCSEL_S);
+        (((uint16)(CpuTimerClkCfg->Mcu_CpuTimer2ClkSource) << (uint16)SYSCTL_TMR2CLKCTL_TMR2CLKSRCSEL_S) &
+         (uint16)SYSCTL_TMR2CLKCTL_TMR2CLKSRCSEL_M);
 
     /* Set Cpu Timer 2 Clock Divider */
     HWREGH(CPUSYS_BASE + SYSCTL_O_TMR2CLKCTL) =
         (HWREGH(CPUSYS_BASE + SYSCTL_O_TMR2CLKCTL) & (uint16) ~(SYSCTL_TMR2CLKCTL_TMR2CLKPRESCALE_M)) |
-        (((uint16)CpuTimerClkCfg->Mcu_CpuTimer2ClkDiv - (uint16)1U) << (uint16)SYSCTL_TMR2CLKCTL_TMR2CLKPRESCALE_S);
+        ((((uint16)CpuTimerClkCfg->Mcu_CpuTimer2ClkDiv - (uint16)1U) << (uint16)SYSCTL_TMR2CLKCTL_TMR2CLKPRESCALE_S) &
+         (uint16)SYSCTL_TMR2CLKCTL_TMR2CLKPRESCALE_M);
 }
 
 /*
@@ -1100,12 +1103,16 @@ static FUNC(void, MCU_CODE) Mcu_SetExternalClockOutput(const Mcu_ExternalClkOutC
         /* Select External Clock Output Source */
         HWREGH(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL3) =
             (HWREGH(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL3) & (uint16) ~(SYSCTL_CLKSRCCTL3_XCLKOUTSEL_M)) |
-            ((uint16)(ExternalClkOutCfg->Mcu_ExternalClockOutSource) << (uint16)SYSCTL_CLKSRCCTL3_XCLKOUTSEL_S);
+            (((uint16)(ExternalClkOutCfg->Mcu_ExternalClockOutSource) << (uint16)SYSCTL_CLKSRCCTL3_XCLKOUTSEL_S) &
+             (uint16)SYSCTL_CLKSRCCTL3_XCLKOUTSEL_M);
 
         Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_CLKSRCCTL3);
 
         /* Set External Clock Output Divider */
-        HWREG(DEVCFG_BASE + SYSCTL_O_XCLKOUTDIVSEL) = ExternalClkOutCfg->Mcu_ExternalClkOutDiv;
+        HWREGH(DEVCFG_BASE + SYSCTL_O_XCLKOUTDIVSEL) =
+            (HWREGH(DEVCFG_BASE + SYSCTL_O_XCLKOUTDIVSEL) & (uint16) ~(SYSCTL_XCLKOUTDIVSEL_XCLKOUTDIV_M)) |
+            (((uint16)(ExternalClkOutCfg->Mcu_ExternalClkOutDiv) << (uint16)SYSCTL_XCLKOUTDIVSEL_XCLKOUTDIV_S) &
+             (uint16)SYSCTL_XCLKOUTDIVSEL_XCLKOUTDIV_M);
 
         Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_XCLKOUTDIVSEL);
     }
@@ -1145,7 +1152,8 @@ static FUNC(void, MCU_CODE) Mcu_SetEpwmClock(Mcu_EPWMClkDivider EpwmClkDiv)
 {
     /* Select Epwm Clock divder  */
     HWREGH(DEVCFG_BASE + SYSCTL_O_PERCLKDIVSEL) =
-        (HWREGH(DEVCFG_BASE + SYSCTL_O_PERCLKDIVSEL) & ~SYSCTL_PERCLKDIVSEL_EPWMCLKDIV_M) | (uint16)EpwmClkDiv;
+        (HWREGH(DEVCFG_BASE + SYSCTL_O_PERCLKDIVSEL) & (uint16)~SYSCTL_PERCLKDIVSEL_EPWMCLKDIV_M) |
+        ((uint16)EpwmClkDiv & (uint16)SYSCTL_PERCLKDIVSEL_EPWMCLKDIV_M);
 
     Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_PERCLKDIVSEL);
 }
@@ -1373,8 +1381,6 @@ static FUNC(boolean, MCU_CODE) Mcu_WaitX1Saturate(uint16 loop_count)
     {
         status = TRUE;
     }
-
-    local_counter = ((uint32)0U);
 
     return status;
 }
@@ -1669,8 +1675,8 @@ LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_EnterStandbyMode(void)
 LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_SetStandbyQualificationPeriod(uint16 cycles)
 {
     /* Set the standby qualification period */
-    HWREGH(CPUSYS_BASE + SYSCTL_O_LPMCR) = (HWREGH(CPUSYS_BASE + SYSCTL_O_LPMCR) & ~(uint16)SYSCTL_LPMCR_QUALSTDBY_M) |
-                                           ((cycles - (uint16)2U) << (uint16)SYSCTL_LPMCR_QUALSTDBY_S);
+    HWREGH(CPUSYS_BASE + SYSCTL_O_LPMCR) = (HWREGH(CPUSYS_BASE + SYSCTL_O_LPMCR) & (uint16)~SYSCTL_LPMCR_QUALSTDBY_M) |
+                                           (uint16)((cycles - (uint16)2U) << SYSCTL_LPMCR_QUALSTDBY_S);
 }
 
 /*

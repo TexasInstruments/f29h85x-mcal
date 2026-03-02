@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. F29H85x-MCAL-SDK 01.05.00 Release Notes &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx-design.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Overview of MCAL" href="Overview_of_MCAL.html" />
+    <link rel="prev" title="F29H85x MCAL User Guide" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.05.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. F29H85x-MCAL-SDK 01.05.00 Release Notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">1.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-start">1.2. Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#device-support">1.3. Device Support</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mcus">1.3.1. MCUs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-platforms">1.3.2. Hardware Platforms</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-supported">1.4. What Is Supported</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-not-supported">1.5. What Is Not Supported</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#new-in-this-release">1.6. New In This Release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-version-number">1.7. Module Version Number</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#note">1.7.1. Note</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#fixed-in-this-release">1.8. Fixed In This Release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#known-issues-and-limitations">1.9. Known Issues And Limitations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">1.9.1. Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#new-known-issues">1.9.2. New Known Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#existing-known-issues">1.9.3. Existing Known Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#quality-status">1.10. Quality Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">1.11. Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">2. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">3. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModuleUserGuide_list.html">5. Module User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">6. Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">7. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">8. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">9. AUTOSAR Integration Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">1. </span>F29H85x-MCAL-SDK 01.05.00 Release Notes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="f29h85x-mcal-sdk-01-05-00-release-notes">
+<h1><span class="section-number">1. </span>F29H85x-MCAL-SDK 01.05.00 Release Notes<a class="headerlink" href="#f29h85x-mcal-sdk-01-05-00-release-notes" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#quick-start">Quick Start</a></p></li>
+<li><p><a class="reference internal" href="#device-support">Device Support</a></p></li>
+<li><p><a class="reference internal" href="#what-is-supported">What Is Supported</a></p></li>
+<li><p><a class="reference internal" href="#what-is-not-supported">What Is Not Supported</a></p></li>
+<li><p><a class="reference internal" href="#new-in-this-release">New In This Release</a></p></li>
+<li><p><a class="reference internal" href="#module-version-number">Module Version Number</a></p></li>
+<li><p><a class="reference internal" href="#fixed-in-this-release">Fixed In This Release</a></p></li>
+<li><p><a class="reference internal" href="#known-issues-and-limitations">Known Issues And Limitations</a></p>
+<ul>
+<li><p><a class="reference internal" href="#limitations">Limitations</a></p></li>
+<li><p><a class="reference internal" href="#new-known-issues">New Known Issues</a></p></li>
+<li><p><a class="reference internal" href="#existing-known-issues">Existing Known Issues</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#quality-status">Quality Status</a></p></li>
+<li><p><a class="reference internal" href="#dependencies">Dependencies</a></p></li>
+</ul>
+<section id="introduction">
+<h2><span class="section-number">1.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>F29x MCAL is a cohesive set of tools for AUTOSAR based development on C2000 real-time controllers. It includes device-specific drivers (MCALs), EB Tresos Plugins for configuration, Bare-metal Examples for each driver.</p>
+<p>This release is an early adopter release targeted for F29H85x.</p>
+</section>
+<section id="quick-start">
+<h2><span class="section-number">1.2. </span>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Install Prerequisites:</strong></p>
+<ul class="simple">
+<li><p>Install all tools listed in the <a class="reference internal" href="#dependencies">Dependencies</a> section.</p></li>
+</ul>
+</li>
+<li><p><strong>Get Started:</strong></p>
+<ul class="simple">
+<li><p>Refer to the User Guide at <code class="docutils literal notranslate"><span class="pre">Installer:\docs\User_Guide</span></code> (local copy) or <a class="reference external" href="https://software-dl.ti.com/C2000/docs/mcal/F29H85x/01.05.00/index.html">online version</a></p></li>
+<li><p>Refer to the <a class="reference external" href="https://software-dl.ti.com/C2000/docs/mcal/F29H85x/01.05.00/src/MigrationGuide_list.html">Migration Guide</a> for upgrading from previous versions</p></li>
+<li><p>Try the bare-metal examples in the <code class="docutils literal notranslate"><span class="pre">examples/</span></code> directory</p></li>
+</ul>
+</li>
+<li><p><strong>Get Help:</strong></p>
+<ul class="simple">
+<li><p>Technical Support: <a class="reference external" href="https://e2e.ti.com/support/microcontrollers/c2000/f/171">E2E Forum</a></p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="device-support">
+<h2><span class="section-number">1.3. </span>Device Support<a class="headerlink" href="#device-support" title="Link to this heading"></a></h2>
+<p>The following devices are supported with this release:</p>
+<section id="mcus">
+<h3><span class="section-number">1.3.1. </span>MCUs<a class="headerlink" href="#mcus" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>F29H859DU_Q1</p></li>
+<li><p>F29H859TM_Q1</p></li>
+<li><p>F29H859TU_Q1</p></li>
+<li><p>F29P329SJ_Q1</p></li>
+<li><p>F29P329SM_Q1</p></li>
+<li><p>F29P589DM_Q1</p></li>
+<li><p>F29P589DU_Q1</p></li>
+</ul>
+</section>
+<section id="hardware-platforms">
+<h3><span class="section-number">1.3.2. </span>Hardware Platforms<a class="headerlink" href="#hardware-platforms" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>F29H85X-SOM-EVM</p></li>
+</ul>
+</section>
+</section>
+<section id="what-is-supported">
+<h2><span class="section-number">1.4. </span>What Is Supported<a class="headerlink" href="#what-is-supported" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>MCAL / CDD (AUTOSAR v4.3.1)</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Drivers</p></th>
+<th class="head"><p>Modules</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Micro controller Drivers</p></td>
+<td><p>GPT, MCU, WDG</p></td>
+</tr>
+<tr class="row-odd"><td><p>Communication Driver</p></td>
+<td><p>CAN, LIN, SPI</p></td>
+</tr>
+<tr class="row-even"><td><p>I/O Drivers</p></td>
+<td><p>DIO, PORT</p></td>
+</tr>
+<tr class="row-odd"><td><p>Memory Drivers</p></td>
+<td><p>FLS</p></td>
+</tr>
+<tr class="row-even"><td><p>Complex Device Drivers</p></td>
+<td><p>ADC, XBAR, SENT, IPC, UART, PWM, ECAP, I2C</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Resource Allocator</p></li>
+<li><p>Reference Code:</p>
+<ul>
+<li><p>Multi-Core startup code</p></li>
+</ul>
+</li>
+<li><p>Build System:</p>
+<ul>
+<li><p>CMake</p></li>
+<li><p>CCS Projectspec</p></li>
+</ul>
+</li>
+<li><p><span class="sd-sphinx-override sd-badge sd-bg-warning sd-bg-text-warning">Beta</span> AI Agent Enablement</p></li>
+</ul>
+</section>
+<section id="what-is-not-supported">
+<h2><span class="section-number">1.5. </span>What Is Not Supported<a class="headerlink" href="#what-is-not-supported" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Multi-core MCALs as per AUTOSAR 4.3.1.</p></li>
+</ul>
+</section>
+<section id="new-in-this-release">
+<h2><span class="section-number">1.6. </span>New In This Release<a class="headerlink" href="#new-in-this-release" title="Link to this heading"></a></h2>
+<!--
+================================================================================
+TEMPLATE: New Features and Changes
+================================================================================
+Use the following format to document new features, enhancements, and changes:
+
+- MCAL / CDD:
+  - New modules added:
+    1. **<MODULE_NAME>:**
+       - <Feature description>
+       - <Feature description>
+  - Existing modules with enhancements:
+    1. **<MODULE_NAME>:**
+       - <Enhancement description>
+       - Fixed: <Bug fix description>
+  - Existing modules with bug fixes:
+    1. **<MODULE_NAME>:**
+       - Fixed: <Bug fix description>
+
+- Build System:
+  - <Build system change description>
+
+- Documentation:
+  - <Documentation update description>
+
+Example:
+- MCAL / CDD:
+  - New modules added:
+    1. **CDD DMA:**
+       - Added DMA driver with support for memory-to-memory transfers
+       - Added interrupt-based transfer completion notification
+  - Existing modules with enhancements:
+    1. **CAN:**
+       - Added support for CAN FD with bit rate switching
+       - Fixed: Interrupts not processed when CanRxProcessing is INTERRUPT
+    2. **SPI:**
+       - Header inclusion structure is optimized
+================================================================================
+-->
+<ul class="simple">
+<li><p><span class="sd-sphinx-override sd-badge sd-bg-warning sd-bg-text-warning">Beta</span> AI Agent Enablement:</p>
+<ol class="arabic simple">
+<li><p><strong>CCS AI Agent Support:</strong></p>
+<ul>
+<li><p>Added AGENTS.md file to enable AI-assisted development workflows</p></li>
+<li><p>AI coding agents can automatically create working F29 MCAL example projects</p></li>
+<li><p>Compatible with CCS v20.05.00</p></li>
+<li><p>CCS provides additional MCP services (build, debug) that help AI agents catch and fix issues automatically</p></li>
+<li><p><strong>Disclaimer:</strong> As with any AI-based tooling, results may vary. The AGENTS.md file will be updated iteratively based on feedback. Always review AI-generated code before use.</p></li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>MCAL / CDD:</p>
+<ul>
+<li><p>Existing modules with enhancements:</p>
+<ol class="arabic simple">
+<li><p><strong>WDG:</strong></p>
+<ul>
+<li><p>Added new <code class="docutils literal notranslate"><span class="pre">Wdg_Example_Reset</span></code> example demonstrating watchdog timer reset functionality</p></li>
+<li><p>Example shows watchdog timeout behavior when intentionally not serviced</p></li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="module-version-number">
+<h2><span class="section-number">1.7. </span>Module Version Number<a class="headerlink" href="#module-version-number" title="Link to this heading"></a></h2>
+<!--
+================================================================================
+TEMPLATE: Module Version Table
+================================================================================
+Update the version numbers for modules that have changed in this release.
+Follow AUTOSAR versioning rules (see Note section below).
+
+Format: XX.YY.ZZ where:
+- XX = MAJOR_VERSION (incremented when API is not compatible)
+- YY = MINOR_VERSION (incremented when functionality added, still compatible)
+- ZZ = PATCH_VERSION (incremented for bug fixes, fully compatible)
+================================================================================
+-->
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Module</p></th>
+<th class="head"><p>Version</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MCU</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-even"><td><p>DIO</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPT</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-even"><td><p>CAN</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-odd"><td><p>WDG</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD ADC</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD XBAR</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD SENT</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD PWM</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD ECAP</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD IPC</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD UART</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD I2C</p></td>
+<td><p>XX.XX.XX</p></td>
+</tr>
+</tbody>
+</table>
+<section id="note">
+<h3><span class="section-number">1.7.1. </span>Note<a class="headerlink" href="#note" title="Link to this heading"></a></h3>
+<p>We follow Autosar’s requirement [SRS_BSW_00321] for versioning of each module:</p>
+<p><strong>5.2.4.10 [SRS_BSW_00321]</strong> The version numbers of AUTOSAR Basic Software Modules shall be enumerated according specific rules</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Type</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Type:</strong></p></td>
+<td class="text-left"><p>Valid</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Description:</strong></p></td>
+<td class="text-left"><p>The version numbers of AUTOSAR Basic Software Modules shall be enumerated according to the following rules:<br>- Increasing a more significant digit of a version number resets all less significant digits<br>- The PATCH_VERSION is incremented if the module is still upwards and downwards compatible (e.g. bug fixed)<br>- The MINOR_VERSION is incremented if the module is still downwards compatible (e.g. valid functionality added)<br>- The MAJOR_VERSION is incremented if the module is not compatible any more (e.g. existing API invalid)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Rationale:</strong></p></td>
+<td class="text-left"><p>Provide unambiguous version identification for each module, provide version cross check as well as basic version retrieval facilities. Compatibility is always visible!</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Use Case:</strong></p></td>
+<td class="text-left"><p>Example: ADC module with version 1.14.2</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="fixed-in-this-release">
+<h2><span class="section-number">1.8. </span>Fixed In This Release<a class="headerlink" href="#fixed-in-this-release" title="Link to this heading"></a></h2>
+<!--
+================================================================================
+TEMPLATE: Fixed Issues Table
+================================================================================
+Add entries for bugs fixed in this release using the format below.
+
+| Key | Component/s | Severity | Summary | Affected Version | Impact | Steps to Reproduce | Fix Description |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| <JIRA-ID> | <Module name(s)> | <S1-Critical/S2-Major/S3-Minor/S4-Trivial> | <Brief summary of the issue> | <Version where issue exists> | <Description of the impact on users> | <Numbered steps to reproduce the issue> | <Brief description of the fix applied> |
+
+Example:
+| MCAL-12345 | Can | S2-Major | CAN: Message loss in loopback mode | C29xMCAL_01.00.00 | Messages sent in loopback mode are not received, causing test failures. | 1. Configure CAN in loopback mode. 2. Send a message. 3. Observe that the message is not received. | Added proper message buffer handling in loopback mode to ensure messages are correctly routed back to the receive buffer. |
+================================================================================
+-->
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Component/s</p></th>
+<th class="head"><p>Severity</p></th>
+<th class="head"><p>Summary</p></th>
+<th class="head"><p>Affected Version</p></th>
+<th class="head"><p>Impact</p></th>
+<th class="head"><p>Steps to Reproduce</p></th>
+<th class="head"><p>Fix Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MCAL-35980</p></td>
+<td><p>Can</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>CAN: Configuration validation gap for CanMainFunctionRWPeriod in Polling/Mixed Mode</p></td>
+<td><p>C29xMCAL_01.00.00 <br>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.02.01 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00</p></td>
+<td><p>Configurator allows a hardware object mapped to a controller configured entirely in Polling mode to have no schedulable function mapped to it without any warning or error. If such configuration exists, hardware object can’t be read or written.</p></td>
+<td><p>1. Open EB Tresos configuration tool. <br>2. Create a new Can module configuration. <br>3. Configure a CanController with: CanRxProcessing = POLLING, CanTxProcessing = POLLING. <br>4. Create 2 or more CanHardwareObjects that reference this CanController. <br>5. Do not configure any CanMainFunctionRWPeriodRef in HOH and do not make any entry in CanMainFunctionRWPeriods. <br>6. Generate the configuration. <br>7. Observe that no error is generated despite the invalid configuration.</p></td>
+<td><p>Added configuration validation check in XDM to detect and report an error when a hardware object set to Polling mode has no CanMainFunctionRWPeriodRef mapped to it.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-35624</p></td>
+<td><p>Dio</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>DIO: Dio doesn’t follow AUTOSAR naming guidelines for typedefs and macros</p></td>
+<td><p>C29xMCAL_01.00.00 <br>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.02.01 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00</p></td>
+<td><p>As AUTOSAR naming convention is not followed, these definitions may conflict with other definitions in an application</p></td>
+<td><p>Review the static and dynamic files of DIO module</p></td>
+<td><p>Updated all macros in DIO module to follow AUTOSAR naming conventions (Dio_ prefix for all public symbols).</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL-35862</p></td>
+<td><p>Fls</p></td>
+<td><p>S2-Major</p></td>
+<td><p>FLS: Fls_F29Compare casts a byte aligned pointer to a 32-bit aligned pointer and dereferences it, which is illegal</p></td>
+<td><p>C29xMCAL_01.04.01</p></td>
+<td><p>When Fls_f29Compare() is called with a ramAddr that is not 32-bit aligned (e.g. 8-bit aligned), execution will crash in Fls_priv.c in Fls_F29Compare() due to illegal pointer cast and dereference.</p></td>
+<td><p>1. Call Fls_f29Compare() with a ramAddr that is not 32-bit aligned (e.g. 8-bit aligned). <br>2. Observe that execution crashes in Fls_priv.c in Fls_F29Compare() at P2VAR(uint32, AUTOMATIC, FLS_APPL_DATA) pu32CheckValueBuffer = (uint32 *)Fls_DrvObj.ramAddr;</p></td>
+<td><p>Removed the illegal conversion and appropriately internally handle the 8-bit pointer.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="known-issues-and-limitations">
+<h2><span class="section-number">1.9. </span>Known Issues And Limitations<a class="headerlink" href="#known-issues-and-limitations" title="Link to this heading"></a></h2>
+<p>There are few limitations and known issues associated with this release.</p>
+<section id="limitations">
+<h3><span class="section-number">1.9.1. </span>Limitations<a class="headerlink" href="#limitations" title="Link to this heading"></a></h3>
+<!--
+================================================================================
+TEMPLATE: Limitations
+================================================================================
+Document any limitations that users should be aware of. Use the format:
+
+- **<Module/Area>:**
+  - <Limitation description>
+
+Example:
+- **CDD ECAP:**
+  - In case of high frequency signals (i.e. 500Khz and above), software overhead in user callback shall be kept to minimum to avoid missing edges.
+- **Test Infrastructure:** Following tests have not been performed due to limitations of available test infrastructure:
+  - **CDD SENT:** Following modes in SENT are not tested:
+    - Enhanced 16-bit Slow Mode.
+================================================================================
+-->
+<ul class="simple">
+<li><p><strong>CDD ECAP:</strong></p>
+<ul>
+<li><p>In case of high frequency signals (i.e. 500Khz and above), software overhead in user callback shall be kept to minimum to avoid missing edges.</p></li>
+</ul>
+</li>
+<li><p><strong>Test Infrastructure:</strong> Following tests have not been performed due to limitations of available test infrastructure:</p>
+<ul>
+<li><p><strong>CDD SENT:</strong> Following modes in SENT are not tested:</p>
+<ul>
+<li><p>Enhanced 16-bit Slow Mode.</p></li>
+<li><p>Nibble Count 1,2,3,4,5.</p></li>
+<li><p>MTP Mode with all 4 sensors connected.</p></li>
+</ul>
+</li>
+<li><p><strong>CDD IPC:</strong> IPC is validated between CPU1 and CPU3. Since, CPU2 is configured in lockstep in our framework; IPC between CPU1 and CPU2 or CPU2 and CPU3 is not validated.</p></li>
+<li><p><strong>Fls:</strong> Timeout tests are not performed as FLASH characterization data is not yet available for this device.</p></li>
+<li><p><strong>Spi:</strong> Board to board Spi communication validated upto 40MHz. 50MHz have been only tested in loopback mode.</p></li>
+<li><p><strong>CDD I2C:</strong> Target mode is not supported.</p></li>
+</ul>
+</li>
+<li><p><strong>Compiler:</strong></p>
+<ul>
+<li><p>Link Time optimization is currently not supported.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="new-known-issues">
+<h3><span class="section-number">1.9.2. </span>New Known Issues<a class="headerlink" href="#new-known-issues" title="Link to this heading"></a></h3>
+<!--
+================================================================================
+TEMPLATE: New Known Issues Table
+================================================================================
+Add entries for new known issues discovered in this release.
+
+| Key | Component/s | Severity | Summary | Affected Version | Impact | Steps to Reproduce | Workaround |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| <JIRA-ID> | <Module> | <S1-Critical/S2-Major/S3-Minor/S4-Trivial> | <Brief summary> | <Version where issue was found> | <Impact description> | <Numbered steps> | <Workaround description> |
+
+Example:
+| MCAL-12345 | Spi | S2-Major | SPI: DMA transfer fails above 25MHz | C29xMCAL_01.00.00 | DMA-based SPI transfers fail at clock speeds above 25MHz. | 1. Configure SPI with DMA. 2. Set clock to 30MHz. 3. Initiate transfer. 4. Observe failure. | Use polling mode or reduce clock speed to 25MHz or below. |
+================================================================================
+-->
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Component/s</p></th>
+<th class="head"><p>Severity</p></th>
+<th class="head"><p>Summary</p></th>
+<th class="head"><p>Affected Version</p></th>
+<th class="head"><p>Impact</p></th>
+<th class="head"><p>Steps to Reproduce</p></th>
+<th class="head"><p>Workaround</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="existing-known-issues">
+<h3><span class="section-number">1.9.3. </span>Existing Known Issues<a class="headerlink" href="#existing-known-issues" title="Link to this heading"></a></h3>
+<!--
+================================================================================
+TEMPLATE: Existing Known Issues Table
+================================================================================
+Carry forward known issues from previous releases that are still open.
+Move issues to "Fixed In This Release" section when resolved.
+
+| Key | Component/s | Severity | Summary | Affected Version | Impact | Steps to Reproduce | Workaround |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| <JIRA-ID> | <Module> | <S1-Critical/S2-Major/S3-Minor/S4-Trivial> | <Brief summary> | <Version where issue was found> | <Impact description> | <Numbered steps> | <Workaround description> |
+================================================================================
+-->
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Component/s</p></th>
+<th class="head"><p>Severity</p></th>
+<th class="head"><p>Summary</p></th>
+<th class="head"><p>Affected Version</p></th>
+<th class="head"><p>Impact</p></th>
+<th class="head"><p>Steps to Reproduce</p></th>
+<th class="head"><p>Workaround</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MCAL-35347</p></td>
+<td><p>CDD I2C</p></td>
+<td><p>S2-Major</p></td>
+<td><p>I2C: Cancel API is not functional</p></td>
+<td><p>C29xMCAL_01.04.00</p></td>
+<td><p>The I2C_Cancel API does not successfully cancel an ongoing I2C transfer, which may cause unexpected behavior in applications relying on transfer cancellation.</p></td>
+<td><p>1. Start an I2C transfer.<br>2. Immediately cancel the transfer by invoking the I2C_Cancel API.<br>3. Observe that the cancellation does not take effect.</p></td>
+<td><p>Do not cancel the ongoing transmission using API. Instead handle this situation in application code.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-32321</p></td>
+<td><p>All</p></td>
+<td><p>S2-Major</p></td>
+<td><p>All Modules: Link time optimization is not verified for all modules</p></td>
+<td><p>C29xMCAL_01.03.00</p></td>
+<td><p>Link time optimization (LTO) has not been verified across all modules, which may cause unexpected behavior or build issues if enabled.</p></td>
+<td><p>1. Add -flto flag to compiler options.<br>2. Build the MCAL project.<br>3. Run the application and you might observe unexpected behavior.</p></td>
+<td><p>By default LTO is disabled, user shall not enable it.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="quality-status">
+<h2><span class="section-number">1.10. </span>Quality Status<a class="headerlink" href="#quality-status" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Sr. No.</p></th>
+<th class="head"><p>Work Product</p></th>
+<th class="head"><p>Availability</p></th>
+<th class="head"><p>Where to find Artifacts</p></th>
+<th class="head"><p>Current Quality Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Dynamic Analysis Report<br>1. MCDC<br>2. Branch<br>3. Region<br>4. Line<br>5. Function</p></td>
+<td><p>No</p></td>
+<td><p>CSP</p></td>
+<td><p>Will be available in future releases. Please refer to device roadmap for details.</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Static Analysis Report<br>1. Static<br>2. HIS<br>3. MISRA-C</p></td>
+<td><p>Yes</p></td>
+<td><p>Installer:*\docs\Static_Analysis</p></td>
+<td><p>All Mandatory &amp; Critical warnings and errors are resolved. Required and Advisory warnings will be fixed in future releases.</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Test Reports: Test Cases and Test Results</p></td>
+<td><p>Yes</p></td>
+<td><p>Installer:*\docs\Test_Report</p></td>
+<td><p>All test reports are present in installer.</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>Bi-directional Traceability Report<br>1. MRD↔SPS<br>2. SPS↔SW Arch↔SWDesign Doc↔SW Units (Code)<br>3. MRD↔SPS↔Test Case<br>4. Test Case↔Arch Test Case↔Design</p></td>
+<td><p>No</p></td>
+<td><p>CSP</p></td>
+<td><p>Will be available in future releases. Please refer to device roadmap for details.</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>Customer Docs: User Guide</p></td>
+<td><p>Yes</p></td>
+<td><p>Installer:*\docs\User_Guide</p></td>
+<td><p>User Guide is present in installer as well as softwaredl</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>SW FMEA</p></td>
+<td><p>No</p></td>
+<td><p>CSP</p></td>
+<td><p>Will be available in future releases. Please refer to device roadmap for details.</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>Detailed Design Document</p></td>
+<td><p>No</p></td>
+<td><p>CSP</p></td>
+<td><p>Will be available in future releases. Please refer to device roadmap for details.</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>SW Manifest</p></td>
+<td><p>Yes</p></td>
+<td><p>Installer:*\mcal_manifest</p></td>
+<td><p>SW manifest is present in installer</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>Software Product Specification: List of functional, safety requirements for SW components</p></td>
+<td><p>No</p></td>
+<td><p>CSP</p></td>
+<td><p>Will be available in future releases. Please refer to device roadmap for details.</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>Architecture Document</p></td>
+<td><p>No</p></td>
+<td><p>CSP</p></td>
+<td><p>Will be available in future releases. Please refer to device roadmap for details.</p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>SW Safety Manual</p></td>
+<td><p>No</p></td>
+<td><p>CSP</p></td>
+<td><p>Will be available in future releases. Please refer to device roadmap for details.</p></td>
+</tr>
+<tr class="row-odd"><td><p>12</p></td>
+<td><p>Safety Assessment</p></td>
+<td><p>No</p></td>
+<td><p>CSP</p></td>
+<td><p>Will be available in future releases. Please refer to device roadmap for details.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> CSP = Compliance Support Package</p>
+</section>
+<section id="dependencies">
+<h2><span class="section-number">1.11. </span>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h2>
+<p>This release has dependency on the following tools:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.ti.com/tool/CCSTUDIO">CCS</a> v20.05.00 or above version.</p></li>
+<li><p><a class="reference external" href="https://www.ti.com/tool/C2000-CGT">C29Clang Compiler</a> 2.0.0 STS.</p></li>
+<li><p><a class="reference external" href="https://www.ti.com/drr/opn/PROCESSOR-SDK-MCAL-EB-TRESOS">EB Tresos</a> (ACG 8.8.12)</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="F29H85x MCAL User Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Overview_of_MCAL.html" class="btn btn-neutral float-right" title="2. Overview of MCAL" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2026, Texas Instruments Incorporated.
+        <br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.05.00
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

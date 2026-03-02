@@ -245,9 +245,7 @@ FUNC(void, GPT_CODE) Gpt_Init(P2CONST(Gpt_ConfigType, AUTOMATIC, GPT_CONST) Conf
          */
         return_value = Gpt_SetChannelsToUnintializedPriv(&Gpt_DrvObj, CfgPtr);
 
-        /* TI_COVERAGE_GAP_START [Branch Gap] Tool false positive */
         if (E_OK == return_value)
-        /* TI_COVERAGE_GAP_STOP*/
         {
             Gpt_ConfigureInitPriv();
 
@@ -280,8 +278,7 @@ FUNC(void, GPT_CODE) Gpt_DeInit(void)
 #endif
     {
         /* Iterate through the configured list. */
-        for (loop = ((Gpt_ValueType)0U); ((loop < ((Gpt_ValueType)GPT_CFG_NO_OF_CHANNELS)) && (return_value == E_OK));
-             loop++)
+        for (loop = ((Gpt_ValueType)0U); (loop < ((Gpt_ValueType)GPT_CFG_NO_OF_CHANNELS)); loop++)
         {
             /* If any timer channel is in state "running", report to DET with "GPT_E_BUSY" error. */
             if (GPT_CH_RUNNING == Gpt_DrvObj.Gpt_ChannelState[loop])
@@ -289,6 +286,7 @@ FUNC(void, GPT_CODE) Gpt_DeInit(void)
                 (void)Det_ReportRuntimeError(GPT_MODULE_ID, GPT_INSTANCE_ID, GPT_SID_DEINIT, GPT_E_BUSY);
 
                 return_value = E_NOT_OK;
+                break;
             }
         }
 
@@ -323,7 +321,7 @@ FUNC(Gpt_ValueType, GPT_CODE) Gpt_GetTimeElapsed(Gpt_ChannelType Channel)
     }
     /* If channel is not a valid configured channel, the function shall raise the error
      * GPT_E_PARAM_CHANNEL. */
-    else if (GPT_CFG_MAX_CHANNELS <= ch_index)
+    else if (GPT_CFG_NO_OF_CHANNELS <= ch_index)
     {
 #if (STD_ON == GPT_CFG_DEV_ERROR_DETECT)
         (void)Det_ReportError(GPT_MODULE_ID, GPT_INSTANCE_ID, GPT_SID_GET_TIME_ELAPSED, GPT_E_PARAM_CHANNEL);
@@ -350,20 +348,22 @@ FUNC(Gpt_ValueType, GPT_CODE) Gpt_GetTimeRemaining(Gpt_ChannelType Channel)
     VAR(Gpt_ValueType, AUTOMATIC) ch_index = GPT_MAX_32BIT_VAL;
 
     (void)Gpt_GetChIdxPriv(&Gpt_DrvObj, Channel, &ch_index);
-#if (STD_ON == GPT_CFG_DEV_ERROR_DETECT)
     /* If the driver is not initialized, report to DET with "GPT_E_UNINIT" error. */
     if (FALSE == Gpt_DriverInitialized)
     {
+#if (STD_ON == GPT_CFG_DEV_ERROR_DETECT)
         (void)Det_ReportError(GPT_MODULE_ID, GPT_INSTANCE_ID, GPT_SID_GET_TIME_REMAINING, GPT_E_UNINIT);
+#endif
     }
     /* If channel is not a valid configured channel, report to DET with GPT_E_PARAM_CHANNEL" error.
      */
     else if (GPT_MAX_32BIT_VAL == ch_index)
     {
+#if (STD_ON == GPT_CFG_DEV_ERROR_DETECT)
         (void)Det_ReportError(GPT_MODULE_ID, GPT_INSTANCE_ID, GPT_SID_GET_TIME_REMAINING, GPT_E_PARAM_CHANNEL);
+#endif
     }
     else
-#endif
     {
         /* Check for channel state */
         switch (Gpt_DrvObj.Gpt_ChannelState[ch_index])
@@ -492,11 +492,12 @@ FUNC(void, GPT_CODE) Gpt_EnableNotification(Gpt_ChannelType Channel)
     VAR(Gpt_ValueType, AUTOMATIC) ch_index = GPT_MAX_32BIT_VAL;
 
     (void)Gpt_GetChIdxPriv(&Gpt_DrvObj, Channel, &ch_index);
-#if (STD_ON == GPT_CFG_DEV_ERROR_DETECT)
     /* If the driver is not initialized, report to DET with "GPT_E_UNINIT" error. */
     if (FALSE == Gpt_DriverInitialized)
     {
+#if (STD_ON == GPT_CFG_DEV_ERROR_DETECT)
         (void)Det_ReportError(GPT_MODULE_ID, GPT_INSTANCE_ID, GPT_SID_ENABLE_NOTIFY, GPT_E_UNINIT);
+#endif
     }
     /* If the requested channel is not a valid configured channel, report to DET with
      * "GPT_E_PARAM_CHANNEL" error. */
@@ -505,25 +506,23 @@ FUNC(void, GPT_CODE) Gpt_EnableNotification(Gpt_ChannelType Channel)
     else if ((GPT_MAX_32BIT_VAL == ch_index) ||
              (NULL_PTR == Gpt_DrvObj.Gpt_CfgPtr->ChannelCfgPtr[ch_index].Gpt_PtrNotifyFunction))
     {
+#if (STD_ON == GPT_CFG_DEV_ERROR_DETECT)
         (void)Det_ReportError(GPT_MODULE_ID, GPT_INSTANCE_ID, GPT_SID_ENABLE_NOTIFY, GPT_E_PARAM_CHANNEL);
+#endif
     }
     else
-#endif
     {
-        if (GPT_CH_UNINITIALIZED != Gpt_DrvObj.Gpt_ChannelState[ch_index])
-        {
-            /* Critical section, block the interrupts. */
-            SchM_Enter_Gpt_GPT_EXCLUSIVE_AREA_0();
+        /* Critical section, block the interrupts. */
+        SchM_Enter_Gpt_GPT_EXCLUSIVE_AREA_0();
 
-            /* Enable the interrupt */
-            Gpt_EnableIntPriv(&(Gpt_DrvObj.Gpt_CfgPtr->ChannelCfgPtr[ch_index]));
+        /* Enable the interrupt */
+        Gpt_EnableIntPriv(&(Gpt_DrvObj.Gpt_CfgPtr->ChannelCfgPtr[ch_index]));
 
-            /* Set the channel notification state to "Enable". */
-            Gpt_DrvObj.Gpt_NotificationState[ch_index] = GPT_NOTIF_ENABLED;
+        /* Set the channel notification state to "Enable". */
+        Gpt_DrvObj.Gpt_NotificationState[ch_index] = GPT_NOTIF_ENABLED;
 
-            /* Critical section, restore the interrupts. */
-            SchM_Exit_Gpt_GPT_EXCLUSIVE_AREA_0();
-        }
+        /* Critical section, restore the interrupts. */
+        SchM_Exit_Gpt_GPT_EXCLUSIVE_AREA_0();
     }
 
     return;
@@ -539,11 +538,12 @@ FUNC(void, GPT_CODE) Gpt_DisableNotification(Gpt_ChannelType Channel)
     VAR(Gpt_ValueType, AUTOMATIC) ch_index = GPT_MAX_32BIT_VAL;
 
     (void)Gpt_GetChIdxPriv(&Gpt_DrvObj, Channel, &ch_index);
-#if (STD_ON == GPT_CFG_DEV_ERROR_DETECT)
     /* If the driver is not initialized, report to DET with "GPT_E_UNINIT" error. */
     if (FALSE == Gpt_DriverInitialized)
     {
+#if (STD_ON == GPT_CFG_DEV_ERROR_DETECT)
         (void)Det_ReportError(GPT_MODULE_ID, GPT_INSTANCE_ID, GPT_SID_DISABLE_NOTIFY, GPT_E_UNINIT);
+#endif
     }
     /* If the requested channel is not a valid configured channel, report to DET with
      * "GPT_E_PARAM_CHANNEL" error. */
@@ -552,25 +552,23 @@ FUNC(void, GPT_CODE) Gpt_DisableNotification(Gpt_ChannelType Channel)
     else if ((GPT_MAX_32BIT_VAL == ch_index) ||
              (NULL_PTR == Gpt_DrvObj.Gpt_CfgPtr->ChannelCfgPtr[ch_index].Gpt_PtrNotifyFunction))
     {
+#if (STD_ON == GPT_CFG_DEV_ERROR_DETECT)
         (void)Det_ReportError(GPT_MODULE_ID, GPT_INSTANCE_ID, GPT_SID_DISABLE_NOTIFY, GPT_E_PARAM_CHANNEL);
+#endif
     }
     else
-#endif
     {
-        if (GPT_CH_UNINITIALIZED != Gpt_DrvObj.Gpt_ChannelState[ch_index])
-        {
-            /* Critical section, block the interrupts. */
-            SchM_Enter_Gpt_GPT_EXCLUSIVE_AREA_0();
+        /* Critical section, block the interrupts. */
+        SchM_Enter_Gpt_GPT_EXCLUSIVE_AREA_0();
 
-            /* Disable the timer interrupt */
-            Gpt_DisableIntPriv(&(Gpt_DrvObj.Gpt_CfgPtr->ChannelCfgPtr[ch_index]));
+        /* Disable the timer interrupt */
+        Gpt_DisableIntPriv(&(Gpt_DrvObj.Gpt_CfgPtr->ChannelCfgPtr[ch_index]));
 
-            /* Set the channel notification state to "Disable". */
-            Gpt_DrvObj.Gpt_NotificationState[ch_index] = GPT_NOTIF_DISABLED;
+        /* Set the channel notification state to "Disable". */
+        Gpt_DrvObj.Gpt_NotificationState[ch_index] = GPT_NOTIF_DISABLED;
 
-            /* Critical section, restore the interrupts. */
-            SchM_Exit_Gpt_GPT_EXCLUSIVE_AREA_0();
-        }
+        /* Critical section, restore the interrupts. */
+        SchM_Exit_Gpt_GPT_EXCLUSIVE_AREA_0();
     }
 
     return;
@@ -698,46 +696,43 @@ static FUNC(uint32, GPT_CODE) Gpt_ChannelStateCheckPriv(Gpt_ValueType Channel_In
     VAR(uint32, AUTOMATIC) periodRegVal       = 0U;
     VAR(uint32, AUTOMATIC) countRegVal        = 0U;
     /* Check for channel state */
-    if (GPT_CFG_NO_OF_CHANNELS > Channel_Index)
+    switch (Gpt_DrvObj.Gpt_ChannelState[Channel_Index])
     {
-        switch (Gpt_DrvObj.Gpt_ChannelState[Channel_Index])
-        {
-            case GPT_CH_INITIALIZED:
-                /* Return the time elapsed as 0 as per AUTOSAR when timer channel is in INIT state
-                 */
-                returnValue = ((Gpt_ValueType)0U);
-                break;
-            case GPT_CH_RUNNING:
-                /* Return the time difference between period register and current counter register
-                 * of the channel. */
-                periodRegVal = Gpt_GetPrdCountPriv(&(Gpt_DrvObj.Gpt_CfgPtr->ChannelCfgPtr[Channel_Index]));
-                countRegVal  = Gpt_GetCurCountPriv(&(Gpt_DrvObj.Gpt_CfgPtr->ChannelCfgPtr[Channel_Index]));
-                if (periodRegVal > countRegVal)
-                {
-                    returnValue = (uint32)(periodRegVal - countRegVal);
-                }
-                break;
-            case GPT_CH_STOPPED:
-                /* Return the time diff between period and counter register which are saved when
-                 * timer is stopped */
-                periodRegVal = Gpt_DrvObj.Gpt_StopStatePrdCounter[Channel_Index];
-                countRegVal  = Gpt_DrvObj.Gpt_StopStateCurCounter[Channel_Index];
-                if (periodRegVal > countRegVal)
-                {
-                    returnValue = (uint32)(periodRegVal - countRegVal);
-                }
-                break;
-            case GPT_CH_EXPIRED:
-                /* Read & return the period register of the channel. */
-                returnValue = Gpt_GetPrdCountPriv(&(Gpt_DrvObj.Gpt_CfgPtr->ChannelCfgPtr[Channel_Index]));
-                break;
-            default:
-                break;
-        }
-    }
-    else
-    {
-        /*Do nothing*/
+        case GPT_CH_INITIALIZED:
+            /* Return the time elapsed as 0 as per AUTOSAR when timer channel is in INIT state
+             */
+            returnValue = ((Gpt_ValueType)0U);
+            break;
+        case GPT_CH_RUNNING:
+            /* Return the time difference between period register and current counter register
+             * of the channel. */
+            periodRegVal = Gpt_GetPrdCountPriv(&(Gpt_DrvObj.Gpt_CfgPtr->ChannelCfgPtr[Channel_Index]));
+            countRegVal  = Gpt_GetCurCountPriv(&(Gpt_DrvObj.Gpt_CfgPtr->ChannelCfgPtr[Channel_Index]));
+            /*TIM register is loaded with value in PRD register
+             *before timer is started. In running mode TIM Register counter starts decrementing
+             *till it reaches zero.
+             *In RUNNING state periodRegVal is always greater than countRegVal*/
+            returnValue = (uint32)(periodRegVal - countRegVal);
+            break;
+        case GPT_CH_STOPPED:
+            /* Return the time diff between period and counter register which are saved when
+             * timer is stopped */
+            periodRegVal = Gpt_DrvObj.Gpt_StopStatePrdCounter[Channel_Index];
+            countRegVal  = Gpt_DrvObj.Gpt_StopStateCurCounter[Channel_Index];
+            if (periodRegVal > countRegVal)
+            {
+                returnValue = (uint32)(periodRegVal - countRegVal);
+            }
+            break;
+        case GPT_CH_EXPIRED:
+            /* Read & return the period register of the channel. */
+            returnValue = Gpt_GetPrdCountPriv(&(Gpt_DrvObj.Gpt_CfgPtr->ChannelCfgPtr[Channel_Index]));
+            break;
+        /* TI_COVERAGE_GAP_START [Branch/Line Gap] All the states of the channel are already
+               added in Switch hence this default case can't be validated. */
+        default:
+            break;
+            /* TI_COVERAGE_GAP_STOP*/
     }
 
     return returnValue;
@@ -824,14 +819,14 @@ static inline FUNC(uint32, GPT_CODE)
     /* Copy Config Pointer */
     GptDrvObj->Gpt_CfgPtr = Cfg_Ptr;
 
-    for (LoopValue = ((Gpt_ValueType)0U);
-         ((LoopValue < ((Gpt_ValueType)GPT_CFG_NO_OF_CHANNELS)) && (returnValue == E_OK)); LoopValue++)
+    for (LoopValue = ((Gpt_ValueType)0U); (LoopValue < ((Gpt_ValueType)GPT_CFG_NO_OF_CHANNELS)); LoopValue++)
     {
         /* If the channel is invalid, report to DET with "GPT_E_PARAM_CHANNEL" error. */
         if (GptDrvObj->Gpt_CfgPtr->ChannelCfgPtr[LoopValue].Gpt_ChannelId >= ((Gpt_ChannelType)GPT_CFG_MAX_CHANNELS))
         {
             (void)Det_ReportError(GPT_MODULE_ID, GPT_INSTANCE_ID, GPT_SID_INIT, GPT_E_PARAM_CHANNEL);
             returnValue = E_NOT_OK;
+            break;
         }
     }
     return returnValue;

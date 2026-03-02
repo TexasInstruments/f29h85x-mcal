@@ -560,7 +560,7 @@ static CONST(Mcu_RamSectionConfigType, MCU_CONFIG_DATA) Mcu_RamSectionCfgSet[!"n
 {
 [!LOOP "McuRamSectorSettingConf/*"!]    {
     .Mcu_RamSectionBytes       = ((uint32) [!"McuRamSectionSize"!]U),
-    .Mcu_RamSectionBaseAddress = ((uint8*) [!"num:inttohex(McuRamSectionBaseAddress,8)"!]),
+    .Mcu_RamSectionBaseAddress = ((uint8*) [!"num:inttohex(McuRamSectionBaseAddress,8)"!]U),
     .Mcu_RamDefaultValue       = ((uint8) [!"num:inttohex(McuRamDefaultValue,2)"!]U),
     .Mcu_RamSectionWriteSize   = ((uint8) [!"McuRamSectionWriteSize"!]U)
     }[!IF "not(node:islast())"!],[!CR!][!ELSE!][!VAR "McuRamSectors" = "@index"!][!ENDIF!][!ENDLOOP!]

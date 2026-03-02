@@ -77,7 +77,9 @@ extern VAR(uint32, FLS_VAR_NO_INIT_32) Fls_u32UserFlashConfig;       /* User fla
 #define FLS_START_SEC_VAR_INIT_UNSPECIFIED
 #include "Fls_MemMap.h"
 
-/* \brief FLS driver object */
+/* \brief FLS driver object
+ *  Design: MCAL-30888
+ */
 Fls_DriverObjType Fls_DrvObj = {
     .status = MEMIF_UNINIT /* 0x0, defined in Memif_Types.h*/
 };
@@ -156,7 +158,7 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_CheckWrtAddressAlignment(Fls_AddressTy
  *	provided in the given configuration set
  *  SWS_Fls_00249
  *  Design: MCAL-30923, MCAL-30924, MCAL-30925, MCAL-30926, MCAL-30927, MCAL-30928, MCAL-30929
- *  Design: MCAL-30930
+ *  Design: MCAL-30930, MCAL-30900, MCAL-30902,
  */
 FUNC(void, FLS_CODE) Fls_Init(P2CONST(Fls_ConfigType, AUTOMATIC, FLS_CONFIG_DATA) ConfigPtr)
 {
@@ -233,9 +235,10 @@ FUNC(void, FLS_CODE) Fls_Init(P2CONST(Fls_ConfigType, AUTOMATIC, FLS_CONFIG_DATA
          * This function must also be called whenever System frequency or RWAIT is
          * changed.
          **/
+        Fls_SSU_claimFlashSemaphore();
         CPU_SYS_CLOCK_MHZ = FLS_CPU_CLOCK_FREQ / FLS_CONV_TO_MHZ;
         oReturnCheck      = Fls_Fapi_initializeAPI(CPU_SYS_CLOCK_MHZ);
-
+        Fls_SSU_releaseFlashSemaphore();
         if (oReturnCheck != E_OK)
         {
             /* Check Flash API documentation for possible errors */
@@ -246,10 +249,6 @@ FUNC(void, FLS_CODE) Fls_Init(P2CONST(Fls_ConfigType, AUTOMATIC, FLS_CONFIG_DATA
         {
             Fls_DrvObj.status = MEMIF_IDLE;
         }
-
-        /* Check the maximum write size */
-
-        Fls_DrvObj.FlsMaxWriteNormalMode = 16U;
 
         /* SWS_Fls_00324*/
         Fls_DrvObj.jobResultType = MEMIF_JOB_OK; /* The job has been finished successfully */
@@ -263,7 +262,8 @@ FUNC(void, FLS_CODE) Fls_Init(P2CONST(Fls_ConfigType, AUTOMATIC, FLS_CONFIG_DATA
  *  The function Fls_Erase shall erase one or more complete flash sectors.
  *  SWS_Fls_00250
  *  Design: MCAL-30931, MCAL-30932, MCAL-30933, MCAL-30934, MCAL-30935, MCAL-30936, MCAL-30937
- *  Design: MCAL-30938, MCAL-30939, MCAL-30940, MCAL-30941, MCAL-30942
+ *  Design: MCAL-30938, MCAL-30939, MCAL-30940, MCAL-30941, MCAL-30942, MCAL-30895, MCAL-30896
+ *  Design: MCAL-30900, MCAL-30901, MCAL-30902, MCAL-30915,
  */
 FUNC(Std_ReturnType, FLS_CODE) Fls_Erase(Fls_AddressType TargetAddress, Fls_LengthType Length)
 {
@@ -373,7 +373,8 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_Erase(Fls_AddressType TargetAddress, Fls_Leng
  *
  *  The function Fls_Read shall read from flash memory.
  *  Design: MCAL-30970, MCAL-30971, MCAL-30972, MCAL-30973, MCAL-30974, MCAL-30975, MCAL-30976
- *  Design: MCAL-30977, MCAL-30978, MCAL-30979, MCAL-30980, MCAL-30981, MCAL-30982
+ *  Design: MCAL-30977, MCAL-30978, MCAL-30979, MCAL-30980, MCAL-30981, MCAL-30982, MCAL-31021
+ *  Design: MCAL-30895, MCAL-30896, MCAL-30900, MCAL-30901, MCAL-30902, MCAL-30902,
  */
 FUNC(Std_ReturnType, FLS_CODE)
 Fls_Read(Fls_AddressType SourceAddress, P2VAR(uint8, AUTOMATIC, FLS_APPL_DATA) TargetAddressPtr, Fls_LengthType Length)
@@ -489,8 +490,8 @@ Fls_Read(Fls_AddressType SourceAddress, P2VAR(uint8, AUTOMATIC, FLS_APPL_DATA) T
  *  The function Fls_Write shall write one or more complete flash pages to the
  *  flash device.
  *  Design: MCAL-30943, MCAL-30944, MCAL-30945, MCAL-30946, MCAL-30947, MCAL-30948, MCAL-30949
- *  Design: MCAL-30950, MCAL-30951, MCAL-30952, MCAL-30953, MCAL-30954, MCAL-30955
- *
+ *  Design: MCAL-30950, MCAL-30951, MCAL-30952, MCAL-30953, MCAL-30954, MCAL-30955, MCAL-30895
+ *  Design: MCAL-30896, MCAL-30902, MCAL-30916,
  */
 FUNC(Std_ReturnType, FLS_CODE)
 Fls_Write(Fls_AddressType TargetAddress, P2VAR(const uint8, AUTOMATIC, FLS_APPL_DATA) SourceAddressPtr,
@@ -614,7 +615,8 @@ Fls_Write(Fls_AddressType TargetAddress, P2VAR(const uint8, AUTOMATIC, FLS_APPL_
  *  The function Fls_Compare shall compare the contents of an area of flash
  *  memory with that of an application data buffer.
  *  Design: MCAL-30983, MCAL-30984, MCAL-30985, MCAL-30986, MCAL-30987, MCAL-30988, MCAL-30989
- *  Design: MCAL-30990, MCAL-30991, MCAL-30992, MCAL-30993, MCAL-30994, MCAL-30995
+ *  Design: MCAL-30990, MCAL-30991, MCAL-30992, MCAL-30993, MCAL-30994, MCAL-30995, MCAL-30896
+ *  Design: MCAL-30900, MCAL-30901, MCAL-30902, MCAL-31043,
  */
 #if (FLS_COMPARE_API == STD_ON)
 FUNC(Std_ReturnType, FLS_CODE)
@@ -736,7 +738,8 @@ Fls_Compare(Fls_AddressType SourceAddress, P2VAR(const uint8, AUTOMATIC, FLS_APP
  *  The function Fls_BlankCheck shall verify, whether a given memory area
  *  has been erased.
  *  Design: MCAL-31000, MCAL-31001, MCAL-31002, MCAL-31003, MCAL-31004, MCAL-31005, MCAL-31006
- *  Design: MCAL-31007, MCAL-31008, MCAL-31009, MCAL-31010, MCAL-31011, MCAL-31012
+ *  Design: MCAL-31007, MCAL-31008, MCAL-31009, MCAL-31010, MCAL-31011, MCAL-31012, MCAL-30901,
+ *  Design: MCAL-30902,
  */
 #if (FLS_BLANK_CHECK_API == STD_ON)
 FUNC(Std_ReturnType, FLS_CODE) Fls_BlankCheck(Fls_AddressType TargetAddress, Fls_LengthType Length)
@@ -897,7 +900,7 @@ FUNC(MemIf_JobResultType, FLS_CODE) Fls_GetJobResult(void)
 /*
  *  Function Name: Fls_GetVersionInfo
  *  The function Returns the version information of this module.
- *  Design: MCAL-30999
+ *  Design: MCAL-30999, MCAL-30894
  */
 #if (STD_ON == FLS_VERSION_INFO_API)
 FUNC(Std_ReturnType, FLS_CODE)
@@ -938,6 +941,7 @@ Fls_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, FLS_APPL_DATA) versioni
  *  Design: MCAL-31020, MCAL-31020, MCAL-31022, MCAL-31023, MCAL-31024, MCAL-31025, MCAL-31026
  *  Design: MCAL-31027, MCAL-31028, MCAL-31029, MCAL-31030, MCAL-31031, MCAL-31032, MCAL-31033
  *  Design: MCAL-31034, MCAL-31035, MCAL-31036, MCAL-31037, MCAL-31040, MCAL-31041, MCAL-31042
+ *  Design: MCAL-30886, MCAL-30887, MCAL-30917, MCAL-30918, MCAL-30919, MCAL-30920,
  *  SWS_Fls_00037, SWS_Fls_00038
  */
 FUNC(void, FLS_CODE) Fls_MainFunction(void)
@@ -982,7 +986,8 @@ FUNC(void, FLS_CODE) Fls_MainFunction(void)
  *  The function Fls_Cancel shall cancel an ongoing flash read,
  *  write, erase or compare job synchronously so that directly
  *  after returning from this function a new job can be started
- *
+ *  Design: MCAL-30956, MCAL-30957, MCAL-30958, MCAL-30959, MCAL-30960, MCAL-30961, MCAL-30962,
+ *  Design: MCAL-30963,
  *  SRS_Fls_12137
  */
 #if (FLS_CANCEL_API == STD_ON)
@@ -1086,6 +1091,7 @@ FUNC(void, FLS_CODE) Fls_SetMode(MemIf_ModeType Mode)
 
 /*
  * Check Flash bank ranges for a valid address
+ * Design: MCAL-30921, MCAL-30922,
  */
 static Std_ReturnType Fls_CheckValidAddress(Fls_AddressType SourceAddress)
 {

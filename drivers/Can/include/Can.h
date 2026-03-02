@@ -82,7 +82,7 @@ extern "C" {
 /** \brief  CAN Driver Module ID. */
 #define CAN_MODULE_ID ((uint16)80U)
 /** \brief  CAN Instance ID. */
-#define CAN_INSTANCE_ID ((uint16)0U)
+#define CAN_INSTANCE_ID ((uint8)0U)
 
 /**
  * \brief The Service Id is one of the argument to Det_ReportError function and is
@@ -303,6 +303,8 @@ typedef struct Can_CanConfigType_s
     boolean CanTransmitPause;
     /** \brief TRUE = Disable Auto Retransmission */
     boolean CanDisableAutomaticRetransmission;
+    /** \brief Extended ID mask */
+    uint32  CanExtendedIDMask;
 } Can_CanConfigType;
 
 /*
@@ -318,7 +320,7 @@ typedef struct Can_FdBaudConfigType_s
     uint16  CanControllerFdBaudRate;
     /** \brief Controller BRP value for Baud */
     uint16  BrpValue;
-    /** \brief Prop Segement value */
+    /** \brief Prop Segment value */
     uint8   CanControllerPropSeg;
     /** \brief Phase Segment 1 */
     uint8   CanControllerSeg1;
@@ -349,7 +351,7 @@ typedef struct Can_BaudConfigType_s
     uint16               CanControllerBaudRate;
     /** \brief Config ID */
     uint8                CanControllerBaudRateConfigID;
-    /** \brief Prop Segement value */
+    /** \brief Prop Segment value */
     uint8                CanControllerPropSeg;
     /** \brief Phase Segment 1 */
     uint8                CanControllerSeg1;
@@ -371,7 +373,7 @@ typedef struct Can_ControllerType_s
 {
     /** \brief Id as provided by GUI */
     uint8                      CanControllerId;
-    /** \brief Contoller is used=1 or not_used=0 */
+    /** \brief Controller is used=1 or not_used=0 */
     boolean                    CanControllerActivation;
     /** \brief Can Controller Instance */
     Can_ControllerInstance     CanControllerInstance;
@@ -546,7 +548,7 @@ typedef struct Can_ConfigType_s
     /** \brief MaxMbCount in MB list in all controller */
     uint16                     MaxMbCnt;
     /** \brief Max Baud Config Index in BaudRateConfigList in all controller */
-    uint32                     MaxBaudConfigID[KMAX_CONTROLLER];
+    uint16                     MaxBaudConfigID[KMAX_CONTROLLER];
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
     /** \brief Icom Configuration List */
     const Can_IcomConfigType** IcomConfigurationList;

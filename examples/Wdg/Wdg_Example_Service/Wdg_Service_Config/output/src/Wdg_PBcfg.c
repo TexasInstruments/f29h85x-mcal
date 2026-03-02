@@ -78,7 +78,7 @@
 CONST(Wdg_ConfigType, WDG_CONFIG_DATA) Wdg_Config =
 {
     .Wdg_DefaultMode    = ((WdgIf_ModeType) WDGIF_SLOW_MODE),
-    .Wdg_InstanceId     = ((uint16) 0U),
+    .Wdg_InstanceId     = ((uint8) 0U),
     .Wdg_InitialTimeOut = ((uint16) 13U),
     .Wdg_MaxTimeOut     = ((uint16) 3342U),
     .Wdg_FastModeCfg    =
@@ -87,7 +87,7 @@ CONST(Wdg_ConfigType, WDG_CONFIG_DATA) Wdg_Config =
       .Threshold  = ((uint16) 0U), 
       .PreDivider = ((Wdg_PreDivider) WDG_PREDIV_512),
       .PreScaler  = ((Wdg_PreScaler) WDG_PRESCALE_1),
-      .Timeout  = ((uint16) 13U),
+      .Timeout    = ((uint16) 13U),
    },
    .Wdg_SlowModeCfg    =
    {
@@ -95,7 +95,7 @@ CONST(Wdg_ConfigType, WDG_CONFIG_DATA) Wdg_Config =
       .Threshold  = ((uint16) 0U),
       .PreDivider = ((Wdg_PreDivider) WDG_PREDIV_4096),
       .PreScaler  = ((Wdg_PreScaler) WDG_PRESCALE_32),
-      .Timeout  = ((uint16) 3342U),	   
+      .Timeout    = ((uint16) 3342U),	   
    },
 };
 

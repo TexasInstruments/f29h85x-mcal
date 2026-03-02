@@ -493,7 +493,7 @@ typedef enum
     /** \brief  Classic filter: SFID1 = filter; SFID2 = mask */
     CAN_CLASSIC_FILTER = 0x2U,
     /** \brief  Filter element disabled */
-    CAN_FILTER_DISABLED = 0x03,
+    CAN_SFT_FILTER_DISABLED_EFT_RANGE_NO_XIDAM = 0x03,
 } Can_StandardFilterType;
 
 /*********************************************************************************************************************

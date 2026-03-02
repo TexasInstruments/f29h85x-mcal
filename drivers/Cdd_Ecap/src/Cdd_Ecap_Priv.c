@@ -71,10 +71,6 @@ P2CONST(Cdd_Ecap_ConfigType, AUTOMATIC, CDD_ECAP_CONST) Cdd_Ecap_CfgPtr = NULL_P
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
-#if (STD_ON == CDD_ECAP_TIMESTAMP_API)
-static FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_Timestamp_ISRProcess(Cdd_Ecap_ChannelType Channel);
-#endif
-
 /**
  * \brief   This function enables capture loading.
  *
@@ -126,11 +122,8 @@ void Cdd_Ecap_prescaleConfig(uint32 baseAddr, uint32 prescale);
  *          mode or in APWM mode.
  *
  * \param   baseAddr    It is the Memory address of the ECAP instance used.
- * \param   modeSelect  It is the value which determines whether ecapture
- *                      module to operate in capture mode or in APWM mode.\n
- *
  */
-void Cdd_Ecap_operatingModeSelect(uint32 baseAddr, uint32 modeSelect);
+void Cdd_Ecap_enableCaptureMode(uint32 baseAddr);
 
 /**
  * \brief   This function returns time-stamp for a given capture event.
@@ -257,6 +250,9 @@ void Cdd_Ecap_setEmulationMode(uint32 baseAddr, Cdd_Ecap_EmulationMode srcSelect
  */
 void Cdd_Ecap_clearGlobalInterrupt(uint32 baseAddr);
 
+#if (STD_ON == CDD_ECAP_TIMESTAMP_API)
+static FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_Timestamp_ISRProcess(Cdd_Ecap_ChannelType Channel);
+#endif
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
@@ -301,65 +297,25 @@ void Cdd_Ecap_prescaleConfig(uint32 baseAddr, uint32 prescale)
 {
     uint32 temp_addr;
 
-    if (prescale < CDD_ECAP_MAX_PRESCALER_VALUE)
-    {
-        temp_addr = baseAddr + ECAP_O_ECCTL1;
-        /* Write to PRESCALE bit */
-        HWREGH(temp_addr) = ((HWREGH(temp_addr) & (~ECAP_ECCTL1_PRESCALE_M)) | (prescale << ECAP_ECCTL1_PRESCALE_S));
-    }
+    temp_addr = baseAddr + ECAP_O_ECCTL1;
+    /* Write to PRESCALE bit */
+    HWREGH(temp_addr) = ((HWREGH(temp_addr) & (~ECAP_ECCTL1_PRESCALE_M)) | (prescale << ECAP_ECCTL1_PRESCALE_S));
 }
 
-void Cdd_Ecap_operatingModeSelect(uint32 baseAddr, uint32 modeSelect)
+void Cdd_Ecap_enableCaptureMode(uint32 baseAddr)
 {
     uint32 temp_addr = baseAddr + ECAP_O_ECCTL2;
 
-    if (modeSelect == CDD_ECAP_CAPTURE_MODE)
-    {
-        /* Capture mode */
-        HWREGH(temp_addr) &= ~ECAP_ECCTL2_CAP_APWM;
-    }
-    else if (modeSelect == CDD_ECAP_APWM_MODE)
-    {
-        /* APWM mode */
-        HWREGH(temp_addr) |= ECAP_ECCTL2_CAP_APWM;
-    }
-    else
-    {
-        /* Nothing */
-    }
+    /* Capture mode */
+    HWREGH(temp_addr) &= ~ECAP_ECCTL2_CAP_APWM;
 }
 
 uint32 Cdd_Ecap_timeStampRead(uint32 baseAddr, uint32 capEvtFlag)
 {
     uint32 count = 0U;
 
-    switch (capEvtFlag)
-    {
-        case CDD_ECAP_EVENT_1:
-            /* Read CAP1 register */
-            count = HWREG(baseAddr + ECAP_O_CAP1);
-            break;
-
-        case CDD_ECAP_EVENT_2:
-            /* Read CAP2 register */
-            count = HWREG(baseAddr + ECAP_O_CAP2);
-            break;
-
-        case CDD_ECAP_EVENT_3:
-            /* Read CAP3 register */
-            count = HWREG(baseAddr + ECAP_O_CAP3);
-            break;
-
-        case CDD_ECAP_EVENT_4:
-            /* Read CAP4 register */
-            count = HWREG(baseAddr + ECAP_O_CAP4);
-            break;
-
-        default:
-            /* Invalid event parameter */
-            count = 0U;
-            break;
-    }
+    uint32 offset = (4U) * capEvtFlag;
+    count         = HWREG(baseAddr + ECAP_O_CAP1 + offset);
 
     return (count);
 }
@@ -488,21 +444,9 @@ void Cdd_Ecap_HRCAP_enableHighResolution(uint32 baseAddr)
     return;
 }
 
-void Cdd_Ecap_HRCAP_disableHighResolution(uint32 baseAddr)
-{
-    HWREGH(baseAddr + ECAP_O_HRCTL) &= ~ECAP_HRCTL_HRE;
-    return;
-}
-
 void Cdd_Ecap_HRCAP_enableHighResolutionClock(uint32 baseAddr)
 {
     HWREGH(baseAddr + ECAP_O_HRCTL) |= ECAP_HRCTL_HRCLKE;
-    return;
-}
-
-void Cdd_Ecap_HRCAP_disableHighResolutionClock(uint32 baseAddr)
-{
-    HWREGH(baseAddr + ECAP_O_HRCTL) &= ~ECAP_HRCTL_HRCLKE;
     return;
 }
 
@@ -524,12 +468,6 @@ void Cdd_Ecap_HRCAP_enableCalibrationInterrupt(uint32 baseAddr, uint16 intFlags)
     return;
 }
 
-void Cdd_Ecap_HRCAP_disableCalibrationInterrupt(uint32 baseAddr, uint16 intFlags)
-{
-    HWREGH(baseAddr + ECAP_O_HRINTEN) &= ~intFlags;
-    return;
-}
-
 uint16 Cdd_Ecap_HRCAP_getCalibrationFlags(uint32 baseAddr)
 {
     return ((uint16)(HWREGH(baseAddr + ECAP_O_HRFLG) & 0x7U));
@@ -540,26 +478,9 @@ void Cdd_Ecap_HRCAP_clearCalibrationFlags(uint32 baseAddr, uint16 flags)
     HWREGH(baseAddr + ECAP_O_HRCLR) = flags;
 }
 
-boolean Cdd_Ecap_HRCAP_isCalibrationBusy(uint32 baseAddr)
-{
-    return ((HWREGH(baseAddr + ECAP_O_HRCTL) & ECAP_HRCTL_CALIBSTS) == ECAP_HRCTL_CALIBSTS);
-}
-
-void Cdd_Ecap_HRCAP_forceCalibrationFlags(uint32 baseAddr, uint16 flags)
-{
-    HWREGH(baseAddr + ECAP_O_HRFRC) = flags;
-    return;
-}
-
 void Cdd_Ecap_HRCAP_setCalibrationPeriod(uint32 baseAddr, uint32 sysclkHz)
 {
     HWREG(baseAddr + ECAP_O_HRCALPRD) = (sysclkHz * 1600000U);
-    return;
-}
-
-void Cdd_Ecap_HRCAP_configCalibrationPeriod(uint32 baseAddr, uint32 sysclkHz, float32 periodInMs)
-{
-    HWREG(baseAddr + ECAP_O_HRCALPRD) = (uint32)((float32)sysclkHz * periodInMs / 1000.0F);
     return;
 }
 
@@ -570,14 +491,20 @@ uint32 Cdd_Ecap_HRCAP_getCalibrationClockPeriod(uint32 baseAddr, Cdd_Ecap_HrCap_
 
 float32 Cdd_Ecap_HRCAP_getScaleFactor(uint32 baseAddr, Cdd_Ecap_ChannelType Channel)
 {
+    float32 result = CDD_ECAP_SF_NOTREADY;
+
     /* Calculate and return the scale factor. */
     if (Cdd_Ecap_ObjPtr->chObj[Channel].intHr >= 1U)
     {
-        return ((float32)Cdd_Ecap_HRCAP_getCalibrationClockPeriod(baseAddr, CDD_ECAP_HRCAP_CALIBRATION_CLOCK_SYSCLK) /
-                (float32)Cdd_Ecap_HRCAP_getCalibrationClockPeriod(baseAddr, CDD_ECAP_HRCAP_CALIBRATION_CLOCK_HRCLK));
+        result = ((float32)Cdd_Ecap_HRCAP_getCalibrationClockPeriod(baseAddr, CDD_ECAP_HRCAP_CALIBRATION_CLOCK_SYSCLK) /
+                  (float32)Cdd_Ecap_HRCAP_getCalibrationClockPeriod(baseAddr, CDD_ECAP_HRCAP_CALIBRATION_CLOCK_HRCLK));
+    }
+    else
+    {
+        result = CDD_ECAP_SF_NOTREADY;
     }
 
-    return CDD_ECAP_SF_NOTREADY;
+    return result;
 }
 
 float32 Cdd_Ecap_HRCAP_convertEventTimeStamp(uint32 baseAddr, uint32 timeStamp, float32 scaleFactor)
@@ -652,14 +579,6 @@ void Cdd_Ecap_HwUnitInit(void)
 
     for (chNum = 0U; chNum < CDD_ECAP_HW_CNT; chNum++)
     {
-#if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
-        if (((Cdd_Ecap_CfgPtr)->chCfg[chNum].channelId) > (uint32)CDD_ECAP_MAX_NUM_CHANNELS)
-        {
-            /* Invalid channel */
-            (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_INIT_ID, CDD_ECAP_E_PARAM_CHANNEL);
-        }
-#endif /* (STD_ON == CDD_ECAP_DEV_ERROR_DETECT) */
-
         baseAddr = Cdd_Ecap_CfgPtr->chCfg[chNum].base_addr;
 #if (STD_ON == CDD_ECAP_HR_API)
         if (Cdd_Ecap_CfgPtr->chCfg[chNum].hr_enable == TRUE)
@@ -683,7 +602,7 @@ void Cdd_Ecap_HwUnitInit(void)
          *    Enable eCAP module.
          */
         Cdd_Ecap_counterControl(baseAddr, CDD_ECAP_COUNTER_STOP);
-        Cdd_Ecap_operatingModeSelect(baseAddr, CDD_ECAP_CAPTURE_MODE);
+        Cdd_Ecap_enableCaptureMode(baseAddr);
         /* Configure initial parameters */
         Cdd_Ecap_prescaleConfig(baseAddr, Cdd_Ecap_CfgPtr->chCfg[chNum].prescaler);
         Cdd_Ecap_selectECAPInput(baseAddr, Cdd_Ecap_CfgPtr->chCfg[chNum].inputSelect);
@@ -692,10 +611,8 @@ void Cdd_Ecap_HwUnitInit(void)
 }
 
 void Cdd_Ecap_ConfigEcap(uint32 baseAddr, Cdd_Ecap_ActivationType activation, Cdd_Ecap_CounterRstType cntRst,
-                         boolean interruptEnable, Cdd_Ecap_IntrCapSelect capture, uint32 Channel)
+                         Cdd_Ecap_IntrCapSelect capture, uint32 Channel)
 {
-    baseAddr = Cdd_Ecap_CfgPtr->chCfg[Channel].base_addr;
-
     Cdd_Ecap_intrDisable(baseAddr, CDD_ECAP_INT_ALL);
     Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_INT_ALL);
     Cdd_Ecap_clearGlobalInterrupt(baseAddr);
@@ -708,7 +625,7 @@ void Cdd_Ecap_ConfigEcap(uint32 baseAddr, Cdd_Ecap_ActivationType activation, Cd
     Cdd_Ecap_cap4Reset(baseAddr);
 
     Cdd_Ecap_counterControl(baseAddr, CDD_ECAP_COUNTER_STOP);
-    Cdd_Ecap_operatingModeSelect(baseAddr, CDD_ECAP_CAPTURE_MODE);
+    Cdd_Ecap_enableCaptureMode(baseAddr);
     if (Cdd_Ecap_CfgPtr->chCfg[Channel].measurementMode == CDD_ECAP_MODE_SIGNAL_MEASUREMENT)
     {
         Cdd_Ecap_continuosModeConfig(baseAddr, CDD_ECAP_EVENT_4);
@@ -749,7 +666,7 @@ void Cdd_Ecap_ConfigEcap(uint32 baseAddr, Cdd_Ecap_ActivationType activation, Cd
         }
     }
 
-    if ((cntRst == CDD_ECAP_ABSOLUTE_MODE) || (Cdd_Ecap_CfgPtr->chCfg[Channel].hr_enable == TRUE))
+    if (cntRst == CDD_ECAP_ABSOLUTE_MODE)
     {
         Cdd_Ecap_captureEvtCntrRstConfig(baseAddr, 0, 0, 0, 0); /* using absolute mode */
     }
@@ -763,22 +680,20 @@ void Cdd_Ecap_ConfigEcap(uint32 baseAddr, Cdd_Ecap_ActivationType activation, Cd
 
     Cdd_Ecap_reArm(baseAddr);
 
-    if (interruptEnable != (uint32)0U)
-    {
-        uint16 cap = (uint16)capture;
-        Cdd_Ecap_intrEnable(baseAddr, cap);
-    }
+    /*Enabling interrupts*/
+    uint16 cap = (uint16)capture;
+    Cdd_Ecap_intrEnable(baseAddr, cap);
 
 #if (STD_ON == CDD_ECAP_HR_API)
     if (Cdd_Ecap_CfgPtr->chCfg[Channel].hr_enable == TRUE)
     {
+        Cdd_Ecap_captureEvtCntrRstConfig(baseAddr, 0, 0, 0, 0); /* using absolute mode */
         Cdd_Ecap_HRCAP_setCalibrationPeriod(Cdd_Ecap_CfgPtr->chCfg[Channel].hr_base_addr,
                                             Cdd_Ecap_CfgPtr->chCfg[Channel].instanceClkMHz);
         Cdd_Ecap_HRCAP_setCalibrationMode(Cdd_Ecap_CfgPtr->chCfg[Channel].hr_base_addr);
         Cdd_Ecap_HRCAP_enableCalibrationInterrupt(
             Cdd_Ecap_CfgPtr->chCfg[Channel].hr_base_addr,
-            (CDD_ECAP_HRCAP_CALIBRATION_DONE | CDD_ECAP_HRCAP_CALIBRATION_PERIOD_OVERFLOW |
-             CDD_ECAP_HRCAP_CALIBRATION_PERIOD_OVERFLOW));
+            (CDD_ECAP_HRCAP_CALIBRATION_DONE | CDD_ECAP_HRCAP_CALIBRATION_PERIOD_OVERFLOW));
         Cdd_Ecap_HRCAP_startCalibration(Cdd_Ecap_CfgPtr->chCfg[Channel].hr_base_addr);
     }
 #endif
@@ -856,21 +771,17 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_Timestamp_ISR(Cdd_Ecap_ChannelType Channel)
     if ((Cdd_Ecap_ObjPtr->chObj[Channel].NextTimeStampIndex >= Cdd_Ecap_ObjPtr->chObj[Channel].TimeStampBufferSize) &&
         (Cdd_Ecap_ObjPtr->chObj[Channel].NextTimeStampIndexPtr != NULL_PTR))
     {
-        switch (Cdd_Ecap_CfgPtr->chCfg[Channel].bufferType)
+        if (Cdd_Ecap_CfgPtr->chCfg[Channel].bufferType == CDD_ECAP_LINEAR_BUFFER)
         {
-            case CDD_ECAP_LINEAR_BUFFER:
-                /* Stop capturing values and disable interrupts */
-
-                /* Stop capturing timestamps, but take the NextTimeStampIndex value */
-                Cdd_Ecap_intrDisable(baseAddr, CDD_ECAP_INT_ALL);
-                Cdd_Ecap_ObjPtr->chObj[Channel].IsRunning = FALSE;
-                break;
-            case CDD_ECAP_CIRCULAR_BUFFER:
-                /* Next timestamp writes over the first item, and continuous capturing timestamps */
-                Cdd_Ecap_ObjPtr->chObj[Channel].NextTimeStampIndex = 0U;
-                break;
-            default:
-                break;
+            /* Stop capturing values and disable interrupts */
+            /* Stop capturing timestamps, but take the NextTimeStampIndex value */
+            Cdd_Ecap_intrDisable(baseAddr, CDD_ECAP_INT_ALL);
+            Cdd_Ecap_ObjPtr->chObj[Channel].IsRunning = FALSE;
+        }
+        else
+        {
+            /* Next timestamp writes over the first item, and continuous capturing timestamps */
+            Cdd_Ecap_ObjPtr->chObj[Channel].NextTimeStampIndex = 0U;
         }
     }
 
@@ -909,7 +820,387 @@ static FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_Timestamp_ISRProcess(Cdd_Ecap_ChannelT
     /* Clear interrupt */
     Cdd_Ecap_globalIntrClear(baseAddr);
 }
+
+/*******************************************************************************
+ *   Function Name : Cdd_Ecap_Timestamp_ProcessNotification
+ ******************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_Timestamp_ProcessNotification(uint8 chNum)
+{
+    Cdd_Ecap_ObjPtr->chObj[chNum].NotificationCounter++;
+
+    if ((Cdd_Ecap_ObjPtr->chObj[chNum].NotificationEnabled == TRUE) &&
+        (Cdd_Ecap_ObjPtr->chObj[chNum].NotificationCounter >= Cdd_Ecap_ObjPtr->chObj[chNum].NotifyInterval))
+    {
+        Cdd_Ecap_ObjPtr->chObj[chNum].NotificationCounter = 0U;
+        /* Call configured notification function if defined */
+        if (Cdd_Ecap_CfgPtr->chCfg[chNum].notificationHandler != NULL_PTR)
+        {
+            Cdd_Ecap_CfgPtr->chCfg[chNum].notificationHandler();
+        }
+    }
+}
 #endif
+
+#if (STD_ON == CDD_ECAP_EDGE_DETECT_API)
+/*******************************************************************************
+ *   Function Name : Cdd_Ecap_EdgeDetect_ProcessNotification
+ ******************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EdgeDetect_ProcessNotification(uint8 chNum, uint32 baseAddr)
+{
+    Cdd_Ecap_ObjPtr->chObj[chNum].InputState = CDD_ECAP_ACTIVE;
+
+    /* Clear interrupt */
+    Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT1_CEVT2_INT);
+    Cdd_Ecap_globalIntrClear(baseAddr);
+
+    if ((Cdd_Ecap_ObjPtr->chObj[chNum].NotificationEnabled == TRUE) &&
+        (Cdd_Ecap_CfgPtr->chCfg[chNum].notificationHandler != NULL_PTR))
+    {
+        Cdd_Ecap_CfgPtr->chCfg[chNum].notificationHandler();
+    }
+}
+#endif
+
+#if (STD_ON == CDD_ECAP_SIGNAL_MEASUREMENT_API)
+/*******************************************************************************
+ *   Function Name : Cdd_Ecap_SignalMeasurement_ProcessCevt1
+ ******************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurement_ProcessCevt1(uint8 chNum, uint32 baseAddr)
+{
+    Cdd_Ecap_ValueType highTime;
+    Cdd_Ecap_ValueType lowTime;
+    Cdd_Ecap_ValueType period;
+
+    if ((Cdd_Ecap_ObjPtr->chObj[chNum].cap1 == 0U) || (Cdd_Ecap_ObjPtr->chObj[chNum].cap4 == 0U))
+    {
+        Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = FALSE;
+        Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = FALSE;
+    }
+    else
+    {
+        /* Increment is done to take care of the cycle delay due to counter reset */
+        Cdd_Ecap_ObjPtr->chObj[chNum].cap1++;
+        Cdd_Ecap_ObjPtr->chObj[chNum].cap4++;
+        if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_FALLING_EDGE)
+        {
+            highTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap1);
+            lowTime  = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4);
+        }
+        else
+        {
+            highTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4);
+            lowTime  = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap1);
+        }
+        period                                             = highTime + lowTime;
+        Cdd_Ecap_ObjPtr->chObj[chNum].HighTime             = highTime;
+        Cdd_Ecap_ObjPtr->chObj[chNum].LowTime              = lowTime;
+        Cdd_Ecap_ObjPtr->chObj[chNum].Period               = period;
+        Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.PeriodTime = period;
+        Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.ActiveTime = highTime;
+
+        /* Ignore the first interrupt as CAP4 will be invalid as it might be from an edge before start */
+        if (Cdd_Ecap_ObjPtr->chObj[chNum].intrCount > 1U)
+        {
+            Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = TRUE;
+            Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = TRUE;
+        }
+    }
+    Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT1_INT);
+}
+
+/*******************************************************************************
+ *   Function Name : Cdd_Ecap_SignalMeasurement_ProcessCevt2
+ ******************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurement_ProcessCevt2(uint8 chNum)
+{
+    if (Cdd_Ecap_ObjPtr->chObj[chNum].cap2 == 0U)
+    {
+        Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired     = FALSE;
+        Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired   = FALSE;
+        Cdd_Ecap_ObjPtr->chObj[chNum].HighTimeAcquired = FALSE;
+        Cdd_Ecap_ObjPtr->chObj[chNum].LowTimeAcquired  = FALSE;
+    }
+    else
+    {
+        if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_FALLING_EDGE)
+        {
+            Cdd_Ecap_ObjPtr->chObj[chNum].LowTime         = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2);
+            Cdd_Ecap_ObjPtr->chObj[chNum].LowTimeAcquired = TRUE;
+        }
+        else
+        {
+            Cdd_Ecap_ObjPtr->chObj[chNum].HighTime         = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2);
+            Cdd_Ecap_ObjPtr->chObj[chNum].HighTimeAcquired = TRUE;
+        }
+    }
+}
+
+/*******************************************************************************
+ *   Function Name : Cdd_Ecap_SignalMeasurement_ProcessCevt3
+ ******************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurement_ProcessCevt3(uint8 chNum, uint32 baseAddr)
+{
+    Cdd_Ecap_ValueType highTime;
+    Cdd_Ecap_ValueType lowTime;
+    Cdd_Ecap_ValueType period;
+
+    if ((Cdd_Ecap_ObjPtr->chObj[chNum].cap2 == 0U) || (Cdd_Ecap_ObjPtr->chObj[chNum].cap3 == 0U))
+    {
+        Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = FALSE;
+        Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = FALSE;
+    }
+    else
+    {
+        /* Increment is done to take care of the cycle delay due to counter reset */
+        Cdd_Ecap_ObjPtr->chObj[chNum].cap2++;
+        Cdd_Ecap_ObjPtr->chObj[chNum].cap3++;
+        if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_FALLING_EDGE)
+        {
+            highTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap3);
+            lowTime  = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2);
+        }
+        else
+        {
+            highTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2);
+            lowTime  = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap3);
+        }
+        period                                             = highTime + lowTime;
+        Cdd_Ecap_ObjPtr->chObj[chNum].HighTime             = highTime;
+        Cdd_Ecap_ObjPtr->chObj[chNum].LowTime              = lowTime;
+        Cdd_Ecap_ObjPtr->chObj[chNum].Period               = period;
+        Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.PeriodTime = period;
+        Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.ActiveTime = highTime;
+
+        /* Ignore the first interrupt as CAP3 will be invalid as it might be from an edge before start */
+        if (Cdd_Ecap_ObjPtr->chObj[chNum].intrCount > 1U)
+        {
+            Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = TRUE;
+            Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = TRUE;
+        }
+    }
+    Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT3_INT);
+}
+
+/*******************************************************************************
+ *   Function Name : Cdd_Ecap_SignalMeasurement_ProcessCevt4
+ ******************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurement_ProcessCevt4(uint8 chNum)
+{
+    if (Cdd_Ecap_ObjPtr->chObj[chNum].cap4 == 0U)
+    {
+        Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired     = FALSE;
+        Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired   = FALSE;
+        Cdd_Ecap_ObjPtr->chObj[chNum].HighTimeAcquired = FALSE;
+        Cdd_Ecap_ObjPtr->chObj[chNum].LowTimeAcquired  = FALSE;
+    }
+    else
+    {
+        if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_FALLING_EDGE)
+        {
+            Cdd_Ecap_ObjPtr->chObj[chNum].LowTime         = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4);
+            Cdd_Ecap_ObjPtr->chObj[chNum].LowTimeAcquired = TRUE;
+        }
+        else
+        {
+            Cdd_Ecap_ObjPtr->chObj[chNum].HighTime         = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4);
+            Cdd_Ecap_ObjPtr->chObj[chNum].HighTimeAcquired = TRUE;
+        }
+    }
+}
+
+/*******************************************************************************
+ *   Function Name : Cdd_Ecap_SignalMeasurement_DispatchIntr
+ ******************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurement_DispatchIntr(uint8 chNum, uint32 baseAddr)
+{
+    Cdd_Ecap_ObjPtr->chObj[chNum].InputState = CDD_ECAP_ACTIVE;
+
+    Cdd_Ecap_ObjPtr->chObj[chNum].cap1 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_1);
+    Cdd_Ecap_ObjPtr->chObj[chNum].cap2 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_2);
+    Cdd_Ecap_ObjPtr->chObj[chNum].cap3 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_3);
+    Cdd_Ecap_ObjPtr->chObj[chNum].cap4 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_4);
+    Cdd_Ecap_ObjPtr->chObj[chNum].intrCount++;
+
+    if (Cdd_Ecap_getIntrStatus(baseAddr, CDD_ECAP_CEVT1_INT) != 0U)
+    {
+        Cdd_Ecap_SignalMeasurement_ProcessCevt1(chNum, baseAddr);
+    }
+    else if (Cdd_Ecap_getIntrStatus(baseAddr, CDD_ECAP_CEVT2_INT) != 0U)
+    {
+        Cdd_Ecap_SignalMeasurement_ProcessCevt2(chNum);
+        Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT2_INT);
+    }
+    else if (Cdd_Ecap_getIntrStatus(baseAddr, CDD_ECAP_CEVT3_INT) != 0U)
+    {
+        Cdd_Ecap_SignalMeasurement_ProcessCevt3(chNum, baseAddr);
+    }
+    else
+    {
+        /*Condition for EVT4 capture*/
+        Cdd_Ecap_SignalMeasurement_ProcessCevt4(chNum);
+        Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT4_INT);
+    }
+
+    /* Clear interrupt */
+    Cdd_Ecap_globalIntrClear(baseAddr);
+}
+#endif /* (STD_ON == CDD_ECAP_SIGNAL_MEASUREMENT_API) */
+
+#if ((STD_ON == CDD_ECAP_SIGNAL_MEASUREMENT_API) && (STD_ON == CDD_ECAP_HR_API))
+/*******************************************************************************
+ *   Function Name : Cdd_Ecap_SignalMeasurementHr_ProcessCevt1
+ ******************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurementHr_ProcessCevt1(uint8 chNum, uint32 baseAddr)
+{
+    Cdd_Ecap_ValueType highTime;
+    Cdd_Ecap_ValueType lowTime;
+    Cdd_Ecap_ValueType period;
+
+    if ((Cdd_Ecap_ObjPtr->chObj[chNum].cap3 == 0U) || (Cdd_Ecap_ObjPtr->chObj[chNum].cap4 == 0U))
+    {
+        Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = FALSE;
+        Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = FALSE;
+    }
+    else
+    {
+        if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_RISING_EDGE)
+        {
+            highTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4 - Cdd_Ecap_ObjPtr->chObj[chNum].cap3);
+            lowTime  = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap1 - Cdd_Ecap_ObjPtr->chObj[chNum].cap4);
+        }
+        else
+        {
+            highTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap1 - Cdd_Ecap_ObjPtr->chObj[chNum].cap4);
+            lowTime  = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4 - Cdd_Ecap_ObjPtr->chObj[chNum].cap3);
+        }
+        period                                             = highTime + lowTime;
+        Cdd_Ecap_ObjPtr->chObj[chNum].HighTime             = highTime;
+        Cdd_Ecap_ObjPtr->chObj[chNum].LowTime              = lowTime;
+        Cdd_Ecap_ObjPtr->chObj[chNum].Period               = period;
+        Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.PeriodTime = period;
+        Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.ActiveTime = highTime;
+
+        /* Ignore the first interrupt as CAP4 will be invalid as it might be from an edge before start */
+        if (Cdd_Ecap_ObjPtr->chObj[chNum].intrCount > 1U)
+        {
+            Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = TRUE;
+            Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = TRUE;
+        }
+    }
+    Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT1_INT);
+}
+
+/*******************************************************************************
+ *   Function Name : Cdd_Ecap_SignalMeasurementHr_ProcessCevt2
+ ******************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurementHr_ProcessCevt2(uint8 chNum)
+{
+    if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_FALLING_EDGE)
+    {
+        Cdd_Ecap_ObjPtr->chObj[chNum].LowTime =
+            (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2 - Cdd_Ecap_ObjPtr->chObj[chNum].cap1);
+        Cdd_Ecap_ObjPtr->chObj[chNum].LowTimeAcquired = TRUE;
+    }
+    else
+    {
+        Cdd_Ecap_ObjPtr->chObj[chNum].HighTime =
+            (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2 - Cdd_Ecap_ObjPtr->chObj[chNum].cap1);
+        Cdd_Ecap_ObjPtr->chObj[chNum].HighTimeAcquired = TRUE;
+    }
+}
+
+/*******************************************************************************
+ *   Function Name : Cdd_Ecap_SignalMeasurementHr_ProcessCevt3
+ ******************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurementHr_ProcessCevt3(uint8 chNum, uint32 baseAddr)
+{
+    Cdd_Ecap_ValueType highTime;
+    Cdd_Ecap_ValueType lowTime;
+    Cdd_Ecap_ValueType period;
+
+    if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_RISING_EDGE)
+    {
+        highTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2 - Cdd_Ecap_ObjPtr->chObj[chNum].cap1);
+        lowTime  = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap3 - Cdd_Ecap_ObjPtr->chObj[chNum].cap2);
+    }
+    else
+    {
+        highTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap3 - Cdd_Ecap_ObjPtr->chObj[chNum].cap2);
+        lowTime  = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2 - Cdd_Ecap_ObjPtr->chObj[chNum].cap1);
+    }
+    period                                             = highTime + lowTime;
+    Cdd_Ecap_ObjPtr->chObj[chNum].HighTime             = highTime;
+    Cdd_Ecap_ObjPtr->chObj[chNum].LowTime              = lowTime;
+    Cdd_Ecap_ObjPtr->chObj[chNum].Period               = period;
+    Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.PeriodTime = period;
+    Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.ActiveTime = highTime;
+
+    /* Ignore the first interrupt as CAP3 will be invalid as it might be from an edge before start */
+    if (Cdd_Ecap_ObjPtr->chObj[chNum].intrCount > 1U)
+    {
+        Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = TRUE;
+        Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = TRUE;
+    }
+    Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT3_INT);
+}
+
+/*******************************************************************************
+ *   Function Name : Cdd_Ecap_SignalMeasurementHr_ProcessCevt4
+ ******************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurementHr_ProcessCevt4(uint8 chNum)
+{
+    if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_FALLING_EDGE)
+    {
+        Cdd_Ecap_ObjPtr->chObj[chNum].LowTime =
+            (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4 - Cdd_Ecap_ObjPtr->chObj[chNum].cap3);
+        Cdd_Ecap_ObjPtr->chObj[chNum].LowTimeAcquired = TRUE;
+    }
+    else
+    {
+        Cdd_Ecap_ObjPtr->chObj[chNum].HighTime =
+            (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4 - Cdd_Ecap_ObjPtr->chObj[chNum].cap3);
+        Cdd_Ecap_ObjPtr->chObj[chNum].HighTimeAcquired = TRUE;
+    }
+}
+
+/*******************************************************************************
+ *   Function Name : Cdd_Ecap_SignalMeasurementHr_DispatchIntr
+ ******************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurementHr_DispatchIntr(uint8 chNum, uint32 baseAddr)
+{
+    Cdd_Ecap_ObjPtr->chObj[chNum].InputState = CDD_ECAP_ACTIVE;
+
+    Cdd_Ecap_ObjPtr->chObj[chNum].intrCount++;
+
+    Cdd_Ecap_ObjPtr->chObj[chNum].cap1 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_1);
+    Cdd_Ecap_ObjPtr->chObj[chNum].cap2 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_2);
+    Cdd_Ecap_ObjPtr->chObj[chNum].cap3 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_3);
+    Cdd_Ecap_ObjPtr->chObj[chNum].cap4 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_4);
+
+    if (Cdd_Ecap_getIntrStatus(baseAddr, CDD_ECAP_CEVT1_INT) != 0U)
+    {
+        Cdd_Ecap_SignalMeasurementHr_ProcessCevt1(chNum, baseAddr);
+    }
+    else if (Cdd_Ecap_getIntrStatus(baseAddr, CDD_ECAP_CEVT2_INT) != 0U)
+    {
+        Cdd_Ecap_SignalMeasurementHr_ProcessCevt2(chNum);
+        Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT2_INT);
+    }
+    else if (Cdd_Ecap_getIntrStatus(baseAddr, CDD_ECAP_CEVT3_INT) != 0U)
+    {
+        Cdd_Ecap_SignalMeasurementHr_ProcessCevt3(chNum, baseAddr);
+    }
+    else
+    {
+        /*Condition for EVT4 capture*/
+        Cdd_Ecap_SignalMeasurementHr_ProcessCevt4(chNum);
+        Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT4_INT);
+    }
+
+    /* Clear interrupt */
+    Cdd_Ecap_globalIntrClear(baseAddr);
+}
+#endif /* ((STD_ON == CDD_ECAP_SIGNAL_MEASUREMENT_API) && (STD_ON == CDD_ECAP_HR_API)) */
 
 /*********************************************************************************************************************
  *  External Functions Definition
@@ -934,26 +1225,13 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_ChannelISR(Cdd_Ecap_ChannelType Channel)
     if (Cdd_Ecap_CfgPtr->chCfg[chNum].measurementMode == CDD_ECAP_MODE_TIMESTAMP)
     {
         Cdd_Ecap_Timestamp_ISR(chNum);
-
-        Cdd_Ecap_ObjPtr->chObj[chNum].NotificationCounter++;
-        if ((Cdd_Ecap_ObjPtr->chObj[chNum].NotificationEnabled == TRUE) &&
-            (Cdd_Ecap_ObjPtr->chObj[chNum].NotificationCounter >= Cdd_Ecap_ObjPtr->chObj[chNum].NotifyInterval))
-        {
-            Cdd_Ecap_ObjPtr->chObj[chNum].NotificationCounter = 0U;
-            /* Call configured notification function if defined */
-            if (Cdd_Ecap_CfgPtr->chCfg[chNum].notificationHandler != NULL_PTR)
-            {
-                Cdd_Ecap_CfgPtr->chCfg[chNum].notificationHandler();
-            }
-        }
+        Cdd_Ecap_Timestamp_ProcessNotification(chNum);
     }
 #endif
 #if (STD_ON == CDD_ECAP_EDGE_COUNT_API)
     if (Cdd_Ecap_CfgPtr->chCfg[chNum].measurementMode == CDD_ECAP_MODE_EDGE_COUNTER)
     {
-        uint32 baseAddr;
-        baseAddr = Cdd_Ecap_CfgPtr->chCfg[chNum].base_addr;
-
+        uint32 baseAddr = Cdd_Ecap_CfgPtr->chCfg[chNum].base_addr;
         Cdd_Ecap_ObjPtr->chObj[chNum].EdgeCounter++;
 
         /* Clear interrupt */
@@ -964,339 +1242,57 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_ChannelISR(Cdd_Ecap_ChannelType Channel)
 #if (STD_ON == CDD_ECAP_EDGE_DETECT_API)
     if (Cdd_Ecap_CfgPtr->chCfg[chNum].measurementMode == CDD_ECAP_MODE_SIGNAL_EDGE_DETECT)
     {
-        uint32 baseAddr;
-        baseAddr = Cdd_Ecap_CfgPtr->chCfg[chNum].base_addr;
-
-        Cdd_Ecap_ObjPtr->chObj[chNum].InputState = CDD_ECAP_ACTIVE;
-
-        /* Clear interrupt */
-        Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT1_CEVT2_INT);
-        Cdd_Ecap_globalIntrClear(baseAddr);
-
-        if ((Cdd_Ecap_ObjPtr->chObj[chNum].NotificationEnabled == TRUE) &&
-            (Cdd_Ecap_CfgPtr->chCfg[chNum].notificationHandler != NULL_PTR))
-        {
-            Cdd_Ecap_CfgPtr->chCfg[chNum].notificationHandler();
-        }
+        uint32 baseAddr = Cdd_Ecap_CfgPtr->chCfg[chNum].base_addr;
+        Cdd_Ecap_EdgeDetect_ProcessNotification(chNum, baseAddr);
     }
 #endif
 #if (STD_ON == CDD_ECAP_SIGNAL_MEASUREMENT_API)
     if ((Cdd_Ecap_CfgPtr->chCfg[chNum].measurementMode == CDD_ECAP_MODE_SIGNAL_MEASUREMENT) &&
         (Cdd_Ecap_CfgPtr->chCfg[chNum].hr_enable == FALSE))
     {
-        uint32             baseAddr;
-        Cdd_Ecap_ValueType highTime, lowTime, period;
-
-        baseAddr = Cdd_Ecap_CfgPtr->chCfg[chNum].base_addr;
-
-        Cdd_Ecap_ObjPtr->chObj[chNum].InputState = CDD_ECAP_ACTIVE;
-
-        Cdd_Ecap_ObjPtr->chObj[chNum].cap1 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_1);
-        Cdd_Ecap_ObjPtr->chObj[chNum].cap2 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_2);
-        Cdd_Ecap_ObjPtr->chObj[chNum].cap3 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_3);
-        Cdd_Ecap_ObjPtr->chObj[chNum].cap4 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_4);
-        Cdd_Ecap_ObjPtr->chObj[chNum].intrCount++;
-        if (Cdd_Ecap_getIntrStatus(baseAddr, CDD_ECAP_CEVT1_INT) != 0U)
-        {
-            if ((Cdd_Ecap_ObjPtr->chObj[chNum].cap1 == 0U) || (Cdd_Ecap_ObjPtr->chObj[chNum].cap4 == 0U))
-            {
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = FALSE;
-            }
-            else
-            {
-                /* Increment is done to take care of the cycle delay due to counter reset */
-                Cdd_Ecap_ObjPtr->chObj[chNum].cap1++;
-                Cdd_Ecap_ObjPtr->chObj[chNum].cap4++;
-                if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_FALLING_EDGE)
-                {
-                    highTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap1);
-                    lowTime  = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4);
-                }
-                else
-                {
-                    highTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4);
-                    lowTime  = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap1);
-                }
-                period                                             = highTime + lowTime;
-                Cdd_Ecap_ObjPtr->chObj[chNum].HighTime             = highTime;
-                Cdd_Ecap_ObjPtr->chObj[chNum].LowTime              = lowTime;
-                Cdd_Ecap_ObjPtr->chObj[chNum].Period               = period;
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.PeriodTime = period;
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.ActiveTime = highTime;
-
-                /* Ignore the first interrupt as CAP4 will be invalid as it might be from an
-                 * edge before start */
-                if (Cdd_Ecap_ObjPtr->chObj[chNum].intrCount > 1U)
-                {
-                    Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = TRUE;
-                    Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = TRUE;
-                }
-            }
-            Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT1_INT);
-        }
-        else if (Cdd_Ecap_getIntrStatus(baseAddr, CDD_ECAP_CEVT2_INT) != 0U)
-        {
-            if (Cdd_Ecap_ObjPtr->chObj[chNum].cap2 == 0U)
-            {
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired     = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired   = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].HighTimeAcquired = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].LowTimeAcquired  = FALSE;
-            }
-            else
-            {
-                if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_FALLING_EDGE)
-                {
-                    lowTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2);
-                    Cdd_Ecap_ObjPtr->chObj[chNum].LowTimeAcquired = TRUE;
-                }
-                else
-                {
-                    highTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2);
-                    Cdd_Ecap_ObjPtr->chObj[chNum].HighTimeAcquired = TRUE;
-                }
-            }
-
-            Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT2_INT);
-        }
-        else if (Cdd_Ecap_getIntrStatus(baseAddr, CDD_ECAP_CEVT3_INT) != 0U)
-        {
-            if ((Cdd_Ecap_ObjPtr->chObj[chNum].cap2 == 0U) || (Cdd_Ecap_ObjPtr->chObj[chNum].cap3 == 0U))
-            {
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = FALSE;
-            }
-            else
-            {
-                /* Increment is done to take care of the cycle delay due to counter reset */
-                Cdd_Ecap_ObjPtr->chObj[chNum].cap2++;
-                Cdd_Ecap_ObjPtr->chObj[chNum].cap3++;
-                if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_FALLING_EDGE)
-                {
-                    highTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap3);
-                    lowTime  = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2);
-                }
-                else
-                {
-                    highTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2);
-                    lowTime  = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap3);
-                }
-                period                                             = highTime + lowTime;
-                Cdd_Ecap_ObjPtr->chObj[chNum].HighTime             = highTime;
-                Cdd_Ecap_ObjPtr->chObj[chNum].LowTime              = lowTime;
-                Cdd_Ecap_ObjPtr->chObj[chNum].Period               = period;
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.PeriodTime = period;
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.ActiveTime = highTime;
-
-                /* Ignore the first interrupt as CAP3 will be invalid as it might be from an
-                 * edge before start */
-                if (Cdd_Ecap_ObjPtr->chObj[chNum].intrCount > 1U)
-                {
-                    Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = TRUE;
-                    Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = TRUE;
-                }
-            }
-            Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT3_INT);
-        }
-        else if (Cdd_Ecap_getIntrStatus(baseAddr, CDD_ECAP_CEVT4_INT) != 0U)
-        {
-            if (Cdd_Ecap_ObjPtr->chObj[chNum].cap4 == 0U)
-            {
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired     = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired   = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].HighTimeAcquired = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].LowTimeAcquired  = FALSE;
-            }
-            else
-            {
-                if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_FALLING_EDGE)
-                {
-                    lowTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4);
-                    Cdd_Ecap_ObjPtr->chObj[chNum].LowTimeAcquired = TRUE;
-                }
-                else
-                {
-                    highTime = (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4);
-                    Cdd_Ecap_ObjPtr->chObj[chNum].HighTimeAcquired = TRUE;
-                }
-            }
-
-            Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT4_INT);
-        }
-        else
-        {
-            /* Do Nothing */
-        }
-
-        /* Clear interrupt */
-        Cdd_Ecap_globalIntrClear(baseAddr);
+        uint32 baseAddr = Cdd_Ecap_CfgPtr->chCfg[chNum].base_addr;
+        Cdd_Ecap_SignalMeasurement_DispatchIntr(chNum, baseAddr);
     }
 #if (STD_ON == CDD_ECAP_HR_API)
     if ((Cdd_Ecap_CfgPtr->chCfg[chNum].measurementMode == CDD_ECAP_MODE_SIGNAL_MEASUREMENT) &&
         (Cdd_Ecap_CfgPtr->chCfg[chNum].hr_enable == TRUE))
     {
-        uint32             baseAddr = Cdd_Ecap_CfgPtr->chCfg[chNum].base_addr;
-        Cdd_Ecap_ValueType highTime, lowTime, period;
-
-        Cdd_Ecap_ObjPtr->chObj[chNum].InputState = CDD_ECAP_ACTIVE;
-
-        Cdd_Ecap_ObjPtr->chObj[chNum].intrCount++;
-
-        Cdd_Ecap_ObjPtr->chObj[chNum].cap1 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_1);
-        Cdd_Ecap_ObjPtr->chObj[chNum].cap2 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_2);
-        Cdd_Ecap_ObjPtr->chObj[chNum].cap3 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_3);
-        Cdd_Ecap_ObjPtr->chObj[chNum].cap4 = Cdd_Ecap_timeStampRead(baseAddr, CDD_ECAP_EVENT_4);
-
-        if (Cdd_Ecap_getIntrStatus(baseAddr, CDD_ECAP_CEVT1_INT) != 0U)
-        {
-            if ((Cdd_Ecap_ObjPtr->chObj[chNum].cap1 == 0U) || (Cdd_Ecap_ObjPtr->chObj[chNum].cap3 == 0U) ||
-                (Cdd_Ecap_ObjPtr->chObj[chNum].cap4 == 0U))
-            {
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = FALSE;
-            }
-            else
-            {
-                if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_RISING_EDGE)
-                {
-                    highTime =
-                        (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4 - Cdd_Ecap_ObjPtr->chObj[chNum].cap3);
-                    lowTime =
-                        (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap1 - Cdd_Ecap_ObjPtr->chObj[chNum].cap4);
-                }
-                else
-                {
-                    highTime =
-                        (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap1 - Cdd_Ecap_ObjPtr->chObj[chNum].cap4);
-                    lowTime =
-                        (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4 - Cdd_Ecap_ObjPtr->chObj[chNum].cap3);
-                }
-                period                                             = highTime + lowTime;
-                Cdd_Ecap_ObjPtr->chObj[chNum].HighTime             = highTime;
-                Cdd_Ecap_ObjPtr->chObj[chNum].LowTime              = lowTime;
-                Cdd_Ecap_ObjPtr->chObj[chNum].Period               = period;
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.PeriodTime = period;
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.ActiveTime = highTime;
-
-                /* Ignore the first interrupt as CAP4 will be invalid as it might be from an
-                 * edge before start */
-                if (Cdd_Ecap_ObjPtr->chObj[chNum].intrCount > 1U)
-                {
-                    Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = TRUE;
-                    Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = TRUE;
-                }
-            }
-            Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT1_INT);
-        }
-        else if (Cdd_Ecap_getIntrStatus(baseAddr, CDD_ECAP_CEVT2_INT) != 0U)
-        {
-            if ((Cdd_Ecap_ObjPtr->chObj[chNum].cap2 == 0U) || (Cdd_Ecap_ObjPtr->chObj[chNum].cap1 == 0U))
-            {
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired     = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired   = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].HighTimeAcquired = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].LowTimeAcquired  = FALSE;
-            }
-            else
-            {
-                if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_FALLING_EDGE)
-                {
-                    lowTime =
-                        (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2 - Cdd_Ecap_ObjPtr->chObj[chNum].cap1);
-                    Cdd_Ecap_ObjPtr->chObj[chNum].LowTimeAcquired = TRUE;
-                }
-                else
-                {
-                    highTime =
-                        (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2 - Cdd_Ecap_ObjPtr->chObj[chNum].cap1);
-                    Cdd_Ecap_ObjPtr->chObj[chNum].HighTimeAcquired = TRUE;
-                }
-            }
-
-            Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT2_INT);
-        }
-        else if (Cdd_Ecap_getIntrStatus(baseAddr, CDD_ECAP_CEVT3_INT) != 0U)
-        {
-            if ((Cdd_Ecap_ObjPtr->chObj[chNum].cap1 == 0U) || (Cdd_Ecap_ObjPtr->chObj[chNum].cap2 == 0U) ||
-                (Cdd_Ecap_ObjPtr->chObj[chNum].cap3 == 0U))
-            {
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = FALSE;
-            }
-            else
-            {
-                if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_RISING_EDGE)
-                {
-                    highTime =
-                        (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2 - Cdd_Ecap_ObjPtr->chObj[chNum].cap1);
-                    lowTime =
-                        (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap3 - Cdd_Ecap_ObjPtr->chObj[chNum].cap2);
-                }
-                else
-                {
-                    highTime =
-                        (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap3 - Cdd_Ecap_ObjPtr->chObj[chNum].cap2);
-                    lowTime =
-                        (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap2 - Cdd_Ecap_ObjPtr->chObj[chNum].cap1);
-                }
-                period                                             = highTime + lowTime;
-                Cdd_Ecap_ObjPtr->chObj[chNum].HighTime             = highTime;
-                Cdd_Ecap_ObjPtr->chObj[chNum].LowTime              = lowTime;
-                Cdd_Ecap_ObjPtr->chObj[chNum].Period               = period;
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.PeriodTime = period;
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyCycle.ActiveTime = highTime;
-
-                /* Ignore the first interrupt as CAP3 will be invalid as it might be from an
-                 * edge before start */
-                if (Cdd_Ecap_ObjPtr->chObj[chNum].intrCount > 1U)
-                {
-                    Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired   = TRUE;
-                    Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired = TRUE;
-                }
-            }
-            Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT3_INT);
-        }
-        else if (Cdd_Ecap_getIntrStatus(baseAddr, CDD_ECAP_CEVT4_INT) != 0U)
-        {
-            if ((Cdd_Ecap_ObjPtr->chObj[chNum].cap3 == 0U) || (Cdd_Ecap_ObjPtr->chObj[chNum].cap4 == 0U))
-            {
-                Cdd_Ecap_ObjPtr->chObj[chNum].DutyAcquired     = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].PeriodAcquired   = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].HighTimeAcquired = FALSE;
-                Cdd_Ecap_ObjPtr->chObj[chNum].LowTimeAcquired  = FALSE;
-            }
-            else
-            {
-                if (Cdd_Ecap_ObjPtr->chObj[chNum].StartLevel == CDD_ECAP_START_LEVEL_FALLING_EDGE)
-                {
-                    lowTime =
-                        (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4 - Cdd_Ecap_ObjPtr->chObj[chNum].cap3);
-                    Cdd_Ecap_ObjPtr->chObj[chNum].LowTimeAcquired = TRUE;
-                }
-                else
-                {
-                    highTime =
-                        (Cdd_Ecap_ValueType)(Cdd_Ecap_ObjPtr->chObj[chNum].cap4 - Cdd_Ecap_ObjPtr->chObj[chNum].cap3);
-                    Cdd_Ecap_ObjPtr->chObj[chNum].HighTimeAcquired = TRUE;
-                }
-            }
-
-            Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_CEVT4_INT);
-        }
-        else
-        {
-            /* Do Nothing */
-        }
-
-        /* Clear interrupt */
-        Cdd_Ecap_globalIntrClear(baseAddr);
+        uint32 baseAddr = Cdd_Ecap_CfgPtr->chCfg[chNum].base_addr;
+        Cdd_Ecap_SignalMeasurementHr_DispatchIntr(chNum, baseAddr);
     }
 #endif
 #endif
 }
 
 #if (STD_ON == CDD_ECAP_HR_API)
+/*******************************************************************************
+ *   Function Name : Cdd_Ecap_CheckHrOverFlowStatus
+ ******************************************************************************/
+/*! \brief Service to check for overflow ionterrupt and calculate the scalefactor
+ *
+ *  Function is called from interrupt level
+ ******************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_CheckHrOverFlowStatus(uint8 chNum)
+{
+    /*Calibration done with an overflow. Determine which counter has overflowed*/
+    if (Cdd_Ecap_ObjPtr->chObj[chNum].hrclkCount > Cdd_Ecap_ObjPtr->chObj[chNum].sysclkCount)
+    {
+        /* HRCLK has overflowed */
+        Cdd_Ecap_ObjPtr->chObj[chNum].scaleFactor =
+            ((float32)Cdd_Ecap_ObjPtr->chObj[chNum].sysclkCount * CDD_ECAP_HRCAP_HRCAPCAL_INV_OVERFLOW);
+    }
+    else if (Cdd_Ecap_ObjPtr->chObj[chNum].hrclkCount < Cdd_Ecap_ObjPtr->chObj[chNum].sysclkCount)
+    {
+        /* SYSCLK has overflowed */
+        Cdd_Ecap_ObjPtr->chObj[chNum].scaleFactor =
+            (CDD_ECAP_HRCAP_HRCAPCAL_OVERFLOW / ((float32)Cdd_Ecap_ObjPtr->chObj[chNum].hrclkCount));
+    }
+    else
+    {
+        /* Both SYSCLK and HRCLK have overflowed */
+        Cdd_Ecap_ObjPtr->chObj[chNum].scaleFactor = 1.0f;
+    }
+}
 /*******************************************************************************
  *   Function Name : Cdd_Ecap_HR_ISR
  ******************************************************************************/
@@ -1330,24 +1326,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HR_ISR(Cdd_Ecap_ChannelType Channel)
     }
     else if ((uint16)CDD_ECAP_HRCAP_HRCALCAL_STATUS_PERIOD_OVERFLOW_ISR == calstatus)
     {
-        /*Calibration done with an overflow. Determine which counter has overflowed*/
-        if (Cdd_Ecap_ObjPtr->chObj[chNum].hrclkCount > Cdd_Ecap_ObjPtr->chObj[chNum].sysclkCount)
-        {
-            /* HRCLK has overflowed */
-            Cdd_Ecap_ObjPtr->chObj[chNum].scaleFactor =
-                ((float32)Cdd_Ecap_ObjPtr->chObj[chNum].sysclkCount * CDD_ECAP_HRCAP_HRCAPCAL_INV_OVERFLOW);
-        }
-        else if (Cdd_Ecap_ObjPtr->chObj[chNum].hrclkCount < Cdd_Ecap_ObjPtr->chObj[chNum].sysclkCount)
-        {
-            /* SYSCLK has overflowed */
-            Cdd_Ecap_ObjPtr->chObj[chNum].scaleFactor =
-                (CDD_ECAP_HRCAP_HRCAPCAL_OVERFLOW / ((float32)Cdd_Ecap_ObjPtr->chObj[chNum].hrclkCount));
-        }
-        else
-        {
-            /* Both SYSCLK and HRCLK have overflowed */
-            Cdd_Ecap_ObjPtr->chObj[chNum].scaleFactor = 1.0f;
-        }
+        Cdd_Ecap_CheckHrOverFlowStatus(chNum);
     }
     else
     {

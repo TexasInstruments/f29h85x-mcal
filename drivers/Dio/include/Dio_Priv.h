@@ -54,31 +54,31 @@ extern "C" {
 
 /** \brief Index of GPIO_DATA register for a port registers set */
 
-#define GPIO_DATA_INDEX (GPIO_O_GPADAT / 4U)
+#define DIO_DATA_INDEX (GPIO_O_GPADAT / 4U)
 
 /* Design: MCAL-23536 */
 
 /** \brief Index of GPIO_TOGGLE register for a port registers set */
 
-#define GPIO_TOGGLE_INDEX (GPIO_O_GPATOGGLE / 4U)
+#define DIO_TOGGLE_INDEX (GPIO_O_GPATOGGLE / 4U)
 
 /* Design: MCAL-23535 */
 
 /** \brief Index of GPIO_CLEAR register for a port registers set */
 
-#define GPIO_CLEAR_INDEX (GPIO_O_GPACLEAR / 4U)
+#define DIO_CLEAR_INDEX (GPIO_O_GPACLEAR / 4U)
 
 /* Design: MCAL-23534 */
 
 /** \brief Index of GPIO_SET register for a port registers set */
 
-#define GPIO_SET_INDEX (GPIO_O_GPASET / 4U)
+#define DIO_SET_INDEX (GPIO_O_GPASET / 4U)
 
 /* Design: MCAL-23537 */
 
 /** \brief Port Data register step size */
 
-#define GPIO_DATA_REGS_STEP ((GPIO_O_GPBDAT - GPIO_O_GPADAT) / 4U)
+#define DIO_DATA_REGS_STEP ((GPIO_O_GPBDAT - GPIO_O_GPADAT) / 4U)
 
 /* Design: MCAL-22468 */
 /** \brief Width of GPIO register in this platform. */

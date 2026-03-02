@@ -92,6 +92,7 @@ P2CONST(Cdd_Adc_ConfigType, AUTOMATIC, CDD_ADC_CONST) Cdd_Adc_CfgPtr = NULL_PTR;
  *  Local Function Prototypes
  *********************************************************************************************************************/
 
+/* Design: MCAL-31314 */
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
 /** \brief This function detects det errors in the Cdd_Adc_SetupResultBuffer & Cdd_Adc_ReadGroup APIs
  *
@@ -415,7 +416,7 @@ Cdd_Adc_SetupResultBuffer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
 #if (STD_ON == CDD_ADC_VERSION_INFO_API)
 
 /* Design: MCAL-31315 */
-/* Design: MCAL-31173,MCAL-31172 */
+/* Design: MCAL-31173,MCAL-31172,MCAL-31313 */
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_ADC_DATA) VersionInfo)
 {
@@ -440,7 +441,7 @@ Cdd_Adc_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_ADC_DATA) Versi
 #endif
 
 /*
- * Design: MCAL-
+ * Design: MCAL-31308
  */
 #if (STD_ON == CDD_ADC_DEINIT_API)
 /* Design: MCAL-31176,MCAL-31175,MCAL-31174 */
@@ -462,7 +463,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_DeInit(void)
 }
 #endif
 
-/* Design: MCAL-31316 */
+/* Design: MCAL-31316,MCAL-31309 */
 #if (STD_ON == CDD_ADC_ENABLE_START_STOP_GROUP_API)
 /*
  * Design: MCAL-31186,MCAL-31185,MCAL-31184,MCAL-31183,MCAL-31182,MCAL-31181,MCAL-31180,MCAL-31179,
@@ -597,6 +598,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGlobalSwTrig(VAR(Cdd_Adc_GlbTrigType, AUTOM
     }
     else if (GlbSwTrig >= CDD_ADC_GLBSW_TRIG_CNT)
     {
+        /* Design: MCAL-31293 */
         /* Report DET error if the global software trigger symbolic ID doesn't exist*/
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_STOP_GLBSW_TRIG,
                               CDD_ADC_E_INVALID_ID);
@@ -774,6 +776,7 @@ Cdd_Adc_ReadGroup(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
 }
 #endif
 
+/* Design: MCAL-31310 */
 #if (STD_ON == CDD_ADC_GRP_NOTIF_CAPABILITY_API)
 /* Design: MCAL-31283,MCAL-31282,MCAL-31281,MCAL-31280 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_EnableGroupNotification(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group)
@@ -794,6 +797,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_EnableGroupNotification(VAR(Cdd_Adc_GroupType, 
     }
     else if ((Cdd_Adc_GroupEndNotifyType)NULL_PTR == Cdd_Adc_CfgPtr->groupcfg[Group].groupend_notification)
     {
+        /* Design: MCAL-31156 */
         /* Report DET error if the group notification function doesn't exist */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_ENABLE_GROUP_NOTIFICATION,
                               CDD_ADC_E_NOTIF_CAPABILITY);
@@ -940,7 +944,7 @@ Cdd_Adc_SetResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
 
 #if (STD_ON == CDD_ADC_SAFETY_CHECK_API)
 
-/* Design: MCAL-31244,MCAL-31243,MCAL-31242 */
+/* Design: MCAL-31244,MCAL-31243,MCAL-31242,MCAL-31246,MCAL-31245 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartResultChecker(VAR(Cdd_Adc_CheckerType, AUTOMATIC) CheckerId)
 {
     uint32 base_addr = 0U;
@@ -977,10 +981,10 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartResultChecker(VAR(Cdd_Adc_CheckerType, AUT
         else
         {
             SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
+            /* Force Software sync to clear any result safety checker event flags that are set */
+            Cdd_Adc_ForceSafetyCheckerSync(base_addr);
             /* Enable the specified result safety checker tile */
             Cdd_Adc_ConfigureCheckerTile(base_addr, TRUE);
-            /* Force Software sync */
-            Cdd_Adc_ForceSafetyCheckerSync(base_addr);
             SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
         }
     }
@@ -1121,6 +1125,7 @@ Cdd_Adc_ClearCheckerEvt(VAR(Cdd_Adc_CheckerIntEvtType, AUTOMATIC) IntEvt,
 }
 #endif
 
+/* Design: MCAL-31311 */
 #if (STD_ON == CDD_ADC_ENABLE_PPB_API)
 /* Design: MCAL-31266,MCAL-31265,MCAL-31264,MCAL-31263 */
 FUNC(Cdd_Adc_PpbValType, CDD_ADC_CODE)
@@ -1277,13 +1282,14 @@ FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_GetDelayStamp(VAR(Cdd_Adc_PpbType, AUTOMATIC)
 }
 
 #if (STD_ON == CDD_ADC_PPB_NOTIF_CAPABILITY_API)
-
+/* Design:MCAL-35280 */
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_ConfigurePpbNotification(VAR(Cdd_Adc_PpbType, AUTOMATIC) PpbId, VAR(boolean, AUTOMATIC) Mode)
 {
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     if (FALSE == Cdd_Adc_IsInitialized)
     {
+        /* Design: MCAL-35328 */
         /* Report DET error if the driver not initialised before calling
          * CDD_Adc_EnableGroupNotification */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_CONFIGURE_PPB_NOTIFICATION,
@@ -1291,6 +1297,7 @@ Cdd_Adc_ConfigurePpbNotification(VAR(Cdd_Adc_PpbType, AUTOMATIC) PpbId, VAR(bool
     }
     else if (PpbId >= CDD_ADC_PPB_CNT)
     {
+        /* Design:MCAL-35329 */
         /* Report DET error if the PPB ID doesn't exist*/
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_CONFIGURE_PPB_NOTIFICATION,
                               CDD_ADC_E_INVALID_ID);
@@ -1315,7 +1322,7 @@ Cdd_Adc_ConfigurePpbNotification(VAR(Cdd_Adc_PpbType, AUTOMATIC) PpbId, VAR(bool
 #endif
 
 #if (STD_ON == CDD_ADC_TEMPERATURE_SENSOR_ENABLE)
-/* Design: MCAL-31300,MCAL-31329,MCAL-31328,MCAL-31327 */
+/* Design: MCAL-31300,MCAL-31329,MCAL-31328,MCAL-31327,MCAL-31299 */
 FUNC(sint16, CDD_ADC_CODE)
 Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
                         VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult)
@@ -1326,11 +1333,13 @@ Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
     Std_ReturnType return_value = E_NOT_OK;
     if (FALSE == Cdd_Adc_IsInitialized)
     {
+        /* Design: MCAL-31297 */
         /* Report DET error if the driver not initialised */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_TEMPERATURE_C, CDD_ADC_E_UNINIT);
     }
     else if (HwUnit >= CDD_ADC_HW_CNT)
     {
+        /* Design: MCAL-31298 */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_TEMPERATURE_C,
                               CDD_ADC_E_INVALID_ID);
     }
@@ -1431,7 +1440,7 @@ Cdd_Adc_SetInternalTestNode(VAR(Cdd_Adc_InternalTestNodeType, AUTOMATIC) TestNod
     }
 }
 
-/* Design:  */
+/* Design: MCAL-32672,MCAL-31128,MCAL-32668 */
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_UpdateStatusThroughDma(VAR(Cdd_Adc_HwUnitType, AUTOMATIC) HwUnitId, VAR(Cdd_Adc_IntNumType, AUTOMATIC) IntNum)
 {

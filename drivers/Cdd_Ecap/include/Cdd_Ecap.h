@@ -162,6 +162,8 @@ extern "C" {
 #define CDD_ECAP_E_PARAM_START_LEVEL ((uint8)0x1AU)
 /** \brief API service called with an invalid channel in the HR mode */
 #define CDD_ECAP_E_HR_CHANNEL ((uint8)0x1BU)
+/** \brief API service called when DeInit is called while the channel is running */
+#define CDD_ECAP_DEINIT_RUNNING_CHANNEL_ID ((uint8)0x1CU)
 /** @} */
 
 /**
@@ -175,7 +177,7 @@ extern "C" {
 /** \brief CDD_ECAP driver Status Initialized */
 #define CDD_ECAP_STATUS_INIT ((uint8)(1U))
 /** \brief CDD_ECAP Scalefactor is not ready */
-#define CDD_ECAP_SF_NOTREADY ((uint8)(0U))
+#define CDD_ECAP_SF_NOTREADY ((float32)(0U))
 /** @} */
 
 /**

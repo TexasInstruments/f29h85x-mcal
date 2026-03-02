@@ -91,6 +91,8 @@ extern "C" {
 /* Design: MCAL-22502 */
 #define DIO_FLIP_CHANNEL_API      [!IF "DioGeneral/DioFlipChannelApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 #endif
+
+/* Design: MCAL-22512 */
 /*********************************************************************************************************************
  *
  * \brief Defines mapping to physical GPIO ports.
@@ -98,21 +100,21 @@ extern "C" {
  *********************************************************************************************************************/
 /* Design: MCAL-22505 */
 /** \brief GPIO PORT A identifier. */
-#define GPIO_PORT_A                 (0U)
+#define DIO_PORT_A                 (0U)
 /** \brief GPIO PORT B identifier. */ 
-#define GPIO_PORT_B                 (1U)
+#define DIO_PORT_B                 (1U)
 /** \brief GPIO PORT C identifier. */
-#define GPIO_PORT_C                 (2U)
+#define DIO_PORT_C                 (2U)
 /** \brief GPIO PORT D identifier. */ 
-#define GPIO_PORT_D                 (3U)
+#define DIO_PORT_D                 (3U)
 /** \brief GPIO PORT E identifier. */ 
-#define GPIO_PORT_E                 (4U)
+#define DIO_PORT_E                 (4U)
 /** \brief GPIO PORT F identifier. */ 
-#define GPIO_PORT_F                 (5U)
+#define DIO_PORT_F                 (5U)
 /** \brief GPIO PORT G identifier. */ 
-#define GPIO_PORT_G                 (6U)
+#define DIO_PORT_G                 (6U)
 /** \brief GPIO PORT H identifier. */ 
-#define GPIO_PORT_H                 (7U) 
+#define DIO_PORT_H                 (7U) 
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -127,8 +129,8 @@ extern "C" {
 /* Design: MCAL-22504, MCAL-22474, MCAL-22473, MCAL-22537, MCAL-22538 */
 [!VAR "var1" = "0"!][!//
 [!LOOP "DioConfig/DioPort/*"!][!//
-/* Symbolic name for [!"concat('GPIO_PORT_', translate(DioPortId, '01234567', 'ABCDEFGH'))"!] */
-#define DioConf_DioPort_[!"@name"!] ((Dio_PortType)  [!"concat('GPIO_PORT_', translate(DioPortId, '01234567', 'ABCDEFGH'))"!]) /*~ASR~*/
+/* Symbolic name for [!"concat('DIO_PORT_', translate(DioPortId, '01234567', 'ABCDEFGH'))"!] */
+#define DioConf_DioPort_[!"@name"!] ((Dio_PortType)  [!"concat('DIO_PORT_', translate(DioPortId, '01234567', 'ABCDEFGH'))"!]) /*~ASR~*/
 [!CR!][!VAR "var1" = "$var1+1"!][!//
 [!ENDLOOP!][!//
 
@@ -139,7 +141,7 @@ extern "C" {
  *********************************************************************************************************************/
 #define DIO_CFG_ENABLED_PORT_MASK             (0U [!//
 [!LOOP "DioConfig/DioPort/*"!]\
-                                                  | (1U << [!"concat('GPIO_PORT_', translate(DioPortId, '01234567', 'ABCDEFGH'))"!])[!//
+                                                  | (1U << [!"concat('DIO_PORT_', translate(DioPortId, '01234567', 'ABCDEFGH'))"!])[!//
 [!ENDLOOP!][!//
 )[!//
 
@@ -157,21 +159,21 @@ extern "C" {
  * These defines map to GPIO register channels.
  *
  * The channel numbers are mapped as
- *  GPIO_PORT_A: Channel 0  - Channel 31
- *  GPIO_PORT_B: Channel 32 - Channel 63
- *  GPIO_PORT_C: Channel 64 - Channel 95
- *  GPIO_PORT_D: Channel 96 - Channel 127
- *  GPIO_PORT_E: Channel 128 - Channel 159
- *  GPIO_PORT_F: Channel 160 - Channel 191
- *  GPIO_PORT_G: Channel 192 - Channel 223
- *  GPIO_PORT_H: Channel 224 - Channel 255
+ *  DIO_PORT_A: Channel 0  - Channel 31
+ *  DIO_PORT_B: Channel 32 - Channel 63
+ *  DIO_PORT_C: Channel 64 - Channel 95
+ *  DIO_PORT_D: Channel 96 - Channel 127
+ *  DIO_PORT_E: Channel 128 - Channel 159
+ *  DIO_PORT_F: Channel 160 - Channel 191
+ *  DIO_PORT_G: Channel 192 - Channel 223
+ *  DIO_PORT_H: Channel 224 - Channel 255
  *
  *********************************************************************************************************************/
 /* Design: MCAL-22471, MCAL-22469, MCAL-22506, MCAL-22507, MCAL-22470, MCAL-22537, MCAL-22538*/
 [!VAR "var1" = "0"!][!//
 [!LOOP "DioConfig/DioPort/*"!][!//
 [!LOOP "DioChannel/*"!][!//
-/* Symbolic name for GPIO channel #[!"DioChannelId"!] [!"@name"!] */
+/* Symbolic name for DIO channel #[!"DioChannelId"!] [!"@name"!] */
 #define DioConf_DioChannel_[!"@name"!] ((Dio_ChannelType) [!"DioChannelId"!]U) /*~ASR~*/
 [!VAR "var1" = "$var1+1"!][!//
 [!ENDLOOP!][!//

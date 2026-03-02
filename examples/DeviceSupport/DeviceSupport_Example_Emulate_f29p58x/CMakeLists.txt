@@ -2,20 +2,20 @@ project(DeviceSupport_Example_Emulate_f29p58x LANGUAGES C ASM)
 
 if(NOT TARGET hw_include)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/hw_include/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/hw_include/
         ${CMAKE_CURRENT_BINARY_DIR}/DeviceSupport_Example_Emulate_f29p58x/hw_include
     )
 endif()
 
 if(NOT TARGET Port)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/Port/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/Port/
         ${CMAKE_CURRENT_BINARY_DIR}/DeviceSupport_Example_Emulate_f29p58x/Port)
 endif()
 
 if(NOT TARGET Mcu)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/Mcu/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/Mcu/
         ${CMAKE_CURRENT_BINARY_DIR}/DeviceSupport_Example_Emulate_f29p58x/Mcu)
 endif()
 
@@ -26,58 +26,58 @@ endif()
 
 if(NOT TARGET SchM_Port)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/SchM/Port/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Port/
         ${CMAKE_CURRENT_BINARY_DIR}/DeviceSupport_Example_Emulate_f29p58x/SchM_Port
     )
 endif()
 
 if(NOT TARGET Mcal_Lib)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/Mcal_Lib/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/Mcal_Lib/
         ${CMAKE_CURRENT_BINARY_DIR}/DeviceSupport_Example_Emulate_f29p58x/Mcal_Lib
     )
 endif()
 
 if(NOT TARGET AUTOSAR_Types)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/AUTOSAR_Types/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/AUTOSAR_Types/
         ${CMAKE_CURRENT_BINARY_DIR}/DeviceSupport_Example_Emulate_f29p58x/AUTOSAR_Types
     )
 endif()
 
 if(NOT TARGET AppUtils)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../AppUtils
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/examples/AppUtils
                      ${CMAKE_BINARY_DIR}/AppUtils)
 endif()
 
 if(NOT TARGET Det)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/Det/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/Det/
         ${CMAKE_CURRENT_BINARY_DIR}/DeviceSupport_Example_Emulate_f29p58x/Det)
 endif()
 
 if(NOT TARGET Dem)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/Dem/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/Dem/
         ${CMAKE_CURRENT_BINARY_DIR}/DeviceSupport_Example_Emulate_f29p58x/Dem)
 endif()
 
 if(NOT TARGET MemMap)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/MemMap/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/MemMap/
         ${CMAKE_CURRENT_BINARY_DIR}/DeviceSupport_Example_Emulate_f29p58x/MemMap
     )
 endif()
 
 if(NOT TARGET EcuM)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/EcuM/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/EcuM/
         ${CMAKE_CURRENT_BINARY_DIR}/DeviceSupport_Example_Emulate_f29p58x/EcuM)
 endif()
 
 if(NOT TARGET Os)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/BSW_Stubs/Os/
+        ${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/Os/
         ${CMAKE_CURRENT_BINARY_DIR}/DeviceSupport_Example_Emulate_f29p58x/Os)
 endif()
 
@@ -89,7 +89,7 @@ if(NOT TARGET DeviceSupport_Example_Emulate_f29p58x_Config)
 endif()
 
 if(NOT TARGET DeviceSupport)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/examples/DeviceSupport
                      ${CMAKE_BINARY_DIR}/DeviceSupport)
 endif()
 
@@ -102,11 +102,11 @@ add_link_options(-Wl,-m=${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.map)
 
 if(BUILD_CONFIGURATION MATCHES "RAM")
     add_link_options(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29p58x_ram_lnk_cpu1.cmd
+        ${PROJECT_ROOT_DIRECTORY}/examples/DeviceSupport/LinkerCMD/f29p58x_ram_lnk_cpu1.cmd
     )
 else()
     add_link_options(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29p58x_flash_lnk_cpu1.cmd
+        ${PROJECT_ROOT_DIRECTORY}/examples/DeviceSupport/LinkerCMD/f29p58x_flash_lnk_cpu1.cmd
     )
 endif()
 

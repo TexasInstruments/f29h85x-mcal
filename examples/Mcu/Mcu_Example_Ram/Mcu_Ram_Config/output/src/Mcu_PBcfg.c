@@ -1455,7 +1455,7 @@ static CONST(Mcu_RamSectionConfigType, MCU_CONFIG_DATA) Mcu_RamSectionCfgSet0[1]
 {
     {
     .Mcu_RamSectionBytes       = ((uint32) 16U),
-    .Mcu_RamSectionBaseAddress = ((uint8*) 0x200e0000),
+    .Mcu_RamSectionBaseAddress = ((uint8*) 0x200e0000U),
     .Mcu_RamDefaultValue       = ((uint8) 0xcdU),
     .Mcu_RamSectionWriteSize   = ((uint8) 1U)
     }

@@ -91,7 +91,7 @@ if(NOT TARGET Cdd_Ecap_HrMode_Config)
 endif()
 
 if(NOT TARGET DeviceSupport)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/examples/DeviceSupport
                      ${CMAKE_BINARY_DIR}/DeviceSupport)
 endif()
 
@@ -101,7 +101,7 @@ if(NOT TARGET Cdd_Xbar)
 endif()
 
 if(NOT TARGET AppUtils)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../AppUtils
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/examples/AppUtils
                      ${CMAKE_BINARY_DIR}/AppUtils)
 endif()
 

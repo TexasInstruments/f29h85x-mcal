@@ -22,6 +22,9 @@
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
+/*
+ * Design: MCAL-30912, MCAL-30913, MCAL-30914,
+ */
 #include "Fls_Ac.h"
 
 /*********************************************************************************************************************
@@ -55,7 +58,7 @@
 static FUNC(void, FLS_CODE) Fls_Write_32(uint32 ctrlBase, uint32 reg_offset, uint32 mask, uint32 shift, uint32 value);
 
 /* Flash C API functions*/
-static FUNC(void, FLS_CODE) Fls_Fapi_issueFsmCommand(Fls_FlashStateCmdType oCommand);
+static FUNC(void, FLS_CODE) Fls_Fapi_issueFsmCommand(void);
 
 static FUNC(uint32, FLS_CODE) Fls_Fapi_flushPipeline(void);
 
@@ -166,18 +169,19 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_initializeAPI(uint32 u32HclkFrequency)
 
     return (oErrorReturn);
 }
+
 /*
  *   Used to setup and issue a programming command to the Flash State Machine.
+ *  Design: MCAL-30891, MCAL-30892, MCAL-30893, MCAL-30897,
  */
-FUNC(Std_ReturnType, FLS_CODE)
+FUNC(void, FLS_CODE)
 Fls_Fapi_issueProgrammingCommand(uint32 *pu32StartAddress, uint8 *pu8DataBuffer, uint8 u8DataBufferSizeInBytes)
 {
-    VAR(uint32, AUTOMATIC) u8BankWidth                   = 16U;
-    VAR(uint32, AUTOMATIC) u32StartCondition             = 0U;
-    VAR(uint32, AUTOMATIC) u32StopCondition              = 0U;
-    VAR(uint32, AUTOMATIC) u32Index                      = 0U;
-    VAR(uint32, AUTOMATIC) u32CopyDataBuffer             = 0U;
-    VAR(volatile Std_ReturnType, AUTOMATIC) oErrorReturn = E_OK;
+    VAR(uint32, AUTOMATIC) u8BankWidth       = 16U;
+    VAR(uint32, AUTOMATIC) u32StartCondition = 0U;
+    VAR(uint32, AUTOMATIC) u32StopCondition  = 0U;
+    VAR(uint32, AUTOMATIC) u32Index          = 0U;
+    VAR(uint32, AUTOMATIC) u32CopyDataBuffer = 0U;
 
     u32StartCondition = ((uint32)pu32StartAddress) & (uint32)((uint32)u8BankWidth - (uint32)1U);
     /* Proceed to setting up address and data registers for program operation */
@@ -237,24 +241,19 @@ Fls_Fapi_issueProgrammingCommand(uint32 *pu32StartAddress, uint8 *pu8DataBuffer,
         HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDBYTEN) |= (((uint32)0xF) << (u32Index));
     }
     /* Issue the Program command to the FSM */
-    Fls_Fapi_issueFsmCommand(FLS_FAPI_PROGRAMDATA);
+    Fls_Fapi_issueFsmCommand();
 
     /* Disable AUTOCALC */
     (void)Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CMDCTL, FLS_FLASH_NW_CMDCTL_ECCGENOVR,
                        FLS_FLASH_NW_CMDCTL_ECCGENOVR_S, 1U);
-
-    /* Return the function status */
-    return (oErrorReturn);
 }
 /*
  *   Issues a command to the Flash State Machine for operations that require
  *   a valid address to operate to correctly.
  */
-FUNC(Std_ReturnType, FLS_CODE)
-Fls_Fapi_issueAsyncCommandWithAddress(Fls_FlashStateCmdType oCommand, uint32 *pu32StartAddress)
+FUNC(void, FLS_CODE)
+Fls_Fapi_issueAsyncCommandWithAddress(uint32 *pu32StartAddress)
 {
-    VAR(Std_ReturnType, AUTOMATIC) oErrorReturn = E_OK;
-
     /*  Configure for sector erase: Command is erase (2), Size is sector (4) */
     HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDTYPE) = FLS_FLASH_NW_CMDTYPE_SECTOR_ERASE;
 
@@ -262,18 +261,14 @@ Fls_Fapi_issueAsyncCommandWithAddress(Fls_FlashStateCmdType oCommand, uint32 *pu
     HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDADDR) = (uint32)pu32StartAddress;
 
     /* Issue the specified command to the FSM */
-    Fls_Fapi_issueFsmCommand(FLS_FAPI_ERASESECTOR);
-
-    return (oErrorReturn);
+    Fls_Fapi_issueFsmCommand();
 }
 
 /*
  *   Issues bank erase command to the Flash State Machine for the given bank address
  */
-FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_issueBankEraseCommand(uint32 *pu32StartAddress)
+FUNC(void, FLS_CODE) Fls_Fapi_issueBankEraseCommand(uint32 *pu32StartAddress)
 {
-    VAR(Std_ReturnType, AUTOMATIC) oErrorReturn = E_OK; /*0x0*/
-
     /* Bit field: | 4   3  |  2   1   0| */
     /* Bit field:   FLCID      BankID    */
     HWREG(FLS_SSUGEN_BASE + FLS_SSU_O_BEPROT_BANK)  = (4U << FLS_SSU_BEPROT_BANK_BANKID_S);
@@ -293,33 +288,24 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_issueBankEraseCommand(uint32 *pu32StartA
                  FLS_FLASH_NW_CMDWEPROTNM_VAL_S, 1U);
 
     /* Issue the specified command to the FSM */
-    Fls_Fapi_issueFsmCommand(FLS_FAPI_ERASEBANK);
-
-    return (oErrorReturn);
+    Fls_Fapi_issueFsmCommand();
 }
 
 /*
  *   Issues a command to the Flash State Machine for operations that do not
  *   require a valid address to operate to correctly.
  */
-FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_issueAsyncCommand(Fls_FlashStateCmdType oCommand)
+FUNC(void, FLS_CODE) Fls_Fapi_issueAsyncCommand(void)
 {
-    VAR(volatile Std_ReturnType, AUTOMATIC) oErrorReturn = E_NOT_OK;
-
     /* Issue the command only if the command is valid    */
-    if (FLS_FAPI_CLEARSTATUS == oCommand)
-    {
-        /* Configure for CLEAR STATUS and read back FLS_FLASH_O_CMDTYPE*/
-        Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CMDTYPE, FLS_FLASH_NW_CMDTYPE_CMD_M,
-                     FLS_FLASH_NW_CMDTYPE_CMD_S, 0x5U);
-        // /* Issue the specified command to the FSM */
 
-        /* Issue the specified command to the FSM */
-        Fls_Fapi_issueFsmCommand(oCommand);
-        oErrorReturn = E_OK;
-    }
+    /* Configure for CLEAR STATUS and read back FLS_FLASH_O_CMDTYPE*/
+    Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CMDTYPE, FLS_FLASH_NW_CMDTYPE_CMD_M,
+                 FLS_FLASH_NW_CMDTYPE_CMD_S, 0x5U);
+    // /* Issue the specified command to the FSM */
 
-    return (oErrorReturn);
+    /* Issue the specified command to the FSM */
+    Fls_Fapi_issueFsmCommand();
 }
 
 /*
@@ -358,7 +344,7 @@ static FUNC(Std_ReturnType, FLS_CODE)
     {
         if (*pu32CurrentAddress != *pu32CurrentCheckValue)
         {
-            /* save last address read */
+            /* save address of first failure */
             poFlashStatusWord->au32StatusWord[0] = (uint32)(pu32CurrentAddress);
             /* save actual data */
             poFlashStatusWord->au32StatusWord[1] = *pu32CurrentAddress;
@@ -366,6 +352,7 @@ static FUNC(Std_ReturnType, FLS_CODE)
             poFlashStatusWord->au32StatusWord[2] = *pu32CurrentCheckValue;
 
             oErrorReturn = E_NOT_OK;
+            break;
         }
 
         /* Increment the check buffer if not checking for a single value */
@@ -398,6 +385,76 @@ static FUNC(Std_ReturnType, FLS_CODE)
         oErrorReturn                         = E_NOT_OK;
     }
     return (oErrorReturn);
+}
+
+/*
+ *   Loops the specified region for the looking for the specified check value.
+ */
+static FUNC(Std_ReturnType, FLS_CODE)
+    Fls_Fapi_loopRegionForValueByByte(uint8 *pu8StartAddress, uint32 u32ByteCount,
+                                      Fls_FlashStatusWordType *poFlashStatusWord, uint8 *pu8CheckValue,
+                                      Fls_FapiRegionValueType oRegionValue)
+{
+    VAR(Std_ReturnType, AUTOMATIC) oErrorReturn                 = E_OK;
+    P2VAR(uint8, AUTOMATIC, FLS_APPL_DATA) pu8CurrentCheckValue = pu8CheckValue;
+    P2VAR(uint8, AUTOMATIC, FLS_APPL_DATA) pu8CurrentAddress    = (uint8 *)(pu8StartAddress);
+    VAR(uint32, AUTOMATIC) index                                = (uint32)0U;
+
+    for (index = 0; index < u32ByteCount; index++)
+    {
+        if (*pu8CurrentAddress != *pu8CurrentCheckValue)
+        {
+            /* save address of first failure */
+            poFlashStatusWord->au32StatusWord[0] = (uint32)(pu8CurrentAddress);
+            /* save actual data */
+            poFlashStatusWord->au32StatusWord[1] = *pu8CurrentAddress;
+            /* save expected data */
+            poFlashStatusWord->au32StatusWord[2] = (uint8)*pu8CurrentCheckValue;
+
+            oErrorReturn = E_NOT_OK;
+            break;
+        }
+        /* Increment the check buffer if not checking for a single value */
+        if (oRegionValue != FLS_FAPI_SINGLEVALUE)
+        {
+            pu8CurrentCheckValue++;
+        }
+
+        /* increment address */
+        pu8CurrentAddress++;
+    }
+    return (oErrorReturn);
+}
+
+/*
+ *   Loops the specified region for the looking for the specified check value by byte.
+ */
+static FUNC(Std_ReturnType, FLS_CODE)
+    Fls_Fapi_checkRegionForValueByByte(uint8 *pu8StartAddress, uint32 u32ByteCount,
+                                       Fls_FlashStatusWordType *poFlashStatusWord, uint8 *pu8CheckValue,
+                                       Fls_FapiRegionValueType oRegionValue)
+{
+    VAR(Std_ReturnType, AUTOMATIC) oErrorReturn = E_OK;
+
+    /* Verify only if the address is valid */
+    (void)Fls_Fapi_flushPipeline();
+    if (Fls_Fapi_loopRegionForValueByByte(pu8StartAddress, u32ByteCount, poFlashStatusWord, pu8CheckValue,
+                                          oRegionValue) != E_OK)
+    {
+        /* save read mode */
+        poFlashStatusWord->au32StatusWord[3] = 0U;
+        oErrorReturn                         = E_NOT_OK;
+    }
+
+    return (oErrorReturn);
+}
+
+FUNC(Std_ReturnType, FLS_CODE)
+Fls_Fapi_doVerifyByByte(uint8 *pu8StartAddress, uint32 u32ByteCount, uint8 *pu8CheckValueBuffer,
+                        Fls_FlashStatusWordType *poFlashStatusWord)
+{
+    return (Fls_Fapi_checkRegionForValueByByte(pu8StartAddress, u32ByteCount, poFlashStatusWord, pu8CheckValueBuffer,
+                                               FLS_FAPI_MULTIPLEVALUEECC));
 }
 
 /**
@@ -445,30 +502,19 @@ FUNC(Fls_FapiFlashStatus, FLS_CODE) Fls_Fapi_getFsmStatus(void)
 /*
  *   Issues a command to the Flash State Machine.
  */
-static FUNC(void, FLS_CODE) Fls_Fapi_issueFsmCommand(Fls_FlashStateCmdType oCommand)
+static FUNC(void, FLS_CODE) Fls_Fapi_issueFsmCommand(void)
 {
     /* Issue the command only if the command is valid */
-    if ((FLS_FAPI_CLEARSTATUS == oCommand) || (FLS_FAPI_PROGRAMDATA == oCommand) || (FLS_FAPI_ERASEBANK == oCommand) ||
-        (FLS_FAPI_ERASESECTOR == oCommand))
-    {
-        HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDEXEC) = 0x1U;
-    }
+    HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDEXEC) = 0x1U;
 }
 
 /*
  *   Used to enable sector access during erase and program operations.
+ *   Design: MCAL-31077,
  */
-FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_setupBankSectorEnable(uint32 reg_address, uint32 value)
+FUNC(void, FLS_CODE) Fls_Fapi_setupBankSectorEnable(uint32 reg_address, uint32 value)
 {
-    VAR(Std_ReturnType, AUTOMATIC) oStatusReturn = E_NOT_OK;
-
-    if ((reg_address == (FLS_FLASH_NW_O_CMDWEPROTA)) || (reg_address == (FLS_FLASH_NW_O_CMDWEPROTB)))
-    {
-        HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + reg_address) = value;
-        oStatusReturn                                        = E_OK;
-    }
-
-    return (oStatusReturn);
+    HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + reg_address) = value;
 }
 
 /*
@@ -500,13 +546,11 @@ static FUNC(void, FLS_CODE) Fls_Write_32(uint32 ctrlBase, uint32 reg_offset, uin
 static FUNC(void, FLS_CODE) Fls_F29SetWaitstates(uint16 waitstates)
 {
     /* waitstates is 4 bits wide */
-    if ((waitstates <= 0xFU) && (waitstates >= 0x1U))
-    {
-        /* Write flash read wait-state amount to appropriate register */
-        HWREG(FLS_FRI1_CTL_BASE + FLS_FRI_O_FRDCNTL) =
-            (HWREG(FLS_FRI1_CTL_BASE + FLS_FRI_O_FRDCNTL) & ~(uint32)FLS_FRI_FRDCNTL_RWAIT_M) |
-            ((uint32)waitstates << FLS_FRI_FRDCNTL_RWAIT_S);
-    }
+
+    /* Write flash read wait-state amount to appropriate register */
+    HWREG(FLS_FRI1_CTL_BASE + FLS_FRI_O_FRDCNTL) =
+        (HWREG(FLS_FRI1_CTL_BASE + FLS_FRI_O_FRDCNTL) & ~(uint32)FLS_FRI_FRDCNTL_RWAIT_M) |
+        ((uint32)waitstates << FLS_FRI_FRDCNTL_RWAIT_S);
 }
 
 static FUNC(void, FLS_CODE) Fls_F29WriteTrims(uint32 reg_offset, uint32 mask, uint32 shift, uint32 value)

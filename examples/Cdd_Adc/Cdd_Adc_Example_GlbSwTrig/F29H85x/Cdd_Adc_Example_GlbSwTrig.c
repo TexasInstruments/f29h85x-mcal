@@ -90,6 +90,11 @@ Cdd_Adc_ValueGroupType Cdd_Adc_ResultBuffer[CDD_ADC_GROUP_CNT][20U];
  * Local Object Definitions
  *********************************************************************************************************************/
 
+#if (STD_ON == CDD_ADC_VERSION_INFO_API)
+/*  Version info variable */
+Std_VersionInfoType Cdd_Adc_VersionInfo;
+#endif
+
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
@@ -217,6 +222,17 @@ int main()
 
     AppUtils_Init(200000000U);  // Init App utils to enable prints
     AppUtils_Printf("Executing Cdd_Adc_Example_GlbSwTrig example\n");
+
+#if (STD_ON == CDD_ADC_VERSION_INFO_API)
+    Cdd_Adc_GetVersionInfo(&Cdd_Adc_VersionInfo);
+    AppUtils_Printf("CDD ADC MCAL Version Info\n");
+    AppUtils_Printf("---------------------\n");
+    AppUtils_Printf("Vendor ID           : %d\n", Cdd_Adc_VersionInfo.vendorID);
+    AppUtils_Printf("Module ID           : %d\n", Cdd_Adc_VersionInfo.moduleID);
+    AppUtils_Printf("SW Major Version    : %d\n", Cdd_Adc_VersionInfo.sw_major_version);
+    AppUtils_Printf("SW Minor Version    : %d\n", Cdd_Adc_VersionInfo.sw_minor_version);
+    AppUtils_Printf("SW Patch Version    : %d\n", Cdd_Adc_VersionInfo.sw_patch_version);
+#endif
 
     Cdd_Adc_ConfigTypePtr = &CDD_ADC_CONFIG_PC;
     group_mask = Cdd_Adc_ConfigTypePtr->glbtrigcfg[CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0].group_mask;

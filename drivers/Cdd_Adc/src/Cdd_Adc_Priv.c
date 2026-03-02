@@ -294,14 +294,13 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SelSocExtChn(uint32 Base, uint8 So
  * This enables/disables the external mux preselect for the specified ADC hardware unit
  *
  * \param[in]  Base     Base address of the ADC hardware unit
- * \param[in]  Mode     Enable/Disable to select/deselect external mux preselection
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureExtMuxPreselect(uint32 Base, boolean Mode);
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureExtMuxPreselect(uint32 Base);
 #endif
 
 #if (CDD_ADC_TRIG_REP_ENABLE == STD_ON)
@@ -1125,27 +1124,27 @@ static FUNC(void, CDD_ADC_CODE)
 #define CDD_ADC_START_SEC_CODE
 #include "Cdd_Adc_MemMap.h"
 
-/* Design MCAL-31355 */
+/* Design: MCAL-31355 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SelectOffsetTrimMode(uint32 Base, Cdd_Adc_OffsetTrimType TrimMode)
 {
     /* Select offset trim mode for the ADC hardware instance */
-    HWREGH(Base + ADC_O_CTL2) = (HWREGH(Base + ADC_O_CTL2) & ~(ADC_CTL2_OFFTRIMMODE)) | (uint16)TrimMode;
+    HWREGH(Base + ADC_O_CTL2) = (HWREGH(Base + ADC_O_CTL2) & (uint16)(~ADC_CTL2_OFFTRIMMODE)) | (uint16)TrimMode;
 }
 
-/* Design MCAL-31356 */
+/* Design: MCAL-31356 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetPrescaler(uint32 Base, Cdd_Adc_PrescaleType Prescale)
 {
-    HWREGH(Base + ADC_O_CTL2) = (HWREGH(Base + ADC_O_CTL2) & ~ADC_CTL2_PRESCALE_M) | (uint16)Prescale;
+    HWREGH(Base + ADC_O_CTL2) = (HWREGH(Base + ADC_O_CTL2) & (uint16)(~ADC_CTL2_PRESCALE_M)) | (uint16)Prescale;
 }
 
-/* Design MCAL-31358 */
+/* Design: MCAL-31358,MCAL-31134 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetIntPulseMode(uint32 Base, Cdd_Adc_EocPulseType PulseMode)
 {
     /* Set the position of the pulse */
-    HWREGH(Base + ADC_O_CTL1) = (HWREGH(Base + ADC_O_CTL1) & ~ADC_CTL1_INTPULSEPOS) | ((uint16)PulseMode);
+    HWREGH(Base + ADC_O_CTL1) = (HWREGH(Base + ADC_O_CTL1) & (uint16)(~ADC_CTL1_INTPULSEPOS)) | ((uint16)PulseMode);
 }
 
-/* Design MCAL-31357 */
+/* Design: MCAL-31357 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_SetupSoc(uint32 Base, uint8 SocNum, Cdd_Adc_TriggerType Trigger, uint8 Channel, uint16 SampleWindow)
 {
@@ -1158,18 +1157,18 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
                           ((uint32)SampleWindow);
 }
 
-/* Design MCAL-31359 */
+/* Design: MCAL-31359 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ForceMultipleSoc(uint32 Base, uint32 SocMask)
 {
     /* Write to the register that will force a 1 to desired SOCs */
     HWREG(Base + ADC_O_SOCFRC1) |= SocMask;
 }
 
-/* Design MCAL-31360 */
+/* Design: MCAL-31360 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetSocPriority(uint32 Base, Cdd_Adc_SocPriorityType PriorityMode)
 {
     HWREGH(Base + ADC_O_SOCPRICTL) =
-        (HWREGH(Base + ADC_O_SOCPRICTL) & ~ADC_SOCPRICTL_SOCPRIORITY_M) | ((uint16)PriorityMode);
+        (HWREGH(Base + ADC_O_SOCPRICTL) & (uint16)(~ADC_SOCPRICTL_SOCPRIORITY_M)) | ((uint16)PriorityMode);
 }
 
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_EnableAltDmaTiming(uint32 Base)
@@ -1178,19 +1177,19 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_EnableAltDmaTiming(uint32 Base)
     HWREGH(Base + ADC_O_CTL1) |= (uint16)ADC_CTL1_TDMAEN;
 }
 
-/* Design MCAL-31361 */
+/* Design: MCAL-31361 */
 static FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_ReadResult(uint32 ResultBase, uint8 SocNumber)
 {
     /*  Return the ADC result for the selected SOC */
     return (uint16)(HWREGH(ResultBase + ADC_O_RESULT0 + ((uint32)SocNumber * ADC_RESULT_STEP)));
 }
 
-/* Design MCAL-31362 */
+/* Design: MCAL-31362 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_SetIntSocTrigger(uint32 Base, uint8 SocNum, Cdd_Adc_IntSocTriggerType Trigger)
 {
     /* Each SOC has a 2-bit field in this register */
-    uint16 shift_val = ((SocNum % (uint8)16U) << (uint8)1U);
+    uint16 shift_val = (((uint16)SocNum % (uint16)16U) << (uint8)1U);
     /* Get the offset to the appropriate offset register */
     uint32 offset = Base + ADC_O_INTSOCSEL1 + ((uint32)4U * (((uint32)SocNum) / (uint32)16U));
     HWREG(offset) = (HWREG(offset) & ~((uint32)ADC_INTSOCSEL1_SOC0_M << shift_val)) | ((uint32)Trigger << shift_val);
@@ -1199,7 +1198,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
 /* ADC global registers */
 #if (CDD_ADC_GLBSW_TRIG_API == STD_ON)
 
-/* Design MCAL-31363 */
+/* Design: MCAL-31363 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_GlobalSwTrigger(uint8 AdcMask)
 {
     uint32 addr = Cdd_Adc_ConfigPtr->glbsw_baseaddr + ASYSCTL_O_ADCSOCFRCGBSEL;
@@ -1207,7 +1206,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_GlobalSwTrigger(uint8 AdcMask)
     HWREG(addr) = (uint32)AdcMask;
 }
 
-/* Design MCAL-31364 */
+/* Design: MCAL-31364 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SocGlobalSwTrigger(uint32 SocMask)
 {
     uint32 addr = Cdd_Adc_ConfigPtr->glbsw_baseaddr + ASYSCTL_O_ADCSOCFRCGB;
@@ -1218,7 +1217,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SocGlobalSwTrigger(uint32 SocMask)
 
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
 
-/* Design MCAL-31365 */
+/* Design: MCAL-31365 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SelSocExtChn(uint32 Base, uint8 SocNum, uint8 ExtChannel)
 {
     uint32 ctlreg_addr = Base + ADC_O_SOC0CTL + ((uint32)SocNum * (ADC_SOCXCTL_STEP));
@@ -1228,24 +1227,18 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SelSocExtChn(uint32 Base, uint8 So
         (HWREG(ctlreg_addr) & ~((uint32)ADC_SOC0CTL_EXTCHSEL_M)) | ((uint32)ExtChannel << ADC_SOC0CTL_EXTCHSEL_S);
 }
 
-/* Design MCAL-31366 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureExtMuxPreselect(uint32 Base, boolean Mode)
+/* Design: MCAL-31366 */
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureExtMuxPreselect(uint32 Base)
 {
     /* Enable the external mux selection at the beginning of S+H window of current conversion */
-    if (TRUE == Mode)
-    {
-        HWREGH(Base + ADC_O_CTL1) |= (uint16)ADC_CTL1_EXTMUXPRESELECTEN;
-    }
-    else
-    {
-        HWREGH(Base + ADC_O_CTL1) &= ~((uint16)ADC_CTL1_EXTMUXPRESELECTEN);
-    }
+
+    HWREGH(Base + ADC_O_CTL1) |= (uint16)ADC_CTL1_EXTMUXPRESELECTEN;
 }
 #endif
 
 #if (CDD_ADC_TRIG_REP_ENABLE == STD_ON)
 
-/* Design MCAL-31367 */
+/* Design: MCAL-31367,MCAL-31127 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_SetTrigRepMode(uint32 Base, Cdd_Adc_RepeaterType RepInstance, Cdd_Adc_RepeaterModeType RepMode)
 {
@@ -1254,7 +1247,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     HWREG(regoffset) = (HWREG(regoffset) & ~ADC_REP1CTL_MODE) | (uint32)RepMode;
 }
 
-/* Design MCAL-31368 */
+/* Design: MCAL-31368 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_SelTrigRepTrigger(uint32 Base, Cdd_Adc_RepeaterType RepInstance, Cdd_Adc_TriggerType Trigger)
 {
@@ -1264,7 +1257,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
         (HWREG(regoffset) & ~((uint32)ADC_REP1CTL_TRIGGER_M)) | ((uint32)Trigger << ADC_REP1CTL_TRIGGER_S);
 }
 
-/* Design MCAL-31369 */
+/* Design: MCAL-31369 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ForceRepeaterTriggerSync(uint32 Base, Cdd_Adc_RepeaterType RepInstance)
 {
     uint32 regoffset = Base + ((uint32)RepInstance * (ADC_REPXCTL_STEP)) + ADC_O_REP1CTL;
@@ -1272,7 +1265,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ForceRepeaterTriggerSync(uint32 Ba
     HWREG(regoffset) |= (uint32)ADC_REP1CTL_SWSYNC;
 }
 
-/* Design MCAL-31370 */
+/* Design: MCAL-31370 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_SetTrigRepCount(uint32 Base, Cdd_Adc_RepeaterType RepInstance, uint8 RepCount)
 {
@@ -1281,7 +1274,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     HWREG(regoffset) = (HWREG(regoffset) & ~(ADC_REP1N_NSEL_M)) | (uint32)RepCount;
 }
 
-/* Design MCAL-31371 */
+/* Design: MCAL-31371 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_SetTrigRepPhase(uint32 Base, Cdd_Adc_RepeaterType RepInstance, uint16 RepPhase)
 {
@@ -1290,7 +1283,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     HWREG(regoffset) = (HWREG(regoffset) & ~ADC_REP1PHASE_PHASE_M) | (uint32)RepPhase;
 }
 
-/* Design MCAL-31372 */
+/* Design: MCAL-31372 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_SetTrigRepSpread(uint32 Base, Cdd_Adc_RepeaterType RepInstance, uint16 RepSpread)
 {
@@ -1299,7 +1292,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     HWREG(regoffset) = (HWREG(regoffset) & ~(ADC_REP1SPREAD_SPREAD_M)) | (uint32)RepSpread;
 }
 
-/* Design MCAL-31373 */
+/* Design: MCAL-31373 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ClearPhaseOvf(uint32 Base, Cdd_Adc_RepeaterType RepInstance)
 {
     uint32 regoffset = Base + ((uint32)RepInstance * (ADC_REPXCTL_STEP)) + ADC_O_REP1CTL;
@@ -1308,7 +1301,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ClearPhaseOvf(uint32 Base, Cdd_Adc
     HWREG(regoffset) |= ((uint32)ADC_REP1CTL_PHASEOVF);
 }
 
-/* Design MCAL-31374 */
+/* Design: MCAL-31374 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ClearTriggerOvf(uint32 Base, Cdd_Adc_RepeaterType RepInstance)
 {
     uint32 regoffset = Base + ((uint32)RepInstance * (ADC_REPXCTL_STEP)) + ADC_O_REP1CTL;
@@ -1318,7 +1311,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ClearTriggerOvf(uint32 Base, Cdd_A
 }
 #endif
 
-/* Design MCAL-31375 */
+/* Design: MCAL-31375 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureInterrupt(uint32 Base, Cdd_Adc_IntNumType IntNum, boolean Mode)
 {
     uint32 base_addr = Base + ADC_O_INTSEL1N2 + ((uint32)ADC_INTSELXNY_STEP * ((uint32)IntNum >> 1U));
@@ -1327,7 +1320,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureInterrupt(uint32 Base, Cd
     /* Enable/Disable the specified ADC interrupt. */
     if (TRUE == Mode)
     {
-        HWREGH(base_addr) |= (ADC_INTSEL1N2_INT1E << shiftval);
+        HWREGH(base_addr) |= ((uint16)ADC_INTSEL1N2_INT1E << shiftval);
     }
     else
     {
@@ -1335,7 +1328,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureInterrupt(uint32 Base, Cd
     }
 }
 
-/* Design MCAL-31376 */
+/* Design: MCAL-31376 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_ConfigureContinueToIntMode(uint32 Base, Cdd_Adc_IntNumType IntNum, boolean Mode)
 {
@@ -1347,7 +1340,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     /* Enable continuous mode for the specified ADC interrupt. */
     if (TRUE == Mode)
     {
-        HWREGH(base_addr) |= (ADC_INTSEL1N2_INT1CONT << shiftval);
+        HWREGH(base_addr) |= ((uint16)ADC_INTSEL1N2_INT1CONT << shiftval);
     }
     else
     {
@@ -1355,7 +1348,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     }
 }
 
-/* Design MCAL-31377 */
+/* Design: MCAL-31377 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_SetIntSource(uint32 Base, Cdd_Adc_IntNumType IntNum, Cdd_Adc_IntTriggerType IntTrigger)
 {
@@ -1367,28 +1360,28 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
         (HWREGH(base_addr) & ~((uint16)ADC_INTSEL1N2_INT1SEL_M << shiftval)) | ((uint16)IntTrigger << shiftval);
 }
 
-/* Design MCAL-31378 */
+/* Design: MCAL-31378 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ClearInterruptFlag(uint32 Base, Cdd_Adc_IntNumType IntNum)
 {
     /* Clear the specified interrupt */
     HWREGH(Base + ADC_O_INTFLGCLR) |= ((uint16)1U << (uint8)IntNum);
 }
 
-/* Design MCAL-31379 */
+/* Design: MCAL-31379 */
 static FUNC(boolean, CDD_ADC_CODE) Cdd_Adc_GetIntOvfStatus(uint32 Base, Cdd_Adc_IntNumType IntNum)
 {
     /* Get the specified ADC interrupt status */
     return (boolean)((HWREGH(Base + ADC_O_INTOVF) >> (uint8)IntNum) & (uint8)ADC_INTOVF_ADCINT1);
 }
 
-/* Design MCAL-31380 */
+/* Design: MCAL-31380 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ClearIntOvfStatus(uint32 Base, Cdd_Adc_IntNumType IntNum)
 {
     /* Clear the specified interrupt overflow bit */
     HWREGH(Base + ADC_O_INTOVFCLR) |= ((uint16)1U << (uint8)IntNum);
 }
 
-/* Design MCAL-31381 */
+/* Design: MCAL-31381 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetInterruptCycleOffset(uint32 Base, uint16 CycleOffset)
 {
     /* Set the position of the pulse.Set the position of the pulse */
@@ -1397,7 +1390,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetInterruptCycleOffset(uint32 Bas
 
 #if (STD_ON == CDD_ADC_ENABLE_PPB_API)
 
-/* Design MCAL-31382 */
+/* Design: MCAL-31382 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_PpbOffsetCorrection(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint16 OffCal)
 {
@@ -1405,26 +1398,27 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     HWREGH(Base + ((uint32)PpbNumber * ADC_PPBXOFFCAL_STEP) + ADC_O_PPB1OFFCAL) = OffCal;
 }
 
-/* Design MCAL-31383 */
+/* Design: MCAL-31383 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetPpbRefOffset(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint16 Offset)
 {
     /* Write the offset amount */
     HWREGH(Base + ((uint32)PpbNumber * ADC_PPBXOFFREF_STEP) + ADC_O_PPB1OFFREF) = Offset;
 }
 
-/* Design MCAL-31384 */
+/* Design: MCAL-31384 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_ConfigurePpbResult(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint16 ResConfig)
 {
     /* Get the offset to the appropriate offset register */
     uint32 ppboffset = Base + ((uint32)PpbNumber * ADC_PPBXCONFIG_STEP) + ADC_O_PPB1CONFIG;
     /* Enable/Disable PPB's two's complement */
-    HWREGH(ppboffset) = (HWREGH(ppboffset) & ~(ADC_PPB1CONFIG_DELTAEN | ADC_PPB1CONFIG_TWOSCOMPEN |
-                                               ADC_PPB1CONFIG_ABSEN | ADC_PPB1CONFIG_CBCEN | ADC_PPB1CONFIG_CONFIG_M)) |
-                        (ResConfig);
+    HWREGH(ppboffset) =
+        (HWREGH(ppboffset) & (uint16)(~(ADC_PPB1CONFIG_DELTAEN | ADC_PPB1CONFIG_TWOSCOMPEN | ADC_PPB1CONFIG_ABSEN |
+                                        ADC_PPB1CONFIG_CBCEN | ADC_PPB1CONFIG_CONFIG_M))) |
+        (ResConfig);
 }
 
-/* Design MCAL-31385 */
+/* Design: MCAL-31385 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_ConfigurePpbHighLimit(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, sint32 LimitHigh)
 {
@@ -1433,14 +1427,14 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
         ((uint32)LimitHigh & ADC_PPB1TRIPHI_LIMITHI_M);
 }
 
-/* Design MCAL-31386 */
+/* Design: MCAL-31386 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_EnablePpbExtendedLowLimit(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
 {
     /*Enable PPB extended trip low limit*/
     HWREG(Base + ((uint32)PpbNumber * ADC_PPBXTRIPLO_STEP) + ADC_O_PPB1TRIPLO) |= ADC_PPB1TRIPLO_LIMITLO2EN;
 }
 
-/* Design MCAL-31387 */
+/* Design: MCAL-31387 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_SetPpbExtendedLowLimit(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, sint32 TripLowLimit)
 {
@@ -1449,18 +1443,18 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
         ((uint32)TripLowLimit & ADC_PPB1TRIPHI_LIMITHI_M);
 }
 
-/* Design MCAL-31388 */
+/* Design: MCAL-31388 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_ConfigureTripFilter(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint16 TripFilCfg)
 {
     /* Configure digital trip filter */
     uint32 offset  = Base + ((uint32)PpbNumber * ADC_PPBXTRIPFIL_STEP) + ADC_O_PPBTRIP1FILCTL;
-    HWREGH(offset) = (HWREGH(offset) & ~(ADC_PPBTRIP1FILCTL_THRESH_M | ADC_PPBTRIP1FILCTL_SAMPWIN_M |
-                                         ADC_PPBTRIP1FILCTL_FILTLOEN | ADC_PPBTRIP1FILCTL_FILTHIEN)) |
+    HWREGH(offset) = (HWREGH(offset) & (uint16)(~(ADC_PPBTRIP1FILCTL_THRESH_M | ADC_PPBTRIP1FILCTL_SAMPWIN_M |
+                                                  ADC_PPBTRIP1FILCTL_FILTLOEN | ADC_PPBTRIP1FILCTL_FILTHIEN))) |
                      TripFilCfg;
 }
 
-/* Design MCAL-31389 */
+/* Design: MCAL-31389 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_TripFilterInit(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
 {
     /* Enable/disable digital trip filter */
@@ -1468,7 +1462,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_TripFilterInit(uint32 Base, Cdd_Ad
     HWREGH(offset) |= ((uint16)ADC_PPBTRIP1FILCTL_FILINIT);
 }
 
-/* Design MCAL-31390 */
+/* Design: MCAL-31390 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_SetTripFilPrescale(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint16 ClkPrescale)
 {
@@ -1476,61 +1470,62 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     HWREG(Base + ((uint32)PpbNumber * ADC_PPBXTRIPFILCLK_STEP) + ADC_O_PPBTRIP1FILCLKCTL) = ClkPrescale;
 }
 
-/* Design MCAL-31391 */
+/* Design: MCAL-31391 */
 static FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_GetPpbEvtStatus(uint32 Base)
 {
     /* Get the event status for the specified post-processing block */
     return (HWREGH(Base + ADC_O_EVTSTAT));
 }
 
-/* Design MCAL-31392 */
+/* Design: MCAL-31392 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_ConfigPpbEvent(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint8 EvtFlags, boolean Mode)
 {
     /* Confiure the specified event */
     if (TRUE == Mode)
     {
-        HWREGH(Base + ADC_O_EVTSEL) |= ((EvtFlags & (uint8)ADC_PPBEVTMASK) << ((uint16)PpbNumber * 4U));
+        HWREGH(Base + ADC_O_EVTSEL) |= (((uint16)EvtFlags & (uint16)ADC_PPBEVTMASK) << ((uint16)PpbNumber * 4U));
     }
     else
     {
-        HWREGH(Base + ADC_O_EVTSEL) &= ~((EvtFlags & (uint8)ADC_PPBEVTMASK) << ((uint16)PpbNumber * 4U));
+        HWREGH(Base + ADC_O_EVTSEL) &= ~(((uint16)EvtFlags & (uint16)ADC_PPBEVTMASK) << ((uint16)PpbNumber * 4U));
     }
 }
 
-/* Design MCAL-31393 */
+/* Design: MCAL-31393 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_ConfigPpbEventInterrupt(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint8 IntFlags, boolean Mode)
 {
     /* Enable the specified event interrupts */
     if (TRUE == Mode)
     {
-        HWREGH(Base + ADC_O_EVTINTSEL) |= ((IntFlags & (uint8)ADC_PPBEVTMASK) << ((uint16)PpbNumber * 4U));
+        HWREGH(Base + ADC_O_EVTINTSEL) |= (((uint16)IntFlags & (uint16)ADC_PPBEVTMASK) << ((uint16)PpbNumber * 4U));
     }
     else
     {
-        HWREGH(Base + ADC_O_EVTINTSEL) &= ~((IntFlags & (uint8)ADC_PPBEVTMASK) << ((uint16)PpbNumber * 4U));
+        HWREGH(Base + ADC_O_EVTINTSEL) &= ~(((uint16)IntFlags & (uint16)ADC_PPBEVTMASK) << ((uint16)PpbNumber * 4U));
     }
 }
 
-/* Design MCAL-31394 */
+/* Design: MCAL-31394 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetPpbCountLimit(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint16 Limit)
 {
     /* Set ppb count limit */
     HWREGH(Base + ((uint32)PpbNumber * ADC_PPBXLIMIT_STEP) + ADC_O_PPB1LIMIT) = (Limit & ADC_PPB1LIMIT_LIMIT_M);
 }
 
-/* Design MCAL-31395 */
+/* Design: MCAL-31395 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigPpb2(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint16 PpbCfg2)
 {
     /* Get the offset to the appropriate delay */
     uint32 ppboffset = Base + ((uint32)PpbNumber * ADC_PPBXCONFIG2_STEP) + ADC_O_PPB1CONFIG2;
 
     /* Select sync input for the PPB */
-    HWREGH(ppboffset) = (HWREGH(ppboffset) & ~(ADC_PPB1CONFIG2_COMPSEL_M | ADC_PPB1CONFIG2_SHIFT_M)) | (PpbCfg2);
+    HWREGH(ppboffset) =
+        (HWREGH(ppboffset) & (uint16)(~(ADC_PPB1CONFIG2_COMPSEL_M | ADC_PPB1CONFIG2_SHIFT_M))) | (PpbCfg2);
 }
 
-/* Design MCAL-31396 */
+/* Design: MCAL-31396 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ForcePpbSync(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
 {
     /* Force software sync for the PPB */
@@ -1540,7 +1535,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ForcePpbSync(uint32 Base, Cdd_Adc_
 
 #if (STD_ON == CDD_ADC_SAFETY_CHECK_API)
 
-/* Design MCAL-31399 */
+/* Design: MCAL-31399,MCAL-31137 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_ConfigureSafetyCheckerInput(uint32 Base, uint8 SocNum, Cdd_Adc_CheckerInputType ScInput)
 {
@@ -1551,24 +1546,25 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     HWREG(offset) = (HWREG(offset) & ~(ADC_SAFECHECKRESEN_SOC0CHKEN_M << socshift)) | ((uint32)ScInput << socshift);
 }
 
-/* Design MCAL-31400 */
+/* Design: MCAL-31400 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_ConfigureSafetyChecker(uint32 ScBase, uint8 CheckerResNum, Cdd_Adc_HwUnitType Instance, uint8 ResultNum)
 {
     uint32 offset = ScBase + ADC_O_RESSEL1 + ((uint32)(ADC_O_RESSEL2 - ADC_O_RESSEL1) * CheckerResNum);
     /* Configure safety checker instance */
-    HWREGH(offset) = (HWREGH(offset) & ~(ADC_RESSEL1_ADCSEL_M | ADC_RESSEL1_ADCRESULTSEL_M)) |
-                     ((((uint16)Instance << ADC_RESSEL1_ADCSEL_S) | ((uint16)ResultNum << ADC_RESSEL1_ADCRESULTSEL_S)));
+    HWREGH(offset) = (HWREGH(offset) & (uint16)(~(ADC_RESSEL1_ADCSEL_M | ADC_RESSEL1_ADCRESULTSEL_M))) |
+                     ((((uint16)Instance << (uint16)ADC_RESSEL1_ADCSEL_S) |
+                       ((uint16)ResultNum << (uint16)ADC_RESSEL1_ADCRESULTSEL_S)));
 }
 
-/* Design MCAL-31401 */
+/* Design: MCAL-31401 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetSafetyCheckerTolerance(uint32 ScBase, uint32 Tolerance)
 {
     /* Set safety checker tolerance */
     HWREG(ScBase + ADC_O_TOLERANCE) = (Tolerance & ADC_TOLERANCE_TOLERANCE_M);
 }
 
-/* Design MCAL-31402 */
+/* Design: MCAL-31402,MCAL-31141 */
 LOCAL_INLINE FUNC(uint8, CDD_ADC_CODE) Cdd_Adc_GetSafetyCheckStatus(uint32 Base, Cdd_Adc_CheckerType CheckerNumber,
                                                                     Cdd_Adc_SafetyCheckFlagType CheckerFlag)
 {
@@ -1576,7 +1572,7 @@ LOCAL_INLINE FUNC(uint8, CDD_ADC_CODE) Cdd_Adc_GetSafetyCheckStatus(uint32 Base,
     return (uint8)((HWREG(Base + ADC_O_OOTFLG + (uint8)CheckerFlag) >> (uint16)CheckerNumber) & (uint16)1U);
 }
 
-/* Design MCAL-31403 */
+/* Design: MCAL-31403 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_ClearCheckEvtFlag(uint32 Base, Cdd_Adc_CheckerType CheckerNumber, Cdd_Adc_SafetyCheckFlagType CheckerFlag)
 {
@@ -1584,7 +1580,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     HWREG(Base + ADC_O_OOTFLGCLR + (uint8)CheckerFlag) |= ((uint32)1U << (uint8)CheckerNumber);
 }
 
-/* Design MCAL-31405 */
+/* Design: MCAL-31405 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_ClearCheckEvtStatus(uint32 Base, Cdd_Adc_SafetyCheckFlagType CheckerFlag, uint16 EvtMask)
 {
@@ -1592,7 +1588,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     HWREG((Base + ADC_O_OOTFLGCLR) + (uint8)CheckerFlag) |= ((uint32)EvtMask);
 }
 
-/* Design MCAL-31406 */
+/* Design: MCAL-31406,MCAL-31142 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_ConfigureCheckIntSrc(uint32 Base, Cdd_Adc_SafetyCheckEvtSrcType CheckerFlag, uint16 IntFlagMask,
                                  boolean Mode)
@@ -1610,14 +1606,14 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     }
 }
 
-/* Design MCAL-31404 */
+/* Design: MCAL-31404 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ClearSafetyCheckIntStatus(uint32 Base)
 {
     /* Clear the specified safety checker interrupt status */
     HWREGH(Base + ADC_O_CHECKINTFLGCLR) = ((uint16)1U);
 }
 
-/* Design MCAL-31407 */
+/* Design: MCAL-31407 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_ConfigureCheckEvtSrc(uint32 Base, Cdd_Adc_SafetyCheckEvtSrcType CheckerFlag, uint8 CheckEvt,
                                  uint16 EvtFlagMask, boolean Mode)
@@ -1639,16 +1635,17 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
 
 #if (STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)
 
-/* Design MCAL-31408 */
+/* Design: MCAL-31408,MCAL-31337 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigOSDetectMode(uint32 Base, Cdd_Adc_OsDetectModeType Mode)
 {
-    HWREGH(Base + ADC_O_OSDETECT) = (HWREGH(Base + ADC_O_OSDETECT) & ~(ADC_OSDETECT_DETECTCFG_M)) | ((uint16)Mode);
+    HWREGH(Base + ADC_O_OSDETECT) =
+        (HWREGH(Base + ADC_O_OSDETECT) & (uint16)(~ADC_OSDETECT_DETECTCFG_M)) | ((uint16)Mode);
 }
 #endif
 
 #if (STD_ON == CDD_ADC_TEMPERATURE_SENSOR_ENABLE)
 
-/* Design MCAL-31409 */
+/* Design: MCAL-31409,MCAL-31120 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureTempSensor(boolean Mode)
 {
     /* Enable/Disable the temperature sensor */
@@ -1658,11 +1655,11 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureTempSensor(boolean Mode)
     }
     else
     {
-        HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_TSNSCTL) &= ~((uint16)ASYSCTL_TSNSCTL_ENABLE);
+        HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_TSNSCTL) &= (uint16)(~ASYSCTL_TSNSCTL_ENABLE);
     }
 }
 
-/* Design MCAL-31410 */
+/* Design: MCAL-31410 */
 LOCAL_INLINE FUNC(boolean, CDD_ADC_CODE) Cdd_Adc_GetTempSensorLockStatus(void)
 {
     /* Enable/Disable the temperature sensor */
@@ -1672,7 +1669,7 @@ LOCAL_INLINE FUNC(boolean, CDD_ADC_CODE) Cdd_Adc_GetTempSensorLockStatus(void)
 
 #if (STD_ON == CDD_ADC_LOCK_TEMPERATURE_SENSOR)
 
-/* Design MCAL-31411 */
+/* Design: MCAL-31411,MCAL-31398 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_LockTempSensor(void)
 {
     /* Lock temperature sensor */
@@ -1680,7 +1677,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_LockTempSensor(void)
 }
 #endif
 
-/* Design MCAL-31412 */
+/* Design: MCAL-31412 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureConverter(uint32 Base, boolean Mode)
 {
     if (TRUE == Mode)
@@ -1689,7 +1686,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureConverter(uint32 Base, bo
     }
     else
     {
-        HWREGH(Base + ADC_O_CTL1) &= ~((uint16)ADC_CTL1_ADCPWDNZ);
+        HWREGH(Base + ADC_O_CTL1) &= (uint16)(~ADC_CTL1_ADCPWDNZ);
     }
 }
 
@@ -1697,20 +1694,20 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureConverter(uint32 Base, bo
  *  External Functions Definition
  *********************************************************************************************************************/
 
-/* Design MCAL-31424 */
+/* Design: MCAL-31424 */
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_SetMode(Cdd_Adc_HwUnitInstanceType HwUnitId, Cdd_Adc_ResolutionType Resolution,
                 Cdd_Adc_SignalModeType SignalMode)
 {
     uint32 base               = Cdd_Adc_ConfigPtr->hwunitcfg[HwUnitId].base_addr;
-    HWREGH(base + ADC_O_CTL2) = (HWREGH(base + ADC_O_CTL2) & ~(ADC_CTL2_RESOLUTION | ADC_CTL2_SIGNALMODE)) |
+    HWREGH(base + ADC_O_CTL2) = (HWREGH(base + ADC_O_CTL2) & (uint16)(~(ADC_CTL2_RESOLUTION | ADC_CTL2_SIGNALMODE))) |
                                 (((uint16)Resolution << 6U) | (uint16)SignalMode);
     /* Apply INL and offset trims */
     Cdd_Adc_SetINLTrim(HwUnitId);
     Cdd_Adc_SetOffsetTrim(base);
 }
 
-/* Design MCAL-31339 */
+/* Design: MCAL-31339 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_SelectInternalTestNode(Cdd_Adc_InternalTestNodeType TestNode)
 {
     uint32 offset = ANALOGSUBSYS_BASE + ASYSCTL_O_INTERNALTESTCTL;
@@ -1723,7 +1720,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_SelectInternalTestNode(Cdd_Adc_InternalTestNode
  * PPB related function
  */
 
-/* Design MCAL-31352 */
+/* Design: MCAL-31352 */
 sint32 Cdd_Adc_ReadPpbResult(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)
 {
     uint32 offset = ResultBase + ADC_O_PPB1RESULT + ((uint32)PpbNumber * ADC_PPBXRESULT_STEP);
@@ -1731,7 +1728,7 @@ sint32 Cdd_Adc_ReadPpbResult(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)
     return (sint32)(HWREG(offset));
 }
 
-/* Design MCAL-31353 */
+/* Design: MCAL-31353 */
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_ClearPpbEvtStatus(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint8 TripEvtMask)
 {
@@ -1739,7 +1736,7 @@ Cdd_Adc_ClearPpbEvtStatus(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint8 TripEv
     HWREGH(Base + ADC_O_EVTCLR) |= ((uint16)TripEvtMask << ((uint16)PpbNumber * 4U));
 }
 
-/* Design MCAL-31425 */
+/* Design: MCAL-31425 */
 FUNC(Cdd_Adc_TriggerSrcType, CDD_ADC_CODE) Cdd_Adc_PrivGetTrigSrc(VAR(Cdd_Adc_PpbType, AUTOMATIC) PpbId)
 {
     Cdd_Adc_TriggerSrcType triggersrc_type = CDD_ADC_TRIGG_SRC_SW;
@@ -1762,7 +1759,7 @@ FUNC(Cdd_Adc_TriggerSrcType, CDD_ADC_CODE) Cdd_Adc_PrivGetTrigSrc(VAR(Cdd_Adc_Pp
     return triggersrc_type;
 }
 
-/* Design MCAL-31354 */
+/* Design: MCAL-31354 */
 uint16 Cdd_Adc_GetPpbDelayTimeStamp(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
 {
     /* Get the offset to the appropriate delay */
@@ -1773,7 +1770,7 @@ uint16 Cdd_Adc_GetPpbDelayTimeStamp(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
 
 /* Partial PPB register read */
 
-/* Design MCAL-31343 */
+/* Design: MCAL-31343 */
 uint16 Cdd_Adc_ReadPpbPCount(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
 {
     uint32 offset = Base + ADC_O_PPBP1PCOUNT + ((uint32)PpbNumber * ADC_PPBXPCOUNT_STEP);
@@ -1781,7 +1778,7 @@ uint16 Cdd_Adc_ReadPpbPCount(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
     return (HWREGH(offset));
 }
 
-/* Design MCAL-31342 */
+/* Design: MCAL-31342 */
 sint32 Cdd_Adc_ReadPpbPSum(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
 {
     uint32 offset = Base + ADC_O_PPB1PSUM + ((uint32)PpbNumber * ADC_PPBXPSUM_STEP);
@@ -1789,35 +1786,35 @@ sint32 Cdd_Adc_ReadPpbPSum(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
     return ((sint32)HWREG(offset));
 }
 
-/* Design MCAL-31344 */
+/* Design: MCAL-31344 */
 uint16 Cdd_Adc_ReadPpbPMaxIndex(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
 {
     /* Returns the index of the final maximum value of selected PPB */
     return (HWREGH(Base + ADC_O_PPB1PMAXI + ((uint32)PpbNumber * ADC_PPBXPMAXI_STEP)));
 }
 
-/* Design MCAL-31345 */
+/* Design: MCAL-31345 */
 uint16 Cdd_Adc_ReadPpbPMinIndex(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
 {
     /* Returns the index of the final minimum value of the selected PPB */
     return (HWREGH(Base + ADC_O_PPB1PMINI + ((uint32)PpbNumber * ADC_PPBXPMINI_STEP)));
 }
 
-/* Design MCAL-31341 */
+/* Design: MCAL-31341 */
 sint32 Cdd_Adc_ReadPpbPMax(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
 {
     /* Return the final maximum value of selected PPB */
     return ((sint32)HWREG(Base + ADC_O_PPB1PMAX + ((uint32)PpbNumber * ADC_PPBXPMAX_STEP)));
 }
 
-/* Design MCAL-31340 */
+/* Design: MCAL-31340 */
 sint32 Cdd_Adc_ReadPpbPMin(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
 {
     /* Return the final minimum value of selected PPB */
     return ((sint32)HWREG(Base + ADC_O_PPB1PMIN + ((uint32)PpbNumber * ADC_PPBXPMIN_STEP)));
 }
 
-/* Design MCAL-31348 */
+/* Design: MCAL-31348 */
 sint32 Cdd_Adc_ReadPpbSum(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)
 {
     uint32 offset = ResultBase + ADC_O_PPB1SUM + ((uint32)PpbNumber * ADC_PPBXSUM_STEP);
@@ -1825,14 +1822,14 @@ sint32 Cdd_Adc_ReadPpbSum(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)
     return ((sint32)HWREG(offset));
 }
 
-/* Design MCAL-31347 */
+/* Design: MCAL-31347 */
 sint32 Cdd_Adc_ReadPpbMax(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)
 {
     /* Return the final maximum value of selected PPB */
     return ((sint32)HWREG(ResultBase + ADC_O_PPB1MAX + ((uint32)PpbNumber * ADC_PPBXMAX_STEP)));
 }
 
-/* Design MCAL-31346 */
+/* Design: MCAL-31346 */
 sint32 Cdd_Adc_ReadPpbMin(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)
 {
     /* Return the final minimum value of selected PPB */
@@ -1840,7 +1837,7 @@ sint32 Cdd_Adc_ReadPpbMin(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)
 }
 
 /* PPB register read */
-/* Design MCAL-31349 */
+/* Design: MCAL-31349 */
 uint16 Cdd_Adc_ReadPpbCount(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)
 {
     uint32 offset = ResultBase + ADC_O_PPB1COUNT + ((uint32)PpbNumber * ADC_PPBXCOUNT_STEP);
@@ -1848,14 +1845,14 @@ uint16 Cdd_Adc_ReadPpbCount(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)
     return (HWREGH(offset));
 }
 
-/* Design MCAL-31350 */
+/* Design: MCAL-31350 */
 uint16 Cdd_Adc_ReadPpbMaxIndex(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)
 {
     /* Returns the index of the final maximum value of selected PPB */
     return (HWREGH(ResultBase + ADC_O_PPB1MAXI + ((uint32)PpbNumber * ADC_PPBXMAXI_STEP)));
 }
 
-/* Design MCAL-31351 */
+/* Design: MCAL-31351 */
 uint16 Cdd_Adc_ReadPpbMinIndex(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)
 {
     /* Returns the index of the final minimum value of the selected PPB */
@@ -1865,7 +1862,7 @@ uint16 Cdd_Adc_ReadPpbMinIndex(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)
 
 #if (STD_ON == CDD_ADC_SET_RESOLUTION_API)
 
-/* Design MCAL-31331 */
+/* Design: MCAL-31331 */
 FUNC(Std_ReturnType, CDD_ADC_CODE)
 Cdd_Adc_UpdateResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
                          VAR(Cdd_Adc_ResolutionType, AUTOMATIC) Resolution)
@@ -1924,7 +1921,7 @@ Cdd_Adc_UpdateResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
 
 #if (STD_ON == CDD_ADC_GLBSW_TRIG_API)
 
-/* Design MCAL-31328 */
+/* Design: MCAL-31328 */
 FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_CheckGlbTrig(VAR(Cdd_Adc_GlbTrigType, AUTOMATIC) GlbSwTrig)
 {
     uint32               groupmask;
@@ -1975,11 +1972,12 @@ FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_CheckGlbTrig(VAR(Cdd_Adc_GlbTrigType,
 #endif
 
 #if (STD_ON == CDD_ADC_SAFETY_CHECK_API)
+/* Design: MCAL-31312 */
 /*
  * Safety-checker functions
  */
 
-/* Design MCAL-31333 */
+/* Design: MCAL-31333*/
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureCheckerTile(uint32 ScBase, boolean Mode)
 {
     /* Enable the Saftey Checker module */
@@ -1989,32 +1987,32 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureCheckerTile(uint32 ScBase, boolean Mod
     }
     else
     {
-        HWREGH(ScBase + ADC_O_CHECKCONFIG) &= ~((uint16)ADC_CHECKCONFIG_CHKEN);
+        HWREGH(ScBase + ADC_O_CHECKCONFIG) &= (uint16)(~ADC_CHECKCONFIG_CHKEN);
     }
 }
 
-/* Design MCAL-31332 */
+/* Design: MCAL-31332 */
 FUNC(boolean, CDD_ADC_CODE) Cdd_Adc_GetCheckerStatus(uint32 ScBase)
 {
     /* Return the Saftey Checker status */
     return (boolean)((HWREGH(ScBase + ADC_O_CHECKCONFIG) & ADC_CHECKCONFIG_CHKEN) >> 15U);
 }
 
-/* Design MCAL-31334 */
+/* Design: MCAL-31334 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_ForceSafetyCheckerSync(uint32 ScBase)
 {
     /* Force software sync for the safety checker module */
     HWREGH(ScBase + ADC_O_CHECKCONFIG) |= (uint16)ADC_CHECKCONFIG_SWSYNC;
 }
 
-/* Design MCAL-31336 */
+/* Design: MCAL-31336 */
 FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_GetSafetyCheckIntStatus(uint32 Base)
 {
     /* Get the specified safety checker interrupt status */
     return (HWREGH(Base + ADC_O_CHECKINTFLG));
 }
 
-/* Design MCAL-31338 */
+/* Design: MCAL-31338 */
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_ClearCheckerStatus(Cdd_Adc_CheckerIntEvtType IntEvtId, Cdd_Adc_CheckerEventType Event_Id)
 {
@@ -2028,14 +2026,14 @@ Cdd_Adc_ClearCheckerStatus(Cdd_Adc_CheckerIntEvtType IntEvtId, Cdd_Adc_CheckerEv
                                 Cdd_Adc_ConfigPtr->checkercfg.checkerintevtcfg[IntEvtId].checkevt[Event_Id].res2ovf);
 }
 
-/* Design MCAL-31335 */
+/* Design: MCAL-31335 */
 /* Stop the result checker unit */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopChecker(Cdd_Adc_CheckerType CheckerId)
 {
-    /* Force Software sync */
-    Cdd_Adc_ForceSafetyCheckerSync(Cdd_Adc_ConfigPtr->checkercfg.checkerunitcfg[CheckerId].base_addr);
     /* Disable the safety checker unit */
     Cdd_Adc_ConfigureCheckerTile(Cdd_Adc_ConfigPtr->checkercfg.checkerunitcfg[CheckerId].base_addr, FALSE);
+    /* Force Software sync to clear any result safety checker event flags that are set */
+    Cdd_Adc_ForceSafetyCheckerSync(Cdd_Adc_ConfigPtr->checkercfg.checkerunitcfg[CheckerId].base_addr);
 
     if (CDD_ADC_CHECKER_INTEVT_CNT != 0U)
     {
@@ -2056,7 +2054,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopChecker(Cdd_Adc_CheckerType CheckerId)
 }
 #endif
 
-/* Design MCAL-31321 */
+/* Design: MCAL-31321,MCAL-31320 */
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_SetDrvObj(Cdd_Adc_DriverObjType *DrvObj, const Cdd_Adc_ConfigType *CfgPtr)
 {
@@ -2066,7 +2064,7 @@ Cdd_Adc_SetDrvObj(Cdd_Adc_DriverObjType *DrvObj, const Cdd_Adc_ConfigType *CfgPt
     Cdd_Adc_ConfigPtr = CfgPtr;
 }
 
-/* Design MCAL-31322 */
+/* Design: MCAL-31322 */
 /* Reset the driver object to the power on reset mode */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_DrvObjInit(void)
 {
@@ -2123,7 +2121,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_DrvObjInit(void)
 #endif /* #if (STD_ON == CDD_ADC_PPB_NOTIF_CAPABILITY_API) && (STD_ON == CDD_ADC_ENABLE_PPB_API) */
 }
 
-/* Design MCAL-31323 */
+/* Design: MCAL-31323 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitInit(void)
 {
     /* Initialize each HW instance */
@@ -2186,7 +2184,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitInit(void)
         if (hwunitcfg->extmuxpreselect != 0U)
         {
             /* Enable external mux preselect mode */
-            Cdd_Adc_ConfigureExtMuxPreselect(hwunitcfg->base_addr, TRUE);
+            Cdd_Adc_ConfigureExtMuxPreselect(hwunitcfg->base_addr);
         }
 #endif
     }
@@ -2302,7 +2300,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitInit(void)
 }
 
 #if (STD_ON == CDD_ADC_DEINIT_API)
-/* Design MCAL-31324 */
+/* Design: MCAL-31324 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitDeinit(void)
 {
     /* De-Init the HW instance */
@@ -2376,7 +2374,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitDeinit(void)
 }
 #endif
 
-/* Design MCAL-31325 */
+/* Design: MCAL-31325 */
 /* start the requested group conversion */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartGroup(Cdd_Adc_GroupType Group)
 {
@@ -2387,7 +2385,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartGroup(Cdd_Adc_GroupType Group)
     Cdd_Adc_SetGrpTrigger(Group);
 }
 
-/* Design MCAL-31325 */
+/* Design: MCAL-31325 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group)
 {
     const Cdd_Adc_GroupCfgType *groupcfg    = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
@@ -2418,13 +2416,14 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group)
     group_obj->grp_notification = FALSE;
 #endif
 
-    /* Disable trigger sources and interrupt trigger source */
+    /* Disable trigger sources and interrupt trigger source for hardware triggered groups whose conversion is
+     * incomplete. */
     if ((groupcfg->trigsrc_type == CDD_ADC_TRIGG_SRC_HW) &&
-        ((group_obj->implicit_stop == FALSE) ||
-         ((group_obj->implicit_stop == TRUE) && (group_obj->valid_samples != groupcfg->stream_numsamples))))
+        ((group_obj->grp_status != CDD_ADC_IDLE) &&
+         ((group_obj->implicit_stop == FALSE) || (group_obj->grp_status != CDD_ADC_STREAM_COMPLETED))))
     {
-        /* Disable trigger and interrupt trigger source for explicitly stopped hardware triggered groups and
-         * for implicitly stopped groups whose valid samples count is not equal to the streaming samples count
+        /* Disable trigger and interrupt trigger source for explicitly stopped hardware triggered groups
+         * which are not IDLE and for implicitly stopped groups which are not in IDLE or STREAM_COMPLETED state
          */
         Cdd_Adc_StopHwGrpTrigger(Group);
     }
@@ -2445,8 +2444,19 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group)
             /* Configure the interrupt and event flags */
             Cdd_Adc_ConfigPpbEventInterrupt(base_addr, ppbcfg->ppb_id, ppbcfg->tripevtintsel, FALSE);
             Cdd_Adc_ConfigPpbEvent(base_addr, ppbcfg->ppb_id, ppbcfg->tripevtsel, FALSE);
+
             /* Clear all the PPB event flags */
             Cdd_Adc_ClearPpbEvtStatus(base_addr, ppbcfg->ppb_id, (uint8)ADC_PPBEVTMASK);
+
+            /* When there are incomplete result accumulation force software sync to the PPB to reset the
+             * partial PPB count.
+             */
+            if (Cdd_Adc_ReadPpbPCount(base_addr, ppbcfg->ppb_id) != 0U)
+            {
+                /* Force PPB Sync to start PPB accumulation and get rid of unwanted accumulation from past group
+                 * conversions */
+                Cdd_Adc_ForcePpbSync(base_addr, ppbcfg->ppb_id);
+            }
 
 #if (STD_ON == CDD_ADC_PPB_NOTIF_CAPABILITY_API)
             Cdd_Adc_DrvObjPtr->ppb_obj[ppb_num] = FALSE; /* Set the notification of PPB to FALSE */
@@ -2461,7 +2471,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group)
 
 #if (STD_ON == CDD_ADC_GLBSW_TRIG_API)
 
-/* Design MCAL-31329 */
+/* Design: MCAL-31329 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartGlbTrig(Cdd_Adc_GlbTrigType GlbSwTrig)
 {
     Cdd_Adc_GlbSwCfgType glbsw = Cdd_Adc_ConfigPtr->glbtrigcfg[GlbSwTrig];
@@ -2487,7 +2497,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartGlbTrig(Cdd_Adc_GlbTrigType GlbSwTrig)
     Cdd_Adc_SocGlobalSwTrigger(glbsw.soc_mask);
 }
 
-/* Design MCAL-31330 */
+/* Design: MCAL-31330 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGlbTrig(Cdd_Adc_GlbTrigType GlbSwTrig)
 {
     Cdd_Adc_GlbSwCfgType glbsw = Cdd_Adc_ConfigPtr->glbtrigcfg[GlbSwTrig];
@@ -2514,7 +2524,8 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGlbTrig(Cdd_Adc_GlbTrigType GlbSwTrig)
 #endif
 
 #if (STD_ON == CDD_ADC_ENABLE_PPB_API)
-/* Design MCAL-31418 */
+
+/* Design: MCAL-31418 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_PpbEvtIsr(Cdd_Adc_HwUnitType HwUnitId)
 {
     Cdd_Adc_PpbType               ppb_num;
@@ -2564,7 +2575,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_PpbEvtIsr(Cdd_Adc_HwUnitType HwUnitId)
 #endif
 
 #if (STD_ON == CDD_ADC_SAFETY_CHECK_API)
-/* Design MCAL-31419 */
+/* Design: MCAL-31419 */
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_CheckerIsr(Cdd_Adc_CheckerIntEvtType IntEvtId, Cdd_Adc_CheckFlagStatusType *FlagStatus)
 {
@@ -2631,7 +2642,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_PrivUpdateStatusThroughDma(Cdd_Adc_IntNumType I
     // }
 }
 
-/* Design MCAL-31416 */
+/* Design: MCAL-31416 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessIsr(Cdd_Adc_IntNumType IntNum, Cdd_Adc_HwUnitType HwUnitId)
 {
     Cdd_Adc_GroupType group_id, hwint;
@@ -2651,7 +2662,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessIsr(Cdd_Adc_IntNumType IntNum, Cdd_Adc_H
 
 #if (STD_ON == CDD_ADC_READ_GROUP_API)
 
-/* Design MCAL-31326 */
+/* Design: MCAL-31326 */
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_ReadGroupResult(Cdd_Adc_GroupType Group, Cdd_Adc_ValueGroupType *DataPtr)
 {
@@ -2672,7 +2683,7 @@ Cdd_Adc_ReadGroupResult(Cdd_Adc_GroupType Group, Cdd_Adc_ValueGroupType *DataPtr
 }
 #endif
 
-/* Design MCAL-31327 */
+/* Design: MCAL-31327 */
 Cdd_Adc_StreamNumSampleType Cdd_Adc_GetValidSampleCnt(Cdd_Adc_GroupType Group, Cdd_Adc_ValueGroupType **PtrToSamplePtr)
 {
     Cdd_Adc_StreamNumSampleType num_samples = Cdd_Adc_DrvObjPtr->group_obj[Group].valid_samples;
@@ -2700,7 +2711,7 @@ Cdd_Adc_StreamNumSampleType Cdd_Adc_GetValidSampleCnt(Cdd_Adc_GroupType Group, C
  *  Local Functions Definition
  *********************************************************************************************************************/
 
-/* Design MCAL-31421 */
+/* Design: MCAL-31421 */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetOffsetTrim(uint32 Base)
 {
     /*
@@ -2710,7 +2721,7 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetOffsetTrim(uint32 Base)
     Cdd_Adc_SelectOffsetTrimMode(Base, CDD_ADC_OFFSET_TRIM_INDIVIDUAL);
 }
 
-/* Design MCAL-31423 */
+/* Design: MCAL-31423,MCAL-31132 */
 static FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_SetVREF(Cdd_Adc_HwUnitInstanceType HwUnitId, Cdd_Adc_RefModeType RefMode, Cdd_Adc_RefVoltType RefVoltage)
 {
@@ -2737,7 +2748,7 @@ static FUNC(void, CDD_ADC_CODE)
     }
 }
 
-/* Design MCAL-31422 */
+/* Design: MCAL-31422 */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetINLTrim(Cdd_Adc_HwUnitInstanceType HwUnitId)
 {
     uint8   i;
@@ -2750,7 +2761,7 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetINLTrim(Cdd_Adc_HwUnitInstanceType Hw
     /* Update INL trim values to ADC trim registers */
     for (i = 0U; i < Cdd_Adc_ConfigPtr->hwunitcfg[HwUnitId].numadc_inltrim; i++)
     {
-        HWREG(base + ADC_O_INLTRIM1 + (i * 4U)) = *trimaddress;
+        HWREG(base + ADC_O_INLTRIM1 + (i * (uint8)4U)) = *trimaddress;
         trimaddress++;
     }
 
@@ -2801,7 +2812,7 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigPpbUnit(Cdd_Adc_PpbType PpbId)
 }
 #endif
 
-/* Design MCAL-31420 */
+/* Design: MCAL-31420 */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetGrpTrigger(Cdd_Adc_GroupType Group)
 {
     const Cdd_Adc_GroupCfgType *group_cfg = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
@@ -2835,7 +2846,7 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetGrpTrigger(Cdd_Adc_GroupType Group)
     }
 }
 
-/* Design MCAL-31413 */
+/* Design: MCAL-31413 */
 /* Private function to update the status of the group */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_UpdateGroupStatus(Cdd_Adc_GroupType Group)
 {
@@ -2854,7 +2865,7 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_UpdateGroupStatus(Cdd_Adc_GroupType Grou
     }
 }
 
-/* Design MCAL-31414 */
+/* Design: MCAL-31414 */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopHwGrpTrigger(Cdd_Adc_GroupType Group)
 {
     const Cdd_Adc_GroupCfgType   *group_cfg = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
@@ -2880,7 +2891,7 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopHwGrpTrigger(Cdd_Adc_GroupType Group
     }
 }
 
-/* Design MCAL-31415 */
+/* Design: MCAL-31415 */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetGroup(Cdd_Adc_GroupType Group)
 {
     const Cdd_Adc_GroupCfgType *groupcfg    = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
@@ -2924,13 +2935,10 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetGroup(Cdd_Adc_GroupType Group)
         {
             ppbcfg = &(Cdd_Adc_ConfigPtr->ppbcfg[ppb_num]);
 
-            /* Clear all the PPB event flags */
+            /* Clear all the PPB event flags to avoid unneccessary interrupt or event generation */
             Cdd_Adc_ClearPpbEvtStatus(base_addr, Cdd_Adc_ConfigPtr->ppbcfg[ppb_num].ppb_id, (uint8)ADC_PPBEVTMASK);
 
-            /* Configure the interrupt and event flags */
-            Cdd_Adc_ForcePpbSync(base_addr, ppbcfg->ppb_id);
-
-            /* If the group is started */
+            /* Enable interrupt and event flags */
             Cdd_Adc_ConfigPpbEvent(base_addr, ppbcfg->ppb_id, ppbcfg->tripevtsel, TRUE);
             Cdd_Adc_ConfigPpbEventInterrupt(base_addr, ppbcfg->ppb_id, ppbcfg->tripevtintsel, TRUE);
 
@@ -2948,7 +2956,7 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetGroup(Cdd_Adc_GroupType Group)
     group_obj->grp_status = CDD_ADC_BUSY;
 }
 
-/* Design MCAL-31417 */
+/* Design: MCAL-31417 */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessGroup(Cdd_Adc_GroupType Group)
 {
     const Cdd_Adc_GroupCfgType *groupcfg  = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);

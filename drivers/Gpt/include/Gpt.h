@@ -119,7 +119,7 @@ extern "C" {
 #endif
 
 /*
- *Design: MCAL-22034, MCAL-22035
+ *Design: MCAL-22034, MCAL-22035, MCAL-21995
  */
 /** \brief Gpt_GetVersionInfo(). */
 #define GPT_SID_GET_VERSION_INFO ((uint8)0x00U)
