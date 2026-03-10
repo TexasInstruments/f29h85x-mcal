@@ -3,12 +3,60 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
  *
- *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *   TEXAS INSTRUMENTS TEXT FILE LICENSE
  *
- *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
- *                 is strictly prohibited.  This product  is  protected  under  copyright  law
- *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+ *   Copyright (c) 2025 Texas Instruments Incorporated
+ *
+ *   All rights reserved not granted herein.
+ *
+ *   Limited License.
+ *
+ *   Texas Instruments Incorporated grants a world-wide, royalty-free, non-exclusive
+ *   license under copyrights and patents it now or hereafter owns or controls to
+ *   make, have made, use, import, offer to sell and sell ("Utilize") this software
+ *   subject to the terms herein. With respect to the foregoing patent license,
+ *   such license is granted solely to the extent that any such patent is necessary
+ *   to Utilize the software alone. The patent license shall not apply to any
+ *   combinations which include this software, other than combinations with devices
+ *   manufactured by or for TI ("TI Devices"). No hardware patent is licensed hereunder.
+ *
+ *   Redistributions must preserve existing copyright notices and reproduce this license
+ *   (including the above copyright notice and the disclaimer and (if applicable) source
+ *   code license limitations below) in the documentation and/or other materials provided
+ *   with the distribution.
+ *
+ *   Redistribution and use in binary form, without modification, are permitted provided
+ *   that the following conditions are met:
+ *
+ *   * No reverse engineering, decompilation, or disassembly of this software is
+ *     permitted with respect to any software provided in binary form.
+ *   * Any redistribution and use are licensed by TI for use only with TI Devices.
+ *   * Nothing shall obligate TI to provide you with source code for the software
+ *     licensed and provided to you in object code.
+ *
+ *   If software source code is provided to you, modification and redistribution of the
+ *   source code are permitted provided that the following conditions are met:
+ *
+ *   * Any redistribution and use of the source code, including any resulting derivative
+ *     works, are licensed by TI for use only with TI Devices.
+ *   * Any redistribution and use of any object code compiled from the source code
+ *     and any resulting derivative works, are licensed by TI for use only with TI Devices.
+ *
+ *   Neither the name of Texas Instruments Incorporated nor the names of its suppliers
+ *   may be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ *   DISCLAIMER.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY TI AND TI'S LICENSORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ *   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TI AND TI'S
+ *   LICENSORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *   GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -535,7 +583,7 @@ static FUNC(void, CAN_CODE) Can_TxBufCancelReqPriv(uint32 baseAddr, uint32 buffN
  * \retval returns the value of the type uint32.
  *
  *****************************************************************************/
-static FUNC(uint32, CAN_CODE) Can_TxBufCancelStatusPriv(uint32 baseAddr);
+static FUNC(uint32, CAN_CODE) Can_GetTxBufCancelStatusPriv(uint32 baseAddr);
 
 /** \brief This API will read Transmission status of Transmit Buffers.
  *
@@ -739,7 +787,8 @@ static FUNC(Std_ReturnType, CAN_CODE)
 
 /** \brief This function will check only Tx buffers.
  *
- * \param[in] txStat Count of controller.
+ * \param[in] txStat Tx Buffer Transmission Occurred status (MCAN_TXBTO).
+ * \param[in] txCancelStat Tx Buffer Cancellation Finished status (MCAN_TXBCF).
  * \param[in] canCntrlObj Pointer to Can controller config parameters.
  * \param[in] canMailObj Message RAM Configuration parameters.
  * \pre None
@@ -748,9 +797,9 @@ static FUNC(Std_ReturnType, CAN_CODE)
  * \retval None
  *
  *****************************************************************************/
-static FUNC(void, CAN_CODE)
-    Can_CheckAllTxBuffers(uint32 txStat, P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canCntrlObj,
-                          P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailObj);
+static FUNC(void, CAN_CODE) Can_CheckAllTxBuffers(uint32 txStat, uint32 txCancelStat,
+                                                  P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canCntrlObj,
+                                                  P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailObj);
 
 /** \brief This function will check for pending message.
  *
@@ -966,6 +1015,24 @@ static FUNC(void, CAN_CODE)
                                      P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailObj,
                                      VAR(Can_HwHandleType, AUTOMATIC) hth, VAR(uint8, AUTOMATIC) loopCnt);
 
+/** \brief This is a helper function to process Tx buffer status for a single buffer.
+ *         Common code for polling mode Tx confirmation handling.
+ *
+ * \param[in] buffIdx Buffer index to check
+ * \param[in] txStatus Tx Buffer Transmission Occurred status (MCAN_TXBTO)
+ * \param[in] txCancelStatus Tx Buffer Cancellation Finished status (MCAN_TXBCF)
+ * \param[in, out] canController Controller object
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+static FUNC(void, CAN_CODE)
+    Can_ProcessTxBufferStatusPriv(VAR(uint8, AUTOMATIC) buffIdx, VAR(uint32, AUTOMATIC) txStatus,
+                                  VAR(uint32, AUTOMATIC) txCancelStatus,
+                                  P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canController);
+
 /** \brief This is a helper function to configure the message RAM
  *
  * \param[in, out] canFDMsgRamConfig CAN FD message RAM configuration
@@ -1033,6 +1100,7 @@ Can_ResetDrvObjPriv(P2VAR(Can_DriverObjType, AUTOMATIC, CAN_APPL_DATA) drvObj)
         drvObj->canController[controllerIndx].canBaud                 = ((uint16)0U);
         drvObj->canController[controllerIndx].canBusOffRecoveryStatus = FALSE;
         drvObj->canController[controllerIndx].canInterruptCounter     = ((uint8)0U);
+        drvObj->canController[controllerIndx].txPendingStatus         = ((uint32)0U);
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
         drvObj->Can_IcomActivation[controllerIndx] = FALSE;
 #endif
@@ -1683,10 +1751,14 @@ Can_HwUnitTxDonePollingPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DAT
     VAR(uint32, AUTOMATIC) baseAddr;
     VAR(uint8, AUTOMATIC) buffNum;
     VAR(uint8, AUTOMATIC) loopCnt;
-    VAR(uint32, AUTOMATIC) bitPos;
     VAR(uint32, AUTOMATIC) txStatus;
+    VAR(uint32, AUTOMATIC) txCancelStatus;
 
     baseAddr = canController->canControllerConfig.CanControllerBaseAddress;
+
+    /* Get the transmission status of all buffers */
+    txStatus       = Can_GetTxBufTransStatusPriv(baseAddr);
+    txCancelStatus = Can_GetTxBufCancelStatusPriv(baseAddr);
 
     if (CAN_BASIC == canMailbox->mailBoxConfig.CanHandleType)
     {
@@ -1694,21 +1766,19 @@ Can_HwUnitTxDonePollingPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DAT
         buffNum =
             ((canController->canFDMsgRamConfig.txBuffNum + canController->canFDMsgRamConfig.txFIFONum) & MAX_UINT8);
 
-        /* Check if transmission is completed from FIFO*/
-        Can_HwUnitTxConfirmationPriv(loopCnt, buffNum, canController);
+        /* Check if transmission is completed for each FIFO buffer */
+        for (; loopCnt < buffNum; loopCnt++)
+        {
+            /* Process the Tx buffer status using common function */
+            Can_ProcessTxBufferStatusPriv(loopCnt, txStatus, txCancelStatus, canController);
+        }
     }
     else
     {
         loopCnt = (canMailbox->mailBoxConfig.HwHandle);
-        bitPos  = ((uint32)1U << loopCnt);
-        /* Get the transmission status of dedicated buffers */
-        txStatus = Can_GetTxBufTransStatusPriv(baseAddr);
-        /* Check if transmission is completed for respective dedicated buffer */
-        if (bitPos == (txStatus & bitPos))
-        {
-            /* Call Tx Confirmation */
-            CanIf_TxConfirmation(canController->canTxRxPduId[loopCnt]);
-        }
+
+        /* Process the Tx buffer status using common function */
+        Can_ProcessTxBufferStatusPriv(loopCnt, txStatus, txCancelStatus, canController);
     }
 }
 
@@ -1903,6 +1973,7 @@ Can_ProcessLine0ISR(Can_ControllerInstance canInstance, uint32 lineSelect)
     VAR(uint32, AUTOMATIC) baseAddr                                      = (uint32)0U;
     VAR(uint32, AUTOMATIC) intrStatus                                    = (uint32)0U;
     VAR(uint32, AUTOMATIC) txStatus                                      = (uint32)0U;
+    VAR(uint32, AUTOMATIC) txCancelStatus                                = (uint32)0U;
 
     if (NULL_PTR != Can_DriverObjPtr)
     {
@@ -1912,7 +1983,8 @@ Can_ProcessLine0ISR(Can_ControllerInstance canInstance, uint32 lineSelect)
         /* Get Interrupt status */
         intrStatus = Can_GetIntrStatus(baseAddr);
         /* Take a snap of all required status registers to process further*/
-        txStatus = Can_GetTxBufTransStatusPriv(baseAddr);
+        txStatus       = Can_GetTxBufTransStatusPriv(baseAddr);
+        txCancelStatus = Can_GetTxBufCancelStatusPriv(baseAddr);
         /* Clear Interrupt status, next interrupt can register in MCAN_IR but can't be served until
         current execution is completed as nesting is not allowed */
         Can_ClearIntrStatusPriv(baseAddr, intrStatus & MCANSS_INTR_LINE_0_MASK, lineSelect);
@@ -1942,11 +2014,14 @@ Can_ProcessLine0ISR(Can_ControllerInstance canInstance, uint32 lineSelect)
         }
 #endif
         /* TI_COVERAGE_GAP_STOP */
-        /* Process Transmission ocurred interrupt*/
-        if (MCAN_IR_TC_MASK == (intrStatus & MCAN_IR_TC_MASK))
+        /* Process Transmission Completed (TC) interrupt - called when TXBTO is set */
+        /* Process Transmission Cancellation Finished (TCF) interrupt - called when TXBCF is set */
+        /* Both interrupts require processing of Tx buffers to update txPendingStatus */
+        if ((MCAN_IR_TC_MASK == (intrStatus & MCAN_IR_TC_MASK)) ||
+            (MCAN_IR_TCF_MASK == (intrStatus & MCAN_IR_TCF_MASK)))
         {
-            /* Check only Tx buffers */
-            Can_CheckAllTxBuffers(txStatus, canController, canMailbox);
+            /* Check all Tx buffers for transmission completion or cancellation */
+            Can_CheckAllTxBuffers(txStatus, txCancelStatus, canController, canMailbox);
         }
     }
     else
@@ -2616,34 +2691,6 @@ Can_InterruptCounterCheckPriv(P2VAR(Can_DriverObjType, AUTOMATIC, CAN_APPL_DATA)
 }
 
 /*
- *Design: MCAL-28426
- */
-FUNC(void, CAN_CODE)
-Can_HwUnitTxConfirmationPriv(uint8 loopCnt, uint8 buffNum,
-                             P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canController)
-{
-    VAR(uint32, AUTOMATIC) bitPos   = (uint32)0U;
-    VAR(uint32, AUTOMATIC) txStatus = (uint32)0U;
-    VAR(uint32, AUTOMATIC) baseAddr = (uint32)0U;
-    VAR(uint8, AUTOMATIC) loop_Cnt  = loopCnt;
-
-    baseAddr = canController->canControllerConfig.CanControllerBaseAddress;
-
-    for (; loop_Cnt < buffNum; loop_Cnt++)
-    {
-        bitPos = ((uint32)1U << loop_Cnt);
-        /* Get the status of transmission occurred bit*/
-        txStatus = Can_GetTxBufTransStatusPriv(baseAddr);
-
-        if (bitPos == (txStatus & bitPos))
-        {
-            /* Call Tx Confirmation */
-            CanIf_TxConfirmation(canController->canTxRxPduId[loop_Cnt]);
-        }
-    }
-}
-
-/*
  *Design: MCAL-28433
  */
 FUNC(void, CAN_CODE)
@@ -2918,9 +2965,9 @@ Can_PeriodicReadbackPrv(uint8 Controller,
 /*
  *Design: MCAL-28432
  */
-static FUNC(void, CAN_CODE)
-    Can_CheckAllTxBuffers(uint32 txStat, P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canCntrlObj,
-                          P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailObj)
+static FUNC(void, CAN_CODE) Can_CheckAllTxBuffers(uint32 txStat, uint32 txCancelStat,
+                                                  P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canCntrlObj,
+                                                  P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailObj)
 {
     VAR(uint8, AUTOMATIC) loopCnt        = (uint8)0U;
     VAR(uint32, AUTOMATIC) bitPos        = (uint32)0U;
@@ -2930,10 +2977,31 @@ static FUNC(void, CAN_CODE)
     for (loopCnt = ((uint8)0U); loopCnt < MCAN_TX_MB_MAX_NUM; loopCnt++)
     {
         bitPos = ((uint32)1U << loopCnt);
-        if (bitPos == (txStat & bitPos))
+        /* Check if transmission is pending for this buffer.
+           TXBTO bit remains set until next TXBAR write, so we use txPendingStatus
+           to track actual pending transmissions and prevent multiple TxConfirmation calls. */
+        if (bitPos == (canCntrlObj->txPendingStatus & bitPos))
         {
             hth = canCntrlObj->canFDMsgRamConfig.canTxBufToHohMapping[loopCnt];
-            Can_CheckAndConfirmTxBuffersPriv(canCntrlObj, canMailObj, hth, loopCnt);
+            /* Transmission outcome scenarios in DAR (Disable Automatic Retransmission) mode:
+               - TXBTO=1, TXBCF=0: Successful transmission
+               - TXBTO=1, TXBCF=1: Successful transmission despite cancellation request
+               - TXBTO=0, TXBCF=1: Arbitration lost or frame transmission disturbed */
+            if (bitPos == (txStat & bitPos))
+            {
+                /* TXBTO is set - transmission was successful, call TxConfirmation */
+                Can_CheckAndConfirmTxBuffersPriv(canCntrlObj, canMailObj, hth, loopCnt);
+            }
+            else if (bitPos == (txCancelStat & bitPos))
+            {
+                /* TXBCF is set but TXBTO is not - transmission failed (arbitration lost or error).
+                   Clear txPendingStatus but do not call TxConfirmation. */
+                canCntrlObj->txPendingStatus &= ~bitPos;
+            }
+            else
+            {
+                /* Neither TXBTO nor TXBCF is set - transmission still in progress, do nothing */
+            }
         }
     }
 }
@@ -2943,14 +3011,60 @@ static FUNC(void, CAN_CODE)
                                      P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailObj,
                                      VAR(Can_HwHandleType, AUTOMATIC) hth, VAR(uint8, AUTOMATIC) loopCnt)
 {
+    VAR(uint32, AUTOMATIC) bitPos = ((uint32)1U << loopCnt);
+
     if ((canCntrlObj->canControllerConfig.CanTxProcessing == CAN_INTERRUPT) ||
         ((canCntrlObj->canControllerConfig.CanTxProcessing == CAN_MIXED) &&
          (canMailObj[hth].mailBoxConfig.CanHardwareObjectUsesPolling == FALSE)))
     {
         if (CAN_TRANSMIT == canMailObj[hth].mailBoxConfig.CanObjectType)
         {
+            /* Clear the pending status bit before calling TxConfirmation */
+            canCntrlObj->txPendingStatus &= ~bitPos;
+
             /* Call Tx Confirmation */
             CanIf_TxConfirmation(canCntrlObj->canTxRxPduId[loopCnt]);
+        }
+    }
+}
+
+/*
+ * Design: MCAL-28426
+ */
+static FUNC(void, CAN_CODE)
+    Can_ProcessTxBufferStatusPriv(VAR(uint8, AUTOMATIC) buffIdx, VAR(uint32, AUTOMATIC) txStatus,
+                                  VAR(uint32, AUTOMATIC) txCancelStatus,
+                                  P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canController)
+{
+    VAR(uint32, AUTOMATIC) bitPos = ((uint32)1U << buffIdx);
+
+    /* Check if transmission is pending for this buffer.
+       TXBTO bit remains set until next TXBAR write, so we use txPendingStatus
+       to track actual pending transmissions and prevent multiple TxConfirmation calls. */
+    if (bitPos == (canController->txPendingStatus & bitPos))
+    {
+        /* Transmission outcome scenarios in DAR (Disable Automatic Retransmission) mode:
+           - TXBTO=1, TXBCF=0: Successful transmission
+           - TXBTO=1, TXBCF=1: Successful transmission despite cancellation request
+           - TXBTO=0, TXBCF=1: Arbitration lost or frame transmission disturbed */
+        if (bitPos == (txStatus & bitPos))
+        {
+            /* TXBTO is set - transmission was successful */
+            /* Clear the pending status bit before calling TxConfirmation */
+            canController->txPendingStatus &= ~bitPos;
+
+            /* Call Tx Confirmation */
+            CanIf_TxConfirmation(canController->canTxRxPduId[buffIdx]);
+        }
+        else if (bitPos == (txCancelStatus & bitPos))
+        {
+            /* TXBCF is set but TXBTO is not - transmission failed (arbitration lost or error).
+               Clear txPendingStatus but do not call TxConfirmation. */
+            canController->txPendingStatus &= ~bitPos;
+        }
+        else
+        {
+            /* Neither TXBTO nor TXBCF is set - transmission still in progress, do nothing */
         }
     }
 }
@@ -3561,7 +3675,10 @@ static FUNC(uint32, CAN_CODE) Can_GetInterruptMaskPriv(P2CONST(Can_ControllerTyp
     /* Enable Transmit Interrupt*/
     if (CAN_POLLING != configParam->CanTxProcessing)
     {
-        interruptMask |= ((uint32)MCAN_IR_TFE_MASK | (uint32)MCAN_IR_TC_MASK);
+        /* TC: Transmission Completed - set when TXBTO is updated
+           TCF: Transmission Cancellation Finished - set when TXBCF is updated
+           TFE: Tx FIFO Empty */
+        interruptMask |= ((uint32)MCAN_IR_TFE_MASK | (uint32)MCAN_IR_TC_MASK | (uint32)MCAN_IR_TCF_MASK);
     }
 
 #if (CAN_CFG_DEM_ENABLE == STD_ON)
@@ -3708,7 +3825,7 @@ static FUNC(void, CAN_CODE) Can_WaitForTxBufCancelReqPriv(uint32 bitPos, uint32 
         }
         /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] This cannot be covered can't simulate
          * Hardware IP Errors */
-    } while ((uint32)bitPos != ((Can_TxBufCancelStatusPriv(baseAddr))&bitPos));
+    } while ((uint32)bitPos != ((Can_GetTxBufCancelStatusPriv(baseAddr))&bitPos));
     /* TI_COVERAGE_GAP_STOP */
 
     return;
@@ -3737,7 +3854,7 @@ static FUNC(void, CAN_CODE) Can_TxBufCancelReqPriv(uint32 baseAddr, uint32 buffN
 /*
  *Design: MCAL-24232
  */
-static FUNC(uint32, CAN_CODE) Can_TxBufCancelStatusPriv(uint32 baseAddr)
+static FUNC(uint32, CAN_CODE) Can_GetTxBufCancelStatusPriv(uint32 baseAddr)
 {
     return (MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBCF));
 }

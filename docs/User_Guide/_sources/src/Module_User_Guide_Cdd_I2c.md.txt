@@ -301,18 +301,6 @@ General configuration settings for Complex device driver
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### CddI2cUseInterrupts
-
-| Item ||
-|--------|---------------|
-| **Name** | CddI2cUseInterrupts |
-| **Description** | Switches to activate or deactivate interrupt controlled job processing(ON/OFF). |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | false |
-
 ##### CddI2cVersionInfoApi
 
 | Item ||
@@ -369,6 +357,32 @@ General configuration settings for Complex device driver
 #### CddI2cHwConfig
 This container contains the HW unit initialization parameters
 
+##### CddI2cHwUnitMode
+
+| Item ||
+|--------|---------------|
+| **Name** | CddI2cHwUnitMode |
+| **Description** | Selects the operation mode of the I2C HW unit (Controller or Target). |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_I2C_MODE_CONTROLLER |
+| **Range** | CDD_I2C_MODE_CONTROLLER<br>CDD_I2C_MODE_TARGET |
+
+##### CddI2cHwUseInterrupts
+
+| Item ||
+|--------|---------------|
+| **Name** | CddI2cHwUseInterrupts |
+| **Description** | Switches to activate or deactivate interrupt controlled job processing for this HW unit. Always enabled in Target mode. |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
 ##### CddI2cHwBaudrate
 
 | Item ||
@@ -376,6 +390,7 @@ This container contains the HW unit initialization parameters
 | **Name** | CddI2cHwBaudrate |
 | **Description** | Channel Bit Rate (Range = 10kbps - 400kbps). Value needs to be provided in bits per second. |
 | **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
@@ -396,6 +411,19 @@ This container contains the HW unit initialization parameters
 | **Default-value** | 10000000 |
 | **Max-value** | 12000000 |
 | **Min-value** | 7000000 |
+
+##### CddI2cHwAddressScheme
+
+| Item ||
+|--------|---------------|
+| **Name** | CddI2cHwAddressScheme |
+| **Description** | Specifies whether the HW unit uses 7-bit or 10-bit addressing. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_I2C_ADDRESS_7_BIT |
+| **Range** | CDD_I2C_ADDRESS_7_BIT<br>CDD_I2C_ADDRESS_10_BIT |
 
 ##### CddI2cHwOwnAddress
 
@@ -445,6 +473,84 @@ This container contains the HW unit initialization parameters
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
+
+##### CddI2cTargetCallbacks
+Container for target mode callback notifications. Only visible when HW unit is configured in Target mode.
+
+###### CddI2cTargetTxStartNotification
+
+| Item ||
+|--------|---------------|
+| **Name** | CddI2cTargetTxStartNotification |
+| **Description** | Function pointer to callback function called when target TX start condition is detected. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
+
+###### CddI2cTargetRxStartNotification
+
+| Item ||
+|--------|---------------|
+| **Name** | CddI2cTargetRxStartNotification |
+| **Description** | Function pointer to callback function called when target RX start condition is detected. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
+
+###### CddI2cTargetTxCompleteNotification
+
+| Item ||
+|--------|---------------|
+| **Name** | CddI2cTargetTxCompleteNotification |
+| **Description** | Function pointer to callback function called when target TX is complete (stop condition or buffer fully transferred). |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
+
+###### CddI2cTargetRxCompleteNotification
+
+| Item ||
+|--------|---------------|
+| **Name** | CddI2cTargetRxCompleteNotification |
+| **Description** | Function pointer to callback function called when target RX is complete (stop condition or buffer full). |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
+
+###### CddI2cTargetErrorNotification
+
+| Item ||
+|--------|---------------|
+| **Name** | CddI2cTargetErrorNotification |
+| **Description** | Function pointer to callback function called when a target bus error occurs. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
 
 #### CddI2cChConfig
 This container contains the Channel configurations
@@ -534,7 +640,7 @@ This container contains the Sequence configurations
 | Item ||
 |--------|---------------|
 | **Name** | CddI2cSeqHwUnitAssignment |
-| **Description** | I2c HW unit reference to use. |
+| **Description** | I2c HW unit reference to use. Only HW units configured in Controller mode are allowed. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |

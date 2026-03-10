@@ -8,4 +8,5 @@ target_sources(
               ${CMAKE_CURRENT_LIST_DIR}/src/Cdd_I2c_Hw.c
               ${CMAKE_CURRENT_LIST_DIR}/src/Cdd_I2c_Irq.c
               ${CMAKE_CURRENT_LIST_DIR}/src/Cdd_I2c_Priv.c
+              ${CMAKE_CURRENT_LIST_DIR}/src/Cdd_I2c_Target.c
               ${CMAKE_CURRENT_LIST_DIR}/src/Cdd_I2c_Utils.c)

@@ -28,6 +28,11 @@ title: Cdd I2c
 |typedef uint16  | **[Cdd_I2c_DataLengthType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_datalengthtype)** | Type to define the number of data elements to be sent and/or received during a transmission.  | 
 |typedef void(*)(void)  | **[Cdd_I2c_SequenceEndNotification](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_sequenceendnotification)** | Callback routine provided by the user for each Sequence to notify the caller that a Sequence has been finished.  | 
 |typedef void(*)(uint8 errorCode)  | **[Cdd_I2c_SequenceErrorNotification](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_sequenceerrornotification)** | Callback routine provided by the user for each Sequence to notify the caller that a Sequence has been finished with an error.  | 
+|typedef void(*)(Cdd_I2c_HwUnitType hwUnitId)  | **[Cdd_I2c_TargetRxStartNotificationType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_targetrxstartnotificationtype)** | Target RX start notification callback - called on start condition.  | 
+|typedef void(*)(Cdd_I2c_HwUnitType hwUnitId)  | **[Cdd_I2c_TargetTxStartNotificationType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_targettxstartnotificationtype)** | Target TX start notification callback - called on start condition.  | 
+|typedef void(*)(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataPtrType pRxBuffer, Cdd_I2c_DataLengthType rxCount, uint8 event)  | **[Cdd_I2c_TargetRxCompleteNotificationType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_targetrxcompletenotificationtype)** | Target RX complete notification callback - called on stop condition or the buffer is fully filled.  | 
+|typedef void(*)(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataConstPtrType pTxBuffer, Cdd_I2c_DataLengthType txCount, uint8 event)  | **[Cdd_I2c_TargetTxCompleteNotificationType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_targettxcompletenotificationtype)** | Target TX complete notification callback - called on stop condition or the buffer is fully transferred.  | 
+|typedef void(*)(Cdd_I2c_HwUnitType hwUnitId, uint8 errorEvent)  | **[Cdd_I2c_TargetErrorNotificationType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_targeterrornotificationtype)** | Target error notification callback - called on bus error conditions.  | 
 
 
 
@@ -253,6 +258,105 @@ Callback routine provided by the user for each Sequence to notify the caller tha
 
 
 
+### typedef Cdd_I2c_TargetRxStartNotificationType
+```
+typedef void(* Cdd_I2c_TargetRxStartNotificationType) (Cdd_I2c_HwUnitType hwUnitId);
+```
+
+
+**Brief**: 
+Target RX start notification callback - called on start condition. 
+
+**Parameters**: 
+
+  
+* **hwUnitId** I2C instance 
+
+
+
+
+### typedef Cdd_I2c_TargetTxStartNotificationType
+```
+typedef void(* Cdd_I2c_TargetTxStartNotificationType) (Cdd_I2c_HwUnitType hwUnitId);
+```
+
+
+**Brief**: 
+Target TX start notification callback - called on start condition. 
+
+**Parameters**: 
+
+  
+* **hwUnitId** I2C instance 
+
+
+
+
+### typedef Cdd_I2c_TargetRxCompleteNotificationType
+```
+typedef void(* Cdd_I2c_TargetRxCompleteNotificationType) (Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataPtrType pRxBuffer, Cdd_I2c_DataLengthType rxCount, uint8 event);
+```
+
+
+**Brief**: 
+Target RX complete notification callback - called on stop condition or the buffer is fully filled. 
+
+**Parameters**: 
+
+  
+* **hwUnitId** I2C instance 
+  
+* **pRxBuffer** Pointer to RX data buffer given at time of submit 
+  
+* **rxCount** Number of bytes actually received 
+  
+* **event** CDD_I2C_TARGET_EVENT_TRANSFER_COMPLETE or CDD_I2C_TARGET_EVENT_STOP 
+
+
+
+
+### typedef Cdd_I2c_TargetTxCompleteNotificationType
+```
+typedef void(* Cdd_I2c_TargetTxCompleteNotificationType) (Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataConstPtrType pTxBuffer, Cdd_I2c_DataLengthType txCount, uint8 event);
+```
+
+
+**Brief**: 
+Target TX complete notification callback - called on stop condition or the buffer is fully transferred. 
+
+**Parameters**: 
+
+  
+* **hwUnitId** I2C instance 
+  
+* **pTxBuffer** Pointer to TX data buffer 
+  
+* **txCount** Number of bytes actually transmitted 
+  
+* **event** CDD_I2C_TARGET_EVENT_TRANSFER_COMPLETE or CDD_I2C_TARGET_EVENT_STOP 
+
+
+
+
+### typedef Cdd_I2c_TargetErrorNotificationType
+```
+typedef void(* Cdd_I2c_TargetErrorNotificationType) (Cdd_I2c_HwUnitType hwUnitId, uint8 errorEvent);
+```
+
+
+**Brief**: 
+Target error notification callback - called on bus error conditions. 
+
+**Parameters**: 
+
+  
+* **hwUnitId** I2C instance 
+  
+* **errorEvent** Error Events: CDD_I2C_TARGET_EVENT_NO_BUFFER, CDD_I2C_TARGET_EVENT_TX_UNDERFLOW, CDD_I2C_TARGET_EVENT_RX_OVERFLOW, CDD_I2C_TARGET_EVENT_NACK 
+
+
+
+
 
 ## Structures
 |   Name         | Brief          |
@@ -295,6 +399,10 @@ Callback routine provided by the user for each Sequence to notify the caller tha
 | CDD_I2C_SID_MAIN_FUNCTION   | Service ID Cdd_I2c_MainFunction()  |
 | CDD_I2C_SID_POLLING_MODE_PROCESSING   | Service ID Cdd_I2c_PollingModeProcessing()  |
 | CDD_I2C_SID_GET_STATUS   | Service ID Cdd_I2c_GetStatus()  |
+| CDD_I2C_SID_TARGET_START   | Service ID Cdd_I2c_TargetStart()  |
+| CDD_I2C_SID_TARGET_STOP   | Service ID Cdd_I2c_TargetStop()  |
+| CDD_I2C_SID_TARGET_SUBMIT_TX_BUF   | Service ID Cdd_I2c_TargetSubmitTxBuffer()  |
+| CDD_I2C_SID_TARGET_SUBMIT_RX_BUF   | Service ID Cdd_I2c_TargetSubmitRxBuffer()  |
 | CDD_I2C_E_NO_ERROR   | No errors.  |
 | CDD_I2C_E_UNINIT   | Error code for not initialized module.  |
 | CDD_I2C_E_ALREADY_INITIALIZED   | Init service called twice without deinit.  |
@@ -308,16 +416,30 @@ Callback routine provided by the user for each Sequence to notify the caller tha
 | CDD_I2C_E_PARAM_DIRECTION   | Buffer direction conflicts with channel direction set via EB.  |
 | CDD_I2C_E_PARAM_HWUNIT   | API service called with invalid HW unit ID.  |
 | CDD_I2C_E_SEQ_BUSY   | API service called with sequence is busy.  |
+| CDD_I2C_E_PARAM_MODE   | API service called with invalid mode - controller or target.  |
 | CDD_I2C_E_NACK_RECEIVED   | Error is reported if NACK was received.  |
 | CDD_I2C_E_ARBITRATION_FAILURE   | Error is reported if the master loses arbitration. This usually happens if the SDA is stuck low or another master has won the arbitration procedure.  |
 | CDD_I2C_E_BUS_FAILURE   | Error is reported if the SCL line is stuck low.  |
+| CDD_I2C_E_CANCELLED   | Sequence cancelled.  |
+| CDD_I2C_E_RX_OVERFLOW   | RX buffer overflow - applicable only in target mode.  |
+| CDD_I2C_E_TX_UNDERFLOW   | TX buffer underflow - applicable only in target mode.  |
+| CDD_I2C_E_NO_BUFFER   | No buffer submitted - applicable only in target mode.  |
 | CDD_I2C_WRITE   | CDD_I2C direction - write.  |
 | CDD_I2C_READ   | CDD_I2C direction - read.  |
 | CDD_I2C_ADDRESS_7_BIT   | 7 bit address  |
 | CDD_I2C_ADDRESS_10_BIT   | 10 bit address  |
+| CDD_I2C_MODE_CONTROLLER   | HW unit operates as I2C controller (master)  |
+| CDD_I2C_MODE_TARGET   | HW unit operates as I2C target (slave)  |
+| CDD_I2C_TARGET_EVENT_TRANSFER_COMPLETE   |  |
+| CDD_I2C_TARGET_EVENT_STOP   |  |
+| CDD_I2C_TARGET_EVENT_NO_BUFFER   |  |
+| CDD_I2C_TARGET_EVENT_TX_UNDERFLOW   |  |
+| CDD_I2C_TARGET_EVENT_RX_OVERFLOW   |  |
+| CDD_I2C_TARGET_EVENT_NACK   |  |
 | CDD_I2C_PRE_COMPILE_VARIANT   | I2C Build Variant. Build variants.(i.e Pre Compile and Post Build)  |
 | CDD_I2C_CONFIG_PC   | Precompile variant macro.  |
-| CDD_I2C_POLLING_MODE   | Enable/disable Interrupts.  |
+| CDD_I2C_POLLING_MODE   | STD_ON if any HW unit uses polling.  |
+| CDD_I2C_INTERRUPT_MODE   | STD_ON if any HW unit uses interrupts.  |
 | CDD_I2C_DEV_ERROR_DETECT   | Enable/Disable I2C dev detect error.  |
 | CDD_I2C_VERSION_INFO_API   | Version info API macro.  |
 | CDD_I2C_CANCEL_API   | Check to enable cancel API.  |
@@ -329,7 +451,9 @@ Callback routine provided by the user for each Sequence to notify the caller tha
 | CDD_I2C_MAX_HW_UNIT   | Maximum HW unit.  |
 | CDD_I2C_HW_UNIT_I2CA_ACTIVE   |  |
 | CDD_I2C_HW_UNIT_I2CB_ACTIVE   |  |
+| CDD_I2C_HW_UNIT_I2CA_CONTROLLER_INT_MODE   |  |
 | CDD_I2C_HW_UNIT_I2CA_ISR_CAT2_INT   |  |
+| CDD_I2C_HW_UNIT_I2CB_CONTROLLER_INT_MODE   |  |
 | CDD_I2C_HW_UNIT_I2CB_ISR_CAT2_INT   |  |
 | CddI2cConf_CddI2cSeqConfig_CddI2cSeqConfig_0   | Symbolic Name for I2c Sequence 0.  |
 | CddI2cConf_CddI2cSeqConfig_CddI2cSeqConfig_1   | Symbolic Name for I2c Sequence 1.  |
@@ -364,9 +488,14 @@ Callback routine provided by the user for each Sequence to notify the caller tha
 | Std_ReturnType | **[Cdd_I2c_AsyncTransmit](../Modules/group__CDD__I2C.md#function-cdd_i2c_asynctransmit)**([Cdd_I2c_SequenceType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_sequencetype) sequenceId)| The service conducts an asynchronous data transmission according to the parameters provided to the Cdd_I2c_SetupEB() service. The callback Cdd_I2c_SequenceErrorNotification() is called, when the asynchronous operation has finished.  |
 | Std_ReturnType | **[Cdd_I2c_Cancel](../Modules/group__CDD__I2C.md#function-cdd_i2c_cancel)**([Cdd_I2c_SequenceType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_sequencetype) sequenceId)| Cancel a transmission.  |
 | void | **[Cdd_I2c_MainFunction](../Modules/group__CDD__I2C.md#function-cdd_i2c_mainfunction)**(void )| Makes a target channel available for processing requests (addressing). When called, the target channel becomes available for starting incoming or outgoing transfers.  |
+| void | **[Cdd_I2c_PollingModeProcessing](../Modules/group__CDD__I2C.md#function-cdd_i2c_pollingmodeprocessing)**(void )| Ensures proper processing of I2c communication in the case of disabled interrupts.  |
 | [Cdd_I2c_SequenceResultType](../Modules/group__CDD__I2C.md#enum-cdd_i2c_sequenceresulttype) | **[Cdd_I2c_GetSequenceResult](../Modules/group__CDD__I2C.md#function-cdd_i2c_getsequenceresult)**([Cdd_I2c_SequenceType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_sequencetype) sequenceId)| This service returns the current status of the given SequenceId.  |
 | [Cdd_I2c_ChannelResultType](../Modules/group__CDD__I2C.md#enum-cdd_i2c_channelresulttype) | **[Cdd_I2c_GetResult](../Modules/group__CDD__I2C.md#function-cdd_i2c_getresult)**([Cdd_I2c_ChannelType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_channeltype) chId)| This service returns the current status of the given channel.  |
 | [Cdd_I2c_ComponentStatusType](../Modules/group__CDD__I2C.md#enum-cdd_i2c_componentstatustype) | **[Cdd_I2c_GetStatus](../Modules/group__CDD__I2C.md#function-cdd_i2c_getstatus)**(void )| This service returns the module's status.  |
+| Std_ReturnType | **[Cdd_I2c_TargetStart](../Modules/group__CDD__I2C.md#function-cdd_i2c_targetstart)**([Cdd_I2c_HwUnitType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_hwunittype) hwUnitId)| This service starts the target-mode for the provided HW unit ID This enables interrupts and targets will start responding to I2C events after this.  |
+| Std_ReturnType | **[Cdd_I2c_TargetStop](../Modules/group__CDD__I2C.md#function-cdd_i2c_targetstop)**([Cdd_I2c_HwUnitType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_hwunittype) hwUnitId)| This service stops the target-mode for the provided HW unit ID. This disables interrupts and targets will not respond to I2C events after this.  |
+| Std_ReturnType | **[Cdd_I2c_TargetSubmitTxBuffer](../Modules/group__CDD__I2C.md#function-cdd_i2c_targetsubmittxbuffer)**([Cdd_I2c_HwUnitType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_hwunittype) hwUnitId, [Cdd_I2c_DataConstPtrType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_dataconstptrtype) pTxBuffer, [Cdd_I2c_DataLengthType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_datalengthtype) txBufferSize)| Submit TX buffer - call before Start or in TX Notification callback to provide a new buffer to work with.  |
+| Std_ReturnType | **[Cdd_I2c_TargetSubmitRxBuffer](../Modules/group__CDD__I2C.md#function-cdd_i2c_targetsubmitrxbuffer)**([Cdd_I2c_HwUnitType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_hwunittype) hwUnitId, [Cdd_I2c_DataPtrType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_dataptrtype) pRxBuffer, [Cdd_I2c_DataLengthType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_datalengthtype) rxBufferSize)| Submit RX buffer - call before Start or in RX Notification callback to provide a new buffer to work with.  |
 | void | **[I2c_appSeqComplete](../Modules/group__CDD__I2C.md#function-i2c_appseqcomplete)**(void )|  |
 | void | **[I2c_appSeqFail](../Modules/group__CDD__I2C.md#function-i2c_appseqfail)**(uint8 errorCode)|  |
 
@@ -385,6 +514,8 @@ void Cdd_I2c_Init(
 Service for CDD_I2C initialization. 
 
 Initialize the CDD_I2C hardware for each Cdd_I2cChannel using the Cdd_I2cHwUnitBaseAddress and configure the Cdd_I2cBaudRate accordingly.
+
+Note: This API is applicable for both controller and target mode.
 
 Service ID[hex] - CDD_I2C_SID_INIT Sync/Async - Synchronous Reentrancy - Non Reentrant
 
@@ -414,6 +545,8 @@ Std_ReturnType Cdd_I2c_DeInit(
 Service for CDD_I2C driver de-initialization. 
 
 CDD_I2C_DeInit de-initializes the CDD_I2C peripheral(s) into a Power On Reset state.
+
+Note: This API is applicable for both controller and target mode.
 
 Service ID[hex] - CDD_I2C_SID_DEINIT Sync/Async - Synchronous Reentrancy - Non Reentrant
 
@@ -446,6 +579,8 @@ void Cdd_I2c_GetVersionInfo(
 **Brief**: 
 Service that returns the version information of the module. 
 
+Note: This API is applicable for both controller and target mode.
+
 Service ID[hex] - CDD_I2C_SID_GET_VERSION_INFO Sync/Async - Synchronous Reentrancy - Reentrant
 
 
@@ -475,6 +610,8 @@ Std_ReturnType Cdd_I2c_SetupEB(
 
 **Brief**: 
 Service to setup the buffers and the length of data for the Ch specified. 
+
+Note: This API is applicable only for controller mode.
 
 Service ID[hex] - CDD_I2C_SID_SETUP_EB Sync/Async - Synchronous Reentrancy - Non Reentrant
 
@@ -523,6 +660,8 @@ Std_ReturnType Cdd_I2c_SetupEBDynamic(
 **Brief**: 
 Service to setup the buffers and the length of data for the Ch specified. 
 
+Note: This API is applicable only for controller mode.
+
 Service ID[hex] - CDD_I2C_SID_SETUP_EB_DYNAMIC Sync/Async - Synchronous Reentrancy - Non Reentrant
 
 
@@ -568,6 +707,8 @@ Std_ReturnType Cdd_I2c_AsyncTransmit(
 **Brief**: 
 The service conducts an asynchronous data transmission according to the parameters provided to the Cdd_I2c_SetupEB() service. The callback Cdd_I2c_SequenceErrorNotification() is called, when the asynchronous operation has finished. 
 
+Note: This API is applicable only for controller mode.
+
 Service ID[hex] - CDD_I2C_SID_ASYNC_TRANSMIT Sync/Async - Synchronous Reentrancy - Non Reentrant
 
 
@@ -607,6 +748,8 @@ Cancel a transmission.
 
 A request that is already in transmission progress, is cancelled by finishing the current sequence. This is done to achieve a stable state with no undefined data. A queued transmission request is cancelled at once.
 
+Note: This API is applicable only for controller mode.
+
 Service ID[hex] - CDD_I2C_SID_CANCEL Sync/Async - Synchronous Reentrancy - Non Reentrant
 
 
@@ -644,7 +787,32 @@ void Cdd_I2c_MainFunction(
 **Brief**: 
 Makes a target channel available for processing requests (addressing). When called, the target channel becomes available for starting incoming or outgoing transfers. 
 
+Note: This API is applicable only for controller mode.
+
 Service ID[hex] - CDD_I2C_SID_MAIN_FUNCTION Sync/Async - Asynchronous Reentrancy - Reentrant
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_I2c_PollingModeProcessing
+
+```
+void Cdd_I2c_PollingModeProcessing(
+    void 
+)
+```
+
+
+**Brief**: 
+Ensures proper processing of I2c communication in the case of disabled interrupts. 
+
+Note: This API is applicable only for controller mode.
+
+Service ID[hex] - CDD_I2C_SID_POLLING_MODE_PROCESSING Sync/Async - Asynchronous Reentrancy - Reentrant
 
 
 **Return**: None 
@@ -664,6 +832,8 @@ Cdd_I2c_SequenceResultType Cdd_I2c_GetSequenceResult(
 
 **Brief**: 
 This service returns the current status of the given SequenceId. 
+
+Note: This API is applicable only for controller mode.
 
 Service ID[hex] - CDD_I2C_SID_GET_SEQUENCE_RESULT Sync/Async - Synchronous Reentrancy - Reentrant
 
@@ -692,6 +862,8 @@ Cdd_I2c_ChannelResultType Cdd_I2c_GetResult(
 **Brief**: 
 This service returns the current status of the given channel. 
 
+Note: This API is applicable only for controller mode.
+
 Service ID[hex] - CDD_I2C_SID_GET_RESULT Sync/Async - Synchronous Reentrancy - Reentrant
 
 
@@ -719,10 +891,153 @@ Cdd_I2c_ComponentStatusType Cdd_I2c_GetStatus(
 **Brief**: 
 This service returns the module's status. 
 
+Note: This API is applicable only for controller mode.
+
 Service ID[hex] - CDD_I2C_SID_GET_STATUS Sync/Async - Synchronous Reentrancy - Reentrant
 
 
 **Return**: Cdd_I2c_ComponentStatusType - Return the current status 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_I2c_TargetStart
+
+```
+Std_ReturnType Cdd_I2c_TargetStart(
+    Cdd_I2c_HwUnitType hwUnitId
+)
+```
+
+
+**Brief**: 
+This service starts the target-mode for the provided HW unit ID This enables interrupts and targets will start responding to I2C events after this. 
+
+Note: This API is applicable only for target mode.
+
+Service ID[hex] - CDD_I2C_SID_TARGET_START Sync/Async - Synchronous Reentrancy - Reentrant
+
+
+**Parameters**: 
+
+  
+* **hwUnitId** I2C HW unit ID 
+
+
+**Returns**: 
+
+  
+* **E_OK** Success 
+<br> 
+  
+* **E_NOT_OK** Request rejected 
+<br> 
+
+
+**Return**: Std_ReturnType 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_I2c_TargetStop
+
+```
+Std_ReturnType Cdd_I2c_TargetStop(
+    Cdd_I2c_HwUnitType hwUnitId
+)
+```
+
+
+**Brief**: 
+This service stops the target-mode for the provided HW unit ID. This disables interrupts and targets will not respond to I2C events after this. 
+
+Note: This API is applicable only for target mode.
+
+Service ID[hex] - CDD_I2C_SID_TARGET_STOP Sync/Async - Synchronous Reentrancy - Reentrant
+
+
+Stop all target-mode HW units - 
+
+
+**Parameters**: 
+
+  
+* **hwUnitId** I2C HW unit ID 
+
+
+**Returns**: 
+
+  
+* **E_OK** Success 
+<br> 
+  
+* **E_NOT_OK** Request rejected
+<br> 
+
+
+**Return**: Std_ReturnType 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_I2c_TargetSubmitTxBuffer
+
+```
+Std_ReturnType Cdd_I2c_TargetSubmitTxBuffer(
+    Cdd_I2c_HwUnitType hwUnitId,
+    Cdd_I2c_DataConstPtrType pTxBuffer,
+    Cdd_I2c_DataLengthType txBufferSize
+)
+```
+
+
+**Brief**: 
+Submit TX buffer - call before Start or in TX Notification callback to provide a new buffer to work with. 
+
+**Parameters**: 
+
+  
+* **hwUnitId** I2C HW unit ID 
+  
+* **pTxBuffer** Pointer to TX data buffer 
+  
+* **txBufferSize** Size of TX data buffer in bytes
+
+
+**Return**: E_OK on success, E_NOT_OK on failure 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_I2c_TargetSubmitRxBuffer
+
+```
+Std_ReturnType Cdd_I2c_TargetSubmitRxBuffer(
+    Cdd_I2c_HwUnitType hwUnitId,
+    Cdd_I2c_DataPtrType pRxBuffer,
+    Cdd_I2c_DataLengthType rxBufferSize
+)
+```
+
+
+**Brief**: 
+Submit RX buffer - call before Start or in RX Notification callback to provide a new buffer to work with. 
+
+**Parameters**: 
+
+  
+* **hwUnitId** I2C HW unit ID 
+  
+* **pRxBuffer** Pointer to RX data buffer 
+  
+* **rxBufferSize** Size of RX data buffer in bytes
+
+
+**Return**: E_OK on success, E_NOT_OK on failure 
 
 **Precondition**: None 
 

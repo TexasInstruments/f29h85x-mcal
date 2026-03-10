@@ -4,12 +4,60 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
  *
- *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *   TEXAS INSTRUMENTS TEXT FILE LICENSE
  *
- *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
- *                 is strictly prohibited.  This product  is  protected  under  copyright  law
- *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+ *   Copyright (c) 2025 Texas Instruments Incorporated
+ *
+ *   All rights reserved not granted herein.
+ *
+ *   Limited License.
+ *
+ *   Texas Instruments Incorporated grants a world-wide, royalty-free, non-exclusive
+ *   license under copyrights and patents it now or hereafter owns or controls to
+ *   make, have made, use, import, offer to sell and sell ("Utilize") this software
+ *   subject to the terms herein. With respect to the foregoing patent license,
+ *   such license is granted solely to the extent that any such patent is necessary
+ *   to Utilize the software alone. The patent license shall not apply to any
+ *   combinations which include this software, other than combinations with devices
+ *   manufactured by or for TI ("TI Devices"). No hardware patent is licensed hereunder.
+ *
+ *   Redistributions must preserve existing copyright notices and reproduce this license
+ *   (including the above copyright notice and the disclaimer and (if applicable) source
+ *   code license limitations below) in the documentation and/or other materials provided
+ *   with the distribution.
+ *
+ *   Redistribution and use in binary form, without modification, are permitted provided
+ *   that the following conditions are met:
+ *
+ *   * No reverse engineering, decompilation, or disassembly of this software is
+ *     permitted with respect to any software provided in binary form.
+ *   * Any redistribution and use are licensed by TI for use only with TI Devices.
+ *   * Nothing shall obligate TI to provide you with source code for the software
+ *     licensed and provided to you in object code.
+ *
+ *   If software source code is provided to you, modification and redistribution of the
+ *   source code are permitted provided that the following conditions are met:
+ *
+ *   * Any redistribution and use of the source code, including any resulting derivative
+ *     works, are licensed by TI for use only with TI Devices.
+ *   * Any redistribution and use of any object code compiled from the source code
+ *     and any resulting derivative works, are licensed by TI for use only with TI Devices.
+ *
+ *   Neither the name of Texas Instruments Incorporated nor the names of its suppliers
+ *   may be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ *   DISCLAIMER.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY TI AND TI'S LICENSORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ *   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TI AND TI'S
+ *   LICENSORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *   GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -29,6 +77,8 @@
  * Header Files
  *********************************************************************************************************************/
 #include "Mcu.h"
+#include "hw_memmap.h"
+#include "hw_sysctl.h"
 
 #define MCU_START_SEC_CONFIG_DATA
 #include "Mcu_MemMap.h"
@@ -585,27 +635,705 @@ static CONST(Mcu_ModeConfigType, MCU_CONFIG_DATA) Mcu_ModeConfigurationSet[!"num
 /*
  * Design: MCAL-21865, MCAL-21866, MCAL-21867, MCAL-21868, MCAL-21869, MCAL-21866
  */
+/* Forward declaration of peripheral configuration structure */
+static CONST(Mcu_PeripheralConfigType, MCU_CONFIG_DATA) Mcu_PeripheralConfig;
+
 [!LOOP "McuModuleConfiguration/*"!]CONST(Mcu_ConfigType, MCU_CONFIG_DATA) Mcu_Config_[!"@name"!] =
 {
-    /* Mcu_ClockConfig */ 
+    /* Mcu_ClockConfig */
     .Mcu_ClockConfig               = ((Mcu_ClockConfigPtrType) Mcu_ClkCfgSet[!"@index"!]),
-    /* Mcu_ConfigRamSection */ 
+    /* Mcu_ConfigRamSection */
     .Mcu_ConfigRamSection          = ((Mcu_RamConfigPtrType) Mcu_RamSectionCfgSet[!"@index"!]),
-    /* Mcu_ModeConfig */ 
+    /* Mcu_ModeConfig */
     .Mcu_ModeConfig                = ((Mcu_ModeConfigPtrType) Mcu_ModeConfigurationSet[!"@index"!]),
-    /* Mcu_ClockSetting */ 
+    /* Mcu_ClockSetting */
     .Mcu_ClockSetting              = ((uint8) [!"num:i(count(McuClockSettingConfig/*))"!]U),
-    /* Mcu_NumberOfRamSectors */ 
+    /* Mcu_NumberOfRamSectors */
     .Mcu_NumberOfRamSectors        = ((uint8) [!"McuRamSectors"!]U),
-    /* Mcu_ModesNumber */ 
+    /* Mcu_ModesNumber */
     .Mcu_NumberOfLowPowerModes     = ((uint8) [!"McuNumberOfMcuModes"!]U),
-    /* Mcu_ResetSetting */ 
+    /* Mcu_ResetSetting */
     .Mcu_ResetSetting              = ((Mcu_ResetType) [!IF "McuResetSetting = 1"!]MCU_EXTERNAL_RESET[!ELSE!][!"McuResetSetting"!]U[!ENDIF!]),
-    /* Mcu_EnableClkFailNotification */ 
-    .Mcu_EnableClkFailNotification = ((boolean) [!IF "McuClockSrcFailureNotification='ENABLED'"!]TRUE[!ELSE!]FALSE[!ENDIF!])
+    /* Mcu_EnableClkFailNotification */
+    .Mcu_EnableClkFailNotification = ((boolean) [!IF "McuClockSrcFailureNotification='ENABLED'"!]TRUE[!ELSE!]FALSE[!ENDIF!]),
+    /* Peripheral Configuration */
+    .PeripheralConfig              = &Mcu_PeripheralConfig
 };
 [!ENDLOOP!]
 [!ENDSELECT!]
+
+/*********************************************************************************************************************
+ *  Peripheral Configuration Register Array Generation
+ *
+ *  This section generates peripheral configuration arrays from ResourceAllocator XDM configuration.
+ *  Each peripheral configuration register has the following bit layout:
+ *    - Bits 31-8: Reserved (0)
+ *    - Bit 7: DBGHALTEN - Debug halt enable (1=enabled, 0=disabled)
+ *    - Bit 6: STANDBYEN - Standby mode enable (1=enabled, 0=disabled)
+ *    - Bits 5-3: CPUSEL - CPU selection (000=CPU1, 001=CPU2, 010=CPU3)
+ *    - Bits 2-0: FRAMESEL - Frame selection (000=FRAME0, 001=FRAME1, 010=FRAME2, 011=FRAME3)
+ *********************************************************************************************************************/
+[!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator'])"!][!//
+[!SELECT "as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']"!][!//
+[!/* Initialize peripheral configuration count */!][!//
+[!VAR "McuPeripheralConfigCount" = "0"!][!//
+[!/*
+ * Macro to calculate register value from configuration parameters
+ * RegValue = (FRAMESEL << 0) | (CPUSEL << 3) | (STANDBYEN << 6) | (DBGHALTEN << 7)
+ */!][!//
+/*********************************************************************************************************************
+ *  Peripheral Configuration Array
+ *
+ *  Contains configuration entries for all peripherals with Frame configuration from ResourceAllocator.
+ *  Each entry specifies the register address and the configuration value to write.
+ *********************************************************************************************************************/
+static CONST(Mcu_PeripheralRegEntryType, MCU_CONFIG_DATA) Mcu_PeripheralConfigSet[] =
+{
+[!VAR "firstEntry" = "'true'"!][!//
+[!LOOP "ResourceAllocatorGeneral/Context/*"!][!//
+    [!VAR "contextName" = "node:name(.)"!][!//
+    [!VAR "coreName" = "node:value(./Core)"!][!//
+    [!/* Determine CPUSEL value from context name */!][!//
+    [!IF "node:value(./Core) = 'CPU1'"!][!//
+        [!VAR "cpusel" = "0"!][!//
+    [!ELSEIF "node:value(./Core) = 'CPU2'"!][!//
+        [!VAR "cpusel" = "1"!][!//
+    [!ELSEIF "node:value(./Core) = 'CPU3'"!][!//
+        [!VAR "cpusel" = "2"!][!//
+    [!ELSE!][!//
+        [!VAR "cpusel" = "0"!][!//
+    [!ENDIF!][!//
+[!/* CAN Peripheral Instances */!][!//
+[!IF "node:exists(./Can/*/CanAllocatedInstance)"!][!//
+[!LOOP "./Can/*/CanAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!/* Calculate FRAMESEL value */!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!/* Calculate register value */!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* SPI Peripheral Instances */!][!//
+[!IF "node:exists(./Spi/*/SpiAllocatedInstance)"!][!//
+[!LOOP "./Spi/*/SpiAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* LIN Peripheral Instances */!][!//
+[!IF "node:exists(./Lin/*/LinAllocatedInstance)"!][!//
+[!LOOP "./Lin/*/LinAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Cdd_Adc Peripheral Instances */!][!//
+[!IF "node:exists(./Cdd_Adc/*/Cdd_AdcAllocatedInstance)"!][!//
+[!LOOP "./Cdd_Adc/*/Cdd_AdcAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "regName" = "substring-after($instanceName, 'CDD_')"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$regName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Cdd_Adc Safety Checker Instances */!][!//
+[!IF "node:exists(./Cdd_Adc/*/CddAdcSafetyCheckerInstance)"!][!//
+[!LOOP "./Cdd_Adc/*/CddAdcSafetyCheckerInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./SafetyCheckerInstance)"!][!//
+[!VAR "regName" = "concat('ADCCHECKER', substring-after($instanceName, 'ADCSAFETYCHECK'))"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$regName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Cdd_Adc Checker Interrupt Event Instances */!][!//
+[!IF "node:exists(./Cdd_Adc/*/CddAdcCheckerInterruptEvtInstance)"!][!//
+[!LOOP "./Cdd_Adc/*/CddAdcCheckerInterruptEvtInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./SafetyCheckerIntEvtInstance)"!][!//
+[!VAR "regName" = "concat('ADCSEAGGRCPU', substring-after($instanceName, 'ADCSAFETYCHECKINTEVT'))"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$regName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Cdd_Adc Global Software Force - FRAMESEL only (no CPUSEL, STANDBYEN, DBGHALTEN) */!][!//
+[!IF "node:exists(./Cdd_Adc/*/CddAdcGlobalSoftwareForce)"!][!//
+[!LOOP "./Cdd_Adc/*/CddAdcGlobalSoftwareForce/*"!][!//
+[!VAR "instanceName" = "'ADC_GLOBAL_REGS'"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"node:value(./Frame)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Cdd_Ecap Peripheral Instances */!][!//
+[!IF "node:exists(./Cdd_Ecap/*/Cdd_EcapAllocatedInstance)"!][!//
+[!LOOP "./Cdd_Ecap/*/Cdd_EcapAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Cdd_I2c Peripheral Instances */!][!//
+[!IF "node:exists(./Cdd_I2c/*/Cdd_I2cAllocatedInstance)"!][!//
+[!LOOP "./Cdd_I2c/*/Cdd_I2cAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Cdd_Pwm Peripheral Instances */!][!//
+[!IF "node:exists(./Cdd_Pwm/*/Cdd_PwmAllocatedInstance)"!][!//
+[!LOOP "./Cdd_Pwm/*/Cdd_PwmAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Cdd_Pwm HRPWM Cal Instances - FRAMESEL only (no CPUSEL, STANDBYEN, DBGHALTEN) */!][!//
+[!IF "node:exists(./Cdd_Pwm/*/CddPwmHrpwmCalInstance)"!][!//
+[!LOOP "./Cdd_Pwm/*/CddPwmHrpwmCalInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "regName" = "concat('HRCAL', substring-after($instanceName, 'HRPWMCAL'))"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"node:value(./Frame)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$regName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Cdd_Sent Peripheral Instances */!][!//
+[!IF "node:exists(./Cdd_Sent/*/Cdd_SentAllocatedInstance)"!][!//
+[!LOOP "./Cdd_Sent/*/Cdd_SentAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Cdd_Uart Peripheral Instances */!][!//
+[!IF "node:exists(./Cdd_Uart/*/Cdd_UartAllocatedInstance)"!][!//
+[!LOOP "./Cdd_Uart/*/Cdd_UartAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Cdd_Cmpss Peripheral Instances */!][!//
+[!IF "node:exists(./Cdd_Cmpss/*/Cdd_CmpssAllocatedInstance)"!][!//
+[!LOOP "./Cdd_Cmpss/*/Cdd_CmpssAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Eqep Peripheral Instances */!][!//
+[!IF "node:exists(./Eqep/*/EqepAllocatedInstance)"!][!//
+[!LOOP "./Eqep/*/EqepAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+
+[!/* Sdfm Peripheral Instances */!][!//
+[!IF "node:exists(./Sdfm/*/SdfmAllocatedInstance)"!][!//
+[!LOOP "./Sdfm/*/SdfmAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Pmbus Peripheral Instances */!][!//
+[!IF "node:exists(./Pmbus/*/PmbusAllocatedInstance)"!][!//
+[!LOOP "./Pmbus/*/PmbusAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Dac Peripheral Instances */!][!//
+[!IF "node:exists(./Dac/*/DacAllocatedInstance)"!][!//
+[!LOOP "./Dac/*/DacAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Clb Peripheral Instances */!][!//
+[!IF "node:exists(./Clb/*/ClbAllocatedInstance)"!][!//
+[!LOOP "./Clb/*/ClbAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* FsiTx Peripheral Instances */!][!//
+[!IF "node:exists(./FsiTx/*/FsiTxAllocatedInstance)"!][!//
+[!LOOP "./FsiTx/*/FsiTxAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* FsiRx Peripheral Instances */!][!//
+[!IF "node:exists(./FsiRx/*/FsiRxAllocatedInstance)"!][!//
+[!LOOP "./FsiRx/*/FsiRxAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Dcc Peripheral Instances */!][!//
+[!IF "node:exists(./Dcc/*/DccAllocatedInstance)"!][!//
+[!LOOP "./Dcc/*/DccAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Epg Peripheral Instances */!][!//
+[!IF "node:exists(./Epg/*/EpgAllocatedInstance)"!][!//
+[!LOOP "./Epg/*/EpgAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* Wadi Peripheral Instances */!][!//
+[!IF "node:exists(./Wadi/*/WadiAllocatedInstance)"!][!//
+[!LOOP "./Wadi/*/WadiAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!VAR "regValue" = "num:i($regValue) + num:i($cpusel * 8)"!][!//
+[!IF "node:value(./StandbyModeEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 64"!][!//
+[!ENDIF!][!//
+[!IF "node:value(./DebugHaltEnabled) = 'true'"!][!//
+[!VAR "regValue" = "num:i($regValue) + 128"!][!//
+[!ENDIF!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"$coreName"!], [!"node:value(./Frame)"!], DbgHalt=[!"node:value(./DebugHaltEnabled)"!], Standby=[!"node:value(./StandbyModeEnabled)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!ENDLOOP!][!/* End of Context loop */!][!//
+[!/* ===== Cdd_Xbar OUTPUT_XBAR_FLAG - FRAMESEL only ===== */!][!//
+[!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Cdd_Xbar/*/CddXbarOutputXbarFlag/*)"!][!//
+[!LOOP "as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Cdd_Xbar/*/CddXbarOutputXbarFlag/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regAddr" = "node:value(./BaseAddr)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"node:value(./Frame)"!] */
+    {
+        .RegAddr = (uint32)[!"$regAddr"!],
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* ===== Cdd_Xbar INPUT_XBAR_FLAG - FRAMESEL only ===== */!][!//
+[!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Cdd_Xbar/*/CddXbarInputFlag/*)"!][!//
+[!LOOP "as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Cdd_Xbar/*/CddXbarInputFlag/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regAddr" = "node:value(./BaseAddr)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"node:value(./Frame)"!] */
+    {
+        .RegAddr = (uint32)[!"$regAddr"!],
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* ===== DLTFifoRegs (DLT) - FRAMESEL only ===== */!][!//
+[!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/DLTFifoRegs/*/DLTFifoRegsAllocatedInstance/*)"!][!//
+[!LOOP "as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/DLTFifoRegs/*/DLTFifoRegsAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regAddr" = "node:value(./BaseAddr)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"node:value(./Frame)"!] */
+    {
+        .RegAddr = (uint32)[!"$regAddr"!],
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* ===== Error_Aggregator (ERROR_AGGREGATOR) - FRAMESEL only ===== */!][!//
+[!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Error_Aggregator/*/Error_AggregatorAllocatedInstance/*)"!][!//
+[!LOOP "as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Error_Aggregator/*/Error_AggregatorAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regAddr" = "node:value(./BaseAddr)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"node:value(./Frame)"!] */
+    {
+        .RegAddr = (uint32)[!"$regAddr"!],
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!/* ===== ESM - FRAMESEL only ===== */!][!//
+[!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/ESM/*/ESMAllocatedInstance/*)"!][!//
+[!LOOP "as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/ESM/*/ESMAllocatedInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regAddr" = "node:value(./BaseAddr)"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"node:value(./Frame)"!] */
+    {
+        .RegAddr = (uint32)[!"$regAddr"!],
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+};
+
+/*********************************************************************************************************************
+ *  Peripheral Configuration Structure
+ *
+ *  This structure wraps the peripheral configuration array and count for use by Mcu_Init.
+ *  The PeripheralConfigEntries pointer references the Mcu_PeripheralConfigSet array, which
+ *  contains struct entries with RegAddr and RegValue fields.
+ *********************************************************************************************************************/
+static CONST(Mcu_PeripheralConfigType, MCU_CONFIG_DATA) Mcu_PeripheralConfig =
+{
+    .PeripheralConfigEntries = Mcu_PeripheralConfigSet,
+    .PeripheralConfigCount   = [!"num:i($McuPeripheralConfigCount)"!]U
+};
+
+[!ENDSELECT!]
+[!ELSE!]
+/*********************************************************************************************************************
+ *  ResourceAllocator module not present - No peripheral configuration generated
+ *********************************************************************************************************************/
+/*********************************************************************************************************************
+ *  Peripheral Configuration Structure (Empty - No ResourceAllocator)
+ *********************************************************************************************************************/
+static CONST(Mcu_PeripheralConfigType, MCU_CONFIG_DATA) Mcu_PeripheralConfig =
+{
+    .PeripheralConfigEntries = NULL_PTR,
+    .PeripheralConfigCount   = 0U
+};
+[!ENDIF!]
 
 /*********************************************************************************************************************
  *  Local Function Prototypes

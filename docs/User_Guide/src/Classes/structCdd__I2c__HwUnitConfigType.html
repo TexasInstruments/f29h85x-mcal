@@ -100,7 +100,7 @@ summary: CDD_I2C Hardware unit configuration structure.</p>
 <section id="cdd-i2c-hwunitconfigtype">
 <h1>Cdd_I2c_HwUnitConfigType<a class="headerlink" href="#cdd-i2c-hwunitconfigtype" title="Link to this heading"></a></h1>
 <p>CDD_I2C Hardware unit configuration structure.</p>
-<p><code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;Cdd_I2c.h&gt;</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;Cdd_I2c_Cfg.h&gt;</span></code></p>
 <section id="structure-members">
 <h2>Structure Members<a class="headerlink" href="#structure-members" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
@@ -130,6 +130,38 @@ summary: CDD_I2C Hardware unit configuration structure.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="../Modules/group__CDD__I2C.html#typedef-cdd-i2c-addresstype"><span class="std std-ref">Cdd_I2c_AddressType</span></a></p></td>
 <td><p>ownAddress</p></td>
 <td><p>Own address. Used in both 7 and 10-bit address mode. Note that the user can program the I2C own address to any value as long as it does not conflict with other components in the system.</p></td>
+</tr>
+<tr class="row-odd"><td><p>uint8</p></td>
+<td><p>addressScheme</p></td>
+<td><p>7-bit or 10-bit addressing (CDD_I2C_ADDRESS_7_BIT / CDD_I2C_ADDRESS_10_BIT). This is used at init time to program the default value.</p></td>
+</tr>
+<tr class="row-even"><td><p>uint8</p></td>
+<td><p>mode</p></td>
+<td><p>HW unit mode CDD_I2C_MODE_CONTROLLER or CDD_I2C_MODE_TARGET.</p></td>
+</tr>
+<tr class="row-odd"><td><p>boolean</p></td>
+<td><p>isIntrMode</p></td>
+<td><p>TRUE if this HW unit uses interrupts, FALSE for polling.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../Modules/group__CDD__I2C.html#typedef-cdd-i2c-targettxstartnotificationtype"><span class="std std-ref">Cdd_I2c_TargetTxStartNotificationType</span></a></p></td>
+<td><p>targetTxStartNotification</p></td>
+<td><p>TX start notification callback for Target mode only [Will be assigned NULL in controller mode].</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../Modules/group__CDD__I2C.html#typedef-cdd-i2c-targetrxstartnotificationtype"><span class="std std-ref">Cdd_I2c_TargetRxStartNotificationType</span></a></p></td>
+<td><p>targetRxStartNotification</p></td>
+<td><p>RX start notification callback for Target mode only [Will be assigned NULL in controller mode].</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../Modules/group__CDD__I2C.html#typedef-cdd-i2c-targettxcompletenotificationtype"><span class="std std-ref">Cdd_I2c_TargetTxCompleteNotificationType</span></a></p></td>
+<td><p>targetTxCompleteNotification</p></td>
+<td><p>TX complete notification callback for Target mode only [Will be assigned NULL in controller mode].</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../Modules/group__CDD__I2C.html#typedef-cdd-i2c-targetrxcompletenotificationtype"><span class="std std-ref">Cdd_I2c_TargetRxCompleteNotificationType</span></a></p></td>
+<td><p>targetRxCompleteNotification</p></td>
+<td><p>RX complete notification callback for Target mode only [Will be assigned NULL in controller mode].</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../Modules/group__CDD__I2C.html#typedef-cdd-i2c-targeterrornotificationtype"><span class="std std-ref">Cdd_I2c_TargetErrorNotificationType</span></a></p></td>
+<td><p>targetErrorNotification</p></td>
+<td><p>Error notification callback for Target mode only [Will be assigned NULL in controller mode].</p></td>
 </tr>
 </tbody>
 </table>

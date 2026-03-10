@@ -3,12 +3,60 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
  *
- *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *   TEXAS INSTRUMENTS TEXT FILE LICENSE
  *
- *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
- *                 is strictly prohibited.  This product  is  protected  under  copyright  law
- *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+ *   Copyright (c) 2025 Texas Instruments Incorporated
+ *
+ *   All rights reserved not granted herein.
+ *
+ *   Limited License.
+ *
+ *   Texas Instruments Incorporated grants a world-wide, royalty-free, non-exclusive
+ *   license under copyrights and patents it now or hereafter owns or controls to
+ *   make, have made, use, import, offer to sell and sell ("Utilize") this software
+ *   subject to the terms herein. With respect to the foregoing patent license,
+ *   such license is granted solely to the extent that any such patent is necessary
+ *   to Utilize the software alone. The patent license shall not apply to any
+ *   combinations which include this software, other than combinations with devices
+ *   manufactured by or for TI ("TI Devices"). No hardware patent is licensed hereunder.
+ *
+ *   Redistributions must preserve existing copyright notices and reproduce this license
+ *   (including the above copyright notice and the disclaimer and (if applicable) source
+ *   code license limitations below) in the documentation and/or other materials provided
+ *   with the distribution.
+ *
+ *   Redistribution and use in binary form, without modification, are permitted provided
+ *   that the following conditions are met:
+ *
+ *   * No reverse engineering, decompilation, or disassembly of this software is
+ *     permitted with respect to any software provided in binary form.
+ *   * Any redistribution and use are licensed by TI for use only with TI Devices.
+ *   * Nothing shall obligate TI to provide you with source code for the software
+ *     licensed and provided to you in object code.
+ *
+ *   If software source code is provided to you, modification and redistribution of the
+ *   source code are permitted provided that the following conditions are met:
+ *
+ *   * Any redistribution and use of the source code, including any resulting derivative
+ *     works, are licensed by TI for use only with TI Devices.
+ *   * Any redistribution and use of any object code compiled from the source code
+ *     and any resulting derivative works, are licensed by TI for use only with TI Devices.
+ *
+ *   Neither the name of Texas Instruments Incorporated nor the names of its suppliers
+ *   may be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ *   DISCLAIMER.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY TI AND TI'S LICENSORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ *   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TI AND TI'S
+ *   LICENSORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *   GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -72,7 +120,7 @@
  *********************************************************************************************************************/
 
 static void Cdd_I2c_HwSetup(Cdd_I2c_ChObjType *chObj, boolean isIntrMode);
-static void Cdd_I2c_HwSetupClk(uint32 baseAddr, uint32 baudRate, uint32 hwUnitFrequency, uint32 sysClk);
+static void Cdd_I2c_HwSetupClk(uint32 baseAddr, uint32 baudRate, uint32 hwUnitFrequency, uint32 sysClk, uint8 mode);
 
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForBusFree(Cdd_I2c_ChObjType *chObj);
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForBusBusy(Cdd_I2c_ChObjType *chObj);
@@ -91,21 +139,15 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForAccessReady(uint32 baseAddr);
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForStop(uint32 baseAddr);
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwGetErrorCode(uint16 intrStatus, boolean checkStopStatus);
 
-static void Cdd_I2c_HwSetMode(uint32 baseAddr, uint16 ctrlMask, uint16 ctrlCmds);
 static void Cdd_I2c_HwReset(uint32 baseAddr);
-static void Cdd_I2c_HwEnableModule(uint32 baseAddr);
+static void Cdd_I2c_HwEnableModule(uint32 baseAddr, uint8 mode);
 static void Cdd_I2c_HwStop(uint32 baseAddr);
 
-static void   Cdd_I2c_HwEnableIntr(uint32 baseAddr, uint16 mask);
-static void   Cdd_I2c_HwDisableIntr(uint32 baseAddr, uint16 mask);
 static void   Cdd_I2c_HwClearIntr(uint32 baseAddr, uint16 mask);
 static uint16 Cdd_I2c_HwGetIntrStatus(uint32 baseAddr);
 
-static void  Cdd_I2c_HwSetOwnAddress(uint32 baseAddr, uint16 ownAddress);
-static void  Cdd_I2c_HwSetSlaveAddress(uint32 baseAddr, Cdd_I2c_AddressType deviceAddress);
-static void  Cdd_I2c_HwSetDataCount(uint32 baseAddr, uint16 length);
-static void  Cdd_I2c_HwWriteData(uint32 baseAddr, uint8 data);
-static uint8 Cdd_I2c_HwReadData(uint32 baseAddr);
+static void Cdd_I2c_HwSetOwnAddress(uint32 baseAddr, uint16 ownAddress);
+static void Cdd_I2c_HwSetSlaveAddress(uint32 baseAddr, Cdd_I2c_AddressType deviceAddress);
 
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
@@ -119,17 +161,17 @@ static uint8 Cdd_I2c_HwReadData(uint32 baseAddr);
 #include "Cdd_I2c_MemMap.h"
 
 void Cdd_I2c_HwInit(uint32 baseAddr, uint32 baudRate, uint32 hwUnitFrequency, uint32 sysClk,
-                    Cdd_I2c_AddressType ownAddress)
+                    Cdd_I2c_AddressType ownAddress, uint8 mode)
 {
     Cdd_I2c_HwReset(baseAddr);
 
-    /* Initialises I2C hardware unit for required baudrate */
-    Cdd_I2c_HwSetupClk(baseAddr, baudRate, hwUnitFrequency, sysClk);
+    /* Setup prescaler (both modes) and baud rate (controller only) */
+    Cdd_I2c_HwSetupClk(baseAddr, baudRate, hwUnitFrequency, sysClk, mode);
 
     /* Disable/clear all interrupts and enable the module */
     Cdd_I2c_HwDisableAllIntr(baseAddr);
     Cdd_I2c_HwClearAllStatus(baseAddr);
-    Cdd_I2c_HwEnableModule(baseAddr);
+    Cdd_I2c_HwEnableModule(baseAddr, mode);
     Cdd_I2c_HwSetOwnAddress(baseAddr, ownAddress);
 
     return;
@@ -169,6 +211,18 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwTxPollingContinue(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_ChannelResultType chResult = chObj->chResult;
 
+    /*
+     * If not started yet and is cancelled, just return
+     */
+    if (TRUE == chObj->isCancelInProgress)
+    {
+        if (chObj->state <= CDD_I2C_STATE_SETUP)
+        {
+            chResult     = CDD_I2C_CH_RESULT_OK;
+            chObj->state = CDD_I2C_STATE_COMPLETE;
+        }
+    }
+
     if (CDD_I2C_STATE_WAIT_FOR_BUS_FREE == chObj->state)
     {
         chResult = Cdd_I2c_HwStateDoWaitForBusFree(chObj);
@@ -187,7 +241,16 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwTxPollingContinue(Cdd_I2c_ChObjType *chObj)
 
     if (CDD_I2C_STATE_DATA_TRANSFER == chObj->state)
     {
-        chResult = Cdd_I2c_HwStateDoTransferTxPolling(chObj);
+        if (TRUE == chObj->isCancelInProgress)
+        {
+            /* Skip further transfers in data transfer state - the main difference in
+             * cancel compared to regular transfer */
+            chObj->state = CDD_I2C_STATE_WAIT_FOR_ACCESS_READY;
+        }
+        else
+        {
+            chResult = Cdd_I2c_HwStateDoTransferTxPolling(chObj);
+        }
     }
 
     if (CDD_I2C_STATE_WAIT_FOR_ACCESS_READY == chObj->state)
@@ -228,6 +291,18 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwRxPollingContinue(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_ChannelResultType chResult = chObj->chResult;
 
+    /*
+     * If not started yet and is cancelled, just return
+     */
+    if (TRUE == chObj->isCancelInProgress)
+    {
+        if (chObj->state <= CDD_I2C_STATE_SETUP)
+        {
+            chResult     = CDD_I2C_CH_RESULT_OK;
+            chObj->state = CDD_I2C_STATE_COMPLETE;
+        }
+    }
+
     if (CDD_I2C_STATE_WAIT_FOR_BUS_FREE == chObj->state)
     {
         chResult = Cdd_I2c_HwStateDoWaitForBusFree(chObj);
@@ -246,8 +321,25 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwRxPollingContinue(Cdd_I2c_ChObjType *chObj)
 
     if (CDD_I2C_STATE_DATA_TRANSFER == chObj->state)
     {
-        /* Read the remaining bytes */
-        chResult = Cdd_I2c_HwStateDoTransferRxPolling(chObj);
+        /* Incase of cancel, wait for a RX event to exit the transfer gracefully */
+        if (TRUE == chObj->isCancelInProgress)
+        {
+            Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
+            uint32                    baseAddr  = hwUnitObj->baseAddr;
+            Cdd_I2c_ChannelResultType chResultTemp;
+
+            chResultTemp = Cdd_I2c_HwCheckForRxReady(baseAddr);
+            if (CDD_I2C_CH_RESULT_OK == chResultTemp)
+            {
+                chObj->state = CDD_I2C_STATE_WAIT_FOR_STOP;
+                Cdd_I2c_HwStop(baseAddr);
+            }
+        }
+        else
+        {
+            /* Read the remaining bytes */
+            chResult = Cdd_I2c_HwStateDoTransferRxPolling(chObj);
+        }
     }
 
     if (CDD_I2C_STATE_WAIT_FOR_STOP == chObj->state)
@@ -312,61 +404,28 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwTxRxIntrContinue(Cdd_I2c_ChObjType *chObj)
     }
     else
     {
-        if (CDD_I2C_WRITE == chObj->chCfg->direction)
+        if (TRUE == chObj->isCancelInProgress)
         {
-            chResult = Cdd_I2c_HwStateDoTransferTxIntr(chObj, intrStatus);
+            Cdd_I2c_HwDisableIntr(baseAddr, I2C_IER_ARDY | I2C_IER_XRDY | I2C_IER_RRDY);
+            Cdd_I2c_HwClearIntr(baseAddr, I2C_STR_ARDY | I2C_IER_XRDY | I2C_IER_RRDY);
+
+            chObj->state = CDD_I2C_STATE_WAIT_FOR_STOP;
+            Cdd_I2c_HwStop(baseAddr);
         }
         else
         {
-            chResult = Cdd_I2c_HwStateDoTransferRxIntr(chObj, intrStatus);
+            if (CDD_I2C_WRITE == chObj->chCfg->direction)
+            {
+                chResult = Cdd_I2c_HwStateDoTransferTxIntr(chObj, intrStatus);
+            }
+            else
+            {
+                chResult = Cdd_I2c_HwStateDoTransferRxIntr(chObj, intrStatus);
+            }
         }
     }
 
     return chResult;
-}
-
-void Cdd_I2c_HwCancelPolling(Cdd_I2c_ChObjType *chObj)
-{
-    Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
-    uint32                    baseAddr  = hwUnitObj->baseAddr;
-    Cdd_I2c_ChannelResultType chResult;
-
-    /* Force stop only if the channel is started */
-    if (chObj->state > CDD_I2C_STATE_SETUP)
-    {
-        // TODO: Implement timeout
-        Cdd_I2c_HwStop(baseAddr);
-        do
-        {
-            chResult = Cdd_I2c_HwStateDoWaitForStop(chObj);
-        } while (chResult != CDD_I2C_CH_RESULT_OK);
-    }
-
-    return;
-}
-
-void Cdd_I2c_HwCancelIntr(Cdd_I2c_ChObjType *chObj)
-{
-    Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
-    uint32                    baseAddr  = hwUnitObj->baseAddr;
-    Cdd_I2c_ChannelResultType chResult;
-
-    /* Force stop only if the channel is started */
-    if (chObj->state > CDD_I2C_STATE_SETUP)
-    {
-        /* Disable and clear all interrupts and perform stop from same context */
-        Cdd_I2c_HwDisableAllIntr(baseAddr);
-        Cdd_I2c_HwClearAllStatus(baseAddr);
-
-        // TODO: Implement timeout
-        Cdd_I2c_HwStop(baseAddr);
-        do
-        {
-            chResult = Cdd_I2c_HwStateDoWaitForStop(chObj);
-        } while (chResult != CDD_I2C_CH_RESULT_OK);
-    }
-
-    return;
 }
 
 void Cdd_I2c_HwDisableAllIntr(uint32 baseAddr)
@@ -377,6 +436,59 @@ void Cdd_I2c_HwDisableAllIntr(uint32 baseAddr)
 void Cdd_I2c_HwClearAllStatus(uint32 baseAddr)
 {
     Cdd_I2c_HwClearIntr(baseAddr, CDD_I2C_HW_INTR_STATUS_MASK_ALL);
+}
+
+void Cdd_I2c_HwSetMode(uint32 baseAddr, uint16 ctrlMask, uint16 ctrlCmds)
+{
+    uint16 regVal;
+
+    regVal                        = HWREGH(baseAddr + I2C_O_MDR);
+    regVal                       &= (uint16)~ctrlMask;
+    regVal                       |= ctrlCmds;
+    HWREGH(baseAddr + I2C_O_MDR)  = regVal;
+}
+
+void Cdd_I2c_HwSetDataCount(uint32 baseAddr, uint16 length)
+{
+    HWREGH(baseAddr + I2C_O_CNT) = length;
+}
+
+void Cdd_I2c_DisableFifo(uint32 baseAddr)
+{
+    uint16 regVal;
+
+    /* Disable both TX and RX FIFOs */
+    regVal                         = HWREGH(baseAddr + I2C_O_FFTX);
+    regVal                        &= (uint16)~I2C_FFTX_I2CFFEN;
+    HWREGH(baseAddr + I2C_O_FFTX)  = regVal;
+    regVal                         = HWREGH(baseAddr + I2C_O_FFRX);
+    regVal                        &= (uint16)~I2C_FFRX_RXFFRST;
+    HWREGH(baseAddr + I2C_O_FFRX)  = regVal;
+}
+
+void Cdd_I2c_SetExtCompatibilityMode(uint32 baseAddr, uint8 extCompMode)
+{
+    uint16 regVal;
+
+    regVal                         = HWREGH(baseAddr + I2C_O_EMDR);
+    regVal                        &= (uint16)(~(I2C_EMDR_BC | I2C_EMDR_FCM));
+    regVal                        |= (uint16)extCompMode;
+    HWREGH(baseAddr + I2C_O_EMDR)  = regVal;
+}
+
+uint16 Cdd_I2c_HwGetIntCode(uint32 baseAddr)
+{
+    return HWREGH(baseAddr + I2C_O_ISRC) & I2C_ISRC_INTCODE_M;
+}
+
+void Cdd_I2c_HwWriteData(uint32 baseAddr, uint8 data)
+{
+    HWREGH(baseAddr + I2C_O_DXR) = (uint8)data;
+}
+
+uint8 Cdd_I2c_HwReadData(uint32 baseAddr)
+{
+    return (uint8)HWREGH(baseAddr + I2C_O_DRR);
 }
 
 /*********************************************************************************************************************
@@ -433,39 +545,44 @@ static void Cdd_I2c_HwSetup(Cdd_I2c_ChObjType *chObj, boolean isIntrMode)
     return;
 }
 
-static void Cdd_I2c_HwSetupClk(uint32 baseAddr, uint32 baudRate, uint32 hwUnitFrequency, uint32 sysClk)
+static void Cdd_I2c_HwSetupClk(uint32 baseAddr, uint32 baudRate, uint32 hwUnitFrequency, uint32 sysClk, uint8 mode)
 {
     uint16 preScaler;
-    uint16 diff;
-    uint16 divisor, clkh, clkl;
-    uint32 hwUnitFrequencyActual;
 
-    /* Calculate prescaler */
+    /* Calculate and set prescaler to derive module clock from system clock */
     preScaler                    = (uint16)((sysClk / hwUnitFrequency) - 1U);
     HWREGH(baseAddr + I2C_O_PSC) = preScaler;
 
-    /* Determine diff based on prescaler */
-    if (preScaler == 0U)
+    /* Baud rate (CLKH/CLKL) only applies to controller mode; target does not drive SCL */
+    if (CDD_I2C_MODE_CONTROLLER == mode)
     {
-        diff = 7U;
-    }
-    else if (preScaler == 1U)
-    {
-        diff = 6U;
-    }
-    else
-    {
-        diff = 5U;
-    }
+        uint16 diff;
+        uint16 divisor, clkh, clkl;
+        uint32 hwUnitFrequencyActual;
 
-    /* Calculate divisor - use actual module frequency after prescaler */
-    hwUnitFrequencyActual          = sysClk / ((uint32)preScaler + 1U);
-    divisor                        = (uint16)(hwUnitFrequencyActual / baudRate);
-    divisor                       -= (2U * diff);
-    clkh                           = divisor >> 1U;
-    clkl                           = divisor - clkh;
-    HWREGH(baseAddr + I2C_O_CLKH)  = clkh;
-    HWREGH(baseAddr + I2C_O_CLKL)  = clkl;
+        /* Determine diff based on prescaler */
+        if (preScaler == 0U)
+        {
+            diff = 7U;
+        }
+        else if (preScaler == 1U)
+        {
+            diff = 6U;
+        }
+        else
+        {
+            diff = 5U;
+        }
+
+        /* Calculate divisor - use actual module frequency after prescaler */
+        hwUnitFrequencyActual          = sysClk / ((uint32)preScaler + 1U);
+        divisor                        = (uint16)(hwUnitFrequencyActual / baudRate);
+        divisor                       -= (2U * diff);
+        clkh                           = divisor >> 1U;
+        clkl                           = divisor - clkh;
+        HWREGH(baseAddr + I2C_O_CLKH)  = clkh;
+        HWREGH(baseAddr + I2C_O_CLKL)  = clkl;
+    }
 
     return;
 }
@@ -687,8 +804,9 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForAccessReady(Cdd_I2c_ChO
     chResult = Cdd_I2c_HwCheckForAccessReady(baseAddr);
     if (CDD_I2C_CH_RESULT_OK == chResult)
     {
-        /* Generate stop if required or in case of error */
-        if ((TRUE == chObj->isStopRequired) || (chObj->chErrorCode != CDD_I2C_CH_RESULT_OK))
+        /* Generate stop if required or in case of error or if cancelled */
+        if ((TRUE == chObj->isStopRequired) || (chObj->chErrorCode != CDD_I2C_CH_RESULT_OK) ||
+            (TRUE == chObj->isCancelInProgress))
         {
             chResult     = CDD_I2C_CH_RESULT_PENDING;
             chObj->state = CDD_I2C_STATE_WAIT_FOR_STOP;
@@ -825,40 +943,36 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwGetErrorCode(uint16 intrStatus, boole
 {
     Cdd_I2c_ChannelResultType chErrorCode = CDD_I2C_CH_RESULT_OK;
 
+    /* TI_COVERAGE_GAP_START Arbitration loss error cannot be recreated in test environment */
     if ((intrStatus & I2C_STR_ARBL) != 0U)
     {
         chErrorCode = CDD_I2C_CH_RESULT_ARBFAIL;
     }
+    /* TI_COVERAGE_GAP_STOP */
     if ((intrStatus & I2C_STR_NACK) != 0U)
     {
         chErrorCode = CDD_I2C_CH_RESULT_NACKFAIL;
     }
+    /* TI_COVERAGE_GAP_START Address zero error cannot be recreated in test environment */
     if ((intrStatus & I2C_STR_AD0) != 0U)
     {
         chErrorCode = CDD_I2C_CH_RESULT_NOT_OK;
     }
+    /* TI_COVERAGE_GAP_STOP */
     /* Check this only for polled mode as in intr mode
      * we use stop intr status for getting interrupt and handle
      * the transfer end */
     if (TRUE == checkStopStatus)
     {
+        /* TI_COVERAGE_GAP_START Bus fail error cannot be recreated in test environment */
         if ((intrStatus & I2C_STR_SCD) != 0U)
         {
             chErrorCode = CDD_I2C_CH_RESULT_BUSFAIL;
         }
+        /* TI_COVERAGE_GAP_STOP */
     }
 
     return chErrorCode;
-}
-
-static void Cdd_I2c_HwSetMode(uint32 baseAddr, uint16 ctrlMask, uint16 ctrlCmds)
-{
-    uint16 regVal;
-
-    regVal                        = HWREGH(baseAddr + I2C_O_MDR);
-    regVal                       &= ~ctrlMask;
-    regVal                       |= ctrlCmds;
-    HWREGH(baseAddr + I2C_O_MDR)  = regVal;
 }
 
 static void Cdd_I2c_HwReset(uint32 baseAddr)
@@ -866,12 +980,17 @@ static void Cdd_I2c_HwReset(uint32 baseAddr)
     Cdd_I2c_HwSetMode(baseAddr, I2C_MDR_IRS, 0U);
 }
 
-static void Cdd_I2c_HwEnableModule(uint32 baseAddr)
+static void Cdd_I2c_HwEnableModule(uint32 baseAddr, uint8 mode)
 {
     uint16 regVal;
 
-    regVal                       = I2C_MDR_CNT | I2C_MDR_FREE | I2C_MDR_IRS;
-    HWREGH(baseAddr + I2C_O_MDR) = regVal;
+    regVal = 0U;
+    if (CDD_I2C_MODE_CONTROLLER == mode)
+    {
+        regVal |= I2C_MDR_CNT;
+    }
+    regVal                       |= I2C_MDR_FREE | I2C_MDR_IRS;
+    HWREGH(baseAddr + I2C_O_MDR)  = regVal;
 }
 
 static void Cdd_I2c_HwStop(uint32 baseAddr)
@@ -879,7 +998,7 @@ static void Cdd_I2c_HwStop(uint32 baseAddr)
     Cdd_I2c_HwSetMode(baseAddr, I2C_MDR_STP, I2C_MDR_STP);
 }
 
-static void Cdd_I2c_HwEnableIntr(uint32 baseAddr, uint16 mask)
+void Cdd_I2c_HwEnableIntr(uint32 baseAddr, uint16 mask)
 {
     uint16 regVal;
 
@@ -888,7 +1007,7 @@ static void Cdd_I2c_HwEnableIntr(uint32 baseAddr, uint16 mask)
     HWREGH(baseAddr + I2C_O_IER)  = regVal;
 }
 
-static void Cdd_I2c_HwDisableIntr(uint32 baseAddr, uint16 mask)
+void Cdd_I2c_HwDisableIntr(uint32 baseAddr, uint16 mask)
 {
     uint16 regVal;
 
@@ -899,7 +1018,7 @@ static void Cdd_I2c_HwDisableIntr(uint32 baseAddr, uint16 mask)
 
 static void Cdd_I2c_HwClearIntr(uint32 baseAddr, uint16 mask)
 {
-    /* TODO: STR needs to read before clearing without this restart is not working */
+    /* STR needs to read before clearing without this restart is not working */
     volatile uint16 regVal;
     regVal = HWREGH(baseAddr + I2C_O_STR);
     (void)regVal;
@@ -920,21 +1039,6 @@ static void Cdd_I2c_HwSetOwnAddress(uint32 baseAddr, uint16 ownAddress)
 static void Cdd_I2c_HwSetSlaveAddress(uint32 baseAddr, Cdd_I2c_AddressType deviceAddress)
 {
     HWREGH(baseAddr + I2C_O_TAR) = deviceAddress;
-}
-
-static void Cdd_I2c_HwSetDataCount(uint32 baseAddr, uint16 length)
-{
-    HWREGH(baseAddr + I2C_O_CNT) = length;
-}
-
-static void Cdd_I2c_HwWriteData(uint32 baseAddr, uint8 data)
-{
-    HWREGH(baseAddr + I2C_O_DXR) = (uint8)data;
-}
-
-static uint8 Cdd_I2c_HwReadData(uint32 baseAddr)
-{
-    return (uint8)HWREGH(baseAddr + I2C_O_DRR);
 }
 
 #define CDD_I2C_STOP_SEC_CODE

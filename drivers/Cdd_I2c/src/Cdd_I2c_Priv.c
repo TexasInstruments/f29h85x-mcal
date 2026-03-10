@@ -3,12 +3,60 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
  *
- *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *   TEXAS INSTRUMENTS TEXT FILE LICENSE
  *
- *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
- *                 is strictly prohibited.  This product  is  protected  under  copyright  law
- *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+ *   Copyright (c) 2025 Texas Instruments Incorporated
+ *
+ *   All rights reserved not granted herein.
+ *
+ *   Limited License.
+ *
+ *   Texas Instruments Incorporated grants a world-wide, royalty-free, non-exclusive
+ *   license under copyrights and patents it now or hereafter owns or controls to
+ *   make, have made, use, import, offer to sell and sell ("Utilize") this software
+ *   subject to the terms herein. With respect to the foregoing patent license,
+ *   such license is granted solely to the extent that any such patent is necessary
+ *   to Utilize the software alone. The patent license shall not apply to any
+ *   combinations which include this software, other than combinations with devices
+ *   manufactured by or for TI ("TI Devices"). No hardware patent is licensed hereunder.
+ *
+ *   Redistributions must preserve existing copyright notices and reproduce this license
+ *   (including the above copyright notice and the disclaimer and (if applicable) source
+ *   code license limitations below) in the documentation and/or other materials provided
+ *   with the distribution.
+ *
+ *   Redistribution and use in binary form, without modification, are permitted provided
+ *   that the following conditions are met:
+ *
+ *   * No reverse engineering, decompilation, or disassembly of this software is
+ *     permitted with respect to any software provided in binary form.
+ *   * Any redistribution and use are licensed by TI for use only with TI Devices.
+ *   * Nothing shall obligate TI to provide you with source code for the software
+ *     licensed and provided to you in object code.
+ *
+ *   If software source code is provided to you, modification and redistribution of the
+ *   source code are permitted provided that the following conditions are met:
+ *
+ *   * Any redistribution and use of the source code, including any resulting derivative
+ *     works, are licensed by TI for use only with TI Devices.
+ *   * Any redistribution and use of any object code compiled from the source code
+ *     and any resulting derivative works, are licensed by TI for use only with TI Devices.
+ *
+ *   Neither the name of Texas Instruments Incorporated nor the names of its suppliers
+ *   may be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ *   DISCLAIMER.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY TI AND TI'S LICENSORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ *   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TI AND TI'S
+ *   LICENSORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *   GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -89,7 +137,7 @@ Std_ReturnType Cdd_I2c_StartSeqAsync(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqO
 
     /* Queue the chs in this sequence */
     retVal = Cdd_I2c_QueueCh(drvObj, seqObj);
-    if (E_OK == retVal)
+    if (retVal == (Std_ReturnType)E_OK)
     {
         /* Check all the hardware queue and consume any pending channels if
          * the hardware is free */
@@ -111,7 +159,7 @@ Std_ReturnType Cdd_I2c_StartSeqAsync(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqO
 Std_ReturnType Cdd_I2c_CancelSeq(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqObjType *seqObj)
 {
     Std_ReturnType     retVal      = E_OK;
-    Cdd_I2c_ChObjType *chObjActive = (Cdd_I2c_ChObjType *)NULL_PTR;
+    Cdd_I2c_ChObjType *activeChObj = (Cdd_I2c_ChObjType *)NULL_PTR;
 
     /* Check all channels in the sequence and cancel them */
     for (uint32 chIdx = 0U; chIdx < seqObj->seqCfg->chPerSeq; chIdx++)
@@ -128,39 +176,39 @@ Std_ReturnType Cdd_I2c_CancelSeq(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqObjTy
         if (chObj == hwUnitObj->curChObj)
         {
             /* Stop the on going transfer */
-#if (STD_ON == CDD_I2C_POLLING_MODE)
-            Cdd_I2c_HwCancelPolling(chObj);
-#else
-            Cdd_I2c_HwCancelIntr(chObj);
-#endif
-            hwUnitObj->curChObj = (Cdd_I2c_ChObjType *)NULL_PTR;
-            chObjActive         = chObj;
+            seqObj->numChsPending      = 1U; /* Only one channel to transfer now */
+            seqObj->isCancelInProgress = TRUE;
+            chObj->isCancelInProgress  = TRUE;
+            activeChObj                = chObj;
         }
         else
         {
             /* Channel is not active. Just remove from queue */
             Cdd_I2c_UtilsUnLinkNodePri(&hwUnitObj->llobj, &chObj->nodeObj);
+            /* Set channel results */
+            chObj->chResult = CDD_I2C_CH_RESULT_OK;
+            chObj->state    = CDD_I2C_STATE_COMPLETE;
         }
-
-        /* Set channel results */
-        chObj->chResult = CDD_I2C_CH_RESULT_OK;
-        chObj->state    = CDD_I2C_STATE_COMPLETE;
     }
 
-    /* Set sequence status */
-    seqObj->seqResult     = CDD_I2C_SEQ_CANCELLED;
-    seqObj->seqErrorCode  = CDD_I2C_E_NO_ERROR;
-    seqObj->numChsPending = 0U;
-
     /*
-     * Check if any active channel was cancelled and if so consume any pending channels
-     * Note: This step is done after all the channels in the sequence is cancelled. Otherwise
-     * we will end-up scheduling the subsequent channels in the same sequence.
+     * Check if any active channel was cancelled and if not the sequence was never started!!
      */
-    if (chObjActive != NULL_PTR)
+    if (activeChObj == NULL_PTR)
     {
-        Cdd_I2c_HwUnitObjType *hwUnitObj = chObjActive->hwUnitObj;
-        Cdd_I2c_CheckAndScheduleHw(drvObj, hwUnitObj);
+        Cdd_I2c_SequenceErrorNotification errorNotify = (Cdd_I2c_SequenceErrorNotification)NULL_PTR;
+
+        /* Set sequence status */
+        seqObj->seqResult     = CDD_I2C_SEQ_CANCELLED;
+        seqObj->seqErrorCode  = CDD_I2C_E_CANCELLED;
+        seqObj->numChsPending = 0U;
+
+        /* Notify Sequence end */
+        errorNotify = seqObj->seqCfg->errorNotify;
+        if (NULL_PTR != errorNotify)
+        {
+            errorNotify(seqObj->seqErrorCode);
+        }
     }
 
     return retVal;
@@ -172,7 +220,7 @@ Std_ReturnType Cdd_I2c_CheckConfig(const Cdd_I2c_ConfigType *configPtr)
     Std_ReturnType retVal = E_OK;
 
     retVal = Cdd_I2c_CheckHwConfig(configPtr);
-    if (E_OK == retVal)
+    if (retVal == (Std_ReturnType)E_OK)
     {
         for (uint32 seqIdx = 0U; seqIdx < CDD_I2C_MAX_SEQ; seqIdx++)
         {
@@ -200,6 +248,16 @@ void Cdd_I2c_InitDrvObj(Cdd_I2c_DriverObjType *drvObj)
         hwUnitObj->baseAddr     = 0U;
         hwUnitObj->curChObj     = (Cdd_I2c_ChObjType *)NULL_PTR;
         hwUnitObj->hwUnitStatus = CDD_I2C_HW_UNIT_FREE;
+        /* Target mode variables */
+        hwUnitObj->targetState  = CDD_I2C_TARGET_STATE_IDLE;
+        hwUnitObj->pRxBuffer    = NULL_PTR;
+        hwUnitObj->rxBufferSize = 0U;
+        hwUnitObj->rxCount      = 0U;
+        hwUnitObj->rxOverflow   = FALSE;
+        hwUnitObj->pTxBuffer    = NULL_PTR;
+        hwUnitObj->txBufferSize = 0U;
+        hwUnitObj->txCount      = 0U;
+        hwUnitObj->txUnderflow  = FALSE;
         Cdd_I2c_UtilsInitLinkList(&hwUnitObj->llobj);
     }
 
@@ -207,35 +265,37 @@ void Cdd_I2c_InitDrvObj(Cdd_I2c_DriverObjType *drvObj)
     {
         Cdd_I2c_SeqObjType *seqObj = &drvObj->seqObj[seqIdx];
 
-        seqObj->seqCfg        = (const Cdd_I2c_SequenceConfigType *)NULL_PTR;
-        seqObj->sequenceId    = (Cdd_I2c_SequenceType)seqIdx;
-        seqObj->hwUnitObj     = (Cdd_I2c_HwUnitObjType *)NULL_PTR;
-        seqObj->seqResult     = CDD_I2C_SEQ_OK;
-        seqObj->seqErrorCode  = CDD_I2C_E_NO_ERROR;
-        seqObj->numChsPending = 0U;
+        seqObj->seqCfg             = (const Cdd_I2c_SequenceConfigType *)NULL_PTR;
+        seqObj->sequenceId         = (Cdd_I2c_SequenceType)seqIdx;
+        seqObj->hwUnitObj          = (Cdd_I2c_HwUnitObjType *)NULL_PTR;
+        seqObj->seqResult          = CDD_I2C_SEQ_OK;
+        seqObj->seqErrorCode       = CDD_I2C_E_NO_ERROR;
+        seqObj->numChsPending      = 0U;
+        seqObj->isCancelInProgress = FALSE;
     }
 
     for (uint32 chIdx = 0U; chIdx < CDD_I2C_MAX_CH; chIdx++)
     {
         Cdd_I2c_ChObjType *chObj = &drvObj->chObj[chIdx];
 
-        chObj->chCfg          = (const Cdd_I2c_ChConfigType *)NULL_PTR;
-        chObj->chId           = (Cdd_I2c_ChannelType)chIdx;
-        chObj->seqObj         = (Cdd_I2c_SeqObjType *)NULL_PTR;
-        chObj->hwUnitObj      = (Cdd_I2c_HwUnitObjType *)NULL_PTR;
-        chObj->txBufPtr       = (Cdd_I2c_DataConstPtrType)NULL_PTR;
-        chObj->rxBufPtr       = (Cdd_I2c_DataPtrType)NULL_PTR;
-        chObj->length         = 0U;
-        chObj->deviceAddress  = 0x00U;
-        chObj->addressScheme  = CDD_I2C_ADDRESS_7_BIT;
-        chObj->chResult       = CDD_I2C_CH_RESULT_OK;
-        chObj->chErrorCode    = CDD_I2C_CH_RESULT_OK;
-        chObj->curTxBufPtr    = (Cdd_I2c_DataConstPtrType)NULL_PTR;
-        chObj->curRxBufPtr    = (Cdd_I2c_DataPtrType)NULL_PTR;
-        chObj->curLength      = 0U;
-        chObj->isStopRequired = TRUE;
-        chObj->doBusyCheck    = TRUE;
-        chObj->state          = CDD_I2C_STATE_INIT;
+        chObj->chCfg              = (const Cdd_I2c_ChConfigType *)NULL_PTR;
+        chObj->chId               = (Cdd_I2c_ChannelType)chIdx;
+        chObj->seqObj             = (Cdd_I2c_SeqObjType *)NULL_PTR;
+        chObj->hwUnitObj          = (Cdd_I2c_HwUnitObjType *)NULL_PTR;
+        chObj->txBufPtr           = (Cdd_I2c_DataConstPtrType)NULL_PTR;
+        chObj->rxBufPtr           = (Cdd_I2c_DataPtrType)NULL_PTR;
+        chObj->length             = 0U;
+        chObj->deviceAddress      = 0x00U;
+        chObj->addressScheme      = CDD_I2C_ADDRESS_7_BIT;
+        chObj->chResult           = CDD_I2C_CH_RESULT_OK;
+        chObj->chErrorCode        = CDD_I2C_CH_RESULT_OK;
+        chObj->curTxBufPtr        = (Cdd_I2c_DataConstPtrType)NULL_PTR;
+        chObj->curRxBufPtr        = (Cdd_I2c_DataPtrType)NULL_PTR;
+        chObj->curLength          = 0U;
+        chObj->isStopRequired     = TRUE;
+        chObj->doBusyCheck        = TRUE;
+        chObj->state              = CDD_I2C_STATE_INIT;
+        chObj->isCancelInProgress = FALSE;
         Cdd_I2c_UtilsInitNodeObject(&chObj->nodeObj);
     }
 
@@ -354,19 +414,22 @@ void Cdd_I2c_ProcessEvents(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_HwUnitObjType 
     chObj = hwUnitObj->curChObj;
     if (NULL_PTR != chObj)
     {
-#if (STD_ON == CDD_I2C_POLLING_MODE)
-        if (CDD_I2C_WRITE == chObj->chCfg->direction)
+        if (TRUE == hwUnitObj->hwUnitCfg->isIntrMode)
         {
-            chResult = Cdd_I2c_HwTxPollingContinue(chObj);
+            /* Continue the transfer in interrupt mode */
+            chResult = Cdd_I2c_HwTxRxIntrContinue(chObj);
         }
         else
         {
-            chResult = Cdd_I2c_HwRxPollingContinue(chObj);
+            if (CDD_I2C_WRITE == chObj->chCfg->direction)
+            {
+                chResult = Cdd_I2c_HwTxPollingContinue(chObj);
+            }
+            else
+            {
+                chResult = Cdd_I2c_HwRxPollingContinue(chObj);
+            }
         }
-#else
-        /* Continue the transfer in interrupt mode */
-        chResult = Cdd_I2c_HwTxRxIntrContinue(chObj);
-#endif
 
         /* Channel completed or failed!! */
         if (CDD_I2C_CH_RESULT_PENDING != chResult)
@@ -473,6 +536,7 @@ static Std_ReturnType Cdd_I2c_QueueCh(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_Seq
             chObj->seqObj                = seqObj;
             chObj->chResult              = CDD_I2C_CH_RESULT_PENDING;
             chObj->chErrorCode           = CDD_I2C_CH_RESULT_OK;
+            chObj->isCancelInProgress    = FALSE;
             utilsParams.data             = chObj;
             utilsParams.priority         = 0U; /* Not used in current implementation */
             utilsParams.seqId            = seqObj->sequenceId;
@@ -481,10 +545,11 @@ static Std_ReturnType Cdd_I2c_QueueCh(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_Seq
         }
 
         /* Set the states */
-        seqObj->seqResult     = CDD_I2C_SEQ_PENDING;
-        seqObj->seqErrorCode  = CDD_I2C_E_NO_ERROR;
-        seqObj->numChsPending = seqObj->seqCfg->chPerSeq;
-        Cdd_I2c_DrvState      = CDD_I2C_BUSY;
+        seqObj->seqResult          = CDD_I2C_SEQ_PENDING;
+        seqObj->seqErrorCode       = CDD_I2C_E_NO_ERROR;
+        seqObj->isCancelInProgress = FALSE;
+        seqObj->numChsPending      = seqObj->seqCfg->chPerSeq;
+        Cdd_I2c_DrvState           = CDD_I2C_BUSY;
     }
 
     return retVal;
@@ -545,27 +610,30 @@ static void Cdd_I2c_ScheduleCh(Cdd_I2c_ChObjType *chObj)
     chObj->curRxBufPtr = chObj->rxBufPtr;
     chObj->curLength   = 0U;
 
-#if (STD_ON == CDD_I2C_POLLING_MODE)
-    /* Start the channel in polled mode */
-    if (CDD_I2C_WRITE == chObj->chCfg->direction)
+    if (TRUE == chObj->hwUnitObj->hwUnitCfg->isIntrMode)
     {
-        chResult = Cdd_I2c_HwTxPolling(chObj);
+        /* Start the channel in interrupt mode */
+        if (CDD_I2C_WRITE == chObj->chCfg->direction)
+        {
+            chResult = Cdd_I2c_HwTxIntr(chObj);
+        }
+        else
+        {
+            chResult = Cdd_I2c_HwRxIntr(chObj);
+        }
     }
     else
     {
-        chResult = Cdd_I2c_HwRxPolling(chObj);
+        /* Start the channel in polled mode */
+        if (CDD_I2C_WRITE == chObj->chCfg->direction)
+        {
+            chResult = Cdd_I2c_HwTxPolling(chObj);
+        }
+        else
+        {
+            chResult = Cdd_I2c_HwRxPolling(chObj);
+        }
     }
-#else
-    /* Start the channel in interrupt mode */
-    if (CDD_I2C_WRITE == chObj->chCfg->direction)
-    {
-        chResult = Cdd_I2c_HwTxIntr(chObj);
-    }
-    else
-    {
-        chResult = Cdd_I2c_HwRxIntr(chObj);
-    }
-#endif
 
     /* Store result only if not pending - happens only for error case.
      * This is because the ISR could get triggered immediately and the channel
@@ -585,38 +653,52 @@ static void Cdd_I2c_SetSeqErrorCode(Cdd_I2c_SeqObjType *seqObj, Cdd_I2c_ChannelR
     if (CDD_I2C_CH_RESULT_OK != chResult)
     {
         seqObj->seqErrorCode = CDD_I2C_E_BUS_FAILURE;
-        if (CDD_I2C_CH_RESULT_NACKFAIL == chResult)
-        {
-            seqObj->seqErrorCode = CDD_I2C_E_NACK_RECEIVED;
-        }
-        if (CDD_I2C_CH_RESULT_ARBFAIL == chResult)
-        {
-            seqObj->seqErrorCode = CDD_I2C_E_ARBITRATION_FAILURE;
-        }
     }
+
+    /*
+     * Override with specific error code
+     */
+    if (CDD_I2C_CH_RESULT_NACKFAIL == chResult)
+    {
+        seqObj->seqErrorCode = CDD_I2C_E_NACK_RECEIVED;
+    }
+    /* TI_COVERAGE_GAP_START Arbitration loss error cannot be recreated in test environment */
+    if (CDD_I2C_CH_RESULT_ARBFAIL == chResult)
+    {
+        seqObj->seqErrorCode = CDD_I2C_E_ARBITRATION_FAILURE;
+    }
+    /* TI_COVERAGE_GAP_STOP */
 
     return;
 }
 
 static void Cdd_I2c_SetSeqResult(Cdd_I2c_SeqObjType *seqObj)
 {
+    seqObj->seqResult = CDD_I2C_SEQ_OK;
     /* check if any channel has previously failed or cancelled */
-    if (CDD_I2C_E_NO_ERROR == seqObj->seqErrorCode)
-    {
-        seqObj->seqResult = CDD_I2C_SEQ_OK;
-    }
-    else
+    if (CDD_I2C_E_NO_ERROR != seqObj->seqErrorCode)
     {
         seqObj->seqResult = CDD_I2C_SEQ_FAILED;
-        /* Override with specific error code */
-        if (CDD_I2C_E_NACK_RECEIVED == seqObj->seqErrorCode)
-        {
-            seqObj->seqResult = CDD_I2C_SEQ_NACK;
-        }
-        if (CDD_I2C_E_ARBITRATION_FAILURE == seqObj->seqErrorCode)
-        {
-            seqObj->seqResult = CDD_I2C_SEQ_ARB;
-        }
+    }
+
+    /*
+     * Override with specific error code
+     */
+    if (CDD_I2C_E_NACK_RECEIVED == seqObj->seqErrorCode)
+    {
+        seqObj->seqResult = CDD_I2C_SEQ_NACK;
+    }
+    /* TI_COVERAGE_GAP_START Arbitration loss error cannot be recreated in test environment */
+    if (CDD_I2C_E_ARBITRATION_FAILURE == seqObj->seqErrorCode)
+    {
+        seqObj->seqResult = CDD_I2C_SEQ_ARB;
+    }
+    /* TI_COVERAGE_GAP_STOP */
+    if (TRUE == seqObj->isCancelInProgress)
+    {
+        seqObj->seqResult          = CDD_I2C_SEQ_CANCELLED;
+        seqObj->seqErrorCode       = CDD_I2C_E_CANCELLED;
+        seqObj->isCancelInProgress = FALSE;
     }
 
     return;
@@ -631,8 +713,9 @@ static void Cdd_I2c_ProcessChCompletion(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_C
 
     seqObj = chObj->seqObj;
     seqObj->numChsPending--;
-    hwUnitObj->curChObj = (Cdd_I2c_ChObjType *)NULL_PTR;
-    chObj->chResult     = chResult;
+    hwUnitObj->curChObj       = (Cdd_I2c_ChObjType *)NULL_PTR;
+    chObj->chResult           = chResult;
+    chObj->isCancelInProgress = FALSE;
     Cdd_I2c_SetSeqErrorCode(seqObj, chResult);
 
     /* Check if sequence is complete */
@@ -721,7 +804,7 @@ static Std_ReturnType Cdd_I2c_CheckSeqConfig(const Cdd_I2c_SequenceConfigType *s
         retVal = (Std_ReturnType)E_NOT_OK;
     }
 
-    if (E_OK == retVal)
+    if (retVal == (Std_ReturnType)E_OK)
     {
         for (uint32 chIdx = 0U; chIdx < seqCfg->chPerSeq; chIdx++)
         {

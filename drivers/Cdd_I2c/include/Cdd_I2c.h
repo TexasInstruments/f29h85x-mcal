@@ -3,12 +3,60 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
  *
- *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *   TEXAS INSTRUMENTS TEXT FILE LICENSE
  *
- *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
- *                 is strictly prohibited.  This product  is  protected  under  copyright  law
- *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+ *   Copyright (c) 2025 Texas Instruments Incorporated
+ *
+ *   All rights reserved not granted herein.
+ *
+ *   Limited License.
+ *
+ *   Texas Instruments Incorporated grants a world-wide, royalty-free, non-exclusive
+ *   license under copyrights and patents it now or hereafter owns or controls to
+ *   make, have made, use, import, offer to sell and sell ("Utilize") this software
+ *   subject to the terms herein. With respect to the foregoing patent license,
+ *   such license is granted solely to the extent that any such patent is necessary
+ *   to Utilize the software alone. The patent license shall not apply to any
+ *   combinations which include this software, other than combinations with devices
+ *   manufactured by or for TI ("TI Devices"). No hardware patent is licensed hereunder.
+ *
+ *   Redistributions must preserve existing copyright notices and reproduce this license
+ *   (including the above copyright notice and the disclaimer and (if applicable) source
+ *   code license limitations below) in the documentation and/or other materials provided
+ *   with the distribution.
+ *
+ *   Redistribution and use in binary form, without modification, are permitted provided
+ *   that the following conditions are met:
+ *
+ *   * No reverse engineering, decompilation, or disassembly of this software is
+ *     permitted with respect to any software provided in binary form.
+ *   * Any redistribution and use are licensed by TI for use only with TI Devices.
+ *   * Nothing shall obligate TI to provide you with source code for the software
+ *     licensed and provided to you in object code.
+ *
+ *   If software source code is provided to you, modification and redistribution of the
+ *   source code are permitted provided that the following conditions are met:
+ *
+ *   * Any redistribution and use of the source code, including any resulting derivative
+ *     works, are licensed by TI for use only with TI Devices.
+ *   * Any redistribution and use of any object code compiled from the source code
+ *     and any resulting derivative works, are licensed by TI for use only with TI Devices.
+ *
+ *   Neither the name of Texas Instruments Incorporated nor the names of its suppliers
+ *   may be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ *   DISCLAIMER.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY TI AND TI'S LICENSORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ *   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TI AND TI'S
+ *   LICENSORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *   GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -50,7 +98,7 @@ extern "C" {
 /** \brief Driver Implementation Major Version */
 #define CDD_I2C_SW_MAJOR_VERSION (1U)
 /** \brief Driver Implementation Minor Version */
-#define CDD_I2C_SW_MINOR_VERSION (1U)
+#define CDD_I2C_SW_MINOR_VERSION (2U)
 /** \brief Driver Implementation Patch Version */
 #define CDD_I2C_SW_PATCH_VERSION (0U)
 
@@ -96,6 +144,14 @@ extern "C" {
 #define CDD_I2C_SID_POLLING_MODE_PROCESSING (0x0AU)
 /** \brief Service ID Cdd_I2c_GetStatus() */
 #define CDD_I2C_SID_GET_STATUS (0x0BU)
+/** \brief Service ID Cdd_I2c_TargetStart() */
+#define CDD_I2C_SID_TARGET_START (0x0CU)
+/** \brief Service ID Cdd_I2c_TargetStop() */
+#define CDD_I2C_SID_TARGET_STOP (0x0DU)
+/** \brief Service ID Cdd_I2c_TargetSubmitTxBuffer() */
+#define CDD_I2C_SID_TARGET_SUBMIT_TX_BUF (0x0EU)
+/** \brief Service ID Cdd_I2c_TargetSubmitRxBuffer() */
+#define CDD_I2C_SID_TARGET_SUBMIT_RX_BUF (0x0FU)
 
 /* Error codes returned by CDD_I2C functions. */
 /** \brief No errors */
@@ -124,6 +180,8 @@ extern "C" {
 #define CDD_I2C_E_PARAM_HWUNIT (0x16U)
 /** \brief API service called with sequence is busy */
 #define CDD_I2C_E_SEQ_BUSY (0x17U)
+/** \brief API service called with invalid mode - controller or target */
+#define CDD_I2C_E_PARAM_MODE (0x18U)
 
 /* Error codes returned by CDD_I2C functions at runtime via error callback
  * Cdd_I2c_SequenceErrorNotification. */
@@ -135,6 +193,14 @@ extern "C" {
 #define CDD_I2C_E_ARBITRATION_FAILURE ((uint8)0x02U)
 /** \brief Error is reported if the SCL line is stuck low */
 #define CDD_I2C_E_BUS_FAILURE ((uint8)0x03U)
+/** \brief Sequence cancelled */
+#define CDD_I2C_E_CANCELLED ((uint8)0x04U)
+/** \brief RX buffer overflow - applicable only in target mode */
+#define CDD_I2C_E_RX_OVERFLOW ((uint8)0x05U)
+/** \brief TX buffer underflow - applicable only in target mode */
+#define CDD_I2C_E_TX_UNDERFLOW ((uint8)0x06U)
+/** \brief No buffer submitted - applicable only in target mode */
+#define CDD_I2C_E_NO_BUFFER ((uint8)0x07U)
 
 /* CDD_I2C direction macros. */
 /** \brief CDD_I2C direction - write */
@@ -148,6 +214,28 @@ extern "C" {
 /** \brief 10 bit address */
 #define CDD_I2C_ADDRESS_10_BIT (0x01U)
 
+/* HW unit mode */
+/** \brief HW unit operates as I2C controller (master) */
+#define CDD_I2C_MODE_CONTROLLER (0U)
+/** \brief HW unit operates as I2C target (slave) */
+#define CDD_I2C_MODE_TARGET (1U)
+
+/*
+ * Target Rx/Tx notification status
+ */
+/* \brief This event is set in TX/RX completion when buffer is returned to user after it is full (RX) or empty (TX) */
+#define CDD_I2C_TARGET_EVENT_TRANSFER_COMPLETE (0U)
+/* \brief This event is set in TX/RX completion when STOP is detected */
+#define CDD_I2C_TARGET_EVENT_STOP (1U)
+/* \brief This event is set in error callback in TX/RX mode when driver doesn't have any buffer */
+#define CDD_I2C_TARGET_EVENT_NO_BUFFER (2U)
+/* \brief This event is set in error callback when TX underflows */
+#define CDD_I2C_TARGET_EVENT_TX_UNDERFLOW (3U)
+/* \brief This event is set in error callback when RX overflows */
+#define CDD_I2C_TARGET_EVENT_RX_OVERFLOW (4U)
+/* \brief This event is set in error callback when target received NACK from controller - typically in TX mode */
+#define CDD_I2C_TARGET_EVENT_NACK (5U)
+
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
@@ -155,34 +243,6 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
-
-/** \brief This type defines the addresss size */
-typedef uint16 Cdd_I2c_AddressType;
-
-/** \brief This type defines the direction of operation - write or read */
-typedef uint8 Cdd_I2c_DirectionType;
-
-/** \brief This type defines the data to be transmitted using the CDD_I2C Driver */
-typedef uint8 Cdd_I2c_DataType;
-
-/** \brief Definition for the pointer type for general buffer handling */
-typedef uint8* Cdd_I2c_DataPtrType;
-
-/** \brief Definition for the pointer type for TX buffer handling */
-typedef const uint8* Cdd_I2c_DataConstPtrType;
-
-/** \brief Specifies the identification (ID) for a CDD_I2C Hardware unit */
-typedef uint8 Cdd_I2c_HwUnitType;
-
-/** \brief This is the type for a sequence identifier */
-typedef uint8 Cdd_I2c_SequenceType;
-
-/** \brief This is the type for a Ch identifier */
-typedef uint8 Cdd_I2c_ChannelType;
-
-/** \brief Type to define the number of data elements to be sent and/or received
- *  during a transmission */
-typedef uint16 Cdd_I2c_DataLengthType;
 
 /**
  * \brief This is an enum containing the possible HW unit states states.
@@ -266,100 +326,6 @@ typedef enum
     CDD_I2C_SEQ_ARB = 0x07U
 } Cdd_I2c_SequenceResultType;
 
-/**
- * \brief This is an enum containing the possible restart modes.
- * The default mode is CDD_I2C_RESTART_MODE_NOSTOP
- */
-typedef enum
-{
-    /** \brief CDD_I2C restart mode with stop at end of each transaction/channel write/read */
-    CDD_I2C_RESTART_MODE_STOP,
-    /** \brief CDD_I2C restart mode with no stop at end of each transaction/channel write/read,
-     * by default there is start at begining of each transaction */
-    CDD_I2C_RESTART_MODE_NOSTOP
-} Cdd_I2c_RestartModeType;
-
-/**
- * \brief Callback routine provided by the user for each Sequence to notify the
- * caller that a Sequence has been finished.
- */
-typedef void (*Cdd_I2c_SequenceEndNotification)(void);
-
-/**
- * \brief Callback routine provided by the user for each Sequence to notify the
- * caller that a Sequence has been finished with an error.
- *
- * \param[out] errorCode Sequence error code
- */
-typedef void (*Cdd_I2c_SequenceErrorNotification)(uint8 errorCode);
-
-/**
- * \brief CDD_I2C Hardware unit configuration structure
- */
-typedef struct
-{
-    /** \brief CDD_I2C HW unit to use */
-    Cdd_I2c_HwUnitType  hwUnitId;
-    /** \brief The baud rate of the bus in bit/s */
-    uint32              baudRate;
-    /** \brief This unit is used set the I2c HW module frequency */
-    uint32              hwUnitFrequency;
-    /** \brief This element contains the system clock frequency being used by the I2c instance */
-    uint32              sysClk;
-    /** \brief Own address. Used in both 7 and 10-bit address mode.
-     *  Note that the user can program the I2C own address to any value as long as it
-     *  does not conflict with other components in the system */
-    Cdd_I2c_AddressType ownAddress;
-} Cdd_I2c_HwUnitConfigType;
-
-/**
- * \brief CDD_I2C Channel configuration structure
- */
-typedef struct
-{
-    /** \brief CDD_I2C Direction - write or read */
-    Cdd_I2c_DirectionType direction;
-    /** \brief The address of a target device which is accessed by the Controller */
-    Cdd_I2c_AddressType   deviceAddress;
-    /** \brief 7-bit or 10-bit addressing */
-    uint8                 addressScheme;
-} Cdd_I2c_ChConfigType;
-
-/**
- * \brief CDD_I2C Sequence configuration structure
- */
-typedef struct
-{
-    /** \brief This element points to which CDD_I2C hardware instance to use */
-    Cdd_I2c_HwUnitType                hwUnitId;
-    /** \brief The transmission end notification to inform the user that a
-     * transmission request has been serviced */
-    Cdd_I2c_SequenceEndNotification   completeNotify;
-    /** \brief The transmission end notification to inform the user that a
-     * transmission request has been serviced but with error */
-    Cdd_I2c_SequenceErrorNotification errorNotify;
-    /** \brief This element indicates the restart mode */
-    Cdd_I2c_RestartModeType           restartMode;
-    /** \brief Number of chs for this sequence.
-     *   Should not be more than CDD_I2C_MAX_CH_PER_SEQ */
-    uint32                            chPerSeq;
-    /** \brief Channel index list */
-    Cdd_I2c_ChannelType               chList[CDD_I2C_MAX_CH_PER_SEQ];
-} Cdd_I2c_SequenceConfigType;
-
-/**
- * \brief CDD_I2C config structure
- */
-typedef struct Cdd_I2c_ConfigTag
-{
-    /** \brief HW Unit configurations */
-    Cdd_I2c_HwUnitConfigType   hwUnitCfg[CDD_I2C_MAX_HW_UNIT];
-    /** \brief Sequence configurations */
-    Cdd_I2c_SequenceConfigType seqCfg[CDD_I2C_MAX_SEQ];
-    /** \brief Ch configurations */
-    Cdd_I2c_ChConfigType       chCfg[CDD_I2C_MAX_CH];
-} Cdd_I2c_ConfigType;
-
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
@@ -372,6 +338,8 @@ typedef struct Cdd_I2c_ConfigTag
  *
  * Initialize the CDD_I2C hardware for each Cdd_I2cChannel using the Cdd_I2cHwUnitBaseAddress
  * and configure the Cdd_I2cBaudRate accordingly.
+ *
+ * Note: This API is applicable for both controller and target mode.
  *
  * Service ID[hex] - CDD_I2C_SID_INIT
  * Sync/Async - Synchronous
@@ -388,6 +356,8 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_Init(const Cdd_I2c_ConfigType* configPtr);
  *
  * CDD_I2C_DeInit de-initializes the CDD_I2C peripheral(s) into a Power On Reset state.
  *
+ * Note: This API is applicable for both controller and target mode.
+ *
  * Service ID[hex] - CDD_I2C_SID_DEINIT
  * Sync/Async - Synchronous
  * Reentrancy - Non Reentrant
@@ -403,6 +373,8 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_DeInit(void);
 #if (STD_ON == CDD_I2C_VERSION_INFO_API)
 /** \brief Service that returns the version information of the module.
  *
+ * Note: This API is applicable for both controller and target mode.
+ *
  * Service ID[hex] - CDD_I2C_SID_GET_VERSION_INFO
  * Sync/Async - Synchronous
  * Reentrancy - Reentrant
@@ -416,6 +388,8 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_GetVersionInfo(Std_VersionInfoType* versionInfo
 #endif
 
 /** \brief Service to setup the buffers and the length of data for the Ch specified.
+ *
+ * Note: This API is applicable only for controller mode.
  *
  * Service ID[hex] - CDD_I2C_SID_SETUP_EB
  * Sync/Async - Synchronous
@@ -437,6 +411,8 @@ Cdd_I2c_SetupEB(Cdd_I2c_ChannelType chId, Cdd_I2c_DataConstPtrType txDataBufferP
                 Cdd_I2c_DataLengthType length);
 
 /** \brief Service to setup the buffers and the length of data for the Ch specified.
+ *
+ * Note: This API is applicable only for controller mode.
  *
  * Service ID[hex] - CDD_I2C_SID_SETUP_EB_DYNAMIC
  * Sync/Async - Synchronous
@@ -464,6 +440,8 @@ Cdd_I2c_SetupEBDynamic(Cdd_I2c_ChannelType chId, Cdd_I2c_AddressType deviceAddre
  * provided to the Cdd_I2c_SetupEB() service. The callback Cdd_I2c_SequenceErrorNotification()
  * is called, when the asynchronous operation has finished.
  *
+ * Note: This API is applicable only for controller mode.
+ *
  * Service ID[hex] - CDD_I2C_SID_ASYNC_TRANSMIT
  * Sync/Async - Synchronous
  * Reentrancy - Non Reentrant
@@ -485,6 +463,8 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_AsyncTransmit(Cdd_I2c_SequenceType se
  * state with no undefined data. A queued transmission request is cancelled
  * at once.
  *
+ * Note: This API is applicable only for controller mode.
+ *
  * Service ID[hex] - CDD_I2C_SID_CANCEL
  * Sync/Async - Synchronous
  * Reentrancy - Non Reentrant
@@ -503,6 +483,8 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_Cancel(Cdd_I2c_SequenceType sequenceI
  * When called, the target channel becomes available for starting incoming or
  * outgoing transfers.
  *
+ * Note: This API is applicable only for controller mode.
+ *
  * Service ID[hex] - CDD_I2C_SID_MAIN_FUNCTION
  * Sync/Async - Asynchronous
  * Reentrancy - Reentrant
@@ -513,9 +495,10 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_Cancel(Cdd_I2c_SequenceType sequenceI
  *********************************************************************************************************************/
 FUNC(void, CDD_I2C_CODE) Cdd_I2c_MainFunction(void);
 
-#if (STD_ON == CDD_I2C_POLLING_MODE)
 /** \brief Ensures proper processing of I2c communication in the case of
  * disabled interrupts.
+ *
+ * Note: This API is applicable only for controller mode.
  *
  * Service ID[hex] - CDD_I2C_SID_POLLING_MODE_PROCESSING
  * Sync/Async - Asynchronous
@@ -526,9 +509,10 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_MainFunction(void);
  * \return None
  *********************************************************************************************************************/
 FUNC(void, CDD_I2C_CODE) Cdd_I2c_PollingModeProcessing(void);
-#endif
 
 /** \brief This service returns the current status of the given SequenceId.
+ *
+ * Note: This API is applicable only for controller mode.
  *
  * Service ID[hex] - CDD_I2C_SID_GET_SEQUENCE_RESULT
  * Sync/Async - Synchronous
@@ -542,6 +526,8 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_PollingModeProcessing(void);
 FUNC(Cdd_I2c_SequenceResultType, CDD_I2C_CODE) Cdd_I2c_GetSequenceResult(Cdd_I2c_SequenceType sequenceId);
 
 /** \brief This service returns the current status of the given channel.
+ *
+ * Note: This API is applicable only for controller mode.
  *
  * Service ID[hex] - CDD_I2C_SID_GET_RESULT
  * Sync/Async - Synchronous
@@ -557,6 +543,8 @@ FUNC(Cdd_I2c_ChannelResultType, CDD_I2C_CODE) Cdd_I2c_GetResult(Cdd_I2c_ChannelT
 #if (STD_ON == CDD_I2C_GET_STATUS_API)
 /** \brief This service returns the module's status
  *
+ * Note: This API is applicable only for controller mode.
+ *
  * Service ID[hex] - CDD_I2C_SID_GET_STATUS
  * Sync/Async - Synchronous
  * Reentrancy - Reentrant
@@ -567,6 +555,75 @@ FUNC(Cdd_I2c_ChannelResultType, CDD_I2C_CODE) Cdd_I2c_GetResult(Cdd_I2c_ChannelT
  *********************************************************************************************************************/
 FUNC(Cdd_I2c_ComponentStatusType, CDD_I2C_CODE) Cdd_I2c_GetStatus(void);
 #endif
+
+/*
+ * Below APIs are applicable only for target mode
+ */
+/** \brief This service starts the target-mode for the provided HW unit ID
+ *  This enables interrupts and targets will start responding to I2C events after this.
+ *
+ * Note: This API is applicable only for target mode.
+ *
+ * Service ID[hex] - CDD_I2C_SID_TARGET_START
+ * Sync/Async - Synchronous
+ * Reentrancy - Reentrant
+ *
+ * \param[in] hwUnitId I2C HW unit ID
+ * \pre None
+ * \post None
+ * \return Std_ReturnType
+ * \retval E_OK: Success
+ * \retval E_NOT_OK: Request rejected
+ *********************************************************************************************************************/
+FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_TargetStart(Cdd_I2c_HwUnitType hwUnitId);
+
+/** \brief This service stops the target-mode for the provided HW unit ID.
+ *  This disables interrupts and targets will not respond to I2C events after this.
+ *
+ * Note: This API is applicable only for target mode.
+ *
+ * Service ID[hex] - CDD_I2C_SID_TARGET_STOP
+ * Sync/Async - Synchronous
+ * Reentrancy - Reentrant
+ *
+ * \param[in] hwUnitId I2C HW unit ID
+ * \pre None
+ * \post None
+ * \return Std_ReturnType
+ * \retval E_OK: Success
+ * \retval E_NOT_OK: Request rejected
+ *********************************************************************************************************************/
+/** \brief Stop all target-mode HW units -
+ *********************************************************************************************************************/
+FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_TargetStop(Cdd_I2c_HwUnitType hwUnitId);
+
+/** \brief Submit TX buffer - call before Start or in TX Notification callback to provide a new buffer to work with
+ *
+ * \param[in] hwUnitId I2C HW unit ID
+ * \param[in] pTxBuffer Pointer to TX data buffer
+ * \param[in] txBufferSize Size of TX data buffer in bytes
+ *
+ * \pre None
+ * \post None
+ * \return E_OK on success, E_NOT_OK on failure
+ *********************************************************************************************************************/
+FUNC(Std_ReturnType, CDD_I2C_CODE)
+Cdd_I2c_TargetSubmitTxBuffer(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataConstPtrType pTxBuffer,
+                             Cdd_I2c_DataLengthType txBufferSize);
+
+/** \brief Submit RX buffer - call before Start or in RX Notification callback to provide a new buffer to work with
+ *
+ * \param[in] hwUnitId I2C HW unit ID
+ * \param[in] pRxBuffer Pointer to RX data buffer
+ * \param[in] rxBufferSize Size of RX data buffer in bytes
+ *
+ * \pre None
+ * \post None
+ * \return E_OK on success, E_NOT_OK on failure
+ *********************************************************************************************************************/
+FUNC(Std_ReturnType, CDD_I2C_CODE)
+Cdd_I2c_TargetSubmitRxBuffer(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataPtrType pRxBuffer,
+                             Cdd_I2c_DataLengthType rxBufferSize);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

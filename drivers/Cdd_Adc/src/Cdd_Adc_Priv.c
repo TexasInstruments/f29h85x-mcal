@@ -3,12 +3,60 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
  *
- *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *   TEXAS INSTRUMENTS TEXT FILE LICENSE
  *
- *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
- *                 is strictly prohibited.  This product  is  protected  under  copyright  law
- *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+ *   Copyright (c) 2025 Texas Instruments Incorporated
+ *
+ *   All rights reserved not granted herein.
+ *
+ *   Limited License.
+ *
+ *   Texas Instruments Incorporated grants a world-wide, royalty-free, non-exclusive
+ *   license under copyrights and patents it now or hereafter owns or controls to
+ *   make, have made, use, import, offer to sell and sell ("Utilize") this software
+ *   subject to the terms herein. With respect to the foregoing patent license,
+ *   such license is granted solely to the extent that any such patent is necessary
+ *   to Utilize the software alone. The patent license shall not apply to any
+ *   combinations which include this software, other than combinations with devices
+ *   manufactured by or for TI ("TI Devices"). No hardware patent is licensed hereunder.
+ *
+ *   Redistributions must preserve existing copyright notices and reproduce this license
+ *   (including the above copyright notice and the disclaimer and (if applicable) source
+ *   code license limitations below) in the documentation and/or other materials provided
+ *   with the distribution.
+ *
+ *   Redistribution and use in binary form, without modification, are permitted provided
+ *   that the following conditions are met:
+ *
+ *   * No reverse engineering, decompilation, or disassembly of this software is
+ *     permitted with respect to any software provided in binary form.
+ *   * Any redistribution and use are licensed by TI for use only with TI Devices.
+ *   * Nothing shall obligate TI to provide you with source code for the software
+ *     licensed and provided to you in object code.
+ *
+ *   If software source code is provided to you, modification and redistribution of the
+ *   source code are permitted provided that the following conditions are met:
+ *
+ *   * Any redistribution and use of the source code, including any resulting derivative
+ *     works, are licensed by TI for use only with TI Devices.
+ *   * Any redistribution and use of any object code compiled from the source code
+ *     and any resulting derivative works, are licensed by TI for use only with TI Devices.
+ *
+ *   Neither the name of Texas Instruments Incorporated nor the names of its suppliers
+ *   may be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ *   DISCLAIMER.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY TI AND TI'S LICENSORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ *   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TI AND TI'S
+ *   LICENSORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *   GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -1118,6 +1166,116 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetINLTrim(Cdd_Adc_HwUnitInstanceType Hw
 static FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_SetVREF(Cdd_Adc_HwUnitInstanceType HwUnitId, Cdd_Adc_RefModeType RefMode, Cdd_Adc_RefVoltType RefVoltage);
 
+/** \brief Check if the group is to be retriggered or to disable the trigger
+ *
+ * This function checks if the group is to be retriggered or to disable the trigger
+ *
+ * \param[in]  Group     Numeric ID of the group
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+static FUNC(void, CDD_ADC_CODE) Cdd_Adc_HandleGrpTrigger(Cdd_Adc_GroupType Group);
+
+/** \brief Update the valid sample count, result pointer and group status
+ *
+ * This function updates the valid sample count, result pointer and group status
+ *
+ * \param[in]  GroupCfg     Pointer to the group config structure
+ * \param[in]  GroupObj     Pointer to the group object structure
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+static FUNC(void, CDD_ADC_CODE)
+    Cdd_Adc_UpdateGrpState(const Cdd_Adc_GroupCfgType *GroupCfg, Cdd_Adc_GroupObjType *GroupObj);
+
+#if (STD_ON == CDD_ADC_SET_RESOLUTION_API)
+
+/** \brief Check if all groups are IDLE of the specified ADC instance
+ *
+ * This function checks if all group are IDLE that are linked to the specified ADC instance
+ *
+ * \param[in]  HwUnit     ADC instance
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+static FUNC(Cdd_Adc_GroupType, CDD_ADC_CODE) Cdd_Adc_CheckGrpIdle(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit);
+#endif
+
+#if (STD_ON == CDD_ADC_SAFETY_CHECK_API)
+
+/** \brief Set voltage reference for the ADC HW Unit function
+ *
+ * This function stores the flags of the interrupt sources for the instances which generated the interrupt
+ *
+ * \param[in]  IntEvtId     Numeric ID of the interrupt event instance
+ * \param[in]  FlagStatus   Pointer to the array to store the flags of the interrupt source
+ * \param[in]  CheckerIdx     Numeric ID of the safety checker instance
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+static FUNC(void, CDD_ADC_CODE)
+    Cdd_Adc_UpdateCheckerFlag(Cdd_Adc_CheckerIntEvtType IntEvtId, Cdd_Adc_CheckFlagStatusType *FlagStatus,
+                              Cdd_Adc_CheckerType CheckerIdx);
+
+#if (STD_ON == CDD_ADC_DEINIT_API)
+/** \brief Deinitialize safety checkers & interrupt event checker instances
+ *
+ * This function deinitialize safety checkers & interrupt event checker instances
+ *
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+static FUNC(void, CDD_ADC_CODE) Cdd_Adc_DeInit_Checker(void);
+#endif
+
+#endif
+
+#if (STD_ON == CDD_ADC_GLBSW_TRIG_API)
+/** \brief Check if the group settings are proper to start global software trigger
+ *
+ * This function checks if the group settings are proper to start global software trigger
+ *
+ * \param[in]  Group     Numeric ID of the group
+ * \param[in]  GlbSwObj   Pointer to the global software object
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+static FUNC(Std_ReturnType, CDD_ADC_CODE)
+    Cdd_Adc_CheckGroupstate(Cdd_Adc_GroupType Group, Cdd_Adc_GlbSwObjType *GlbSwObj);
+#endif
+
+#if (STD_ON == CDD_ADC_ENABLE_PPB_API)
+/** \brief Clear PPB flags and call user notification function
+ *
+ * This function cleasr PPB flags and call user notification function
+ *
+ * \param[in]  HwUnitIndex     Index of the ADC instance
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessPpbIsr(uint8 HwUnitIndex);
+#endif
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
@@ -1888,22 +2046,9 @@ Cdd_Adc_UpdateResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
         }
         else
         {
-            /* Report Det runtime error if any of the group is in IDLE state */
-            for (group = Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].startgroupnum;
-                 ((group <= Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].lastgroupnum)); group++)
-            {
-                /* Skip to the next group if the group is in IDLE state */
-                if (Cdd_Adc_DrvObjPtr->group_obj[group].grp_status != CDD_ADC_IDLE)
-                {
-                    /* Check if the group is in IDLE state, else report det runtime error */
-                    (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_SET_RESOLUTION,
-                                                 CDD_ADC_E_BUSY);
-                    break;
-                }
-            }
-
             /* When all the groups are IDLE, the group ID exceeds the last group number of the
              * hardware unit */
+            group = Cdd_Adc_CheckGrpIdle(HwUnit);
 
             /* If any of the groups is BUSY then return the function without any action */
             if (group > Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].lastgroupnum)
@@ -1933,40 +2078,17 @@ FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_CheckGlbTrig(VAR(Cdd_Adc_GlbTrigType,
     {
         if ((groupmask & 1U) != 0U)
         {
-            if (((Cdd_Adc_DrvObjPtr->group_obj[group_id].grp_status != CDD_ADC_COMPLETED) &&
-                 (Cdd_Adc_DrvObjPtr->glbsw_obj[GlbSwTrig].status == TRUE)) ||
-                ((Cdd_Adc_DrvObjPtr->group_obj[group_id].grp_status != CDD_ADC_IDLE) &&
-                 (Cdd_Adc_DrvObjPtr->glbsw_obj[GlbSwTrig].status == FALSE)))
+            return_val = Cdd_Adc_CheckGroupstate(group_id, &Cdd_Adc_DrvObjPtr->glbsw_obj[GlbSwTrig]);
+
+            if (return_val == E_NOT_OK)
             {
-                /* Report runtime error if the group conversion is not done for the previous API
-                    call or when the group is not in IDLE state and the API is called after
-                    StopGlobalSwTrig API */
-                (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_START_GLBSW_TRIG,
-                                             CDD_ADC_E_BUSY);
-                return_val = E_NOT_OK;
                 break;
-            }
-#if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
-            else if ((Cdd_Adc_DrvObjPtr->group_obj[group_id].resbuffer == ((Cdd_Adc_ValueGroupType *)NULL_PTR)) &&
-                     (FALSE == Cdd_Adc_ConfigPtr->groupcfg[group_id].dma_mode))
-            {
-                /* Report DET error if the result buffer is NULL for any one of the groups and
-                 * this check is not when the API is called more than once without calling
-                 * StopGlobalSwTrig API.
-                 */
-                (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_START_GLBSW_TRIG,
-                                      CDD_ADC_E_BUFFER_UNINIT);
-                return_val = E_NOT_OK;
-                break;
-            }
-#endif
-            else
-            {
-                /* Move to the next group if all the checks are passed */
             }
         }
+
         group_id++;
     }
+
     return return_val;
 }
 #endif
@@ -2087,7 +2209,8 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_DrvObjInit(void)
         group_obj->triggersrc    = CDD_ADC_GRP_TRIGG_SRC_SW; /* Set the trigger source to SW */
         group_obj->valid_samples = 0U;                       /* Set the valid samples count to zero */
 
-        /* Group ID for the i th interrupt of j th ADC hardware unit ID is - i + (j*4U).
+        /* Group ID for the i th interrupt of j th ADC hardware unit ID is stored at (i + (j*4U))th index of the array.
+         * j is multiplied by 4 because the total number of interrupts available for each ADC instance are 4.
          * This is used to retrieve the group ID when the ISR is executed(ProcessIsr function)
          */
         hw_index = Cdd_Adc_ConfigPtr->groupcfg[grp_id].hwunit_index;
@@ -2113,11 +2236,20 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_DrvObjInit(void)
     }
 #endif /* #if (STD_ON == CDD_ADC_GLBSW_TRIG_API) */
 
-#if (STD_ON == CDD_ADC_PPB_NOTIF_CAPABILITY_API) && (STD_ON == CDD_ADC_ENABLE_PPB_API)
+#if (STD_ON == CDD_ADC_ENABLE_PPB_API)
+#if (STD_ON == CDD_ADC_PPB_NOTIF_CAPABILITY_API)
     for (Cdd_Adc_PpbType ppbid = 0U; ppbid < CDD_ADC_PPB_CNT; ppbid++)
     {
         Cdd_Adc_DrvObjPtr->ppb_obj[ppbid] = FALSE; /* Set the notification of PPB to FALSE */
     }
+#endif
+
+    for (Cdd_Adc_HwUnitInstanceType hwunit_id = 0U; hwunit_id < CDD_ADC_HW_CNT; hwunit_id++)
+    {
+        /* Set the index of the ADC instance */
+        Cdd_Adc_DrvObjPtr->instanceindex[(Cdd_Adc_ConfigPtr->hwunitcfg[hwunit_id].hwunit_id)] = hwunit_id;
+    }
+
 #endif /* #if (STD_ON == CDD_ADC_PPB_NOTIF_CAPABILITY_API) && (STD_ON == CDD_ADC_ENABLE_PPB_API) */
 }
 
@@ -2306,10 +2438,6 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitDeinit(void)
     /* De-Init the HW instance */
     uint32 base_addr;
 
-#if (STD_ON == CDD_ADC_SAFETY_CHECK_API)
-    uint32 checker_baseaddr, intevt_baseaddr;
-#endif
-
     for (Cdd_Adc_HwUnitInstanceType hwunit_id = 0U; hwunit_id < CDD_ADC_HW_CNT; hwunit_id++)
     {
         base_addr = Cdd_Adc_ConfigPtr->hwunitcfg[hwunit_id].base_addr;
@@ -2334,24 +2462,9 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitDeinit(void)
     }
 
 #if (STD_ON == CDD_ADC_SAFETY_CHECK_API)
-    /* Disable safety checker tiles */
-    for (Cdd_Adc_CheckerType checker_id = 0U; checker_id < CDD_ADC_CHECKER_CNT; checker_id++)
-    {
-        checker_baseaddr = Cdd_Adc_ConfigPtr->checkercfg.checkerunitcfg[checker_id].base_addr;
-        /* If the safety checker has already stopped them it can be ignored */
-        if (Cdd_Adc_GetCheckerStatus(checker_baseaddr) == TRUE)
-        {
-            Cdd_Adc_StopChecker(checker_id);
-        }
-    }
 
-    /* Clear all safety checker interrupts */
-    for (Cdd_Adc_CheckerIntEvtType intevt_id = 0U; intevt_id < CDD_ADC_CHECKER_INTEVT_CNT; intevt_id++)
-    {
-        intevt_baseaddr = Cdd_Adc_ConfigPtr->checkercfg.checkerintevtcfg[intevt_id].base_addr;
-        /* Clear safety checker interrupt flag */
-        Cdd_Adc_ClearSafetyCheckIntStatus(intevt_baseaddr);
-    }
+    Cdd_Adc_DeInit_Checker();
+
 #endif /* #if (STD_ON == CDD_ADC_SAFETY_CHECK_API) */
 
 #if (STD_ON == CDD_ADC_GLBSW_TRIG_API)
@@ -2405,9 +2518,6 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group)
     /* Clear the interrupt flag and the result ready flag */
     Cdd_Adc_ClearInterruptFlag(base_addr, groupcfg->grp_int);
 
-    /* Set the group status to Idle */
-    group_obj->grp_status = CDD_ADC_IDLE;
-
     /* Set the group active status to FALSE */
     group_obj->grp_active = FALSE;
 
@@ -2427,6 +2537,9 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group)
          */
         Cdd_Adc_StopHwGrpTrigger(Group);
     }
+
+    /* Set the group status to Idle */
+    group_obj->grp_status = CDD_ADC_IDLE;
 
 #if (STD_ON == CDD_ADC_ENABLE_PPB_API)
     /* Get the last PPB ID */
@@ -2528,48 +2641,19 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGlbTrig(Cdd_Adc_GlbTrigType GlbSwTrig)
 /* Design: MCAL-31418 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_PpbEvtIsr(Cdd_Adc_HwUnitType HwUnitId)
 {
-    Cdd_Adc_PpbType               ppb_num;
-    Cdd_Adc_PpbType               lastppbnum;
-    const Cdd_Adc_PpbUnitCfgType *ppbcfg;
-    uint8                         hwunit_index;
-    uint16                        evtintstat;
-    uint32                        base_addr;
+    /* Set the index to the maximum value */
+    uint8 hwunit_index = CDD_ADC_HW_CNT;
 
-    for (hwunit_index = 0U; hwunit_index < CDD_ADC_HW_CNT; hwunit_index++)
+    /* Check if the ADC instance ID is within the valid range */
+    if (HwUnitId < CDD_ADC_MAX_HW_UNIT_COUNT)
     {
-        if (Cdd_Adc_ConfigPtr->hwunitcfg[hwunit_index].hwunit_id == HwUnitId)
-        {
-            break;
-        }
+        /* Get the ADC hardware index */
+        hwunit_index = Cdd_Adc_DrvObjPtr->instanceindex[HwUnitId];
     }
 
-    if (hwunit_index != CDD_ADC_HW_CNT)
+    if (hwunit_index < CDD_ADC_HW_CNT)
     {
-        base_addr  = Cdd_Adc_ConfigPtr->hwunitcfg[hwunit_index].base_addr;
-        evtintstat = Cdd_Adc_GetPpbEvtStatus(base_addr);
-        /* Last PPB number */
-        lastppbnum = (Cdd_Adc_PpbType)(Cdd_Adc_ConfigPtr->hwunitcfg[hwunit_index].ppbcount +
-                                       Cdd_Adc_ConfigPtr->hwunitcfg[hwunit_index].startppbnum);
-        for (ppb_num = Cdd_Adc_ConfigPtr->hwunitcfg[hwunit_index].startppbnum; ((ppb_num < lastppbnum)); ppb_num++)
-        {
-            if (((evtintstat >> (((uint8)Cdd_Adc_ConfigPtr->ppbcfg[ppb_num].ppb_id) * 4U)) &
-                 Cdd_Adc_ConfigPtr->ppbcfg[ppb_num].tripevtintsel) != 0U)
-            {
-                ppbcfg = &(Cdd_Adc_ConfigPtr->ppbcfg[ppb_num]);
-
-                /* Clear the flags that triggered the interrupt */
-                Cdd_Adc_ClearPpbEvtStatus(base_addr, ppbcfg->ppb_id, ppbcfg->tripevtintsel);
-#if (STD_ON == CDD_ADC_PPB_NOTIF_CAPABILITY_API)
-                /* Call notification function if exists*/
-                if ((ppbcfg->ppbevtint_notification != ((Cdd_Adc_PpbNotifyType)NULL_PTR)) &&
-                    (TRUE == Cdd_Adc_DrvObjPtr->ppb_obj[ppb_num]))
-                {
-                    /* Design: MCAL-31138 */
-                    ppbcfg->ppbevtint_notification();
-                }
-#endif
-            }
-        }
+        Cdd_Adc_ProcessPpbIsr(hwunit_index);
     }
 }
 #endif
@@ -2579,37 +2663,14 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_PpbEvtIsr(Cdd_Adc_HwUnitType HwUnitId)
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_CheckerIsr(Cdd_Adc_CheckerIntEvtType IntEvtId, Cdd_Adc_CheckFlagStatusType *FlagStatus)
 {
-    Cdd_Adc_CheckerType       checker_id, checker_number;
-    uint32                    base_addr     = Cdd_Adc_ConfigPtr->checkercfg.checkerintevtcfg[IntEvtId].base_addr;
-    const Cdd_Adc_IntSrcType *checkerevtint = &(Cdd_Adc_ConfigPtr->checkercfg.checkerintevtcfg[IntEvtId].checkevtint);
+    Cdd_Adc_CheckerType checker_number;
+    uint32              base_addr = Cdd_Adc_ConfigPtr->checkercfg.checkerintevtcfg[IntEvtId].base_addr;
 
     for (checker_number = 0U; checker_number < CDD_ADC_CHECKER_CNT; checker_number++)
     {
-        checker_id = Cdd_Adc_ConfigPtr->checkercfg.checkerunitcfg[checker_number].checker_id;
-        /* Check if the interrupt source is configured for the specified safety checker */
-        if ((Cdd_Adc_GetSafetyCheckStatus(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_OOT_FLG) &
-             (uint8)((checkerevtint->ootflg >> checker_id) & 1U)) != 0U)
-        {
-            FlagStatus[checker_number] = CDD_ADC_SAFETY_CHECKER_OOT_FLG;
-            Cdd_Adc_ClearCheckEvtFlag(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_OOT_FLG);
-        }
-        else if ((Cdd_Adc_GetSafetyCheckStatus(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_RES1OVF_FLG) &
-                  (uint8)((checkerevtint->res1ovf >> checker_id) & 1U)) != 0U)
-        {
-            FlagStatus[checker_number] = CDD_ADC_SAFETY_CHECKER_RES1OVF_FLG;
-            Cdd_Adc_ClearCheckEvtFlag(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_RES1OVF_FLG);
-        }
-        else if ((Cdd_Adc_GetSafetyCheckStatus(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_RES2OVF_FLG) &
-                  (uint8)((checkerevtint->res2ovf >> checker_id) & 1U)) != 0U)
-        {
-            FlagStatus[checker_number] = CDD_ADC_SAFETY_CHECKER_RES2OVF_FLG;
-            Cdd_Adc_ClearCheckEvtFlag(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_RES2OVF_FLG);
-        }
-        else
-        {
-            FlagStatus[checker_number] = CDD_ADC_SAFETY_CHECKER_FLG_NONE;
-        }
+        Cdd_Adc_UpdateCheckerFlag(IntEvtId, FlagStatus, checker_number);
     }
+
     /* Clear safety checker interrupt flag */
     Cdd_Adc_ClearSafetyCheckIntStatus(base_addr);
 }
@@ -2617,47 +2678,64 @@ Cdd_Adc_CheckerIsr(Cdd_Adc_CheckerIntEvtType IntEvtId, Cdd_Adc_CheckFlagStatusTy
 
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_PrivUpdateStatusThroughDma(Cdd_Adc_IntNumType IntNum, Cdd_Adc_HwUnitType HwUnitId)
 {
-    Cdd_Adc_GroupType group_id, hwint;
+    Cdd_Adc_GroupType     group_id = CDD_ADC_GROUP_CNT, hwint = CDD_ADC_MAX_HW_UNIT_COUNT * CDD_ADC_MAX_INT_COUNT;
+    Cdd_Adc_GroupObjType *group_obj;
 
-    /* Get the interrupt_obj index which stores the group ID */
-    hwint = ((Cdd_Adc_GroupType)IntNum) + (((Cdd_Adc_GroupType)HwUnitId) * 4U);
+    /* Check if the ADC instance ID is within the valid range */
+    if ((HwUnitId < CDD_ADC_MAX_HW_UNIT_COUNT) && (IntNum < CDD_ADC_MAX_INT_COUNT))
+    {
+        /* Get the interrupt_obj index which stores the group ID */
+        hwint = ((Cdd_Adc_GroupType)IntNum) + (((Cdd_Adc_GroupType)HwUnitId) * 4U);
 
-    /* Get the group ID */
-    group_id = Cdd_Adc_DrvObjPtr->interrupt_obj[hwint];
+        /* Get the group ID */
+        group_id = Cdd_Adc_DrvObjPtr->interrupt_obj[hwint];
+    }
 
     /* Check if group ID is in range */
-    // if (CDD_ADC_GROUP_CNT > group_id)
-    // {
-    if (FALSE == Cdd_Adc_ConfigPtr->groupcfg[group_id].dma_mode)
+    if (CDD_ADC_GROUP_CNT > group_id)
     {
-        /* Report Det runtime error if the group is not configured for DMA mode */
-        (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_UPDATE_STATUS_THROUGH_DMA,
-                                     CDD_ADC_E_WRONG_PROCESSING_MODE);
+        group_obj = &(Cdd_Adc_DrvObjPtr->group_obj[group_id]);
+
+        if (!(((group_obj->implicit_stop == TRUE) &&
+               (group_obj->valid_samples == Cdd_Adc_ConfigPtr->groupcfg[group_id].stream_numsamples)) ||
+              (group_obj->grp_status == CDD_ADC_IDLE)))
+        {
+            /* Process the group if the group ID exists */
+            Cdd_Adc_ProcessGroup(group_id);
+        }
     }
-    else
-    {
-        /* Process the group if the group ID exists */
-        Cdd_Adc_ProcessGroup(group_id);
-    }
-    // }
 }
 
 /* Design: MCAL-31416 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessIsr(Cdd_Adc_IntNumType IntNum, Cdd_Adc_HwUnitType HwUnitId)
 {
-    Cdd_Adc_GroupType group_id, hwint;
+    /* Set parameters to the maximum value */
+    Cdd_Adc_GroupType     group_id = CDD_ADC_GROUP_CNT, hwint = CDD_ADC_MAX_HW_UNIT_COUNT * CDD_ADC_MAX_INT_COUNT;
+    Cdd_Adc_GroupObjType *group_obj;
 
-    /* Get the interrupt_obj index which stores the group ID */
-    hwint = ((Cdd_Adc_GroupType)IntNum) + (((Cdd_Adc_GroupType)HwUnitId) * 4U);
+    /* Check if the ADC instance ID is within the valid range */
+    if ((HwUnitId < CDD_ADC_MAX_HW_UNIT_COUNT) && (IntNum < CDD_ADC_MAX_INT_COUNT))
+    {
+        /* Get the interrupt_obj index which stores the group ID */
+        hwint = ((Cdd_Adc_GroupType)IntNum) + (((Cdd_Adc_GroupType)HwUnitId) * 4U);
 
-    /* Get the group ID */
-    group_id = Cdd_Adc_DrvObjPtr->interrupt_obj[hwint];
+        /* Get the group ID */
+        group_id = Cdd_Adc_DrvObjPtr->interrupt_obj[hwint];
+    }
 
-    // if (CDD_ADC_GROUP_CNT > group_id)
-    // {
-    /* Process the group if the group ID exists */
-    Cdd_Adc_ProcessGroup(group_id);
-    // }
+    /* Check if the group ID is in range */
+    if (CDD_ADC_GROUP_CNT > group_id)
+    {
+        group_obj = &(Cdd_Adc_DrvObjPtr->group_obj[group_id]);
+
+        if (!(((group_obj->implicit_stop == TRUE) &&
+               (group_obj->valid_samples == Cdd_Adc_ConfigPtr->groupcfg[group_id].stream_numsamples)) ||
+              (group_obj->grp_status == CDD_ADC_IDLE)))
+        {
+            /* Process the group if the group ID exists */
+            Cdd_Adc_ProcessGroup(group_id);
+        }
+    }
 }
 
 #if (STD_ON == CDD_ADC_READ_GROUP_API)
@@ -2964,115 +3042,312 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessGroup(Cdd_Adc_GroupType Group)
 
     uint32 base_addr, result_baseaddr;
 
-    if (!(((group_obj->implicit_stop == TRUE) && (group_obj->valid_samples == groupcfg->stream_numsamples)) ||
-          (group_obj->grp_status == CDD_ADC_IDLE)))
+    base_addr       = Cdd_Adc_ConfigPtr->hwunitcfg[(groupcfg->hwunit_index)].base_addr;
+    result_baseaddr = Cdd_Adc_ConfigPtr->hwunitcfg[(groupcfg->hwunit_index)].result_baseaddr;
+
+    Cdd_Adc_UpdateGrpState(groupcfg, group_obj);
+
+    /* Check if interrupt overflow has occurred */
+    if (TRUE == Cdd_Adc_GetIntOvfStatus(base_addr, groupcfg->grp_int))
     {
-        base_addr       = Cdd_Adc_ConfigPtr->hwunitcfg[(groupcfg->hwunit_index)].base_addr;
-        result_baseaddr = Cdd_Adc_ConfigPtr->hwunitcfg[(groupcfg->hwunit_index)].result_baseaddr;
+        Cdd_Adc_ClearIntOvfStatus(base_addr, groupcfg->grp_int);
+    }
+    /* Clear the interrupt flag */
+    Cdd_Adc_ClearInterruptFlag(base_addr, groupcfg->grp_int);
 
-        /* Update the current result pointer only if DMA is not enabled for the group */
-        if (FALSE == groupcfg->dma_mode)
-        {
-            if ((group_obj->valid_samples == groupcfg->stream_numsamples) || (group_obj->valid_samples == 0U))
-            {
-                /* If the buffer is filled wrap around the buffer */
-                group_obj->cur_resultptr = (Cdd_Adc_ValueGroupType *)(group_obj->resbuffer);
-            }
-            else
-            {
-                group_obj->cur_resultptr++; /* Update the current result buffer pointer */
-            }
-        }
+    /* Do not disable interrupts for explicitly stopped groups and don't stop if the buffer
+            is not completely filled implicitly stopped groups */
+    if ((group_obj->implicit_stop == TRUE) && (group_obj->valid_samples == groupcfg->stream_numsamples))
+    {
+        /* Disable interrups if the buffer is completely filled for the implicitly stopped
+         * groups */
+        Cdd_Adc_ConfigureInterrupt(base_addr, groupcfg->grp_int, FALSE);
+        /* Disable continue to interrupt mode */
+        Cdd_Adc_ConfigureContinueToIntMode(base_addr, groupcfg->grp_int, FALSE);
+    }
 
-        /* Continue with ISR execution */
-        if ((group_obj->valid_samples == groupcfg->stream_numsamples) || (group_obj->valid_samples == 0U))
+    /* Copy the results to the result buffer of the group if DMA is not enabled for the group */
+    if (FALSE == groupcfg->dma_mode)
+    {
+        for (uint8 channelnum = 0U; channelnum < groupcfg->channelcount; channelnum++)
         {
-            /* Valid samples has become equal to maximum streaming number of samples for the group */
-            group_obj->valid_samples = 1U;
+            /* Read the corresponding SOC result and store it in the group result buffer */
+            *(group_obj->cur_resultptr + (channelnum * (groupcfg->stream_numsamples))) = Cdd_Adc_ReadResult(
+                result_baseaddr, Cdd_Adc_ConfigPtr->channelcfg[(channelnum + groupcfg->startchannelnum)].soc_num);
         }
-        else
-        {
-            group_obj->valid_samples++; /* Number of valid samples per channel */
-        }
-
-        /* Update the group status to CDD_ADC_COMPLETED when global software trigger is the source
-            and when the result buffer is not completely filled */
-        if ((group_obj->triggersrc == CDD_ADC_GRP_TRIGG_SRC_GLBSW) ||
-            (group_obj->valid_samples != groupcfg->stream_numsamples))
-        {
-            group_obj->grp_status = CDD_ADC_COMPLETED;
-        }
-        else
-        {
-            /* Update the group status to CDD_ADC_STREAM_COMPLETED when the buffer is completely
-             * filled */
-            group_obj->grp_status = CDD_ADC_STREAM_COMPLETED;
-        }
-
-        /* Clear the interrupt flag and the result ready flag */
-        Cdd_Adc_ClearInterruptFlag(base_addr, groupcfg->grp_int);
-        /* Check if interrupt overflow has occurred */
-        if (TRUE == Cdd_Adc_GetIntOvfStatus(base_addr, groupcfg->grp_int))
-        {
-            Cdd_Adc_ClearIntOvfStatus(base_addr, groupcfg->grp_int);
-            Cdd_Adc_ClearInterruptFlag(base_addr, groupcfg->grp_int);
-        }
-
-        /* Do not disable interrupts for explicitly stopped groups and don't stop if the buffer
-               is not completely filled implicitly stopped groups */
-        if ((group_obj->implicit_stop == TRUE) && (group_obj->valid_samples == groupcfg->stream_numsamples))
-        {
-            /* Disable interrups if the buffer is completely filled for the implicitly stopped
-             * groups */
-            Cdd_Adc_ConfigureInterrupt(base_addr, groupcfg->grp_int, FALSE);
-            /* Disable continue to interrupt mode */
-            Cdd_Adc_ConfigureContinueToIntMode(base_addr, groupcfg->grp_int, FALSE);
-        }
-
-        /* Copy the results to the result buffer of the group if DMA is not enabled for the group */
-        if (FALSE == groupcfg->dma_mode)
-        {
-            for (uint8 channelnum = 0U; channelnum < groupcfg->channelcount; channelnum++)
-            {
-                /* Read the corresponding SOC result and store it in the group result buffer */
-                *(group_obj->cur_resultptr + (channelnum * (groupcfg->stream_numsamples))) = Cdd_Adc_ReadResult(
-                    result_baseaddr, Cdd_Adc_ConfigPtr->channelcfg[(channelnum + groupcfg->startchannelnum)].soc_num);
-            }
-        }
+    }
 
 #if (STD_ON == CDD_ADC_GRP_NOTIF_CAPABILITY_API)
-        if (group_obj->grp_notification == TRUE)
-        {
-            /* Call the specified end group notification function */
-            groupcfg->groupend_notification();
-        }
+    if (group_obj->grp_notification == TRUE)
+    {
+        /* Call the specified end group notification function */
+        groupcfg->groupend_notification();
+    }
 #endif /*(STD_ON == CDD_ADC_GRP_NOTIF_CAPABILITY_API) */
 
-        /* Manual re-trigger is necessary only for the software triggered groups */
-        if ((group_obj->triggersrc == CDD_ADC_GRP_TRIGG_SRC_SW) &&
-            ((group_obj->implicit_stop == FALSE) || (group_obj->valid_samples < groupcfg->stream_numsamples)))
+    Cdd_Adc_HandleGrpTrigger(Group);
+}
+
+#if (STD_ON == CDD_ADC_SET_RESOLUTION_API)
+static FUNC(Cdd_Adc_GroupType, CDD_ADC_CODE) Cdd_Adc_CheckGrpIdle(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit)
+{
+    Cdd_Adc_GroupType group = 0U;
+
+    /* Report Det runtime error if any of the group is in IDLE state */
+    for (group = Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].startgroupnum;
+         ((group <= Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].lastgroupnum)); group++)
+    {
+        /* Skip to the next group if the group is in IDLE state */
+        if (Cdd_Adc_DrvObjPtr->group_obj[group].grp_status != CDD_ADC_IDLE)
         {
-            /* Retrigger the group conversion if the group doesn't stop implicitly or the buffer is
-            not completely filled for implicitly stopped groups */
-            Cdd_Adc_ForceMultipleSoc(base_addr, groupcfg->soc_mask);
+            /* Check if the group is in IDLE state, else report det runtime error */
+            (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_SET_RESOLUTION,
+                                         CDD_ADC_E_BUSY);
+            break;
         }
-        else if ((group_obj->triggersrc == CDD_ADC_GRP_TRIGG_SRC_HW) && (group_obj->implicit_stop == TRUE) &&
-                 (group_obj->valid_samples == groupcfg->stream_numsamples))
+    }
+
+    return group;
+}
+
+#endif
+
+#if (STD_ON == CDD_ADC_SAFETY_CHECK_API)
+
+static FUNC(void, CDD_ADC_CODE)
+    Cdd_Adc_UpdateCheckerFlag(Cdd_Adc_CheckerIntEvtType IntEvtId, Cdd_Adc_CheckFlagStatusType *FlagStatus,
+                              Cdd_Adc_CheckerType CheckerIdx)
+{
+    uint32                    base_addr     = Cdd_Adc_ConfigPtr->checkercfg.checkerintevtcfg[IntEvtId].base_addr;
+    const Cdd_Adc_IntSrcType *checkerevtint = &(Cdd_Adc_ConfigPtr->checkercfg.checkerintevtcfg[IntEvtId].checkevtint);
+    Cdd_Adc_CheckerType       checker_id    = Cdd_Adc_ConfigPtr->checkercfg.checkerunitcfg[CheckerIdx].checker_id;
+
+    /* Check if the interrupt source is configured for the specified safety checker */
+    if ((Cdd_Adc_GetSafetyCheckStatus(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_OOT_FLG) &
+         (uint8)((checkerevtint->ootflg >> checker_id) & 1U)) != 0U)
+    {
+        FlagStatus[CheckerIdx] = CDD_ADC_SAFETY_CHECKER_OOT_FLG;
+        Cdd_Adc_ClearCheckEvtFlag(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_OOT_FLG);
+    }
+    else if ((Cdd_Adc_GetSafetyCheckStatus(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_RES1OVF_FLG) &
+              (uint8)((checkerevtint->res1ovf >> checker_id) & 1U)) != 0U)
+    {
+        FlagStatus[CheckerIdx] = CDD_ADC_SAFETY_CHECKER_RES1OVF_FLG;
+        Cdd_Adc_ClearCheckEvtFlag(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_RES1OVF_FLG);
+    }
+    else if ((Cdd_Adc_GetSafetyCheckStatus(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_RES2OVF_FLG) &
+              (uint8)((checkerevtint->res2ovf >> checker_id) & 1U)) != 0U)
+    {
+        FlagStatus[CheckerIdx] = CDD_ADC_SAFETY_CHECKER_RES2OVF_FLG;
+        Cdd_Adc_ClearCheckEvtFlag(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_RES2OVF_FLG);
+    }
+    else
+    {
+        FlagStatus[CheckerIdx] = CDD_ADC_SAFETY_CHECKER_FLG_NONE;
+    }
+}
+
+#if (STD_ON == CDD_ADC_DEINIT_API)
+static FUNC(void, CDD_ADC_CODE) Cdd_Adc_DeInit_Checker(void)
+{
+    uint32                              checker_baseaddr;
+    const Cdd_Adc_CheckerIntEvtCfgType *intevt_cfg;
+
+    /* Disable safety checker tiles */
+    for (Cdd_Adc_CheckerType checker_id = 0U; checker_id < CDD_ADC_CHECKER_CNT; checker_id++)
+    {
+        checker_baseaddr = Cdd_Adc_ConfigPtr->checkercfg.checkerunitcfg[checker_id].base_addr;
+        /* If the safety checker has already stopped them it can be ignored */
+        if (Cdd_Adc_GetCheckerStatus(checker_baseaddr) == TRUE)
         {
-            /* Disable group trigger sources and interrupt trigger source for the hardware trigger
-             * source groups which ae impliclitly stoped. If the  hardware group trigger source is
-             * left unchanged the hardware trigger might start ADC conversion when the trigger is
-             * received blocking other group conversions. No need to perform any action for software
-             * triggers except disabling interrupts
-             */
-            Cdd_Adc_StopHwGrpTrigger(Group);
+            Cdd_Adc_StopChecker(checker_id);
+        }
+    }
+
+    /* Clear all safety checker interrupts */
+    for (Cdd_Adc_CheckerIntEvtType intevt_id = 0U; intevt_id < CDD_ADC_CHECKER_INTEVT_CNT; intevt_id++)
+    {
+        intevt_cfg = &(Cdd_Adc_ConfigPtr->checkercfg.checkerintevtcfg[intevt_id]);
+
+        /* Disable interrupt event source flags */
+        Cdd_Adc_ConfigureCheckIntSrc(intevt_cfg->base_addr, CDD_ADC_SAFETY_CHECK_RES1OVF,
+                                     intevt_cfg->checkevtint.res1ovf, FALSE);
+        Cdd_Adc_ConfigureCheckIntSrc(intevt_cfg->base_addr, CDD_ADC_SAFETY_CHECK_RES2OVF,
+                                     intevt_cfg->checkevtint.res2ovf, FALSE);
+        Cdd_Adc_ConfigureCheckIntSrc(intevt_cfg->base_addr, CDD_ADC_SAFETY_CHECK_OOT, intevt_cfg->checkevtint.ootflg,
+                                     FALSE);
+
+        /* Disable checker event sources */
+        for (uint8 evtid = 0U; evtid < CDD_ADC_CHECKER_EVT_CNT; evtid++)
+        {
+            Cdd_Adc_ConfigureCheckEvtSrc(intevt_cfg->base_addr, CDD_ADC_SAFETY_CHECK_RES1OVF, evtid,
+                                         intevt_cfg->checkevt[evtid].res1ovf, FALSE);
+            Cdd_Adc_ConfigureCheckEvtSrc(intevt_cfg->base_addr, CDD_ADC_SAFETY_CHECK_RES2OVF, evtid,
+                                         intevt_cfg->checkevt[evtid].res2ovf, FALSE);
+            Cdd_Adc_ConfigureCheckEvtSrc(intevt_cfg->base_addr, CDD_ADC_SAFETY_CHECK_OOT, evtid,
+                                         intevt_cfg->checkevt[evtid].ootflg, FALSE);
+        }
+
+        /* Clear safety checker interrupt flag */
+        Cdd_Adc_ClearSafetyCheckIntStatus(intevt_cfg->base_addr);
+    }
+}
+#endif
+
+#endif
+
+#if (STD_ON == CDD_ADC_GLBSW_TRIG_API)
+
+static FUNC(Std_ReturnType, CDD_ADC_CODE)
+    Cdd_Adc_CheckGroupstate(Cdd_Adc_GroupType Group, Cdd_Adc_GlbSwObjType *GlbSwObj)
+{
+    Std_ReturnType        return_val = E_OK;
+    Cdd_Adc_GroupObjType *group_obj  = &(Cdd_Adc_DrvObjPtr->group_obj[Group]);
+
+    if (((group_obj->grp_status != CDD_ADC_COMPLETED) && (GlbSwObj->status == TRUE)) ||
+        ((group_obj->grp_status != CDD_ADC_IDLE) && (GlbSwObj->status == FALSE)))
+    {
+        /* Report runtime error if the group conversion is not done for the previous API
+            call or when the group is not in IDLE state and the API is called after
+            StopGlobalSwTrig API */
+        (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_START_GLBSW_TRIG,
+                                     CDD_ADC_E_BUSY);
+        return_val = E_NOT_OK;
+    }
+#if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
+    else if ((group_obj->resbuffer == ((Cdd_Adc_ValueGroupType *)NULL_PTR)) &&
+             (FALSE == Cdd_Adc_ConfigPtr->groupcfg[Group].dma_mode))
+    {
+        /* Report DET error if the result buffer is NULL for any one of the groups and
+         * this check is not when the API is called more than once without calling
+         * StopGlobalSwTrig API.
+         */
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_START_GLBSW_TRIG,
+                              CDD_ADC_E_BUFFER_UNINIT);
+        return_val = E_NOT_OK;
+    }
+#endif
+    else
+    {
+        /* Move to the next group if all the checks are passed */
+    }
+
+    return return_val;
+}
+#endif
+
+#if (STD_ON == CDD_ADC_ENABLE_PPB_API)
+
+static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessPpbIsr(uint8 HwUnitIndex)
+{
+    uint16                        evtintstat;
+    uint32                        base_addr;
+    Cdd_Adc_PpbType               ppb_num;
+    Cdd_Adc_PpbType               lastppbnum;
+    const Cdd_Adc_PpbUnitCfgType *ppbcfg;
+
+    base_addr  = Cdd_Adc_ConfigPtr->hwunitcfg[HwUnitIndex].base_addr;
+    evtintstat = Cdd_Adc_GetPpbEvtStatus(base_addr);
+    /* Last PPB number */
+    lastppbnum = (Cdd_Adc_PpbType)(Cdd_Adc_ConfigPtr->hwunitcfg[HwUnitIndex].ppbcount +
+                                   Cdd_Adc_ConfigPtr->hwunitcfg[HwUnitIndex].startppbnum);
+    for (ppb_num = Cdd_Adc_ConfigPtr->hwunitcfg[HwUnitIndex].startppbnum; ((ppb_num < lastppbnum)); ppb_num++)
+    {
+        if (((evtintstat >> (((uint8)Cdd_Adc_ConfigPtr->ppbcfg[ppb_num].ppb_id) * 4U)) &
+             Cdd_Adc_ConfigPtr->ppbcfg[ppb_num].tripevtintsel) != 0U)
+        {
+            ppbcfg = &(Cdd_Adc_ConfigPtr->ppbcfg[ppb_num]);
+
+            /* Clear the flags that triggered the interrupt */
+            Cdd_Adc_ClearPpbEvtStatus(base_addr, ppbcfg->ppb_id, ppbcfg->tripevtintsel);
+#if (STD_ON == CDD_ADC_PPB_NOTIF_CAPABILITY_API)
+            /* Call notification function if exists*/
+            if ((ppbcfg->ppbevtint_notification != ((Cdd_Adc_PpbNotifyType)NULL_PTR)) &&
+                (TRUE == Cdd_Adc_DrvObjPtr->ppb_obj[ppb_num]))
+            {
+                /* Design: MCAL-31138 */
+                ppbcfg->ppbevtint_notification();
+            }
+#endif
+        }
+    }
+}
+#endif
+
+static FUNC(void, CDD_ADC_CODE) Cdd_Adc_HandleGrpTrigger(Cdd_Adc_GroupType Group)
+{
+    const Cdd_Adc_GroupCfgType *groupcfg  = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
+    Cdd_Adc_GroupObjType       *group_obj = &(Cdd_Adc_DrvObjPtr->group_obj[Group]);
+    uint32                      base_addr = Cdd_Adc_ConfigPtr->hwunitcfg[(groupcfg->hwunit_index)].base_addr;
+
+    /* Manual re-trigger is necessary only for the software triggered groups */
+    if ((group_obj->triggersrc == CDD_ADC_GRP_TRIGG_SRC_SW) &&
+        ((group_obj->implicit_stop == FALSE) || (group_obj->valid_samples < groupcfg->stream_numsamples)))
+    {
+        /* Retrigger the group conversion if the group doesn't stop implicitly or the buffer is
+        not completely filled for implicitly stopped groups */
+        Cdd_Adc_ForceMultipleSoc(base_addr, groupcfg->soc_mask);
+    }
+    else if ((group_obj->triggersrc == CDD_ADC_GRP_TRIGG_SRC_HW) && (group_obj->implicit_stop == TRUE) &&
+             (group_obj->valid_samples == groupcfg->stream_numsamples))
+    {
+        /* Disable group trigger sources and interrupt trigger source for the hardware trigger
+         * source groups which ae impliclitly stoped. If the  hardware group trigger source is
+         * left unchanged the hardware trigger might start ADC conversion when the trigger is
+         * received blocking other group conversions. No need to perform any action for software
+         * triggers except disabling interrupts
+         */
+        Cdd_Adc_StopHwGrpTrigger(Group);
+    }
+    else
+    {
+        /* For explicitly stopped hardware groups don't stop hardware triggers and
+            for implicitly stopped software groups don't trigger the group for another
+            conversion if the buffer is complete.
+            For global software trigger don't trigger another conversion. For another round of conversion
+            Cdd_Adc_StartGlobalSwTrig API should be called. */
+    }
+}
+
+static FUNC(void, CDD_ADC_CODE)
+    Cdd_Adc_UpdateGrpState(const Cdd_Adc_GroupCfgType *GroupCfg, Cdd_Adc_GroupObjType *GroupObj)
+{
+    /* Update the current result pointer only if DMA is not enabled for the group */
+    if (FALSE == GroupCfg->dma_mode)
+    {
+        if ((GroupObj->valid_samples == GroupCfg->stream_numsamples) || (GroupObj->valid_samples == 0U))
+        {
+            /* If the buffer is filled wrap around the buffer */
+            GroupObj->cur_resultptr = (Cdd_Adc_ValueGroupType *)(GroupObj->resbuffer);
         }
         else
         {
-            /* For explicitly stopped hardware groups don't stop hardware triggers and
-                for implicitly stopped software groups don't trigger the group for another
-               conversion */
+            GroupObj->cur_resultptr++; /* Update the current result buffer pointer */
         }
+    }
+
+    /* Continue with ISR execution */
+    if (GroupObj->valid_samples == GroupCfg->stream_numsamples)
+    {
+        /* Valid samples has become equal to maximum streaming number of samples for the group */
+        GroupObj->valid_samples = 1U;
+    }
+    else
+    {
+        GroupObj->valid_samples++; /* Number of valid samples per channel */
+    }
+
+    /* Update the group status to CDD_ADC_COMPLETED when global software trigger is the source
+        and when the result buffer is not completely filled */
+    if ((GroupObj->triggersrc == CDD_ADC_GRP_TRIGG_SRC_GLBSW) ||
+        (GroupObj->valid_samples != GroupCfg->stream_numsamples))
+    {
+        GroupObj->grp_status = CDD_ADC_COMPLETED;
+    }
+    else
+    {
+        /* Update the group status to CDD_ADC_STREAM_COMPLETED when the buffer is completely filled */
+        GroupObj->grp_status = CDD_ADC_STREAM_COMPLETED;
     }
 }
 

@@ -3,12 +3,60 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
  *
- *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *   TEXAS INSTRUMENTS TEXT FILE LICENSE
  *
- *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
- *                 is strictly prohibited.  This product  is  protected  under  copyright  law
- *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+ *   Copyright (c) 2025 Texas Instruments Incorporated
+ *
+ *   All rights reserved not granted herein.
+ *
+ *   Limited License.
+ *
+ *   Texas Instruments Incorporated grants a world-wide, royalty-free, non-exclusive
+ *   license under copyrights and patents it now or hereafter owns or controls to
+ *   make, have made, use, import, offer to sell and sell ("Utilize") this software
+ *   subject to the terms herein. With respect to the foregoing patent license,
+ *   such license is granted solely to the extent that any such patent is necessary
+ *   to Utilize the software alone. The patent license shall not apply to any
+ *   combinations which include this software, other than combinations with devices
+ *   manufactured by or for TI ("TI Devices"). No hardware patent is licensed hereunder.
+ *
+ *   Redistributions must preserve existing copyright notices and reproduce this license
+ *   (including the above copyright notice and the disclaimer and (if applicable) source
+ *   code license limitations below) in the documentation and/or other materials provided
+ *   with the distribution.
+ *
+ *   Redistribution and use in binary form, without modification, are permitted provided
+ *   that the following conditions are met:
+ *
+ *   * No reverse engineering, decompilation, or disassembly of this software is
+ *     permitted with respect to any software provided in binary form.
+ *   * Any redistribution and use are licensed by TI for use only with TI Devices.
+ *   * Nothing shall obligate TI to provide you with source code for the software
+ *     licensed and provided to you in object code.
+ *
+ *   If software source code is provided to you, modification and redistribution of the
+ *   source code are permitted provided that the following conditions are met:
+ *
+ *   * Any redistribution and use of the source code, including any resulting derivative
+ *     works, are licensed by TI for use only with TI Devices.
+ *   * Any redistribution and use of any object code compiled from the source code
+ *     and any resulting derivative works, are licensed by TI for use only with TI Devices.
+ *
+ *   Neither the name of Texas Instruments Incorporated nor the names of its suppliers
+ *   may be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ *   DISCLAIMER.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY TI AND TI'S LICENSORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ *   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TI AND TI'S
+ *   LICENSORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *   GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -179,7 +227,7 @@ static FUNC(void, SPI_CODE) Spi_ConfigChannel(P2CONST(Spi_HwUnitObjType, AUTOMAT
  *
  * \param[in] hwUnitObj : pointer to HWUnit object
  * \param[in] jobObj  : pointer to Job object
- * \param[in] ChObj : pointer to Channel object
+ * \param[in] chObj : pointer to Channel object
  * \param[in] isIntrMode : True or False
  * \pre None
  * \post None
@@ -189,7 +237,7 @@ static FUNC(void, SPI_CODE) Spi_ConfigChannel(P2CONST(Spi_HwUnitObjType, AUTOMAT
  ********************************************************************************************************************/
 static FUNC(void, SPI_CODE)
     Spi_Start(P2CONST(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj,
-              P2CONST(Spi_JobObjType, AUTOMATIC, SPI_CODE) jobObj, P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) ChObj,
+              P2CONST(Spi_JobObjType, AUTOMATIC, SPI_CODE) jobObj, P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj,
               VAR(uint32, AUTOMATIC) isIntrMode);
 
 /** \brief function to Start transmission of next channel
@@ -287,7 +335,7 @@ static FUNC(Spi_JobResultType, SPI_CODE) Spi_TransferJob(P2VAR(Spi_HwUnitObjType
  *
  *  function to Read from fifo
  *
- * \param[in] ChObj : pointer to channel object
+ * \param[in] chObj : pointer to channel object
  * \param[in] baseAddr : Base Address of HWUnit
  * \param[in] numWordsToRead : number of words to read
  * \param[in] curRxWords : total number of words read
@@ -299,14 +347,14 @@ static FUNC(Spi_JobResultType, SPI_CODE) Spi_TransferJob(P2VAR(Spi_HwUnitObjType
  *
  ********************************************************************************************************************/
 static FUNC(void, SPI_CODE)
-    Spi_ReadFifo(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) ChObj, VAR(uint32, AUTOMATIC) baseAddr,
+    Spi_ReadFifo(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj, VAR(uint32, AUTOMATIC) baseAddr,
                  VAR(uint32, AUTOMATIC) numWordsToRead, VAR(uint16, AUTOMATIC) curRxWords);
 
 /** \brief function to Write into fifo
  *
  *  function to Write into fifo
  *
- * \param[in] ChObj : pointer to channel object
+ * \param[in] chObj : pointer to channel object
  * \param[in] baseAddr : Base Address of HWUnit
  * \param[in] numWordsToWrite : number of words to write
  * \param[in] curTxWords : total number of words written
@@ -318,7 +366,7 @@ static FUNC(void, SPI_CODE)
  *
  ********************************************************************************************************************/
 static FUNC(void, SPI_CODE)
-    Spi_WriteFifo(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) ChObj, VAR(uint32, AUTOMATIC) baseAddr,
+    Spi_WriteFifo(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj, VAR(uint32, AUTOMATIC) baseAddr,
                   VAR(uint32, AUTOMATIC) numWordsToWrite, VAR(uint16, AUTOMATIC) curTxWords);
 
 /** \brief function to continue transmission and reception
@@ -596,7 +644,7 @@ LOCAL_INLINE void Spi_FifoWrite16(VAR(uint32, AUTOMATIC) baseAddr, P2VAR(Spi_Cha
 {
     VAR(uint16, AUTOMATIC) txData;
     VAR(uint32, AUTOMATIC) i;
-    P2VAR(uint16, AUTOMATIC, SPI_CODE) txBuf = (uint16 *)chObj->curTxBufPtr;
+    volatile P2CONST(uint16, AUTOMATIC, SPI_CODE) txBuf = (volatile const uint16 *)chObj->curTxBufPtr;
 
     /* Write the data in TX FIFO for 16-bit transfer */
     for (i = curTxWords; i < (curTxWords + transferLength); i++)
@@ -632,9 +680,10 @@ LOCAL_INLINE volatile uint8 *Spi_FifoRead8(VAR(uint32, AUTOMATIC) baseAddr,
     return (bufPtr);
 }
 /* Design: MCAL-28315 */
-LOCAL_INLINE uint16 *Spi_FifoRead16(VAR(uint32, AUTOMATIC) baseAddr, P2VAR(uint16, AUTOMATIC, SPI_CODE) bufPtr,
-                                    VAR(uint32, AUTOMATIC) numWordsToRead, VAR(uint16, AUTOMATIC) dataWidthBitMask,
-                                    VAR(uint16, AUTOMATIC) curRxWords)
+LOCAL_INLINE volatile uint16 *Spi_FifoRead16(VAR(uint32, AUTOMATIC) baseAddr,
+                                             volatile P2VAR(uint16, AUTOMATIC, SPI_CODE) bufPtr,
+                                             VAR(uint32, AUTOMATIC) numWordsToRead,
+                                             VAR(uint16, AUTOMATIC) dataWidthBitMask, VAR(uint16, AUTOMATIC) curRxWords)
 {
     VAR(uint16, AUTOMATIC) rxData;
     VAR(uint32, AUTOMATIC) i;
@@ -688,7 +737,7 @@ LOCAL_INLINE FUNC(void, SPI_CODE)
 /* Design: MCAL-28320 */
 LOCAL_INLINE FUNC(void, SPI_CODE) Spi_ClearPIPEINTFlag(VAR(uint32, AUTOMATIC) intNum)
 {
-    HWREGB(PIPE_BASE + PIPE_O_INT_CTL_H(intNum)) = PIPE_INT_CTL_H_FLAG_CLR;
+    HWREGB((PIPE_BASE) + (PIPE_O_INT_CTL_H(intNum))) = PIPE_INT_CTL_H_FLAG_CLR;
     return;
 }
 /*********************************************************************************************************************
@@ -966,16 +1015,16 @@ static FUNC(uint16, SPI_CODE) Spi_GetDataWidthBitMask(VAR(uint8, AUTOMATIC) data
 
 /* Design : MCAL-28292 */
 Spi_HwUnitObjType *Spi_GetHwUnitObj(VAR(Spi_HWUnitType, AUTOMATIC) HWUnit,
-                                    P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) Spi_DrvObj)
+                                    P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj)
 {
     VAR(uint32, AUTOMATIC) hwUnitIdx                        = ((uint32)0U);
     VAR(uint32, AUTOMATIC) hwUnitCfgFound                   = (uint32)FALSE;
     P2VAR(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj = NULL_PTR;
 
     /* HW unit ID may not be the index, so search for matching HW unit */
-    for (hwUnitIdx = ((uint32)0U); hwUnitIdx < Spi_DrvObj->maxHwUnit; hwUnitIdx++)
+    for (hwUnitIdx = ((uint32)0U); hwUnitIdx < drvObj->maxHwUnit; hwUnitIdx++)
     {
-        if (Spi_DrvObj->hwUnitObj[hwUnitIdx].hwUnitCfg->hwUnitId == HWUnit)
+        if (drvObj->hwUnitObj[hwUnitIdx].hwUnitCfg->hwUnitId == HWUnit)
         {
             hwUnitCfgFound = (uint32)TRUE;
             break; /* Match found */
@@ -990,7 +1039,7 @@ Spi_HwUnitObjType *Spi_GetHwUnitObj(VAR(Spi_HWUnitType, AUTOMATIC) HWUnit,
     }
     else
     {
-        hwUnitObj = &Spi_DrvObj->hwUnitObj[hwUnitIdx];
+        hwUnitObj = &drvObj->hwUnitObj[hwUnitIdx];
     }
 
     return hwUnitObj;
@@ -1022,7 +1071,7 @@ FUNC(Spi_ChannelObjPtrType, SPI_CODE) Spi_GetCurrChannelObj(VAR(Spi_ChannelType,
  * Design : MCAL-28295
  */
 FUNC(Std_ReturnType, SPI_CODE)
-Spi_StartSeqAsync(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) Spi_DrvObj,
+Spi_StartSeqAsync(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
                   P2VAR(Spi_SeqObjType, AUTOMATIC, SPI_CODE) seqObj)
 {
     VAR(uint32, AUTOMATIC) index;
@@ -1032,14 +1081,14 @@ Spi_StartSeqAsync(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) Spi_DrvObj,
     P2VAR(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj;
     SchM_Enter_Spi_SPI_EXCLUSIVE_AREA_0();
     /* Queue the jobs in this sequence */
-    retVal = Spi_QueueJobs(Spi_DrvObj, seqObj);
+    retVal = Spi_QueueJobs(drvObj, seqObj);
     if (((Std_ReturnType)E_OK) == retVal)
     {
         /* Check all the hardware queue and consume any pending job if
          * the hardware is free */
-        for (index = ((uint32)0U); index < Spi_DrvObj->maxHwUnit; index++)
+        for (index = ((uint32)0U); index < drvObj->maxHwUnit; index++)
         {
-            hwUnitObj = &(Spi_DrvObj->hwUnitObj[index]);
+            hwUnitObj = &(drvObj->hwUnitObj[index]);
             if ((SPI_HW_UNIT_OK == hwUnitObj->hwUnitResult) && (hwUnitObj->jobList.headNode != NULL_PTR))
             {
                 /* Check if we have any job pending in the queue */
@@ -1260,8 +1309,8 @@ static FUNC(void, SPI_CODE) Spi_ConfigChannel(P2CONST(Spi_HwUnitObjType, AUTOMAT
 #if ((SPI_CHANNEL_BUFFERS == SPI_IB) || (SPI_CHANNEL_BUFFERS == SPI_IB_EB))
     if (((uint8)SPI_IB) == chObj->chCfg->channelBufType)
     {
-        chObj->curTxBufPtr = (const uint8 *)&chObj->txIb[0U];
-        chObj->curRxBufPtr = (uint8 *)&chObj->rxIb[0U];
+        chObj->curTxBufPtr = (volatile const uint8 *)&chObj->txIb[0U];
+        chObj->curRxBufPtr = (volatile uint8 *)&chObj->rxIb[0U];
     }
 #endif
     /* Reset Transmit and receive words to Zero */
@@ -1535,8 +1584,8 @@ static FUNC(void, SPI_CODE)
         }
         else
         {
-            chObj->curRxBufPtr = (uint8 *)Spi_FifoRead16(baseAddr, (uint16 *)chObj->curRxBufPtr, numWordsToRead,
-                                                         chObj->dataWidthBitMask, curRxWords);
+            chObj->curRxBufPtr = (volatile uint8 *)Spi_FifoRead16(baseAddr, (volatile uint16 *)chObj->curRxBufPtr,
+                                                                  numWordsToRead, chObj->dataWidthBitMask, curRxWords);
         }
     }
     else
@@ -1580,21 +1629,21 @@ static FUNC(void, SPI_CODE)
 LOCAL_INLINE FUNC(void, SPI_CODE)
     Spi_ReadRxBufferNonFifo(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj, VAR(uint32, AUTOMATIC) baseAddr)
 {
-    P2VAR(uint8, AUTOMATIC, SPI_CODE) rxBufferPtr8;
-    P2VAR(uint16, AUTOMATIC, SPI_CODE) rxBufferPtr16;
+    volatile P2VAR(uint8, AUTOMATIC, SPI_CODE) rxBufferPtr8;
+    volatile P2VAR(uint16, AUTOMATIC, SPI_CODE) rxBufferPtr16;
     volatile VAR(uint16, AUTOMATIC) rxData;
     if (NULL_PTR != chObj->curRxBufPtr)
     {
         if (SPI_8BIT_BUFFER == chObj->bufWidth)
         {
-            rxBufferPtr8                     = (uint8 *)chObj->curRxBufPtr;
+            rxBufferPtr8                     = (volatile uint8 *)chObj->curRxBufPtr;
             rxData                           = McalLib_RegReadRaw16(baseAddr + SPI_O_RXBUF);
             rxData                          &= chObj->dataWidthBitMask; /* Clear unused bits */
             rxBufferPtr8[chObj->curRxWords]  = (uint8)rxData;
         }
         else
         {
-            rxBufferPtr16                     = (uint16 *)chObj->curRxBufPtr;
+            rxBufferPtr16                     = (volatile uint16 *)chObj->curRxBufPtr;
             rxData                            = McalLib_RegReadRaw16(baseAddr + SPI_O_RXBUF);
             rxData                           &= chObj->dataWidthBitMask; /* Clear unused bits */
             rxBufferPtr16[chObj->curRxWords]  = (uint16)rxData;
@@ -1614,14 +1663,14 @@ LOCAL_INLINE FUNC(void, SPI_CODE)
 LOCAL_INLINE FUNC(void, SPI_CODE)
     Spi_WriteTxBufferNonFifo(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj, VAR(uint32, AUTOMATIC) baseAddr)
 {
-    P2CONST(uint8, AUTOMATIC, SPI_CODE) txBufferPtr8;
-    P2CONST(uint16, AUTOMATIC, SPI_CODE) txBufferPtr16;
+    volatile P2CONST(uint8, AUTOMATIC, SPI_CODE) txBufferPtr8;
+    volatile P2CONST(uint16, AUTOMATIC, SPI_CODE) txBufferPtr16;
     VAR(uint16, AUTOMATIC) txData;
     if (NULL_PTR != chObj->curTxBufPtr)
     {
         if (SPI_8BIT_BUFFER == chObj->bufWidth)
         {
-            txBufferPtr8 = (const uint8 *)chObj->curTxBufPtr;
+            txBufferPtr8 = (volatile const uint8 *)chObj->curTxBufPtr;
             txData       = txBufferPtr8[chObj->curTxWords];
             if (chObj->chCfg->transferType == SPI_LSB)
             {
@@ -1631,7 +1680,7 @@ LOCAL_INLINE FUNC(void, SPI_CODE)
         }
         else
         {
-            txBufferPtr16 = (const uint16 *)chObj->curTxBufPtr;
+            txBufferPtr16 = (volatile const uint16 *)chObj->curTxBufPtr;
             txData        = txBufferPtr16[chObj->curTxWords];
             if (chObj->chCfg->transferType == SPI_LSB)
             {
@@ -1677,7 +1726,7 @@ static FUNC(Spi_JobResultType, SPI_CODE) Spi_ContinueTxRx(P2VAR(Spi_HwUnitObjTyp
 }
 /* Design : MCAL-28296 */
 FUNC(Std_ReturnType, SPI_CODE)
-Spi_StartSeqSync(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) Spi_DrvObj,
+Spi_StartSeqSync(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
                  P2VAR(Spi_SeqObjType, AUTOMATIC, SPI_CODE) seqObj)
 {
     VAR(Std_ReturnType, AUTOMATIC) retVal = ((Std_ReturnType)E_NOT_OK);
@@ -1689,7 +1738,7 @@ Spi_StartSeqSync(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) Spi_DrvObj,
 
         /* Schedule all the jobs one after another in case of Sync
          *  transfer */
-        Spi_ScheduleAllJobsSyncTransmit(Spi_DrvObj, seqObj);
+        Spi_ScheduleAllJobsSyncTransmit(drvObj, seqObj);
 
         /* check if any job has previously failed or cancelled
          * and hence the sequence result is already set. So
@@ -1703,7 +1752,7 @@ Spi_StartSeqSync(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) Spi_DrvObj,
          * Check if all hardware is free so that driver can be
          * put in idle state
          */
-        Spi_CheckAndSetDrvState(Spi_DrvObj);
+        Spi_CheckAndSetDrvState(drvObj);
         retVal = (Std_ReturnType)E_OK;
     }
 
@@ -1746,7 +1795,7 @@ FUNC(void, SPI_CODE) Spi_ProcessRxEvent(VAR(Spi_HWUnitType, AUTOMATIC) hwUnitId)
 FUNC(void, SPI_CODE)
 Spi_ProcessChCompletion(P2VAR(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj,
                         VAR(Spi_JobResultType, AUTOMATIC) jobResult,
-                        P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) Spi_DrvObj)
+                        P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj)
 {
     VAR(Spi_ChannelType, AUTOMATIC) chId;
     P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj;
@@ -1764,7 +1813,7 @@ Spi_ProcessChCompletion(P2VAR(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj,
     if ((jobObj->curChIdx == jobObj->jobCfg->channelPerJob) || (SPI_JOB_FAILED == jobResult))
     {
         Spi_StopJob(hwUnitObj, jobObj);
-        Spi_ProcessJobCompletion(hwUnitObj, jobObj, Spi_DrvObj);
+        Spi_ProcessJobCompletion(hwUnitObj, jobObj, drvObj);
     }
     else
     {
@@ -1785,7 +1834,7 @@ Spi_ProcessChCompletion(P2VAR(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj,
         else
         {
             Spi_ConfigChannel(hwUnitObj, chObj);
-            Spi_StartNextChannel(hwUnitObj, chObj, Spi_DrvObj);
+            Spi_StartNextChannel(hwUnitObj, chObj, drvObj);
         }
     }
     return;
@@ -1998,10 +2047,10 @@ Spi_PrivIntlBufWrite8(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) ChObj,
                       P2CONST(Spi_DataBufferType, AUTOMATIC, SPI_CODE) DataBufferPtr)
 {
     P2CONST(uint8, AUTOMATIC, SPI_CODE) tempBuf8;
-    P2VAR(uint8, AUTOMATIC, SPI_CODE) tempIbPtr8;
+    volatile P2VAR(uint8, AUTOMATIC, SPI_CODE) tempIbPtr8;
     VAR(uint32, AUTOMATIC) index;
 
-    tempIbPtr8 = ((uint8 *)&ChObj->txIb[0U]);
+    tempIbPtr8 = ((volatile uint8 *)&ChObj->txIb[0U]);
     for (index = ((uint32)0U); index < ChObj->chCfg->maxBufLength; index++)
     {
         if (NULL_PTR != DataBufferPtr)
@@ -2023,10 +2072,10 @@ Spi_PrivIntlBufWrite16(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) ChObj,
                        P2CONST(Spi_DataBufferType, AUTOMATIC, SPI_CODE) DataBufferPtr)
 {
     P2CONST(uint16, AUTOMATIC, SPI_CODE) tempBuf16;
-    P2VAR(uint16, AUTOMATIC, SPI_CODE) tempIbPtr16;
+    volatile P2VAR(uint16, AUTOMATIC, SPI_CODE) tempIbPtr16;
     VAR(uint32, AUTOMATIC) index;
 
-    tempIbPtr16 = ((uint16 *)&ChObj->txIb[0U]);
+    tempIbPtr16 = ((volatile uint16 *)&ChObj->txIb[0U]);
     for (index = ((uint32)0U); index < ChObj->chCfg->maxBufLength; index++)
     {
         if (NULL_PTR != DataBufferPtr)
@@ -2047,15 +2096,15 @@ Spi_PrivReadIB(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj,
                P2CONST(Spi_DataBufferType, AUTOMATIC, SPI_CODE) DataBufferPointer)
 {
     P2VAR(uint8, AUTOMATIC, SPI_CODE) tempBuf8;
-    P2VAR(uint8, AUTOMATIC, SPI_CODE) tempIbPtr8;
+    volatile P2VAR(uint8, AUTOMATIC, SPI_CODE) tempIbPtr8;
     P2VAR(uint16, AUTOMATIC, SPI_CODE) tempBuf16;
-    P2VAR(uint16, AUTOMATIC, SPI_CODE) tempIbPtr16;
+    volatile P2VAR(uint16, AUTOMATIC, SPI_CODE) tempIbPtr16;
     VAR(uint32, AUTOMATIC) index;
 
     if (SPI_8BIT_BUFFER == chObj->bufWidth)
     {
         tempBuf8   = (uint8 *)DataBufferPointer;
-        tempIbPtr8 = ((uint8 *)&chObj->rxIb[0U]);
+        tempIbPtr8 = ((volatile uint8 *)&chObj->rxIb[0U]);
         for (index = ((uint32)0U); index < chObj->chCfg->maxBufLength; index++)
         {
             tempBuf8[index] = tempIbPtr8[index];
@@ -2064,7 +2113,7 @@ Spi_PrivReadIB(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj,
     else
     {
         tempBuf16   = (uint16 *)DataBufferPointer;
-        tempIbPtr16 = ((uint16 *)&chObj->rxIb[0U]);
+        tempIbPtr16 = ((volatile uint16 *)&chObj->rxIb[0U]);
         for (index = ((uint32)0U); index < chObj->chCfg->maxBufLength; index++)
         {
             tempBuf16[index] = tempIbPtr16[index];
@@ -2100,7 +2149,7 @@ Spi_PrivProcessTxEvent(VAR(uint32, AUTOMATIC) baseAddr, P2VAR(Spi_ChannelObjType
     VAR(uint16, AUTOMATIC) availableTxFIFO = 0;
     if (chObj->numWordsTxRx > chObj->curTxWords)
     {
-        txFifoStatus = ((txIntrStatus & SPI_FFTX_TXFFST_M) >> SPI_FFTX_TXFFST_S);
+        txFifoStatus = (uint8)((txIntrStatus & SPI_FFTX_TXFFST_M) >> SPI_FFTX_TXFFST_S);
         /* TI_COVERAGE_GAP_START [Branch Coverage] fifo status cannot be greater than
            (SPI_FIFO_TX_FIFO_DEPTH - 1U), this condition added to resolve MISCRA issue */
         if ((SPI_FIFO_TX_FIFO_DEPTH - 1U) > txFifoStatus)
@@ -2489,36 +2538,36 @@ static FUNC(void, SPI_CODE) Spi_PrivProcessJobCompletion(P2VAR(Spi_SeqObjType, A
 }
 /* Design: MCAL-28321 */
 FUNC(void, SPI_CODE)
-Spi_PrivInit(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) Spi_DrvObj,
-             P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA) ConfigPtr)
+Spi_PrivInit(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
+             P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA) CfgPtr)
 {
     VAR(uint32, AUTOMATIC) index;
 #if (STD_ON == SPI_CS_VIA_GPIO)
     VAR(uint32, AUTOMATIC) jobindex;
 #endif
-    Spi_ResetDrvObj(Spi_DrvObj);
-    Spi_CopyConfig(Spi_DrvObj, ConfigPtr);
+    Spi_ResetDrvObj(drvObj);
+    Spi_CopyConfig(drvObj, CfgPtr);
 
     /* Init HW once all config is copied */
     for (index = ((uint8)0U); index < SPI_MAX_HW_UNIT; index++)
     {
-        Spi_HwUnitInit(Spi_DrvObj, &(Spi_DrvObj->hwUnitObj[index]));
+        Spi_HwUnitInit(drvObj, &(drvObj->hwUnitObj[index]));
     }
 #if (STD_ON == SPI_CS_VIA_GPIO)
     /* Init Gpio Chip Select Pins */
-    for (jobindex = ((uint8)0U); jobindex < SPI_MAX_JOBS; jobindex++)
+    for (jobindex = ((uint32)0U); jobindex < drvObj->maxJobs; jobindex++)
     {
         /* UnSet chip select, if GPIO */
-        if ((Spi_CsSelection)CS_VIA_GPIO == Spi_DrvObj->jobObj[jobindex].jobCfg->csSelect)
+        if ((Spi_CsSelection)CS_VIA_GPIO == drvObj->jobObj[jobindex].jobCfg->csSelect)
         {
             /* Set initial state of the GPIO CS */
-            Spi_ConfigGpioChipSelect(&Spi_DrvObj->jobObj[jobindex], FALSE);
+            Spi_ConfigGpioChipSelect(&drvObj->jobObj[jobindex], FALSE);
         }
     }
 #endif
     /* Initialize driver status and object */
     Spi_DrvStatus    = SPI_IDLE;
-    Spi_DriverObjPtr = Spi_DrvObj;
+    Spi_DriverObjPtr = drvObj;
 }
 /* Design: MCAL-28346 */
 static FUNC(void, SPI_CODE)

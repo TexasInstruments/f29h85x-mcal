@@ -3,12 +3,60 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
  *
- *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *   TEXAS INSTRUMENTS TEXT FILE LICENSE
  *
- *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
- *                 is strictly prohibited.  This product  is  protected  under  copyright  law
- *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+ *   Copyright (c) 2025 Texas Instruments Incorporated
+ *
+ *   All rights reserved not granted herein.
+ *
+ *   Limited License.
+ *
+ *   Texas Instruments Incorporated grants a world-wide, royalty-free, non-exclusive
+ *   license under copyrights and patents it now or hereafter owns or controls to
+ *   make, have made, use, import, offer to sell and sell ("Utilize") this software
+ *   subject to the terms herein. With respect to the foregoing patent license,
+ *   such license is granted solely to the extent that any such patent is necessary
+ *   to Utilize the software alone. The patent license shall not apply to any
+ *   combinations which include this software, other than combinations with devices
+ *   manufactured by or for TI ("TI Devices"). No hardware patent is licensed hereunder.
+ *
+ *   Redistributions must preserve existing copyright notices and reproduce this license
+ *   (including the above copyright notice and the disclaimer and (if applicable) source
+ *   code license limitations below) in the documentation and/or other materials provided
+ *   with the distribution.
+ *
+ *   Redistribution and use in binary form, without modification, are permitted provided
+ *   that the following conditions are met:
+ *
+ *   * No reverse engineering, decompilation, or disassembly of this software is
+ *     permitted with respect to any software provided in binary form.
+ *   * Any redistribution and use are licensed by TI for use only with TI Devices.
+ *   * Nothing shall obligate TI to provide you with source code for the software
+ *     licensed and provided to you in object code.
+ *
+ *   If software source code is provided to you, modification and redistribution of the
+ *   source code are permitted provided that the following conditions are met:
+ *
+ *   * Any redistribution and use of the source code, including any resulting derivative
+ *     works, are licensed by TI for use only with TI Devices.
+ *   * Any redistribution and use of any object code compiled from the source code
+ *     and any resulting derivative works, are licensed by TI for use only with TI Devices.
+ *
+ *   Neither the name of Texas Instruments Incorporated nor the names of its suppliers
+ *   may be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ *   DISCLAIMER.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY TI AND TI'S LICENSORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ *   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TI AND TI'S
+ *   LICENSORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *   GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -288,8 +336,8 @@ Wdg_SetModeConfig(P2CONST(Wdg_ModeInfoType, AUTOMATIC, WDG_APPL_DATA) ModeCfg)
 FUNC(void, WDG_CODE) Wdg_EnableWatchdog(void)
 {
     /* Clear the disable bit */
-    HWREGH(WD_BASE + SYSCTL_O_WDCR) =
-        (uint16)((HWREGH(WD_BASE + SYSCTL_O_WDCR) & ~(uint16)SYSCTL_WDCR_WDDIS) | WDG_CHKBITS);
+    HWREGH((WD_BASE + SYSCTL_O_WDCR)) =
+        (uint16)((HWREGH((WD_BASE + SYSCTL_O_WDCR)) & (uint16)~SYSCTL_WDCR_WDDIS) | WDG_CHKBITS);
 }
 
 /*
@@ -298,7 +346,7 @@ FUNC(void, WDG_CODE) Wdg_EnableWatchdog(void)
 FUNC(void, WDG_CODE) Wdg_DisableWatchdog(void)
 {
     /* Set the disable bit */
-    HWREGH(WD_BASE + SYSCTL_O_WDCR) |= (uint16)(WDG_CHKBITS | SYSCTL_WDCR_WDDIS);
+    HWREGH((WD_BASE + SYSCTL_O_WDCR)) |= (uint16)(WDG_CHKBITS | SYSCTL_WDCR_WDDIS);
 }
 
 /*
@@ -307,8 +355,8 @@ FUNC(void, WDG_CODE) Wdg_DisableWatchdog(void)
 FUNC(void, WDG_CODE) Wdg_ServiceWatchdog(void)
 {
     /* Enable the counter to be reset and then reset it */
-    HWREGH(WD_BASE + SYSCTL_O_WDKEY) = (uint16)WDG_ENRSTKEY;
-    HWREGH(WD_BASE + SYSCTL_O_WDKEY) = (uint16)WDG_RSTKEY;
+    HWREGH((WD_BASE + SYSCTL_O_WDKEY)) = (uint16)WDG_ENRSTKEY;
+    HWREGH((WD_BASE + SYSCTL_O_WDKEY)) = (uint16)WDG_RSTKEY;
 }
 
 /*
@@ -320,7 +368,7 @@ FUNC(void, WDG_CODE) Wdg_GenerateImmediateEvent(void)
     /* By Default WDG_CHKBITS the 3 bit value it is set to 0x28 : 0010 1000 : Where 3 bit pattern is
      * 1 0 1*/
     /* Update with different value 0x38 : 0011 1000 : Where 3 bit pattern is 1 1 1 */
-    HWREGH(WD_BASE + SYSCTL_O_WDCR) |= (uint16)WDG_CHKBITS_RESET;
+    HWREGH((WD_BASE + SYSCTL_O_WDCR)) |= (uint16)WDG_CHKBITS_RESET;
 }
 
 /*
@@ -329,7 +377,7 @@ FUNC(void, WDG_CODE) Wdg_GenerateImmediateEvent(void)
 FUNC(uint16, WDG_CODE) Wdg_GetWatchdogCounterValue(void)
 {
     /* Read and return the value of the watchdog counter. */
-    return (HWREGH(WD_BASE + SYSCTL_O_WDCNTR));
+    return (HWREGH((WD_BASE + SYSCTL_O_WDCNTR)));
 }
 
 /*
@@ -365,7 +413,13 @@ FUNC(void, WDG_CODE) Wdg_SetTriggerConditionPriv(VAR(uint16, AUTOMATIC) Time_out
 
         /* In case the counter value stored inside watchdog has the value "255",
            the service Wdg_SetTriggerCondition shall do nothing */
+        /* TI_COVERAGE_GAP_START [Branch Coverage] The false branch (counter == 255) cannot be covered
+           by software testing. The watchdog counter (WDCNTR) is a hardware register that increments
+           automatically based on the watchdog clock. To cover this branch, the test would need to call
+           Wdg_SetTriggerCondition(0U) at the exact moment when the counter equals 255, which is
+           infeasible to synchronize in software due to timing constraints and hardware behavior. */
         if (current_wdg_cntr_value != WDG_MAX_8BIT_CNTR_VALUE)
+        /* TI_COVERAGE_GAP_STOP */
         {
             /* Write Bad key to generate immediate watchdog event */
             Wdg_GenerateImmediateEvent();
@@ -391,8 +445,8 @@ LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogPredivider(VAR(Wdg_PreDivider, 
     reg_val = (uint16)predivider | (uint16)WDG_CHKBITS;
 
     /* Write the predivider to the appropriate register. */
-    HWREGH(WD_BASE + SYSCTL_O_WDCR) =
-        (uint16)((uint16)(HWREGH(WD_BASE + SYSCTL_O_WDCR) & ~(uint16)(SYSCTL_WDCR_WDPRECLKDIV_M)) | reg_val);
+    HWREGH((WD_BASE + SYSCTL_O_WDCR)) =
+        (uint16)((uint16)(HWREGH((WD_BASE + SYSCTL_O_WDCR)) & (uint16)~SYSCTL_WDCR_WDPRECLKDIV_M) | reg_val);
 }
 
 /*
@@ -405,8 +459,8 @@ LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogPrescaler(VAR(Wdg_PreScaler, AU
     reg_val = (uint16)prescaler | (uint16)WDG_CHKBITS;
 
     /* Write the prescaler to the appropriate register */
-    HWREGH(WD_BASE + SYSCTL_O_WDCR) =
-        (uint16)((uint16)(HWREGH(WD_BASE + SYSCTL_O_WDCR) & ~(uint16)(SYSCTL_WDCR_WDPS_M)) | reg_val);
+    HWREGH((WD_BASE + SYSCTL_O_WDCR)) =
+        (uint16)((uint16)(HWREGH((WD_BASE + SYSCTL_O_WDCR)) & (uint16)~SYSCTL_WDCR_WDPS_M) | reg_val);
 }
 
 /*
@@ -415,10 +469,10 @@ LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogPrescaler(VAR(Wdg_PreScaler, AU
 LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogWindowValue(VAR(uint16, AUTOMATIC) value)
 {
     /* Clear the windowed value */
-    HWREGH(WD_BASE + SYSCTL_O_WDWCR) &= ~(uint16)SYSCTL_WDWCR_MIN_M;
+    HWREGH((WD_BASE + SYSCTL_O_WDWCR)) &= (uint16)~SYSCTL_WDWCR_MIN_M;
 
     /* Set the windowed value */
-    HWREGH(WD_BASE + SYSCTL_O_WDWCR) |= (uint16)(value & (uint16)SYSCTL_WDWCR_MIN_M);
+    HWREGH((WD_BASE + SYSCTL_O_WDWCR)) |= (uint16)(value & (uint16)SYSCTL_WDWCR_MIN_M);
 }
 
 /*
@@ -432,12 +486,12 @@ LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogReaction(VAR(Wdg_Reaction, AUTO
 
     if (reaction == WDG_GENERATE_INTERRUPT)
     {
-        HWREGH(WD_BASE + SYSCTL_O_SCSR) =
-            (uint16)((HWREGH(WD_BASE + SYSCTL_O_SCSR) & ~(uint16)SYSCTL_SCSR_WDOVERRIDE) | SYSCTL_SCSR_WDENINT);
+        HWREGH((WD_BASE + SYSCTL_O_SCSR)) =
+            (uint16)((HWREGH((WD_BASE + SYSCTL_O_SCSR)) & (uint16)~SYSCTL_SCSR_WDOVERRIDE) | SYSCTL_SCSR_WDENINT);
     }
     else
     {
-        HWREGH(WD_BASE + SYSCTL_O_SCSR) &= ~(uint16)(SYSCTL_SCSR_WDENINT | SYSCTL_SCSR_WDOVERRIDE);
+        HWREGH((WD_BASE + SYSCTL_O_SCSR)) &= (uint16) ~(SYSCTL_SCSR_WDENINT | SYSCTL_SCSR_WDOVERRIDE);
     }
 }
 
@@ -446,8 +500,15 @@ LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogReaction(VAR(Wdg_Reaction, AUTO
  */
 LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_IsWatchdogInterruptActive(void)
 {
+    VAR(boolean, AUTOMATIC) status = FALSE;
+
     /* If the status bit is cleared, the WDINTn signal is active.*/
-    return ((HWREGH(WD_BASE + SYSCTL_O_SCSR) & SYSCTL_SCSR_WDINTS) == 0U);
+    if ((HWREGH((WD_BASE + SYSCTL_O_SCSR)) & SYSCTL_SCSR_WDINTS) == 0U)
+    {
+        status = TRUE;
+    }
+
+    return status;
 }
 
 /*

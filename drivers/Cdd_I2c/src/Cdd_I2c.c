@@ -3,12 +3,60 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
  *
- *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *   TEXAS INSTRUMENTS TEXT FILE LICENSE
  *
- *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
- *                 is strictly prohibited.  This product  is  protected  under  copyright  law
- *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+ *   Copyright (c) 2025 Texas Instruments Incorporated
+ *
+ *   All rights reserved not granted herein.
+ *
+ *   Limited License.
+ *
+ *   Texas Instruments Incorporated grants a world-wide, royalty-free, non-exclusive
+ *   license under copyrights and patents it now or hereafter owns or controls to
+ *   make, have made, use, import, offer to sell and sell ("Utilize") this software
+ *   subject to the terms herein. With respect to the foregoing patent license,
+ *   such license is granted solely to the extent that any such patent is necessary
+ *   to Utilize the software alone. The patent license shall not apply to any
+ *   combinations which include this software, other than combinations with devices
+ *   manufactured by or for TI ("TI Devices"). No hardware patent is licensed hereunder.
+ *
+ *   Redistributions must preserve existing copyright notices and reproduce this license
+ *   (including the above copyright notice and the disclaimer and (if applicable) source
+ *   code license limitations below) in the documentation and/or other materials provided
+ *   with the distribution.
+ *
+ *   Redistribution and use in binary form, without modification, are permitted provided
+ *   that the following conditions are met:
+ *
+ *   * No reverse engineering, decompilation, or disassembly of this software is
+ *     permitted with respect to any software provided in binary form.
+ *   * Any redistribution and use are licensed by TI for use only with TI Devices.
+ *   * Nothing shall obligate TI to provide you with source code for the software
+ *     licensed and provided to you in object code.
+ *
+ *   If software source code is provided to you, modification and redistribution of the
+ *   source code are permitted provided that the following conditions are met:
+ *
+ *   * Any redistribution and use of the source code, including any resulting derivative
+ *     works, are licensed by TI for use only with TI Devices.
+ *   * Any redistribution and use of any object code compiled from the source code
+ *     and any resulting derivative works, are licensed by TI for use only with TI Devices.
+ *
+ *   Neither the name of Texas Instruments Incorporated nor the names of its suppliers
+ *   may be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ *   DISCLAIMER.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY TI AND TI'S LICENSORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ *   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TI AND TI'S
+ *   LICENSORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *   GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -70,10 +118,10 @@
 #endif
 
 /* vendor specific version information check */
-#if ((CDD_I2C_SW_MAJOR_VERSION != (1U)) || (CDD_I2C_SW_MINOR_VERSION != (1U)))
+#if ((CDD_I2C_SW_MAJOR_VERSION != (1U)) || (CDD_I2C_SW_MINOR_VERSION != (2U)))
 #error "Version numbers of Cdd_I2c.c and Cdd_I2c.h are not matching!"
 #endif
-#if ((CDD_I2C_CFG_MAJOR_VERSION != (1U)) || (CDD_I2C_CFG_MINOR_VERSION != (1U)))
+#if ((CDD_I2C_CFG_MAJOR_VERSION != (1U)) || (CDD_I2C_CFG_MINOR_VERSION != (2U)))
 #error "Version numbers of Cdd_I2c.c and Cdd_I2c_Cfg.h are not matching!"
 #endif
 
@@ -132,7 +180,7 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_Init(const Cdd_I2c_ConfigType *configPtr)
         (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, CDD_I2C_SID_INIT, CDD_I2C_E_ALREADY_INITIALIZED);
         retVal = E_NOT_OK;
     }
-    if (E_OK == retVal)
+    if (retVal == (Std_ReturnType)E_OK)
 #endif
     {
         /* Only pre-compile variant supported */
@@ -142,7 +190,7 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_Init(const Cdd_I2c_ConfigType *configPtr)
         (void)configPtr;
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
         retVal = Cdd_I2c_CheckConfig(localConfigPtr);
-        if (E_OK == retVal)
+        if (retVal == (Std_ReturnType)E_OK)
 #endif
         {
             Cdd_I2c_DriverObjType *drvObj = &Cdd_I2c_DrvObj;
@@ -156,7 +204,7 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_Init(const Cdd_I2c_ConfigType *configPtr)
                 Cdd_I2c_HwUnitObjType          *hwUnitObj = &drvObj->hwUnitObj[hwIdx];
                 const Cdd_I2c_HwUnitConfigType *hwUnitCfg = hwUnitObj->hwUnitCfg;
                 Cdd_I2c_HwInit(hwUnitObj->baseAddr, hwUnitCfg->baudRate, hwUnitCfg->hwUnitFrequency, hwUnitCfg->sysClk,
-                               hwUnitCfg->ownAddress);
+                               hwUnitCfg->ownAddress, hwUnitCfg->mode);
             }
             Cdd_I2c_DrvState = CDD_I2C_IDLE;
         }
@@ -227,16 +275,20 @@ Cdd_I2c_SetupEB(Cdd_I2c_ChannelType chId, Cdd_I2c_DataConstPtrType txDataBufferP
         (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, CDD_I2C_SID_SETUP_EB, CDD_I2C_E_UNINIT);
         retVal = E_NOT_OK;
     }
-    if ((retVal == (Std_ReturnType)E_OK) && (chId >= CDD_I2C_MAX_CH))
+    if (retVal == (Std_ReturnType)E_OK)
     {
-        (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, CDD_I2C_SID_SETUP_EB, CDD_I2C_E_PARAM_CHANNEL);
-        retVal = E_NOT_OK;
+        if (chId >= CDD_I2C_MAX_CH)
+        {
+            (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, CDD_I2C_SID_SETUP_EB,
+                                  CDD_I2C_E_PARAM_CHANNEL);
+            retVal = E_NOT_OK;
+        }
+        else
+        {
+            retVal = Cdd_I2c_SetupEBParamCheck(CDD_I2C_SID_SETUP_EB, chId, txDataBufferPtr, rxDataBufferPtr, length);
+        }
     }
-    if (E_OK == retVal)
-    {
-        retVal = Cdd_I2c_SetupEBParamCheck(CDD_I2C_SID_SETUP_EB, chId, txDataBufferPtr, rxDataBufferPtr, length);
-    }
-    if (E_OK == retVal)
+    if (retVal == (Std_ReturnType)E_OK)
 #endif
     {
         Cdd_I2c_DriverObjType *drvObj = &Cdd_I2c_DrvObj;
@@ -270,11 +322,19 @@ Cdd_I2c_SetupEBDynamic(Cdd_I2c_ChannelType chId, Cdd_I2c_AddressType deviceAddre
         (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, CDD_I2C_SID_SETUP_EB_DYNAMIC, CDD_I2C_E_UNINIT);
         retVal = E_NOT_OK;
     }
-    if ((retVal == (Std_ReturnType)E_OK) && (chId >= CDD_I2C_MAX_CH))
+    if (retVal == (Std_ReturnType)E_OK)
     {
-        (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, CDD_I2C_SID_SETUP_EB_DYNAMIC,
-                              CDD_I2C_E_PARAM_CHANNEL);
-        retVal = E_NOT_OK;
+        if (chId >= CDD_I2C_MAX_CH)
+        {
+            (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, CDD_I2C_SID_SETUP_EB_DYNAMIC,
+                                  CDD_I2C_E_PARAM_CHANNEL);
+            retVal = E_NOT_OK;
+        }
+        else
+        {
+            retVal =
+                Cdd_I2c_SetupEBParamCheck(CDD_I2C_SID_SETUP_EB_DYNAMIC, chId, txDataBufferPtr, rxDataBufferPtr, length);
+        }
     }
     if ((retVal == (Std_ReturnType)E_OK) && (deviceAddress > CDD_I2C_ADDRESS_10_BIT_MAX))
     {
@@ -282,12 +342,7 @@ Cdd_I2c_SetupEBDynamic(Cdd_I2c_ChannelType chId, Cdd_I2c_AddressType deviceAddre
                               CDD_I2C_E_PARAM_ADDRESS);
         retVal = E_NOT_OK;
     }
-    if (E_OK == retVal)
-    {
-        retVal =
-            Cdd_I2c_SetupEBParamCheck(CDD_I2C_SID_SETUP_EB_DYNAMIC, chId, txDataBufferPtr, rxDataBufferPtr, length);
-    }
-    if (E_OK == retVal)
+    if (retVal == (Std_ReturnType)E_OK)
 #endif
     {
         Cdd_I2c_DriverObjType *drvObj = &Cdd_I2c_DrvObj;
@@ -331,7 +386,7 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_AsyncTransmit(Cdd_I2c_SequenceType se
                               CDD_I2C_E_PARAM_SEQUENCE);
         retVal = E_NOT_OK;
     }
-    if (E_OK == retVal)
+    if (retVal == (Std_ReturnType)E_OK)
 #endif
     {
         Cdd_I2c_DriverObjType *drvObj = &Cdd_I2c_DrvObj;
@@ -383,7 +438,7 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_Cancel(Cdd_I2c_SequenceType sequenceI
         (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, CDD_I2C_SID_CANCEL, CDD_I2C_E_PARAM_SEQUENCE);
         retVal = E_NOT_OK;
     }
-    if (E_OK == retVal)
+    if (retVal == (Std_ReturnType)E_OK)
 #endif
     {
         Cdd_I2c_DriverObjType *drvObj = &Cdd_I2c_DrvObj;
@@ -413,7 +468,6 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_MainFunction(void)
     else
 #endif
     {
-#if (STD_ON == CDD_I2C_POLLING_MODE)
         Cdd_I2c_DriverObjType *drvObj = &Cdd_I2c_DrvObj;
         Cdd_I2c_HwUnitObjType *hwUnitObj;
 
@@ -423,20 +477,19 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_MainFunction(void)
         for (uint32 hwUnitIdx = 0U; hwUnitIdx < drvObj->maxHwUnit; hwUnitIdx++)
         {
             hwUnitObj = &drvObj->hwUnitObj[hwUnitIdx];
-            if (NULL_PTR != hwUnitObj->curChObj)
+            /* Only poll HW units that are not using interrupts */
+            if ((FALSE == hwUnitObj->hwUnitCfg->isIntrMode) && (NULL_PTR != hwUnitObj->curChObj))
             {
                 Cdd_I2c_ProcessEvents(drvObj, hwUnitObj);
             }
         }
 
         SchM_Exit_Cdd_I2c_CDD_I2C_EXCLUSIVE_AREA_0();
-#endif
     }
 
     return;
 }
 
-#if (STD_ON == CDD_I2C_POLLING_MODE)
 FUNC(void, CDD_I2C_CODE) Cdd_I2c_PollingModeProcessing(void)
 {
     /* This API is deprecated and provide only for backward compatibility.
@@ -444,7 +497,6 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_PollingModeProcessing(void)
     Cdd_I2c_MainFunction();
     return;
 }
-#endif
 
 FUNC(Cdd_I2c_SequenceResultType, CDD_I2C_CODE) Cdd_I2c_GetSequenceResult(Cdd_I2c_SequenceType sequenceId)
 {

@@ -3,12 +3,60 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
  *
- *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *   TEXAS INSTRUMENTS TEXT FILE LICENSE
  *
- *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
- *                 is strictly prohibited.  This product  is  protected  under  copyright  law
- *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+ *   Copyright (c) 2025 Texas Instruments Incorporated
+ *
+ *   All rights reserved not granted herein.
+ *
+ *   Limited License.
+ *
+ *   Texas Instruments Incorporated grants a world-wide, royalty-free, non-exclusive
+ *   license under copyrights and patents it now or hereafter owns or controls to
+ *   make, have made, use, import, offer to sell and sell ("Utilize") this software
+ *   subject to the terms herein. With respect to the foregoing patent license,
+ *   such license is granted solely to the extent that any such patent is necessary
+ *   to Utilize the software alone. The patent license shall not apply to any
+ *   combinations which include this software, other than combinations with devices
+ *   manufactured by or for TI ("TI Devices"). No hardware patent is licensed hereunder.
+ *
+ *   Redistributions must preserve existing copyright notices and reproduce this license
+ *   (including the above copyright notice and the disclaimer and (if applicable) source
+ *   code license limitations below) in the documentation and/or other materials provided
+ *   with the distribution.
+ *
+ *   Redistribution and use in binary form, without modification, are permitted provided
+ *   that the following conditions are met:
+ *
+ *   * No reverse engineering, decompilation, or disassembly of this software is
+ *     permitted with respect to any software provided in binary form.
+ *   * Any redistribution and use are licensed by TI for use only with TI Devices.
+ *   * Nothing shall obligate TI to provide you with source code for the software
+ *     licensed and provided to you in object code.
+ *
+ *   If software source code is provided to you, modification and redistribution of the
+ *   source code are permitted provided that the following conditions are met:
+ *
+ *   * Any redistribution and use of the source code, including any resulting derivative
+ *     works, are licensed by TI for use only with TI Devices.
+ *   * Any redistribution and use of any object code compiled from the source code
+ *     and any resulting derivative works, are licensed by TI for use only with TI Devices.
+ *
+ *   Neither the name of Texas Instruments Incorporated nor the names of its suppliers
+ *   may be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ *   DISCLAIMER.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY TI AND TI'S LICENSORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ *   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TI AND TI'S
+ *   LICENSORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *   GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -134,8 +182,8 @@ Wdg_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, WDG_APPL_DATA) Versioni
     else
 #endif /* WDG_DEV_ERROR_DETECT */
     {
-        Versioninfo->vendorID         = (WDG_VENDOR_ID);
-        Versioninfo->moduleID         = (WDG_MODULE_ID);
+        Versioninfo->vendorID         = WDG_VENDOR_ID;
+        Versioninfo->moduleID         = WDG_MODULE_ID;
         Versioninfo->sw_major_version = (uint8)(WDG_SW_MAJOR_VERSION);
         Versioninfo->sw_minor_version = (uint8)(WDG_SW_MINOR_VERSION);
         Versioninfo->sw_patch_version = (uint8)(WDG_SW_PATCH_VERSION);
@@ -178,7 +226,7 @@ FUNC(void, WDG_CODE) Wdg_Init(P2CONST(Wdg_ConfigType, WDG_CONFIG_DATA, WDG_CONFI
     if (NULL_PTR == config_ptr)
     {
 #if (STD_ON == WDG_DEV_ERROR_DETECT)
-        (void)Det_ReportError(WDG_MODULE_ID, WDG_INSTANCE_ID, WDG_SID_INIT, WDG_E_PARAM_POINTER);
+        (void)Det_ReportError(WDG_MODULE_ID, (uint8)WDG_INSTANCE_ID, WDG_SID_INIT, WDG_E_PARAM_POINTER);
 #endif
     }
     else
@@ -218,7 +266,7 @@ FUNC(void, WDG_CODE) Wdg_Init(P2CONST(Wdg_ConfigType, WDG_CONFIG_DATA, WDG_CONFI
 #endif
 
 #if (STD_ON == WDG_DEV_ERROR_DETECT)
-                (void)Det_ReportError(WDG_MODULE_ID, WDG_INSTANCE_ID, WDG_SID_INIT, WDG_E_PARAM_CONFIG);
+                (void)Det_ReportError(WDG_MODULE_ID, (uint8)WDG_INSTANCE_ID, WDG_SID_INIT, WDG_E_PARAM_CONFIG);
 #endif
             }
             else
@@ -263,11 +311,11 @@ FUNC(Std_ReturnType, WDG_CODE) Wdg_SetMode(VAR(WdgIf_ModeType, AUTOMATIC) Mode)
 #if (STD_ON == WDG_DEV_ERROR_DETECT)
     if (WDG_IDLE != Wdg_DrvStatus)
     {
-        (void)Det_ReportError(WDG_MODULE_ID, WDG_INSTANCE_ID, WDG_SID_SET_MODE, WDG_E_DRIVER_STATE);
+        (void)Det_ReportError(WDG_MODULE_ID, (uint8)WDG_INSTANCE_ID, WDG_SID_SET_MODE, WDG_E_DRIVER_STATE);
     }
     else if (WDGIF_MODE_MAX <= Mode)
     {
-        (void)Det_ReportError(WDG_MODULE_ID, WDG_INSTANCE_ID, WDG_SID_SET_MODE, WDG_E_PARAM_MODE);
+        (void)Det_ReportError(WDG_MODULE_ID, (uint8)WDG_INSTANCE_ID, WDG_SID_SET_MODE, WDG_E_PARAM_MODE);
     }
     else
 #endif
@@ -304,7 +352,7 @@ FUNC(Std_ReturnType, WDG_CODE) Wdg_SetMode(VAR(WdgIf_ModeType, AUTOMATIC) Mode)
 #if (STD_ON == WDG_DEV_ERROR_DETECT)
         if (return_value == (Std_ReturnType)E_OK)
         {
-            Wdg_DrvStatus = WDG_IDLE;
+            Wdg_DrvStatus = (Wdg_StatusType)WDG_IDLE;
         }
         else
         {
@@ -323,19 +371,20 @@ FUNC(Std_ReturnType, WDG_CODE) Wdg_SetMode(VAR(WdgIf_ModeType, AUTOMATIC) Mode)
 FUNC(void, WDG_CODE) Wdg_SetTriggerCondition(VAR(uint16, AUTOMATIC) Timeout)
 {
 #if (STD_ON == WDG_DEV_ERROR_DETECT)
-    VAR(uint16, AUTOMATIC) Max_Timeout = 0U;
+    VAR(uint16, AUTOMATIC) Max_Timeout = (uint16)0;
 
     Max_Timeout = Wdg_GetMaxTimeout(&Wdg_DrvObj);
 
     /* Check if driver already initialized */
     if (WDG_IDLE != Wdg_DrvStatus)
     {
-        (void)Det_ReportError(WDG_MODULE_ID, WDG_INSTANCE_ID, WDG_SID_SET_TRIGGER_CONDITION, WDG_E_DRIVER_STATE);
+        (void)Det_ReportError(WDG_MODULE_ID, (uint8)WDG_INSTANCE_ID, WDG_SID_SET_TRIGGER_CONDITION, WDG_E_DRIVER_STATE);
     }
     else if (Timeout > Max_Timeout)
     {
         /* API is being called with an invalid timeout value */
-        (void)Det_ReportError(WDG_MODULE_ID, WDG_INSTANCE_ID, WDG_SID_SET_TRIGGER_CONDITION, WDG_E_PARAM_TIMEOUT);
+        (void)Det_ReportError(WDG_MODULE_ID, (uint8)WDG_INSTANCE_ID, WDG_SID_SET_TRIGGER_CONDITION,
+                              WDG_E_PARAM_TIMEOUT);
     }
     else
 #endif
@@ -391,7 +440,7 @@ static FUNC(Std_ReturnType, WDG_CODE) Wdg_CheckAndSetRequestedMode(VAR(WdgIf_Mod
             (void)Dem_SetEventStatus(WDG_E_MODE_FAILED, DEM_EVENT_STATUS_FAILED);
 #endif
 #if (STD_ON == WDG_DEV_ERROR_DETECT)
-            (void)Det_ReportError(WDG_MODULE_ID, WDG_INSTANCE_ID, WDG_SID_SET_MODE, WDG_E_PARAM_CONFIG);
+            (void)Det_ReportError(WDG_MODULE_ID, (uint8)WDG_INSTANCE_ID, WDG_SID_SET_MODE, WDG_E_PARAM_CONFIG);
 #endif
         }
         else

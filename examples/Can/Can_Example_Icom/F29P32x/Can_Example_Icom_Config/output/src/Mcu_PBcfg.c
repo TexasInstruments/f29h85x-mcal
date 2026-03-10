@@ -3,12 +3,60 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
  *
- *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *   TEXAS INSTRUMENTS TEXT FILE LICENSE
  *
- *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
- *                 is strictly prohibited.  This product  is  protected  under  copyright  law
- *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+ *   Copyright (c) 2025 Texas Instruments Incorporated
+ *
+ *   All rights reserved not granted herein.
+ *
+ *   Limited License.
+ *
+ *   Texas Instruments Incorporated grants a world-wide, royalty-free, non-exclusive
+ *   license under copyrights and patents it now or hereafter owns or controls to
+ *   make, have made, use, import, offer to sell and sell ("Utilize") this software
+ *   subject to the terms herein. With respect to the foregoing patent license,
+ *   such license is granted solely to the extent that any such patent is necessary
+ *   to Utilize the software alone. The patent license shall not apply to any
+ *   combinations which include this software, other than combinations with devices
+ *   manufactured by or for TI ("TI Devices"). No hardware patent is licensed hereunder.
+ *
+ *   Redistributions must preserve existing copyright notices and reproduce this license
+ *   (including the above copyright notice and the disclaimer and (if applicable) source
+ *   code license limitations below) in the documentation and/or other materials provided
+ *   with the distribution.
+ *
+ *   Redistribution and use in binary form, without modification, are permitted provided
+ *   that the following conditions are met:
+ *
+ *   * No reverse engineering, decompilation, or disassembly of this software is
+ *     permitted with respect to any software provided in binary form.
+ *   * Any redistribution and use are licensed by TI for use only with TI Devices.
+ *   * Nothing shall obligate TI to provide you with source code for the software
+ *     licensed and provided to you in object code.
+ *
+ *   If software source code is provided to you, modification and redistribution of the
+ *   source code are permitted provided that the following conditions are met:
+ *
+ *   * Any redistribution and use of the source code, including any resulting derivative
+ *     works, are licensed by TI for use only with TI Devices.
+ *   * Any redistribution and use of any object code compiled from the source code
+ *     and any resulting derivative works, are licensed by TI for use only with TI Devices.
+ *
+ *   Neither the name of Texas Instruments Incorporated nor the names of its suppliers
+ *   may be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ *   DISCLAIMER.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY TI AND TI'S LICENSORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ *   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TI AND TI'S
+ *   LICENSORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *   GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -28,6 +76,8 @@
  * Header Files
  *********************************************************************************************************************/
 #include "Mcu.h"
+#include "hw_memmap.h"
+#include "hw_sysctl.h"
 
 #define MCU_START_SEC_CONFIG_DATA
 #include "Mcu_MemMap.h"
@@ -1480,25 +1530,85 @@ static CONST(Mcu_ModeConfigType, MCU_CONFIG_DATA) Mcu_ModeConfigurationSet0[2] =
 /*
  * Design: MCAL-21865, MCAL-21866, MCAL-21867, MCAL-21868, MCAL-21869, MCAL-21866
  */
+/* Forward declaration of peripheral configuration structure */
+static CONST(Mcu_PeripheralConfigType, MCU_CONFIG_DATA) Mcu_PeripheralConfig;
+
 CONST(Mcu_ConfigType, MCU_CONFIG_DATA) Mcu_Config_Mcu_ModuleConfiguration_0 =
 {
-    /* Mcu_ClockConfig */ 
+    /* Mcu_ClockConfig */
     .Mcu_ClockConfig               = ((Mcu_ClockConfigPtrType) Mcu_ClkCfgSet0),
-    /* Mcu_ConfigRamSection */ 
+    /* Mcu_ConfigRamSection */
     .Mcu_ConfigRamSection          = ((Mcu_RamConfigPtrType) Mcu_RamSectionCfgSet0),
-    /* Mcu_ModeConfig */ 
+    /* Mcu_ModeConfig */
     .Mcu_ModeConfig                = ((Mcu_ModeConfigPtrType) Mcu_ModeConfigurationSet0),
-    /* Mcu_ClockSetting */ 
+    /* Mcu_ClockSetting */
     .Mcu_ClockSetting              = ((uint8) 3U),
-    /* Mcu_NumberOfRamSectors */ 
+    /* Mcu_NumberOfRamSectors */
     .Mcu_NumberOfRamSectors        = ((uint8) 0U),
-    /* Mcu_ModesNumber */ 
+    /* Mcu_ModesNumber */
     .Mcu_NumberOfLowPowerModes     = ((uint8) 2U),
-    /* Mcu_ResetSetting */ 
+    /* Mcu_ResetSetting */
     .Mcu_ResetSetting              = ((Mcu_ResetType) MCU_EXTERNAL_RESET),
-    /* Mcu_EnableClkFailNotification */ 
-    .Mcu_EnableClkFailNotification = ((boolean) TRUE)
+    /* Mcu_EnableClkFailNotification */
+    .Mcu_EnableClkFailNotification = ((boolean) TRUE),
+    /* Peripheral Configuration */
+    .PeripheralConfig              = &Mcu_PeripheralConfig
 };
+
+
+
+/*********************************************************************************************************************
+ *  Peripheral Configuration Register Array Generation
+ *
+ *  This section generates peripheral configuration arrays from ResourceAllocator XDM configuration.
+ *  Each peripheral configuration register has the following bit layout:
+ *    - Bits 31-8: Reserved (0)
+ *    - Bit 7: DBGHALTEN - Debug halt enable (1=enabled, 0=disabled)
+ *    - Bit 6: STANDBYEN - Standby mode enable (1=enabled, 0=disabled)
+ *    - Bits 5-3: CPUSEL - CPU selection (000=CPU1, 001=CPU2, 010=CPU3)
+ *    - Bits 2-0: FRAMESEL - Frame selection (000=FRAME0, 001=FRAME1, 010=FRAME2, 011=FRAME3)
+ *********************************************************************************************************************/
+/*********************************************************************************************************************
+ *  Peripheral Configuration Array
+ *
+ *  Contains configuration entries for all peripherals with Frame configuration from ResourceAllocator.
+ *  Each entry specifies the register address and the configuration value to write.
+ *********************************************************************************************************************/
+static CONST(Mcu_PeripheralRegEntryType, MCU_CONFIG_DATA) Mcu_PeripheralConfigSet[] =
+{
+                            
+    /* MCANA Configuration - CPU1, FRAME0, DbgHalt=true, Standby=true */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_MCANA),
+        .RegValue = (uint32)0x000000C0U
+    },
+
+    /* MCANB Configuration - CPU1, FRAME0, DbgHalt=true, Standby=true */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_MCANB),
+        .RegValue = (uint32)0x000000C0U
+    },
+
+    /* MCANC Configuration - CPU1, FRAME0, DbgHalt=true, Standby=true */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_MCANC),
+        .RegValue = (uint32)0x000000C0U
+    }
+};
+
+/*********************************************************************************************************************
+ *  Peripheral Configuration Structure
+ *
+ *  This structure wraps the peripheral configuration array and count for use by Mcu_Init.
+ *  The PeripheralConfigEntries pointer references the Mcu_PeripheralConfigSet array, which
+ *  contains struct entries with RegAddr and RegValue fields.
+ *********************************************************************************************************************/
+static CONST(Mcu_PeripheralConfigType, MCU_CONFIG_DATA) Mcu_PeripheralConfig =
+{
+    .PeripheralConfigEntries = Mcu_PeripheralConfigSet,
+    .PeripheralConfigCount   = 3U
+};
+
 
 
 

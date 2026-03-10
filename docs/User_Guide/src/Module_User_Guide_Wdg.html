@@ -115,7 +115,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#examples">5.10.11. Examples</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#wdg-example-service">5.10.11.1. Wdg_Example_Service</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#wdg-example-interrupt">5.10.11.2. Wdg_Example_Interrupt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#file-structure">5.10.11.3. File Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wdg-example-reset">5.10.11.3. Wdg_Example_Reset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">5.10.11.4. File Structure</a></li>
 </ul>
 </li>
 </ul>
@@ -991,8 +992,267 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 </div>
 </section>
 </section>
+<section id="wdg-example-reset">
+<h3><span class="section-number">5.10.11.3. </span>Wdg_Example_Reset<a class="headerlink" href="#wdg-example-reset" title="Link to this heading"></a></h3>
+<section id="overview-of-wdg-example-reset">
+<h4><span class="section-number">5.10.11.3.1. </span>Overview of Wdg_Example_Reset<a class="headerlink" href="#overview-of-wdg-example-reset" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Wdg_Example_Reset</p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init()</p></li>
+<li><p>Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()</p></li>
+</ul>
+</li>
+<li><p>Demonstrates watchdog timer reset functionality when the watchdog is intentionally not serviced</p></li>
+<li><p>Detects reset reason using Mcu_GetResetReason() API to identify MCU_WATCHDOG_RESET (value = 3)</p></li>
+<li><p>Uses USER_REG1_PORESETN register to maintain a persistent counter across watchdog resets. This register retains data until PORESETn, so there should not be any other PORESETn in between.</p></li>
+<li><p>Repeats the watchdog timeout cycle up to 20 times to verify reset behavior</p></li>
+<li><p>After completion, disables the watchdog using Wdg_SetMode(WDGIF_OFF_MODE)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-wdg-example-reset">
+<h4><span class="section-number">5.10.11.3.2. </span>Setup required to run Wdg_Example_Reset<a class="headerlink" href="#setup-required-to-run-wdg-example-reset" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio latest version</p></li>
+<li><p>Install latest C29 compiler</p></li>
+<li><p>Connect the hardware and power up</p></li>
+<li><p>Connect the uart set up to check the log on serial console</p></li>
+</ul>
+</section>
+<section id="how-to-run-wdg-example-reset">
+<h4><span class="section-number">5.10.11.3.3. </span>How to run Wdg_Example_Reset<a class="headerlink" href="#how-to-run-wdg-example-reset" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open CCS and Import Wdg_Example_Reset example</p></li>
+<li><p>Build project and start debug project</p></li>
+</ul>
+</section>
+<section id="sample-log-of-wdg-example-reset">
+<h4><span class="section-number">5.10.11.3.4. </span>Sample Log of Wdg_Example_Reset<a class="headerlink" href="#sample-log-of-wdg-example-reset" title="Link to this heading"></a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 6
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Sample Application to test Wdg Reset - STARTS !!!
+WDG is Initialized in Slow mode
+Watchdog will NOT be serviced intentionally !!!
+Watchdog reset will occur in 3342ms
+-----------------------------------------------------
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #1
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #2
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #3
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #4
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #5
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #6
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #7
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #8
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #9
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #10
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #11
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #12
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #13
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #14
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #15
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #16
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #17
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #18
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #19
+-----------------------------------------------------
+Waiting for watchdog to expire and trigger reset...
+-------------------------------
+Wdg Reset Test Example !!!
+-------------------------------
+Detected Reset Reason: 3
+Reset Reasons: 0=POWER_ON, 1=EXTERNAL, 2=ESM_NMI_WD, 3=WATCHDOG, 4=SW, 5=ESM, 6=UNDEFINED
+-----------------------------------------------------
+Restarted after a Watchdog Reset !!!
+Wdg Example Reset: Sample Application - Watchdog Reset #20
+-----------------------------------------------------
+-----------------------------------------------------
+Total watchdog resets performed: 20
+Sample Application to test Wdg Reset  - COMPLETED !!!
+</pre></div>
+</div>
+</section>
+</section>
 <section id="file-structure">
-<h3><span class="section-number">5.10.11.3. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.10.11.4. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />

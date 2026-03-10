@@ -58,23 +58,6 @@
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>true</DEFAULT-VALUE>
                     </ECUC-BOOLEAN-PARAM-DEF>
-                    <ECUC-BOOLEAN-PARAM-DEF UUID="1ca8ab74-453c-440a-b02f-a8301b5be55d">
-                      <SHORT-NAME>CddI2cUseInterrupts</SHORT-NAME>
-                      <DESC>
-                        <L-2 L="EN">Switches to activate or deactivate interrupt controlled job processing(ON/OFF).</L-2>
-                      </DESC>
-                      <SCOPE>LOCAL</SCOPE>
-                      <ORIGIN>Texas Instruments</ORIGIN>
-                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
-                      <VALUE-CONFIG-CLASSES>
-                        <ECUC-VALUE-CONFIGURATION-CLASS>
-                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                        </ECUC-VALUE-CONFIGURATION-CLASS>
-                      </VALUE-CONFIG-CLASSES>
-                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
-                    </ECUC-BOOLEAN-PARAM-DEF>
                     <ECUC-BOOLEAN-PARAM-DEF UUID="7ef17aaa-3480-4b34-be74-ab79ea6e2a97">
                       <SHORT-NAME>CddI2cVersionInfoApi</SHORT-NAME>
                       <DESC>
@@ -170,13 +153,67 @@
                   </MULTIPLICITY-CONFIG-CLASSES>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="as:uuid()">
+                      <SHORT-NAME>CddI2cHwUnitMode</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Selects the operation mode of the I2C HW unit (Controller or Target).</L-2>
+                      </DESC>
+                      <SCOPE>ECU</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>CDD_I2C_MODE_CONTROLLER</DEFAULT-VALUE>
+                      <LITERALS>
+                        <ECUC-ENUMERATION-LITERAL-DEF>
+                          <SHORT-NAME>CDD_I2C_MODE_CONTROLLER</SHORT-NAME>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                        </ECUC-ENUMERATION-LITERAL-DEF>
+                        <ECUC-ENUMERATION-LITERAL-DEF>
+                          <SHORT-NAME>CDD_I2C_MODE_TARGET</SHORT-NAME>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                        </ECUC-ENUMERATION-LITERAL-DEF>
+                      </LITERALS>
+                    </ECUC-ENUMERATION-PARAM-DEF>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="as:uuid()">
+                      <SHORT-NAME>CddI2cHwUseInterrupts</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Switches to activate or deactivate interrupt controlled job processing for this HW unit. Always enabled in Target mode.</L-2>
+                      </DESC>
+                      <!-- @Calculated /TI_F29H85x/Cdd_I2c/Cdd/CddI2cHwConfig/CddI2cHwUseInterrupts: ENABLE(XPath: (../CddI2cHwUnitMode != &apos;CDD_I2C_MODE_TARGET&apos;))-->
+                      <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                      <!-- @CalculatedEnd -->
+                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                      <SCOPE>ECU</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
                     <ECUC-INTEGER-PARAM-DEF UUID="1acefcc0-3ecd-4071-a2e1-8becf702d89b">
                       <SHORT-NAME>CddI2cHwBaudrate</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Channel Bit Rate (Range = 10kbps - 400kbps). Value needs to be provided in bits per second.</L-2>
                       </DESC>
+                      <!-- @Calculated /TI_F29H85x/Cdd_I2c/Cdd/CddI2cHwConfig/CddI2cHwBaudrate: ENABLE(XPath: (../CddI2cHwUnitMode = &apos;CDD_I2C_MODE_CONTROLLER&apos;))-->
+                      <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                      <!-- @CalculatedEnd -->
+                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                       <VALUE-CONFIG-CLASSES>
                         <ECUC-VALUE-CONFIGURATION-CLASS>
@@ -208,6 +245,33 @@
                       <MAX>12000000</MAX>
                       <MIN>7000000</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="as:uuid()">
+                      <SHORT-NAME>CddI2cHwAddressScheme</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Specifies whether the HW unit uses 7-bit or 10-bit addressing.</L-2>
+                      </DESC>
+                      <SCOPE>ECU</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>CDD_I2C_ADDRESS_7_BIT</DEFAULT-VALUE>
+                      <LITERALS>
+                        <ECUC-ENUMERATION-LITERAL-DEF>
+                          <SHORT-NAME>CDD_I2C_ADDRESS_7_BIT</SHORT-NAME>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                        </ECUC-ENUMERATION-LITERAL-DEF>
+                        <ECUC-ENUMERATION-LITERAL-DEF>
+                          <SHORT-NAME>CDD_I2C_ADDRESS_10_BIT</SHORT-NAME>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                        </ECUC-ENUMERATION-LITERAL-DEF>
+                      </LITERALS>
+                    </ECUC-ENUMERATION-PARAM-DEF>
                     <ECUC-INTEGER-PARAM-DEF UUID="ECUC:efb1a8d3-e084-4c1c-af6a-271e5d8356c7">
                       <SHORT-NAME>CddI2cHwOwnAddress</SHORT-NAME>
                       <DESC>
@@ -292,13 +356,178 @@
                       <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/TI_F29H85x/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint</DESTINATION-REF>
                     </ECUC-REFERENCE-DEF>
                   </REFERENCES>
+                  <SUB-CONTAINERS>
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="as:uuid()">
+                      <SHORT-NAME>CddI2cTargetCallbacks</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Container for target mode callback notifications. Only visible when HW unit is configured in Target mode.</L-2>
+                      </DESC>
+                      <!-- @Calculated /TI_F29H85x/Cdd_I2c/Cdd/CddI2cHwConfig/CddI2cTargetCallbacks: ENABLE(XPath: (../CddI2cHwUnitMode = &apos;CDD_I2C_MODE_TARGET&apos;))-->
+                      <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                      <!-- @CalculatedEnd -->
+                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                      <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                      <PARAMETERS>
+                        <ECUC-FUNCTION-NAME-DEF UUID="as:uuid()">
+                          <SHORT-NAME>CddI2cTargetTxStartNotification</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Function pointer to callback function called when target TX start condition is detected.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>ECU</SCOPE>
+                          <MULTIPLICITY-CONFIG-CLASSES>
+                            <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          </MULTIPLICITY-CONFIG-CLASSES>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                            <ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
+                              <DEFAULT-VALUE>NULL_PTR</DEFAULT-VALUE>
+                            </ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
+                          </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                        </ECUC-FUNCTION-NAME-DEF>
+                        <ECUC-FUNCTION-NAME-DEF UUID="as:uuid()">
+                          <SHORT-NAME>CddI2cTargetRxStartNotification</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Function pointer to callback function called when target RX start condition is detected.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>ECU</SCOPE>
+                          <MULTIPLICITY-CONFIG-CLASSES>
+                            <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          </MULTIPLICITY-CONFIG-CLASSES>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                            <ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
+                              <DEFAULT-VALUE>NULL_PTR</DEFAULT-VALUE>
+                            </ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
+                          </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                        </ECUC-FUNCTION-NAME-DEF>
+                        <ECUC-FUNCTION-NAME-DEF UUID="as:uuid()">
+                          <SHORT-NAME>CddI2cTargetTxCompleteNotification</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Function pointer to callback function called when target TX is complete (stop condition or buffer fully transferred).</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>ECU</SCOPE>
+                          <MULTIPLICITY-CONFIG-CLASSES>
+                            <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          </MULTIPLICITY-CONFIG-CLASSES>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                            <ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
+                              <DEFAULT-VALUE>NULL_PTR</DEFAULT-VALUE>
+                            </ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
+                          </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                        </ECUC-FUNCTION-NAME-DEF>
+                        <ECUC-FUNCTION-NAME-DEF UUID="as:uuid()">
+                          <SHORT-NAME>CddI2cTargetRxCompleteNotification</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Function pointer to callback function called when target RX is complete (stop condition or buffer full).</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>ECU</SCOPE>
+                          <MULTIPLICITY-CONFIG-CLASSES>
+                            <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          </MULTIPLICITY-CONFIG-CLASSES>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                            <ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
+                              <DEFAULT-VALUE>NULL_PTR</DEFAULT-VALUE>
+                            </ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
+                          </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                        </ECUC-FUNCTION-NAME-DEF>
+                        <ECUC-FUNCTION-NAME-DEF UUID="as:uuid()">
+                          <SHORT-NAME>CddI2cTargetErrorNotification</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Function pointer to callback function called when a target bus error occurs.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>ECU</SCOPE>
+                          <MULTIPLICITY-CONFIG-CLASSES>
+                            <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          </MULTIPLICITY-CONFIG-CLASSES>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                            <ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
+                              <DEFAULT-VALUE>NULL_PTR</DEFAULT-VALUE>
+                            </ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
+                          </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                        </ECUC-FUNCTION-NAME-DEF>
+                      </PARAMETERS>
+                    </ECUC-PARAM-CONF-CONTAINER-DEF>
+                  </SUB-CONTAINERS>
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
                 <ECUC-PARAM-CONF-CONTAINER-DEF UUID="80ffcca1-5b11-4d00-8313-f12d9a481946">
                   <SHORT-NAME>CddI2cChConfig</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This container contains the Channel configurations</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                  <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                   <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                   <MULTIPLICITY-CONFIG-CLASSES>
                     <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
@@ -388,7 +617,7 @@
                   <DESC>
                     <L-2 L="EN">This container contains the Sequence configurations</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                  <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                   <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                   <MULTIPLICITY-CONFIG-CLASSES>
                     <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
@@ -472,7 +701,7 @@
                     <ECUC-REFERENCE-DEF UUID="269e350d-8b4b-4a1f-915f-f25861cc6fa5">
                       <SHORT-NAME>CddI2cSeqHwUnitAssignment</SHORT-NAME>
                       <DESC>
-                        <L-2 L="EN">I2c HW unit reference to use.</L-2>
+                        <L-2 L="EN">I2c HW unit reference to use. Only HW units configured in Controller mode are allowed.</L-2>
                       </DESC>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>Texas Instruments</ORIGIN>

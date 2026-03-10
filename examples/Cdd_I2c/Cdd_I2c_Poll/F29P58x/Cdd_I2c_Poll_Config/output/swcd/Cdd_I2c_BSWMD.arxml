@@ -38,12 +38,6 @@
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_GetStatus</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_MainFunction</BSW-MODULE-ENTRY-REF>
-            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_PollingModeProcessing</BSW-MODULE-ENTRY-REF>
-            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
           </IMPLEMENTED-ENTRYS>
           <MODULE-ID>255</MODULE-ID>
           <BSW-MODULE-DEPENDENCYS>
@@ -155,31 +149,6 @@
                   </CALL-POINTS>
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_Cancel</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
-                <BSW-SCHEDULABLE-ENTITY UUID="743e0703-5938-46e1-b666-84ce17d1eeee">
-                  <SHORT-NAME>Cdd_I2c_MainFunction</SHORT-NAME>
-                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
-                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_I2c_TI_F29H85x/Cdd_I2c/Cdd_I2c_Behavior/CDD_I2C_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
-                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
-                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  <CALL-POINTS>
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>Det</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportError</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>
-                  </CALL-POINTS>
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_MainFunction</IMPLEMENTED-ENTRY-REF>
-                </BSW-SCHEDULABLE-ENTITY>
-                <BSW-SCHEDULABLE-ENTITY UUID="3d0290cf-3837-4249-bee7-738b9cdca2c2">
-                  <SHORT-NAME>Cdd_I2c_PollingModeProcessing</SHORT-NAME>
-                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  <CALL-POINTS>
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>Det</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportError</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>
-                  </CALL-POINTS>
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_PollingModeProcessing</IMPLEMENTED-ENTRY-REF>
-                </BSW-SCHEDULABLE-ENTITY>
                 <BSW-CALLED-ENTITY UUID="a07b4a6c-e247-4b63-8d75-a45ad78d3fb2">
                   <SHORT-NAME>Cdd_I2c_GetSequenceResult</SHORT-NAME>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
@@ -208,13 +177,6 @@
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_GetStatus</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
               </ENTITYS>
-              <EVENTS>
-                <BSW-TIMING-EVENT UUID="38294663-f034-493c-aecd-714bc6ac74c2">
-                  <SHORT-NAME>Cdd_I2c_MainFunctionTimingEvent</SHORT-NAME>
-                  <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Cdd_I2c_TI_F29H85x/Cdd_I2c/Cdd_I2c_Behavior/Cdd_I2c_MainFunction</STARTS-ON-EVENT-REF>
-                  <PERIOD>0.01</PERIOD>
-                </BSW-TIMING-EVENT>
-              </EVENTS>
             </BSW-INTERNAL-BEHAVIOR>
           </INTERNAL-BEHAVIORS>
         </BSW-MODULE-DESCRIPTION>
@@ -329,7 +291,7 @@
               </MEMORY-SECTION>
             </MEMORY-SECTIONS>
           </RESOURCE-CONSUMPTION>
-          <SW-VERSION>1.1.0</SW-VERSION>
+          <SW-VERSION>1.2.0</SW-VERSION>
           <VENDOR-ID>44</VENDOR-ID>
           <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
           <BEHAVIOR-REF DEST="BSW-INTERNAL-BEHAVIOR">/Cdd_I2c_TI_F29H85x/Cdd_I2c/Cdd_I2c_Behavior</BEHAVIOR-REF>
@@ -408,16 +370,6 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
-              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
-              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
-              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
-            </BSW-MODULE-ENTRY>
-            <BSW-MODULE-ENTRY UUID="2243f72d-f3ec-4727-bdde-8df5e4905268">
-              <SHORT-NAME>Cdd_I2c_MainFunction</SHORT-NAME>
-              <SERVICE-ID>9</SERVICE-ID>
-              <IS-REENTRANT>true</IS-REENTRANT>
-              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
-              <CALL-TYPE>SCHEDULED</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>

@@ -15,7 +15,7 @@ summary: CDD_I2C Hardware unit configuration structure.
 CDD_I2C Hardware unit configuration structure. 
 
 
-`#include <Cdd_I2c.h>`
+`#include <Cdd_I2c_Cfg.h>`
 
 ## Structure Members
 
@@ -26,5 +26,13 @@ CDD_I2C Hardware unit configuration structure.
 |  uint32 | hwUnitFrequency |  This unit is used set the I2c HW module frequency.  |
 |  uint32 | sysClk |  This element contains the system clock frequency being used by the I2c instance.  |
 |  [Cdd_I2c_AddressType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_addresstype) | ownAddress |  Own address. Used in both 7 and 10-bit address mode. Note that the user can program the I2C own address to any value as long as it does not conflict with other components in the system.  |
+|  uint8 | addressScheme |  7-bit or 10-bit addressing (CDD_I2C_ADDRESS_7_BIT / CDD_I2C_ADDRESS_10_BIT). This is used at init time to program the default value.  |
+|  uint8 | mode |  HW unit mode CDD_I2C_MODE_CONTROLLER or CDD_I2C_MODE_TARGET.  |
+|  boolean | isIntrMode |  TRUE if this HW unit uses interrupts, FALSE for polling.  |
+|  [Cdd_I2c_TargetTxStartNotificationType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_targettxstartnotificationtype) | targetTxStartNotification |  TX start notification callback for Target mode only [Will be assigned NULL in controller mode].  |
+|  [Cdd_I2c_TargetRxStartNotificationType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_targetrxstartnotificationtype) | targetRxStartNotification |  RX start notification callback for Target mode only [Will be assigned NULL in controller mode].  |
+|  [Cdd_I2c_TargetTxCompleteNotificationType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_targettxcompletenotificationtype) | targetTxCompleteNotification |  TX complete notification callback for Target mode only [Will be assigned NULL in controller mode].  |
+|  [Cdd_I2c_TargetRxCompleteNotificationType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_targetrxcompletenotificationtype) | targetRxCompleteNotification |  RX complete notification callback for Target mode only [Will be assigned NULL in controller mode].  |
+|  [Cdd_I2c_TargetErrorNotificationType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_targeterrornotificationtype) | targetErrorNotification |  Error notification callback for Target mode only [Will be assigned NULL in controller mode].  |
 
 

@@ -3,12 +3,60 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
  *
- *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *   TEXAS INSTRUMENTS TEXT FILE LICENSE
  *
- *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
- *                 is strictly prohibited.  This product  is  protected  under  copyright  law
- *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+ *   Copyright (c) 2025 Texas Instruments Incorporated
+ *
+ *   All rights reserved not granted herein.
+ *
+ *   Limited License.
+ *
+ *   Texas Instruments Incorporated grants a world-wide, royalty-free, non-exclusive
+ *   license under copyrights and patents it now or hereafter owns or controls to
+ *   make, have made, use, import, offer to sell and sell ("Utilize") this software
+ *   subject to the terms herein. With respect to the foregoing patent license,
+ *   such license is granted solely to the extent that any such patent is necessary
+ *   to Utilize the software alone. The patent license shall not apply to any
+ *   combinations which include this software, other than combinations with devices
+ *   manufactured by or for TI ("TI Devices"). No hardware patent is licensed hereunder.
+ *
+ *   Redistributions must preserve existing copyright notices and reproduce this license
+ *   (including the above copyright notice and the disclaimer and (if applicable) source
+ *   code license limitations below) in the documentation and/or other materials provided
+ *   with the distribution.
+ *
+ *   Redistribution and use in binary form, without modification, are permitted provided
+ *   that the following conditions are met:
+ *
+ *   * No reverse engineering, decompilation, or disassembly of this software is
+ *     permitted with respect to any software provided in binary form.
+ *   * Any redistribution and use are licensed by TI for use only with TI Devices.
+ *   * Nothing shall obligate TI to provide you with source code for the software
+ *     licensed and provided to you in object code.
+ *
+ *   If software source code is provided to you, modification and redistribution of the
+ *   source code are permitted provided that the following conditions are met:
+ *
+ *   * Any redistribution and use of the source code, including any resulting derivative
+ *     works, are licensed by TI for use only with TI Devices.
+ *   * Any redistribution and use of any object code compiled from the source code
+ *     and any resulting derivative works, are licensed by TI for use only with TI Devices.
+ *
+ *   Neither the name of Texas Instruments Incorporated nor the names of its suppliers
+ *   may be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ *   DISCLAIMER.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY TI AND TI'S LICENSORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ *   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TI AND TI'S
+ *   LICENSORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *   GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -676,7 +724,7 @@ Can_SetControllerMode(uint8 Controller, Can_ControllerStateType Transition)
  *MCAL-22844, Design: MCAL-22898, MCAL-22899, MCAL-22900, MCAL-22976, MCAL-22977, MCAL-22978,
  *MCAL-22979, MCAL-22980, Design: MCAL-22981, MCAL-22982, MCAL-22983, MCAL-22984, MCAL-22985,
  *MCAL-22986, MCAL-22987, MCAL-22988, Design: MCAL-22989, MCAL-22990, MCAL-22845, MCAL-22932,
- *MCAL-22831, MCAL-22930, MCAL-23012, MCAL-22843, Design: MCAL-22931
+ *MCAL-22831, MCAL-22930, MCAL-23012, MCAL-22843, Design: MCAL-22931, MCAL-28426
  */
 FUNC(Std_ReturnType, CAN_CODE)
 Can_Write(Can_HwHandleType Hth, P2CONST(Can_PduType, AUTOMATIC, CAN_APPL_CONST) PduInfo)
@@ -1261,12 +1309,28 @@ static FUNC(Std_ReturnType, CAN_CODE) Can_WriteTxHandlerPriv(P2VAR(Can_PduType, 
 
     returnValue = Can_GetFreeTxMsgObjPriv(&Can_DriverObj.canMailbox[Hth].mailBoxConfig, &messageBox);
 
+    /* Additional check for txPendingStatus: Even if TXBRP shows buffer is free (transmission
+       completed or cancelled), we must ensure TxConfirmation has been called for any previous
+       transmission. TXBRP clears immediately when transmission completes, but TxConfirmation
+       may not have been called yet. If txPendingStatus bit is still set, the buffer is not
+       truly available for a new transmission. */
+    if ((E_OK == returnValue) &&
+        (((uint32)0U) != (Can_DriverObj.canController[msgController].txPendingStatus & ((uint32)1U << messageBox))))
+    {
+        returnValue = (Std_ReturnType)CAN_BUSY;
+    }
+
     if (E_OK == returnValue)
     {
         Can_WriteTxMailboxPriv(&Can_DriverObj.canMailbox[Hth].mailBoxConfig, messageBox, pduInfo);
 
         /* Store the transmitted Pdu SWPdu Handle for Tx confirmation */
         Can_DriverObj.canController[msgController].canTxRxPduId[messageBox] = PduInfo->swPduHandle;
+
+        /* Set the txPendingStatus bit to track pending transmission.
+           This bit will be cleared when TxConfirmation is called to prevent
+           multiple TxConfirmation calls for the same transmission. */
+        Can_DriverObj.canController[msgController].txPendingStatus |= ((uint32)1U << messageBox);
     }
     SchM_Exit_Can_CAN_EXCLUSIVE_AREA_1();
 

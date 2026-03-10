@@ -427,6 +427,38 @@ The example application demonstrates use of Wdg module, the list below identifie
 ```{literalinclude} Assets/text/Wdg/Wdg_Example_Interrupt.txt
 ```
 
+#### Wdg_Example_Reset
+
+##### Overview of Wdg_Example_Reset
+
+* Wdg_Example_Reset
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
+  * Demonstrates watchdog timer reset functionality when the watchdog is intentionally not serviced
+  * Detects reset reason using Mcu_GetResetReason() API to identify MCU_WATCHDOG_RESET (value = 3)
+  * Uses USER_REG1_PORESETN register to maintain a persistent counter across watchdog resets. This register retains data until PORESETn, so there should not be any other PORESETn in between.
+  * Repeats the watchdog timeout cycle up to 20 times to verify reset behavior
+  * After completion, disables the watchdog using Wdg_SetMode(WDGIF_OFF_MODE)
+
+##### Setup required to run Wdg_Example_Reset
+
+* Install Code Composer Studio latest version
+* Install latest C29 compiler
+* Connect the hardware and power up
+* Connect the uart set up to check the log on serial console
+
+##### How to run Wdg_Example_Reset
+
+* Open CCS and Import Wdg_Example_Reset example
+* Build project and start debug project
+
+##### Sample Log of Wdg_Example_Reset
+
+```{literalinclude} Assets/text/Wdg/Wdg_Example_Reset.txt
+:language: none
+```
+
 #### File Structure
 
 📦f29h85x_mcal\
