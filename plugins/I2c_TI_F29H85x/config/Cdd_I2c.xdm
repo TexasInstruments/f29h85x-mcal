@@ -113,9 +113,13 @@
                       <a:a name="UUID" value="e36d9b26-757d-4f5c-be99-14de29754fad"/>
                       <a:a name="OPTIONAL" value="true"/>
                       <a:da name="DEFAULT" value="0.01"/>
-                      <a:da name="INVALID" type="Range">
-                        <a:tst expr="&lt;Infinity"/>
-                        <a:tst expr="&gt;0.0"/>
+                      <a:da name="INVALID" type="Multi">
+                        <mt:range>
+                          <a:tst expr="&lt;Infinity"/>
+                          <a:tst expr="&gt;0.0"/>
+                        </mt:range>
+                        <mt:xpath expr="count(../../CddI2cHwConfig/*[CddI2cHwUnitMode = 'CDD_I2C_MODE_CONTROLLER' and CddI2cHwUseInterrupts = 'false']) &gt; 0"
+                                  false="CddI2cMainFunctionPeriod is enabled but no HW unit is configured as a polling controller. Disable this parameter or configure at least one controller HW unit in polling mode."/>
                       </a:da>
                     </v:var>
                   </v:ctr>
@@ -175,6 +179,9 @@
                         <a:a name="UUID" value="as:uuid()"/>
                         <a:da name="DEFAULT" value="false"/>
                         <a:da name="ENABLE" type="XPath" expr="(../CddI2cHwUnitMode != 'CDD_I2C_MODE_TARGET')"/>
+                        <a:da name="INVALID" type="XPath"
+                             expr="node:value(.) = 'true' or ../CddI2cHwUnitMode != 'CDD_I2C_MODE_CONTROLLER' or node:exists(../../../CddI2cGeneral/CddI2cMainFunctionPeriod)"
+                             false="CddI2cMainFunctionPeriod is not enabled but a controller HW unit is configured in polling mode. Enable CddI2cMainFunctionPeriod or switch the controller HW unit to interrupt mode."/>
                       </v:var>
                       <v:var name="CddI2cHwBaudrate" type="INTEGER">
                         <a:a name="DESC"

@@ -140,12 +140,10 @@ extern "C" {
 #define CDD_I2C_SID_GET_SEQUENCE_RESULT (0x08U)
 /** \brief Service ID Cdd_I2c_MainFunction() */
 #define CDD_I2C_SID_MAIN_FUNCTION (0x09U)
-/** \brief Service ID Cdd_I2c_PollingModeProcessing() */
-#define CDD_I2C_SID_POLLING_MODE_PROCESSING (0x0AU)
 /** \brief Service ID Cdd_I2c_GetStatus() */
-#define CDD_I2C_SID_GET_STATUS (0x0BU)
+#define CDD_I2C_SID_GET_STATUS (0x0AU)
 /** \brief Service ID Cdd_I2c_ResetHwUnit() */
-#define CDD_I2C_SID_RESET_HW_UNIT (0x0CU)
+#define CDD_I2C_SID_RESET_HW_UNIT (0x0BU)
 /** \brief Service ID Cdd_I2c_TargetStart() */
 #define CDD_I2C_SID_TARGET_START (0x20U)
 /** \brief Service ID Cdd_I2c_TargetStop() */
@@ -504,21 +502,6 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_Cancel(Cdd_I2c_SequenceType sequenceI
  *********************************************************************************************************************/
 FUNC(void, CDD_I2C_CODE) Cdd_I2c_MainFunction(void);
 
-/** \brief Ensures proper processing of I2c communication in the case of
- * disabled interrupts.
- *
- * Note: This API is applicable only for controller mode.
- *
- * Service ID[hex] - CDD_I2C_SID_POLLING_MODE_PROCESSING
- * Sync/Async - Asynchronous
- * Reentrancy - Reentrant
- *
- * \pre None
- * \post None
- * \return None
- *********************************************************************************************************************/
-FUNC(void, CDD_I2C_CODE) Cdd_I2c_PollingModeProcessing(void);
-
 /** \brief This service returns the current status of the given SequenceId.
  *
  * Note: This API is applicable only for controller mode.
@@ -635,8 +618,6 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_TargetStart(Cdd_I2c_HwUnitType hwUnit
  * \return Std_ReturnType
  * \retval E_OK: Success
  * \retval E_NOT_OK: Request rejected
- *********************************************************************************************************************/
-/** \brief Stop all target-mode HW units -
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_TargetStop(Cdd_I2c_HwUnitType hwUnitId);
 

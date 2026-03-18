@@ -384,8 +384,9 @@ static Std_ReturnType I2c_appRunLoopbackTest(void)
 
 int main(void)
 {
-    Std_ReturnType retVal;
-    uint32         idx;
+    Std_ReturnType      retVal;
+    uint32              idx;
+    Std_VersionInfoType versioninfo;
 
     DeviceSupport_Init();
     EcuM_Init();
@@ -393,7 +394,18 @@ int main(void)
     AppUtils_Init(200000000U);
 
     AppUtils_Printf(APP_NAME ": Example Application - STARTS ...\r\n");
-    AppUtils_Printf(APP_NAME ": I2CA: target at 0x48, I2CB: controller (external loopback)\r\n");
+
+    /* Get and print version */
+    Cdd_I2c_GetVersionInfo(&versioninfo);
+    AppUtils_Printf(" \r\n");
+    AppUtils_Printf(" Cdd I2c MCAL Version Info\r\n");
+    AppUtils_Printf(" -------------------------\r\n");
+    AppUtils_Printf(" Vendor ID           : %d\r\n", versioninfo.vendorID);
+    AppUtils_Printf(" Module ID           : %d\r\n", versioninfo.moduleID);
+    AppUtils_Printf(" SW Major Version    : %d\r\n", versioninfo.sw_major_version);
+    AppUtils_Printf(" SW Minor Version    : %d\r\n", versioninfo.sw_minor_version);
+    AppUtils_Printf(" SW Patch Version    : %d\r\n", versioninfo.sw_patch_version);
+    AppUtils_Printf(" \r\n");
 
     /* Pre-fill target TX buffer with known pattern */
     for (idx = 0U; idx < APP_BUF_SIZE; idx++)
@@ -407,19 +419,31 @@ int main(void)
     Cdd_I2c_TargetSubmitTxBuffer(CDD_I2C_HW_UNIT_I2CA, gTargetTxBuf, APP_BUF_SIZE);
     Cdd_I2c_TargetStart(CDD_I2C_HW_UNIT_I2CA);
 
-    AppUtils_Printf(APP_NAME ": Target started.\r\n");
-
     /*
      * Loopback: Controller write -> Target receive, then Controller read <- Target transmit
      */
     retVal = I2c_appRunLoopbackTest();
+
+    /* Print buffer verification */
+    AppUtils_Printf("Controller WR -> Target RX:\r\n");
+    for (idx = 0U; idx < APP_BUF_SIZE; idx++)
+    {
+        AppUtils_Printf("  [%lu] WR: 0x%0.2X  RX: 0x%0.2X\r\n", idx, gCtrlWrBuf[idx], gTargetRxBuf[idx]);
+    }
+    AppUtils_Printf("Target TX -> Controller RD:\r\n");
+    for (idx = 0U; idx < APP_BUF_SIZE; idx++)
+    {
+        AppUtils_Printf("  [%lu] TX: 0x%0.2X  RD: 0x%0.2X\r\n", idx, gTargetTxBuf[idx], gCtrlRdBuf[idx]);
+    }
+
     if (retVal == E_OK)
     {
-        AppUtils_Printf(APP_NAME ": Loopback PASS\r\n");
+        AppUtils_Printf(APP_NAME ": Example Application - ENDS (Passed)!!!\r\n");
+        AppUtils_Printf(APP_NAME ": All tests have passed\r\n");
     }
     else
     {
-        AppUtils_Printf(APP_NAME ": Loopback FAIL\r\n");
+        AppUtils_Printf(APP_NAME ": Example Application - ENDS (Failed)!!!\r\n");
     }
 
     /* Cleanup */

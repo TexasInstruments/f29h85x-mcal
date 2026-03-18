@@ -270,7 +270,6 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_ResetHwUnit(Cdd_I2c_HwUnitType hwUnit
     Std_ReturnType         retVal = E_OK;
     Cdd_I2c_DriverObjType *drvObj = &Cdd_I2c_DrvObj;
     Cdd_I2c_HwUnitObjType *hwUnitObj;
-
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
     if (CDD_I2C_UNINIT == Cdd_I2c_DrvState)
     {
@@ -537,14 +536,6 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_MainFunction(void)
         SchM_Exit_Cdd_I2c_CDD_I2C_EXCLUSIVE_AREA_0();
     }
 
-    return;
-}
-
-FUNC(void, CDD_I2C_CODE) Cdd_I2c_PollingModeProcessing(void)
-{
-    /* This API is deprecated and provide only for backward compatibility.
-     * Call main handling fxn which does the job */
-    Cdd_I2c_MainFunction();
     return;
 }
 

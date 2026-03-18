@@ -7,11 +7,11 @@
 [!LOOP "CddI2cHwConfig/*"!][!//
 [!IF "CddI2cHwUnitMode = 'CDD_I2C_MODE_CONTROLLER'"!][!//
 [!VAR "HAS_CONTROLLER" = "'true'"!][!//
-[!ELSEIF "CddI2cHwUnitMode = 'CDD_I2C_MODE_TARGET'"!][!//
-[!VAR "HAS_TARGET" = "'true'"!][!//
-[!ENDIF!][!//
 [!IF "CddI2cHwUseInterrupts = 'false'"!][!//
 [!VAR "HAS_POLLING" = "'true'"!][!//
+[!ENDIF!][!//
+[!ELSEIF "CddI2cHwUnitMode = 'CDD_I2C_MODE_TARGET'"!][!//
+[!VAR "HAS_TARGET" = "'true'"!][!//
 [!ENDIF!][!//
 [!ENDLOOP!][!//
 <AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd">
@@ -63,14 +63,11 @@
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_GetStatus</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
             [!ENDIF!][!//
+            [!ENDIF!][!//
             [!IF "$HAS_POLLING = 'true'"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_MainFunction</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_PollingModeProcessing</BSW-MODULE-ENTRY-REF>
-            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-            [!ENDIF!][!//
             [!ENDIF!][!//
             [!LOOP "CddI2cHwConfig/*"!][!//
             [!IF "CddI2cHwUseInterrupts = 'true'"!][!//
@@ -248,39 +245,6 @@
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_Cancel</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
                 [!ENDIF!][!//
-                [!IF "$HAS_POLLING = 'true'"!][!//
-                <BSW-SCHEDULABLE-ENTITY UUID="743e0703-5938-46e1-b666-84ce17d1eeee">
-                  <SHORT-NAME>Cdd_I2c_MainFunction</SHORT-NAME>
-                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
-                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_I2c_TI_F29H85x/Cdd_I2c/Cdd_I2c_Behavior/CDD_I2C_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
-                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
-                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "CddI2cGeneral/CddI2cDevErrorDetect = 'true'"!][!//
-                  <CALL-POINTS>
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>Det</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportError</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>
-                  </CALL-POINTS>
-                  [!ENDIF!][!//
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_MainFunction</IMPLEMENTED-ENTRY-REF>
-                </BSW-SCHEDULABLE-ENTITY>
-                [!ENDIF!][!//
-                [!IF "$HAS_POLLING = 'true'"!][!//
-                <BSW-SCHEDULABLE-ENTITY UUID="3d0290cf-3837-4249-bee7-738b9cdca2c2">
-                  <SHORT-NAME>Cdd_I2c_PollingModeProcessing</SHORT-NAME>
-                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "CddI2cGeneral/CddI2cDevErrorDetect = 'true'"!][!//
-                  <CALL-POINTS>
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>Det</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportError</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>
-                  </CALL-POINTS>
-                  [!ENDIF!][!//
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_PollingModeProcessing</IMPLEMENTED-ENTRY-REF>
-                </BSW-SCHEDULABLE-ENTITY>
-                [!ENDIF!][!//
                 <BSW-CALLED-ENTITY UUID="a07b4a6c-e247-4b63-8d75-a45ad78d3fb2">
                   <SHORT-NAME>Cdd_I2c_GetSequenceResult</SHORT-NAME>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
@@ -314,6 +278,24 @@
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_GetStatus</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
                 [!ENDIF!][!//
+                [!ENDIF!][!//
+                [!IF "$HAS_POLLING = 'true'"!][!//
+                <BSW-SCHEDULABLE-ENTITY UUID="743e0703-5938-46e1-b666-84ce17d1eeee">
+                  <SHORT-NAME>Cdd_I2c_MainFunction</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_I2c_TI_F29H85x/Cdd_I2c/Cdd_I2c_Behavior/CDD_I2C_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "CddI2cGeneral/CddI2cDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_I2c_TI_F29H85x/Cdd_I2c_ModuleEntry/Cdd_I2c_MainFunction</IMPLEMENTED-ENTRY-REF>
+                </BSW-SCHEDULABLE-ENTITY>
                 [!ENDIF!][!//
                 [!IF "$HAS_TARGET = 'true'"!][!//
                 <BSW-CALLED-ENTITY UUID="f42af007-7bf3-4b65-8544-26195f8abfb5">
@@ -398,8 +380,6 @@
                 [!ENDIF!][!//
                 [!ENDLOOP!][!//
               </ENTITYS>
-              [!IF "$HAS_CONTROLLER = 'true'"!][!//
-              [!IF "$HAS_POLLING = 'true'"!][!//
               [!IF "node:exists(CddI2cGeneral/CddI2cMainFunctionPeriod)"!][!//
               <EVENTS>
                 <BSW-TIMING-EVENT UUID="38294663-f034-493c-aecd-714bc6ac74c2">
@@ -408,8 +388,6 @@
                   <PERIOD>[!"CddI2cGeneral/CddI2cMainFunctionPeriod"!]</PERIOD>
                 </BSW-TIMING-EVENT>
               </EVENTS>
-              [!ENDIF!][!//
-              [!ENDIF!][!//
               [!ENDIF!][!//
             </BSW-INTERNAL-BEHAVIOR>
           </INTERNAL-BEHAVIORS>
@@ -632,16 +610,6 @@
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
-            <BSW-MODULE-ENTRY UUID="063d54c5-3427-4a96-9a87-10b045bb7a47">
-              <SHORT-NAME>Cdd_I2c_PollingModeProcessing</SHORT-NAME>
-              <SERVICE-ID>10</SERVICE-ID>
-              <IS-REENTRANT>true</IS-REENTRANT>
-              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
-              <CALL-TYPE>REGULAR</CALL-TYPE>
-              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
-              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
-              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
-            </BSW-MODULE-ENTRY>
             <BSW-MODULE-ENTRY UUID="b29c7de4-3075-4f2c-8a9f-2f10448c020b">
               <SHORT-NAME>Cdd_I2c_GetSequenceResult</SHORT-NAME>
               <SERVICE-ID>8</SERVICE-ID>
@@ -712,6 +680,9 @@
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
+            [!LOOP "CddI2cHwConfig/*"!][!//
+            [!IF "CddI2cHwUseInterrupts = 'true'"!][!//
+            [!IF "node:value(node:ref(CddI2cHwUnitRef)/InstanceName) = 'I2CA'"!][!//
             <BSW-MODULE-ENTRY UUID="d701b6b8-07a4-4b4b-8f23-659d958ad6ac">
               <SHORT-NAME>Cdd_I2c_I2CA_ISR</SHORT-NAME>
               <IS-REENTRANT>false</IS-REENTRANT>
@@ -725,6 +696,8 @@
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
+            [!ENDIF!][!//
+            [!IF "node:value(node:ref(CddI2cHwUnitRef)/InstanceName) = 'I2CB'"!][!//
             <BSW-MODULE-ENTRY UUID="70651793-dd36-4916-b1e5-fa94e71ace3f">
               <SHORT-NAME>Cdd_I2c_I2CB_ISR</SHORT-NAME>
               <IS-REENTRANT>false</IS-REENTRANT>
@@ -738,6 +711,9 @@
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
+            [!ENDIF!][!//
+            [!ENDIF!][!//
+            [!ENDLOOP!][!//
           </ELEMENTS>
         </AR-PACKAGE>
       </AR-PACKAGES>
