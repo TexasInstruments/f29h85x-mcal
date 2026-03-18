@@ -1960,7 +1960,7 @@ DMA_commitAllDMASettings(void)
 //! Setup DMA to transfer data on the specified channel.
 //!
 //! \param base is Base address of the DMA channel control register
-//! \param *transfParams configuration parameter
+//! \param configParams configuration parameter
 //!                      Refer struct #DMA_ConfigParams
 //!
 //! This function configures the DMA transfer on the specified channel.
@@ -1968,15 +1968,15 @@ DMA_commitAllDMASettings(void)
 //! \return None.
 //
 //*****************************************************************************
-extern void DMA_configChannel(uint32_t base, const DMA_ConfigParams *transfParams);
+extern void DMA_configChannel(uint32_t base, const DMA_ConfigParams *configParams);
 
 //*****************************************************************************
 //
 //! Configures the DMA channel
 //!
 //! \param base is the base address of the DMA channel control registers.
-//! \param *destAddr is the destination address.
-//! \param *srcAddr is a source address.
+//! \param destAddr is the destination address.
+//! \param srcAddr is a source address.
 //!
 //! This function configures the source and destination addresses of a DMA
 //! channel. The parameters are pointers to the data to be transferred.

@@ -111,8 +111,8 @@
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
 								<a:a name="UUID" 
                                      value="1524b130-f10e-4db6-85de-f92558523ae3"/>
-								<a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x','.AllMuxModes'))&quot;,'GPIO')"/>
-                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x','.AllMuxModes'))[1]&quot;,'GPIO')"/>
+								<a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x','.PeripheralList'))&quot;,ecu:list('ResourceAllocator_F29H85x.AllPeripherals'))"/>
+								<a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x','.PeripheralList'))[1]&quot;,ecu:list('ResourceAllocator_F29H85x.AllPeripherals')[1])"/>
 							</v:var>
 			
 							<v:var name="PortPinPeripheralInstance" type="ENUMERATION">
@@ -128,8 +128,8 @@
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
 								<a:a name="UUID" 
                                      value="2b0213d3-57e1-470b-9a2f-324238acd542"/>
-                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_',node:value(../PortPinPeripheral)),'.MuxModeSignal')))&quot;,'GPIO0')"/>
-								<a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_',node:value(../PortPinPeripheral)),'.MuxModeSignal')))[1]&quot;,'GPIO0')"/>
+                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_',node:value(../PortPinPeripheral)),'.MuxModeSignal')))&quot;,ecu:list('ResourceAllocator_F29H85x.AllMuxModeSignals'))"/>
+                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_',node:value(../PortPinPeripheral)),'.MuxModeSignal')))[1]&quot;,ecu:list('ResourceAllocator_F29H85x.AllMuxModeSignals')[1])"/>
 							</v:var>					
 
 							<v:var name="PortPinPeripheralSignal" type="ENUMERATION">
@@ -145,8 +145,8 @@
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
 								<a:a name="UUID" 
                                      value="a597c658-0033-40fe-8ec8-b3803edd5128"/>
-                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_',node:value(../PortPinPeripheralInstance)),'.MuxModeSignalType')))&quot;,'GPIO0')"/>
-								<a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_',node:value(../PortPinPeripheralInstance)),'.MuxModeSignalType')))[1]&quot;,'GPIO0')"/>
+                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_',node:value(../PortPinPeripheralInstance)),'.MuxModeSignalType')))&quot;,ecu:list('ResourceAllocator_F29H85x.AllMuxModeSignalTypes'))"/>
+                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_',node:value(../PortPinPeripheralInstance)),'.MuxModeSignalType')))[1]&quot;,ecu:list('ResourceAllocator_F29H85x.AllMuxModeSignalTypes')[1])"/>
 							</v:var>
 										
 							<v:var name="PortPhysicalPinId" type="ENUMERATION">
@@ -163,10 +163,10 @@
 								<a:a name="UUID" 
                           value="45201f79-32a8-43d9-b52f-699f1883f353"/>
 									
-                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_',node:value(../PortPinPeripheralSignal)),'.PhysicalPinNumber')))&quot;,'A8')"/>
+                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_',node:value(../PortPinPeripheralSignal)),'.PhysicalPinNumber')))&quot;,ecu:list('ResourceAllocator_F29H85x.AllPhysicalPinNumbers'))"/>
 								<a:da name="INVALID" type="XPath" expr="text:uniq((../../../..//*[@name='PortPhysicalPinId']),node:value(.))" false="Port Pin selection has to be unique across all PortConfig containers"/>
 								<a:da name="DEFAULT" type="XPath">
-								<a:tst expr="node:fallback(&quot;-> ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_',node:value(../PortPinPeripheralSignal)),'.PhysicalPinNumber')))[1]&quot;,'A8')"/>
+								<a:tst expr="node:fallback(&quot;-> ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_',node:value(../PortPinPeripheralSignal)),'.PhysicalPinNumber')))[1]&quot;,ecu:list('ResourceAllocator_F29H85x.AllPhysicalPinNumbers')[1])"/>
 								</a:da>
 							</v:var>
 										
@@ -184,9 +184,9 @@
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
 								<a:a name="UUID" 
                           value="cc6f90e8-ea77-48ea-a27c-0094023ad3a0"/>
-								<a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinName')))&quot;,'GPIO0')"/>
+								<a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(../PortPhysicalPinId),'PORT_PIN_','')),'.pinName')))&quot;,ecu:list('ResourceAllocator_F29H85x.AllPinNames'))"/>
 								<a:da name="DEFAULT" type="XPath">
-								<a:tst expr="node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinName')))&quot;,'GPIO0')"/>
+								<a:tst expr="node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(../PortPhysicalPinId),'PORT_PIN_','')),'.pinName')))&quot;,ecu:list('ResourceAllocator_F29H85x.AllPinNames')[1])"/>
 								</a:da>
 							</v:var>
 							
@@ -205,11 +205,11 @@
 								<a:a name="UUID" value="596f64af-63c1-43ec-adb5-a809351a907c"/>
 								
 								<a:da name="DEFAULT" type="XPath">
-								<a:tst expr="node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinNumber')))&quot;,'0')"/>
+								<a:tst expr="node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(../PortPhysicalPinId),'PORT_PIN_','')),'.pinNumber')))&quot;,'0')"/>
 								</a:da>
 
                 <a:da name="INVALID" type="Multi">
-                  <mt:xpath expr="node:value(.) = node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinNumber')))&quot;,'0')" false="PortPinId value is invalid. Please recalculate the value."/>
+                  <mt:xpath expr="node:value(.) = node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(../PortPhysicalPinId),'PORT_PIN_','')),'.pinNumber')))&quot;,'0')" false="PortPinId value is invalid. Please recalculate the value."/>
                   <mt:range>
                     <!-- Upper limit of 256 is set because there are multiple pin packages that could have port pin IDs
                          ranging from 1 to 255. Each pin package could have different port pin IDs in this range.
@@ -238,7 +238,7 @@
 								<a:a name="UUID" 
                           value="ac98d8cf-cb56-41e2-b5cd-6631a29fcc21"/>
 								<a:da name="DEFAULT" type="XPath" >
-								<a:tst expr="node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isConfigurable')))&quot;,'true')"/>
+								<a:tst expr="node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(../PortPhysicalPinId),'PORT_PIN_','')),'.isConfigurable')))&quot;,'true')"/>
 								</a:da>
                 <a:a name="VISIBLE" value="false"/>
 								<a:da name="EDITABLE" value="false"/>
@@ -259,7 +259,7 @@
 								<a:a name="UUID" 
                           value="79b359f9-61ad-4e8b-a3b3-7219a66d64aa"/>
 								<a:da name="DEFAULT" type="XPath">
-								<a:tst expr="node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAnalogModeSupported')))&quot;,'false')"/>
+								<a:tst expr="node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(../PortPhysicalPinId),'PORT_PIN_','')),'.isAnalogModeSupported')))&quot;,'false')"/>
 								</a:da>
                 <a:a name="VISIBLE" value="false"/>
 								<a:da name="EDITABLE" value="false"/>
@@ -279,9 +279,8 @@
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
 								<a:a name="UUID" 
                           value="4be9a33c-ce37-4f96-a0a2-76fa54e225ab"/>
-								<!--<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAGPIO')))" />-->
 								<a:da name="DEFAULT" type="XPath">
-									<a:tst expr="node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAGPIO')))&quot;,'true')"/>
+									<a:tst expr="node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(../PortPhysicalPinId),'PORT_PIN_','')),'.isAGPIO')))&quot;,'true')"/>
 								</a:da>
                 <a:a name="VISIBLE" value="false"/>
 								<a:da name="EDITABLE" value="false"/>
@@ -302,7 +301,7 @@
 								<a:a name="UUID" 
                           value="695e002c-17bf-44c9-8cda-31389d19ace5"/>
 								<a:da name="DEFAULT" type="XPath">
-									<a:tst expr="node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAIO')))&quot;,'true')"/>
+									<a:tst expr="node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(../PortPhysicalPinId),'PORT_PIN_','')),'.isAIO')))&quot;,'true')"/>
 								</a:da>
                 <a:a name="VISIBLE" value="false"/>
 								<a:da name="EDITABLE" value="false"/>
@@ -323,7 +322,7 @@
 								<a:a name="UUID" 
                           value="4bbbf5b9-41b6-43ac-9149-b27d2b8a14eb"/>
 								<a:da name="DEFAULT" type="XPath">
-									<a:tst expr="node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isGPIO')))&quot;,'true')"/>
+									<a:tst expr="node:fallback(&quot;-> ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(../PortPhysicalPinId),'PORT_PIN_','')),'.isGPIO')))&quot;,'true')"/>
 								</a:da>
                 <a:a name="VISIBLE" value="false"/>
 								<a:da name="EDITABLE" value="false"/>
@@ -367,10 +366,10 @@
                 <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                 <a:a name="UUID" 
 									   value="d31ccffe-6df7-47f0-82f9-f8e43cfb691c"/>
-								<a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->  ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.muxMode')))&quot;,'PORT_MUXMODE_NA')" />
+								<a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->  ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(../PortPhysicalPinId),'PORT_PIN_','')),'.muxMode')))&quot;,ecu:list('ResourceAllocator_F29H85x.AllMuxModes'))" />
                 <a:da name="EDITABLE" type="XPath" expr="(../PortIsPinConfigurable='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED')" />
 								<a:da name="DEFAULT" type="XPath">
-									<a:tst expr="node:fallback(&quot;-> node:when(text:contains(ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.muxMode'))), node:value(../PortPinPeripheralSignal)), node:value(../PortPinPeripheralSignal), 'PORT_MUXMODE_NA')&quot;,'PORT_MUXMODE_NA')"/>
+									<a:tst expr="node:fallback(&quot;-> node:when(text:contains(ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(../PortPhysicalPinId),'PORT_PIN_','')),'.muxMode'))), node:value(../PortPinPeripheralSignal)), node:value(../PortPinPeripheralSignal), 'PORT_MUXMODE_NA')&quot;,ecu:list('ResourceAllocator_F29H85x.AllMuxModes')[1])"/>
 								</a:da>
                 </v:var>
 										
@@ -388,7 +387,7 @@
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
 								<a:a name="UUID" 
 									   value="0d7a1769-4d06-4e74-908f-4c1413257af2"/>
-								<a:da name="RANGE" type="XPath" expr="node:fallback(&quot;-> ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.supportedDirection')))&quot;,'PORT_PIN_IN')" />
+								<a:da name="RANGE" type="XPath" expr="node:fallback(&quot;-> ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(../PortPhysicalPinId),'PORT_PIN_','')),'.supportedDirection')))&quot;,ecu:list('ResourceAllocator_F29H85x.AllSupportedDirections'))" />
 								<a:da name="DEFAULT" type="XPath">
 									<a:tst expr="node:fallback(&quot;-> ((../PortIsPinConfigurable='true') and ((contains(node:value(../PortPinInitialMode), 'GPIO')) or (contains(node:value(../PortPinInitialMode), 'AIO'))) and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))&quot;,'PORT_PIN_NA')" true="PORT_PIN_IN" false="PORT_PIN_NA"/>
 								</a:da>
@@ -585,7 +584,7 @@
 						
                         <v:lst name="PortPinMode">
                             <a:da name="MIN" value="1"/>
-						                <a:da name="MAX" type="XPath" expr="node:fallback(&quot;-> count(ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.muxMode'))))&quot;,'1')"/>
+						                <a:da name="MAX" type="XPath" expr="node:fallback(&quot;-> count(ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(../PortPhysicalPinId),'PORT_PIN_','')),'.muxMode'))))&quot;,'1')"/>
                             <v:var name="PortPinMode" type="ENUMERATION">
                             <a:a name="DESC"
                                  value="EN: Port pin mode from mode list. NOTE: While configuring the PortPinMode, ensure that the selected mux mode is available for the specific device variant by checking the datasheet as the pinmuxmode list contains a superset of values for all the variants."/>
@@ -604,9 +603,9 @@
                             <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                             <a:a name="UUID" 
                                  value="7493d992-4db1-445c-b7d2-7ac901424983"/>
-                            <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(../../PortPhysicalPinId)),'.muxMode')))&quot;,'PORT_MUXMODE_NA')" />
+                            <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(../../PortPhysicalPinId),'PORT_PIN_','')),'.muxMode')))&quot;,ecu:list('ResourceAllocator_F29H85x.AllMuxModes'))" />
                             <a:da name="DEFAULT" type="XPath">
-                              <a:tst expr="node:fallback(&quot;-> node:value(../../PortPinInitialMode)&quot;,'PORT_MUXMODE_NA')"/>
+                              <a:tst expr="node:fallback(&quot;-> node:value(../../PortPinInitialMode)&quot;,ecu:list('ResourceAllocator_F29H85x.AllMuxModes')[1])"/>
                             </a:da>
                             <a:da name="INVALID" type="XPath">
                               <a:tst expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Port Pin Mode has to be unique."/>

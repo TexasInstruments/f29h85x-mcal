@@ -228,6 +228,8 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+/* Forward declaration of Lin configuration structure */
+struct Lin_ConfigTag;
 
 /** \brief Enum of Lin Interrupt line number, 0 or 1. */
 /* 

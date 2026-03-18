@@ -168,7 +168,7 @@ Std_VersionInfoType Cdd_Adc_VersionInfo;
  *  Local Functions Definition
  *********************************************************************************************************************/
 
-void Cdd_Adc_Grp0Notification()
+void Cdd_Adc_Grp0Notification(void)
 {
     if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_0) == CDD_ADC_STREAM_COMPLETED)
     {
@@ -193,7 +193,7 @@ void Cdd_Adc_Grp0Notification()
     }
 }
 
-void Cdd_Adc_Grp1Notification()
+void Cdd_Adc_Grp1Notification(void)
 {
     if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_1) == CDD_ADC_STREAM_COMPLETED)
     {
@@ -218,7 +218,7 @@ void Cdd_Adc_Grp1Notification()
     }
 }
 
-void Cdd_Adc_Grp2Notification()
+void Cdd_Adc_Grp2Notification(void)
 {
     /* Read the group conversion results and increment the group notification count */
     if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_2) == CDD_ADC_STREAM_COMPLETED)
@@ -242,7 +242,7 @@ void Cdd_Adc_Grp2Notification()
     }
 }
 
-void Cdd_Adc_Grp3Notification()
+void Cdd_Adc_Grp3Notification(void)
 {
     if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_3) == CDD_ADC_STREAM_COMPLETED)
     {
@@ -267,13 +267,13 @@ void Cdd_Adc_Grp3Notification()
     }
 }
 
-void Cdd_Adc_Hw1Grp0Notification()
+void Cdd_Adc_Hw1Grp0Notification(void)
 {
     Cdd_Adc_GroupNotifCount[CddAdcConf_CddAdcGroup_CddAdcGroup_4]++;
     Cdd_Adc_ReadGroup(CddAdcConf_CddAdcGroup_CddAdcGroup_4, &Cdd_Adc_Buffer[CddAdcConf_CddAdcGroup_CddAdcGroup_4][0]);
 }
 
-void Cdd_Adc_Hw1Grp1Notification()
+void Cdd_Adc_Hw1Grp1Notification(void)
 {
     Cdd_Adc_GroupNotifCount[CddAdcConf_CddAdcGroup_CddAdcGroup_5]++;
     if (Cdd_Adc_GroupNotifCount[CddAdcConf_CddAdcGroup_CddAdcGroup_5] == 3U)
@@ -282,19 +282,19 @@ void Cdd_Adc_Hw1Grp1Notification()
     }
 }
 
-void Cdd_Adc_Ppb0Notification()
+void Cdd_Adc_Ppb0Notification(void)
 {
     /* Increment every time the notification function is called */
     Cdd_Adc_PpbEvtInt[CddAdcConf_CddAdcPpbConfig_CddAdcPpbConfig_0]++;
 }
 
-void Cdd_Adc_Ppb1Notification()
+void Cdd_Adc_Ppb1Notification(void)
 {
     /* Increment every time the notification function is called */
     Cdd_Adc_PpbEvtInt[CddAdcConf_CddAdcPpbConfig_CddAdcPpbConfig_1]++;
 }
 
-void Cdd_Adc_Ppb2Notification()
+void Cdd_Adc_Ppb2Notification(void)
 {
     /* Increment every time the notification function is called */
     Cdd_Adc_PpbEvtInt[CddAdcConf_CddAdcPpbConfig_CddAdcPpbConfig_2]++;

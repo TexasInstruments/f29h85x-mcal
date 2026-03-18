@@ -91,11 +91,11 @@ extern "C" {
 /** #define ATTRIBUTE_PACKED    __attribute__((packed))*/
 
 #ifndef TRUE
-#define TRUE 1U
+#define TRUE (1U)
 #endif
 
 #ifndef FALSE
-#define FALSE 0U
+#define FALSE (0U)
 #endif
 
 #if defined(_LITTLE_ENDIAN)
@@ -110,51 +110,51 @@ extern "C" {
 
 /**   SSU registers*/
 /** \brief Base address of SSU module */
-#define FLS_SSUGEN_BASE (uint32)(0x30080000U)
+#define FLS_SSUGEN_BASE ((uint32)(0x30080000U))
 /** \brief Flash Controller Semaphore Request Register*/
-#define FLS_SSU_O_FLSEMREQ (uint32)(0x224U)
+#define FLS_SSU_O_FLSEMREQ ((uint32)(0x224U))
 /** \brief Flash Controller Semaphore Status Register*/
-#define FLS_SSU_O_FLSEMSTAT (uint32)(0x220U)
+#define FLS_SSU_O_FLSEMSTAT ((uint32)(0x220U))
 /** \brief Flash Controller Semaphore Clear Register*/
-#define FLS_SSU_O_FLSEMCLR (uint32)(0x228U)
+#define FLS_SSU_O_FLSEMCLR ((uint32)(0x228U))
 /** \brief Semaphore CPU owner mask*/
-#define FLS_SSU_FLSEMSTAT_CPU_M (uint32)(0x7000U)
+#define FLS_SSU_FLSEMSTAT_CPU_M ((uint32)(0x7000U))
 /** \brief Semaphore CPU owner shift bit*/
-#define FLS_SSU_FLSEMSTAT_CPU_S 12U
+#define FLS_SSU_FLSEMSTAT_CPU_S (12U)
 /** \brief Assigned Flag bit*/
-#define FLS_SSU_FLSEMSTAT_ASSIGNED (uint32)(0x80000000U)
+#define FLS_SSU_FLSEMSTAT_ASSIGNED ((uint32)(0x80000000U))
 /** \brief Match status bit */
-#define FLS_SSU_FLSEMSTAT_MATCH (uint32)(0x40000000U)
+#define FLS_SSU_FLSEMSTAT_MATCH ((uint32)(0x40000000U))
 
 /** The following are defines for the bit fields in the BEPROT_BANK register*/
 /** \brief Bank Erase Protection Bank Register*/
-#define FLS_SSU_O_BEPROT_BANK (uint32)(0x200U)
+#define FLS_SSU_O_BEPROT_BANK ((uint32)(0x200U))
 /** \brief Bank Erase Status Register*/
-#define FLS_SSU_O_BEPROT_STAT (uint32)(0x204U)
+#define FLS_SSU_O_BEPROT_STAT ((uint32)(0x204U))
 /** \brief Bank Erase Bank ID mask shift bit*/
-#define FLS_SSU_BEPROT_BANK_BANKID_S 0U
+#define FLS_SSU_BEPROT_BANK_BANKID_S (0U)
 /** \brief Bank Erase Bank ID mask*/
-#define FLS_SSU_BEPROT_BANK_BANKID_M 0x7U
+#define FLS_SSU_BEPROT_BANK_BANKID_M (0x7U)
 /** \brief Bank Erase Bank FLC ID shift bit*/
-#define FLS_SSU_BEPROT_BANK_FLCID_S 3U
+#define FLS_SSU_BEPROT_BANK_FLCID_S (3U)
 /** \brief Bank Erase Bank FLC ID mask bit*/
-#define FLS_SSU_BEPROT_BANK_FLCID_M 0x18U
+#define FLS_SSU_BEPROT_BANK_FLCID_M (0x18U)
 
 /** FRI register offsets and bit fields*/
 /** \brief flash command register base address*/
-#define FLS_FLASH_FLC1_CMD_REGS_BASE (uint32)(0x30100000U)
+#define FLS_FLASH_FLC1_CMD_REGS_BASE ((uint32)(0x30100000U))
 /** \brief Flash control register base address*/
-#define FLS_FRI1_CTL_BASE (uint32)(0x301D0000U)
+#define FLS_FRI1_CTL_BASE ((uint32)(0x301D0000U))
 /** \brief Analog sub system base address*/
-#define FLS_ANALOGSUBSYS_BASE (uint32)(0x30182000U)
+#define FLS_ANALOGSUBSYS_BASE ((uint32)(0x30182000U))
 /** \brief Flash Read Control Register*/
-#define FLS_FRI_O_FRDCNTL (uint32)(0x10U)
+#define FLS_FRI_O_FRDCNTL ((uint32)(0x10U))
 /** \brief Flash Read Interface 1 Control Register*/
-#define FLS_FRI_O_1_INTF_CTRL (uint32)(0x30U)
+#define FLS_FRI_O_1_INTF_CTRL ((uint32)(0x30U))
 /** \brief Read Wait state shift bit*/
-#define FLS_FRI_FRDCNTL_RWAIT_S (uint32)(8U)
+#define FLS_FRI_FRDCNTL_RWAIT_S ((uint32)(8U))
 /** \brief Read Wait state mask bit*/
-#define FLS_FRI_FRDCNTL_RWAIT_M (uint32)(0xF00U)
+#define FLS_FRI_FRDCNTL_RWAIT_M ((uint32)(0xF00U))
 /** \brief Flash delay configuration*/
 #define FLS_FLASH_DELAY_CONFIG \
     __asm(" NOP #8");          \
@@ -164,26 +164,26 @@ extern "C" {
 /**  FMC memory map defines */
 // #if defined (_F29H85x_)
 /** \brief Flash read interface base address*/
-#define FLS_FLASH_READINTERFACE_BASE (uint32)0x301D0000U
+#define FLS_FLASH_READINTERFACE_BASE ((uint32)0x301D0000U)
 /** \brief Flash command  interface base address*/
-#define FLS_FLASH_FAPI_FLASHNW_FC1_BASE (uint32)0x30100000U
+#define FLS_FLASH_FAPI_FLASHNW_FC1_BASE ((uint32)0x30100000U)
 // #endif
 /**  \brief  flash prefetch enable */
-#define FLS_FLASH_PREFETCH_ENABLE 0x1U
+#define FLS_FLASH_PREFETCH_ENABLE (0x1U)
 /**  \brief  flash prefetch disable */
-#define FLS_FLASH_PREFETCH_DISABLE 0x0U
+#define FLS_FLASH_PREFETCH_DISABLE (0x0U)
 /**  \brief  flash data cache enable */
-#define FLS_FLASH_DATACACHE_ENABLE 0x2U
+#define FLS_FLASH_DATACACHE_ENABLE (0x2U)
 /**  \brief  flash data cache disable */
-#define FLS_FLASH_DATACACHE_DISABLE 0x0U
+#define FLS_FLASH_DATACACHE_DISABLE (0x0U)
 /**  \brief  flash code cache enable */
-#define FLS_FLASH_CODECACHE_ENABLE 0x4U
+#define FLS_FLASH_CODECACHE_ENABLE (0x4U)
 /**  \brief  flash code cache disable */
-#define FLS_FLASH_CODECACHE_DISABLE 0x0U
+#define FLS_FLASH_CODECACHE_DISABLE (0x0U)
 /**  \brief  flash data read enable */
-#define FLS_FLASH_DATAPREREAD_ENABLE 0x8U
+#define FLS_FLASH_DATAPREREAD_ENABLE (0x8U)
 /**  \brief  flash data read disable */
-#define FLS_FLASH_DATAPREREAD_DISABLE 0x0U
+#define FLS_FLASH_DATAPREREAD_DISABLE (0x0U)
 
 /** \brief Macro to define the offset between options for different FRIs.
  *  For example, FRI_O_2_INTF_CTRL - FRI_O_1_INTF_CTRL = 0x10U.
@@ -191,124 +191,124 @@ extern "C" {
 #define FLS_FRI_REG_STEP (uint8)(0x10U)
 
 /**  \brief  flash trim commit register offset */
-#define FLS_ASYSCTL_O_FLASHTRIMCOMMIT 0x90U
+#define FLS_ASYSCTL_O_FLASHTRIMCOMMIT (0x90U)
 /**  \brief  flash trim commit read register offset */
-#define FLS_ASYSCTL_FLC1TRIMCOMMITREAD 0x4U
+#define FLS_ASYSCTL_FLC1TRIMCOMMITREAD (0x4U)
 /**  \brief  flash trim commit other register offset */
-#define FLS_ASYSCTL_FLC1TRIMCOMMITOTHER 0x8U
+#define FLS_ASYSCTL_FLC1TRIMCOMMITOTHER (0x8U)
 
 /**  \brief  IP Revision Register */
-#define FLS_FLASH_O_REVISION 0x0U
+#define FLS_FLASH_O_REVISION (0x0U)
 /**  \brief  Flash Read Control Register */
-#define FLS_FLASH_O_FRDCNTL 0x10U
+#define FLS_FLASH_O_FRDCNTL (0x10U)
 /**  \brief  Flash Read Clock Control Register */
-#define FLS_FLASH_O_FLCLKCTL 0x20U
+#define FLS_FLASH_O_FLCLKCTL (0x20U)
 
 /**  \brief  KDIV value of MCLK divider shift bit*/
-#define FLS_FLASH_FLCLKCTL_KDIV_S 0U
+#define FLS_FLASH_FLCLKCTL_KDIV_S (0U)
 /**  \brief  KDIV value of MCLK divider mask bit*/
-#define FLS_FLASH_FLCLKCTL_KDIV_M 0xFU
+#define FLS_FLASH_FLCLKCTL_KDIV_M (0xFU)
 
 /**  \brief  Command Execute Register */
-#define FLS_FLASH_NW_O_CMDEXEC 0x100U
+#define FLS_FLASH_NW_O_CMDEXEC (0x100U)
 /**  \brief  Command Type Register */
-#define FLS_FLASH_NW_O_CMDTYPE 0x104U
+#define FLS_FLASH_NW_O_CMDTYPE (0x104U)
 /**  \brief  Command Control Register */
-#define FLS_FLASH_NW_O_CMDCTL 0x108U
+#define FLS_FLASH_NW_O_CMDCTL (0x108U)
 /**  \brief  Command Address Register */
-#define FLS_FLASH_NW_O_CMDADDR 0x120U
+#define FLS_FLASH_NW_O_CMDADDR (0x120U)
 /**  \brief  Command Program Byte Enable Register */
-#define FLS_FLASH_NW_O_CMDBYTEN 0x124U
+#define FLS_FLASH_NW_O_CMDBYTEN (0x124U)
 /**  \brief  Command Data Index Register */
-#define FLS_FLASH_NW_O_CMDDATAINDEX 0x12CU
+#define FLS_FLASH_NW_O_CMDDATAINDEX (0x12CU)
 /**  \brief  Command Data Register 0  */
-#define FLS_FLASH_NW_O_CMDDATA0 0x130U
+#define FLS_FLASH_NW_O_CMDDATA0 (0x130U)
 /**  \brief  Command Write Erase Protect A Register */
-#define FLS_FLASH_NW_O_CMDWEPROTA 0x1D0U
+#define FLS_FLASH_NW_O_CMDWEPROTA (0x1D0U)
 /**  \brief  Command Write Erase Protect B Register */
-#define FLS_FLASH_NW_O_CMDWEPROTB 0x1D4U
+#define FLS_FLASH_NW_O_CMDWEPROTB (0x1D4U)
 /**  \brief  Command Write Erase Protect Non-Main */
-#define FLS_FLASH_NW_O_CMDWEPROTNM 0x210U
+#define FLS_FLASH_NW_O_CMDWEPROTNM (0x210U)
 /**  \brief  Command Configuration Register */
-#define FLS_FLASH_NW_O_CFGCMD 0x3B0U
+#define FLS_FLASH_NW_O_CFGCMD (0x3B0U)
 /**  \brief  Command Status Register */
-#define FLS_FLASH_NW_O_STATCMD 0x3D0U
+#define FLS_FLASH_NW_O_STATCMD (0x3D0U)
 
 /**  \brief  Flash command type shift bit*/
-#define FLS_FLASH_NW_CMDTYPE_CMD_S 0U
+#define FLS_FLASH_NW_CMDTYPE_CMD_S (0U)
 /**  \brief  Flash command type mask bit*/
-#define FLS_FLASH_NW_CMDTYPE_CMD_M 0x7U
+#define FLS_FLASH_NW_CMDTYPE_CMD_M (0x7U)
 
 /**  \brief  Configure for sector erase: Command is erase (2), Size is sector (4) */
-#define FLS_FLASH_NW_CMDTYPE_SECTOR_ERASE 0x42U
+#define FLS_FLASH_NW_CMDTYPE_SECTOR_ERASE (0x42U)
 /**  \brief  Configure for Bank erase: Command is erase (2), Size is Bank (5)*/
-#define FLS_FLASH_NW_CMDTYPE_BANK_ERASE 0x52U
+#define FLS_FLASH_NW_CMDTYPE_BANK_ERASE (0x52U)
 /**  \brief  Configure for 1*128 word program: Command is program (1), Size is ONEWORD (0)*/
-#define FLS_FLASH_NW_CMDTYPE_PROG_ONEWD 0x01U
+#define FLS_FLASH_NW_CMDTYPE_PROG_ONEWD (0x01U)
 
 /**  \brief  Flash CMDCTL AutoEccgenration mask bit*/
 #define FLS_FLASH_NW_CMDCTL_ECCGENOVR (uint32)(0x20000U)
 /**  \brief  Flash CMDCTL AutoEccgenration shift bit*/
-#define FLS_FLASH_NW_CMDCTL_ECCGENOVR_S 17U
-/**  \brief  Flash CMDCTL Invalid data verify mask bit*/
-#define FLS_FLASH_NW_CMDCTL_DATAVEREN (uint32)(0x200000U)
-/**  \brief  Flash CMDCTL Invalid data verify shift bit*/
-#define FLS_FLASH_NW_CMDCTL_DATAVEREN_S 21U
+#define FLS_FLASH_NW_CMDCTL_ECCGENOVR_S (17U)
+/** \brief  Flash CMDCTL Invalid data verify mask bit*/
+#define FLS_FLASH_NW_CMDCTL_DATAVEREN ((uint32)(0x200000U))
+/** \brief  Flash CMDCTL Invalid data verify shift bit*/
+#define FLS_FLASH_NW_CMDCTL_DATAVEREN_S (21U)
 
 /**  \brief  Flash CFGCMD register wait state shift bit*/
-#define FLS_FLASH_NW_CFGCMD_WAITSTATE_S 0U
+#define FLS_FLASH_NW_CFGCMD_WAITSTATE_S (0U)
 /**  \brief  Flash CFGCMD register wait state mask bit*/
-#define FLS_FLASH_NW_CFGCMD_WAITSTATE_M 0xFU
+#define FLS_FLASH_NW_CFGCMD_WAITSTATE_M (0xFU)
 
 /**  \brief  Flash CMDBYTEN register value shift bit*/
-#define FLS_FLASH_NW_CMDBYTEN_VAL_S 0U
+#define FLS_FLASH_NW_CMDBYTEN_VAL_S (0U)
 /**  \brief  Flash CMDBYTEN register value mask bit*/
-#define FLS_FLASH_NW_CMDBYTEN_VAL_M 0xFFU
+#define FLS_FLASH_NW_CMDBYTEN_VAL_M (0xFFU)
 /**  \brief  Flash CMDBYTEN register ecc value shift bit*/
-#define FLS_FLASH_NW_CMDBYTEN_ECC0VAL_S 16U
+#define FLS_FLASH_NW_CMDBYTEN_ECC0VAL_S (16U)
 /**  \brief  Flash CMDBYTEN register ecc value mask bit*/
 #define FLS_FLASH_NW_CMDBYTEN_ECC0VAL_M (uint32)(0x10000U)
 /**  \brief  Flash CMDBYTEN register ecc value shift bit*/
-#define FLS_FLASH_NW_CMDBYTEN_ECC1VAL_S 17U
+#define FLS_FLASH_NW_CMDBYTEN_ECC1VAL_S (17U)
 /**  \brief  Flash CMDBYTEN register ecc value mask bit*/
-#define FLS_FLASH_NW_CMDBYTEN_ECC1VAL_M (uint32)(0x20000U)
+#define FLS_FLASH_NW_CMDBYTEN_ECC1VAL_M ((uint32)(0x20000U))
 
 /**  \brief  Command WriteErase Protect Non-Main register shift bits*/
-#define FLS_FLASH_NW_CMDWEPROTNM_VAL_S 0U
+#define FLS_FLASH_NW_CMDWEPROTNM_VAL_S (0U)
 /**  \brief  Command WriteErase Protect Non-Main register mask bits*/
-#define FLS_FLASH_NW_CMDWEPROTNM_VAL_M 1U
+#define FLS_FLASH_NW_CMDWEPROTNM_VAL_M (1U)
 /**  \brief  Readback val to protect non-main region sector 0 erase*/
-#define FLS_FLASH_NW_CMDWEPROTNM_READBACK_VAL 1U
+#define FLS_FLASH_NW_CMDWEPROTNM_READBACK_VAL (1U)
 
 /**  \brief  Command WriteErase Protect Non-Main register shift bits*/
-#define FLS_FLASH_NW_CMDADDR_VAL_S 0U
+#define FLS_FLASH_NW_CMDADDR_VAL_S (0U)
 /**  \brief  Command WriteErase Protect Non-Main register mask bits*/
-#define FLS_FLASH_NW_CMDADDR_VAL_M 0xFFFFFFFFU
+#define FLS_FLASH_NW_CMDADDR_VAL_M (0xFFFFFFFFU)
 /**  \brief  Readback val to protect non-main region sector 0 erase*/
-#define FLS_FLASH_NW_CMDTYPE_VAL_S 0U
+#define FLS_FLASH_NW_CMDTYPE_VAL_S (0U)
 /**  \brief  Command WriteErase Protect Non-Main register mask bits*/
-#define FLS_FLASH_NW_CMDTYPE_VAL_M 0xFFFFFFFFU
+#define FLS_FLASH_NW_CMDTYPE_VAL_M (0xFFFFFFFFU)
 /*  \brief STATCMD register command done bit*/
-#define FLS_FLASH_NW_STATCMD_CMDDONE 0x1U
+#define FLS_FLASH_NW_STATCMD_CMDDONE (0x1U)
 /*  \brief STATCMD register command pass bit*/
-#define FLS_FLASH_NW_STATCMD_CMDPASS 0x2U
+#define FLS_FLASH_NW_STATCMD_CMDPASS (0x2U)
 /*  \brief STATCMD register command in progress bit*/
-#define FLS_FLASH_NW_STATCMD_CMDINPROGRESS 0x4U
+#define FLS_FLASH_NW_STATCMD_CMDINPROGRESS (0x4U)
 /*  \brief STATCMD register command write protect voilation bit*/
-#define FLS_FLASH_NW_STATCMD_FAILWEPROT 0x10U
+#define FLS_FLASH_NW_STATCMD_FAILWEPROT (0x10U)
 /*  \brief STATCMD register command failed due to verify error bit*/
-#define FLS_FLASH_NW_STATCMD_FAILVERIFY 0x20U
+#define FLS_FLASH_NW_STATCMD_FAILVERIFY (0x20U)
 /*  \brief STATCMD register command failed due to error other than write/erase protect violation or
  * verify bit*/
-#define FLS_FLASH_NW_STATCMD_FAILMISC 0x1000U
+#define FLS_FLASH_NW_STATCMD_FAILMISC (0x1000U)
 /*  \brief STATCMD register command failed due to the use of an illegal address bit*/
-#define FLS_FLASH_NW_STATCMD_FAILILLADDR 0x40U
+#define FLS_FLASH_NW_STATCMD_FAILILLADDR (0x40U)
 /*  \brief STATCMD register command failed because a bank has been set to a mode other than READ
  * bit*/
-#define FLS_FLASH_NW_STATCMD_FAILMODE 0x80U
+#define FLS_FLASH_NW_STATCMD_FAILMODE (0x80U)
 /*  \brief STATCMD register program command failed because an attempt was made to program a stored
  * bit*/
-#define FLS_FLASH_NW_STATCMD_FAILINVDATA 0x100U
+#define FLS_FLASH_NW_STATCMD_FAILINVDATA (0x100U)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros

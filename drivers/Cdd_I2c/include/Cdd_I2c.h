@@ -144,14 +144,16 @@ extern "C" {
 #define CDD_I2C_SID_POLLING_MODE_PROCESSING (0x0AU)
 /** \brief Service ID Cdd_I2c_GetStatus() */
 #define CDD_I2C_SID_GET_STATUS (0x0BU)
+/** \brief Service ID Cdd_I2c_ResetHwUnit() */
+#define CDD_I2C_SID_RESET_HW_UNIT (0x0CU)
 /** \brief Service ID Cdd_I2c_TargetStart() */
-#define CDD_I2C_SID_TARGET_START (0x0CU)
+#define CDD_I2C_SID_TARGET_START (0x20U)
 /** \brief Service ID Cdd_I2c_TargetStop() */
-#define CDD_I2C_SID_TARGET_STOP (0x0DU)
+#define CDD_I2C_SID_TARGET_STOP (0x21U)
 /** \brief Service ID Cdd_I2c_TargetSubmitTxBuffer() */
-#define CDD_I2C_SID_TARGET_SUBMIT_TX_BUF (0x0EU)
+#define CDD_I2C_SID_TARGET_SUBMIT_TX_BUF (0x22U)
 /** \brief Service ID Cdd_I2c_TargetSubmitRxBuffer() */
-#define CDD_I2C_SID_TARGET_SUBMIT_RX_BUF (0x0FU)
+#define CDD_I2C_SID_TARGET_SUBMIT_RX_BUF (0x23U)
 
 /* Error codes returned by CDD_I2C functions. */
 /** \brief No errors */
@@ -201,6 +203,8 @@ extern "C" {
 #define CDD_I2C_E_TX_UNDERFLOW ((uint8)0x06U)
 /** \brief No buffer submitted - applicable only in target mode */
 #define CDD_I2C_E_NO_BUFFER ((uint8)0x07U)
+/** \brief HW unit reset error */
+#define CDD_I2C_E_HW_UNIT_RESET ((uint8)0x08U)
 
 /* CDD_I2C direction macros. */
 /** \brief CDD_I2C direction - write */
@@ -299,7 +303,9 @@ typedef enum
     /** \brief I2C channel transmission failed due to arbitration loss */
     CDD_I2C_CH_RESULT_ARBFAIL,
     /** \brief I2C channel transmission failed due to bus NACK */
-    CDD_I2C_CH_RESULT_NACKFAIL
+    CDD_I2C_CH_RESULT_NACKFAIL,
+    /** \brief I2C channel transmission failed due to HW unit reset */
+    CDD_I2C_CH_RESULT_HW_UNIT_RESET
 } Cdd_I2c_ChannelResultType;
 
 /**
@@ -323,7 +329,9 @@ typedef enum
     /** \brief I2C sequence transmission is not OK */
     CDD_I2C_SEQ_NOT_OK = 0x06U,
     /** \brief An I2C Sequence encountered a arbitration loss */
-    CDD_I2C_SEQ_ARB = 0x07U
+    CDD_I2C_SEQ_ARB = 0x07U,
+    /** \brief An I2C Sequence was terminated due to HW unit reset (bus-off recovery) */
+    CDD_I2C_SEQ_HW_UNIT_RESET = 0x08U
 } Cdd_I2c_SequenceResultType;
 
 /*********************************************************************************************************************
@@ -387,6 +395,7 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_DeInit(void);
 FUNC(void, CDD_I2C_CODE) Cdd_I2c_GetVersionInfo(Std_VersionInfoType* versionInfo);
 #endif
 
+#if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
 /** \brief Service to setup the buffers and the length of data for the Ch specified.
  *
  * Note: This API is applicable only for controller mode.
@@ -539,11 +548,44 @@ FUNC(Cdd_I2c_SequenceResultType, CDD_I2C_CODE) Cdd_I2c_GetSequenceResult(Cdd_I2c
  * \return Cdd_I2c_ChannelResultType - Return the current status
  *********************************************************************************************************************/
 FUNC(Cdd_I2c_ChannelResultType, CDD_I2C_CODE) Cdd_I2c_GetResult(Cdd_I2c_ChannelType chId);
+#endif /* CDD_I2C_CONTROLLER_ACTIVE */
+
+/** \brief Service to reset and recover a single I2C HW unit from a bus-off condition.
+ *
+ * This API performs a hard reset of the specified I2C hardware unit without
+ * attempting a STOP condition on the bus. Use this when the bus is stuck
+ * (e.g. SCL held low by a faulty target) and Cdd_I2c_Cancel cannot complete
+ * because the state machine is unable to progress.
+ *
+ * The reset performs the following:
+ * - Disables all interrupts on the HW unit
+ * - Marks the currently active channel (if any) with CDD_I2C_CH_RESULT_BUSFAIL
+ * - Drains all queued channels on this HW unit and marks them with
+ *   CDD_I2C_CH_RESULT_BUSFAIL. All channels on this HW unit are affected,
+ *   including channels belonging to different sequences queued on the same
+ *   HW unit.
+ * - For each affected sequence whose pending channel count reaches zero,
+ *   the sequence result is set to CDD_I2C_SEQ_HW_UNIT_RESET and the
+ *   sequence error notification callback (errorNotify) is invoked with
+ *   CDD_I2C_E_BUS_FAILURE if configured.
+ * - Re-initializes the HW unit registers (baud rate, address, mode)
+ * - Sets the HW unit status to free for new transfers
+ *
+ * Service ID[hex] - CDD_I2C_SID_RESET_HW_UNIT
+ * Sync/Async - Synchronous
+ * Reentrancy - Non Reentrant
+ *
+ * \param[in] hwUnitId I2C HW unit ID to reset
+ * \pre Driver must be initialized
+ * \post HW unit is reset and ready for new transfers
+ * \return Std_ReturnType
+ * \retval E_OK: Success
+ * \retval E_NOT_OK: Request rejected (invalid params or driver not init)
+ *********************************************************************************************************************/
+FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_ResetHwUnit(Cdd_I2c_HwUnitType hwUnitId);
 
 #if (STD_ON == CDD_I2C_GET_STATUS_API)
 /** \brief This service returns the module's status
- *
- * Note: This API is applicable only for controller mode.
  *
  * Service ID[hex] - CDD_I2C_SID_GET_STATUS
  * Sync/Async - Synchronous
@@ -556,6 +598,7 @@ FUNC(Cdd_I2c_ChannelResultType, CDD_I2C_CODE) Cdd_I2c_GetResult(Cdd_I2c_ChannelT
 FUNC(Cdd_I2c_ComponentStatusType, CDD_I2C_CODE) Cdd_I2c_GetStatus(void);
 #endif
 
+#if (CDD_I2C_TARGET_ACTIVE == STD_ON)
 /*
  * Below APIs are applicable only for target mode
  */
@@ -624,6 +667,7 @@ Cdd_I2c_TargetSubmitTxBuffer(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataConstPtrTy
 FUNC(Std_ReturnType, CDD_I2C_CODE)
 Cdd_I2c_TargetSubmitRxBuffer(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataPtrType pRxBuffer,
                              Cdd_I2c_DataLengthType rxBufferSize);
+#endif /* CDD_I2C_TARGET_ACTIVE */
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

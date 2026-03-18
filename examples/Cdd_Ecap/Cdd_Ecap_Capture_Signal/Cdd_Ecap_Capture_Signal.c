@@ -135,8 +135,8 @@ uint32                 GCddEcapTimeCnt, GCddEcapSignalCnt;
  *
  *********************************************************************************************************************/
 
-void Cdd_Ecap_TimeStampNotify();
-void Cdd_Ecap_SignalNotify();
+void Cdd_Ecap_TimeStampNotify(void);
+void Cdd_Ecap_SignalNotify(void);
 
 void CddEcap_DemoSignalMeasurementMode();
 void CddEcap_DemoTimestampingMode();
@@ -349,12 +349,12 @@ void CddEcap_DemoEdgeDetectionMode()
     return;
 }
 
-void Cdd_Ecap_TimeStampNotify()
+void Cdd_Ecap_TimeStampNotify(void)
 {
     GCddEcapTimeCnt++;
 }
 
-void Cdd_Ecap_SignalNotify()
+void Cdd_Ecap_SignalNotify(void)
 {
     GCddEcapSignalCnt++;
 }

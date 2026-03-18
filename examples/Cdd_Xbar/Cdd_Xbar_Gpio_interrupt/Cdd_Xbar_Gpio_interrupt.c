@@ -68,7 +68,8 @@
  *  Description:  This example application demonstrates the external interrupt feature by using it in conjunction with
  *  the input and output XBARs.
  *  The GPIO is toggled and connected to the input XBAR, while simultaneously triggering an external interrupt on the
- *  rising edge at the GPIO pin using XINT1(External Interrupt 1).
+ *  rising edge at the GPIO pin using XINT1(External Interrupt 1) during init.
+ *  The example also demonstrates reconfiguration of external interrupt edge using API.
  *  The interrupt increments a counter 'count'.
  *  In addition to triggering an interrupt, the input signal is routed from the input XBAR to the output XBAR so that
  *  the output can be observed via oscilloscope or logic analyzer on a separate pin.
@@ -78,8 +79,6 @@
  *                            |           |
  *                            |___________|---------triggers interrupt using XINT1
  *
- * Note : This example application uses APIs derived from F29H85X-SDK GPIO module, such as GPIO_setInterruptType and
- * GPIO_enableInterrupt. Users can use more such APIs from F29H85X-SDK GPIO APIs according to the use case.
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -89,7 +88,8 @@
 #include "DeviceSupport.h"
 #include "EcuM.h"
 #include "Dio.h"
-#include "hw_xint.h"
+#include "Cdd_Xbar.h"
+#include "Mcal_Lib.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -112,27 +112,8 @@
 /*********************************************************************************************************************
  * Local Type Declarations
  *********************************************************************************************************************/
-/*********************************************************************************************************************
- * Values that can be passed to GPIO_setInterruptType() and GPIO_enableInterrupt as the extIntNum parameter.
- *********************************************************************************************************************/
-typedef enum
-{
-    GPIO_INT_XINT1 = 0,  //!< External Interrupt 1
-    GPIO_INT_XINT2 = 2,  //!< External Interrupt 2
-    GPIO_INT_XINT3 = 4,  //!< External Interrupt 3
-    GPIO_INT_XINT4 = 6,  //!< External Interrupt 4
-    GPIO_INT_XINT5 = 8   //!< External Interrupt 5
-} GPIO_ExternalIntNum;
 
-/*********************************************************************************************************************
- * Values that can be passed to GPIO_setInterruptType() as the intType parameter.
- *********************************************************************************************************************/
-typedef enum
-{
-    GPIO_INT_TYPE_FALLING_EDGE = 0x00,  //!< Interrupt on falling edge
-    GPIO_INT_TYPE_RISING_EDGE  = 0x04,  //!< Interrupt on rising edge
-    GPIO_INT_TYPE_BOTH_EDGES   = 0x0C   //!< Interrupt on both edges
-} GPIO_IntType;
+/* None */
 
 /*********************************************************************************************************************
  * Exported Object Definitions
@@ -144,34 +125,19 @@ typedef enum
  * Local Object Definitions
  *********************************************************************************************************************/
 Dio_LevelType          Dio_ChannelLevel;
-static volatile uint32 count  = 0U;
-static boolean         status = TRUE;
+static volatile uint32 count     = 0U;
+static boolean         status    = TRUE;
+uint16                 hwCounter = 0U;
+Std_ReturnType         retval    = E_NOT_OK;
+#if (STD_ON == CDD_XBAR_GET_VERSION_INFO_API)
+/*  Version info variable */
+Std_VersionInfoType Cdd_Xbar_VersionInfo;
+#endif
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
 
-/** \brief Sets the interrupt type for the specified pin.
- *
- * This function sets up the various interrupt trigger mechanisms for the specified pin on the selected GPIO port.
- *
- * \param[in] extIntNum specifies the external interrupt
- * \param[in] intType specifies the type of interrupt trigger mechanism.
- * \pre None
- * \post None
- * \return None
- *********************************************************************************************************************/
-static inline void GPIO_setInterruptType(GPIO_ExternalIntNum extIntNum, GPIO_IntType intType);
-/** \brief Enables the specified external interrupt.
- *
- * This function enables the indicated external interrupt sources. Only the sources that are enabled can be reflected to
- * the processor interrupt.
- *
- * \param[in] extIntNum specifies the external interrupt
- * \pre None
- * \post None
- * \return None
- *********************************************************************************************************************/
-static inline void GPIO_enableInterrupt(GPIO_ExternalIntNum extIntNum);
+/* None */
 
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
@@ -188,31 +154,44 @@ int main(void)
 {
     uint8 loop;
     DeviceSupport_Init();
-    /* Configure the crossbar and init MCU */
+
+    /* Configure the crossbar and init MCU - external interrupt is configured during init as positive edge/rising edge
+     */
     EcuM_Init();
+
     AppUtils_Init(200000000U);  // Init App utils to enable prints
     AppUtils_Printf("Sample Application - STARTS !!!\n");
     AppUtils_Printf(
         "---------------------------------------------------------------------------------"
         "\n");
 
-    AppUtils_Printf("Setting interrupt type and enabling interrupt...\n");
-    GPIO_setInterruptType(GPIO_INT_XINT1, GPIO_INT_TYPE_RISING_EDGE);
-    GPIO_enableInterrupt(GPIO_INT_XINT1);
+#if (STD_ON == CDD_XBAR_GET_VERSION_INFO_API)
+    Cdd_Xbar_GetVersionInfo(&Cdd_Xbar_VersionInfo);
+    AppUtils_Printf("CDD XBAR MCAL Version Info\n");
+    AppUtils_Printf("---------------------\n");
+    AppUtils_Printf("Vendor ID           : %d\n", Cdd_Xbar_VersionInfo.vendorID);
+    AppUtils_Printf("Module ID           : %d\n", Cdd_Xbar_VersionInfo.moduleID);
+    AppUtils_Printf("SW Major Version    : %d\n", Cdd_Xbar_VersionInfo.sw_major_version);
+    AppUtils_Printf("SW Minor Version    : %d\n", Cdd_Xbar_VersionInfo.sw_minor_version);
+    AppUtils_Printf("SW Patch Version    : %d\n", Cdd_Xbar_VersionInfo.sw_patch_version);
+#endif
+
+    AppUtils_Printf("Phase 1: External interrupt is enabled with positive edge from configurator...\n");
+    count = 0U; /* Reset counter */
 
     for (loop = 0U; loop < 0xFFU; loop++)
     {
-        /* Setting the GPIO0 to STD_HIGH */
-        Dio_WriteChannel(DioConf_DioChannel_GPIO0, STD_HIGH);
+        /* Setting the GPIO0 to STD_LOW */
+        Dio_WriteChannel(DioConf_DioChannel_GPIO0, STD_LOW);
         /* Reading the value at OUTPUTXBAR1 */
         Dio_ChannelLevel = Dio_ReadChannel(DioConf_DioChannel_OUTPUTXBAR1);
-        if (STD_HIGH == Dio_ChannelLevel)
+        if (STD_LOW == Dio_ChannelLevel)
         {
-            /* Setting the GPIO0 to STD_LOW */
-            Dio_WriteChannel(DioConf_DioChannel_GPIO0, STD_LOW);
+            /* Setting the GPIO0 to STD_HIGH */
+            Dio_WriteChannel(DioConf_DioChannel_GPIO0, STD_HIGH);
             /* Reading the value at OUTPUTXBAR1 */
             Dio_ChannelLevel = Dio_ReadChannel(DioConf_DioChannel_OUTPUTXBAR1);
-            if (STD_LOW != Dio_ChannelLevel)
+            if (STD_HIGH != Dio_ChannelLevel)
             {
                 status = FALSE;
                 break;
@@ -224,36 +203,129 @@ int main(void)
             break;
         }
     }
-    if (status == TRUE)
+
+    /* Read hardware counter value */
+    retval = Cdd_Xbar_GetExternalInterruptCounter(
+        CddXbarConf_CddXbarInputXbarInstanceConfig_CddXbarInputXbarInstanceConfig_0, &hwCounter);
+
+    if ((status == TRUE) && (count == 0xFFU))
     {
-        AppUtils_Printf("count: %d\n", count);
-        AppUtils_Printf(
-            "================================================================================="
-            "\n");
-        AppUtils_Printf("PASS: Cdd_Xbar_Gpio_interrupt Sample application passed \n");
+        AppUtils_Printf("count (POSITIVE_EDGE): %d\n", count);
+        if (E_OK == retval)
+        {
+            AppUtils_Printf("Hardware Counter (XINT1): %d\n", hwCounter);
+        }
+        else
+        {
+            AppUtils_Printf("ERROR: Failed to read hardware counter\n");
+            status = FALSE;
+        }
+        AppUtils_Printf("PASS\n");
     }
     else
     {
         AppUtils_Printf("count: %d\n", count);
-        AppUtils_Printf(
-            "================================================================================="
-            "\n");
+        AppUtils_Printf("FAIL\n");
+        status = FALSE;
+    }
+
+    AppUtils_Printf(
+        "---------------------------------------------------------------------------------"
+        "\n");
+
+    /* Phase 2: Change interrupt type using API and test again */
+    AppUtils_Printf("Phase 2: Changing interrupt type to BOTH_EDGES using Cdd_Xbar_SetExternalInterruptType API...\n");
+    retval = Cdd_Xbar_SetExternalInterruptType(
+        CddXbarConf_CddXbarInputXbarInstanceConfig_CddXbarInputXbarInstanceConfig_0, CDD_XBAR_INT_TYPE_BOTH_EDGES);
+
+    if (E_OK != retval)
+    {
+        AppUtils_Printf("ERROR: Failed to set external interrupt type to BOTH_EDGES\n");
+        AppUtils_Printf("FAIL\n");
+        status = FALSE;
+    }
+    else
+    {
+        /* Resetting the GPIO0 to STD_LOW */
+        Dio_WriteChannel(DioConf_DioChannel_GPIO0, STD_LOW);
+        McalLib_Delay(1);
+        count = 0U; /* Reset counter */
+
+        for (loop = 0U; loop < 0xFFU; loop++)
+        {
+            /* Setting the GPIO0 to STD_HIGH */
+            Dio_WriteChannel(DioConf_DioChannel_GPIO0, STD_HIGH);
+            /* Reading the value at OUTPUTXBAR1 */
+            Dio_ChannelLevel = Dio_ReadChannel(DioConf_DioChannel_OUTPUTXBAR1);
+            if (STD_HIGH == Dio_ChannelLevel)
+            {
+                /* Setting the GPIO0 to STD_LOW */
+                Dio_WriteChannel(DioConf_DioChannel_GPIO0, STD_LOW);
+                /* Reading the value at OUTPUTXBAR1 */
+                Dio_ChannelLevel = Dio_ReadChannel(DioConf_DioChannel_OUTPUTXBAR1);
+                if (STD_LOW != Dio_ChannelLevel)
+                {
+                    status = FALSE;
+                    break;
+                }
+            }
+            else
+            {
+                status = FALSE;
+                break;
+            }
+        }
+
+        /* Read hardware counter value using the new API */
+        retval = Cdd_Xbar_GetExternalInterruptCounter(
+            CddXbarConf_CddXbarInputXbarInstanceConfig_CddXbarInputXbarInstanceConfig_0, &hwCounter);
+
+        if ((status == TRUE) && (count == 2U * 0xFFU))
+        {
+            AppUtils_Printf("count (BOTH_EDGES): %d\n", count);
+            if (E_OK == retval)
+            {
+                AppUtils_Printf("Hardware Counter (XINT1): %d\n", hwCounter);
+            }
+            else
+            {
+                AppUtils_Printf("ERROR: Failed to read hardware counter\n");
+                status = FALSE;
+            }
+            AppUtils_Printf("PASS\n");
+        }
+        else
+        {
+            AppUtils_Printf("count: %d\n", count);
+            AppUtils_Printf("FAIL\n");
+            status = FALSE;
+        }
+    }
+
+    AppUtils_Printf("Disabling external interrupt\n");
+    retval = Cdd_Xbar_SetExternalInterruptState(
+        CddXbarConf_CddXbarInputXbarInstanceConfig_CddXbarInputXbarInstanceConfig_0, FALSE);
+
+    if (E_OK != retval)
+    {
+        AppUtils_Printf("ERROR: Failed to disable external interrupt\n");
+        status = FALSE;
+    }
+
+    AppUtils_Printf(
+        "================================================================================="
+        "\n");
+
+    if (status == TRUE)
+    {
+        AppUtils_Printf("PASS: Cdd_Xbar_Gpio_interrupt Sample application passed \n");
+    }
+    else
+    {
         AppUtils_Printf("FAIL: Cdd_Xbar_Gpio_interrupt Sample application failed \n");
     }
+
     return 0;
-}
-
-static inline void GPIO_setInterruptType(GPIO_ExternalIntNum extIntNum, GPIO_IntType intType)
-{
-    /* Write the selected polarity to the appropriate register.*/
-    HWREGH(XINT_BASE + (uint16)extIntNum) =
-        (HWREGH(XINT_BASE + (uint16)extIntNum) & ~XINT_1CR_POLARITY_M) | (uint16)intType;
-}
-
-static inline void GPIO_enableInterrupt(GPIO_ExternalIntNum extIntNum)
-{
-    /* Set the enable bit for the specified interrupt.*/
-    HWREGH(XINT_BASE + (uint16)extIntNum) |= XINT_1CR_ENABLE;
 }
 
 void ISR_GPIO_XINT(void)

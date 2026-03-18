@@ -315,7 +315,7 @@ FUNC(void, GPT_CODE) Gpt_IsrNotifyFunction(Gpt_ChannelType Channel)
     VAR(Gpt_ValueType, AUTOMATIC) ch_index = GPT_MAX_32BIT_VAL;
 
     (void)Gpt_GetChIdxPriv(Gpt_DrvObjPtr, Channel, &ch_index);
-    if (GPT_MAX_32BIT_VAL != ch_index)
+    if (ch_index < GPT_CFG_NO_OF_CHANNELS)
     {
         /* Mark the channel as inactive/expired. */
         if (GPT_CH_MODE_ONESHOT == Gpt_DrvObjPtr->Gpt_CfgPtr->ChannelCfgPtr[ch_index].Gpt_ChannelMode)

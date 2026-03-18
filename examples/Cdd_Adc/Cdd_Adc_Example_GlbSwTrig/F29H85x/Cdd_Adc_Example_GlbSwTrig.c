@@ -159,7 +159,7 @@ Std_VersionInfoType Cdd_Adc_VersionInfo;
  *  Local Functions Definition
  *********************************************************************************************************************/
 
-void Cdd_Adc_ADCA_Grp0NotifFunc()
+void Cdd_Adc_ADCA_Grp0NotifFunc(void)
 {
     /* Read group results */
     Cdd_Adc_ReadGroup(CddAdcConf_CddAdcGroup_CddAdcGroup_0,
@@ -183,7 +183,7 @@ void Cdd_Adc_ADCA_Grp0NotifFunc()
     Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcGroup_CddAdcGroup_0);
 }
 
-void Cdd_Adc_ADCA_Grp1NotifFunc()
+void Cdd_Adc_ADCA_Grp1NotifFunc(void)
 {
     /* Read group results */
     Cdd_Adc_ReadGroup(CddAdcConf_CddAdcGroup_CddAdcGroup_1,
@@ -192,7 +192,7 @@ void Cdd_Adc_ADCA_Grp1NotifFunc()
     Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcGroup_CddAdcGroup_1);
 }
 
-void Cdd_Adc_ADCB_Grp0NotifFunc()
+void Cdd_Adc_ADCB_Grp0NotifFunc(void)
 {
     /* Read group results */
     Cdd_Adc_ReadGroup(CddAdcConf_CddAdcGroup_CddAdcGroup_2,
@@ -201,7 +201,7 @@ void Cdd_Adc_ADCB_Grp0NotifFunc()
     Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcGroup_CddAdcGroup_2);
 }
 
-void Cdd_Adc_ADCB_Grp1NotifFunc()
+void Cdd_Adc_ADCB_Grp1NotifFunc(void)
 {
     /* Read group results */
     Cdd_Adc_ReadGroup(CddAdcConf_CddAdcGroup_CddAdcGroup_3,
@@ -210,7 +210,7 @@ void Cdd_Adc_ADCB_Grp1NotifFunc()
     Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcGroup_CddAdcGroup_3);
 }
 
-void Cdd_Adc_ADCC_Grp0NotifFunc()
+void Cdd_Adc_ADCC_Grp0NotifFunc(void)
 {
     /* Read group results */
     Cdd_Adc_ReadGroup(CddAdcConf_CddAdcGroup_CddAdcGroup_4,
@@ -219,7 +219,7 @@ void Cdd_Adc_ADCC_Grp0NotifFunc()
     Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcGroup_CddAdcGroup_4);
 }
 
-void Cdd_Adc_ADCC_Grp1NotifFunc()
+void Cdd_Adc_ADCC_Grp1NotifFunc(void)
 {
     /* Read group results */
     Cdd_Adc_ReadGroup(CddAdcConf_CddAdcGroup_CddAdcGroup_5,
@@ -228,7 +228,7 @@ void Cdd_Adc_ADCC_Grp1NotifFunc()
     Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcGroup_CddAdcGroup_5);
 }
 
-void Cdd_Adc_ADCD_GrpNotifFunc()
+void Cdd_Adc_ADCD_GrpNotifFunc(void)
 {
     /* Read group results */
     Cdd_Adc_ReadGroup(CddAdcConf_CddAdcGroup_CddAdcGroup_6,
@@ -237,7 +237,7 @@ void Cdd_Adc_ADCD_GrpNotifFunc()
     Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcGroup_CddAdcGroup_6);
 }
 
-void Cdd_Adc_ADCE_GrpNotifFunc()
+void Cdd_Adc_ADCE_GrpNotifFunc(void)
 {
     /* Read group results */
     Cdd_Adc_ReadGroup(CddAdcConf_CddAdcGroup_CddAdcGroup_7,
@@ -247,14 +247,14 @@ void Cdd_Adc_ADCE_GrpNotifFunc()
 }
 
 /* Configure PPB for one of the channels in group 1 */
-void Cdd_Adc_TripHighNotification()
+void Cdd_Adc_TripHighNotification(void)
 {
     /* Increment the count every time a trip high interrupt is generated */
     PpbTripHighCount++;
     return;
 }
 
-void Cdd_Adc_TripLowNotification()
+void Cdd_Adc_TripLowNotification(void)
 {
     /* Increment the count every time a trip low interrupt is generated */
     PpbTripLowCount++;

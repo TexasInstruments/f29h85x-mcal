@@ -185,7 +185,7 @@ void Cdd_Pwm_ConfigureHw(void);
  *  Local Functions Definition
  *********************************************************************************************************************/
 
-void Cdd_Pwm_HwUnit0Notification()
+void Cdd_Pwm_HwUnit0Notification(void)
 {
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0]++;
 
@@ -210,22 +210,22 @@ void Cdd_Pwm_HwUnit0Notification()
     }
 }
 
-void Cdd_Pwm_HwUnit1Notification()
+void Cdd_Pwm_HwUnit1Notification(void)
 {
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1]++;
 }
 
-void Cdd_Pwm_HwUnit2Notification()
+void Cdd_Pwm_HwUnit2Notification(void)
 {
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2]++;
 }
 
-void Cdd_Pwm_HwUnit3Notification()
+void Cdd_Pwm_HwUnit3Notification(void)
 {
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_3]++;
 }
 
-void Cdd_Pwm_ConfigureHw()
+void Cdd_Pwm_ConfigureHw(void)
 {
     /* Configure EPWM1 instance */
     Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0);

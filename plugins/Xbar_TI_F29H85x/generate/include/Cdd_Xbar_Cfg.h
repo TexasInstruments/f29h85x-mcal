@@ -1614,6 +1614,27 @@ typedef enum
     CDD_XBAR_INPUT_FLG_CPU3ERADEVT11  = 0x1213U             /*!< \brief CPU2ERADEVT11  */
 } Cdd_Xbar_InputFlagType;
 
+/** \brief External input type */
+typedef enum
+{
+    CDD_XBAR_INT_TYPE_NEGATIVE_EDGE = 0x00,  /*!< Interrupt on negative edge */
+    CDD_XBAR_INT_TYPE_POSITIVE_EDGE  = 0x04,  /*!< Interrupt on positive edge */
+    CDD_XBAR_INT_TYPE_BOTH_EDGES   = 0x0C,   /*!< Interrupt on both edges */
+    CDD_XBAR_INT_TYPE_DISABLED = 0xFF  /*!< Interrupt disabled */
+} Cdd_Xbar_IntType;
+
+/** \brief External interrupt type */
+typedef enum
+{
+    CDD_XBAR_XINT1 = 0,  /*!< External Interrupt 1 */
+    CDD_XBAR_XINT2 = 2,  /*!< External Interrupt 2 */
+    CDD_XBAR_XINT3 = 4,  /*!< External Interrupt 3 */
+    CDD_XBAR_XINT4 = 6,  /*!< External Interrupt 4 */
+    CDD_XBAR_XINT5 = 8,  /*!< External Interrupt 5 */
+    CDD_XBAR_XINT_DISABLED = 0xFF  /*!< External Interrupt disabled */
+} Cdd_Xbar_ExternalIntNum;
+
+
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
@@ -1626,6 +1647,12 @@ typedef struct Cdd_Xbar_InXbarCfgTag
     uint8 inputSelect;          /* Design: MCAL-25720 */
     /** \brief Input crossbar input line */
     uint16 inputLine;            /* Design: MCAL-25721 */
+    /** \brief External interrupt enable */
+    boolean externalIntEnable;
+    /** \brief External interrupt line */
+    Cdd_Xbar_ExternalIntNum externalIntNum;  /* Design: MCAL-36378 */
+    /** \brief External interrupt type */
+    Cdd_Xbar_IntType externalIntrEdge;
     /** \brief Input crossbar lock setting */
     boolean selectConfigLock;   /* Design: MCAL-25707 */
 } Cdd_Xbar_InXbarCfgType;

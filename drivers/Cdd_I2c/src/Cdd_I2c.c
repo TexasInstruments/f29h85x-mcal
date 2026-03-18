@@ -135,11 +135,13 @@
 /*                          Function Declarations                             */
 /* ========================================================================== */
 
+#if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
 static Std_ReturnType Cdd_I2c_SetupEBParamCheck(uint8 apiId, Cdd_I2c_ChannelType chId,
                                                 Cdd_I2c_DataConstPtrType txDataBufferPtr,
                                                 Cdd_I2c_DataPtrType rxDataBufferPtr, Cdd_I2c_DataLengthType length);
 #endif
+#endif /* CDD_I2C_CONTROLLER_ACTIVE */
 
 /* ========================================================================== */
 /*                        Local Object Definitions                            */
@@ -263,6 +265,54 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_GetVersionInfo(Std_VersionInfoType *versionInfo
 }
 #endif
 
+FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_ResetHwUnit(Cdd_I2c_HwUnitType hwUnitId)
+{
+    Std_ReturnType         retVal = E_OK;
+    Cdd_I2c_DriverObjType *drvObj = &Cdd_I2c_DrvObj;
+    Cdd_I2c_HwUnitObjType *hwUnitObj;
+
+#if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
+    if (CDD_I2C_UNINIT == Cdd_I2c_DrvState)
+    {
+        (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, CDD_I2C_SID_RESET_HW_UNIT, CDD_I2C_E_UNINIT);
+        retVal = E_NOT_OK;
+    }
+    if (retVal == (Std_ReturnType)E_OK)
+#endif
+    {
+        hwUnitObj = Cdd_I2c_GetHwUnitObj(drvObj, hwUnitId);
+        if ((Cdd_I2c_HwUnitObjType *)NULL_PTR == hwUnitObj)
+        {
+#if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
+            (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, CDD_I2C_SID_RESET_HW_UNIT,
+                                  CDD_I2C_E_PARAM_HWUNIT);
+#endif
+            retVal = E_NOT_OK;
+        }
+        else
+        {
+            SchM_Enter_Cdd_I2c_CDD_I2C_EXCLUSIVE_AREA_0();
+
+            retVal = Cdd_I2c_ResetHwUnitPriv(drvObj, hwUnitObj);
+
+            SchM_Exit_Cdd_I2c_CDD_I2C_EXCLUSIVE_AREA_0();
+        }
+    }
+
+    return retVal;
+}
+
+#if (STD_ON == CDD_I2C_GET_STATUS_API)
+FUNC(Cdd_I2c_ComponentStatusType, CDD_I2C_CODE) Cdd_I2c_GetStatus(void)
+{
+    return Cdd_I2c_DrvState;
+}
+#endif
+
+/*
+ * Controller only APIs
+ */
+#if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
 FUNC(Std_ReturnType, CDD_I2C_CODE)
 Cdd_I2c_SetupEB(Cdd_I2c_ChannelType chId, Cdd_I2c_DataConstPtrType txDataBufferPtr, Cdd_I2c_DataPtrType rxDataBufferPtr,
                 Cdd_I2c_DataLengthType length)
@@ -553,18 +603,13 @@ FUNC(Cdd_I2c_ChannelResultType, CDD_I2C_CODE) Cdd_I2c_GetResult(Cdd_I2c_ChannelT
 
     return chResult;
 }
-
-#if (STD_ON == CDD_I2C_GET_STATUS_API)
-FUNC(Cdd_I2c_ComponentStatusType, CDD_I2C_CODE) Cdd_I2c_GetStatus(void)
-{
-    return Cdd_I2c_DrvState;
-}
-#endif
+#endif /* CDD_I2C_CONTROLLER_ACTIVE */
 
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
 
+#if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
 static Std_ReturnType Cdd_I2c_SetupEBParamCheck(uint8 apiId, Cdd_I2c_ChannelType chId,
                                                 Cdd_I2c_DataConstPtrType txDataBufferPtr,
@@ -612,6 +657,7 @@ static Std_ReturnType Cdd_I2c_SetupEBParamCheck(uint8 apiId, Cdd_I2c_ChannelType
     return retVal;
 }
 #endif
+#endif /* CDD_I2C_CONTROLLER_ACTIVE */
 
 #define CDD_I2C_STOP_SEC_CODE
 #include "Cdd_I2c_MemMap.h"

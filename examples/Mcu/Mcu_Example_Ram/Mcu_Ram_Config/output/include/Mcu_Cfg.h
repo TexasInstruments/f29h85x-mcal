@@ -279,7 +279,8 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
-
+/* Forward declaration of Mcu configuration structure */
+struct Mcu_ConfigType_s;
 
  /** \brief Structure for data pre-setting to be initialized */
 typedef struct

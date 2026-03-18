@@ -1178,7 +1178,7 @@ Can_WriteMsgRamPriv(uint32 baseAddr, uint8 bufNum, P2CONST(Can_TxBufElementType,
  *
  *****************************************************************************/
 FUNC(void, CAN_CODE)
-Can_ReadMsgRamPriv(uint32 baseAddr, uint32 memType, uint8 bufNum,
+Can_ReadMsgRamPriv(uint32 baseAddr, Can_MemType memType, uint8 bufNum,
                    P2VAR(Can_RxBufElementType, AUTOMATIC, CAN_APPL_DATA) elem);
 
 /** \brief This service shall read all the statically configured registers

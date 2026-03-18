@@ -1867,7 +1867,7 @@ Cdd_Pwm_SetCountModeAfterSync(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
         /* Design: MCAL-33954 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_COUNTMODE_AFTERSYNC,
-                              CDD_PWM_E_INVALID_ID);
+                              CDD_PWM_E_INVALID_VALUE);
     }
     else
 #endif

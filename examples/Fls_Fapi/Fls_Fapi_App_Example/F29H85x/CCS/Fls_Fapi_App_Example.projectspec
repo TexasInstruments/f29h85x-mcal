@@ -1,0 +1,80 @@
+<projectSpec>
+  <project
+        title="Fls_Fapi_App_Example_F29H85x"
+        name="Fls_Fapi_App_Example_F29H85x"
+        device="F29H850TU9"
+        cgtVersion="2.0.0.STS"
+        outputFormat="ELF"
+        linkerCommandFile=""
+        toolChain="TICLANG"
+        products="f29h85x-mcal-sdk"
+        >
+
+    <configuration name="CPU1_RAM"   compilerBuildOptions="-I${PROJECT_ROOT} -I${C2000MCAL_CONFIG_INCLUDE} -I${C2000MCAL_EXAMPLE_INCLUDE} " compilerBuildOptions_c="-g -DRELEASE -DBUILD_DEVICE_F29H85x -cl-single-precision-constant -O2 -Wall" linkerBuildOptions="--entry_point code_start --stack_size=0x1000 --heap_size=0x400"/>
+    <configuration name="CPU1_FLASH" compilerBuildOptions="-I${PROJECT_ROOT} -I${C2000MCAL_CONFIG_INCLUDE} -I${C2000MCAL_EXAMPLE_INCLUDE} " compilerBuildOptions_c="-g -DRELEASE -DBUILD_DEVICE_F29H85x -D_FLASH -cl-single-precision-constant -O2 -Wall" linkerBuildOptions="--entry_point code_start --stack_size=0x1000 --heap_size=0x400"
+    postBuildStep=
+       "${CG_TOOL_OBJCOPY} --remove-section=cert --remove-section=.TI.bound:CPU1_Cfg --remove-section=.TI.bound:CPU2_Cfg --remove-section=.TI.bound:CPU3_Cfg -O binary ${ProjName}.out ${ProjName}.bin;
+        $(PYTHON_TOOL) ${COM_TI_F29H85X_MCAL_INSTALL_DIR}/build/toolchain/signing/sign_non_secure.py --b ${ProjName}.bin --c C29 --k ${COM_TI_F29H85X_MCAL_INSTALL_DIR}/build/toolchain/signing/keys/key.pem --o 60 --l 0x10001000;
+        ${CG_TOOL_OBJCOPY} --update-section cert=C29-cert.bin ${ProjName}.out ${ProjName}_cert.out;
+        $(RM) ${ProjName}.out;
+        $(RENAME_TOOL) ${ProjName}_cert.out ${ProjName}.out"
+    />
+
+    <pathVariable name="C2000MCAL_CONFIG_INCLUDE"  path="../Fls_Example_Config/output/include/" scope="project"/>
+    <pathVariable name="C2000MCAL_EXAMPLE_INCLUDE" path="../../"                                scope="project"/>
+
+    <file action="copy" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/examples/DeviceSupport/LinkerCMD/f29h85x_ram_lnk_cpu1.cmd"   targetDirectory="" applicableConfigurations="CPU1_RAM"/>
+    <file action="copy" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/examples/DeviceSupport/LinkerCMD/f29h85x_flash_lnk_cpu1.cmd" targetDirectory="" applicableConfigurations="CPU1_FLASH"/>
+    <file action="copy" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/examples/DeviceSupport/src/codestartbranch.asm"              targetDirectory=""/>
+    <file action="copy" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/examples/DeviceSupport/src/DeviceSupport.c"                  targetDirectory=""/>
+    <file action="copy" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/examples/DeviceSupport/targetconfigs/F29H850TU9.ccxml"       targetDirectory="targetConfigs"/>
+    <file action="copy" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/examples/DeviceSupport/makefile.defs"                        targetDirectory=""/>
+    <file action="link" path="../../Fls_Fapi_App.c"                                                                           targetDirectory=""/>
+    <file action="link" path="../../Fls_Fapi_App.h"                                                                                targetDirectory=""/>
+
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/Mcu/include"                                         targetDirectory="MCAL_Drivers/Mcu"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/Mcu/src"                                             targetDirectory="MCAL_Drivers/Mcu"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/Port/include"                                        targetDirectory="MCAL_Drivers/Port"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/Port/src"                                            targetDirectory="MCAL_Drivers/Port"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/Fls/include"                                         targetDirectory="MCAL_Drivers/Fls"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/Fls/src"                                             targetDirectory="MCAL_Drivers/Fls"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/hw_include/"                                         targetDirectory="MCAL_Drivers/hw_include"/>
+    <file action="link" path="../Fls_Example_Config/output/include"                                                           targetDirectory="Examples_config/"/>
+    <file action="link" path="../Fls_Example_Config/output/src"                                                               targetDirectory="Examples_config/"/>
+
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/AUTOSAR_Types/include"                     targetDirectory="AutoSar_BSW/AutoSar_Types"/>
+
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/Det/include"                               targetDirectory="AutoSar_BSW/Det"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/Det/src/Det.c"                              targetDirectory="AutoSar_BSW/Det"/>
+
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/Fee/include"                               targetDirectory="AutoSar_BSW/Fee"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/Fee/src"                                   targetDirectory="AutoSar_BSW/Fee"/>
+
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/Dem/include"                               targetDirectory="AutoSar_BSW/Dem"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/Dem/src/Dem.c"                              targetDirectory="AutoSar_BSW/Dem"/>
+
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/EcuM/include"                              targetDirectory="AutoSar_BSW/EcuM"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/EcuM/src/EcuM.c" excludeFromBuild="true"   targetDirectory="AutoSar_BSW/EcuM"/>
+
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/MemMap/include"                            targetDirectory="AutoSar_BSW/MemMap"/>
+
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/SchM/Fls/include"                          targetDirectory="AutoSar_BSW/SchM/Fls"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/SchM/Fls/src"                              targetDirectory="AutoSar_BSW/SchM/Fls"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/SchM/Port/include"                         targetDirectory="AutoSar_BSW/SchM/Port"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/SchM/Port/src"                             targetDirectory="AutoSar_BSW/SchM/Port"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/SchM/Mcu/include"                          targetDirectory="AutoSar_BSW/SchM/Mcu"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/SchM/Mcu/src"                              targetDirectory="AutoSar_BSW/SchM/Mcu"/>
+
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/Os/include"                                targetDirectory="AutoSar_BSW/Os"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/BSW_Stubs/Os/src/Os.c"                                targetDirectory="AutoSar_BSW/Os"/>
+
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/Mcal_Lib/include"                                    targetDirectory="Mcal_lib"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/Mcal_Lib/src/Mcal_Lib.c"                              targetDirectory="Mcal_lib"/>
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/drivers/Mcal_Lib/src/Mcal_Lib_BootRom.c"                      targetDirectory="Mcal_lib"/>
+
+    <file action="link" path="${COM_TI_F29H85X_MCAL_INSTALL_DIR}/examples/AppUtils/AppUtils.c"                                targetDirectory="AppUtils"/>
+
+    <file action="link" path="../../F29H85x_NWFlashAPI_v21.00.01.lib"   targetDirectory="Fapi_lib" />
+
+  </project>
+</projectSpec>

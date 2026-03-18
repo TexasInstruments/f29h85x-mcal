@@ -109,7 +109,7 @@ extern "C" {
 
 
 /* Macro to define the number of PWM channels supported by the driver */
-#define CDD_PWM_INSTANCE_COUNT    ((Cdd_Pwm_InstanceType)8U)
+#define CDD_PWM_INSTANCE_COUNT    ((Cdd_Pwm_InstanceType)9U)
 
 /* Macro to define the number of Pwm instances configured */
 #define CDD_PWM_COUNT       ((Cdd_Pwm_InstanceType)3U)
@@ -170,6 +170,8 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+/* Forward declaration of Cdd_Pwm configuration structure */
+struct Cdd_Pwm_ConfigTag;
 
 
 /** \brief SYNC INPUT pulse source enumeration */

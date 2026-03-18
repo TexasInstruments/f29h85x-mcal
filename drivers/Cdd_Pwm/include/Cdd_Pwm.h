@@ -3301,12 +3301,12 @@ Cdd_Pwm_GetCounterCompareValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
 /** \brief Returns the counter compare shadow register full status
  *
  * This function returns the counter Compare shadow register full status flag.
- * Valid values for OuputChannel are:
+ * Valid values for OutputChannel are:
  *   - CDD_PWM_COUNTER_COMPARE_A - counter compare A.
  *   - CDD_PWM_COUNTER_COMPARE_B - counter compare B.
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance
- * \param[in] OuputChannel   Counter Compare value module
+ * \param[in] OutputChannel  Counter Compare value module
  * \pre None
  * \post None
  * \return Shadow register full status
@@ -3316,7 +3316,7 @@ Cdd_Pwm_GetCounterCompareValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  *********************************************************************************************************************/
 FUNC(boolean, CDD_PWM_CODE)
 Cdd_Pwm_GetCounterCompareShadowStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                      VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OuputChannel);
+                                      VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel);
 
 /** \brief Enable/disables CMPAHR, CMPBHR register linking
  *
@@ -4469,7 +4469,7 @@ Cdd_Pwm_ClearCycleByCycleTripZoneFlag(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Insta
  * This function clears the specific One Shot (OST) Trip Zone flag.
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
- * \param[in] TzOSTFlags    OST flags to be cleared with valid values:
+ * \param[in] TzOstFlags    OST flags to be cleared with valid values:
  *                          - CDD_PWM_TZ_OST_FLAG_OST1     - OST flag for OST1
  *                          - CDD_PWM_TZ_OST_FLAG_OST2     - OST flag for OST2
  *                          - CDD_PWM_TZ_OST_FLAG_OST3U    - OST flag for OST3U
@@ -4486,7 +4486,7 @@ Cdd_Pwm_ClearCycleByCycleTripZoneFlag(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Insta
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_ClearOneShotTripZoneFlag(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                 VAR(Cdd_Pwm_OneshotTzFlagType, AUTOMATIC) TzOSTFlags);
+                                 VAR(Cdd_Pwm_OneshotTzFlagType, AUTOMATIC) TzOstFlags);
 
 /** \brief Force Trip Zone events
  *

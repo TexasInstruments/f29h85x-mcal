@@ -126,7 +126,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_[!"@name"!]_PinConfig[[
 {
 [!LOOP "PortContainer/*/PortPin/*"!]   
    {
-    /* .Port_PhysicalPinId = [!"PortPhysicalPinId"!]U,    Physical Pin Number*/
+    /* .Port_PhysicalPinId = [!"text:replace(PortPhysicalPinId,'PORT_PIN_','')"!]U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)[!IF "PortPinId='NA'"!][!ERROR "PortPinId cannot be 'NA'.This pin is not configurable"!][!ELSE!][!"PortPinId"!]U[!ENDIF!],
     .Port_PinDirection = (Port_PinDirectionType)[!"PortPinDirection"!],
     .Port_DirectionChangeable = (boolean) [!"text:toupper(PortPinDirectionChangeable)"!],
@@ -143,16 +143,16 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_[!"@name"!]_PinConfig[[
         .Port_PinQualificationPeriod = (uint32)[!"PortPinQualificationPeriod"!]U,
         .Port_CoreSelect = (Port_PinCoreSelect)[!"PortPinCoreSelect"!],
 [!/* Validate PortIsAnalogModeSupported, PortIsAGPIO, PortIsAIO, PortIsGPIO against ECU Resource Allocator */!][!//
-[!IF "text:tolower(PortIsAnalogModeSupported) != text:tolower(ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(PortPhysicalPinId)),'.isAnalogModeSupported'))))"!][!//
+[!IF "text:tolower(PortIsAnalogModeSupported) != text:tolower(ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(PortPhysicalPinId),'PORT_PIN_','')),'.isAnalogModeSupported'))))"!][!//
 [!ERROR!]Errors exist. Please run autocalculation.[!ENDERROR!][!//
 [!ENDIF!][!//
-[!IF "text:tolower(PortIsAGPIO) != text:tolower(ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(PortPhysicalPinId)),'.isAGPIO'))))"!][!//
+[!IF "text:tolower(PortIsAGPIO) != text:tolower(ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(PortPhysicalPinId),'PORT_PIN_','')),'.isAGPIO'))))"!][!//
 [!ERROR!]Errors exist. Please run autocalculation.[!ENDERROR!][!//
 [!ENDIF!][!//
-[!IF "text:tolower(PortIsAIO) != text:tolower(ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(PortPhysicalPinId)),'.isAIO'))))"!][!//
+[!IF "text:tolower(PortIsAIO) != text:tolower(ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(PortPhysicalPinId),'PORT_PIN_','')),'.isAIO'))))"!][!//
 [!ERROR!]Errors exist. Please run autocalculation.[!ENDERROR!][!//
 [!ENDIF!][!//
-[!IF "text:tolower(PortIsGPIO) != text:tolower(ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(PortPhysicalPinId)),'.isGPIO'))))"!][!//
+[!IF "text:tolower(PortIsGPIO) != text:tolower(ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(PortPhysicalPinId),'PORT_PIN_','')),'.isGPIO'))))"!][!//
 [!ERROR!]Errors exist. Please run autocalculation.[!ENDERROR!][!//
 [!ENDIF!][!//
         .Port_PinConfigFlags = (Port_PinConfigFlagType)(([!IF "PortIsPinConfigurable='true'"!]1[!ELSE!]0[!ENDIF!]UL<<0U)

@@ -209,18 +209,18 @@ sint32 AppUtils_GetNum(void);
  *********************************************************************************************************************/
 sint8 Uart_ReadChar();
 
-/** \brief Function to get the number passed via console.
+/** \brief Function to write a character to the console.
  *
- * This function reads the number passed via console.
+ * This function writes the given character to the console.
  *
- * \param[in] data
+ * \param[in] Data Character to be written
  * \param[out] None
  * \post None
- * \return Returns the number read that is passed via console.
- * \retval sint32
+ * \return None
+ * \retval None
  *
  *********************************************************************************************************************/
-void Uart_WriteChar(uint8 data);
+void Uart_WriteChar(uint8 Data);
 
 /** \brief Function to enable UART module.
  *

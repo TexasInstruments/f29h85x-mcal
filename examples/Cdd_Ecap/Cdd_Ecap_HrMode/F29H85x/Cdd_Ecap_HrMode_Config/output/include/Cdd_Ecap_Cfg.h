@@ -154,6 +154,9 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+/* Forward declaration of Cdd_Ecap configuration structure */
+struct Cdd_Ecap_ConfigTag;
+
 /**
  *  \brief This type defines Xbar input to select
  */

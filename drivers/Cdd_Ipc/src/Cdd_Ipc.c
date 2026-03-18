@@ -165,11 +165,11 @@ static FUNC(Std_ReturnType, CDD_IPC_CODE)
  * Design: MCAL-
  */
 FUNC(void, CDD_IPC_CODE)
-Cdd_Ipc_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_IPC_APPL_DATA) VersionInfo)
+Cdd_Ipc_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_IPC_APPL_DATA) VersionInfoPtr)
 {
 #if (STD_ON == CDD_IPC_DEV_ERROR_DETECT)
-    /* If VersionInfo is NULL */
-    if (NULL_PTR == VersionInfo)
+    /* If VersionInfoPtr is NULL */
+    if (NULL_PTR == VersionInfoPtr)
     {
         (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, CDD_IPC_SID_GET_VERSION_INFO,
                               CDD_IPC_E_PARAM_POINTER);
@@ -177,12 +177,12 @@ Cdd_Ipc_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_IPC_APPL_DATA) 
     else
 #endif
     {
-        VersionInfo->vendorID         = (uint16)CDD_IPC_VENDOR_ID;
-        VersionInfo->moduleID         = (uint16)CDD_IPC_MODULE_ID;
-        VersionInfo->instanceID       = (uint8)CDD_IPC_INSTANCE_ID;
-        VersionInfo->sw_major_version = (uint8)CDD_IPC_SW_MAJOR_VERSION;
-        VersionInfo->sw_minor_version = (uint8)CDD_IPC_SW_MINOR_VERSION;
-        VersionInfo->sw_patch_version = (uint8)CDD_IPC_SW_PATCH_VERSION;
+        VersionInfoPtr->vendorID         = (uint16)CDD_IPC_VENDOR_ID;
+        VersionInfoPtr->moduleID         = (uint16)CDD_IPC_MODULE_ID;
+        VersionInfoPtr->instanceID       = (uint8)CDD_IPC_INSTANCE_ID;
+        VersionInfoPtr->sw_major_version = (uint8)CDD_IPC_SW_MAJOR_VERSION;
+        VersionInfoPtr->sw_minor_version = (uint8)CDD_IPC_SW_MINOR_VERSION;
+        VersionInfoPtr->sw_patch_version = (uint8)CDD_IPC_SW_PATCH_VERSION;
     }
     return;
 }

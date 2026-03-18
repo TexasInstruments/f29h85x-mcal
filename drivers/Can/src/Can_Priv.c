@@ -1494,7 +1494,7 @@ Can_HwUnitStartPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) contr
  */
 FUNC(void, CAN_CODE)
 Can_HwUnitStopPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj,
-                   P2VAR(Can_CanIfIndicationType, AUTOMATIC, CAN_APPL_DATA) CanIfIndication)
+                   P2VAR(Can_CanIfIndicationType, AUTOMATIC, CAN_APPL_DATA) canIfIndication)
 {
     VAR(uint32, AUTOMATIC) baseAddr = (uint32)0U;
 
@@ -1511,7 +1511,7 @@ Can_HwUnitStopPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) contro
     /* Can is stopped, report to CanIf */
     controllerObj->canState = CAN_CS_STOPPED;
     CanIf_ControllerModeIndication(controllerObj->canControllerConfig.CanControllerId, CAN_CS_STOPPED);
-    CanIfIndication->stopIndication = TRUE;
+    canIfIndication->stopIndication = TRUE;
 }
 
 /*
@@ -1519,7 +1519,7 @@ Can_HwUnitStopPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) contro
  */
 FUNC(Std_ReturnType, CAN_CODE)
 Can_HwUnitSleepPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj,
-                    P2VAR(Can_CanIfIndicationType, AUTOMATIC, CAN_APPL_DATA) Can_CanIfIndication)
+                    P2VAR(Can_CanIfIndicationType, AUTOMATIC, CAN_APPL_DATA) canIfIndication)
 {
     VAR(Std_ReturnType, AUTOMATIC) returnValue = E_NOT_OK;
     VAR(McalLib_TickType, AUTOMATIC) startCount;
@@ -1562,7 +1562,7 @@ Can_HwUnitSleepPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) contr
         CanIf_ControllerModeIndication(controllerObj->canControllerConfig.CanControllerId, CAN_CS_SLEEP);
         controllerObj->canBusOffRecoveryStatus = FALSE;
         returnValue                            = E_OK;
-        Can_CanIfIndication->sleepIndication   = TRUE;
+        canIfIndication->sleepIndication       = TRUE;
     }
     /* TI_COVERAGE_GAP_START [Line/Region/Branch Coverage] This cannot be covered can't simulate
      * Hardware IP Errors */
@@ -1572,7 +1572,7 @@ Can_HwUnitSleepPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) contr
 #if (CAN_CFG_DEM_ENABLE == STD_ON)
         (void)Dem_SetEventStatus(CAN_E_HARDWARE_ERROR, DEM_EVENT_STATUS_PREFAILED);
 #endif
-        Can_CanIfIndication->sleepIndication = FALSE;
+        canIfIndication->sleepIndication = FALSE;
     }
     /* TI_COVERAGE_GAP_STOP */
 

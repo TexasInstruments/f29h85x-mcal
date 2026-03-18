@@ -196,7 +196,7 @@ void CddSent_Callback(PduIdType id, const PduInfoType *PduInfoPtr)
     data_received_count++;
 }
 
-void CddSent_Error_Callback()
+void CddSent_Error_Callback(void)
 {
     AppUtils_Printf("Error data received \n");
 }

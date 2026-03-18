@@ -144,6 +144,15 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config =
 [!ELSEIF "CddXbarInputXbarInputSourceSelection = 'CDD_XBAR_LOGIC_LOW'"!][!//
             .inputLine = 0xFFFFU,  /* LOGIC LOW  */  /* Design: MCAL-25721 */
 [!ENDIF!]
+[!/* Validate that if CddXbarInputXbarInput is not in external interrupt list, CddXbarExternalInterruptEdge must be CDD_XBAR_INT_TYPE_DISABLED */!][!//
+[!IF "not(text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_Xbar_External_Interrupt_Input_Xbar'), node:value(CddXbarInputXbarInput)))"!][!//
+[!IF "CddXbarExternalInterruptEdge != 'CDD_XBAR_INT_TYPE_DISABLED'"!][!//
+[!ERROR!]CddXbarExternalInterruptEdge must be CDD_XBAR_INT_TYPE_DISABLED for [!"node:value(CddXbarInputXbarInput)"!] as it is not connected to an external interrupt (XINT). Only INPUT_XBAR4 (XINT1), INPUT_XBAR5 (XINT2), INPUT_XBAR6 (XINT3), INPUT_XBAR13 (XINT4), and INPUT_XBAR14 (XINT5) support external interrupts.[!ENDERROR!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+            .externalIntEnable = [!IF "CddXbarExternalInterruptEdge != 'CDD_XBAR_INT_TYPE_DISABLED'"!] TRUE[!ELSE!][!WS "1"!]FALSE[!ENDIF!],
+            .externalIntNum = CDD_XBAR_[!IF "text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_Xbar_External_Interrupt_Input_Xbar'), CddXbarInputXbarInput)"!][!"ecu:get(concat('ResourceAllocator_F29H85x.Cdd_Xbar_External_Interrupt.', node:value(CddXbarInputXbarInput)))"!][!ELSE!]XINT_DISABLED[!ENDIF!],
+            .externalIntrEdge = [!"node:value(CddXbarExternalInterruptEdge)"!],
             .selectConfigLock = [!"text:toupper(CddXbarInputXbarInputSelectConfigurationLock)"!],   /* Design: MCAL-25707 */
         },
 [!ENDLOOP!]

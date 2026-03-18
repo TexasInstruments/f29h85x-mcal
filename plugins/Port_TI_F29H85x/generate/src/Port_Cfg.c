@@ -126,7 +126,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_[!"@name"!]_PinConfig[[
 {
 [!LOOP "PortContainer/*/PortPin/*"!] 
    {
-    /* .Port_PhysicalPinId = [!"PortPhysicalPinId"!]U,    Physical Pin Number*/
+    /* .Port_PhysicalPinId = [!"text:replace(PortPhysicalPinId,'PORT_PIN_','')"!]U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)[!IF "PortPinId='NA'"!][!ERROR "PortPinId cannot be 'NA'.This pin is not configurable"!][!ELSE!][!"PortPinId"!]U[!ENDIF!],
     .Port_PinDirection = (Port_PinDirectionType)[!"PortPinDirection"!],
     .Port_DirectionChangeable = (boolean) [!"text:toupper(PortPinDirectionChangeable)"!],

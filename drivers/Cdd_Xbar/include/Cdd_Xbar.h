@@ -173,6 +173,12 @@
 #define CDD_XBAR_SID_INPUTFLAGSTATUS (0x13)
 /** \brief Cdd_Xbar_InputFlagClear() */
 #define CDD_XBAR_SID_INPUTFLAGCLEAR (0x14)
+/** \brief Cdd_Xbar_SetExternalInterruptType() */
+#define CDD_XBAR_SID_SET_EXTERNAL_INTERRUPT_TYPE (0x15)
+/** \brief Cdd_Xbar_SetExternalInterruptState() */
+#define CDD_XBAR_SID_SET_EXTERNAL_INTERRUPT_STATE (0x16)
+/** \brief Cdd_Xbar_GetExternalInterruptCounter() */
+#define CDD_XBAR_SID_GET_EXTERNAL_INTERRUPT_COUNTER (0x17)
 
 /*********************************************************************************************************************
  * Exported Type Declarations
@@ -552,6 +558,68 @@ FUNC(Std_ReturnType, CDD_XBAR_CODE)
 Cdd_Xbar_InputFlagClear(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag);
 #endif /* STD_ON == CDD_XBAR_INPUT_FLAG_API */
 
+#if (0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS)
+/* Design: MCAL-36380, MCAL-36379 */
+/** \brief Sets the interrupt type for the specified input crossbar instance.
+ *
+ * This function sets up the various interrupt trigger mechanisms for the external interrupt
+ * connected to the specified input XBAR instance.
+ *
+ * \param[in] CrossbarUnit specifies the symbolic name of the input crossbar instance.
+ * \param[in] IntType specifies the type of interrupt trigger mechanism.
+ * \pre Preconditions - Driver is already initialized. Input crossbar must be configured with external interrupt
+ *enabled.
+ * \post Postconditions - None.
+ * \return Status of setting external interrupt type.
+ * \retval E_OK if external interrupt type is set.
+ * \retval E_NOT_OK if external interrupt type is not set.
+ *********************************************************************************************************************/
+FUNC(Std_ReturnType, CDD_XBAR_CODE)
+Cdd_Xbar_SetExternalInterruptType(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit, VAR(Cdd_Xbar_IntType, AUTOMATIC) IntType);
+
+/* Design: MCAL-36382, MCAL-36381 */
+/** \brief Sets the external interrupt state (enable/disable) for the specified input crossbar instance.
+ *
+ * This function enables or disables the external interrupt for the specified input crossbar instance.
+ * When Enable = TRUE, enables the external interrupt.
+ * When Enable = FALSE, disables the external interrupt.
+ *
+ * \param[in] CrossbarUnit specifies the symbolic name of the input crossbar instance.
+ * \param[in] Enable TRUE to enable the interrupt, FALSE to disable the interrupt.
+ * \pre Preconditions - Driver is already initialized. Input crossbar must be configured with external interrupt
+ *enabled.
+ * \post Postconditions - None.
+ * \return Status of setting external interrupt state.
+ * \retval E_OK if external interrupt state is set.
+ * \retval E_NOT_OK if external interrupt state is not set.
+ *********************************************************************************************************************/
+FUNC(Std_ReturnType, CDD_XBAR_CODE)
+Cdd_Xbar_SetExternalInterruptState(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit, VAR(boolean, AUTOMATIC) Enable);
+
+/* Design: MCAL-36389, MCAL-36388 */
+/** \brief Gets external interrupt counter value
+ *
+ * This function retrieves the counter value for the specified external interrupt. This is a free running 16-bit
+ * up-counter clocked at SYSCLK and is only available for XINT1, XINT2, and XINT3. XINT4 and XINT5 do not have
+ * counter registers. The counter value is reset to 0x0000 when a valid interrupt edge is detected and then continues
+ * counting until the next valid interrupt edge is detected. The counter is a free-running counter and will wrap around
+ *to zero when the max value is reached
+ *
+ * \param[in] CrossbarUnit - External interrupt crossbar unit (CDD_XBAR_XINT1,
+ *CDD_XBAR_XINT2, or CDD_XBAR_XINT3)
+ * \param[out] CounterValue - Pointer to store the counter value (16-bit)
+ * \pre Preconditions - Cdd_Xbar_Init() must be called before this function.
+ * \post Postconditions - None.
+ * \return Status of getting external interrupt counter.
+ * \retval E_OK if counter value is retrieved successfully.
+ * \retval E_NOT_OK if counter value retrieval failed (invalid parameters or
+ *counter not available).
+ *********************************************************************************************************************/
+FUNC(Std_ReturnType, CDD_XBAR_CODE)
+Cdd_Xbar_GetExternalInterruptCounter(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit,
+                                     P2VAR(uint16, AUTOMATIC, CDD_XBAR_APPL_DATA) CounterValue);
+#endif /* 0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS */
+
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
@@ -570,19 +638,19 @@ static inline FUNC(uint32, CDD_XBAR_CODE) Cdd_Xbar_Input_Selection_Mask(VAR(uint
 }
 
 /** \brief Get group number for a given input line */
-#define CDD_XBAR_GET_GROUP_NUMBER(InputLine) ((uint8)((InputLine & 0xFF00U) >> 8U))
+#define CDD_XBAR_GET_GROUP_NUMBER(InputLine) ((uint8)(((InputLine) & 0xFF00U) >> 8U))
 
 /** \brief Get crossbar type */
-#define CDD_XBAR_GET_XBAR_TYPE(xbar) ((uint8)((xbar & 0xFF00U) >> 8U))
+#define CDD_XBAR_GET_XBAR_TYPE(xbar) ((uint8)(((xbar) & 0xFF00U) >> 8U))
 
 /** \brief Get crossbar output line */
-#define CDD_XBAR_GET_XBAR_INSTANCE(xbar) ((uint8)(xbar & 0x00FFU))
+#define CDD_XBAR_GET_XBAR_INSTANCE(xbar) ((uint8)((xbar) & 0x00FFU))
 
 /** \brief Get input flag number for a given input flag */
-#define CDD_XBAR_INPUT_FLAG_NUMBER(InputFlag) (((uint16)InputFlag & 0xFF00U) >> (uint16)8U)
+#define CDD_XBAR_INPUT_FLAG_NUMBER(InputFlag) ((((uint16)(InputFlag)) & 0xFF00U) >> (uint16)8U)
 
 /** \brief Get the bit corresponding to the input in the input flag */
-#define CDD_XBAR_INPUT_FLAG_BIT(InputFlag) ((uint16)InputFlag & 0x00FFU)
+#define CDD_XBAR_INPUT_FLAG_BIT(InputFlag) (((uint16)(InputFlag)) & 0x00FFU)
 
 /**
  * @}

@@ -157,7 +157,7 @@ void Cdd_Pwm_ConfigureHw();
  *  External Functions Definition
  *********************************************************************************************************************/
 
-void Cdd_Pwm_HwUnit1Notification()
+void Cdd_Pwm_HwUnit1Notification(void)
 {
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1]++;
 }

@@ -170,12 +170,12 @@ Std_VersionInfoType Cdd_Adc_VersionInfo;
  *  Local Functions Definition
  *********************************************************************************************************************/
 
-void Cdd_Pwm_AsymmetricNotification()
+void Cdd_Pwm_AsymmetricNotification(void)
 {
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0]++;
 }
 
-void Cdd_Pwm_SymmetricNotification()
+void Cdd_Pwm_SymmetricNotification(void)
 {
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1]++;
 }

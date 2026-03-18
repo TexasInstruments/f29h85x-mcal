@@ -8,7 +8,7 @@
         <BSW-MODULE-DESCRIPTION UUID="c3cf11eb-cd88-4853-a6df-9fc323db83cc">
           <SHORT-NAME>Cdd_Xbar</SHORT-NAME>
           <CATEGORY>BSW_MODULE</CATEGORY>
-          <EXPECTED-ENTRYS>
+          <IMPLEMENTED-ENTRYS>
 [!IF "CddXbarGeneral/CddXbarVersionInfoApi = 'true'"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_GetVersionInfo</BSW-MODULE-ENTRY-REF>
@@ -27,6 +27,17 @@
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_SelectInput</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!IF "(num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarInputXbarConfig/CddXbarInputXbarInstanceConfig/*)) != 0)"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_SetExternalInterruptType</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_SetExternalInterruptState</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_GetExternalInterruptCounter</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
 [!IF "(num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*)) != 0)"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_OutLatchSelect</BSW-MODULE-ENTRY-REF>
@@ -90,7 +101,7 @@
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_InputFlagStatus</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
 [!ENDIF!][!//
-          </EXPECTED-ENTRYS>
+          </IMPLEMENTED-ENTRYS>
           <MODULE-ID>255</MODULE-ID>
           <BSW-MODULE-DEPENDENCYS>
 [!IF "CddXbarGeneral/CddXbarDevErrorDetect = 'true'"!][!//
@@ -160,6 +171,50 @@
 [!ENDIF!][!//
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_SelectInput</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
+[!IF "(num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarInputXbarConfig/CddXbarInputXbarInstanceConfig/*)) != 0)"!][!//
+                <BSW-CALLED-ENTITY UUID="78542f07-a439-aa23-945f-6673a0408a7a">
+                  <SHORT-NAME>Cdd_Xbar_SetExternalInterruptType</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+[!IF "CddXbarGeneral/CddXbarDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_SetExternalInterruptType</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="56342f07-6675-40d9-8c63-c21531790782">
+                  <SHORT-NAME>Cdd_Xbar_SetExternalInterruptState</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+[!IF "CddXbarGeneral/CddXbarDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_SetExternalInterruptState</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="90762f07-6671-40d9-8c63-c215317903fb">
+                  <SHORT-NAME>Cdd_Xbar_GetExternalInterruptCounter</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+[!IF "CddXbarGeneral/CddXbarDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_SetExternalInterruptState</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+[!ENDIF!][!//
 [!IF "(num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*)) != 0)"!][!//
                 <BSW-CALLED-ENTITY UUID="b47338a4-e7c4-4bdd-8afb-c87e3d0c3754">
                   <SHORT-NAME>Cdd_Xbar_OutLatchSelect</SHORT-NAME>
@@ -699,6 +754,36 @@
             <BSW-MODULE-ENTRY UUID="44754a28-14cb-4986-9f84-1adf1cc818fc">
               <SHORT-NAME>Cdd_Xbar_InputFlagClear</SHORT-NAME>
               <SERVICE-ID>20</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="42767845-4590-1298-44a7-78561cc818fc">
+              <SHORT-NAME>Cdd_Xbar_SetExternalInterruptType</SHORT-NAME>
+              <SERVICE-ID>21</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="78e223de-6785-6668-af0f-1894d5eb809a">
+              <SHORT-NAME>Cdd_Xbar_SetExternalInterruptState</SHORT-NAME>
+              <SERVICE-ID>22</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="897623de-8976-5643-7865-1894d5eb809a">
+              <SHORT-NAME>Cdd_Xbar_GetExternalInterruptCounter</SHORT-NAME>
+              <SERVICE-ID>23</SERVICE-ID>
               <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>

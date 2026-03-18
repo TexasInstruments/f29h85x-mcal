@@ -146,6 +146,7 @@ CONST(struct Cdd_I2c_ConfigTag, CDD_I2C_CONFIG_DATA) Cdd_I2c_Config =
         },
 
     },
+#if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
     .seqCfg =
     {
         [0U] =
@@ -330,6 +331,7 @@ CONST(struct Cdd_I2c_ConfigTag, CDD_I2C_CONFIG_DATA) Cdd_I2c_Config =
         },
 
     },
+#endif /* CDD_I2C_CONTROLLER_ACTIVE */
 };
 #define CDD_I2C_STOP_SEC_CONFIG_DATA
 #include "Cdd_I2c_MemMap.h"

@@ -1567,7 +1567,9 @@ CONST(Mcu_ConfigType, MCU_CONFIG_DATA) Mcu_Config_Mcu_ModuleConfiguration_0 =
     /* Mcu_EnableClkFailNotification */
     .Mcu_EnableClkFailNotification = ((boolean) TRUE),
     /* Peripheral Configuration */
-    .PeripheralConfig              = &Mcu_PeripheralConfig
+    .PeripheralConfig              = &Mcu_PeripheralConfig,
+    /* CPU1 Lockstep Enable Configuration */
+    .Mcu_LockstepEnable            = ((boolean) TRUE)
 };
 
 

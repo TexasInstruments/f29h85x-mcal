@@ -352,7 +352,10 @@ docs/
 >
 > 1. **Don't use SysCfg for MCAL projects** - SysCfg is not compatible with MCAL. Use EB Tresos for all configuration needs.
 >
-> 2. **For delays, use McalLib instead of adding NOPs** - Use `McalLib_Delay()` or other delay functions from `drivers/Mcal_Lib/` instead of inline NOP instructions or busy-wait loops.
+> 2. **For delays, use McalLib instead of adding NOPs** - Use delay functions from [`drivers/Mcal_Lib/src/Mcal_Lib.c`](drivers/Mcal_Lib/src/Mcal_Lib.c) instead of inline NOP instructions or busy-wait loops. Choose the appropriate function based on the time unit:
+>    - `McalLib_DelayMsec(delayMsec)` - For delays in **milliseconds**
+>    - `McalLib_DelayUsec(delayUsec)` - For delays in **microseconds**
+>    - `McalLib_Delay(loopcnt)` - For delays in **CPU cycles** (low-level, each loop iteration takes 4 cycles)
 >
 > 3. **Use AppUtils for debug UART prints** - Use `AppUtils_Printf()` from `examples/AppUtils/` for debug output instead of implementing custom UART print functions.
 >
@@ -393,6 +396,11 @@ docs/
 > 9. **Verify driver init requirement before EcuM configuration** - Before asking users to configure a driver's initialization in the EcuM module via EB Tresos, first verify that the driver actually requires initialization by checking the `<ModuleName>.c` file in `drivers/<ModuleName>/src/`. Look for a `<ModuleName>_Init()` function to confirm the driver needs EcuM configuration.
 >
 > 10. **Adding missing modules to project** - If a build fails in CCS due to unavailability of any module or driver, those files can be added to the project by modifying the `.project` file present in the CCS project directory.
+>
+> 11. **Wait Bootloader / Program Crash Detection** - While debugging, if the program counter reaches any of the following ROM addresses, it indicates the program has crashed or an exception occurred (bootrom entered wait boot mode):
+>     - `0x0001535C` (PG1.0/1.1) or `0x0001549C` (PG2.0) - Triggered when: wait boot (0x04) bootmode is selected via BMSP, FLASH mode is selected but erased, or boot fails in Link0 due to NMI/SSU Configuration/APR configuration errors.
+>     - `0x00014EB0` (PG1.0/1.1) or `0x00015040` (PG2.0) - Triggered when boot fails in Link1.
+>
 
 ### Creating a New EB Tresos Project
 

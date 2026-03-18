@@ -160,7 +160,7 @@ P2CONST(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA, CDD_XBAR_CONFIG_DATA) Cdd_Xba
 /** \brief Checks for DET error related to output line of input crossbar, output crossbar and CLB
  *crossbar.
  * \param[in] CrossbarType is the type of crossbar.
- * \param[in] DestLine is the output line of the crossbar instance.
+ * \param[in] OutputLine is the output line of the crossbar instance.
  * \param[in] ServID is the service ID of the API being called.
  * \pre Preconditions - None.
  * \post Postconditions - None.
@@ -170,14 +170,14 @@ P2CONST(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA, CDD_XBAR_CONFIG_DATA) Cdd_Xba
  *********************************************************************************************************************/
 static FUNC(Std_ReturnType, CDD_XBAR_CODE)
     Cdd_Xbar_Type_Output_Valid_Firstgroup(VAR(uint8, AUTOMATIC) CrossbarType,
-                                          P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) DestLine,
+                                          P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
                                           VAR(uint8, AUTOMATIC) ServID);
 
 /* Design: MCAL-28365 */
 /** \brief Checks for DET error related to output line of EPWM crossbar, MINDB crossbar and ICL
  *crossbar.
  * \param[in] CrossbarType is the type of crossbar.
- * \param[in] DestLine is the output line of the crossbar instance.
+ * \param[in] OutputLine is the output line of the crossbar instance.
  * \param[in] ServID is the service ID of the API being called.
  * \pre Preconditions - None.
  * \post Postconditions - None.
@@ -187,7 +187,7 @@ static FUNC(Std_ReturnType, CDD_XBAR_CODE)
  *********************************************************************************************************************/
 static FUNC(Std_ReturnType, CDD_XBAR_CODE)
     Cdd_Xbar_Type_Output_Valid_Secondgroup(VAR(uint8, AUTOMATIC) CrossbarType,
-                                           P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) DestLine,
+                                           P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
                                            VAR(uint8, AUTOMATIC) ServID);
 
 /* Design: MCAL-28366 */
@@ -256,6 +256,23 @@ static FUNC(Std_ReturnType, CDD_XBAR_CODE)
     Cdd_Xbar_OutStretchPulseDetCheck(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit, VAR(uint8, AUTOMATIC) ServID,
                                      VAR(Cdd_Xbar_TickStretchType, AUTOMATIC) TickStretch);
 #endif /* 0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS*/
+
+#if (0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS)
+/** \brief Checks for common DET errors related to input crossbar external
+ *interrupt APIs.
+ * \param[in] CrossbarType is the type of crossbar.
+ * \param[in] Index is the instance index.
+ * \param[in] ServID is the service ID of the API being called.
+ * \pre Preconditions - None.
+ * \post Postconditions - None.
+ * \return Status of error detection.
+ * \retval E_OK if no errors are detected.
+ * \retval E_NOT_OK if errors are detected.
+ *********************************************************************************************************************/
+static FUNC(Std_ReturnType, CDD_XBAR_CODE)
+    Cdd_Xbar_Input_Xbar_ExtInt_DetCheck(VAR(uint8, AUTOMATIC) CrossbarType, VAR(uint8, AUTOMATIC) Index,
+                                        VAR(uint8, AUTOMATIC) ServID);
+#endif /* 0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS*/
 #endif /*STD_ON == CDD_XBAR_DEV_ERROR_DETECT*/
 
 #if (0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS)
@@ -1546,6 +1563,115 @@ Cdd_Xbar_InputFlagClear(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag)
 
 #endif /* STD_ON == CDD_XBAR_INPUT_FLAG_API */
 
+#if (0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS)
+
+FUNC(Std_ReturnType, CDD_XBAR_CODE)
+Cdd_Xbar_SetExternalInterruptType(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit, VAR(Cdd_Xbar_IntType, AUTOMATIC) IntType)
+{
+    VAR(uint8, AUTOMATIC) index;
+    VAR(Std_ReturnType, AUTOMATIC) retval = E_NOT_OK;
+#if (STD_ON == CDD_XBAR_DEV_ERROR_DETECT)
+    VAR(uint8, AUTOMATIC) crossbarType;
+
+    /* Extract crossbar type and instance index from CrossbarUnit */
+    crossbarType = CDD_XBAR_GET_XBAR_TYPE(CrossbarUnit);
+#endif
+    index = CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit);
+
+#if (STD_ON == CDD_XBAR_DEV_ERROR_DETECT)
+    if (E_OK != Cdd_Xbar_Input_Xbar_ExtInt_DetCheck(crossbarType, index, CDD_XBAR_SID_SET_EXTERNAL_INTERRUPT_TYPE))
+    {
+        /* DET error already reported by helper function */
+    }
+    else if ((IntType != CDD_XBAR_INT_TYPE_NEGATIVE_EDGE) && (IntType != CDD_XBAR_INT_TYPE_POSITIVE_EDGE) &&
+             (IntType != CDD_XBAR_INT_TYPE_BOTH_EDGES))
+    {
+        (void)Det_ReportError(CDD_XBAR_MODULE_ID, CDD_XBAR_INSTANCE_ID, CDD_XBAR_SID_SET_EXTERNAL_INTERRUPT_TYPE,
+                              CDD_XBAR_E_PARAM_VALUE);
+    }
+    else
+#endif /* STD_ON == CDD_XBAR_DEV_ERROR_DETECT */
+    {
+        Cdd_Xbar_SetIntrType(Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[index].externalIntNum, IntType);
+        retval = E_OK;
+    }
+    return retval;
+}
+
+FUNC(Std_ReturnType, CDD_XBAR_CODE)
+Cdd_Xbar_SetExternalInterruptState(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit, VAR(boolean, AUTOMATIC) Enable)
+{
+    VAR(uint8, AUTOMATIC) index;
+    VAR(Std_ReturnType, AUTOMATIC) retval = E_NOT_OK;
+#if (STD_ON == CDD_XBAR_DEV_ERROR_DETECT)
+    VAR(uint8, AUTOMATIC) crossbarType;
+
+    /* Extract crossbar type and instance index from CrossbarUnit */
+    crossbarType = CDD_XBAR_GET_XBAR_TYPE(CrossbarUnit);
+#endif
+    index = CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit);
+
+#if (STD_ON == CDD_XBAR_DEV_ERROR_DETECT)
+    if (E_OK != Cdd_Xbar_Input_Xbar_ExtInt_DetCheck(crossbarType, index, CDD_XBAR_SID_SET_EXTERNAL_INTERRUPT_STATE))
+    {
+        /* DET error already reported by helper function */
+    }
+    else
+#endif /* STD_ON == CDD_XBAR_DEV_ERROR_DETECT */
+    {
+        /* Enable or disable the external interrupt based on Enable parameter */
+        Cdd_Xbar_EnableIntr(Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[index].externalIntNum, Enable);
+        retval = E_OK;
+    }
+    return retval;
+}
+
+FUNC(Std_ReturnType, CDD_XBAR_CODE)
+Cdd_Xbar_GetExternalInterruptCounter(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit,
+                                     P2VAR(uint16, AUTOMATIC, CDD_XBAR_APPL_DATA) CounterValue)
+{
+    VAR(uint8, AUTOMATIC) index;
+    VAR(Std_ReturnType, AUTOMATIC) retval = E_NOT_OK;
+#if (STD_ON == CDD_XBAR_DEV_ERROR_DETECT)
+    VAR(uint8, AUTOMATIC) crossbarType;
+
+    /* Extract crossbar type and instance index from CrossbarUnit */
+    crossbarType = CDD_XBAR_GET_XBAR_TYPE(CrossbarUnit);
+#endif
+    index = CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit);
+
+#if (STD_ON == CDD_XBAR_DEV_ERROR_DETECT)
+    /* Check if CounterValue pointer is NULL */
+    if (NULL_PTR == CounterValue)
+    {
+        (void)Det_ReportError((uint16)CDD_XBAR_MODULE_ID, (uint8)CDD_XBAR_INSTANCE_ID,
+                              (uint8)CDD_XBAR_SID_GET_EXTERNAL_INTERRUPT_COUNTER, (uint8)CDD_XBAR_E_PARAM_POINTER);
+    }
+    /* Validate CrossbarUnit using existing helper function */
+    else if (E_OK !=
+             Cdd_Xbar_Input_Xbar_ExtInt_DetCheck(crossbarType, index, CDD_XBAR_SID_GET_EXTERNAL_INTERRUPT_COUNTER))
+    {
+        /* DET error already reported by helper function */
+    }
+    /* Check if the external interrupt has a counter register (only XINT1, XINT2,
+       XINT3) */
+    else if ((CDD_XBAR_XINT4 == Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[index].externalIntNum) ||
+             (CDD_XBAR_XINT5 == Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[index].externalIntNum))
+    {
+        (void)Det_ReportError((uint16)CDD_XBAR_MODULE_ID, (uint8)CDD_XBAR_INSTANCE_ID,
+                              (uint8)CDD_XBAR_SID_GET_EXTERNAL_INTERRUPT_COUNTER, (uint8)CDD_XBAR_E_PARAM_VALUE);
+    }
+    else
+#endif /* STD_ON == CDD_XBAR_DEV_ERROR_DETECT */
+    {
+        /* Read the counter value using the private helper function */
+        *CounterValue = Cdd_Xbar_GetIntrCounter(Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[index].externalIntNum);
+        retval        = E_OK;
+    }
+    return retval;
+}
+#endif /* 0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS */
+
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
@@ -1738,6 +1864,36 @@ static FUNC(Std_ReturnType, CDD_XBAR_CODE)
     return retval;
 }
 #endif /* 0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS*/
+#if (0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS)
+static FUNC(Std_ReturnType, CDD_XBAR_CODE)
+    Cdd_Xbar_Input_Xbar_ExtInt_DetCheck(VAR(uint8, AUTOMATIC) CrossbarType, VAR(uint8, AUTOMATIC) Index,
+                                        VAR(uint8, AUTOMATIC) ServID)
+{
+    VAR(Std_ReturnType, AUTOMATIC) retval = E_OK;
+
+    if (CDD_XBAR_UNINIT == Cdd_Xbar_DriverStatus)
+    {
+        (void)Det_ReportError(CDD_XBAR_MODULE_ID, CDD_XBAR_INSTANCE_ID, ServID, CDD_XBAR_E_UNINIT);
+        retval = E_NOT_OK;
+    }
+    else if ((CddXbarConf_CddXbarInputXbar != CrossbarType) || (Index >= CDD_XBAR_INPUT_XBAR_CONFIGURATIONS))
+    {
+        (void)Det_ReportError(CDD_XBAR_MODULE_ID, CDD_XBAR_INSTANCE_ID, ServID, CDD_XBAR_E_PARAM_VALUE);
+        retval = E_NOT_OK;
+    }
+    else if (CDD_XBAR_XINT_DISABLED == Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[Index].externalIntNum)
+    {
+        (void)Det_ReportError(CDD_XBAR_MODULE_ID, CDD_XBAR_INSTANCE_ID, ServID, CDD_XBAR_E_PARAM_VALUE);
+        retval = E_NOT_OK;
+    }
+    else
+    {
+        /* All checks passed */
+    }
+
+    return retval;
+}
+#endif /* 0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS*/
 #endif /*STD_ON == CDD_XBAR_DEV_ERROR_DETECT*/
 
 #if (0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS)
@@ -1781,6 +1937,17 @@ static FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_Input_Priv(VAR(uint8, AUTOMATIC) confi
     /* Select given Input Line */
     Cdd_Xbar_InSelect(&Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[config].inputSelect,
                       &Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[config].inputLine, TRUE);
+
+    /* Configure external interrupt if enabled */
+    if (TRUE == Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[config].externalIntEnable)
+    {
+        /* Set interrupt type */
+        Cdd_Xbar_SetIntrType(Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[config].externalIntNum,
+                             Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[config].externalIntrEdge);
+        /* Enable the external interrupt*/
+        Cdd_Xbar_EnableIntr(Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[config].externalIntNum, TRUE);
+    }
+
     /* Lock Crossbar Select Line */
     if (TRUE == Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[config].selectConfigLock)
     {

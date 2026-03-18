@@ -657,7 +657,9 @@ static CONST(Mcu_PeripheralConfigType, MCU_CONFIG_DATA) Mcu_PeripheralConfig;
     /* Mcu_EnableClkFailNotification */
     .Mcu_EnableClkFailNotification = ((boolean) [!IF "McuClockSrcFailureNotification='ENABLED'"!]TRUE[!ELSE!]FALSE[!ENDIF!]),
     /* Peripheral Configuration */
-    .PeripheralConfig              = &Mcu_PeripheralConfig
+    .PeripheralConfig              = &Mcu_PeripheralConfig,
+    /* CPU1 Lockstep Enable Configuration */
+    .Mcu_LockstepEnable            = ((boolean) [!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/CPU1_Lockstep) and (as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/CPU1_Lockstep = 'false')"!]FALSE[!ELSE!]TRUE[!ENDIF!])
 };
 [!ENDLOOP!]
 [!ENDSELECT!]

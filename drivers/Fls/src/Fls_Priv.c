@@ -131,15 +131,15 @@ static FUNC(void, FLS_CODE) Fls_PostProcessAndReportError(uint8 ApiId, uint8 pro
 static FUNC(void, FLS_CODE) Fls_PostProcessAndInitiateNextJob(Fls_JobType processJobCheck, uint32 processChunkSize);
 
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite_sub(uint32 actualSize);
-static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite(uint32 actualSize);
+static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite(uint32 actualChunkSize);
 
-static FUNC(Std_ReturnType, FLS_CODE) Fls_Callf29Erase(uint32 actualChunkSize);
+static FUNC(Std_ReturnType, FLS_CODE) Fls_Callf29Erase(uint32 chunkSize);
 
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase(uint32 actualChunkSize);
-static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase_sub(uint32 actualChunkSize);
+static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase_sub(uint32 actualSize);
 
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase(uint32 actualChunkSize);
-static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase_sub(uint32 actualChunkSize);
+static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase_sub(uint32 actualSize);
 
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29Read(uint32 actualChunkSize);
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29Compare(uint32 actualChunkSize);

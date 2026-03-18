@@ -114,25 +114,25 @@
 #define ECUM_STOP_SEC_CODE
 #include "EcuM_MemMap.h"
 
-FUNC(void, ECUM_CODE) EcuM_CheckWakeup(EcuM_WakeupSourceType WakeupSource)
+FUNC(void, ECUM_CODE) EcuM_CheckWakeup(EcuM_WakeupSourceType wakeupSource)
 {
     uint8 i;
     for(i=0;i<ECUM_CFG_WAKEUP_EVENT_COUNT;i++)
     {
-        if(EcuM_EventRecord[i].source_id & WakeupSource)
+        if(EcuM_EventRecord[i].source_id & wakeupSource)
         {
             /* Clear the wakeup source bit corresponding to each wakeup source. */
             EcuM_WakeupBitSet &= ~(EcuM_EventRecord[i].source_id);
             /* Call source specific CheckWakeup function */
-            (EcuM_EventRecord[i].wakeup_funcptr)(WakeupSource); 
+            (EcuM_EventRecord[i].wakeup_funcptr)(wakeupSource);
         }
-    } 
+    }
 }
 
-FUNC(void, ECUM_CODE) EcuM_SetWakeupEvent(EcuM_WakeupSourceType Sources)
+FUNC(void, ECUM_CODE) EcuM_SetWakeupEvent(EcuM_WakeupSourceType sources)
 {
     /* Set the wakeup source bits corresponding to each wakeup source.  */
-    EcuM_WakeupBitSet |= Sources;
+    EcuM_WakeupBitSet |= sources;
 }
 
 /*********************************************************************************************************************

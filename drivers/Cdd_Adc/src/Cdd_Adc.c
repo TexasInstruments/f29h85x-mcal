@@ -910,7 +910,9 @@ Cdd_Adc_GetStreamLastPointer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_STREAM_LAST_POINTER,
                               CDD_ADC_E_WRONG_PROCESSING_MODE);
 
-        return_val = E_NOT_OK;
+        /* Set the PtrToSamplePtr to NULL_PTR */
+        *PtrToSamplePtr = (Cdd_Adc_ValueGroupType *)NULL_PTR;
+        return_val      = E_NOT_OK;
     }
 
     /* If no det error is reported */
@@ -941,12 +943,6 @@ Cdd_Adc_GetStreamLastPointer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
         }
         SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
     }
-#if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
-    else
-    {
-        *PtrToSamplePtr = (Cdd_Adc_ValueGroupType *)NULL_PTR;
-    }
-#endif
     return (num_samples);
 }
 

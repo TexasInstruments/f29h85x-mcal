@@ -119,13 +119,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-pollingmodeprocessing">7.12.4.9. function Cdd_I2c_PollingModeProcessing</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-getsequenceresult">7.12.4.10. function Cdd_I2c_GetSequenceResult</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-getresult">7.12.4.11. function Cdd_I2c_GetResult</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-getstatus">7.12.4.12. function Cdd_I2c_GetStatus</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-targetstart">7.12.4.13. function Cdd_I2c_TargetStart</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-targetstop">7.12.4.14. function Cdd_I2c_TargetStop</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-targetsubmittxbuffer">7.12.4.15. function Cdd_I2c_TargetSubmitTxBuffer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-targetsubmitrxbuffer">7.12.4.16. function Cdd_I2c_TargetSubmitRxBuffer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-i2c-appseqcomplete">7.12.4.17. function I2c_appSeqComplete</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-i2c-appseqfail">7.12.4.18. function I2c_appSeqFail</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-resethwunit">7.12.4.12. function Cdd_I2c_ResetHwUnit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-getstatus">7.12.4.13. function Cdd_I2c_GetStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-i2c-appseqcomplete">7.12.4.14. function I2c_appSeqComplete</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-i2c-appseqfail">7.12.4.15. function I2c_appSeqFail</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#detailed-description">7.12.5. Detailed Description</a></li>
@@ -376,6 +373,10 @@ This is an enum containing the possible variants of arbitration loss timeout han
 <td><p></p></td>
 <td><p>I2C channel transmission failed due to bus NACK.</p></td>
 </tr>
+<tr class="row-even"><td><p>CDD_I2C_CH_RESULT_HW_UNIT_RESET</p></td>
+<td><p></p></td>
+<td><p>I2C channel transmission failed due to HW unit reset.</p></td>
+</tr>
 </tbody>
 </table>
 <p><strong>Brief</strong>:
@@ -422,6 +423,10 @@ This is an enum containing all the possible channel results The default channel 
 <tr class="row-odd"><td><p>CDD_I2C_SEQ_ARB</p></td>
 <td><p>0x07U</p></td>
 <td><p>An I2C Sequence encountered a arbitration loss.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_I2C_SEQ_HW_UNIT_RESET</p></td>
+<td><p>0x08U</p></td>
+<td><p>An I2C Sequence was terminated due to HW unit reset (bus-off recovery)</p></td>
 </tr>
 </tbody>
 </table>
@@ -722,80 +727,86 @@ Target error notification callback - called on bus error conditions.</p>
 <tr class="row-odd"><td><p>CDD_I2C_SID_GET_STATUS</p></td>
 <td><p>Service ID Cdd_I2c_GetStatus()</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_I2C_SID_TARGET_START</p></td>
+<tr class="row-even"><td><p>CDD_I2C_SID_RESET_HW_UNIT</p></td>
+<td><p>Service ID Cdd_I2c_ResetHwUnit()</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_I2C_SID_TARGET_START</p></td>
 <td><p>Service ID Cdd_I2c_TargetStart()</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_I2C_SID_TARGET_STOP</p></td>
+<tr class="row-even"><td><p>CDD_I2C_SID_TARGET_STOP</p></td>
 <td><p>Service ID Cdd_I2c_TargetStop()</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_I2C_SID_TARGET_SUBMIT_TX_BUF</p></td>
+<tr class="row-odd"><td><p>CDD_I2C_SID_TARGET_SUBMIT_TX_BUF</p></td>
 <td><p>Service ID Cdd_I2c_TargetSubmitTxBuffer()</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_I2C_SID_TARGET_SUBMIT_RX_BUF</p></td>
+<tr class="row-even"><td><p>CDD_I2C_SID_TARGET_SUBMIT_RX_BUF</p></td>
 <td><p>Service ID Cdd_I2c_TargetSubmitRxBuffer()</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_I2C_E_NO_ERROR</p></td>
+<tr class="row-odd"><td><p>CDD_I2C_E_NO_ERROR</p></td>
 <td><p>No errors.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_I2C_E_UNINIT</p></td>
+<tr class="row-even"><td><p>CDD_I2C_E_UNINIT</p></td>
 <td><p>Error code for not initialized module.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_I2C_E_ALREADY_INITIALIZED</p></td>
+<tr class="row-odd"><td><p>CDD_I2C_E_ALREADY_INITIALIZED</p></td>
 <td><p>Init service called twice without deinit.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_I2C_E_PARAM_CHANNEL</p></td>
+<tr class="row-even"><td><p>CDD_I2C_E_PARAM_CHANNEL</p></td>
 <td><p>Channel out of bounds, exceeds the maximum number of configured channels.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_I2C_E_PARAM_SEQUENCE</p></td>
+<tr class="row-odd"><td><p>CDD_I2C_E_PARAM_SEQUENCE</p></td>
 <td><p>Sequence out of bounds, exceeds the maximum number of configured sequences.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_I2C_E_PARAM_LENGTH</p></td>
+<tr class="row-even"><td><p>CDD_I2C_E_PARAM_LENGTH</p></td>
 <td><p>Length out of bounds – a zero length is not accepted.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_I2C_E_PARAM_VINFO_PTR</p></td>
+<tr class="row-odd"><td><p>CDD_I2C_E_PARAM_VINFO_PTR</p></td>
 <td><p>An invalid version info pointer has been passed (a NULL_PTR)</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_I2C_E_PARAM_CONFIG</p></td>
+<tr class="row-even"><td><p>CDD_I2C_E_PARAM_CONFIG</p></td>
 <td><p>An invalid configuration has been passed (a non NULL_PTR)</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_I2C_E_PARAM_TRANS_BUFFER</p></td>
+<tr class="row-odd"><td><p>CDD_I2C_E_PARAM_TRANS_BUFFER</p></td>
 <td><p>Two in-valid transmission buffers have been passed (no NULL_PTR/ or both NULL_PTR)</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_I2C_E_PARAM_ADDRESS</p></td>
+<tr class="row-even"><td><p>CDD_I2C_E_PARAM_ADDRESS</p></td>
 <td><p>Address out of bounds, exceeds the limit of the configured address range.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_I2C_E_PARAM_DIRECTION</p></td>
+<tr class="row-odd"><td><p>CDD_I2C_E_PARAM_DIRECTION</p></td>
 <td><p>Buffer direction conflicts with channel direction set via EB.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_I2C_E_PARAM_HWUNIT</p></td>
+<tr class="row-even"><td><p>CDD_I2C_E_PARAM_HWUNIT</p></td>
 <td><p>API service called with invalid HW unit ID.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_I2C_E_SEQ_BUSY</p></td>
+<tr class="row-odd"><td><p>CDD_I2C_E_SEQ_BUSY</p></td>
 <td><p>API service called with sequence is busy.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_I2C_E_PARAM_MODE</p></td>
+<tr class="row-even"><td><p>CDD_I2C_E_PARAM_MODE</p></td>
 <td><p>API service called with invalid mode - controller or target.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_I2C_E_NACK_RECEIVED</p></td>
+<tr class="row-odd"><td><p>CDD_I2C_E_NACK_RECEIVED</p></td>
 <td><p>Error is reported if NACK was received.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_I2C_E_ARBITRATION_FAILURE</p></td>
+<tr class="row-even"><td><p>CDD_I2C_E_ARBITRATION_FAILURE</p></td>
 <td><p>Error is reported if the master loses arbitration. This usually happens if the SDA is stuck low or another master has won the arbitration procedure.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_I2C_E_BUS_FAILURE</p></td>
+<tr class="row-odd"><td><p>CDD_I2C_E_BUS_FAILURE</p></td>
 <td><p>Error is reported if the SCL line is stuck low.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_I2C_E_CANCELLED</p></td>
+<tr class="row-even"><td><p>CDD_I2C_E_CANCELLED</p></td>
 <td><p>Sequence cancelled.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_I2C_E_RX_OVERFLOW</p></td>
+<tr class="row-odd"><td><p>CDD_I2C_E_RX_OVERFLOW</p></td>
 <td><p>RX buffer overflow - applicable only in target mode.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_I2C_E_TX_UNDERFLOW</p></td>
+<tr class="row-even"><td><p>CDD_I2C_E_TX_UNDERFLOW</p></td>
 <td><p>TX buffer underflow - applicable only in target mode.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_I2C_E_NO_BUFFER</p></td>
+<tr class="row-odd"><td><p>CDD_I2C_E_NO_BUFFER</p></td>
 <td><p>No buffer submitted - applicable only in target mode.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_I2C_E_HW_UNIT_RESET</p></td>
+<td><p>HW unit reset error.</p></td>
 </tr>
 <tr class="row-odd"><td><p>CDD_I2C_WRITE</p></td>
 <td><p>CDD_I2C direction - write.</p></td>
@@ -844,6 +855,12 @@ Target error notification callback - called on bus error conditions.</p>
 </tr>
 <tr class="row-even"><td><p>CDD_I2C_INTERRUPT_MODE</p></td>
 <td><p>STD_ON if any HW unit uses interrupts.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_I2C_CONTROLLER_ACTIVE</p></td>
+<td><p>STD_ON if any HW unit is in controller mode.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_I2C_TARGET_ACTIVE</p></td>
+<td><p>STD_ON if any HW unit is in target mode.</p></td>
 </tr>
 <tr class="row-odd"><td><p>CDD_I2C_DEV_ERROR_DETECT</p></td>
 <td><p>Enable/Disable I2C dev detect error.</p></td>
@@ -1007,31 +1024,19 @@ Target error notification callback - called on bus error conditions.</p>
 <td><p><strong><a class="reference internal" href="#function-cdd-i2c-getresult"><span class="std std-ref">Cdd_I2c_GetResult</span></a></strong>(<a class="reference internal" href="#typedef-cdd-i2c-channeltype"><span class="std std-ref">Cdd_I2c_ChannelType</span></a> chId)</p></td>
 <td><p>This service returns the current status of the given channel.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#enum-cdd-i2c-componentstatustype"><span class="std std-ref">Cdd_I2c_ComponentStatusType</span></a></p></td>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-i2c-resethwunit"><span class="std std-ref">Cdd_I2c_ResetHwUnit</span></a></strong>(<a class="reference internal" href="#typedef-cdd-i2c-hwunittype"><span class="std std-ref">Cdd_I2c_HwUnitType</span></a> hwUnitId)</p></td>
+<td><p>Service to reset and recover a single I2C HW unit from a bus-off condition.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#enum-cdd-i2c-componentstatustype"><span class="std std-ref">Cdd_I2c_ComponentStatusType</span></a></p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-i2c-getstatus"><span class="std std-ref">Cdd_I2c_GetStatus</span></a></strong>(void )</p></td>
 <td><p>This service returns the module’s status.</p></td>
 </tr>
-<tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-i2c-targetstart"><span class="std std-ref">Cdd_I2c_TargetStart</span></a></strong>(<a class="reference internal" href="#typedef-cdd-i2c-hwunittype"><span class="std std-ref">Cdd_I2c_HwUnitType</span></a> hwUnitId)</p></td>
-<td><p>This service starts the target-mode for the provided HW unit ID This enables interrupts and targets will start responding to I2C events after this.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-i2c-targetstop"><span class="std std-ref">Cdd_I2c_TargetStop</span></a></strong>(<a class="reference internal" href="#typedef-cdd-i2c-hwunittype"><span class="std std-ref">Cdd_I2c_HwUnitType</span></a> hwUnitId)</p></td>
-<td><p>This service stops the target-mode for the provided HW unit ID. This disables interrupts and targets will not respond to I2C events after this.</p></td>
-</tr>
-<tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-i2c-targetsubmittxbuffer"><span class="std std-ref">Cdd_I2c_TargetSubmitTxBuffer</span></a></strong>(<a class="reference internal" href="#typedef-cdd-i2c-hwunittype"><span class="std std-ref">Cdd_I2c_HwUnitType</span></a> hwUnitId, <a class="reference internal" href="#typedef-cdd-i2c-dataconstptrtype"><span class="std std-ref">Cdd_I2c_DataConstPtrType</span></a> pTxBuffer, <a class="reference internal" href="#typedef-cdd-i2c-datalengthtype"><span class="std std-ref">Cdd_I2c_DataLengthType</span></a> txBufferSize)</p></td>
-<td><p>Submit TX buffer - call before Start or in TX Notification callback to provide a new buffer to work with.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-i2c-targetsubmitrxbuffer"><span class="std std-ref">Cdd_I2c_TargetSubmitRxBuffer</span></a></strong>(<a class="reference internal" href="#typedef-cdd-i2c-hwunittype"><span class="std std-ref">Cdd_I2c_HwUnitType</span></a> hwUnitId, <a class="reference internal" href="#typedef-cdd-i2c-dataptrtype"><span class="std std-ref">Cdd_I2c_DataPtrType</span></a> pRxBuffer, <a class="reference internal" href="#typedef-cdd-i2c-datalengthtype"><span class="std std-ref">Cdd_I2c_DataLengthType</span></a> rxBufferSize)</p></td>
-<td><p>Submit RX buffer - call before Start or in RX Notification callback to provide a new buffer to work with.</p></td>
-</tr>
-<tr class="row-even"><td><p>void</p></td>
+<tr class="row-odd"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-i2c-appseqcomplete"><span class="std std-ref">I2c_appSeqComplete</span></a></strong>(void )</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p>void</p></td>
+<tr class="row-even"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-i2c-appseqfail"><span class="std std-ref">I2c_appSeqFail</span></a></strong>(uint8 errorCode)</p></td>
 <td><p></p></td>
 </tr>
@@ -1286,8 +1291,43 @@ This service returns the current status of the given channel.</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
+<section id="function-cdd-i2c-resethwunit">
+<h3><span class="section-number">7.12.4.12. </span>function Cdd_I2c_ResetHwUnit<a class="headerlink" href="#function-cdd-i2c-resethwunit" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_ResetHwUnit</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to reset and recover a single I2C HW unit from a bus-off condition.</p>
+<p>This API performs a hard reset of the specified I2C hardware unit without attempting a STOP condition on the bus. Use this when the bus is stuck (e.g. SCL held low by a faulty target) and Cdd_I2c_Cancel cannot complete because the state machine is unable to progress.</p>
+<p>The reset performs the following:</p>
+<ul class="simple">
+<li><p>Disables all interrupts on the HW unit</p></li>
+<li><p>Marks the currently active channel (if any) with CDD_I2C_CH_RESULT_BUSFAIL</p></li>
+<li><p>Drains all queued channels on this HW unit and marks them with CDD_I2C_CH_RESULT_BUSFAIL. All channels on this HW unit are affected, including channels belonging to different sequences queued on the same HW unit.</p></li>
+<li><p>For each affected sequence whose pending channel count reaches zero, the sequence result is set to CDD_I2C_SEQ_HW_UNIT_RESET and the sequence error notification callback (errorNotify) is invoked with CDD_I2C_E_BUS_FAILURE if configured.</p></li>
+<li><p>Re-initializes the HW unit registers (baud rate, address, mode)</p></li>
+<li><p>Sets the HW unit status to free for new transfers</p></li>
+</ul>
+<p>Service ID[hex] - CDD_I2C_SID_RESET_HW_UNIT Sync/Async - Synchronous Reentrancy - Non Reentrant</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>hwUnitId</strong> I2C HW unit ID to reset</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Success
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Request rejected (invalid params or driver not init)
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Std_ReturnType</p>
+<p><strong>Precondition</strong>: Driver must be initialized</p>
+<p><strong>Postcondition</strong>: HW unit is reset and ready for new transfers</p>
+</section>
 <section id="function-cdd-i2c-getstatus">
-<h3><span class="section-number">7.12.4.12. </span>function Cdd_I2c_GetStatus<a class="headerlink" href="#function-cdd-i2c-getstatus" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.12.4.13. </span>function Cdd_I2c_GetStatus<a class="headerlink" href="#function-cdd-i2c-getstatus" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Cdd_I2c_ComponentStatusType</span><span class="w"> </span><span class="n">Cdd_I2c_GetStatus</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1295,109 +1335,13 @@ This service returns the current status of the given channel.</p>
 </div>
 <p><strong>Brief</strong>:
 This service returns the module’s status.</p>
-<p>Note: This API is applicable only for controller mode.</p>
 <p>Service ID[hex] - CDD_I2C_SID_GET_STATUS Sync/Async - Synchronous Reentrancy - Reentrant</p>
 <p><strong>Return</strong>: Cdd_I2c_ComponentStatusType - Return the current status</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
-<section id="function-cdd-i2c-targetstart">
-<h3><span class="section-number">7.12.4.13. </span>function Cdd_I2c_TargetStart<a class="headerlink" href="#function-cdd-i2c-targetstart" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_TargetStart</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-This service starts the target-mode for the provided HW unit ID This enables interrupts and targets will start responding to I2C events after this.</p>
-<p>Note: This API is applicable only for target mode.</p>
-<p>Service ID[hex] - CDD_I2C_SID_TARGET_START Sync/Async - Synchronous Reentrancy - Reentrant</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>hwUnitId</strong> I2C HW unit ID</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>E_OK</strong> Success
-<br></p></li>
-<li><p><strong>E_NOT_OK</strong> Request rejected
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Std_ReturnType</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-i2c-targetstop">
-<h3><span class="section-number">7.12.4.14. </span>function Cdd_I2c_TargetStop<a class="headerlink" href="#function-cdd-i2c-targetstop" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_TargetStop</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-This service stops the target-mode for the provided HW unit ID. This disables interrupts and targets will not respond to I2C events after this.</p>
-<p>Note: This API is applicable only for target mode.</p>
-<p>Service ID[hex] - CDD_I2C_SID_TARGET_STOP Sync/Async - Synchronous Reentrancy - Reentrant</p>
-<p>Stop all target-mode HW units -</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>hwUnitId</strong> I2C HW unit ID</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>E_OK</strong> Success
-<br></p></li>
-<li><p><strong>E_NOT_OK</strong> Request rejected
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Std_ReturnType</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-i2c-targetsubmittxbuffer">
-<h3><span class="section-number">7.12.4.15. </span>function Cdd_I2c_TargetSubmitTxBuffer<a class="headerlink" href="#function-cdd-i2c-targetsubmittxbuffer" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_TargetSubmitTxBuffer</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">Cdd_I2c_DataConstPtrType</span><span class="w"> </span><span class="n">pTxBuffer</span><span class="p">,</span>
-<span class="w">    </span><span class="n">Cdd_I2c_DataLengthType</span><span class="w"> </span><span class="n">txBufferSize</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Submit TX buffer - call before Start or in TX Notification callback to provide a new buffer to work with.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>hwUnitId</strong> I2C HW unit ID</p></li>
-<li><p><strong>pTxBuffer</strong> Pointer to TX data buffer</p></li>
-<li><p><strong>txBufferSize</strong> Size of TX data buffer in bytes</p></li>
-</ul>
-<p><strong>Return</strong>: E_OK on success, E_NOT_OK on failure</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-i2c-targetsubmitrxbuffer">
-<h3><span class="section-number">7.12.4.16. </span>function Cdd_I2c_TargetSubmitRxBuffer<a class="headerlink" href="#function-cdd-i2c-targetsubmitrxbuffer" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_TargetSubmitRxBuffer</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">Cdd_I2c_DataPtrType</span><span class="w"> </span><span class="n">pRxBuffer</span><span class="p">,</span>
-<span class="w">    </span><span class="n">Cdd_I2c_DataLengthType</span><span class="w"> </span><span class="n">rxBufferSize</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Submit RX buffer - call before Start or in RX Notification callback to provide a new buffer to work with.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>hwUnitId</strong> I2C HW unit ID</p></li>
-<li><p><strong>pRxBuffer</strong> Pointer to RX data buffer</p></li>
-<li><p><strong>rxBufferSize</strong> Size of RX data buffer in bytes</p></li>
-</ul>
-<p><strong>Return</strong>: E_OK on success, E_NOT_OK on failure</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
 <section id="function-i2c-appseqcomplete">
-<h3><span class="section-number">7.12.4.17. </span>function I2c_appSeqComplete<a class="headerlink" href="#function-i2c-appseqcomplete" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.12.4.14. </span>function I2c_appSeqComplete<a class="headerlink" href="#function-i2c-appseqcomplete" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">I2c_appSeqComplete</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1405,7 +1349,7 @@ Submit RX buffer - call before Start or in RX Notification callback to provide a
 </div>
 </section>
 <section id="function-i2c-appseqfail">
-<h3><span class="section-number">7.12.4.18. </span>function I2c_appSeqFail<a class="headerlink" href="#function-i2c-appseqfail" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.12.4.15. </span>function I2c_appSeqFail<a class="headerlink" href="#function-i2c-appseqfail" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">I2c_appSeqFail</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">errorCode</span>
 <span class="p">)</span>

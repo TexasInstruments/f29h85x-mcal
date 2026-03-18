@@ -293,7 +293,7 @@ void CddSent_Callback(PduIdType id, const PduInfoType *PduInfoPtr)
 }
 
 /* Cdd_Sent user error callback notification function */
-void CddSent_Error_Callback()
+void CddSent_Error_Callback(void)
 {
     AppUtils_Printf("Error data received \n");
 }

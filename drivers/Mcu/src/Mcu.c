@@ -243,6 +243,9 @@ FUNC(void, MCU_CODE) Mcu_Init(P2CONST(Mcu_ConfigType, MCU_CONFIG_DATA, MCU_CONFI
         /* Configure peripheral registers */
         Mcu_Priv_ConfigurePeripherals(config_ptr->PeripheralConfig);
 
+        /* Configure CPU1 Lockstep */
+        Mcu_Priv_ConfigureLockstep(config_ptr->Mcu_LockstepEnable);
+
 #if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
         /* Set Init Done flag */
         Mcu_InitDone = TRUE;

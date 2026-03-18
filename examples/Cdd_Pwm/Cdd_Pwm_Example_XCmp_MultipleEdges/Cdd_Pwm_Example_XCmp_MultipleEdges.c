@@ -170,12 +170,12 @@ Std_VersionInfoType Cdd_Adc_VersionInfo;
  *  Local Functions Definition
  *********************************************************************************************************************/
 
-void Cdd_Pwm_HwUnit0Notification()
+void Cdd_Pwm_HwUnit0Notification(void)
 {
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0]++;
 }
 
-void Cdd_Pwm_HwUnit1Notification()
+void Cdd_Pwm_HwUnit1Notification(void)
 {
     /* Reapeat the shadow level */
     if (0U == (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1] % CDD_PWM_SHD_LEVEL))
@@ -213,7 +213,7 @@ void Cdd_Pwm_HwUnit1Notification()
     }
 }
 
-void Cdd_Pwm_HwUnit2Notification()
+void Cdd_Pwm_HwUnit2Notification(void)
 {
     /* Reapeat the shadow level */
     /* Enable start load */

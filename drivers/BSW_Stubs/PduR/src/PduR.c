@@ -101,7 +101,7 @@
  * Local Object Definitions
  *********************************************************************************************************************/
 uint8  CanIf_Rx_Data[64U];
-uint8  PduR_RxIndicationCount;
+volatile uint8  PduR_RxIndicationCount;
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
@@ -114,13 +114,13 @@ uint8  PduR_RxIndicationCount;
  *  External Functions Definition
  *********************************************************************************************************************/
 
-Std_ReturnType PduR_Cdd_Sent_RxIndication(PduIdType id, const PduInfoType *PduInfoPtr)
+Std_ReturnType PduR_Cdd_Sent_RxIndication(PduIdType RxPduId, const PduInfoType *PduInfoPtr)
 {
    PduR_RxIndicationCount++;
    return E_OK;
 }
 
-Std_ReturnType PduR_Cdd_Ipc_RxIndication(PduIdType id, const PduInfoType *PduInfoPtr)
+Std_ReturnType PduR_Cdd_Ipc_RxIndication(PduIdType RxPduId, const PduInfoType *PduInfoPtr)
 {
    PduR_RxIndicationCount++;
    return E_OK;

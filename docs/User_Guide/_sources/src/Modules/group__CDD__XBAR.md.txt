@@ -20,6 +20,8 @@ title: Cdd_Xbar
 |enum| **[Cdd_Xbar_Mindb_Xbar_Input_LinesType](../Modules/group__CDD__XBAR.md#enum-cdd_xbar_mindb_xbar_input_linestype)** | MinDB Crossbar Input Lines.  | 
 |enum| **[Cdd_Xbar_Icl_Xbar_Input_LinesType](../Modules/group__CDD__XBAR.md#enum-cdd_xbar_icl_xbar_input_linestype)** | ICL Crossbar Input Lines.  | 
 |enum| **[Cdd_Xbar_InputFlagType](../Modules/group__CDD__XBAR.md#enum-cdd_xbar_inputflagtype)** | Crossbar input flags.  | 
+|enum| **[Cdd_Xbar_IntType](../Modules/group__CDD__XBAR.md#enum-cdd_xbar_inttype)** | External input type.  | 
+|enum| **[Cdd_Xbar_ExternalIntNum](../Modules/group__CDD__XBAR.md#enum-cdd_xbar_externalintnum)** | External interrupt type.  | 
 |typedef uint16  | **[Cdd_Xbar_Type](../Modules/group__CDD__XBAR.md#typedef-cdd_xbar_type)** | Type for symbolic name of CDD XBAR instances.  | 
 |typedef uint8  | **[Cdd_Xbar_OutputlevelType](../Modules/group__CDD__XBAR.md#typedef-cdd_xbar_outputleveltype)** | These are the possible levels an output crossbar output can have.  | 
 
@@ -1374,6 +1376,40 @@ Crossbar input flags.
 
 
 
+### enum Cdd_Xbar_IntType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_XBAR_INT_TYPE_NEGATIVE_EDGE | 0x00|  Interrupt on negative edge  |
+| CDD_XBAR_INT_TYPE_POSITIVE_EDGE | 0x04|  Interrupt on positive edge  |
+| CDD_XBAR_INT_TYPE_BOTH_EDGES | 0x0C|  Interrupt on both edges  |
+| CDD_XBAR_INT_TYPE_DISABLED | 0xFF|  Interrupt disabled  |
+
+
+
+
+**Brief**: 
+External input type. 
+
+
+
+### enum Cdd_Xbar_ExternalIntNum
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_XBAR_XINT1 | 0|  External Interrupt 1  |
+| CDD_XBAR_XINT2 | 2|  External Interrupt 2  |
+| CDD_XBAR_XINT3 | 4|  External Interrupt 3  |
+| CDD_XBAR_XINT4 | 6|  External Interrupt 4  |
+| CDD_XBAR_XINT5 | 8|  External Interrupt 5  |
+| CDD_XBAR_XINT_DISABLED | 0xFF|  External Interrupt disabled  |
+
+
+
+
+**Brief**: 
+External interrupt type. 
+
+
+
 ### typedef Cdd_Xbar_Type
 ```
 typedef uint16 Cdd_Xbar_Type;
@@ -1449,6 +1485,9 @@ These are the possible levels an output crossbar output can have.
 | CDD_XBAR_SID_LOCKSTATUS   | Cdd_Xbar_LockStatus()  |
 | CDD_XBAR_SID_INPUTFLAGSTATUS   | Cdd_Xbar_InputFlagStatus()  |
 | CDD_XBAR_SID_INPUTFLAGCLEAR   | Cdd_Xbar_InputFlagClear()  |
+| CDD_XBAR_SID_SET_EXTERNAL_INTERRUPT_TYPE   | Cdd_Xbar_SetExternalInterruptType()  |
+| CDD_XBAR_SID_SET_EXTERNAL_INTERRUPT_STATE   | Cdd_Xbar_SetExternalInterruptState()  |
+| CDD_XBAR_SID_GET_EXTERNAL_INTERRUPT_COUNTER   | Cdd_Xbar_GetExternalInterruptCounter()  |
 | CDD_XBAR_GET_GROUP_NUMBER (InputLine)  | Get group number for a given input line.  |
 | CDD_XBAR_GET_XBAR_TYPE (xbar)  | Get crossbar type.  |
 | CDD_XBAR_GET_XBAR_INSTANCE (xbar)  | Get crossbar output line.  |
@@ -1638,6 +1677,9 @@ These are the possible levels an output crossbar output can have.
 | boolean | **[Cdd_Xbar_LockStatus](../Modules/group__CDD__XBAR.md#function-cdd_xbar_lockstatus)**([Cdd_Xbar_Type](../Modules/group__CDD__XBAR.md#typedef-cdd_xbar_type) CrossbarUnit)| Service for checking lock status on a given Crossbar Unit.  |
 | boolean | **[Cdd_Xbar_InputFlagStatus](../Modules/group__CDD__XBAR.md#function-cdd_xbar_inputflagstatus)**([Cdd_Xbar_InputFlagType](../Modules/group__CDD__XBAR.md#enum-cdd_xbar_inputflagtype) InputFlag)| Service for checking status of a crossbar input flag.  |
 | Std_ReturnType | **[Cdd_Xbar_InputFlagClear](../Modules/group__CDD__XBAR.md#function-cdd_xbar_inputflagclear)**([Cdd_Xbar_InputFlagType](../Modules/group__CDD__XBAR.md#enum-cdd_xbar_inputflagtype) InputFlag)| Service for clearing a crossbar input flag.  |
+| Std_ReturnType | **[Cdd_Xbar_SetExternalInterruptType](../Modules/group__CDD__XBAR.md#function-cdd_xbar_setexternalinterrupttype)**([Cdd_Xbar_Type](../Modules/group__CDD__XBAR.md#typedef-cdd_xbar_type) CrossbarUnit, [Cdd_Xbar_IntType](../Modules/group__CDD__XBAR.md#enum-cdd_xbar_inttype) IntType)| Sets the interrupt type for the specified input crossbar instance.  |
+| Std_ReturnType | **[Cdd_Xbar_SetExternalInterruptState](../Modules/group__CDD__XBAR.md#function-cdd_xbar_setexternalinterruptstate)**([Cdd_Xbar_Type](../Modules/group__CDD__XBAR.md#typedef-cdd_xbar_type) CrossbarUnit, boolean Enable)| Sets the external interrupt state (enable/disable) for the specified input crossbar instance.  |
+| Std_ReturnType | **[Cdd_Xbar_GetExternalInterruptCounter](../Modules/group__CDD__XBAR.md#function-cdd_xbar_getexternalinterruptcounter)**([Cdd_Xbar_Type](../Modules/group__CDD__XBAR.md#typedef-cdd_xbar_type) CrossbarUnit, uint16 * CounterValue)| Gets external interrupt counter value.  |
 | uint32 | **[Cdd_Xbar_Input_Selection_Mask](../Modules/group__CDD__XBAR.md#function-cdd_xbar_input_selection_mask)**(uint32 InputLine)| Get Line Number selection mask.  |
 
 
@@ -2374,6 +2416,126 @@ Clears the XBAR input flags.Cdd_Xbar_InputFlagType can be used as an argument to
 **Return**: Status of clearing input flag. 
 
 **Precondition**: Preconditions - Driver is already initialized. 
+
+**Postcondition**: Postconditions - None. 
+
+### function Cdd_Xbar_SetExternalInterruptType
+
+```
+Std_ReturnType Cdd_Xbar_SetExternalInterruptType(
+    Cdd_Xbar_Type CrossbarUnit,
+    Cdd_Xbar_IntType IntType
+)
+```
+
+
+**Brief**: 
+Sets the interrupt type for the specified input crossbar instance. 
+
+This function sets up the various interrupt trigger mechanisms for the external interrupt connected to the specified input XBAR instance.
+
+
+**Parameters**: 
+
+  
+* **CrossbarUnit** specifies the symbolic name of the input crossbar instance. 
+  
+* **IntType** specifies the type of interrupt trigger mechanism. 
+
+
+**Returns**: 
+
+  
+* **E_OK** if external interrupt type is set. 
+<br> 
+  
+* **E_NOT_OK** if external interrupt type is not set. 
+<br> 
+
+
+**Return**: Status of setting external interrupt type. 
+
+**Precondition**: Preconditions - Driver is already initialized. Input crossbar must be configured with external interrupt enabled. 
+
+**Postcondition**: Postconditions - None. 
+
+### function Cdd_Xbar_SetExternalInterruptState
+
+```
+Std_ReturnType Cdd_Xbar_SetExternalInterruptState(
+    Cdd_Xbar_Type CrossbarUnit,
+    boolean Enable
+)
+```
+
+
+**Brief**: 
+Sets the external interrupt state (enable/disable) for the specified input crossbar instance. 
+
+This function enables or disables the external interrupt for the specified input crossbar instance. When Enable = TRUE, enables the external interrupt. When Enable = FALSE, disables the external interrupt.
+
+
+**Parameters**: 
+
+  
+* **CrossbarUnit** specifies the symbolic name of the input crossbar instance. 
+  
+* **Enable** TRUE to enable the interrupt, FALSE to disable the interrupt. 
+
+
+**Returns**: 
+
+  
+* **E_OK** if external interrupt state is set. 
+<br> 
+  
+* **E_NOT_OK** if external interrupt state is not set. 
+<br> 
+
+
+**Return**: Status of setting external interrupt state. 
+
+**Precondition**: Preconditions - Driver is already initialized. Input crossbar must be configured with external interrupt enabled. 
+
+**Postcondition**: Postconditions - None. 
+
+### function Cdd_Xbar_GetExternalInterruptCounter
+
+```
+Std_ReturnType Cdd_Xbar_GetExternalInterruptCounter(
+    Cdd_Xbar_Type CrossbarUnit,
+    uint16 * CounterValue
+)
+```
+
+
+**Brief**: 
+Gets external interrupt counter value. 
+
+This function retrieves the counter value for the specified external interrupt. This is a free running 16-bit up-counter clocked at SYSCLK and is only available for XINT1, XINT2, and XINT3. XINT4 and XINT5 do not have counter registers. The counter value is reset to 0x0000 when a valid interrupt edge is detected and then continues counting until the next valid interrupt edge is detected. The counter is a free-running counter and will wrap around to zero when the max value is reached
+
+
+**Parameters**: 
+
+  
+* **CrossbarUnit** - External interrupt crossbar unit (CDD_XBAR_XINT1, CDD_XBAR_XINT2, or CDD_XBAR_XINT3) 
+  
+* **CounterValue** - Pointer to store the counter value (16-bit) 
+
+
+**Returns**: 
+
+  
+* **E_OK** if counter value is retrieved successfully. 
+<br> 
+  
+* **E_NOT_OK** if counter value retrieval failed (invalid parameters or counter not available). 
+<br> 
+
+
+**Return**: Status of getting external interrupt counter. 
+
+**Precondition**: Preconditions - Cdd_Xbar_Init() must be called before this function. 
 
 **Postcondition**: Postconditions - None. 
 

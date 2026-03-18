@@ -249,7 +249,7 @@ typedef struct Cdd_Adc_DriverObjTag
     boolean ppb_obj[CDD_ADC_PPB_CNT];
 #endif
 
-    Cdd_Adc_HwUnitInstanceType instanceindex[CDD_ADC_MAX_HW_UNIT_COUNT];
+    Cdd_Adc_HwUnitInstanceType instance_index[CDD_ADC_MAX_HW_UNIT_COUNT];
 #endif
 
     /** \brief  ADC group objects */
@@ -368,7 +368,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group);
  * This private function disables the further triggers for the SOCs associated with the requested
  *group.
  *
- * \param[in]  HwUnitId    Numeric ID of the instance
+ * \param[in]  HwIdx    Numeric ID of the instance
  * \param[in]  Resolution    Resolution mode of the ADC hardware unit
  * \param[in]  SignalMode    Signal mode of the ADC hardware unit
  * \pre None
@@ -378,15 +378,14 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group);
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_ADC_CODE)
-Cdd_Adc_SetMode(Cdd_Adc_HwUnitInstanceType HwUnitId, Cdd_Adc_ResolutionType Resolution,
-                Cdd_Adc_SignalModeType SignalMode);
+Cdd_Adc_SetMode(Cdd_Adc_HwUnitInstanceType HwIdx, Cdd_Adc_ResolutionType Resolution, Cdd_Adc_SignalModeType SignalMode);
 
 #if (STD_ON == CDD_ADC_SET_RESOLUTION_API)
 /** \brief Updates the resolution of the specified ADC hardware unit if no DET errors are reported
  *
  * This private updates the resolution of the specified ADC hardware unit if no DET errors are reported
  *
- * \param[in] HwUnit  Instance ID of the specified ADC Hw Unit
+ * \param[in] HwIdx  Instance ID of the specified ADC Hw Unit
  * \param[in] Resolution Resolution to be set for the ADC Hw Unit
  * \pre None
  * \post None
@@ -396,7 +395,7 @@ Cdd_Adc_SetMode(Cdd_Adc_HwUnitInstanceType HwUnitId, Cdd_Adc_ResolutionType Reso
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_ADC_CODE)
-Cdd_Adc_UpdateResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
+Cdd_Adc_UpdateResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwIdx,
                          VAR(Cdd_Adc_ResolutionType, AUTOMATIC) Resolution);
 #endif
 
@@ -682,7 +681,7 @@ FUNC(sint32, CDD_ADC_CODE) Cdd_Adc_ReadPpbPMin(uint32 Base, Cdd_Adc_PpbIdType Pp
  * This function returns the partial index of the processed conversion's maximum value of the
  *specified PPB.
  *
- * \param[in] ResultBase is the Base address of the ADC results.
+ * \param[in] Base is the Base address of the ADC results.
  * \param[in] PpbNumber is the numeric ID of the post-processing block
  * \pre None
  * \post None
@@ -690,14 +689,14 @@ FUNC(sint32, CDD_ADC_CODE) Cdd_Adc_ReadPpbPMin(uint32 Base, Cdd_Adc_PpbIdType Pp
  * \retval uint16 - index of the PPB maximum partial value
  *
  *********************************************************************************************************************/
-FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_ReadPpbPMaxIndex(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber);
+FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_ReadPpbPMaxIndex(uint32 Base, Cdd_Adc_PpbIdType PpbNumber);
 
 /** \brief Reads the partial index of the result with minimum value from the PPB.
  *
  * his function returns the partial index of the processed conversion's minimum value of the
  *specified PPB.
  *
- * \param[in] ResultBase is the Base address of the ADC results.
+ * \param[in] Base is the Base address of the ADC results.
  * \param[in] PpbNumber is the numeric ID of the post-processing block
  * \pre None
  * \post None
@@ -705,7 +704,7 @@ FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_ReadPpbPMaxIndex(uint32 ResultBase, Cdd_Adc_P
  * \retval uint16 - index of the minimum partial value of the PPB
  *
  *********************************************************************************************************************/
-FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_ReadPpbPMinIndex(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber);
+FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_ReadPpbPMinIndex(uint32 Base, Cdd_Adc_PpbIdType PpbNumber);
 
 /** \brief Reads the oversampled final sum from the PPB.
  *

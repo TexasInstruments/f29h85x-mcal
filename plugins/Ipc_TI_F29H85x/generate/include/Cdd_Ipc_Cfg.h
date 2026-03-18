@@ -222,6 +222,9 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+/* Forward declaration of Cdd_Ipc configuration structure */
+struct Cdd_Ipc_ConfigTag;
+
 /* Design: MCAL-30527 */
 /** \brief CPU cores type */
 typedef enum

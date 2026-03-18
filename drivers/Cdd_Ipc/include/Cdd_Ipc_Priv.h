@@ -94,25 +94,25 @@ extern "C" {
 /** \brief Set register address */
 #define CDD_IPC_REG_SET(x) ((uint32)(x))
 /** \brief Clear register address */
-#define CDD_IPC_REG_CLR(x) ((uint32)(x) + 0x4U)
+#define CDD_IPC_REG_CLR(x) (((uint32)(x)) + 0x4U)
 /** \brief Flag register address */
-#define CDD_IPC_REG_FLG(x) ((uint32)(x) + 0x8U)
+#define CDD_IPC_REG_FLG(x) (((uint32)(x)) + 0x8U)
 /** \brief Send command register address */
-#define CDD_IPC_REG_SENDCOM(x) ((uint32)(x) + 0x10U)
+#define CDD_IPC_REG_SENDCOM(x) (((uint32)(x)) + 0x10U)
 /** \brief Send address register address */
-#define CDD_IPC_REG_SENDADDR(x) ((uint32)(x) + 0x14U)
+#define CDD_IPC_REG_SENDADDR(x) (((uint32)(x)) + 0x14U)
 /** \brief Send data register address */
-#define CDD_IPC_REG_SENDDATA(x) ((uint32)(x) + 0x18U)
+#define CDD_IPC_REG_SENDDATA(x) (((uint32)(x)) + 0x18U)
 /** \brief Status register address */
-#define CDD_IPC_REG_STS(x) ((uint32)(x) + CDD_IPC_SEND_TO_RCV_STEP + 0U)
+#define CDD_IPC_REG_STS(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0U)
 /** \brief Acknowledgement register address */
-#define CDD_IPC_REG_ACK(x) ((uint32)(x) + CDD_IPC_SEND_TO_RCV_STEP + 0x4U)
+#define CDD_IPC_REG_ACK(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0x4U)
 /** \brief Receive command register address */
-#define CDD_IPC_REG_RECVCOM(x) ((uint32)(x) + CDD_IPC_SEND_TO_RCV_STEP + 0x10U)
+#define CDD_IPC_REG_RECVCOM(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0x10U)
 /** \brief Receive address register address */
-#define CDD_IPC_REG_RECVADDR(x) ((uint32)(x) + CDD_IPC_SEND_TO_RCV_STEP + 0x14U)
+#define CDD_IPC_REG_RECVADDR(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0x14U)
 /** \brief Receive data register address */
-#define CDD_IPC_REG_RECVDATA(x) ((uint32)(x) + CDD_IPC_SEND_TO_RCV_STEP + 0x18U)
+#define CDD_IPC_REG_RECVDATA(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0x18U)
 
 #define CDD_IPC_FLAG0 0x00000001U /*!< \brief   IPC FLAG 0 - Triggers interrupt */
 #define CDD_IPC_FLAG1 0x00000002U /*!< \brief   IPC FLAG 1 - Indicates polling mode */

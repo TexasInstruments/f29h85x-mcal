@@ -389,7 +389,7 @@ Fls_Compare(Fls_AddressType SourceAddress, const uint8 *TargetAddressPtr, Fls_Le
 #if (STD_ON == FLS_BLANK_CHECK_API)
 /** \brief The function Fls_BlankCheck shall verify, whether a given memory area has been erased but
  *not (yet) programmed.
- * \param[in] Address Address in flash memory from which the blank check should be started.
+ * \param[in] TargetAddress Address in flash memory from which the blank check should be started.
  * \param[in] Length - Number of bytes to be checked for erase pattern
  * \pre Preconditions - Driver not already initialized
  * \post Postconditions - Driver in initialized state
@@ -398,7 +398,7 @@ Fls_Compare(Fls_AddressType SourceAddress, const uint8 *TargetAddressPtr, Fls_Le
  * \retval E_NOT_OK: request for blank checking has not been accepted by the module
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, FLS_CODE) Fls_BlankCheck(Fls_AddressType Address, Fls_LengthType Length);
+FUNC(Std_ReturnType, FLS_CODE) Fls_BlankCheck(Fls_AddressType TargetAddress, Fls_LengthType Length);
 #endif
 
 #if (STD_ON == FLS_GET_STATUS_API)

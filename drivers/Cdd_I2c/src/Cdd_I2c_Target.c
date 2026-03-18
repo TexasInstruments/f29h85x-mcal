@@ -77,6 +77,8 @@
 #include "Cdd_I2c_Hw.h"
 #include "hw_i2c.h"
 
+#if (CDD_I2C_TARGET_ACTIVE == STD_ON)
+
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
@@ -640,6 +642,8 @@ static Std_ReturnType Cdd_I2c_TargetHwUnitIdCheck(Cdd_I2c_DriverObjType *drvObj,
 
 #define CDD_I2C_STOP_SEC_CODE
 #include "Cdd_I2c_MemMap.h"
+
+#endif /* CDD_I2C_TARGET_ACTIVE */
 
 /*********************************************************************************************************************
  *  End of File: Cdd_I2c_Target.c

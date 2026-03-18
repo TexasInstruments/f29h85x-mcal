@@ -96,15 +96,15 @@ extern "C" {
  *Design: MCAL-23521, MCAL-22409, MCAL-23523, MCAL-22412, MCAL-22413,MCAL-23521
  */
 /** \brief Pin configuration check */
-#define PORT_IS_PIN_CONFIGURABLE(x) ((boolean)(((x->Port_ControllerSpecific.Port_PinConfigFlags)) & ((uint8)0x1U)))
+#define PORT_IS_PIN_CONFIGURABLE(x) ((boolean)((((x)->Port_ControllerSpecific.Port_PinConfigFlags)) & ((uint8)0x1U)))
 /** \brief Pin Analog Support check */
-#define PORT_IS_ANALOG_MODE_SUPPORTED(x) ((boolean)(((x->Port_PinConfigFlags) >> (uint8)1U) & (0x1U)))
+#define PORT_IS_ANALOG_MODE_SUPPORTED(x) ((boolean)((((x)->Port_PinConfigFlags) >> (uint8)1U) & (0x1U)))
 /** \brief AGPIO Pin check */
-#define PORT_IS_PIN_AGPIO(x) ((boolean)(((x->Port_PinConfigFlags) >> 2U) & (0x1U)))
+#define PORT_IS_PIN_AGPIO(x) ((boolean)((((x)->Port_PinConfigFlags) >> 2U) & (0x1U)))
 /** \brief AIO Pin check */
-#define PORT_IS_PIN_AIO(x) ((boolean)(((x->Port_PinConfigFlags) >> 3U) & (0x1U)))
+#define PORT_IS_PIN_AIO(x) ((boolean)((((x)->Port_PinConfigFlags) >> 3U) & (0x1U)))
 /** \brief GPIO Pin check */
-#define PORT_IS_PIN_GPIO(x) ((boolean)(((x->Port_PinConfigFlags) >> 4U) & (0x1U)))
+#define PORT_IS_PIN_GPIO(x) ((boolean)((((x)->Port_PinConfigFlags) >> 4U) & (0x1U)))
 /** \brief Port Width : 32 */
 #define PORT_WIDTH (32U)
 /** \brief Half of Port Width */
@@ -216,7 +216,7 @@ Port_SetCntSpConfig(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) Pin
  * The pin is specified by its numerical value. For example, GPIO34 is
  * specified by passing 34 as \e PinNumber.
  *
- * \param[in] PinConfigPtr is the pointer to the pin config structure.
+ * \param[in] PinConfig is the pointer to the pin config structure.
  * \param[in] PinLevel is the value to write to the pin.
  * \pre None
  * \post None
@@ -226,8 +226,7 @@ Port_SetCntSpConfig(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) Pin
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, PORT_CODE)
-Port_SetPinLevel(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfigPtr,
-                 Port_PinLevelValueType PinLevel);
+Port_SetPinLevel(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfig, Port_PinLevelValueType PinLevel);
 
 /** \brief Set pins as Low Power wakeup modes GPIO pins.
  *
@@ -280,7 +279,7 @@ FUNC(void, PORT_CODE) Port_SetPinModeConfig(uint32 PinMode);
  * The pin is specified by its numerical value. For example, GPIO34 is
  * specified by passing 34 as \e pin.
  *
- * \param[in] PinConfigPtr is the pointer to the pin config structure.
+ * \param[in] PinConfig is the pointer to the pin config structure.
  * \param[in] PinDirection is the pin direction mode.
  * \pre None
  * \post None
@@ -290,7 +289,7 @@ FUNC(void, PORT_CODE) Port_SetPinModeConfig(uint32 PinMode);
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, PORT_CODE)
-Port_SetDirectionMode(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfigPtr,
+Port_SetDirectionMode(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfig,
                       Port_PinDirectionType PinDirection);
 
 /** \brief Checks if the provided pin number is Valid or Not.

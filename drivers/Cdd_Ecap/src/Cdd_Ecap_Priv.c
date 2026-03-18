@@ -281,7 +281,7 @@ uint32 Cdd_Ecap_getIntrStatus(uint32 baseAddr, uint32 flag);
 
 /**
  \param baseAddr is the base address of the ECAP module.
- \param srcSelect is the emulation mode.
+ \param mode is the emulation mode.
 
  * \brief This function configures the eCAP counter, TSCTR,  to the desired emulation
  * mode when emulation suspension occurs. Valid inputs for mode are:
@@ -289,7 +289,7 @@ uint32 Cdd_Ecap_getIntrStatus(uint32 baseAddr, uint32 flag);
  * - CDD_ECAP_EMULATION_RUN_TO_ZERO - Counter runs till it reaches 0.
  * - CDD_ECAP_EMULATION_FREE_RUN - Counter is not affected.
  */
-void Cdd_Ecap_setEmulationMode(uint32 baseAddr, Cdd_Ecap_EmulationMode srcSelect);
+void Cdd_Ecap_setEmulationMode(uint32 baseAddr, Cdd_Ecap_EmulationMode mode);
 
 /**
  \param baseAddr is the base address of the ECAP module.
@@ -516,9 +516,9 @@ void Cdd_Ecap_HRCAP_enableCalibrationInterrupt(uint32 baseAddr, uint16 intFlags)
     return;
 }
 
-uint16 Cdd_Ecap_HRCAP_getCalibrationFlags(uint32 baseAddr)
+Cdd_Ecap_ChannelHrInterruptType Cdd_Ecap_HRCAP_getCalibrationFlags(uint32 baseAddr)
 {
-    return ((uint16)(HWREGH(baseAddr + ECAP_O_HRFLG) & 0x7U));
+    return ((Cdd_Ecap_ChannelHrInterruptType)(HWREGH(baseAddr + ECAP_O_HRFLG) & 0x7U));
 }
 
 void Cdd_Ecap_HRCAP_clearCalibrationFlags(uint32 baseAddr, uint16 flags)
@@ -532,14 +532,15 @@ void Cdd_Ecap_HRCAP_setCalibrationPeriod(uint32 baseAddr, uint32 sysclkHz)
     return;
 }
 
-uint32 Cdd_Ecap_HRCAP_getCalibrationClockPeriod(uint32 baseAddr, Cdd_Ecap_HrCap_CalibrationClockSource ClockSource)
+Cdd_Ecap_ValueType Cdd_Ecap_HRCAP_getCalibrationClockPeriod(uint32                                baseAddr,
+                                                            Cdd_Ecap_HrCap_CalibrationClockSource ClockSource)
 {
     return (HWREG(baseAddr + ECAP_O_HRSYSCLKCAP + ((uint32)ClockSource * 2UL)));
 }
 
-float32 Cdd_Ecap_HRCAP_getScaleFactor(uint32 baseAddr, Cdd_Ecap_ChannelType Channel)
+Cdd_Ecap_ChannelHrScaleType Cdd_Ecap_HRCAP_getScaleFactor(uint32 baseAddr, Cdd_Ecap_ChannelType Channel)
 {
-    float32 result = CDD_ECAP_SF_NOTREADY;
+    Cdd_Ecap_ChannelHrScaleType result = CDD_ECAP_SF_NOTREADY;
 
     /* Calculate and return the scale factor. */
     if (Cdd_Ecap_ObjPtr->chObj[Channel].intHr >= 1U)
@@ -555,10 +556,12 @@ float32 Cdd_Ecap_HRCAP_getScaleFactor(uint32 baseAddr, Cdd_Ecap_ChannelType Chan
     return result;
 }
 
-float32 Cdd_Ecap_HRCAP_convertEventTimeStamp(uint32 timeStamp, float32 scaleFactor)
+Cdd_Ecap_ChannelHrScaleType Cdd_Ecap_HRCAP_convertEventTimeStamp(uint32                      timeStamp,
+                                                                 Cdd_Ecap_ChannelHrScaleType scaleFactor)
 {
     /* Convert the raw count value to nanoseconds using the given scale factor. */
-    return ((float32)((float32)timeStamp * scaleFactor) / (float32)128.0);
+    return ((Cdd_Ecap_ChannelHrScaleType)((Cdd_Ecap_ChannelHrScaleType)timeStamp * scaleFactor) /
+            (Cdd_Ecap_ChannelHrScaleType)128.0);
 }
 #endif
 void Cdd_Ecap_ResetChObj(void)

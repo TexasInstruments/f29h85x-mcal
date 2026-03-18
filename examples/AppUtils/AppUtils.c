@@ -216,7 +216,7 @@ void Uart_SetConfig(uint32 UartClk, uint32 Baudrate, uint32 Config)
     Uart_EnableModule();
 }
 
-void AppUtils_DeInit()
+void AppUtils_DeInit(void)
 {
     Uart_DisableModule();
 }

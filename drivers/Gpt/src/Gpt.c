@@ -405,7 +405,7 @@ FUNC(Gpt_ValueType, GPT_CODE) Gpt_GetTimeRemaining(Gpt_ChannelType Channel)
     }
     /* If channel is not a valid configured channel, report to DET with GPT_E_PARAM_CHANNEL" error.
      */
-    else if (GPT_MAX_32BIT_VAL == ch_index)
+    else if (ch_index >= GPT_CFG_NO_OF_CHANNELS)
     {
 #if (STD_ON == GPT_CFG_DEV_ERROR_DETECT)
         (void)Det_ReportError(GPT_MODULE_ID, GPT_INSTANCE_ID, GPT_SID_GET_TIME_REMAINING, GPT_E_PARAM_CHANNEL);
@@ -497,7 +497,7 @@ FUNC(void, GPT_CODE) Gpt_StopTimer(Gpt_ChannelType Channel)
     }
     /* If the requested channel is not a valid configured channel, report to DET with
      * "GPT_E_PARAM_CHANNEL" error. */
-    else if (GPT_MAX_32BIT_VAL == ch_index)
+    else if (ch_index >= GPT_CFG_NO_OF_CHANNELS)
     {
 #if (STD_ON == GPT_CFG_DEV_ERROR_DETECT)
         (void)Det_ReportError(GPT_MODULE_ID, GPT_INSTANCE_ID, GPT_SID_STOP_TIMER, GPT_E_PARAM_CHANNEL);
@@ -551,7 +551,7 @@ FUNC(void, GPT_CODE) Gpt_EnableNotification(Gpt_ChannelType Channel)
      * "GPT_E_PARAM_CHANNEL" error. */
     /* OR */
     /* If the notification call pointer is NULL, report to DET with "GPT_E_PARAM_CHANNEL" error. */
-    else if ((GPT_MAX_32BIT_VAL == ch_index) ||
+    else if ((ch_index >= GPT_CFG_NO_OF_CHANNELS) ||
              (NULL_PTR == Gpt_DrvObj.Gpt_CfgPtr->ChannelCfgPtr[ch_index].Gpt_PtrNotifyFunction))
     {
 #if (STD_ON == GPT_CFG_DEV_ERROR_DETECT)
@@ -597,7 +597,7 @@ FUNC(void, GPT_CODE) Gpt_DisableNotification(Gpt_ChannelType Channel)
      * "GPT_E_PARAM_CHANNEL" error. */
     /* OR */
     /* If the notification call pointer is NULL, report to DET with "GPT_E_PARAM_CHANNEL" error. */
-    else if ((GPT_MAX_32BIT_VAL == ch_index) ||
+    else if ((ch_index >= GPT_CFG_NO_OF_CHANNELS) ||
              (NULL_PTR == Gpt_DrvObj.Gpt_CfgPtr->ChannelCfgPtr[ch_index].Gpt_PtrNotifyFunction))
     {
 #if (STD_ON == GPT_CFG_DEV_ERROR_DETECT)

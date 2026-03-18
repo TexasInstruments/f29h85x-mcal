@@ -1006,6 +1006,40 @@ Cdd_Xbar_InFlagClear(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag,
 }
 #endif /* STD_ON == CDD_XBAR_INPUT_FLAG_API */
 
+#if (0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS)
+
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_SetIntrType(VAR(Cdd_Xbar_ExternalIntNum, AUTOMATIC) ExtIntNum, VAR(Cdd_Xbar_IntType, AUTOMATIC) IntType)
+{
+    /* Write the selected polarity to the appropriate register */
+    HWREGH(XINT_BASE + ExtIntNum) = (HWREGH(XINT_BASE + ExtIntNum) & ~XINT_1CR_POLARITY_M) | IntType;
+}
+
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_EnableIntr(VAR(Cdd_Xbar_ExternalIntNum, AUTOMATIC) ExtIntNum, VAR(boolean, AUTOMATIC) Enable)
+{
+    if (TRUE == Enable)
+    {
+        /* Set the enable bit for the specified interrupt */
+        HWREGH(XINT_BASE + ExtIntNum) |= XINT_1CR_ENABLE;
+    }
+    else
+    {
+        /* Clear the enable bit for the specified interrupt */
+        HWREGH(XINT_BASE + ExtIntNum) &= ~XINT_1CR_ENABLE;
+    }
+}
+
+FUNC(uint16, CDD_XBAR_CODE)
+Cdd_Xbar_GetIntrCounter(VAR(Cdd_Xbar_ExternalIntNum, AUTOMATIC) ExtIntNum)
+{
+    /* Read and return the counter register value for the specified external
+     * interrupt */
+    return (HWREGH(XINT_BASE + XINT_O_1CTR + (uint16)ExtIntNum));
+}
+
+#endif /* 0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS */
+
 #define CDD_XBAR_STOP_SEC_CODE
 #include "Cdd_Xbar_MemMap.h"
 

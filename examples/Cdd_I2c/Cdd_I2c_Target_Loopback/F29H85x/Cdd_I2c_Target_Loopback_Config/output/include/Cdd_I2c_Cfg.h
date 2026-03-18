@@ -151,6 +151,11 @@ typedef uint16 Cdd_I2c_DataLengthType;
 /** \brief STD_ON if any HW unit uses interrupts */
 #define CDD_I2C_INTERRUPT_MODE      (STD_ON)
 
+/** \brief STD_ON if any HW unit is in controller mode */
+#define CDD_I2C_CONTROLLER_ACTIVE   (STD_ON)
+/** \brief STD_ON if any HW unit is in target mode */
+#define CDD_I2C_TARGET_ACTIVE       (STD_ON)
+
 /** \brief Enable/Disable I2C dev detect error */
 #define CDD_I2C_DEV_ERROR_DETECT        (STD_ON)
 
@@ -368,8 +373,11 @@ typedef struct
     /** \brief Number of chs for this sequence.
      *   Should not be more than CDD_I2C_MAX_CH_PER_SEQ */
     uint32                            chPerSeq;
+
+#if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
     /** \brief Channel index list */
     Cdd_I2c_ChannelType               chList[CDD_I2C_MAX_CH_PER_SEQ];
+#endif
 } Cdd_I2c_SequenceConfigType;
 
 /**
@@ -379,10 +387,13 @@ typedef struct Cdd_I2c_ConfigTag
 {
     /** \brief HW Unit configurations */
     Cdd_I2c_HwUnitConfigType   hwUnitCfg[CDD_I2C_MAX_HW_UNIT];
+
+#if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
     /** \brief Sequence configurations */
     Cdd_I2c_SequenceConfigType seqCfg[CDD_I2C_MAX_SEQ];
     /** \brief Ch configurations */
     Cdd_I2c_ChConfigType       chCfg[CDD_I2C_MAX_CH];
+#endif
 } Cdd_I2c_ConfigType;
 
 /*********************************************************************************************************************
@@ -395,14 +406,13 @@ extern CONST(uint32, CDD_I2C_CONST) Cdd_I2c_HwUnitBaseAddr[CDD_I2C_HW_UNIT_MAX];
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
-
 extern void I2c_appSeqComplete(void);
 extern void I2c_appSeqFail(uint8 errorCode);
 
 extern void I2c_appTargetRxStartCallback(Cdd_I2c_HwUnitType hwUnitId);
-extern void I2c_appTargetRxCompleteCallback(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataPtrType pRxBuffer, Cdd_I2c_DataLengthType rxCount, uint8 status);
+extern void I2c_appTargetRxCompleteCallback(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataPtrType pRxData, Cdd_I2c_DataLengthType rxCount, uint8 status);
 extern void I2c_appTargetTxStartCallback(Cdd_I2c_HwUnitType hwUnitId);
-extern void I2c_appTargetTxCompleteCallback(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataConstPtrType pTxBuffer, Cdd_I2c_DataLengthType txCount, uint8 status);
+extern void I2c_appTargetTxCompleteCallback(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataConstPtrType pTxData, Cdd_I2c_DataLengthType txCount, uint8 status);
 extern void I2c_appTargetErrorCallback(Cdd_I2c_HwUnitType hwUnitId, uint8 errorCode);
 
 /*********************************************************************************************************************

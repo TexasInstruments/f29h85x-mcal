@@ -221,20 +221,20 @@ static FUNC(void, PORT_CODE) Port_SetAnalogMode(Port_PinType PinNumber, Port_Ana
  *Design: MCAL-22382,MCAL-22316,MCAL-22409,MCAL-22390,MCAL-22404
  */
 FUNC(Std_ReturnType, PORT_CODE)
-Port_SetCntSpConfig(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfig)
+Port_SetCntSpConfig(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfigPtr)
 {
     P2CONST(Port_ControllerSpecificType, AUTOMATIC, PORT_APPL_DATA)
-    controllerSpecificPtr                          = &PinConfig->Port_ControllerSpecific;
+    controllerSpecificPtr                          = &PinConfigPtr->Port_ControllerSpecific;
     VAR(Std_ReturnType, AUTOMATIC) returnValue     = (Std_ReturnType)E_NOT_OK;
     VAR(Std_ReturnType, AUTOMATIC) PortPinNumValid = (Std_ReturnType)E_NOT_OK;
 
-    PortPinNumValid = Port_IsPinNumberValid(PinConfig->Port_PinId);
+    PortPinNumValid = Port_IsPinNumberValid(PinConfigPtr->Port_PinId);
 
     if (PortPinNumValid != (Std_ReturnType)E_NOT_OK)
     {
         if (TRUE == PORT_IS_ANALOG_MODE_SUPPORTED(controllerSpecificPtr))
         {
-            Port_SetAnalogMode(PinConfig->Port_PinId, controllerSpecificPtr->Port_AnalogMode);
+            Port_SetAnalogMode(PinConfigPtr->Port_PinId, controllerSpecificPtr->Port_AnalogMode);
         }
         else
         {
@@ -245,13 +245,13 @@ Port_SetCntSpConfig(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) Pin
         if ((FALSE == PORT_IS_ANALOG_MODE_SUPPORTED(controllerSpecificPtr)) ||
             (PORT_ANALOG_DISABLED == controllerSpecificPtr->Port_AnalogMode))
         {
-            Port_SetPadConfig(PinConfig->Port_PinId, controllerSpecificPtr->Port_PinPadConfig);
+            Port_SetPadConfig(PinConfigPtr->Port_PinId, controllerSpecificPtr->Port_PinPadConfig);
 
-            Port_SetQualificationMode(PinConfig->Port_PinId, controllerSpecificPtr->Port_PinQualification);
+            Port_SetQualificationMode(PinConfigPtr->Port_PinId, controllerSpecificPtr->Port_PinQualification);
 
-            Port_SetQualificationPeriod(PinConfig->Port_PinId, controllerSpecificPtr->Port_PinQualificationPeriod);
+            Port_SetQualificationPeriod(PinConfigPtr->Port_PinId, controllerSpecificPtr->Port_PinQualificationPeriod);
 
-            Port_SetMasterCore(PinConfig->Port_PinId, controllerSpecificPtr->Port_CoreSelect);
+            Port_SetMasterCore(PinConfigPtr->Port_PinId, controllerSpecificPtr->Port_CoreSelect);
 
             Port_SetPinModeConfig(controllerSpecificPtr->Port_InitialMuxMode);
         }
@@ -297,11 +297,11 @@ Port_EnableLPMWakeUpPin(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA)
         /*If pin number is less than equal to 31 ( GPIO31 )*/
         if (gpio31 >= PinNumber)
         {
-            HWREG(CPUSYS_BASE + SYSCTL_O_GPIOLPMSEL0) |= (pinMask);
+            HWREG((CPUSYS_BASE + SYSCTL_O_GPIOLPMSEL0)) |= (pinMask);
         }
         else if (gpio63 >= PinNumber) /*If pin number is less than equal to 63 ( GPIO63 )*/
         {
-            HWREG(CPUSYS_BASE + SYSCTL_O_GPIOLPMSEL1) |= (pinMask);
+            HWREG((CPUSYS_BASE + SYSCTL_O_GPIOLPMSEL1)) |= (pinMask);
         }
         else
         {
@@ -721,7 +721,7 @@ static FUNC(void, PORT_CODE) Port_SetAnalogMode(Port_PinType PinNumber, Port_Ana
         if ((PinNumber >= (uint32)AGPIO_PINS_START_VALUE))
         {
             /* Set AGPIOCTL */
-            HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_AGPIOCTRLH) |= (pinMask);
+            HWREG((ANALOGSUBSYS_BASE + ASYSCTL_O_AGPIOCTRLH)) |= (pinMask);
         }
     }
     else
@@ -732,7 +732,7 @@ static FUNC(void, PORT_CODE) Port_SetAnalogMode(Port_PinType PinNumber, Port_Ana
         if ((PinNumber >= (uint32)AGPIO_PINS_START_VALUE))
         {
             /* Clear AGPIOCTL */
-            HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_AGPIOCTRLH) &= ~(pinMask);
+            HWREG((ANALOGSUBSYS_BASE + ASYSCTL_O_AGPIOCTRLH)) &= ~(pinMask);
         }
     }
 }

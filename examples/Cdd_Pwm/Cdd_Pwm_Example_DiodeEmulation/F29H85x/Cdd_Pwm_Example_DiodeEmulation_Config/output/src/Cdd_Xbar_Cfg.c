@@ -133,16 +133,25 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config =
         {
             .inputSelect = CDD_XBAR_INPUT1,   /* Design: MCAL-25720 */
             .inputLine = 12U,    /* GPIO12 */  /* Design: MCAL-25721 */
+            .externalIntEnable = FALSE,
+            .externalIntNum = CDD_XBAR_XINT_DISABLED,
+            .externalIntrEdge = CDD_XBAR_INT_TYPE_DISABLED,
             .selectConfigLock = FALSE,   /* Design: MCAL-25707 */
         },
         {
             .inputSelect = CDD_XBAR_INPUT2,   /* Design: MCAL-25720 */
             .inputLine = 13U,    /* GPIO13 */  /* Design: MCAL-25721 */
+            .externalIntEnable = FALSE,
+            .externalIntNum = CDD_XBAR_XINT_DISABLED,
+            .externalIntrEdge = CDD_XBAR_INT_TYPE_DISABLED,
             .selectConfigLock = FALSE,   /* Design: MCAL-25707 */
         },
         {
             .inputSelect = CDD_XBAR_INPUT3,   /* Design: MCAL-25720 */
             .inputLine = 17U,    /* GPIO17 */  /* Design: MCAL-25721 */
+            .externalIntEnable = FALSE,
+            .externalIntNum = CDD_XBAR_XINT_DISABLED,
+            .externalIntrEdge = CDD_XBAR_INT_TYPE_DISABLED,
             .selectConfigLock = FALSE,   /* Design: MCAL-25707 */
         },
     },

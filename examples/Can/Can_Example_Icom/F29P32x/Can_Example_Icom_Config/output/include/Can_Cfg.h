@@ -450,6 +450,11 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+/* Forward declaration of Can configuration structure */
+struct Can_ConfigType_s;
+struct Can_BaudConfigType_s;
+struct Can_ControllerType_s;
+struct Can_IcomConfigType_s;
 
 /** \brief   Enum for the event pin. */
 typedef enum

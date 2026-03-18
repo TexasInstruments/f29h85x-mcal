@@ -128,6 +128,40 @@
                                           expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Select value only once for Input Crossbar.">
                                       </a:da>
                                   </v:var>
+                                  <v:var name="CddXbarExternalInterruptEdge" type="ENUMERATION">
+                                      <a:a name="DESC"><a:v><![CDATA[
+                                      <html>
+                                      <p>External Interrupt Edge configuration.</p>
+                                      <p><b>INPUT_XBAR to XINT Connections:</b></p>
+                                      <ul>
+                                      <li>INPUT_XBAR4 connects to XINT1</li>
+                                      <li>INPUT_XBAR5 connects to XINT2</li>
+                                      <li>INPUT_XBAR6 connects to XINT3</li>
+                                      <li>INPUT_XBAR13 connects to XINT4</li>
+                                      <li>INPUT_XBAR14 connects to XINT5</li>
+                                      </ul>
+                                      <p><b>Note:</b> For input crossbars that are not connected to XINT, this configuration will be disabled: CDD_XBAR_INT_TYPE_DISABLED.</p>
+                                      </html>
+                                      ]]></a:v></a:a>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                           type="IMPLEMENTATIONCONFIGCLASS">
+                                           <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" 
+                                           value="c78c7812-4532-3452-9934-782367526732"/>
+                                      <a:da name="EDITABLE" type="XPath" expr="node:fallback(&quot;->text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_Xbar_External_Interrupt_Input_Xbar'), node:value(../CddXbarInputXbarInput))&quot;,false())"/>
+                                      <a:da name="RANGE">
+                                         <a:v>CDD_XBAR_INT_TYPE_DISABLED</a:v>
+                                         <a:v>CDD_XBAR_INT_TYPE_NEGATIVE_EDGE</a:v>
+                                         <a:v>CDD_XBAR_INT_TYPE_POSITIVE_EDGE</a:v>
+                                         <a:v>CDD_XBAR_INT_TYPE_BOTH_EDGE</a:v>
+                                      </a:da>
+                                      <a:da name="DEFAULT" value="CDD_XBAR_INT_TYPE_DISABLED"/>
+                                  </v:var>
                                   <!-- Design: MCAL-25707 -->
                                   <v:var name="CddXbarInputXbarInputSelectConfigurationLock" type="BOOLEAN">
                                       <a:a name="DESC"
@@ -213,8 +247,8 @@
                                                   <a:a name="UUID" 
                                                        value="e2211c4d-7e24-45bd-9cae-cf9ae333512f"/>
                                                   <a:da name="ENABLE" value="true"/>
-                                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Output_Xbar_Input_Lines', '.', ../../CddXbarOutputXbarInputGroup))[1]&quot;,'CDD_XBAR_OUT_CMPSS1_CTRIPOUTH')"/>
-                                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Output_Xbar_Input_Lines', '.', ../../CddXbarOutputXbarInputGroup))&quot;,'CDD_XBAR_OUT_CMPSS1_CTRIPOUTH')"/>
+                                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Output_Xbar_Input_Lines', '.', ../../CddXbarOutputXbarInputGroup))[1]&quot;,ecu:list('ResourceAllocator_F29H85x.Cdd_Xbar_Output_Xbar_All_Input_Lines')[1])"/>
+                                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Output_Xbar_Input_Lines', '.', ../../CddXbarOutputXbarInputGroup))&quot;,ecu:list('ResourceAllocator_F29H85x.Cdd_Xbar_Output_Xbar_All_Input_Lines'))"/>
                                                   <a:da name="INVALID" type="XPath"
                                                       expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Group value only once for Input configuration of Output Crossbar.">
                                                   </a:da>
@@ -424,8 +458,8 @@
                                               <a:a name="UUID" 
                                                    value="545de3ec-e048-4ec3-bfcf-03076c9063c9"/>
                                               <a:da name="ENABLE" value="true"/>
-                                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Epwm_Xbar_Input_Lines', '.', ../../CddXbarEpwmXbarInputGroup))[1]&quot;,'CDD_XBAR_EPWM_CMPSS1_CTRIPH')"/>
-                                              <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Epwm_Xbar_Input_Lines', '.', ../../CddXbarEpwmXbarInputGroup))&quot;,'CDD_XBAR_EPWM_CMPSS1_CTRIPH')"/>
+                                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Epwm_Xbar_Input_Lines', '.', ../../CddXbarEpwmXbarInputGroup))[1]&quot;,ecu:list('ResourceAllocator_F29H85x.Cdd_Xbar_Epwm_Xbar_All_Input_Lines')[1])"/>
+                                              <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Epwm_Xbar_Input_Lines', '.', ../../CddXbarEpwmXbarInputGroup))&quot;,ecu:list('ResourceAllocator_F29H85x.Cdd_Xbar_Epwm_Xbar_All_Input_Lines'))"/>
                                               <a:da name="INVALID" type="XPath"
                                                   expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Line value only once for Input configuration of EPWM Crossbar.">
                                               </a:da>
@@ -558,8 +592,8 @@
                                                   <a:a name="UUID" 
                                                        value="ebcebda7-1e1e-4723-96b4-7c87a3282508"/>
                                                   <a:da name="ENABLE" value="true"/>
-                                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Clb_Xbar_Input_Lines', '.', ../../CddXbarClbXbarInputGroup))[1]&quot;,'CDD_XBAR_CLB_CMPSS1_CTRIPH')"/>
-                                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Clb_Xbar_Input_Lines', '.', ../../CddXbarClbXbarInputGroup))&quot;,'CDD_XBAR_CLB_CMPSS1_CTRIPH')"/>
+                                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Clb_Xbar_Input_Lines', '.', ../../CddXbarClbXbarInputGroup))[1]&quot;,ecu:list('ResourceAllocator_F29H85x.Cdd_Xbar_Clb_Xbar_All_Input_Lines')[1])"/>
+                                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Clb_Xbar_Input_Lines', '.', ../../CddXbarClbXbarInputGroup))&quot;,ecu:list('ResourceAllocator_F29H85x.Cdd_Xbar_Clb_Xbar_All_Input_Lines'))"/>
                                                   <a:da name="INVALID" type="XPath"
                                                       expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Line value only once for Input configuration of CLB Crossbar.">
                                                   </a:da>
@@ -693,8 +727,8 @@
                                                   <a:a name="UUID" 
                                                        value="38e21bfd-9025-4198-b084-4f185c92879c"/>
                                                   <a:da name="ENABLE" value="true"/>
-                                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Mindb_Xbar_Input_Lines', '.', ../../CddXbarMindbXbarInputGroup))[1]&quot;,'CDD_XBAR_MINDB_EPWM1A_DB_NO_HR')"/>
-                                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Mindb_Xbar_Input_Lines', '.', ../../CddXbarMindbXbarInputGroup))&quot;,'CDD_XBAR_MINDB_EPWM1A_DB_NO_HR')"/>
+                                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Mindb_Xbar_Input_Lines', '.', ../../CddXbarMindbXbarInputGroup))[1]&quot;,ecu:list('ResourceAllocator_F29H85x.Cdd_Xbar_Mindb_Xbar_All_Input_Lines')[1])"/>
+                                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Mindb_Xbar_Input_Lines', '.', ../../CddXbarMindbXbarInputGroup))&quot;,ecu:list('ResourceAllocator_F29H85x.Cdd_Xbar_Mindb_Xbar_All_Input_Lines'))"/>
                                                   <a:da name="INVALID" type="XPath"
                                                       expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Line value only once for Input configuration of MinDB Crossbar.">
                                                   </a:da>
@@ -828,8 +862,8 @@
                                                   <a:a name="UUID" 
                                                        value="7a85b9f6-52e0-4353-8843-76f37ebe4863"/>
                                                   <a:da name="ENABLE" value="true"/>
-                                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Icl_Xbar_Input_Lines', '.', ../../CddXbarIclXbarInputGroup))[1]&quot;,'CDD_XBAR_ICL_EPWM1A_MINDB')"/>
-                                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Icl_Xbar_Input_Lines', '.', ../../CddXbarIclXbarInputGroup))&quot;,'CDD_XBAR_ICL_EPWM1A_MINDB')"/>
+                                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Icl_Xbar_Input_Lines', '.', ../../CddXbarIclXbarInputGroup))[1]&quot;,ecu:list('ResourceAllocator_F29H85x.Cdd_Xbar_Icl_Xbar_All_Input_Lines')[1])"/>
+                                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Xbar_Icl_Xbar_Input_Lines', '.', ../../CddXbarIclXbarInputGroup))&quot;,ecu:list('ResourceAllocator_F29H85x.Cdd_Xbar_Icl_Xbar_All_Input_Lines'))"/>
                                                   <a:da name="INVALID" type="XPath"
                                                       expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Line value only once for Input configuration of ICL Crossbar.">
                                                   </a:da>

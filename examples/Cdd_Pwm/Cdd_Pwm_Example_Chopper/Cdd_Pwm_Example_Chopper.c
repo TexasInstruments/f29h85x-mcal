@@ -161,22 +161,22 @@ Std_VersionInfoType Cdd_Adc_VersionInfo;
  *  Local Functions Definition
  *********************************************************************************************************************/
 
-void Cdd_Pwm_Hw0Notification()
+void Cdd_Pwm_Hw0Notification(void)
 {
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0]++;
 }
 
-void Cdd_Pwm_Hw1Notification()
+void Cdd_Pwm_Hw1Notification(void)
 {
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1]++;
 }
 
-void Cdd_Pwm_Hw2Notification()
+void Cdd_Pwm_Hw2Notification(void)
 {
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2]++;
 }
 
-void Cdd_Pwm_Hw3Notification()
+void Cdd_Pwm_Hw3Notification(void)
 {
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_3]++;
 }

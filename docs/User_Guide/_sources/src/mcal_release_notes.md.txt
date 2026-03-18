@@ -13,13 +13,20 @@
   - [New Known Issues](#new-known-issues)
   - [Existing Known Issues](#existing-known-issues)
 - [Quality Status](#quality-status)
+- [Release Types](#release-types)
+  - [How to Identify Release Type](#how-to-identify-release-type)
+  - [EA (Early Adopter)](#ea-early-adopter)
+  - [STS (Short Term Support)](#sts-short-term-support)
+  - [LTS (Long Term Support)](#lts-long-term-support)
+  - [Release Type Comparison](#release-type-comparison)
+- [Software Bill of Materials](#software-bill-of-materials)
 - [Dependencies](#dependencies)
 
 ## Introduction
 
 F29x MCAL is a cohesive set of tools for AUTOSAR based development on C2000 real-time controllers. It includes device-specific drivers (MCALs), EB Tresos Plugins for configuration, Bare-metal Examples for each driver.
 
-This release is an early adopter release targeted for F29H85x.
+This release is a [STS (Short Term Support)](#sts-short-term-support) release targeted for F29H85x.
 
 ## Quick Start
 
@@ -128,9 +135,29 @@ Example:
 
 - MCAL / CDD:
   - Existing modules with enhancements:
-    1. **WDG:**
+    1. **CDD XBAR:**
+       - Added support for external interrupt configuration
+       - Added APIs to configure external interrupt
+       - Updated `Cdd_Xbar_Gpio_interrupt` example to demonstrate external interrupt configuration
+    2. **WDG:**
        - Added new `Wdg_Example_Reset` example demonstrating watchdog timer reset functionality
        - Example shows watchdog timeout behavior when intentionally not serviced
+    3. **MCU:**
+       - Lockstep configuration is now available through the Resource Allocator plugin
+       - CPUSEL and FRAMESEL settings for supported peripherals can now be configured through the Resource Allocator plugin
+       - **Note:** These features are released with limited testing in this release and will be comprehensively tested in the next release
+    4. **Resource Allocator:**
+       - Added superset property aggregation for all device variants, packages, physical pin numbers, mux modes, pin names, peripherals, and signal types
+       - EB Tresos plugin configurations now use dynamic superset fallback values instead of hardcoded defaults, enabling the plugin to load and display valid options even when device-specific ECU resource files are not yet available
+    5. **PORT:**
+       - Updated EB Tresos plugin to use superset fallback lists for pin configuration parameters including peripherals, mux mode signals, physical pin numbers, pin names, mux modes, and supported directions
+       - Restored EPWM6 pin configuration support as per updated specification for F29P32x devices
+    6. **CDD IPC:**
+       - Updated EB Tresos plugin to use superset fallback lists for IPC remote cores and IPC instance selections
+    7. **CDD XBAR:**
+       - Updated EB Tresos plugin to use superset fallback lists for crossbar input line selections across Output, EPWM, CLB, MinDB, and ICL crossbar types
+    8. **CDD PWM:**
+       - Restored EPWM6 configuration support as per updated specification for F29P32x devices
 
 ## Module Version Number
 
@@ -205,6 +232,7 @@ Example:
 | MCAL-35624 | Dio | S3-Minor | DIO: Dio doesn't follow AUTOSAR naming guidelines for typedefs and macros | C29xMCAL_01.00.00 <br>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.02.01 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 | As AUTOSAR naming convention is not followed, these definitions may conflict with other definitions in an application | Review the static and dynamic files of DIO module | Updated all macros in DIO module to follow AUTOSAR naming conventions (Dio_ prefix for all public symbols). |
 | MCAL-35862 | Fls | S2-Major | FLS: Fls_F29Compare casts a byte aligned pointer to a 32-bit aligned pointer and dereferences it, which is illegal | C29xMCAL_01.04.01 | When Fls_f29Compare() is called with a ramAddr that is not 32-bit aligned (e.g. 8-bit aligned), execution will crash in Fls_priv.c in Fls_F29Compare() due to illegal pointer cast and dereference. | 1. Call Fls_f29Compare() with a ramAddr that is not 32-bit aligned (e.g. 8-bit aligned). <br>2. Observe that execution crashes in Fls_priv.c in Fls_F29Compare() at P2VAR(uint32, AUTOMATIC, FLS_APPL_DATA) pu32CheckValueBuffer = (uint32 *)Fls_DrvObj.ramAddr; | Removed the illegal conversion and appropriately internally handle the 8-bit pointer. |
 | MCAL-35789 | Fls | S1-Critical | FLS: Flash API initialization fails due to missing semaphore handling in FlashAPIInit | C29xMCAL_01.04.01 | The Flash API may not be properly initialized, which can cause flash operations to fail or produce unexpected errors. | 1. Call FlashAPIInit without claiming flash semaphore. <br>2. Observe FLC_MMR_Access error. <br>3. Release flash semaphore without claiming it first. <br>4. Observe SSU MMR Error for FMSTAT clear register. | Added semaphore claim and release calls before and after the Flash initialization function. |
+| MCAL-36611 | Port | S3-Minor | PORT: Invalid characters in Peripheral Names and non-compliant Physical Pin ID enum values violate AUTOSAR naming rules | C29xMCAL_01.00.00 <br>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.02.01 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01 | ARXML generation produces non-compliant AUTOSAR short names, causing AUTOSAR validation tools to reject the generated configuration. Downstream BSW configuration tools expecting valid AUTOSAR identifiers would fail. | 1. Open EB Tresos with the Port plugin. <br>2. Create a Port configuration and select the ANALOG peripheral. <br>3. Observe peripheral signal names containing `/` characters (e.g., A0/C24/DACA_OUT). <br>4. Select any pin and observe the PortPhysicalPinId dropdown containing numeric-only entries (e.g., 1, 10). <br>5. Run arxml_gen_Port — generated ARXML contains invalid short names. <br>6. Run vsmd_check_Port — validation failures reported. | Replaced `/` characters in MuxModeSignalType entries with `_` to comply with AUTOSAR short name rules. Added `PORT_PIN_` prefix to numeric-only PhysicalPinNumber values to ensure all ENUMERATION literals start with an alphabetic character. <br>**Note:** Existing Port configurations may require migration. Refer to the [Migration Guide](https://software-dl.ti.com/C2000/docs/mcal/F29H85x/01.05.00/src/MigrationGuide_list.html) for detailed steps. |
 
 ## Known Issues And Limitations
 
@@ -305,6 +333,73 @@ Move issues to "Fixed In This Release" section when resolved.
 | 12 | Safety Assessment | No | CSP | Will be available in future releases. Please refer to device roadmap for details. |
 
 **Note:** CSP = Compliance Support Package
+
+## Release Types
+
+F29x MCAL releases follow a tiered support model with three release types: Early Adopter (EA), Short Term Support (STS), and Long Term Support (LTS). Each release type serves different customer needs and provides varying levels of support, quality assurance, and maintenance.
+
+### How to Identify Release Type
+
+The release type for each F29x MCAL release can be identified through the following methods:
+
+- **Release Notes Introduction Section:** Every release note's [Introduction](#introduction) section will specify the release type (EA, STS, or LTS) for that particular release.
+
+### EA (Early Adopter)
+
+Early Adopter releases are intended for customers who want early access to new features and capabilities before they are fully validated. These releases allow customers to evaluate new functionality and provide feedback during the development cycle.
+
+**Example Use Cases:**
+
+- Early evaluation of new features
+- Proof-of-concept development
+- Providing feedback to the development team
+- Planning for future integration
+
+### STS (Short Term Support)
+
+Short Term Support releases provide a stable platform with validated features suitable for development and integration activities. These releases offer improved quality assurance compared to EA releases but are not intended for production deployment.
+
+**Example Use Cases:**
+
+- Development and integration activities
+- System validation and testing
+- Pre-production evaluation
+- Feature completeness verification
+
+### LTS (Long Term Support)
+
+Long Term Support releases are production-ready releases that provide the highest level of quality assurance, safety certification support, and long-term maintenance. These releases are recommended for production deployment in automotive and safety-critical applications.
+
+**Example Use Cases:**
+
+- Production deployment
+- Safety-critical applications
+- Automotive production systems
+- Applications requiring long-term stability and support
+
+### Release Type Comparison
+
+| Topic | EA (Early Adopter) | STS (Short Term Support) | LTS (Long Term Support) |
+| --- | --- | --- | --- |
+| Quality | Baseline Quality | Baseline Quality (new features) | Functional Safety (if applicable) |
+| Testing | Best Effort | >95% pass | >95% pass |
+| Safety CSP | NA | NA | Yes (if FSQ) |
+| Safety Certification | NA | NA | Yes (Internal / External) |
+| Maintenance | No | No | Will maintain until next LTS release |
+| Bug Fix / Patch Release | No | Bugs that are prioritized will be fixed in the next release; no backporting to STS releases | Bug fixes on the LTS maintenance branch will be prioritized based on the severity of the bug |
+| Feature Addition | Yes | Yes | New features will be added in an LTS release, but post LTS release, new features will not be backported to the LTS maintenance branch |
+| Production Ready | No | Not recommended for Production | Recommended for Production |
+
+## Software Bill of Materials
+
+| Component Type | Component Name | Production or Reference | Process Compliance | Certification | Distribution | Comments |
+| --- | --- | --- | --- | --- | --- | --- |
+| Tools | ${MCAL_INSTALL_PATH}/build/toolchain/* | Reference | Demo Quality | No | ti.com | |
+| Documentation | ${MCAL_INSTALL_PATH}/docs/* | Reference | Baseline Quality | Yes | ti.com |  |
+| Drivers | ${MCAL_INSTALL_PATH}/drivers/* | Reference | Baseline Quality | Yes | ti.com | Functional Safety Quality and Certification will be available in future releases. Please refer to device roadmap for details. |
+| Stubs | ${MCAL_INSTALL_PATH}/drivers/BSW_Stubs | Reference | Demo Quality | No | ti.com | BSW Stubs are provided as reference only. |
+| Examples | ${MCAL_INSTALL_PATH}/examples/* | Reference | Demo Quality | No | ti.com | |
+| Tools | ${MCAL_INSTALL_PATH}/plugins/* | Reference | Baseline Quality | Yes | ti.com | Functional Safety Quality and Certification will be available in future releases. Please refer to device roadmap for details. |
 
 ## Dependencies
 

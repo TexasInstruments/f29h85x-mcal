@@ -112,7 +112,7 @@ typedef uint32 EcuM_WakeupSourceType;
  *********************************************************************************************************************/
 void EcuM_SetWakeupEvent(EcuM_WakeupSourceType sources);
 
-void EcuM_CheckWakeup(EcuM_WakeupSourceType sources);
+void EcuM_CheckWakeup(EcuM_WakeupSourceType wakeupSource);
 
 #endif /* ECUM_CBK_H */
 /*********************************************************************************************************************

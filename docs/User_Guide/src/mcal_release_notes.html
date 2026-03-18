@@ -84,7 +84,16 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#quality-status">1.10. Quality Status</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dependencies">1.11. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-types">1.11. Release Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-identify-release-type">1.11.1. How to Identify Release Type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ea-early-adopter">1.11.2. EA (Early Adopter)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sts-short-term-support">1.11.3. STS (Short Term Support)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lts-long-term-support">1.11.4. LTS (Long Term Support)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#release-type-comparison">1.11.5. Release Type Comparison</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#software-bill-of-materials">1.12. Software Bill of Materials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">1.13. Dependencies</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">2. Overview of MCAL</a></li>
@@ -139,12 +148,22 @@
 </ul>
 </li>
 <li><p><a class="reference internal" href="#quality-status">Quality Status</a></p></li>
+<li><p><a class="reference internal" href="#release-types">Release Types</a></p>
+<ul>
+<li><p><a class="reference internal" href="#how-to-identify-release-type">How to Identify Release Type</a></p></li>
+<li><p><a class="reference internal" href="#ea-early-adopter">EA (Early Adopter)</a></p></li>
+<li><p><a class="reference internal" href="#sts-short-term-support">STS (Short Term Support)</a></p></li>
+<li><p><a class="reference internal" href="#lts-long-term-support">LTS (Long Term Support)</a></p></li>
+<li><p><a class="reference internal" href="#release-type-comparison">Release Type Comparison</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#software-bill-of-materials">Software Bill of Materials</a></p></li>
 <li><p><a class="reference internal" href="#dependencies">Dependencies</a></p></li>
 </ul>
 <section id="introduction">
 <h2><span class="section-number">1.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>F29x MCAL is a cohesive set of tools for AUTOSAR based development on C2000 real-time controllers. It includes device-specific drivers (MCALs), EB Tresos Plugins for configuration, Bare-metal Examples for each driver.</p>
-<p>This release is an early adopter release targeted for F29H85x.</p>
+<p>This release is a <a class="reference internal" href="#sts-short-term-support">STS (Short Term Support)</a> release targeted for F29H85x.</p>
 </section>
 <section id="quick-start">
 <h2><span class="section-number">1.2. </span>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
@@ -300,10 +319,51 @@ Example:
 <ul>
 <li><p>Existing modules with enhancements:</p>
 <ol class="arabic simple">
+<li><p><strong>CDD XBAR:</strong></p>
+<ul>
+<li><p>Added support for external interrupt configuration</p></li>
+<li><p>Added APIs to configure external interrupt</p></li>
+<li><p>Updated <code class="docutils literal notranslate"><span class="pre">Cdd_Xbar_Gpio_interrupt</span></code> example to demonstrate external interrupt configuration</p></li>
+</ul>
+</li>
 <li><p><strong>WDG:</strong></p>
 <ul>
 <li><p>Added new <code class="docutils literal notranslate"><span class="pre">Wdg_Example_Reset</span></code> example demonstrating watchdog timer reset functionality</p></li>
 <li><p>Example shows watchdog timeout behavior when intentionally not serviced</p></li>
+</ul>
+</li>
+<li><p><strong>MCU:</strong></p>
+<ul>
+<li><p>Lockstep configuration is now available through the Resource Allocator plugin</p></li>
+<li><p>CPUSEL and FRAMESEL settings for supported peripherals can now be configured through the Resource Allocator plugin</p></li>
+<li><p><strong>Note:</strong> These features are released with limited testing in this release and will be comprehensively tested in the next release</p></li>
+</ul>
+</li>
+<li><p><strong>Resource Allocator:</strong></p>
+<ul>
+<li><p>Added superset property aggregation for all device variants, packages, physical pin numbers, mux modes, pin names, peripherals, and signal types</p></li>
+<li><p>EB Tresos plugin configurations now use dynamic superset fallback values instead of hardcoded defaults, enabling the plugin to load and display valid options even when device-specific ECU resource files are not yet available</p></li>
+</ul>
+</li>
+<li><p><strong>PORT:</strong></p>
+<ul>
+<li><p>Updated EB Tresos plugin to use superset fallback lists for pin configuration parameters including peripherals, mux mode signals, physical pin numbers, pin names, mux modes, and supported directions</p></li>
+<li><p>Restored EPWM6 pin configuration support as per updated specification for F29P32x devices</p></li>
+</ul>
+</li>
+<li><p><strong>CDD IPC:</strong></p>
+<ul>
+<li><p>Updated EB Tresos plugin to use superset fallback lists for IPC remote cores and IPC instance selections</p></li>
+</ul>
+</li>
+<li><p><strong>CDD XBAR:</strong></p>
+<ul>
+<li><p>Updated EB Tresos plugin to use superset fallback lists for crossbar input line selections across Output, EPWM, CLB, MinDB, and ICL crossbar types</p></li>
+</ul>
+</li>
+<li><p><strong>CDD PWM:</strong></p>
+<ul>
+<li><p>Restored EPWM6 configuration support as per updated specification for F29P32x devices</p></li>
 </ul>
 </li>
 </ol>
@@ -487,6 +547,15 @@ Example:
 <td><p>The Flash API may not be properly initialized, which can cause flash operations to fail or produce unexpected errors.</p></td>
 <td><p>1. Call FlashAPIInit without claiming flash semaphore. <br>2. Observe FLC_MMR_Access error. <br>3. Release flash semaphore without claiming it first. <br>4. Observe SSU MMR Error for FMSTAT clear register.</p></td>
 <td><p>Added semaphore claim and release calls before and after the Flash initialization function.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-36611</p></td>
+<td><p>Port</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>PORT: Invalid characters in Peripheral Names and non-compliant Physical Pin ID enum values violate AUTOSAR naming rules</p></td>
+<td><p>C29xMCAL_01.00.00 <br>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.02.01 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01</p></td>
+<td><p>ARXML generation produces non-compliant AUTOSAR short names, causing AUTOSAR validation tools to reject the generated configuration. Downstream BSW configuration tools expecting valid AUTOSAR identifiers would fail.</p></td>
+<td><p>1. Open EB Tresos with the Port plugin. <br>2. Create a Port configuration and select the ANALOG peripheral. <br>3. Observe peripheral signal names containing <code class="docutils literal notranslate"><span class="pre">/</span></code> characters (e.g., A0/C24/DACA_OUT). <br>4. Select any pin and observe the PortPhysicalPinId dropdown containing numeric-only entries (e.g., 1, 10). <br>5. Run arxml_gen_Port — generated ARXML contains invalid short names. <br>6. Run vsmd_check_Port — validation failures reported.</p></td>
+<td><p>Replaced <code class="docutils literal notranslate"><span class="pre">/</span></code> characters in MuxModeSignalType entries with <code class="docutils literal notranslate"><span class="pre">_</span></code> to comply with AUTOSAR short name rules. Added <code class="docutils literal notranslate"><span class="pre">PORT_PIN_</span></code> prefix to numeric-only PhysicalPinNumber values to ensure all ENUMERATION literals start with an alphabetic character. <br><strong>Note:</strong> Existing Port configurations may require migration. Refer to the <a class="reference external" href="https://software-dl.ti.com/C2000/docs/mcal/F29H85x/01.05.00/src/MigrationGuide_list.html">Migration Guide</a> for detailed steps.</p></td>
 </tr>
 </tbody>
 </table>
@@ -719,8 +788,171 @@ Move issues to "Fixed In This Release" section when resolved.
 </table>
 <p><strong>Note:</strong> CSP = Compliance Support Package</p>
 </section>
+<section id="release-types">
+<h2><span class="section-number">1.11. </span>Release Types<a class="headerlink" href="#release-types" title="Link to this heading"></a></h2>
+<p>F29x MCAL releases follow a tiered support model with three release types: Early Adopter (EA), Short Term Support (STS), and Long Term Support (LTS). Each release type serves different customer needs and provides varying levels of support, quality assurance, and maintenance.</p>
+<section id="how-to-identify-release-type">
+<h3><span class="section-number">1.11.1. </span>How to Identify Release Type<a class="headerlink" href="#how-to-identify-release-type" title="Link to this heading"></a></h3>
+<p>The release type for each F29x MCAL release can be identified through the following methods:</p>
+<ul class="simple">
+<li><p><strong>Release Notes Introduction Section:</strong> Every release note’s <a class="reference internal" href="#introduction">Introduction</a> section will specify the release type (EA, STS, or LTS) for that particular release.</p></li>
+</ul>
+</section>
+<section id="ea-early-adopter">
+<h3><span class="section-number">1.11.2. </span>EA (Early Adopter)<a class="headerlink" href="#ea-early-adopter" title="Link to this heading"></a></h3>
+<p>Early Adopter releases are intended for customers who want early access to new features and capabilities before they are fully validated. These releases allow customers to evaluate new functionality and provide feedback during the development cycle.</p>
+<p><strong>Example Use Cases:</strong></p>
+<ul class="simple">
+<li><p>Early evaluation of new features</p></li>
+<li><p>Proof-of-concept development</p></li>
+<li><p>Providing feedback to the development team</p></li>
+<li><p>Planning for future integration</p></li>
+</ul>
+</section>
+<section id="sts-short-term-support">
+<h3><span class="section-number">1.11.3. </span>STS (Short Term Support)<a class="headerlink" href="#sts-short-term-support" title="Link to this heading"></a></h3>
+<p>Short Term Support releases provide a stable platform with validated features suitable for development and integration activities. These releases offer improved quality assurance compared to EA releases but are not intended for production deployment.</p>
+<p><strong>Example Use Cases:</strong></p>
+<ul class="simple">
+<li><p>Development and integration activities</p></li>
+<li><p>System validation and testing</p></li>
+<li><p>Pre-production evaluation</p></li>
+<li><p>Feature completeness verification</p></li>
+</ul>
+</section>
+<section id="lts-long-term-support">
+<h3><span class="section-number">1.11.4. </span>LTS (Long Term Support)<a class="headerlink" href="#lts-long-term-support" title="Link to this heading"></a></h3>
+<p>Long Term Support releases are production-ready releases that provide the highest level of quality assurance, safety certification support, and long-term maintenance. These releases are recommended for production deployment in automotive and safety-critical applications.</p>
+<p><strong>Example Use Cases:</strong></p>
+<ul class="simple">
+<li><p>Production deployment</p></li>
+<li><p>Safety-critical applications</p></li>
+<li><p>Automotive production systems</p></li>
+<li><p>Applications requiring long-term stability and support</p></li>
+</ul>
+</section>
+<section id="release-type-comparison">
+<h3><span class="section-number">1.11.5. </span>Release Type Comparison<a class="headerlink" href="#release-type-comparison" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Topic</p></th>
+<th class="head"><p>EA (Early Adopter)</p></th>
+<th class="head"><p>STS (Short Term Support)</p></th>
+<th class="head"><p>LTS (Long Term Support)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Quality</p></td>
+<td><p>Baseline Quality</p></td>
+<td><p>Baseline Quality (new features)</p></td>
+<td><p>Functional Safety (if applicable)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Testing</p></td>
+<td><p>Best Effort</p></td>
+<td><p>&gt;95% pass</p></td>
+<td><p>&gt;95% pass</p></td>
+</tr>
+<tr class="row-even"><td><p>Safety CSP</p></td>
+<td><p>NA</p></td>
+<td><p>NA</p></td>
+<td><p>Yes (if FSQ)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Safety Certification</p></td>
+<td><p>NA</p></td>
+<td><p>NA</p></td>
+<td><p>Yes (Internal / External)</p></td>
+</tr>
+<tr class="row-even"><td><p>Maintenance</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>Will maintain until next LTS release</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bug Fix / Patch Release</p></td>
+<td><p>No</p></td>
+<td><p>Bugs that are prioritized will be fixed in the next release; no backporting to STS releases</p></td>
+<td><p>Bug fixes on the LTS maintenance branch will be prioritized based on the severity of the bug</p></td>
+</tr>
+<tr class="row-even"><td><p>Feature Addition</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>New features will be added in an LTS release, but post LTS release, new features will not be backported to the LTS maintenance branch</p></td>
+</tr>
+<tr class="row-odd"><td><p>Production Ready</p></td>
+<td><p>No</p></td>
+<td><p>Not recommended for Production</p></td>
+<td><p>Recommended for Production</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="software-bill-of-materials">
+<h2><span class="section-number">1.12. </span>Software Bill of Materials<a class="headerlink" href="#software-bill-of-materials" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component Type</p></th>
+<th class="head"><p>Component Name</p></th>
+<th class="head"><p>Production or Reference</p></th>
+<th class="head"><p>Process Compliance</p></th>
+<th class="head"><p>Certification</p></th>
+<th class="head"><p>Distribution</p></th>
+<th class="head"><p>Comments</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Tools</p></td>
+<td><p>${MCAL_INSTALL_PATH}/build/toolchain/*</p></td>
+<td><p>Reference</p></td>
+<td><p>Demo Quality</p></td>
+<td><p>No</p></td>
+<td><p>ti.com</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Documentation</p></td>
+<td><p>${MCAL_INSTALL_PATH}/docs/*</p></td>
+<td><p>Reference</p></td>
+<td><p>Baseline Quality</p></td>
+<td><p>Yes</p></td>
+<td><p>ti.com</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Drivers</p></td>
+<td><p>${MCAL_INSTALL_PATH}/drivers/*</p></td>
+<td><p>Reference</p></td>
+<td><p>Baseline Quality</p></td>
+<td><p>Yes</p></td>
+<td><p>ti.com</p></td>
+<td><p>Functional Safety Quality and Certification will be available in future releases. Please refer to device roadmap for details.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Stubs</p></td>
+<td><p>${MCAL_INSTALL_PATH}/drivers/BSW_Stubs</p></td>
+<td><p>Reference</p></td>
+<td><p>Demo Quality</p></td>
+<td><p>No</p></td>
+<td><p>ti.com</p></td>
+<td><p>BSW Stubs are provided as reference only.</p></td>
+</tr>
+<tr class="row-even"><td><p>Examples</p></td>
+<td><p>${MCAL_INSTALL_PATH}/examples/*</p></td>
+<td><p>Reference</p></td>
+<td><p>Demo Quality</p></td>
+<td><p>No</p></td>
+<td><p>ti.com</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Tools</p></td>
+<td><p>${MCAL_INSTALL_PATH}/plugins/*</p></td>
+<td><p>Reference</p></td>
+<td><p>Baseline Quality</p></td>
+<td><p>Yes</p></td>
+<td><p>ti.com</p></td>
+<td><p>Functional Safety Quality and Certification will be available in future releases. Please refer to device roadmap for details.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="dependencies">
-<h2><span class="section-number">1.11. </span>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h2>
+<h2><span class="section-number">1.13. </span>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h2>
 <p>This release has dependency on the following tools:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.ti.com/tool/CCSTUDIO">CCS</a> v20.05.00 or above version.</p></li>

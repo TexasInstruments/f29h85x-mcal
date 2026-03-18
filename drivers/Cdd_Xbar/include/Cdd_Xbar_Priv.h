@@ -87,6 +87,7 @@ extern "C" {
 #include "hw_mdl_xbar.h"
 #include "hw_icl_xbar.h"
 #include "hw_xbar.h"
+#include "hw_xint.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -187,6 +188,49 @@ Cdd_Xbar_InSelectLock(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) InputSelect);
  *********************************************************************************************************************/
 FUNC(boolean, CDD_XBAR_CODE)
 Cdd_Xbar_InSelectLockStatus(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) InputSelect);
+
+/** \brief Sets external interrupt type
+ *
+ * Function to set the interrupt type (edge polarity) for an external interrupt.
+ *
+ * \param[in] ExtIntNum is the the external interrupt number.
+ * \param[in] IntType is the the interrupt type (edge polarity).
+ * \pre None
+ * \post None
+ * \return None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_SetIntrType(VAR(Cdd_Xbar_ExternalIntNum, AUTOMATIC) ExtIntNum, VAR(Cdd_Xbar_IntType, AUTOMATIC) IntType);
+
+/** \brief Enables or disables external interrupt
+ *
+ * Function to enable or disable an external interrupt.
+ *
+ * \param[in] ExtIntNum is the external interrupt number.
+ * \param[in] Enable enables or disables the external interrupt.
+ * \pre None
+ * \post None
+ * \return None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_EnableIntr(VAR(Cdd_Xbar_ExternalIntNum, AUTOMATIC) ExtIntNum, VAR(boolean, AUTOMATIC) Enable);
+
+/** \brief Gets external interrupt counter value
+ *
+ * Function to read the counter value for an external interrupt.
+ * Only XINT1, XINT2, and XINT3 have counter registers.
+ *
+ * \param[in] ExtIntNum is the external interrupt number (XINT1, XINT2, or
+ *XINT3).
+ * \pre None
+ * \post None
+ * \return Counter value for the specified external interrupt.
+ *
+ *********************************************************************************************************************/
+FUNC(uint16, CDD_XBAR_CODE)
+Cdd_Xbar_GetIntrCounter(VAR(Cdd_Xbar_ExternalIntNum, AUTOMATIC) ExtIntNum);
 #endif /* 0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS*/
 
 /* Design: MCAL-25769 */

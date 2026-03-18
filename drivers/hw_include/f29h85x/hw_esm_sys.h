@@ -48,53 +48,53 @@
 // The following are defines for the ESM_SYS register offsets
 //
 //*************************************************************************************************
-#define ESM_SYS_O_PID                        0x0U                    // Revision Register
-#define ESM_SYS_O_INFO                       0x4U                    // Info Register
-#define ESM_SYS_O_EN                         0x8U                    // Global Enable Register
-#define ESM_SYS_O_SFT_RST                    0xCU                    // Global Soft Reset Register
-#define ESM_SYS_O_LOW_PRI                    0x20U                   // Low Priority Prioritized
+#define ESM_SYS_O_PID                        (0x0U)                  // Revision Register
+#define ESM_SYS_O_INFO                       (0x4U)                  // Info Register
+#define ESM_SYS_O_EN                         (0x8U)                  // Global Enable Register
+#define ESM_SYS_O_SFT_RST                    (0xCU)                  // Global Soft Reset Register
+#define ESM_SYS_O_LOW_PRI                    (0x20U)                 // Low Priority Prioritized
                                                                      // Register
-#define ESM_SYS_O_HI_PRI                     0x24U                   // High Priority Prioritized
+#define ESM_SYS_O_HI_PRI                     (0x24U)                 // High Priority Prioritized
                                                                      // Register
-#define ESM_SYS_O_LOW                        0x28U                   // Low Priority Interrupt
+#define ESM_SYS_O_LOW                        (0x28U)                 // Low Priority Interrupt
                                                                      // Status Register
-#define ESM_SYS_O_HI                         0x2CU                   // High Priority Interrupt
+#define ESM_SYS_O_HI                         (0x2CU)                 // High Priority Interrupt
                                                                      // Status Register
-#define ESM_SYS_O_EOI                        0x30U                   // EOI Interrupt Register
-#define ESM_SYS_O_PIN_CTRL                   0x40U                   // Error Pin Control Register
-#define ESM_SYS_O_PIN_STS                    0x44U                   // Error Pin Status Register
-#define ESM_SYS_O_PIN_CNTR                   0x48U                   // Error Counter Value
+#define ESM_SYS_O_EOI                        (0x30U)                 // EOI Interrupt Register
+#define ESM_SYS_O_PIN_CTRL                   (0x40U)                 // Error Pin Control Register
+#define ESM_SYS_O_PIN_STS                    (0x44U)                 // Error Pin Status Register
+#define ESM_SYS_O_PIN_CNTR                   (0x48U)                 // Error Counter Value
                                                                      // Register
-#define ESM_SYS_O_PIN_CNTR_PRE               0x4CU                   // Error Counter Value
+#define ESM_SYS_O_PIN_CNTR_PRE               (0x4CU)                 // Error Counter Value
                                                                      // Pre-Load Register
-#define ESM_SYS_O_PWMH_PIN_CNTR              0x50U                   // Error PWM High Counter
+#define ESM_SYS_O_PWMH_PIN_CNTR              (0x50U)                 // Error PWM High Counter
                                                                      // Value Register
-#define ESM_SYS_O_PWMH_PIN_CNTR_PRE          0x54U                   // Error PWM High Counter
+#define ESM_SYS_O_PWMH_PIN_CNTR_PRE          (0x54U)                 // Error PWM High Counter
                                                                      // Value Pre-Load Register
-#define ESM_SYS_O_PWML_PIN_CNTR              0x58U                   // Error PWM Low Counter Value
+#define ESM_SYS_O_PWML_PIN_CNTR              (0x58U)                 // Error PWM Low Counter Value
                                                                      // Register
-#define ESM_SYS_O_PWML_PIN_CNTR_PRE          0x5CU                   // Error PWM Low Counter Value
+#define ESM_SYS_O_PWML_PIN_CNTR_PRE          (0x5CU)                 // Error PWM Low Counter Value
                                                                      // Pre-Load Register
-#define ESM_SYS_O_ERRPIN_MON_CFG             0xA0U                   // Error Pin Monitor Config
+#define ESM_SYS_O_ERRPIN_MON_CFG             (0xA0U)                 // Error Pin Monitor Config
                                                                      // Register
-#define ESM_SYS_O_ERRPIN_MON_INTR_SET        0xA4U                   // Error Pin Monitor Interrupt
+#define ESM_SYS_O_ERRPIN_MON_INTR_SET        (0xA4U)                 // Error Pin Monitor Interrupt
                                                                      // Status/Set Register
-#define ESM_SYS_O_ERRPIN_MON_INTR_CLR        0xA8U                   // Error Pin Monitor Interrupt
+#define ESM_SYS_O_ERRPIN_MON_INTR_CLR        (0xA8U)                 // Error Pin Monitor Interrupt
                                                                      // Status/Clear Register
-#define ESM_SYS_O_GROUP_N_LOCK               0x100U                  // Group N Interrupt Lock
+#define ESM_SYS_O_GROUP_N_LOCK               (0x100U)                // Group N Interrupt Lock
                                                                      // Register
-#define ESM_SYS_O_GROUP_N_COMMIT             0x104U                  // Group N Interrupt Commit
+#define ESM_SYS_O_GROUP_N_COMMIT             (0x104U)                // Group N Interrupt Commit
                                                                      // Register
-#define ESM_SYS_O_ERR_PIN_INFLUENCE_LOCK     0x110U                  // Error Pin Influence Lock
+#define ESM_SYS_O_ERR_PIN_INFLUENCE_LOCK     (0x110U)                // Error Pin Influence Lock
                                                                      // Register
-#define ESM_SYS_O_ERR_PIN_INFLUENCE_COMMIT   0x114U                  // Error Pin Influence Commit
+#define ESM_SYS_O_ERR_PIN_INFLUENCE_COMMIT   (0x114U)                // Error Pin Influence Commit
                                                                      // Register
-#define ESM_SYS_O_CRI_PRI_INFLUENCE_LOCK     0x118U                  // Critical Prioirty Interrupt
+#define ESM_SYS_O_CRI_PRI_INFLUENCE_LOCK     (0x118U)                // Critical Prioirty Interrupt
                                                                      // Influence Lock Register
-#define ESM_SYS_O_CRI_PRI_INFLUENCE_COMMIT   0x11CU                  // Critical Priority Interrupt
+#define ESM_SYS_O_CRI_PRI_INFLUENCE_COMMIT   (0x11CU)                // Critical Priority Interrupt
                                                                      // Influence Lock Register
-#define ESM_SYS_O_MMR_CONFIG_LOCK            0x120U                  // MMR Config Lock Register
-#define ESM_SYS_O_MMR_CONFIG_COMMIT          0x124U                  // MMR Config Commit Register
+#define ESM_SYS_O_MMR_CONFIG_LOCK            (0x120U)                // MMR Config Lock Register
+#define ESM_SYS_O_MMR_CONFIG_COMMIT          (0x124U)                // MMR Config Commit Register
 #define ESM_SYS_O_RAW(i)                     (0x400U + ((i) * 32U))  // (0 <= i < 8) Error Group N
                                                                      // Event Raw Status/Set Register
 #define ESM_SYS_O_STS(i)                     (0x404U + ((i) * 32U))  // (0 <= i < 8) Error Group N
@@ -123,187 +123,187 @@
 // The following are defines for the bit fields in the PID register
 //
 //*************************************************************************************************
-#define ESM_SYS_PID_MINOR_S    0U
-#define ESM_SYS_PID_MINOR_M    0x3FU         //
-#define ESM_SYS_PID_CUSTOM_S   6U
-#define ESM_SYS_PID_CUSTOM_M   0xC0U         //
-#define ESM_SYS_PID_MAJOR_S    8U
-#define ESM_SYS_PID_MAJOR_M    0x700U        //
-#define ESM_SYS_PID_RTL_S      11U
-#define ESM_SYS_PID_RTL_M      0xF800U       //
-#define ESM_SYS_PID_FUNC_S     16U
-#define ESM_SYS_PID_FUNC_M     0xFFF0000U    //
-#define ESM_SYS_PID_BU_S       28U
-#define ESM_SYS_PID_BU_M       0x30000000U   //
-#define ESM_SYS_PID_SCHEME_S   30U
-#define ESM_SYS_PID_SCHEME_M   0xC0000000U   //
+#define ESM_SYS_PID_MINOR_S    (0U)
+#define ESM_SYS_PID_MINOR_M    (0x3FU)       //
+#define ESM_SYS_PID_CUSTOM_S   (6U)
+#define ESM_SYS_PID_CUSTOM_M   (0xC0U)       //
+#define ESM_SYS_PID_MAJOR_S    (8U)
+#define ESM_SYS_PID_MAJOR_M    (0x700U)      //
+#define ESM_SYS_PID_RTL_S      (11U)
+#define ESM_SYS_PID_RTL_M      (0xF800U)     //
+#define ESM_SYS_PID_FUNC_S     (16U)
+#define ESM_SYS_PID_FUNC_M     (0xFFF0000U)  //
+#define ESM_SYS_PID_BU_S       (28U)
+#define ESM_SYS_PID_BU_M       (0x30000000U) //
+#define ESM_SYS_PID_SCHEME_S   (30U)
+#define ESM_SYS_PID_SCHEME_M   (0xC0000000U) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the INFO register
 //
 //*************************************************************************************************
-#define ESM_SYS_INFO_GROUPS_S         0U
-#define ESM_SYS_INFO_GROUPS_M         0xFFU         //
-#define ESM_SYS_INFO_PULSE_GROUPS_S   8U
-#define ESM_SYS_INFO_PULSE_GROUPS_M   0xFF00U       //
-#define ESM_SYS_INFO_CRIT_INTR        0x40000000U   //
-#define ESM_SYS_INFO_LAST_RESET       0x80000000U   //
+#define ESM_SYS_INFO_GROUPS_S         (0U)
+#define ESM_SYS_INFO_GROUPS_M         (0xFFU)       //
+#define ESM_SYS_INFO_PULSE_GROUPS_S   (8U)
+#define ESM_SYS_INFO_PULSE_GROUPS_M   (0xFF00U)     //
+#define ESM_SYS_INFO_CRIT_INTR        (0x40000000U) //
+#define ESM_SYS_INFO_LAST_RESET       (0x80000000U) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the EN register
 //
 //*************************************************************************************************
-#define ESM_SYS_EN_KEY_S   0U
-#define ESM_SYS_EN_KEY_M   0xFU   //
+#define ESM_SYS_EN_KEY_S   (0U)
+#define ESM_SYS_EN_KEY_M   (0xFU) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the SFT_RST register
 //
 //*************************************************************************************************
-#define ESM_SYS_SFT_RST_KEY_S   0U
-#define ESM_SYS_SFT_RST_KEY_M   0xFU   //
+#define ESM_SYS_SFT_RST_KEY_S   (0U)
+#define ESM_SYS_SFT_RST_KEY_M   (0xFU) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the LOW_PRI register
 //
 //*************************************************************************************************
-#define ESM_SYS_LOW_PRI_PLS_S   16U
-#define ESM_SYS_LOW_PRI_PLS_M   0xFFFF0000U   //
-#define ESM_SYS_LOW_PRI_LVL_S   0U
-#define ESM_SYS_LOW_PRI_LVL_M   0xFFFFU       //
+#define ESM_SYS_LOW_PRI_PLS_S   (16U)
+#define ESM_SYS_LOW_PRI_PLS_M   (0xFFFF0000U) //
+#define ESM_SYS_LOW_PRI_LVL_S   (0U)
+#define ESM_SYS_LOW_PRI_LVL_M   (0xFFFFU)     //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the HI_PRI register
 //
 //*************************************************************************************************
-#define ESM_SYS_HI_PRI_PLS_S   16U
-#define ESM_SYS_HI_PRI_PLS_M   0xFFFF0000U   //
-#define ESM_SYS_HI_PRI_LVL_S   0U
-#define ESM_SYS_HI_PRI_LVL_M   0xFFFFU       //
+#define ESM_SYS_HI_PRI_PLS_S   (16U)
+#define ESM_SYS_HI_PRI_PLS_M   (0xFFFF0000U) //
+#define ESM_SYS_HI_PRI_LVL_S   (0U)
+#define ESM_SYS_HI_PRI_LVL_M   (0xFFFFU)     //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the EOI register
 //
 //*************************************************************************************************
-#define ESM_SYS_EOI_KEY_S   0U
-#define ESM_SYS_EOI_KEY_M   0x7FFU   //
+#define ESM_SYS_EOI_KEY_S   (0U)
+#define ESM_SYS_EOI_KEY_M   (0x7FFU) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the PIN_CTRL register
 //
 //*************************************************************************************************
-#define ESM_SYS_PIN_CTRL_POLARITY_S   8U
-#define ESM_SYS_PIN_CTRL_POLARITY_M   0xF00U   //
-#define ESM_SYS_PIN_CTRL_PWM_EN_S     4U
-#define ESM_SYS_PIN_CTRL_PWM_EN_M     0xF0U    //
-#define ESM_SYS_PIN_CTRL_KEY_S        0U
-#define ESM_SYS_PIN_CTRL_KEY_M        0xFU     //
+#define ESM_SYS_PIN_CTRL_POLARITY_S   (8U)
+#define ESM_SYS_PIN_CTRL_POLARITY_M   (0xF00U) //
+#define ESM_SYS_PIN_CTRL_PWM_EN_S     (4U)
+#define ESM_SYS_PIN_CTRL_PWM_EN_M     (0xF0U)  //
+#define ESM_SYS_PIN_CTRL_KEY_S        (0U)
+#define ESM_SYS_PIN_CTRL_KEY_M        (0xFU)   //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the PIN_STS register
 //
 //*************************************************************************************************
-#define ESM_SYS_PIN_STS_VAL   0x1U   //
+#define ESM_SYS_PIN_STS_VAL   (0x1U) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the PIN_CNTR register
 //
 //*************************************************************************************************
-#define ESM_SYS_PIN_CNTR_COUNT_S   0U
-#define ESM_SYS_PIN_CNTR_COUNT_M   0xFFFFFFU   //
+#define ESM_SYS_PIN_CNTR_COUNT_S   (0U)
+#define ESM_SYS_PIN_CNTR_COUNT_M   (0xFFFFFFU) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the PIN_CNTR_PRE register
 //
 //*************************************************************************************************
-#define ESM_SYS_PIN_CNTR_PRE_COUNT_S   0U
-#define ESM_SYS_PIN_CNTR_PRE_COUNT_M   0xFFFFFFU   //
+#define ESM_SYS_PIN_CNTR_PRE_COUNT_S   (0U)
+#define ESM_SYS_PIN_CNTR_PRE_COUNT_M   (0xFFFFFFU) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the PWMH_PIN_CNTR register
 //
 //*************************************************************************************************
-#define ESM_SYS_PWMH_PIN_CNTR_COUNT_S   0U
-#define ESM_SYS_PWMH_PIN_CNTR_COUNT_M   0xFFFFFFU   //
+#define ESM_SYS_PWMH_PIN_CNTR_COUNT_S   (0U)
+#define ESM_SYS_PWMH_PIN_CNTR_COUNT_M   (0xFFFFFFU) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the PWMH_PIN_CNTR_PRE register
 //
 //*************************************************************************************************
-#define ESM_SYS_PWMH_PIN_CNTR_PRE_COUNT_S   0U
-#define ESM_SYS_PWMH_PIN_CNTR_PRE_COUNT_M   0xFFFFFFU   //
+#define ESM_SYS_PWMH_PIN_CNTR_PRE_COUNT_S   (0U)
+#define ESM_SYS_PWMH_PIN_CNTR_PRE_COUNT_M   (0xFFFFFFU) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the PWML_PIN_CNTR register
 //
 //*************************************************************************************************
-#define ESM_SYS_PWML_PIN_CNTR_COUNT_S   0U
-#define ESM_SYS_PWML_PIN_CNTR_COUNT_M   0xFFFFFFU   //
+#define ESM_SYS_PWML_PIN_CNTR_COUNT_S   (0U)
+#define ESM_SYS_PWML_PIN_CNTR_COUNT_M   (0xFFFFFFU) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the PWML_PIN_CNTR_PRE register
 //
 //*************************************************************************************************
-#define ESM_SYS_PWML_PIN_CNTR_PRE_COUNT_S   0U
-#define ESM_SYS_PWML_PIN_CNTR_PRE_COUNT_M   0xFFFFFFU   //
+#define ESM_SYS_PWML_PIN_CNTR_PRE_COUNT_S   (0U)
+#define ESM_SYS_PWML_PIN_CNTR_PRE_COUNT_M   (0xFFFFFFU) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the ERRPIN_MON_CFG register
 //
 //*************************************************************************************************
-#define ESM_SYS_ERRPIN_MON_CFG_MON_EN_S   0U
-#define ESM_SYS_ERRPIN_MON_CFG_MON_EN_M   0xFU   //
+#define ESM_SYS_ERRPIN_MON_CFG_MON_EN_S   (0U)
+#define ESM_SYS_ERRPIN_MON_CFG_MON_EN_M   (0xFU) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the ERRPIN_MON_INTR_SET register
 //
 //*************************************************************************************************
-#define ESM_SYS_ERRPIN_MON_INTR_SET_VAL   0x1U   //
+#define ESM_SYS_ERRPIN_MON_INTR_SET_VAL   (0x1U) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the ERRPIN_MON_INTR_CLR register
 //
 //*************************************************************************************************
-#define ESM_SYS_ERRPIN_MON_INTR_CLR_VAL   0x1U   //
+#define ESM_SYS_ERRPIN_MON_INTR_CLR_VAL   (0x1U) //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the MMR_CONFIG_LOCK register
 //
 //*************************************************************************************************
-#define ESM_SYS_MMR_CONFIG_LOCK_GLOBEL_EN_LOCK         0x100U   //
-#define ESM_SYS_MMR_CONFIG_LOCK_GLOBAL_SOFT_RST_LOCK   0x20U    //
-#define ESM_SYS_MMR_CONFIG_LOCK_ERRPIN_LOCK            0x4U     //
-#define ESM_SYS_MMR_CONFIG_LOCK_ERRPIN_MON_LOCK        0x2U     //
-#define ESM_SYS_MMR_CONFIG_LOCK_HI_PRI_WD_LOCK         0x1U     //
+#define ESM_SYS_MMR_CONFIG_LOCK_GLOBEL_EN_LOCK         (0x100U) //
+#define ESM_SYS_MMR_CONFIG_LOCK_GLOBAL_SOFT_RST_LOCK   (0x20U)  //
+#define ESM_SYS_MMR_CONFIG_LOCK_ERRPIN_LOCK            (0x4U)   //
+#define ESM_SYS_MMR_CONFIG_LOCK_ERRPIN_MON_LOCK        (0x2U)   //
+#define ESM_SYS_MMR_CONFIG_LOCK_HI_PRI_WD_LOCK         (0x1U)   //
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the MMR_CONFIG_COMMIT register
 //
 //*************************************************************************************************
-#define ESM_SYS_MMR_CONFIG_COMMIT_GLOBEL_EN_COMMIT         0x100U   //
-#define ESM_SYS_MMR_CONFIG_COMMIT_GLOBAL_SOFT_RST_COMMIT   0x20U    //
-#define ESM_SYS_MMR_CONFIG_COMMIT_ERRPIN_COMMIT            0x4U     //
-#define ESM_SYS_MMR_CONFIG_COMMIT_ERRPIN_MON_COMMIT        0x2U     //
-#define ESM_SYS_MMR_CONFIG_COMMIT_HI_PRI_WD_COMMIT         0x1U     //
+#define ESM_SYS_MMR_CONFIG_COMMIT_GLOBEL_EN_COMMIT         (0x100U) //
+#define ESM_SYS_MMR_CONFIG_COMMIT_GLOBAL_SOFT_RST_COMMIT   (0x20U)  //
+#define ESM_SYS_MMR_CONFIG_COMMIT_ERRPIN_COMMIT            (0x4U)   //
+#define ESM_SYS_MMR_CONFIG_COMMIT_ERRPIN_MON_COMMIT        (0x2U)   //
+#define ESM_SYS_MMR_CONFIG_COMMIT_HI_PRI_WD_COMMIT         (0x1U)   //
 
 
 

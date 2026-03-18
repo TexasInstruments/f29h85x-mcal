@@ -492,15 +492,15 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HR_ISR(Cdd_Ecap_ChannelType Channel);
 /**
  * \brief   This will select ECAP Input.
  *
+ * \param[in]       baseAddr            Baseaddress of channel
  * \param[in]       input               Cdd Ecap Input
- * \param[in]       base                Baseaddress of channel
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  **/
-void Cdd_Ecap_selectECAPInput(uint32 base, Cdd_Ecap_InputSelect input);
+void Cdd_Ecap_selectECAPInput(uint32 baseAddr, Cdd_Ecap_InputSelect input);
 /**
  * \brief   This function disables capture loading
  *
@@ -677,8 +677,8 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_disableCalibrationInterrupt(uint32 base
  * \param[in] baseAddr   The base address of the HRCAP channel.
  * \pre None
  * \post None
- * \return None
- * \retval None
+ * \return Calibration flags
+ * \retval Cdd_Ecap_ChannelHrInterruptType
  *
  *********************************************************************************************************************/
 FUNC(Cdd_Ecap_ChannelHrInterruptType, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_getCalibrationFlags(uint32 baseAddr);
@@ -761,8 +761,8 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_configCalibrationPeriod(uint32 baseAddr
  * \param[in] ClockSource  The clock source for calibration.
  * \pre None
  * \post None
- * \return None
- * \retval None
+ * \return Calibration clock period
+ * \retval Cdd_Ecap_ValueType
  *
  *********************************************************************************************************************/
 FUNC(Cdd_Ecap_ValueType, CDD_ECAP_CODE)
@@ -776,8 +776,8 @@ Cdd_Ecap_HRCAP_getCalibrationClockPeriod(uint32 baseAddr, Cdd_Ecap_HrCap_Calibra
  * \param[in] Channel  The channel for which the scale factor is to be retrieved.
  * \pre None
  * \post None
- * \return None
- * \retval None
+ * \return Scale factor for high resolution
+ * \retval Cdd_Ecap_ChannelHrScaleType
  *
  *********************************************************************************************************************/
 FUNC(Cdd_Ecap_ChannelHrScaleType, CDD_ECAP_CODE)
@@ -787,16 +787,16 @@ Cdd_Ecap_HRCAP_getScaleFactor(uint32 baseAddr, Cdd_Ecap_ChannelType Channel);
  *
  * This service converts the event timestamp to nanoseconds for high resolution capability.
  *
+ * \param[in] timeStamp   Event timestamp
  * \param[in] scaleFactor  The scale factor for conversion.
- * \param[in] timestamp   Event timestamp
  * \pre None
  * \post None
- * \return None
- * \retval None
+ * \return Converted timestamp in nanoseconds
+ * \retval Cdd_Ecap_ChannelHrScaleType
  *
  *********************************************************************************************************************/
 FUNC(Cdd_Ecap_ChannelHrScaleType, CDD_ECAP_CODE)
-Cdd_Ecap_HRCAP_convertEventTimeStamp(uint32 timestamp, float32 scaleFactor);
+Cdd_Ecap_HRCAP_convertEventTimeStamp(uint32 timeStamp, Cdd_Ecap_ChannelHrScaleType scaleFactor);
 
 /** \brief Service to check the overflow interrupt status and calculate scalefactor.
  *

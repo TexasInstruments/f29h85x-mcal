@@ -205,7 +205,7 @@ void Cdd_Pwm_Hw2TzNotification(uint16 TripZoneFlag)
     }
 }
 
-void Cdd_Pwm_ConfigureHw()
+void Cdd_Pwm_ConfigureHw(void)
 {
     /* Configure EPWM1 instance */
     Cdd_Pwm_SetClockPrescaler(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_CLOCK_DIVIDER_4,

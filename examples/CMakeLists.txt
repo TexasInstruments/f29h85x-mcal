@@ -61,6 +61,7 @@ set(module_list
     "Cdd_Pwm"
     "Cdd_Ipc"
     "Fls"
+    "Fls_Fapi"
     "Rtdma"
     "DeviceSupport")
 set(example_list "")

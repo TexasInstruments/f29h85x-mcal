@@ -553,7 +553,7 @@ void DeviceSupport_EmulateDevice(Device_PartNumber partNumber)
             break;
         case DEVICE_F29P329SJ1Q:
             HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF1)  = 0x0U;
-            HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF2)  = 0x1DFU;
+            HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF2)  = 0x1FFU;
             HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF4)  = 0xFU;
             HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF7)  = 0x30000U;
             HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF10) = 0x70U;
@@ -576,7 +576,7 @@ void DeviceSupport_EmulateDevice(Device_PartNumber partNumber)
             break;
         case DEVICE_F29P329SM1Q:
             HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF1)  = 0x0U;
-            HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF2)  = 0x1DFU;
+            HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF2)  = 0x1FFU;
             HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF4)  = 0xFU;
             HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF7)  = 0x30000U;
             HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF10) = 0x70U;
@@ -599,7 +599,7 @@ void DeviceSupport_EmulateDevice(Device_PartNumber partNumber)
             break;
         case DEVICE_F29P329SM2Q:
             HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF1)  = 0x0U;
-            HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF2)  = 0x1DFU;
+            HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF2)  = 0x1FFU;
             HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF4)  = 0xFU;
             HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF7)  = 0x30000U;
             HWREG(DEVCFG_BASE + SYSCTL_O_MCUCNF10) = 0x70U;

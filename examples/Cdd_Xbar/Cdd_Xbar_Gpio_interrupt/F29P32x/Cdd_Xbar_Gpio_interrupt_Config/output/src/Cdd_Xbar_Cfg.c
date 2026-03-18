@@ -133,6 +133,9 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config =
         {
             .inputSelect = CDD_XBAR_INPUT4,   /* Design: MCAL-25720 */
             .inputLine = 0U,    /* GPIO0 */  /* Design: MCAL-25721 */
+            .externalIntEnable = TRUE,
+            .externalIntNum = CDD_XBAR_XINT1,
+            .externalIntrEdge = CDD_XBAR_INT_TYPE_POSITIVE_EDGE,
             .selectConfigLock = TRUE,   /* Design: MCAL-25707 */
         },
     },

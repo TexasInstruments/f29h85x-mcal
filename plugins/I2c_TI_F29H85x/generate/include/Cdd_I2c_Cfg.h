@@ -146,8 +146,8 @@ typedef uint16 Cdd_I2c_DataLengthType;
 
 /** \brief Precompile variant macro */
 #define CDD_I2C_CONFIG_PC               Cdd_I2c_Config
-
 [!ENDIF!]
+
 [!VAR "HAS_POLLING" = "'false'"!][!//
 [!VAR "HAS_INTERRUPT" = "'false'"!][!//
 [!LOOP "CddI2cHwConfig/*"!][!//
@@ -161,6 +161,20 @@ typedef uint16 Cdd_I2c_DataLengthType;
 #define CDD_I2C_POLLING_MODE        [!IF "$HAS_POLLING = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 /** \brief STD_ON if any HW unit uses interrupts */
 #define CDD_I2C_INTERRUPT_MODE      [!IF "$HAS_INTERRUPT = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+
+[!VAR "HAS_CONTROLLER" = "'false'"!][!//
+[!VAR "HAS_TARGET" = "'false'"!][!//
+[!LOOP "CddI2cHwConfig/*"!][!//
+[!IF "CddI2cHwUnitMode = 'CDD_I2C_MODE_CONTROLLER'"!][!//
+[!VAR "HAS_CONTROLLER" = "'true'"!][!//
+[!ELSEIF "CddI2cHwUnitMode = 'CDD_I2C_MODE_TARGET'"!][!//
+[!VAR "HAS_TARGET" = "'true'"!][!//
+[!ENDIF!][!//
+[!ENDLOOP!][!//
+/** \brief STD_ON if any HW unit is in controller mode */
+#define CDD_I2C_CONTROLLER_ACTIVE   [!IF "$HAS_CONTROLLER = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+/** \brief STD_ON if any HW unit is in target mode */
+#define CDD_I2C_TARGET_ACTIVE       [!IF "$HAS_TARGET = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Enable/Disable I2C dev detect error */
 #define CDD_I2C_DEV_ERROR_DETECT        [!IF "CddI2cGeneral/CddI2cDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
@@ -401,8 +415,11 @@ typedef struct
     /** \brief Number of chs for this sequence.
      *   Should not be more than CDD_I2C_MAX_CH_PER_SEQ */
     uint32                            chPerSeq;
+
+#if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
     /** \brief Channel index list */
     Cdd_I2c_ChannelType               chList[CDD_I2C_MAX_CH_PER_SEQ];
+#endif
 } Cdd_I2c_SequenceConfigType;
 
 /**
@@ -412,10 +429,13 @@ typedef struct Cdd_I2c_ConfigTag
 {
     /** \brief HW Unit configurations */
     Cdd_I2c_HwUnitConfigType   hwUnitCfg[CDD_I2C_MAX_HW_UNIT];
+
+#if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
     /** \brief Sequence configurations */
     Cdd_I2c_SequenceConfigType seqCfg[CDD_I2C_MAX_SEQ];
     /** \brief Ch configurations */
     Cdd_I2c_ChConfigType       chCfg[CDD_I2C_MAX_CH];
+#endif
 } Cdd_I2c_ConfigType;
 
 /*********************************************************************************************************************
@@ -428,7 +448,6 @@ extern CONST(uint32, CDD_I2C_CONST) Cdd_I2c_HwUnitBaseAddr[CDD_I2C_HW_UNIT_MAX];
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
-
 [!VAR "CddI2cSeqCompleteNotifyList" = "' '"!][!//
 [!LOOP "CddI2cSeqConfig/*"!][!//
 [!IF "not(node:empty(CddI2cSeqCompleteNotify)) and not((text:match(CddI2cSeqCompleteNotify,'NULL_PTR')))"!][!//
@@ -464,7 +483,7 @@ extern CONST(uint32, CDD_I2C_CONST) Cdd_I2c_HwUnitBaseAddr[CDD_I2C_HW_UNIT_MAX];
 [!IF "CddI2cHwUnitMode = 'CDD_I2C_MODE_TARGET' and node:exists(CddI2cTargetCallbacks)"!][!//
 [!IF "node:exists(CddI2cTargetCallbacks/CddI2cTargetRxCompleteNotification) and not((text:match(CddI2cTargetCallbacks/CddI2cTargetRxCompleteNotification,'NULL_PTR')))"!][!//
 [!IF "not(node:containsValue(text:split($CddI2cTargetRxCompleteNotifyList),CddI2cTargetCallbacks/CddI2cTargetRxCompleteNotification))"!][!//
-[!"concat('extern void ',node:value(CddI2cTargetCallbacks/CddI2cTargetRxCompleteNotification),'(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataPtrType pRxBuffer, Cdd_I2c_DataLengthType rxCount, uint8 status);')"!]
+[!"concat('extern void ',node:value(CddI2cTargetCallbacks/CddI2cTargetRxCompleteNotification),'(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataPtrType pRxData, Cdd_I2c_DataLengthType rxCount, uint8 status);')"!]
 [!VAR "CddI2cTargetRxCompleteNotifyList" = "concat($CddI2cTargetRxCompleteNotifyList,' ',CddI2cTargetCallbacks/CddI2cTargetRxCompleteNotification)"!][!//
 [!ENDIF!][!//
 [!ENDIF!][!//
@@ -486,7 +505,7 @@ extern CONST(uint32, CDD_I2C_CONST) Cdd_I2c_HwUnitBaseAddr[CDD_I2C_HW_UNIT_MAX];
 [!IF "CddI2cHwUnitMode = 'CDD_I2C_MODE_TARGET' and node:exists(CddI2cTargetCallbacks)"!][!//
 [!IF "node:exists(CddI2cTargetCallbacks/CddI2cTargetTxCompleteNotification) and not((text:match(CddI2cTargetCallbacks/CddI2cTargetTxCompleteNotification,'NULL_PTR')))"!][!//
 [!IF "not(node:containsValue(text:split($CddI2cTargetTxCompleteNotifyList),CddI2cTargetCallbacks/CddI2cTargetTxCompleteNotification))"!][!//
-[!"concat('extern void ',node:value(CddI2cTargetCallbacks/CddI2cTargetTxCompleteNotification),'(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataConstPtrType pTxBuffer, Cdd_I2c_DataLengthType txCount, uint8 status);')"!]
+[!"concat('extern void ',node:value(CddI2cTargetCallbacks/CddI2cTargetTxCompleteNotification),'(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataConstPtrType pTxData, Cdd_I2c_DataLengthType txCount, uint8 status);')"!]
 [!VAR "CddI2cTargetTxCompleteNotifyList" = "concat($CddI2cTargetTxCompleteNotifyList,' ',CddI2cTargetCallbacks/CddI2cTargetTxCompleteNotification)"!][!//
 [!ENDIF!][!//
 [!ENDIF!][!//

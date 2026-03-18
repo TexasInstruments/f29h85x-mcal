@@ -223,7 +223,7 @@ struct Cdd_I2c_HwUnitObjType_t
     /**< When hardware is busy, this points to the current ch that
      *   is in progress. When hardware is idle, this will be NULL */
     Cdd_I2c_HwUnitStatusType        hwUnitStatus;
-    /**< SPI HW unit result/status */
+    /**< I2C HW unit result/status */
 
     /*
      * All below variables are used only in target mode
@@ -255,18 +255,20 @@ struct Cdd_I2c_HwUnitObjType_t
  */
 typedef struct
 {
-    uint8                 maxCh;
-    /**< Maximum number of channels */
-    uint8                 maxSeq;
-    /**< Maximum number of sequences */
     uint8                 maxHwUnit;
     /**< Maximum number of HW unit */
-    Cdd_I2c_ChObjType     chObj[CDD_I2C_MAX_CH];
-    /**< I2C ch objects */
-    Cdd_I2c_SeqObjType    seqObj[CDD_I2C_MAX_SEQ];
-    /**< I2C sequence objects */
     Cdd_I2c_HwUnitObjType hwUnitObj[CDD_I2C_MAX_HW_UNIT];
     /**< I2C hw unit objects */
+#if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
+    uint8              maxCh;
+    /**< Maximum number of channels */
+    uint8              maxSeq;
+    /**< Maximum number of sequences */
+    Cdd_I2c_ChObjType  chObj[CDD_I2C_MAX_CH];
+    /**< I2C ch objects */
+    Cdd_I2c_SeqObjType seqObj[CDD_I2C_MAX_SEQ];
+    /**< I2C sequence objects */
+#endif /* CDD_I2C_CONTROLLER_ACTIVE */
 } Cdd_I2c_DriverObjType;
 
 /*********************************************************************************************************************
@@ -280,22 +282,27 @@ extern Cdd_I2c_DriverObjType       Cdd_I2c_DrvObj;
  *  Exported Function Prototypes
  *********************************************************************************************************************/
 
-Std_ReturnType Cdd_I2c_StartSeqAsync(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqObjType *seqObj);
-Std_ReturnType Cdd_I2c_CancelSeq(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqObjType *seqObj);
-
+void           Cdd_I2c_InitDrvObj(Cdd_I2c_DriverObjType *drvObj);
+void           Cdd_I2c_DeInitDrvObj(Cdd_I2c_DriverObjType *drvObj);
+void           Cdd_I2c_CopyConfig(Cdd_I2c_DriverObjType *drvObj, const Cdd_I2c_ConfigType *configPtr);
+Std_ReturnType Cdd_I2c_ResetHwUnitPriv(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_HwUnitObjType *hwUnitObj);
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
 Std_ReturnType Cdd_I2c_CheckConfig(const Cdd_I2c_ConfigType *configPtr);
 #endif
-void Cdd_I2c_InitDrvObj(Cdd_I2c_DriverObjType *drvObj);
-void Cdd_I2c_DeInitDrvObj(Cdd_I2c_DriverObjType *drvObj);
-void Cdd_I2c_CopyConfig(Cdd_I2c_DriverObjType *drvObj, const Cdd_I2c_ConfigType *configPtr);
-
-void Cdd_I2c_ProcessIsr(Cdd_I2c_HwUnitType hwUnitId);
-void Cdd_I2c_ProcessEvents(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_HwUnitObjType *hwUnitObj);
-void Cdd_I2c_TargetIsr(Cdd_I2c_HwUnitType hwUnitId);
 
 uint32                 Cdd_I2c_GetHwUnitBaseAddr(Cdd_I2c_HwUnitType hwUnitId);
 Cdd_I2c_HwUnitObjType *Cdd_I2c_GetHwUnitObj(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_HwUnitType hwUnitId);
+
+#if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
+Std_ReturnType Cdd_I2c_StartSeqAsync(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqObjType *seqObj);
+Std_ReturnType Cdd_I2c_CancelSeq(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqObjType *seqObj);
+void           Cdd_I2c_ProcessIsr(Cdd_I2c_HwUnitType hwUnitId);
+void           Cdd_I2c_ProcessEvents(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_HwUnitObjType *hwUnitObj);
+#endif /* CDD_I2C_CONTROLLER_ACTIVE */
+
+#if (CDD_I2C_TARGET_ACTIVE == STD_ON)
+void Cdd_I2c_TargetIsr(Cdd_I2c_HwUnitType hwUnitId);
+#endif /* CDD_I2C_TARGET_ACTIVE */
 
 #ifdef __cplusplus
 }

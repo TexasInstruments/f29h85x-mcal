@@ -101,9 +101,9 @@ extern "C" {
 
 #else
 
-#define EPWM_O_XCMP  0x0400U
-#define EPWM_O_DE    0x0800U
-#define EPWM_O_MINDB 0x0C00U
+#define EPWM_O_XCMP  (0x0400U)
+#define EPWM_O_DE    (0x0800U)
+#define EPWM_O_MINDB (0x0C00U)
 
 #endif
 
@@ -111,18 +111,18 @@ extern "C" {
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
 /* Calibration, Period and Counter Registers for SFO functionality */
-#define HRPWMCAL_O_HRCAL        0x44U  // HRPWM Calibration Register
-#define HRPWMCAL_O_HRPRD        0x46U  // HRPWM Period Register
-#define HRPWMCAL_O_HRCNT0       0x48U  // HRPWM Counter 0 Register
-#define HRPWMCAL_O_HRCNT1       0x4AU  // HRPWM Counter 1 Register
-#define HRPWMCAL_HRPWR_CALSTART 0x4U   // Calibration Start/Stop
-#define HRPWMCAL_HRPWR_CNTSEL   0x8U   // Counter Select Bit
-#define HRPWMCAL_HRPWR_CALSTS   0x10U  // Calibration Status Bit
-#define HRPWMCAL_HRPWR_TESTSEL  0x20U  // Test Mode (Lump Delay) Select Bit
-#define HRPWMCAL_HRPWR_CALSEL_S 6U
-#define HRPWMCAL_HRPWR_CALSEL_M 0x3C0U  // ePWM Delay Line Selection for Calibration
-#define HRPWMCAL_HRCAL_HRCAL_S  0U
-#define HRPWMCAL_HRCAL_HRCAL_M  0xFFU  // Delay Line Calibration Value Register.
+#define HRPWMCAL_O_HRCAL        (0x44U)  // HRPWM Calibration Register
+#define HRPWMCAL_O_HRPRD        (0x46U)  // HRPWM Period Register
+#define HRPWMCAL_O_HRCNT0       (0x48U)  // HRPWM Counter 0 Register
+#define HRPWMCAL_O_HRCNT1       (0x4AU)  // HRPWM Counter 1 Register
+#define HRPWMCAL_HRPWR_CALSTART (0x4U)   // Calibration Start/Stop
+#define HRPWMCAL_HRPWR_CNTSEL   (0x8U)   // Counter Select Bit
+#define HRPWMCAL_HRPWR_CALSTS   (0x10U)  // Calibration Status Bit
+#define HRPWMCAL_HRPWR_TESTSEL  (0x20U)  // Test Mode (Lump Delay) Select Bit
+#define HRPWMCAL_HRPWR_CALSEL_S (6U)
+#define HRPWMCAL_HRPWR_CALSEL_M (0x3C0U)  // ePWM Delay Line Selection for Calibration
+#define HRPWMCAL_HRCAL_HRCAL_S  (0U)
+#define HRPWMCAL_HRCAL_HRCAL_M  (0xFFU)  // Delay Line Calibration Value Register.
 
 /*********************************************************************************************************************
  * Exported Type Declarations
@@ -307,7 +307,7 @@ Cdd_Pwm_UpdatePeriod(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd_Pw
  *
  * This service sets duty cycle of the PWM channel
  *
- * \param[in] ChannelNumber     Numeric ID of the PWM channel
+ * \param[in] ChannelId     Numeric ID of the PWM channel
  * \param[in] DutyCycle         Requested duty cycle for the PWM Channel.
  * \pre None
  * \post None
@@ -316,22 +316,21 @@ Cdd_Pwm_UpdatePeriod(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd_Pw
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
-Cdd_Pwm_UpdateDutyCycle(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelNumber,
-                        VAR(Cdd_Pwm_DutyCycleType, AUTOMATIC) DutyCycle);
+Cdd_Pwm_UpdateDutyCycle(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId, VAR(Cdd_Pwm_DutyCycleType, AUTOMATIC) DutyCycle);
 
 #if (CDD_PWM_SET_OUTPUT_TO_IDLE_API == STD_ON) || (CDD_PWM_DEINIT_API == STD_ON)
 /** \brief Service to set the Output of the PWM channel to the configured idle state
  *
  * This service sets the Output of the PWM channel to the configured idle state
  *
- * \param[in] ChannelNumber     Numeric ID of the PWM channel
+ * \param[in] ChannelId     Numeric ID of the PWM channel
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_SetIdleOutput(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelNumber);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_SetIdleOutput(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId);
 #endif
 
 #if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
@@ -355,7 +354,7 @@ Cdd_Pwm_NotificationEnable(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) Channel,
  *
  * This service disables notification for the requested PWM Channel.
  *
- * \param[in] InstanceId     Numeric ID of the requested PWM instance.
+ * \param[in] Channel     Numeric ID of the requested PWM instance.
  * \pre None
  * \post None
  * \return None
@@ -363,7 +362,7 @@ Cdd_Pwm_NotificationEnable(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) Channel,
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
-Cdd_Pwm_NotificationDisable(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
+Cdd_Pwm_NotificationDisable(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) Channel);
 #endif
 
 #if (STD_ON == CDD_PWM_DEINIT_API)
@@ -622,7 +621,7 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivClearEventTriggerInterruptFlag(VAR(uint32, 
  *          SYSCLK.
  *
  * \param[in] Base              Base address of the PWM instance
- * \param[in] Prescaler           Time base count pre scale value.
+ * \param[in] Prescale           Time base count pre scale value.
  * \param[in] HighSpeedPrescaler  High speed time base count pre scale value.
  * \pre None
  * \post None
@@ -631,7 +630,7 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivClearEventTriggerInterruptFlag(VAR(uint32, 
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
-Cdd_Pwm_PrivSetClockPrescaler(VAR(uint32, AUTOMATIC) Base, VAR(Cdd_Pwm_ClockDividerType, AUTOMATIC) Prescaler,
+Cdd_Pwm_PrivSetClockPrescaler(VAR(uint32, AUTOMATIC) Base, VAR(Cdd_Pwm_ClockDividerType, AUTOMATIC) Prescale,
                               VAR(Cdd_Pwm_HighSpeedClkDivType, AUTOMATIC) HighSpeedPrescaler);
 
 #if (STD_ON == CDD_PWM_ADVANCED_MODE_API)
@@ -761,7 +760,7 @@ Cdd_Pwm_PrivSetSyncInPulseSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance.
  * \param[in] Source         Sync-out pulse source.
- * \param[in] Select         Boolean to enable/disable the source.
+ * \param[in] Mode         Boolean to enable/disable the source.
  * \pre None
  * \post None
  * \return None
@@ -771,7 +770,7 @@ Cdd_Pwm_PrivSetSyncInPulseSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivConfigureSyncOutPulseSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                                         VAR(Cdd_Pwm_SyncOutPulseSourceType, AUTOMATIC) Source,
-                                        VAR(boolean, AUTOMATIC) Select);
+                                        VAR(boolean, AUTOMATIC) Mode);
 
 /** \brief Set up the one-shot sync-out trigger source
  *
@@ -819,7 +818,7 @@ Cdd_Pwm_PrivSetPeriodLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  * This function enables loading of phase shift when the appropriate sync event occurs.
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance.
- * \param[in] Select         Boolean to enable/disable phase shift load.
+ * \param[in] Mode         Boolean to enable/disable phase shift load.
  * \pre None
  * \post None
  * \return None
@@ -827,7 +826,7 @@ Cdd_Pwm_PrivSetPeriodLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
-Cdd_Pwm_PrivConfigurePhaseShiftLoad(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
+Cdd_Pwm_PrivConfigurePhaseShiftLoad(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Mode);
 
 /** \brief Set shadow to active period load on sync mode
  *
@@ -858,7 +857,7 @@ Cdd_Pwm_PrivSelectPeriodLoadEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceI
  * This function enables one shot sync mode.
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance.
- * \param[in] Select         Boolean to enable/disable one shot sync mode.
+ * \param[in] Mode         Boolean to enable/disable one shot sync mode.
  * \pre None
  * \post None
  * \return None
@@ -866,7 +865,7 @@ Cdd_Pwm_PrivSelectPeriodLoadEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceI
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
-Cdd_Pwm_PrivConfigureOneShotSync(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
+Cdd_Pwm_PrivConfigureOneShotSync(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Mode);
 
 /** \brief Start one shot sync mode
  *
@@ -1081,7 +1080,7 @@ Cdd_Pwm_PrivGetCounterCompareValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instance
  *   - CDD_PWM_COUNTER_COMPARE_B - counter compare B.
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance.
- * \param[in] OuputChannel   Counter Compare value module.
+ * \param[in] OutputChannel   Counter Compare value module.
  * \pre None
  * \post None
  * \return Shadow register full status
@@ -1091,7 +1090,7 @@ Cdd_Pwm_PrivGetCounterCompareValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instance
  *********************************************************************************************************************/
 FUNC(boolean, CDD_PWM_CODE)
 Cdd_Pwm_PrivGetCounterCompareShadowStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                          VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OuputChannel);
+                                          VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel);
 
 /** \brief Enables CMPAHR, CMPBHR register linking
  *
@@ -1099,7 +1098,7 @@ Cdd_Pwm_PrivGetCounterCompareShadowStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) I
  * the same value as CMPAHR.
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance.
- * \param[in] Select         Enable/disable selection.
+ * \param[in] Mode         Enable/disable selection.
  * \pre None
  * \post None
  * \return None
@@ -1107,7 +1106,7 @@ Cdd_Pwm_PrivGetCounterCompareShadowStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) I
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
-Cdd_Pwm_PrivConfigureLinkDutyHR(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
+Cdd_Pwm_PrivConfigureLinkDutyHR(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Mode);
 
 /**
  * Action Qualifier module related APIs
@@ -1796,7 +1795,7 @@ Cdd_Pwm_PrivSetFallingEdgeDelayCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instan
  * This function enables ePWM chopper module.
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance.
- * \param[in] Select         Enable/disable selection for chopper.
+ * \param[in] Mode         Enable/disable selection for chopper.
  * \pre None
  * \post None
  * \return None
@@ -1804,7 +1803,7 @@ Cdd_Pwm_PrivSetFallingEdgeDelayCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instan
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
-Cdd_Pwm_PrivConfigureChopper(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
+Cdd_Pwm_PrivConfigureChopper(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Mode);
 
 /** \brief Set chopper duty cycle
  *
@@ -2053,12 +2052,12 @@ Cdd_Pwm_PrivSetTripZoneAdvAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId
 *
 * \param[in] InstanceId    Numeric ID of the requested PWM instance
 * \param[in] OutputChannel  The ePWM output channel
-* \param[in] TzAdvDCEvent   Digital Compare Trip Zone event type with valid values:
+* \param[in] TzAdvDcEvent   Digital Compare Trip Zone event type with valid values:
 *                           - CDD_PWM_TZ_ADV_ACTION_EVENT_DCXEVT2_D  - Digital Compare event A2 while counting down
 *                           - CDD_PWM_TZ_ADV_ACTION_EVENT_DCXEVT2_U  - Digital Compare event A2 while counting up
 *                           - CDD_PWM_TZ_ADV_ACTION_EVENT_DCXEVT1_D  - Digital Compare event A1 while counting down
 *                           - CDD_PWM_TZ_ADV_ACTION_EVENT_DCXEVT1_U  - Digital Compare event A1 while counting up
-* \param[in] TzAdvDCAction  Digital Compare Trip zone Action with valid values:
+* \param[in] TzAdvDcAction  Digital Compare Trip zone Action with valid values:
 *                           - CDD_PWM_TZ_ADV_ACTION_HIGH_Z    - high impedance output
 *                           - CDD_PWM_TZ_ADV_ACTION_HIGH      - high voltage state
 *                           - CDD_PWM_TZ_ADV_ACTION_LOW       - low voltage state
@@ -2075,8 +2074,8 @@ Cdd_Pwm_PrivSetTripZoneAdvAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivSetTripZoneAdvDigitalCompareAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                                                VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
-                                               VAR(Cdd_Pwm_TripZoneAdvDigitalCompareEventType, AUTOMATIC) TzAdvDCEvent,
-                                               VAR(Cdd_Pwm_TripZoneAdvancedActionType, AUTOMATIC) TzAdvDCAction);
+                                               VAR(Cdd_Pwm_TripZoneAdvDigitalCompareEventType, AUTOMATIC) TzAdvDcEvent,
+                                               VAR(Cdd_Pwm_TripZoneAdvancedActionType, AUTOMATIC) TzAdvDcAction);
 
 /** \brief Enable Trip Zone interrupts
  *
@@ -2236,7 +2235,7 @@ Cdd_Pwm_PrivClearCycleByCycleTripZoneFlag(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) I
  * This function clears the specific One Shot (OST) Trip Zone flag.
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
- * \param[in] TzOSTFlags    OST flags to be cleared with valid values:
+ * \param[in] TzOstFlags    OST flags to be cleared with valid values:
  *                          - CDD_PWM_TZ_OST_FLAG_OST1     - OST flag for OST1
  *                          - CDD_PWM_TZ_OST_FLAG_OST2     - OST flag for OST2
  *                          - CDD_PWM_TZ_OST_FLAG_OST3U    - OST flag for OST3U
@@ -2253,7 +2252,7 @@ Cdd_Pwm_PrivClearCycleByCycleTripZoneFlag(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) I
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivClearOneShotTripZoneFlag(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                     VAR(uint16, AUTOMATIC) TzOSTFlags);
+                                     VAR(uint16, AUTOMATIC) TzOstFlags);
 
 /** \brief Force Trip Zone events
  *
@@ -3889,7 +3888,7 @@ Cdd_Pwm_PrivSetXCmpShadowBufPtrLoadOnce(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Ins
  *    CDD_PWM_XCMP_SHADOW3         - XCMP set is Shadow 3U
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
- * \param[in] Bufferset Shadow set number
+ * \param[in] BufferSet Shadow set number
  * \param[in] Count Number of times Shadow Buffer 2 or 3U is applied
  * \pre None
  * \post None
@@ -3898,7 +3897,7 @@ Cdd_Pwm_PrivSetXCmpShadowBufPtrLoadOnce(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Ins
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivSetXCmpShadowRepeatBufxCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                         VAR(Cdd_Pwm_XCmpShadowSetType, AUTOMATIC) Bufferset,
+                                         VAR(Cdd_Pwm_XCmpShadowSetType, AUTOMATIC) BufferSet,
                                          VAR(uint32, AUTOMATIC) Count);
 
 /** \brief Minimum Dead Band Module related APIs
@@ -4739,7 +4738,7 @@ Cdd_Pwm_PrivHrpwmSetTranslatorRemainder(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Ins
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] OutputChannel The Counter Compare module
- * \param[in] CompareCount The consolidated counter compare count value
+ * \param[in] CompCount The consolidated counter compare count value
  * \pre None
  * \post None
  * \return None
@@ -4748,7 +4747,7 @@ Cdd_Pwm_PrivHrpwmSetTranslatorRemainder(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Ins
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivHrpwmSetCounterCompareValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                                         VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
-                                        VAR(uint32, AUTOMATIC) CompareCount);
+                                        VAR(uint32, AUTOMATIC) CompCount);
 
 /** \brief Sets only the high resolution counter compare value
  *

@@ -259,6 +259,9 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+/* Forward declaration of Cdd_Adc configuration structure */
+struct Cdd_Adc_ConfigTag;
+
 /** \brief Specifies the identification (ID) for ADC Hardware instances */
 typedef enum
 {

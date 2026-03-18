@@ -396,6 +396,21 @@ FUNC(void, MCU_CODE) Mcu_LockCpuSysRegisters(void);
 FUNC(void, MCU_CODE)
 Mcu_Priv_ConfigurePeripherals(P2CONST(Mcu_PeripheralConfigType, AUTOMATIC, MCU_APPL_CONST) PeripheralConfig);
 
+/** \brief Configures CPU1 Lockstep enable/disable (LSEN register)
+ *
+ * This function configures the LSEN register to enable or disable CPU1 lockstep mode.
+ * The LSEN register is located at DEVCFG_BASE + SYSCTL_O_LSEN.
+ * Bit 0 (Enable): 1 = Lockstep enabled, 0 = Lockstep disabled
+ *
+ * \param[in] LockstepEnable TRUE to enable lockstep, FALSE to disable
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_Priv_ConfigureLockstep(boolean LockstepEnable);
+
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/

@@ -294,6 +294,9 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+/* Forward declaration of Cdd_Adc configuration structure */
+struct Cdd_Adc_ConfigTag;
+
 /** \brief Specifies the identification (ID) for ADC Hardware instances */[!//
 [!VAR "variant" = "node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/ResourceAllocator/ELEMENTS/ResourceAllocator/ResourceAllocatorGeneral/Variant)"!][!//
 [!IF "($variant = 'F29P329SM2_Q')"!]

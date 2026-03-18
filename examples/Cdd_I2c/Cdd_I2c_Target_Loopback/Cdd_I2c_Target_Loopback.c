@@ -66,16 +66,14 @@
  ------------------------------------------------------------------------------------------------------------------
  *  File:       Cdd_I2c_Target_Loopback.c
  *
- *  Description:  I2C Target (Slave) mode loopback example application.
+ *  Description:  I2C Target (Slave) mode external loopback example.
  *                I2CA is configured as target at address 0x48.
  *                I2CB is configured as controller (master).
  *                I2CA and I2CB SDA/SCL lines are externally connected.
  *
  *                Test flow:
- *                1. I2CB (controller) writes test data to I2CA (target)
- *                2. Target RX complete callback fires, data is verified
- *                3. I2CB (controller) reads data back from I2CA (target)
- *                4. Controller verifies read data matches expected TX pattern
+ *                1. Controller writes data to target, target receives and verifies.
+ *                2. Controller reads data from target, controller verifies read data.
  *
  * \Note Connect as per below using external wires in the LP board
  *      - I2CA_SCL (J1 Pin 9)  to I2CB_SCL (J5 Pin 49)
@@ -93,7 +91,6 @@
 #include "Os.h"
 #include "Cdd_I2c.h"
 #include "Port.h"
-#include "Mcu.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -103,7 +100,7 @@
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
 
-#define APP_NAME     "Cdd_I2c_Target_LOOPBACK"
+#define APP_NAME     "Cdd_I2c_Target_Loopback"
 #define APP_BUF_SIZE (8U)
 
 #define I2C_TARGET_ADDR (0x48U)
@@ -151,12 +148,12 @@ static volatile boolean gTargetTxDone  = FALSE;
 static volatile boolean gTargetErrFlag = FALSE;
 static volatile uint8   gTargetLastErr = 0U;
 
-/* Test result */
-static uint32 gTestPassed = E_OK;
-
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
+
+static Std_ReturnType I2c_appWaitSeqDone(Cdd_I2c_SequenceType seqId);
+static Std_ReturnType I2c_appRunLoopbackTest(void);
 
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
@@ -278,6 +275,110 @@ static Std_ReturnType I2c_appWaitSeqDone(Cdd_I2c_SequenceType seqId)
 }
 
 /*********************************************************************************************************************
+ *  Local helper: run a full loopback test (write + read + verify)
+ *********************************************************************************************************************/
+
+static Std_ReturnType I2c_appRunLoopbackTest(void)
+{
+    Std_ReturnType retVal;
+    uint32         idx;
+
+    /* Prepare write buffer */
+    for (idx = 0U; idx < APP_BUF_SIZE; idx++)
+    {
+        gCtrlWrBuf[idx] = (uint8)(idx);
+    }
+
+    /* -- Controller write -> Target receive -- */
+    gSeqDone      = FALSE;
+    gSeqErrCode   = CDD_I2C_E_NO_ERROR;
+    gTargetRxDone = FALSE;
+
+    retVal = Cdd_I2c_SetupEBDynamic(I2C_APP_CH_WR, I2C_TARGET_ADDR, gCtrlWrBuf, NULL_PTR, APP_BUF_SIZE);
+    if (retVal != E_OK)
+    {
+        AppUtils_Printf(APP_NAME ": Err: SetupEB WR failed\r\n");
+        return E_NOT_OK;
+    }
+
+    retVal = Cdd_I2c_AsyncTransmit(I2C_APP_SEQ_WR);
+    if (retVal != E_OK)
+    {
+        AppUtils_Printf(APP_NAME ": Err: AsyncTransmit WR failed\r\n");
+        return E_NOT_OK;
+    }
+
+    retVal = I2c_appWaitSeqDone(I2C_APP_SEQ_WR);
+    if (retVal != E_OK)
+    {
+        AppUtils_Printf(APP_NAME ": Err: WR sequence failed\r\n");
+        return E_NOT_OK;
+    }
+
+    /* Verify target received data correctly */
+    for (idx = 0U; idx < APP_BUF_SIZE; idx++)
+    {
+        if (gTargetRxBuf[idx] != gCtrlWrBuf[idx])
+        {
+            AppUtils_Printf(APP_NAME ": Err: Target RX mismatch at [%lu]: got 0x%02X, expected 0x%02X\r\n", idx,
+                            gTargetRxBuf[idx], gCtrlWrBuf[idx]);
+            return E_NOT_OK;
+        }
+    }
+
+    /* -- Controller read <- Target transmit -- */
+    for (idx = 0U; idx < APP_BUF_SIZE; idx++)
+    {
+        gCtrlRdBuf[idx] = 0xFFU;
+    }
+
+    gSeqDone      = FALSE;
+    gSeqErrCode   = CDD_I2C_E_NO_ERROR;
+    gTargetTxDone = FALSE;
+
+    retVal = Cdd_I2c_SetupEBDynamic(I2C_APP_CH_RD, I2C_TARGET_ADDR, NULL_PTR, gCtrlRdBuf, APP_BUF_SIZE);
+    if (retVal != E_OK)
+    {
+        AppUtils_Printf(APP_NAME ": Err: SetupEB RD failed\r\n");
+        return E_NOT_OK;
+    }
+
+    retVal = Cdd_I2c_AsyncTransmit(I2C_APP_SEQ_RD);
+    if (retVal != E_OK)
+    {
+        AppUtils_Printf(APP_NAME ": Err: AsyncTransmit RD failed\r\n");
+        return E_NOT_OK;
+    }
+
+    retVal = I2c_appWaitSeqDone(I2C_APP_SEQ_RD);
+    if (retVal != E_OK)
+    {
+        AppUtils_Printf(APP_NAME ": Err: RD sequence failed\r\n");
+        return E_NOT_OK;
+    }
+
+    /* Verify controller read data matches target TX buffer */
+    for (idx = 0U; idx < APP_BUF_SIZE; idx++)
+    {
+        if (gCtrlRdBuf[idx] != gTargetTxBuf[idx])
+        {
+            AppUtils_Printf(APP_NAME ": Err: Controller RD mismatch at [%lu]: got 0x%02X, expected 0x%02X\r\n", idx,
+                            gCtrlRdBuf[idx], gTargetTxBuf[idx]);
+            return E_NOT_OK;
+        }
+    }
+
+    /* Check for target errors */
+    if (gTargetErrFlag == TRUE)
+    {
+        AppUtils_Printf(APP_NAME ": Err: Target error 0x%02X\r\n", gTargetLastErr);
+        return E_NOT_OK;
+    }
+
+    return E_OK;
+}
+
+/*********************************************************************************************************************
  *  Main
  *********************************************************************************************************************/
 
@@ -292,7 +393,7 @@ int main(void)
     AppUtils_Init(200000000U);
 
     AppUtils_Printf(APP_NAME ": Example Application - STARTS ...\r\n");
-    AppUtils_Printf("I2CA: target at 0x48, I2CB: controller (external loopback)\r\n");
+    AppUtils_Printf(APP_NAME ": I2CA: target at 0x48, I2CB: controller (external loopback)\r\n");
 
     /* Pre-fill target TX buffer with known pattern */
     for (idx = 0U; idx < APP_BUF_SIZE; idx++)
@@ -301,151 +402,28 @@ int main(void)
         gTargetRxBuf[idx] = 0U;
     }
 
-    /* Submit target buffers */
+    /* Submit target buffers and start target mode on I2CA */
     Cdd_I2c_TargetSubmitRxBuffer(CDD_I2C_HW_UNIT_I2CA, gTargetRxBuf, APP_BUF_SIZE);
     Cdd_I2c_TargetSubmitTxBuffer(CDD_I2C_HW_UNIT_I2CA, gTargetTxBuf, APP_BUF_SIZE);
-
-    /* Start target mode on I2CA */
     Cdd_I2c_TargetStart(CDD_I2C_HW_UNIT_I2CA);
 
-    AppUtils_Printf("Target started.\r\n");
+    AppUtils_Printf(APP_NAME ": Target started.\r\n");
 
     /*
-     * Test 1: Controller write -> Target receive
-     *   I2CB writes APP_BUF_SIZE bytes to target address 0x48
-     *   I2CA (target) should receive them in gTargetRxBuf
+     * Loopback: Controller write -> Target receive, then Controller read <- Target transmit
      */
-    for (idx = 0U; idx < APP_BUF_SIZE; idx++)
+    retVal = I2c_appRunLoopbackTest();
+    if (retVal == E_OK)
     {
-        gCtrlWrBuf[idx] = (uint8)(idx);
-    }
-
-    gSeqDone      = FALSE;
-    gSeqErrCode   = CDD_I2C_E_NO_ERROR;
-    gTargetRxDone = FALSE;
-
-    retVal = Cdd_I2c_SetupEBDynamic(I2C_APP_CH_WR, I2C_TARGET_ADDR, gCtrlWrBuf, NULL_PTR, APP_BUF_SIZE);
-    if (retVal != E_OK)
-    {
-        AppUtils_Printf("Err: SetupEB WR failed\r\n");
-        gTestPassed = E_NOT_OK;
-    }
-
-    if (E_OK == gTestPassed)
-    {
-        retVal = Cdd_I2c_AsyncTransmit(I2C_APP_SEQ_WR);
-        if (retVal != E_OK)
-        {
-            AppUtils_Printf("Err: AsyncTransmit WR failed\r\n");
-            gTestPassed = E_NOT_OK;
-        }
-    }
-
-    if (E_OK == gTestPassed)
-    {
-        retVal = I2c_appWaitSeqDone(I2C_APP_SEQ_WR);
-        if (retVal != E_OK)
-        {
-            AppUtils_Printf("Err: WR sequence failed\r\n");
-            gTestPassed = E_NOT_OK;
-        }
-    }
-
-    /* Verify target received the data correctly */
-    if (E_OK == gTestPassed)
-    {
-        for (idx = 0U; idx < APP_BUF_SIZE; idx++)
-        {
-            if (gTargetRxBuf[idx] != gCtrlWrBuf[idx])
-            {
-                AppUtils_Printf("Err: Target RX mismatch at [%lu]: got 0x%02X, expected 0x%02X\r\n", idx,
-                                gTargetRxBuf[idx], gCtrlWrBuf[idx]);
-                gTestPassed = E_NOT_OK;
-                break;
-            }
-        }
-    }
-
-    /*
-     * Test 2: Controller read <- Target transmit
-     *   I2CB reads APP_BUF_SIZE bytes from target address 0x48
-     *   I2CA (target) should send gTargetTxBuf contents
-     *   Controller verifies read data matches target TX pattern
-     */
-    if (E_OK == gTestPassed)
-    {
-        for (idx = 0U; idx < APP_BUF_SIZE; idx++)
-        {
-            gCtrlRdBuf[idx] = 0xFFU;
-        }
-
-        gSeqDone      = FALSE;
-        gSeqErrCode   = CDD_I2C_E_NO_ERROR;
-        gTargetTxDone = FALSE;
-
-        retVal = Cdd_I2c_SetupEBDynamic(I2C_APP_CH_RD, I2C_TARGET_ADDR, NULL_PTR, gCtrlRdBuf, APP_BUF_SIZE);
-        if (retVal != E_OK)
-        {
-            AppUtils_Printf("Err: SetupEB RD failed\r\n");
-            gTestPassed = E_NOT_OK;
-        }
-    }
-
-    if (E_OK == gTestPassed)
-    {
-        retVal = Cdd_I2c_AsyncTransmit(I2C_APP_SEQ_RD);
-        if (retVal != E_OK)
-        {
-            AppUtils_Printf("Err: AsyncTransmit RD failed\r\n");
-            gTestPassed = E_NOT_OK;
-        }
-    }
-
-    if (E_OK == gTestPassed)
-    {
-        retVal = I2c_appWaitSeqDone(I2C_APP_SEQ_RD);
-        if (retVal != E_OK)
-        {
-            AppUtils_Printf("Err: RD sequence failed\r\n");
-            gTestPassed = E_NOT_OK;
-        }
-    }
-
-    /* Verify controller read data matches target TX buffer */
-    if (E_OK == gTestPassed)
-    {
-        for (idx = 0U; idx < APP_BUF_SIZE; idx++)
-        {
-            if (gCtrlRdBuf[idx] != gTargetTxBuf[idx])
-            {
-                AppUtils_Printf("Err: Controller RD mismatch at [%lu]: got 0x%02X, expected 0x%02X\r\n", idx,
-                                gCtrlRdBuf[idx], gTargetTxBuf[idx]);
-                gTestPassed = E_NOT_OK;
-                break;
-            }
-        }
-    }
-
-    /* Check for target errors */
-    if ((E_OK == gTestPassed) && (gTargetErrFlag == TRUE))
-    {
-        AppUtils_Printf("Err: Target error 0x%02X\r\n", gTargetLastErr);
-        gTestPassed = E_NOT_OK;
-    }
-
-    /* Stop target mode */
-    Cdd_I2c_TargetStop(CDD_I2C_HW_UNIT_I2CA);
-
-    if (E_OK == gTestPassed)
-    {
-        AppUtils_Printf(APP_NAME ": Loopback test PASSED\r\n");
-        AppUtils_Printf(APP_NAME ": All tests have passed\r\n");
+        AppUtils_Printf(APP_NAME ": Loopback PASS\r\n");
     }
     else
     {
-        AppUtils_Printf(APP_NAME ": Loopback test FAILED\r\n");
+        AppUtils_Printf(APP_NAME ": Loopback FAIL\r\n");
     }
 
+    /* Cleanup */
+    Cdd_I2c_TargetStop(CDD_I2C_HW_UNIT_I2CA);
     Cdd_I2c_DeInit();
 
     return 0;

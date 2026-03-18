@@ -65,7 +65,7 @@
  *  File:         Fls_App.h
  *  Generator:    None
  *
- *  Description:  This file contains examples for Can driver
+ *  Description:  This file contains include files for the FLS App
  *********************************************************************************************************************/
 #ifndef FLS_APP_H
 #define FLS_APP_H

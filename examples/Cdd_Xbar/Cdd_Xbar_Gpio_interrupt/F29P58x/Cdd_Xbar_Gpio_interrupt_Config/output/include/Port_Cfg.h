@@ -183,6 +183,8 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+/* Forward declaration of Port configuration structure */
+struct Port_ConfigType_s;
 
 /** \brief Enum of Port Pin Pad, Up/Down Type selection. */
 /* 

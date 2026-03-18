@@ -195,7 +195,7 @@ void Gpt_Notify_Func_0(void)
  *  Local Functions Definition
  *********************************************************************************************************************/
 
-void Cdd_Adc_Grp0Notification()
+void Cdd_Adc_Grp0Notification(void)
 {
     /* Read the group conversion results and get PPB values when the stream is complete */
     if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_0) == CDD_ADC_STREAM_COMPLETED)
@@ -218,7 +218,7 @@ void Cdd_Adc_Grp0Notification()
     }
 }
 
-void Cdd_Adc_Grp1Notification()
+void Cdd_Adc_Grp1Notification(void)
 {
     if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_1) == CDD_ADC_STREAM_COMPLETED)
     {
@@ -238,7 +238,7 @@ void Cdd_Adc_Grp1Notification()
     }
 }
 
-void Cdd_Adc_Grp2Notification()
+void Cdd_Adc_Grp2Notification(void)
 {
     if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_2) == CDD_ADC_STREAM_COMPLETED)
     {
@@ -261,7 +261,7 @@ void Cdd_Adc_Grp2Notification()
     }
 }
 
-void Cdd_Adc_Grp3Notification()
+void Cdd_Adc_Grp3Notification(void)
 {
     if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_3) == CDD_ADC_STREAM_COMPLETED)
     {

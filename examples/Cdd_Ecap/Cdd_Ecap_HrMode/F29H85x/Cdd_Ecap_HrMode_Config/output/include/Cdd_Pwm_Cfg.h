@@ -158,6 +158,8 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+/* Forward declaration of Cdd_Pwm configuration structure */
+struct Cdd_Pwm_ConfigTag;
 
 
 /** \brief Cdd_Pwm_OutputSymmetryType determines the symmetry of the output waveform of a PWM instance */

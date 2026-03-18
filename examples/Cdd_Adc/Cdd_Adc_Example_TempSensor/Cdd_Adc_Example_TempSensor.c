@@ -155,7 +155,7 @@ void Gpt_Notify_Func_0(void)
  *  Local Functions Definition
  *********************************************************************************************************************/
 
-void Cdd_Adc_Group1Notification()
+void Cdd_Adc_Group1Notification(void)
 {
     /* When the group status is IDLE the read the temperature sensor value in temperature */
     if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_0) == CDD_ADC_STREAM_COMPLETED)
@@ -170,7 +170,7 @@ void Cdd_Adc_Group1Notification()
     }
 }
 
-void Cdd_Adc_Group2Notification()
+void Cdd_Adc_Group2Notification(void)
 {
     if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_1) == CDD_ADC_STREAM_COMPLETED)
     {

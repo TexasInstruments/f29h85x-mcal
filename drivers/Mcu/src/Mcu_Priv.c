@@ -552,6 +552,20 @@ Mcu_Priv_ConfigurePeripherals(P2CONST(Mcu_PeripheralConfigType, AUTOMATIC, MCU_A
     }
 }
 
+FUNC(void, MCU_CODE) Mcu_Priv_ConfigureLockstep(boolean LockstepEnable)
+{
+    /* Configure CPU1 Lockstep (LSEN register)
+     */
+    if ((boolean)TRUE == LockstepEnable)
+    {
+        HWREG(DEVCFG_BASE + SYSCTL_O_LSEN) |= SYSCTL_LSEN_ENABLE;
+    }
+    else
+    {
+        HWREG(DEVCFG_BASE + SYSCTL_O_LSEN) &= ~SYSCTL_LSEN_ENABLE;
+    }
+}
+
 /*
  * Design: MCAL-21921
  */

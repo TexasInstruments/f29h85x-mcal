@@ -314,6 +314,8 @@ typedef struct Mcu_ConfigType_s
     boolean                Mcu_EnableClkFailNotification;
     /** \brief Peripheral configuration for CPU/Frame assignment */
     P2CONST(struct Mcu_PeripheralConfigType_s, AUTOMATIC, MCU_APPL_CONST) PeripheralConfig;
+    /** \brief CPU1 Lockstep enable configuration */
+    boolean Mcu_LockstepEnable;
 } Mcu_ConfigType;
 
 /*********************************************************************************************************************

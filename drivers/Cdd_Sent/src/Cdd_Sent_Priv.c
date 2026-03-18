@@ -855,8 +855,9 @@ Cdd_Sent_disableInterrupt(uint32 base, uint32 intFlags)
 /*
  *Design: MCAL-28775
  */
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) Cdd_Sent_setDataSortingFormat(uint32 base, Cdd_Sent_DataNumber dataNumber,
-                                                                     Cdd_SentNibbleNumber nibbleNum, uint32 nibble)
+LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
+    Cdd_Sent_setDataSortingFormat(uint32 base, Cdd_Sent_DataNumber dataNumber, Cdd_SentNibbleNumber nibbleNum,
+                                  Cdd_SentNibble nibble)
 {
     VAR(uint32, AUTOMATIC) dataOffset;
     VAR(uint32, AUTOMATIC) shiftVal;

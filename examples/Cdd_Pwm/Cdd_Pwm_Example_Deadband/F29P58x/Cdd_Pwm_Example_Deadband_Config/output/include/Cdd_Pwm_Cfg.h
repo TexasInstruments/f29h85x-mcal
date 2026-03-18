@@ -182,6 +182,8 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+/* Forward declaration of Cdd_Pwm configuration structure */
+struct Cdd_Pwm_ConfigTag;
 
 
 /** \brief SYNC INPUT pulse source enumeration */

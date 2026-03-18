@@ -155,7 +155,7 @@ FUNC(void, ECUM_CODE) EcuM_InitList(void);
  *
  * This function sets the wakeup event.
  *
- * \param[in] Sources Sources of the wakeup event
+ * \param[in] sources Sources of the wakeup event
  * \param[out] None
  * \pre None
  * \post None
@@ -163,13 +163,13 @@ FUNC(void, ECUM_CODE) EcuM_InitList(void);
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, ECUM_CODE) EcuM_SetWakeupEvent(EcuM_WakeupSourceType Sources);
+FUNC(void, ECUM_CODE) EcuM_SetWakeupEvent(EcuM_WakeupSourceType sources);
 
 /** \brief Poll a wakeup source
  *
- * This callout is called by the EcuM to poll a wakeup source. 
+ * This callout is called by the EcuM to poll a wakeup source.
  *
- * \param[in] WakeupSource Sources of the wakeup event
+ * \param[in] wakeupSource Sources of the wakeup event
  * \param[out] None
  * \pre None
  * \post None
@@ -177,7 +177,7 @@ FUNC(void, ECUM_CODE) EcuM_SetWakeupEvent(EcuM_WakeupSourceType Sources);
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, ECUM_CODE) EcuM_CheckWakeup(EcuM_WakeupSourceType WakeupSource);
+FUNC(void, ECUM_CODE) EcuM_CheckWakeup(EcuM_WakeupSourceType wakeupSource);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

@@ -117,7 +117,7 @@ Type of length type.
 | Std_ReturnType | **[Fls_Write](../Modules/group__FLS.md#function-fls_write)**([Fls_AddressType](../Modules/group__FLS.md#typedef-fls_addresstype) TargetAddress, const uint8 * SourceAddressPtr, [Fls_LengthType](../Modules/group__FLS.md#typedef-fls_lengthtype) Length)| Writes one or more complete flash pages.  |
 | Std_ReturnType | **[Fls_Read](../Modules/group__FLS.md#function-fls_read)**([Fls_AddressType](../Modules/group__FLS.md#typedef-fls_addresstype) SourceAddress, uint8 * TargetAddressPtr, [Fls_LengthType](../Modules/group__FLS.md#typedef-fls_lengthtype) Length)| Reads from flash memory.  |
 | Std_ReturnType | **[Fls_Compare](../Modules/group__FLS.md#function-fls_compare)**([Fls_AddressType](../Modules/group__FLS.md#typedef-fls_addresstype) SourceAddress, const uint8 * TargetAddressPtr, [Fls_LengthType](../Modules/group__FLS.md#typedef-fls_lengthtype) Length)| Compares the contents of an area of flash memory with that of an application data buffer.  |
-| Std_ReturnType | **[Fls_BlankCheck](../Modules/group__FLS.md#function-fls_blankcheck)**([Fls_AddressType](../Modules/group__FLS.md#typedef-fls_addresstype) Address, [Fls_LengthType](../Modules/group__FLS.md#typedef-fls_lengthtype) Length)| The function Fls_BlankCheck shall verify, whether a given memory area has been erased but not (yet) programmed.  |
+| Std_ReturnType | **[Fls_BlankCheck](../Modules/group__FLS.md#function-fls_blankcheck)**([Fls_AddressType](../Modules/group__FLS.md#typedef-fls_addresstype) TargetAddress, [Fls_LengthType](../Modules/group__FLS.md#typedef-fls_lengthtype) Length)| The function Fls_BlankCheck shall verify, whether a given memory area has been erased but not (yet) programmed.  |
 | MemIf_StatusType | **[Fls_GetStatus](../Modules/group__FLS.md#function-fls_getstatus)**(void )| Returns the driver state.  |
 | Std_ReturnType | **[Fls_GetVersionInfo](../Modules/group__FLS.md#function-fls_getversioninfo)**(Std_VersionInfoType * versioninfo)| Returns the version information of this module.  |
 | MemIf_JobResultType | **[Fls_GetJobResult](../Modules/group__FLS.md#function-fls_getjobresult)**(void )| Returns the result of the last job.  |
@@ -313,7 +313,7 @@ Compares the contents of an area of flash memory with that of an application dat
 
 ```
 Std_ReturnType Fls_BlankCheck(
-    Fls_AddressType Address,
+    Fls_AddressType TargetAddress,
     Fls_LengthType Length
 )
 ```
@@ -325,7 +325,7 @@ The function Fls_BlankCheck shall verify, whether a given memory area has been e
 **Parameters**: 
 
   
-* **Address** Address in flash memory from which the blank check should be started. 
+* **TargetAddress** Address in flash memory from which the blank check should be started. 
   
 * **Length** - Number of bytes to be checked for erase pattern 
 
