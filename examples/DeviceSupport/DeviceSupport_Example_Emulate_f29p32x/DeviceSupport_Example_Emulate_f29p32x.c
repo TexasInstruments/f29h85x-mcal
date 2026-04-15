@@ -122,8 +122,8 @@ int main(void)
 {
     uint32 regval = 0;
     DeviceSupport_EmulateDevice(DEVICE_F29P329SM2Q);
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(200000000U);  // Init App utils to enable prints
     AppUtils_Printf("Running Emulation Example for f29p32x !!!\n");
     /*Read MCUCNF64 register , offset = 0x2BC*/

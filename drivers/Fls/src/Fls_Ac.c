@@ -223,7 +223,8 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_initializeAPI(uint32 u32HclkFrequency)
  *  Design: MCAL-30891, MCAL-30892, MCAL-30893, MCAL-30897,
  */
 FUNC(void, FLS_CODE)
-Fls_Fapi_issueProgrammingCommand(uint32 *pu32StartAddress, uint8 *pu8DataBuffer, uint8 u8DataBufferSizeInBytes)
+Fls_Fapi_issueProgrammingCommand(const uint32 *pu32StartAddress, const uint8 *pu8DataBuffer,
+                                 uint32 u32DataBufferSizeInBytes)
 {
     VAR(uint32, AUTOMATIC) u8BankWidth       = 16U;
     VAR(uint32, AUTOMATIC) u32StartCondition = 0U;
@@ -256,18 +257,24 @@ Fls_Fapi_issueProgrammingCommand(uint32 *pu32StartAddress, uint8 *pu8DataBuffer,
     /* If not  ECC only mode, load data into the data registers */
     /* Setup the stop position within the register */
     /* Changed to words instead of bytes */
-    u32StopCondition = u32StartCondition + (uint32)((uint32)(u8DataBufferSizeInBytes) - (uint32)1U);
+    u32StopCondition = u32StartCondition + (u32DataBufferSizeInBytes - (uint32)1U);
 
     /* Write each byte to the FWPWrite registers */
     HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDBYTEN) = 0U;
 
+    /* u32Index tracks the byte offset within the 128-bit flash word (0-15). When FlsMaxWriteNormalMode
+     * is 8, a write to the upper half of a 128-bit word has u32StartCondition=8, so u32Index runs
+     * 8..15. Subtracting u32StartCondition maps u32Index back to the start of pu8DataBuffer (which
+     * always points to the first byte of the current 8- or 16-byte chunk, not the 128-bit word).
+     * Without this correction, the upper-half write reads 8 bytes past the intended buffer start.
+     */
     for (u32Index = u32StartCondition; u32Index <= u32StopCondition; u32Index = u32Index + 4U)
     {
         u32CopyDataBuffer  = 0U;
-        u32CopyDataBuffer |= (((uint32) * (pu8DataBuffer + u32Index)));
-        u32CopyDataBuffer |= (((uint32) * (pu8DataBuffer + u32Index + 1U)) << 8U);
-        u32CopyDataBuffer |= (((uint32) * (pu8DataBuffer + u32Index + 2U)) << 16U);
-        u32CopyDataBuffer |= ((uint32) * (pu8DataBuffer + u32Index + 3U) << 24U);
+        u32CopyDataBuffer |= (((uint32) * (pu8DataBuffer + (u32Index - u32StartCondition))));
+        u32CopyDataBuffer |= (((uint32) * (pu8DataBuffer + (u32Index - u32StartCondition) + 1U)) << 8U);
+        u32CopyDataBuffer |= (((uint32) * (pu8DataBuffer + (u32Index - u32StartCondition) + 2U)) << 16U);
+        u32CopyDataBuffer |= ((uint32) * (pu8DataBuffer + (u32Index - u32StartCondition) + 3U) << 24U);
 
         if (((u32Index == 0U) || (u32Index == 4U)))
         {
@@ -300,7 +307,7 @@ Fls_Fapi_issueProgrammingCommand(uint32 *pu32StartAddress, uint8 *pu8DataBuffer,
  *   a valid address to operate to correctly.
  */
 FUNC(void, FLS_CODE)
-Fls_Fapi_issueAsyncCommandWithAddress(uint32 *pu32StartAddress)
+Fls_Fapi_issueAsyncCommandWithAddress(const uint32 *pu32StartAddress)
 {
     /*  Configure for sector erase: Command is erase (2), Size is sector (4) */
     HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDTYPE) = FLS_FLASH_NW_CMDTYPE_SECTOR_ERASE;
@@ -381,33 +388,36 @@ static FUNC(Std_ReturnType, FLS_CODE)
     VAR(volatile Std_ReturnType, AUTOMATIC) oErrorReturn       = E_OK;
     VAR(uint32, AUTOMATIC) u32CurrentLength                    = u32Length;
     P2VAR(uint32, AUTOMATIC, FLS_APPL_DATA) pu32CurrentAddress = pu32StartAddress;
-    P2VAR(uint32, AUTOMATIC, FLS_APPL_DATA) pu32CurrentCheckValue;
-    VAR(uint32, AUTOMATIC) index = (uint32)0U;
-
-    pu32CurrentCheckValue = pu32CheckValue;
+    VAR(uint32, AUTOMATIC) u32ExpectedVal                      = (uint32)0U;
+    VAR(uint32, AUTOMATIC) index                               = (uint32)0U;
 
     /* step through each flash location */
     /* while( u32CurrentLength-- > 0U) */ /* Misra C overflow */
     for (index = 0; index < u32CurrentLength; index++)
     {
-        if (*pu32CurrentAddress != *pu32CurrentCheckValue)
+        /* For single value mode, always use index 0; for multi-value, advance through buffer */
+        if (oRegionValue == FLS_FAPI_SINGLEVALUE)
+        {
+            u32ExpectedVal = pu32CheckValue[0U];
+        }
+        else
+        {
+            u32ExpectedVal = pu32CheckValue[index];
+        }
+
+        if (*pu32CurrentAddress != u32ExpectedVal)
         {
             /* save address of first failure */
             poFlashStatusWord->au32StatusWord[0] = (uint32)(pu32CurrentAddress);
             /* save actual data */
             poFlashStatusWord->au32StatusWord[1] = *pu32CurrentAddress;
             /* save expected data */
-            poFlashStatusWord->au32StatusWord[2] = *pu32CurrentCheckValue;
+            poFlashStatusWord->au32StatusWord[2] = u32ExpectedVal;
 
             oErrorReturn = E_NOT_OK;
             break;
         }
 
-        /* Increment the check buffer if not checking for a single value */
-        if (oRegionValue != FLS_FAPI_SINGLEVALUE)
-        {
-            pu32CurrentCheckValue++;
-        }
         /* increment address */
         pu32CurrentAddress++;
     }
@@ -612,7 +622,7 @@ static FUNC(void, FLS_CODE) Fls_F29WriteTrims(uint32 reg_offset, uint32 mask, ui
 static FUNC(void, FLS_CODE) Fls_F29ConfigFRI(Fls_FlashFRIType friID, uint32 configFlags)
 {
     /* Set the FRI options. */
-    HWREG(FLS_FRI1_CTL_BASE + FLS_FRI_O_1_INTF_CTRL + ((uint8)friID * FLS_FRI_REG_STEP)) = configFlags; /* QJ*/
+    HWREG(FLS_FRI1_CTL_BASE + FLS_FRI_O_1_INTF_CTRL + ((uint32)friID * (uint32)FLS_FRI_REG_STEP)) = configFlags;
 }
 
 FUNC(void, FLS_CODE) Fls_Update_WaitStates(uint16 waitstates)
@@ -644,15 +654,22 @@ FUNC(void, FLS_CODE) Fls_Update_WaitStates(uint16 waitstates)
  * \brief return true if the semaphore is successfully assigned, false if semaphore is already
  * assigned to a different CPU or LINK .
  */
-FUNC(void, FLS_CODE) Fls_SSU_claimFlashSemaphore(void)
+FUNC(Std_ReturnType, FLS_CODE) Fls_SSU_claimFlashSemaphore(void)
 {
-    /* Check if the semaphore is already assigned */
+    VAR(Std_ReturnType, AUTOMATIC) status = E_NOT_OK;
+    /* Claim the semaphore if it is not already assigned */
     if ((HWREG(FLS_SSUGEN_BASE + FLS_SSU_O_FLSEMSTAT) & FLS_SSU_FLSEMSTAT_ASSIGNED) == 0U)
     {
         /* Claim the semaphore */
         HWREG(FLS_SSUGEN_BASE + FLS_SSU_O_FLSEMREQ) = 1U;
     }
-    return;
+
+    /* Check if the semaphore is assigned to the current CPU and LINK */
+    if ((HWREG(FLS_SSUGEN_BASE + FLS_SSU_O_FLSEMSTAT) & FLS_SSU_FLSEMSTAT_MATCH) != 0U)
+    {
+        status = E_OK;
+    }
+    return status;
 }
 
 /* Release Flash Semaphore

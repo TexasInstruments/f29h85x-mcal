@@ -146,15 +146,15 @@ FLS header file include structure
 
 #### Memory Mapping
 
-| Memory Mapping Sections                       | Compiler Abstraction Definitions |                 |          |
-|------------------------------------------------|----------------------------------|-----------------|----------|
-|    | FLS_CODE     | FLS_VAR_NO_INIT | FLS_CFG  |
-| FLS_START_SEC_VAR_NO_INIT_UNSPECIFIED (.data)  |      | x     |          |
-| FLS_STOP_SEC_VAR_NO_INIT_UNSPECIFIED |    | x    |       |
-| FLS_START_SEC_CODE (.text)    | x    |     |     |
-| FLS_STOP_SEC_CODE  |x|      |    |
-| FLS_START_SEC_CONFIG_DATA (.data)   |    |     | x        |
-| FLS_STOP_SEC_CONFIG_DATA   |   |     | x    |
+The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.
+
+Reference memory map files can be found at:
+
+```text
+{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+```
+
+The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.
 
 #### Scheduling
 
@@ -303,6 +303,10 @@ The following table represents the service IDs:
 | FLS_SID_BLANK_CHECK   | 0x0A | FLS_BlankCheck()       |
 | FLS_SID_MAIN_FUNCTION       | 0x06 | FLS_MainFunction()     |
 
+#### Multi-core and Resource allocator
+
+The FLS module is not managed by the Resource Allocator. The Flash controller on F29H85x is a system-level peripheral that is not represented in the Resource Allocator configuration. The FLS MCAL driver can access Data Flash only from CPU1. No Resource Allocator instance allocation is needed for the FLS module.
+
 ### Configuration
 
 The Fls can be configured as **Post-Build** or **Pre-Compile** variant, using EB tresos tool.
@@ -319,10 +323,10 @@ The generated configuration files should not be modified manually. The config to
 
 
 
-#### FlsConfigSet
+##### FlsConfigSet
 Container for runtime configuration parameters of the flash driver.
 
-##### FlsAcErase
+###### FlsAcErase
 
 | Item ||
 |--------|---------------|
@@ -337,7 +341,7 @@ Container for runtime configuration parameters of the flash driver.
 | **Max-value** | 4294967295 |
 | **Min-value** | 0 |
 
-##### FlsAcWrite
+###### FlsAcWrite
 
 | Item ||
 |--------|---------------|
@@ -352,7 +356,7 @@ Container for runtime configuration parameters of the flash driver.
 | **Max-value** | 4294967295 |
 | **Min-value** | 0 |
 
-##### FlsCallCycle
+###### FlsCallCycle
 
 | Item ||
 |--------|---------------|
@@ -367,7 +371,7 @@ Container for runtime configuration parameters of the flash driver.
 | **Max-value** | 100.0 |
 | **Min-value** | 0.0 |
 
-##### FlsDefaultMode
+###### FlsDefaultMode
 
 | Item ||
 |--------|---------------|
@@ -381,7 +385,7 @@ Container for runtime configuration parameters of the flash driver.
 | **Default-value** | MEMIF_MODE_SLOW |
 | **Range** | MEMIF_MODE_FAST<br>MEMIF_MODE_SLOW |
 
-##### FlsJobEndNotification
+###### FlsJobEndNotification
 
 | Item ||
 |--------|---------------|
@@ -398,7 +402,7 @@ Container for runtime configuration parameters of the flash driver.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | NULL_PTR |
 
-##### FlsJobErrorNotification
+###### FlsJobErrorNotification
 
 | Item ||
 |--------|---------------|
@@ -415,7 +419,7 @@ Container for runtime configuration parameters of the flash driver.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | NULL_PTR |
 
-##### FlsMaxReadFastMode
+###### FlsMaxReadFastMode
 
 | Item ||
 |--------|---------------|
@@ -430,7 +434,7 @@ Container for runtime configuration parameters of the flash driver.
 | **Max-value** | 4294967295 |
 | **Min-value** | 0 |
 
-##### FlsMaxWriteFastMode
+###### FlsMaxWriteFastMode
 
 | Item ||
 |--------|---------------|
@@ -445,7 +449,7 @@ Container for runtime configuration parameters of the flash driver.
 | **Max-value** | 4294967295 |
 | **Min-value** | 0 |
 
-##### FlsMaxReadNormalMode
+###### FlsMaxReadNormalMode
 
 | Item ||
 |--------|---------------|
@@ -460,7 +464,7 @@ Container for runtime configuration parameters of the flash driver.
 | **Max-value** | 4294967295 |
 | **Min-value** | 0 |
 
-##### FlsMaxWriteNormalMode
+###### FlsMaxWriteNormalMode
 
 | Item ||
 |--------|---------------|
@@ -475,7 +479,7 @@ Container for runtime configuration parameters of the flash driver.
 | **Max-value** | 16 |
 | **Min-value** | 8 |
 
-##### FlsProtection
+###### FlsProtection
 
 | Item ||
 |--------|---------------|
@@ -490,7 +494,7 @@ Container for runtime configuration parameters of the flash driver.
 | **Max-value** | 4294967295 |
 | **Min-value** | 0 |
 
-##### Fls_CMDWEPROTA
+###### Fls_CMDWEPROTA
 
 | Item ||
 |--------|---------------|
@@ -505,7 +509,7 @@ Container for runtime configuration parameters of the flash driver.
 | **Max-value** | 4294967295 |
 | **Min-value** | 0 |
 
-##### Fls_CMDWEPROTB
+###### Fls_CMDWEPROTB
 
 | Item ||
 |--------|---------------|
@@ -520,7 +524,7 @@ Container for runtime configuration parameters of the flash driver.
 | **Max-value** | 4294967295 |
 | **Min-value** | 0 |
 
-##### FlsExternalDriver
+###### FlsExternalDriver
 This container is present for external Flash drivers only. Internal Flash drivers do not use the parameter listed in this container, hence its multiplicity is 0 for internal drivers. Currently, not supported as only internal flash is present.
 
 ###### FlsSpiReference
@@ -539,10 +543,10 @@ This container is present for external Flash drivers only. Internal Flash driver
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### FlsSectorList
+###### FlsSectorList
 List of flashable sectors and pages.
 
-##### FlsSector
+###### FlsSector
 Configuration description of a flashable sector
 
 ###### FlsNumberOfSectors
@@ -605,10 +609,10 @@ Configuration description of a flashable sector
 | **Max-value** | 4294967295 |
 | **Min-value** | 0 |
 
-#### FlsGeneral
+##### FlsGeneral
 Container for general parameters of the flash driver. These parameters are always pre-compile.
 
-##### FlsAcLoadOnJobStart
+###### FlsAcLoadOnJobStart
 
 | Item ||
 |--------|---------------|
@@ -621,7 +625,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### FlsBaseAddress
+###### FlsBaseAddress
 
 | Item ||
 |--------|---------------|
@@ -636,7 +640,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | **Max-value** | 4294967295 |
 | **Min-value** | 0 |
 
-##### FlsTotalSize
+###### FlsTotalSize
 
 | Item ||
 |--------|---------------|
@@ -651,7 +655,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | **Max-value** | 4294967295 |
 | **Min-value** | 0 |
 
-##### FlsNumBanks
+###### FlsNumBanks
 
 | Item ||
 |--------|---------------|
@@ -666,7 +670,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | **Max-value** | 4294967295 |
 | **Min-value** | 0 |
 
-##### FlsSectorSizeInBytes
+###### FlsSectorSizeInBytes
 
 | Item ||
 |--------|---------------|
@@ -681,7 +685,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | **Max-value** | 4294967295 |
 | **Min-value** | 0 |
 
-##### FlsBlankCheckApi
+###### FlsBlankCheckApi
 
 | Item ||
 |--------|---------------|
@@ -694,7 +698,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### FlsCancelApi
+###### FlsCancelApi
 
 | Item ||
 |--------|---------------|
@@ -707,7 +711,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### FlsCompareApi
+###### FlsCompareApi
 
 | Item ||
 |--------|---------------|
@@ -720,7 +724,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### FlsDevErrorDetect
+###### FlsDevErrorDetect
 
 | Item ||
 |--------|---------------|
@@ -733,7 +737,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### FlsDriverIndex
+###### FlsDriverIndex
 
 | Item ||
 |--------|---------------|
@@ -748,7 +752,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | **Max-value** | 254 |
 | **Min-value** | 0 |
 
-##### FlsEraseVerificationEnabled
+###### FlsEraseVerificationEnabled
 
 | Item ||
 |--------|---------------|
@@ -761,7 +765,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### FlsGetJobResultApi
+###### FlsGetJobResultApi
 
 | Item ||
 |--------|---------------|
@@ -774,7 +778,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### FlsGetStatusApi
+###### FlsGetStatusApi
 
 | Item ||
 |--------|---------------|
@@ -787,7 +791,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### FlsSetModeApi
+###### FlsSetModeApi
 
 | Item ||
 |--------|---------------|
@@ -800,7 +804,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### FlsTimeoutSupervisionEnabled
+###### FlsTimeoutSupervisionEnabled
 
 | Item ||
 |--------|---------------|
@@ -813,7 +817,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### FlsVersionInfoApi
+###### FlsVersionInfoApi
 
 | Item ||
 |--------|---------------|
@@ -826,7 +830,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### FlsWriteVerificationEnabled
+###### FlsWriteVerificationEnabled
 
 | Item ||
 |--------|---------------|
@@ -839,7 +843,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### FlsWaitStates
+###### FlsWaitStates
 
 | Item ||
 |--------|---------------|
@@ -854,7 +858,7 @@ Container for general parameters of the flash driver. These parameters are alway
 | **Max-value** | 3 |
 | **Min-value** | 1 |
 
-##### FlsCpuClockRef
+###### FlsCpuClockRef
 
 | Item ||
 |--------|---------------|
@@ -950,8 +954,6 @@ Refer [AUTOSAR_SWS_FlashDriver section: 10 Configuration specification](https://
 
 #### Setup required
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 * Connect the hardware and power up
 * Launch a Serial terminal (at 115200 baud) with the COM port that is connected to the MCU
 

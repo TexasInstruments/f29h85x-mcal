@@ -148,9 +148,9 @@ int main(void)
     Std_ReturnType returnValue = E_OK;
     uint32         i;
 
-    DeviceSupport_Init();
     /* initialize MCU and PORT in ECuM init */
     EcuM_Init();
+    DeviceSupport_Init();
 
     AppUtils_Init(200000000U);  // Init App utils to enable prints
     AppUtils_Printf("Sample Application - STARTS !!!\n");

@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       PduR.h
- *  Project:    F29x MCAL
- *  Module:     Can Interface
  *  Generator:  None
  *
  *  Description:  This file contains interface header for PduR callback functions.
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *                                                                     
  *********************************************************************************************************************/
 #ifndef PDUR_H

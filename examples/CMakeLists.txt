@@ -60,6 +60,7 @@ set(module_list
     "Cdd_I2c"
     "Cdd_Pwm"
     "Cdd_Ipc"
+    "Cdd_Dma"
     "Fls"
     "Fls_Fapi"
     "Rtdma"

@@ -2770,8 +2770,6 @@ Cdd_Adc_StreamNumSampleType Cdd_Adc_GetValidSampleCnt(Cdd_Adc_GroupType Group, C
     return num_samples;
 }
 
-#define CDD_ADC_STOP_SEC_CODE
-#include "Cdd_Adc_MemMap.h"
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
@@ -3034,13 +3032,20 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessGroup(Cdd_Adc_GroupType Group)
 
     Cdd_Adc_UpdateGrpState(groupcfg, group_obj);
 
+    /* Errata Analysis - ADC: Interrupts may Stop if INTxCONT (Continue-to-Interrupt Mode) is not Set.
+     * The code below implements the recommended workaround following errata analysis
+     * to clear the interrupt and overflow flags.
+     */
+    /* Clear the interrupt flag */
+    Cdd_Adc_ClearInterruptFlag(base_addr, groupcfg->grp_int);
     /* Check if interrupt overflow has occurred */
     if (TRUE == Cdd_Adc_GetIntOvfStatus(base_addr, groupcfg->grp_int))
     {
+        /* Clear interrupt overflow flag */
         Cdd_Adc_ClearIntOvfStatus(base_addr, groupcfg->grp_int);
+        /* Clear the interrupt flag */
+        Cdd_Adc_ClearInterruptFlag(base_addr, groupcfg->grp_int);
     }
-    /* Clear the interrupt flag */
-    Cdd_Adc_ClearInterruptFlag(base_addr, groupcfg->grp_int);
 
     /* Do not disable interrupts for explicitly stopped groups and don't stop if the buffer
             is not completely filled implicitly stopped groups */
@@ -3423,6 +3428,9 @@ static FUNC(void, CDD_ADC_CODE)
         GroupObj->grp_status = CDD_ADC_STREAM_COMPLETED;
     }
 }
+
+#define CDD_ADC_STOP_SEC_CODE
+#include "Cdd_Adc_MemMap.h"
 
 /*********************************************************************************************************************
  *  End of File: Cdd_Adc_Priv.c

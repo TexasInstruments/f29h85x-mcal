@@ -102,7 +102,7 @@ extern "C" {
 /** \brief Driver Implementation Major Version */
 #define FLS_SW_MAJOR_VERSION (3U)
 /** \brief Driver Implementation Minor Version */
-#define FLS_SW_MINOR_VERSION (1U)
+#define FLS_SW_MINOR_VERSION (2U)
 /** \brief Driver Implementation Patch Version */
 #define FLS_SW_PATCH_VERSION (0U)
 

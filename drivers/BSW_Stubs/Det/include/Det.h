@@ -66,6 +66,8 @@
  *  Generator:  Code generation tool (if any)
  *
  *  Description: Development Error Tracer header file.
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *********************************************************************************************************************/
 #ifndef DET_H
 #define DET_H

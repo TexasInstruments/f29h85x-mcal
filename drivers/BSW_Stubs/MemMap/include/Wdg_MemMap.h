@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Wdg_MemMap.h
- *  Project:    C29x MCAL
- *  Module:     WDG
  *  Generator:  None
  *
  *  Description:  Memory Map template file for Wdg module.
+ *                This source code is for reference only, it should not be used as-is in a
+ *                typical customer applications
  *
  *********************************************************************************************************************/
 
@@ -165,6 +165,7 @@
 #define MEMMAP_SECTION_OPEN
 #define WDG_VAR_INIT_UNSPECIFIED_OPEN
 #pragma clang section data = ".WDG_VAR_INIT_UNSPECIFIED"
+#pragma clang section bss = ".WDG_VAR_NO_INIT_UNSPECIFIED"
 #undef WDG_START_SEC_VAR_INIT_UNSPECIFIED
 #undef MEMMAP_ERROR
 
@@ -180,6 +181,7 @@
 #endif
 #undef WDG_VAR_INIT_UNSPECIFIED_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef WDG_STOP_SEC_VAR_INIT_UNSPECIFIED
 #undef MEMMAP_ERROR
             

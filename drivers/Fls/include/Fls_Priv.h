@@ -187,6 +187,52 @@ typedef struct
     /** \brief Size of Data has been transferred */
     Fls_EraseType          typeoferase;
     /** \brief To select the type of erase (sector erase/ block erase/ bulk erase) */
+    uint32                 writePostFapiFsmBusy;
+    /** \brief Set to 1 while the write FSM is in POSTCHECK and the FSM is still busy (not yet done);
+     *         0 otherwise. Reset to 0 when a new write job is accepted. */
+    uint32                 writeChunkComplete;
+    /** \brief Set to 1 when POSTCHECK STATUS_CHECK confirms the programming command completed
+     *         successfully for the current chunk; gates the write-verify compare in
+     *         Fls_Process_JobWrite. Reset to 0 at the start of each Fls_F29AsyncWrite call
+     *         and when a new write job is accepted. */
+    uint32                 erasePostFapiFsmDone;
+    /** \brief Set to 1 once the erase FSM status check confirms the sector/bank erase completed
+     *         successfully; gates the post-erase blank check. Reset to 0 at the start of each
+     *         erase sub-function call and when a new erase job is accepted. */
+    volatile uint8         sectorEraseStage;
+    /** \brief Sector erase FSM stage variable. Reset to FLS_S_EDEFAULT when a new erase job is
+     *         accepted; sectorErasePreCheck and sectorErasePostCheck are reset directly in
+     *         Fls_Erase() rather than via the EDEFAULT detection in Fls_F29AsyncSectorErase. */
+    volatile uint16        sectorErasePreCheck;
+    /** \brief Sector erase pre-check sub-state FSM counter. Reset to FLS_ERASE_FSM_READY_CHECK
+     *         when a new erase job is accepted. */
+    volatile uint16        sectorErasePostCheck;
+    /** \brief Sector erase post-check sub-state FSM counter. Reset to FLS_ERASE_FSM_READY_CHECK
+     *         when a new erase job is accepted. */
+    volatile uint8         bankEraseStage;
+    /** \brief Bank erase FSM stage variable. Reset to FLS_S_EDEFAULT when a new erase job is
+     *         accepted; bankErasePreCheck and bankErasePostCheck are reset directly in
+     *         Fls_Erase() rather than via the EDEFAULT detection in Fls_F29AsyncBankErase. */
+    volatile uint16        bankErasePreCheck;
+    /** \brief Bank erase pre-check sub-state FSM counter. Reset to FLS_ERASE_FSM_READY_CHECK
+     *         when a new erase job is accepted. */
+    volatile uint16        bankErasePostCheck;
+    /** \brief Bank erase post-check sub-state FSM counter. Reset to FLS_ERASE_FSM_READY_CHECK
+     *         when a new erase job is accepted. */
+    volatile uint8         flashWriteStage;
+    /** \brief Write FSM stage variable. Reset to FLS_S_WDEFAULT when a new write job is accepted;
+     *         writePreCheck and writePostCheck are reset directly in Fls_Write() rather than
+     *         via the WDEFAULT detection in Fls_F29AsyncWrite. */
+    volatile uint16        writePreCheck;
+    /** \brief Write pre-check sub-state FSM counter. Reset to FLS_WRITE_FSM_READY_CHECK
+     *         when a new write job is accepted. */
+    volatile uint16        writePostCheck;
+    /** \brief Write post-check sub-state FSM counter. Reset to FLS_WRITE_FSM_READY_CHECK
+     *         when a new write job is accepted. */
+#if (FLS_TIMEOUT_SUPERVISION_ENABLED == STD_ON)
+    McalLib_TickType jobStartCount;
+    /** \brief Counter value captured when the job was accepted, for cumulative timeout tracking */
+#endif
 } Fls_DriverObjType;
 
 /** \brief ENUM for Internal State type names */

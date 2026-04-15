@@ -153,11 +153,11 @@ Std_VersionInfoType Cdd_Xbar_VersionInfo;
 int main(void)
 {
     uint8 loop;
-    DeviceSupport_Init();
 
     /* Configure the crossbar and init MCU - external interrupt is configured during init as positive edge/rising edge
      */
     EcuM_Init();
+    DeviceSupport_Init();
 
     AppUtils_Init(200000000U);  // Init App utils to enable prints
     AppUtils_Printf("Sample Application - STARTS !!!\n");

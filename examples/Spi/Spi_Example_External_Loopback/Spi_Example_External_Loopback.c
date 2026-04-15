@@ -82,7 +82,7 @@
  *
  *  When using CCS for debugging this Multi-core example, after launching the
  *  debug session,
- *              - Connect to CPU1 and load only the C29x1_merged.out.
+ *              - Connect to CPU1 and load only the Spi_Example_External_Loopback.out
  *              - After the program is loaded, run CPU1.
  *              - C29x1 configures and releases CPU3 out of reset
  *              - Connect to CPU3 target now. C29x3.out would have started execution as soon as it is released
@@ -190,10 +190,9 @@ int main(void)
         Spi_SrcBuf0[i] = (Spi_DataBufferType)i;
     }
 
-    DeviceSupport_Init();
-
     /* initialize MCU PORT and SPI in ECU init */
     EcuM_Init();
+    DeviceSupport_Init();
 
     /* initialize MCU clock */
     AppUtils_Init(200000000U);

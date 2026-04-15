@@ -40,5 +40,17 @@ FLS Driver Object, global information used by module.
 |  uint32 | postBlankCheckFlashaddr |  Flash Post Blank Check Address.  |
 |  uint32 | prevFlashaddr |  Flash Previous Address.  |
 |  [Fls_EraseType](../Modules/group__FLS.md#enum-fls_erasetype) | typeoferase |  Size of Data has been transferred.  |
+|  uint32 | writePostFapiFsmBusy |  To select the type of erase (sector erase/ block erase/ bulk erase)  |
+|  uint32 | writeChunkComplete |  Set to 1 while the write FSM is in POSTCHECK and the FSM is still busy (not yet done); 0 otherwise. Reset to 0 when a new write job is accepted.  |
+|  uint32 | erasePostFapiFsmDone |  Set to 1 when POSTCHECK STATUS_CHECK confirms the programming command completed successfully for the current chunk; gates the write-verify compare in Fls_Process_JobWrite. Reset to 0 at the start of each Fls_F29AsyncWrite call and when a new write job is accepted.  |
+|  volatile uint8 | sectorEraseStage |  Set to 1 once the erase FSM status check confirms the sector/bank erase completed successfully; gates the post-erase blank check. Reset to 0 at the start of each erase sub-function call and when a new erase job is accepted.  |
+|  volatile uint16 | sectorErasePreCheck |  Sector erase FSM stage variable. Reset to FLS_S_EDEFAULT when a new erase job is accepted; sectorErasePreCheck and sectorErasePostCheck are reset directly in Fls_Erase() rather than via the EDEFAULT detection in Fls_F29AsyncSectorErase.  |
+|  volatile uint16 | sectorErasePostCheck |  Sector erase pre-check sub-state FSM counter. Reset to FLS_ERASE_FSM_READY_CHECK when a new erase job is accepted.  |
+|  volatile uint8 | bankEraseStage |  Sector erase post-check sub-state FSM counter. Reset to FLS_ERASE_FSM_READY_CHECK when a new erase job is accepted.  |
+|  volatile uint16 | bankErasePreCheck |  Bank erase FSM stage variable. Reset to FLS_S_EDEFAULT when a new erase job is accepted; bankErasePreCheck and bankErasePostCheck are reset directly in Fls_Erase() rather than via the EDEFAULT detection in Fls_F29AsyncBankErase.  |
+|  volatile uint16 | bankErasePostCheck |  Bank erase pre-check sub-state FSM counter. Reset to FLS_ERASE_FSM_READY_CHECK when a new erase job is accepted.  |
+|  volatile uint8 | flashWriteStage |  Bank erase post-check sub-state FSM counter. Reset to FLS_ERASE_FSM_READY_CHECK when a new erase job is accepted.  |
+|  volatile uint16 | writePreCheck |  Write FSM stage variable. Reset to FLS_S_WDEFAULT when a new write job is accepted; writePreCheck and writePostCheck are reset directly in Fls_Write() rather than via the WDEFAULT detection in Fls_F29AsyncWrite.  |
+|  volatile uint16 | writePostCheck |  Write pre-check sub-state FSM counter. Reset to FLS_WRITE_FSM_READY_CHECK when a new write job is accepted.  |
 
 

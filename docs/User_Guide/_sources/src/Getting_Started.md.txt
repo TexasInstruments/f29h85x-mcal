@@ -202,6 +202,7 @@ Linker Option  |Description|
 --diag_suppress=10068 | Suppress linker warning for no matching section in code |
 --diag_suppress=10325 | Suppress linker warning for creating BOUND sections |
 --diag_suppress=10063 | Suppress linker warning for entry-point symbol |
+-flto | Enables link-time optimization in the c29clang toolchain. The linker combines all input object files into a merged representation of the application and presents that representation back to the compiler, where inter-module optimizations are performed. |
 
 [Refer this link to get more information on C29 Compiler options](https://software-dl.ti.com/codegen/docs/c29clang/rel1_0_0_LTS/indexC29.html)
 
@@ -898,31 +899,60 @@ Will be added in later release.
 
 ## Loading example configs to EB tresos
 
-* Create and load the plugins required for the example by following the steps in [Create an EB project](./MCAL_Configuration_and_EB_Tresos.md#create-an-eb-project) and [Load plugins](./MCAL_Configuration_and_EB_Tresos.md#load-plugins) and close the EB tresos.
+1. Launch the EB Tresos tool. On the Welcome Screen, click on the Start Icon. Refer [Getting Started with EB Tresos - Create an EB project](./MCAL_Configuration_and_EB_Tresos.md#create-an-eb-project) for details.
 
-```{figure} Assets/images/EB_Tresos_Example_Step1.PNG
-:alt: EB Tresos Example Project Created 
-:align: center
+2. Click on **File -> Import** to import an existing project into the workspace.
 
-EB Tresos Example Project Created 
-```
+    ```{figure} Assets/images/EB_Tresos_Import_Project.png
+    :alt: EB Tresos Import Project
+    :align: center
 
-* Copy the ECU Parameter definition files(.xdm) of the specific example.
+    EB Tresos File -> Import
+    ```
 
-```{figure} Assets/images/EB_Tresos_Example_Step2.PNG
-:alt: MCAL Example ECU Parameter definition files
-:align: center
+3. Select **Existing Projects into Workspace** and then click on **Next**.
 
-MCAL Example ECU Parameter definition files
-```
+    ```{figure} Assets/images/EB_Tresos_Existing_Project.png
+    :alt: EB Tresos Existing Projects into Workspace
+    :align: center
 
-* Go to the EB tresos project workspace and replace the generated ECU Parameter definition files (.xdm) with the ECU Parameter definition files of your specific example.
+    EB Tresos - Select Existing Projects into Workspace
+    ```
 
-```{figure} Assets/images/EB_Tresos_Example_Step3.PNG
-:alt: EB Tresos ECU Parameter definition files
-:align: center
+4. Browse to `{MCAL_INSTALL_PATH}\examples`, select the example to load, and click on **Finish**.
 
-EB Tresos ECU Parameter definition files
-```
+    ```{figure} Assets/images/EB_Tresos_Example_Selection.png
+    :alt: EB Tresos Example Selection
+    :align: center
 
-* Launch the EB Tresos tool again to see the example configurations.
+    EB Tresos - Browse and Select Example
+    ```
+
+5. The selected examples will be loaded in the workspace as shown below.
+
+    ```{figure} Assets/images/EB_Tresos_Project_Import_Complete.png
+    :alt: EB Tresos Project Import Complete
+    :align: center
+
+    EB Tresos - Examples Loaded in Workspace
+    ```
+
+6. The examples come with a MultiTask wizard setup that performs AutoCalc, Generate, and Generate BSWMD steps. Click on **Run** to execute all steps with a single click.
+
+    ```{figure} Assets/images/EB_Tresos_Multi_Task_Wizard.png
+    :alt: EB Tresos Multi Task Wizard
+    :align: center
+
+    EB Tresos - MultiTask Wizard
+    ```
+
+    ```{Note}
+    The MultiTask wizard can also be executed by clicking the shortcut button shown below.
+    ```
+
+    ```{figure} Assets/images/EB_Tresos_MultiTask_Shortcut.png
+    :alt: EB Tresos MultiTask Shortcut Button
+    :align: center
+
+    EB Tresos - MultiTask Wizard Shortcut Button
+    ```

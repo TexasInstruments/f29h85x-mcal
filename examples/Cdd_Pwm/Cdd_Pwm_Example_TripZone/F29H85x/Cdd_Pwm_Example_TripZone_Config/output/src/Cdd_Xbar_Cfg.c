@@ -83,11 +83,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CDD_XBAR_SW_MAJOR_VERSION != (3U)) || (CDD_XBAR_SW_MINOR_VERSION != (0U)))
+#if ((CDD_XBAR_SW_MAJOR_VERSION != (3U)) || (CDD_XBAR_SW_MINOR_VERSION != (1U)))
     #error "Version numbers of Cdd_Xbar.c and Cdd_Xbar.h are inconsistent!"
 #endif
 
-#if ((CDD_XBAR_CFG_MAJOR_VERSION != (3U)) || (CDD_XBAR_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_XBAR_CFG_MAJOR_VERSION != (3U)) || (CDD_XBAR_CFG_MINOR_VERSION != (1U)))
     #error "Version numbers of Cdd_Xbar_Cfg.c and Cdd_Xbar_Cfg.h are inconsistent!"
 #endif
 
@@ -125,7 +125,7 @@
 #include "Cdd_Xbar_MemMap.h"
 
 /** \brief CDD Crossbar Configuration */
-VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config = 
+CONST(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config = 
 {
   /* Design: MCAL-25701 */
     .Cdd_Xbar_InputCfg = 
@@ -149,6 +149,7 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config =
     .mindbConfigLock = FALSE,
   /* Design: MCAL-25712 */
     .iclConfigLock = FALSE,
+    .outputXbarFlagBaseAddress = 0U,
     .inputFlagBaseAddress = (uint32)XBAR_BASE_FRAME(0U),
 };
 

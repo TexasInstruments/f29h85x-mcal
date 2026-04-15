@@ -152,8 +152,8 @@ int main(void)
 {
     Std_ReturnType return_value = E_OK;
 
-    DeviceSupport_Init();
-    EcuM_Init(); /* PORT & MCU Initilization to get configuration settings */
+    EcuM_Init();
+    DeviceSupport_Init(); /* PORT & MCU Initilization to get configuration settings */
     AppUtils_Init(200000000U);
     AppUtils_Printf("Sample Application - STARTS !!!\r\n");
 

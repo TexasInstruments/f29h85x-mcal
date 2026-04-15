@@ -158,8 +158,8 @@ int main(void)
     uint32                  uartReadSize[CDD_UART_EXAMPLE_READ_INTERRUPT_NUM_TESTS] = {1U, 2U, 3U, 4U, 6U};
     Cdd_Uart_ReadStatusType readStatus;
 
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(200000000U);
     AppUtils_Printf("Cdd_Uart_Example_Read_Interrupt: Sample Application - Starts!!!\n\r");
 

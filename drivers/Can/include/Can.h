@@ -104,9 +104,9 @@ extern "C" {
  * Defines for CAN Driver version used for compatibility checks.
  */
 /** \brief  Driver Implementation Major Version. */
-#define CAN_SW_MAJOR_VERSION (3U)
+#define CAN_SW_MAJOR_VERSION (4U)
 /** \brief  Driver Implementation Minor Version. */
-#define CAN_SW_MINOR_VERSION (1U)
+#define CAN_SW_MINOR_VERSION (0U)
 /** \brief  Driver Implementation Patch Version. */
 #define CAN_SW_PATCH_VERSION (0U)
 
@@ -363,7 +363,7 @@ typedef struct Can_CanConfigType_s
 typedef struct Can_FdBaudConfigType_s
 {
     /** \brief Transceiver Delay Compensation offset */
-    uint16  CanControllerTrcvDelayCompensationOffset;
+    uint8   CanControllerTrcvDelayCompensationOffset;
     /** \brief In KB */
     uint16  CanControllerFdBaudRate;
     /** \brief Controller BRP value for Baud */
@@ -420,33 +420,33 @@ typedef struct Can_BaudConfigType_s
 typedef struct Can_ControllerType_s
 {
     /** \brief Id as provided by GUI */
-    uint8                      CanControllerId;
+    uint8                            CanControllerId;
     /** \brief Controller is used=1 or not_used=0 */
-    boolean                    CanControllerActivation;
+    boolean                          CanControllerActivation;
     /** \brief Can Controller Instance */
-    Can_ControllerInstance     CanControllerInstance;
+    Can_ControllerInstance           CanControllerInstance;
     /** \brief Pointer to CanReg structure */
-    uint32                     CanControllerBaseAddress;
+    uint32                           CanControllerBaseAddress;
     /** \brief TRUE = Interrupt FALSE = Polling */
-    Can_ProcessingType         CanBusoffProcessing;
+    Can_ProcessingType               CanBusoffProcessing;
     /** \brief TRUE = Interrupt FALSE = Polling */
-    Can_ProcessingType         CanRxProcessing;
+    Can_ProcessingType               CanRxProcessing;
     /** \brief TRUE = Interrupt FALSE = Polling */
-    Can_ProcessingType         CanTxProcessing;
+    Can_ProcessingType               CanTxProcessing;
     /** \brief TRUE = Enable Can_CheckWakeup API */
-    boolean                    CanWakeupFunctionalityAPI;
+    boolean                          CanWakeupFunctionalityAPI;
     /** \brief TRUE = Interrupt FALSE = Polling */
-    Can_ProcessingType         CanWakeupProcessing;
+    Can_ProcessingType               CanWakeupProcessing;
     /** \brief Automatic wakeup via bus activity */
-    boolean                    CanWakeupSupport;
+    boolean                          CanWakeupSupport;
     /** \brief Wakeup source to be set */
-    EcuM_WakeupSourceType      CanWakeupSourceRef;
+    EcuM_WakeupSourceType            CanWakeupSourceRef;
     /** \brief pointer to default Baud structure */
-    const Can_BaudConfigType*  CanControllerDefaultBaudrate;
+    const Can_BaudConfigType*        CanControllerDefaultBaudrate;
     /** \brief List of available Baud rates */
-    const Can_BaudConfigType** BaudRateConfigList;
+    const Can_BaudConfigType* const* BaudRateConfigList;
     /** \brief HW specific config parameters */
-    Can_CanConfigType          CanConfigParam;
+    Can_CanConfigType                CanConfigParam;
 
 } Can_ControllerType;
 
@@ -487,7 +487,7 @@ typedef struct Can_MailboxType_s
     /** \brief  Controller */
     const Can_ControllerType*       CanControllerRef;
     /** \brief  Reference to list of hardware filters HOH is associated to. */
-    const Can_HwFilterType**        CanHwFilterList;
+    const Can_HwFilterType* const*  CanHwFilterList;
     /** \brief  Reference to list of hardware filters HOH is associated to. */
     uint8                           CanFilterListCount;
     /** \brief  If PduInfo->SduLength does not match possible DLC values CanDrv will use the next
@@ -588,18 +588,18 @@ typedef struct Can_IcomConfigType_s
 typedef struct Can_ConfigType_s
 {
     /** \brief List of enabled Controllers */
-    const Can_ControllerType** CanControllerList;
+    const Can_ControllerType* const* CanControllerList;
     /** \brief MaxCount of Controller in Controller List */
-    uint8                      CanMaxControllerCount;
+    uint8                            CanMaxControllerCount;
     /** \brief MB array for all controllers */
-    const Can_MailboxType**    MailBoxList;
+    const Can_MailboxType* const*    MailBoxList;
     /** \brief MaxMbCount in MB list in all controller */
-    uint16                     MaxMbCnt;
+    uint16                           MaxMbCnt;
     /** \brief Max Baud Config Index in BaudRateConfigList in all controller */
-    uint16                     MaxBaudConfigID[KMAX_CONTROLLER];
+    uint16                           MaxBaudConfigID[KMAX_CONTROLLER];
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
     /** \brief Icom Configuration List */
-    const Can_IcomConfigType** IcomConfigurationList;
+    const Can_IcomConfigType* const* IcomConfigurationList;
 #endif
 } Can_ConfigType;
 

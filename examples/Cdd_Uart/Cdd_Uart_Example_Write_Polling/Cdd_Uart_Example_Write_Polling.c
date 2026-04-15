@@ -174,8 +174,8 @@ int main(void)
     uarttimeout = (McalLib_TickType)26041U; /*in Us for 115200 bdrate and size 300*/
     VAR(McalLib_TickType, MCAL_LIB_DATA) timerTickCount = (McalLib_TickType)0U;
 
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(200000000U);
     AppUtils_Printf("Cdd_Uart_Example_Write_Polling: Sample Application - Starts!!!\n\r");
 

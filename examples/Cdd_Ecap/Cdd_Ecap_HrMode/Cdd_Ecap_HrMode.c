@@ -168,8 +168,8 @@ void CddEcap_DemoSignalMeasurementModeHighResolution();
  *********************************************************************************************************************/
 int main(void)
 {
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
 
     AppUtils_Init(200000000U);  // Init App utils to enable prints
 

@@ -1,0 +1,1638 @@
+---
+title: Cdd_Dma API GUIDE Header file
+
+---
+
+# CDD_DMA
+
+
+
+## Types
+
+|  Base type   | Type Name  | Brief |
+| -------------| -----------| ----- |
+|enum| **[Cdd_Dma_EmulationModeType](../Modules/group__CDD__DMA.md#enum-cdd_dma_emulationmodetype)** | Emulation control type.  | 
+|enum| **[Cdd_Dma_PriorityType](../Modules/group__CDD__DMA.md#enum-cdd_dma_prioritytype)** | Channel priority selection type.  | 
+|enum| **[Cdd_Dma_InstanceType](../Modules/group__CDD__DMA.md#enum-cdd_dma_instancetype)** | DMA instance type.  | 
+|enum| **[Cdd_Dma_ChannelType](../Modules/group__CDD__DMA.md#enum-cdd_dma_channeltype)** | DMA Channel type.  | 
+|enum| **[Cdd_Dma_MpuRegionType](../Modules/group__CDD__DMA.md#enum-cdd_dma_mpuregiontype)** | DMA MPU Region type.  | 
+|enum| **[Cdd_Dma_ChannelWrDataSizeType](../Modules/group__CDD__DMA.md#enum-cdd_dma_channelwrdatasizetype)** | Write data size mode bit type.  | 
+|enum| **[Cdd_Dma_ChannelDataSizeType](../Modules/group__CDD__DMA.md#enum-cdd_dma_channeldatasizetype)** | Data size mode bit type.  | 
+|enum| **[Cdd_Dma_ContinuousModeEnableType](../Modules/group__CDD__DMA.md#enum-cdd_dma_continuousmodeenabletype)** | Continuous mode type.  | 
+|enum| **[Cdd_Dma_OneshotModeEnableType](../Modules/group__CDD__DMA.md#enum-cdd_dma_oneshotmodeenabletype)** | Oneshot mode type.  | 
+|enum| **[Cdd_Dma_ChIntEnableType](../Modules/group__CDD__DMA.md#enum-cdd_dma_chintenabletype)** | Channel interrupt generation enable type.  | 
+|enum| **[Cdd_Dma_ChIntModeType](../Modules/group__CDD__DMA.md#enum-cdd_dma_chintmodetype)** | Channel interrupt generation mode type.  | 
+|enum| **[Cdd_Dma_OvrflowIntEnableType](../Modules/group__CDD__DMA.md#enum-cdd_dma_ovrflowintenabletype)** | Overflow interrupt type.  | 
+|enum| **[Cdd_Dma_PeriEvtTrigEnableType](../Modules/group__CDD__DMA.md#enum-cdd_dma_perievttrigenabletype)** | Peripheral event trigger enable type.  | 
+|enum| **[Cdd_Dma_OverflowStatusType](../Modules/group__CDD__DMA.md#enum-cdd_dma_overflowstatustype)** | Overflow status type.  | 
+|enum| **[Cdd_Dma_RunStatusType](../Modules/group__CDD__DMA.md#enum-cdd_dma_runstatustype)** | Run status type.  | 
+|enum| **[Cdd_Dma_BurstStatusType](../Modules/group__CDD__DMA.md#enum-cdd_dma_burststatustype)** | Burst status type.  | 
+|enum| **[Cdd_Dma_TransferStatusType](../Modules/group__CDD__DMA.md#enum-cdd_dma_transferstatustype)** | Transfer status type.  | 
+|enum| **[Cdd_Dma_PeriEvtTrigStatusType](../Modules/group__CDD__DMA.md#enum-cdd_dma_perievttrigstatustype)** | Peripheral event trigger status type.  | 
+|enum| **[Cdd_Dma_MpuRegionAccessType](../Modules/group__CDD__DMA.md#enum-cdd_dma_mpuregionaccesstype)** | MPU region access type.  | 
+|enum| **[Cdd_Dma_ChannelPriority](../Modules/group__CDD__DMA.md#enum-cdd_dma_channelpriority)** 
+|enum| **[Cdd_Dma_PeriEvtTriggerSrcType](../Modules/group__CDD__DMA.md#enum-cdd_dma_perievttriggersrctype)** | Peripheral event trigger source select type.  | 
+|typedef void(*)(uint8 Channel_Index)  | **[Cdd_Dma_NotifyType](../Modules/group__CDD__DMA.md#typedef-cdd_dma_notifytype)** | Channel notification callback function pointer.  | 
+|typedef uint16  | **[Cdd_Dma_MpuChmaskType](../Modules/group__CDD__DMA.md#typedef-cdd_dma_mpuchmasktype)** | MPU Region channel mask parameter.  | 
+
+
+
+### enum Cdd_Dma_EmulationModeType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_EMULATION_STOP | | The DMA completes the current read-write operation, then halts.   |
+| CDD_DMA_EMULATION_FREE_RUN | | The DMA continues running during an emulation halt.   |
+
+
+
+
+**Brief**: 
+Emulation control type. 
+
+
+
+### enum Cdd_Dma_PriorityType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_PRIORITY_ROUND_ROBIN | | The round-robin priority scheme.   |
+| CDD_DMA_PRIORITY_SOFTWARE_CONFIG | | Software configurable priority for channels.   |
+
+
+
+
+**Brief**: 
+Channel priority selection type. 
+
+
+
+### enum Cdd_Dma_InstanceType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA1 | 0|   |
+| CDD_DMA2 | 1|   |
+
+
+
+
+**Brief**: 
+DMA instance type. 
+
+
+
+### enum Cdd_Dma_ChannelType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_CH1 | 0|   |
+| CDD_DMA_CH2 | 1|   |
+| CDD_DMA_CH3 | 2|   |
+| CDD_DMA_CH4 | 3|   |
+| CDD_DMA_CH5 | 4|   |
+| CDD_DMA_CH6 | 5|   |
+| CDD_DMA_CH7 | 6|   |
+| CDD_DMA_CH8 | 7|   |
+| CDD_DMA_CH9 | 8|   |
+| CDD_DMA_CH10 | 9|   |
+
+
+
+
+**Brief**: 
+DMA Channel type. 
+
+
+
+### enum Cdd_Dma_MpuRegionType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_MPUR1 | 0| RTDMA MPU Region 1.   |
+| CDD_DMA_MPUR2 | 1| RTDMA MPU Region 2.   |
+| CDD_DMA_MPUR3 | 2| RTDMA MPU Region 3.   |
+| CDD_DMA_MPUR4 | 3| RTDMA MPU Region 4.   |
+| CDD_DMA_MPUR5 | 4| RTDMA MPU Region 5.   |
+| CDD_DMA_MPUR6 | 5| RTDMA MPU Region 6.   |
+| CDD_DMA_MPUR7 | 6| RTDMA MPU Region 7.   |
+| CDD_DMA_MPUR8 | 7| RTDMA MPU Region 8.   |
+| CDD_DMA_MPUR9 | 8| RTDMA MPU Region 9.   |
+| CDD_DMA_MPUR10 | 9| RTDMA MPU Region 10.   |
+| CDD_DMA_MPUR11 | 10| RTDMA MPU Region 11.   |
+| CDD_DMA_MPUR12 | 11| RTDMA MPU Region 12.   |
+| CDD_DMA_MPUR13 | 12| RTDMA MPU Region 13.   |
+| CDD_DMA_MPUR14 | 13| RTDMA MPU Region 14.   |
+| CDD_DMA_MPUR15 | 14| RTDMA MPU Region 15.   |
+| CDD_DMA_MPUR16 | 15| RTDMA MPU Region 16.   |
+
+
+
+
+**Brief**: 
+DMA MPU Region type. 
+
+
+
+### enum Cdd_Dma_ChannelWrDataSizeType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_CHANNEL_WR_DATASIZE_MODE_8 | =
+        0x0U| DMA channel transfers 8 bits of data on write port per read/write operation.   |
+| CDD_DMA_CHANNEL_WR_DATASIZE_MODE_16 | =
+        0x100000U| DMA channel transfers 16 bits of data on write port per read/write operation.   |
+| CDD_DMA_CHANNEL_WR_DATASIZE_MODE_32 | =
+        0x200000U| DMA channel transfers 32 bits of data on write port per read/write operation.   |
+| CDD_DMA_CHANNEL_WR_DATASIZE_MODE_64 | =
+        0x300000U| DMA channel transfers 64 bits of data on write port per read/write operation.   |
+
+
+
+
+**Brief**: 
+Write data size mode bit type. 
+
+
+
+### enum Cdd_Dma_ChannelDataSizeType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_CHANNEL_DATASIZE_MODE_8 | =
+        0x0U| DMA channel transfers 8 bits of data per read/write operation.   |
+| CDD_DMA_CHANNEL_DATASIZE_MODE_16 | =
+        0x20000U| DMA channel transfers 16 bits of data per read/write operation.   |
+| CDD_DMA_CHANNEL_DATASIZE_MODE_32 | =
+        0x40000U| DMA channel transfers 32 bits of data per read/write operation.   |
+| CDD_DMA_CHANNEL_DATASIZE_MODE_64 | =
+        0x60000U| DMA channel transfers 64 bits of data per read/write operation.   |
+
+
+
+
+**Brief**: 
+Data size mode bit type. 
+
+
+
+### enum Cdd_Dma_ContinuousModeEnableType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_CONTINUOUS_MODE_DISABLED | | Continuous mode disabled.   |
+| CDD_DMA_CONTINUOUS_MODE_ENABLED | | Continuous mode enabled.   |
+
+
+
+
+**Brief**: 
+Continuous mode type. 
+
+
+
+### enum Cdd_Dma_OneshotModeEnableType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_ONESHOT_MODE_DISABLED | | Oneshot mode disabled.   |
+| CDD_DMA_ONESHOT_MODE_ENABLED | | Oneshot mode enabled.   |
+
+
+
+
+**Brief**: 
+Oneshot mode type. 
+
+
+
+### enum Cdd_Dma_ChIntEnableType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_CHANNEL_INTERRUPT_DISABLED | | Channel interrupt generation mode disabled.   |
+| CDD_DMA_CHANNEL_INTERRUPT_ENABLED | | Channel interrupt generation mode enabled.   |
+
+
+
+
+**Brief**: 
+Channel interrupt generation enable type. 
+
+
+
+### enum Cdd_Dma_ChIntModeType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_INT_BEG_OF_TRANSFER | | Generate interrupt at beginning of new transfer.   |
+| CDD_DMA_INT_END_OF_TRANSFER | | Generate interrupt at end of transfer.   |
+
+
+
+
+**Brief**: 
+Channel interrupt generation mode type. 
+
+
+
+### enum Cdd_Dma_OvrflowIntEnableType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_OVERFLOW_INTERRUPT_DISABLED | | Overflow interrupt disabled.   |
+| CDD_DMA_OVERFLOW_INTERRUPT_ENABLED | | Overflow interrupt enabled.   |
+
+
+
+
+**Brief**: 
+Overflow interrupt type. 
+
+
+
+### enum Cdd_Dma_PeriEvtTrigEnableType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_PERI_EVT_TRIG_DISABLED | | Peripheral event trigger disabled.   |
+| CDD_DMA_PERI_EVT_TRIG_ENABLED | | Peripheral event trigger enabled.   |
+
+
+
+
+**Brief**: 
+Peripheral event trigger enable type. 
+
+
+
+### enum Cdd_Dma_OverflowStatusType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_OVERFLOW_NOT_DETECTED | | No overflow detected.   |
+| CDD_DMA_OVERFLOW_DETECTED | | Overflow detected i.e. peripheral event trigger was received while PERINTFLG was already set.   |
+
+
+
+
+**Brief**: 
+Overflow status type. 
+
+
+
+### enum Cdd_Dma_RunStatusType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_CHANNEL_NOT_RUNNING | | DMA channel is ready to respond to peripheral event triggers - no ongoing transfer.   |
+| CDD_DMA_CHANNEL_RUNNING | | DMA channel is busy.   |
+
+
+
+
+**Brief**: 
+Run status type. 
+
+
+
+### enum Cdd_Dma_BurstStatusType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_NO_BURST_ACTIVITY_ONGOING | | Burst is completed i.e. BURST_COUNT has reached zero.   |
+| CDD_DMA_BURST_ACTIVITY_ONGOING | | Burst is in progress.   |
+
+
+
+
+**Brief**: 
+Burst status type. 
+
+
+
+### enum Cdd_Dma_TransferStatusType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_NO_TRANSFER_ACTIVITY_ONGOING | | Transfer is completed i.e. TRANSFER_COUNT has reached zero.   |
+| CDD_DMA_TRANSFER_ACTIVITY_ONGOING | | Transfer is in progress.   |
+
+
+
+
+**Brief**: 
+Transfer status type. 
+
+
+
+### enum Cdd_Dma_PeriEvtTrigStatusType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_WAITING_FOR_EVT_TRIG | | Wating for peripheral event trigger.   |
+| CDD_DMA_PENDING_EVT_TRIG | | Peripheral event trigger has arrived.   |
+
+
+
+
+**Brief**: 
+Peripheral event trigger status type. 
+
+
+
+### enum Cdd_Dma_MpuRegionAccessType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_NO_ACCESS | | No access to the region.   |
+| CDD_DMA_READ_ACCESS | | Only read access.   |
+| CDD_DMA_READ_WRITE_ACCESS | | Both read and write access.   |
+
+
+
+
+**Brief**: 
+MPU region access type. 
+
+
+
+### enum Cdd_Dma_ChannelPriority
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_CHPRIORITY0 | | Priority 0.   |
+| CDD_DMA_CHPRIORITY1 | | Priority 1.   |
+| CDD_DMA_CHPRIORITY2 | | Priority 2.   |
+| CDD_DMA_CHPRIORITY3 | | Priority 3.   |
+
+
+
+
+
+
+### enum Cdd_Dma_PeriEvtTriggerSrcType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_DMA_TRIGGER_SOFTWARE | 0| TRIGGER SOFTWARE.   |
+| CDD_DMA_TRIGGER_ADCA1 | 1| TRIGGER ADCA1.   |
+| CDD_DMA_TRIGGER_ADCA2 | 2| TRIGGER ADCA2.   |
+| CDD_DMA_TRIGGER_ADCA3 | 3| TRIGGER ADCA3.   |
+| CDD_DMA_TRIGGER_ADCA4 | 4| TRIGGER ADCA4.   |
+| CDD_DMA_TRIGGER_ADCAEVT | 5| TRIGGER ADCAEVT.   |
+| CDD_DMA_TRIGGER_ADCB1 | 6| TRIGGER ADCB1.   |
+| CDD_DMA_TRIGGER_ADCB2 | 7| TRIGGER ADCB2.   |
+| CDD_DMA_TRIGGER_ADCB3 | 8| TRIGGER ADCB3.   |
+| CDD_DMA_TRIGGER_ADCB4 | 9| TRIGGER ADCB4.   |
+| CDD_DMA_TRIGGER_ADCBEVT | 10| TRIGGER ADCBEVT.   |
+| CDD_DMA_TRIGGER_ADCC1 | 11| TRIGGER ADCC1.   |
+| CDD_DMA_TRIGGER_ADCC2 | 12| TRIGGER ADCC2.   |
+| CDD_DMA_TRIGGER_ADCC3 | 13| TRIGGER ADCC3.   |
+| CDD_DMA_TRIGGER_ADCC4 | 14| TRIGGER ADCC4.   |
+| CDD_DMA_TRIGGER_ADCCEVT | 15| TRIGGER ADCCEVT.   |
+| CDD_DMA_TRIGGER_ADCD1 | 16| TRIGGER ADCD1.   |
+| CDD_DMA_TRIGGER_ADCD2 | 17| TRIGGER ADCD2.   |
+| CDD_DMA_TRIGGER_ADCD3 | 18| TRIGGER ADCD3.   |
+| CDD_DMA_TRIGGER_ADCD4 | 19| TRIGGER ADCD4.   |
+| CDD_DMA_TRIGGER_ADCDEVT | 20| TRIGGER ADCDEVT.   |
+| CDD_DMA_TRIGGER_ADCE1 | 21| TRIGGER ADCE1.   |
+| CDD_DMA_TRIGGER_ADCE2 | 22| TRIGGER ADCE2.   |
+| CDD_DMA_TRIGGER_ADCE3 | 23| TRIGGER ADCE3.   |
+| CDD_DMA_TRIGGER_ADCE4 | 24| TRIGGER ADCE4.   |
+| CDD_DMA_TRIGGER_ADCEEVT | 25| TRIGGER ADCEEVT.   |
+| CDD_DMA_TRIGGER_CPU1_XINT1 | 31| TRIGGER CPU1 XINT1.   |
+| CDD_DMA_TRIGGER_CPU1_XINT2 | 32| TRIGGER CPU1 XINT2.   |
+| CDD_DMA_TRIGGER_CPU1_XINT3 | 33| TRIGGER CPU1 XINT3.   |
+| CDD_DMA_TRIGGER_CPU1_XINT4 | 34| TRIGGER CPU1 XINT4.   |
+| CDD_DMA_TRIGGER_CPU1_XINT5 | 35| TRIGGER CPU1 XINT5.   |
+| CDD_DMA_TRIGGER_CPU2_XINT1 | 36| TRIGGER CPU2 XINT1.   |
+| CDD_DMA_TRIGGER_CPU2_XINT2 | 37| TRIGGER CPU2 XINT2.   |
+| CDD_DMA_TRIGGER_CPU2_XINT3 | 38| TRIGGER CPU2 XINT3.   |
+| CDD_DMA_TRIGGER_CPU2_XINT4 | 39| TRIGGER CPU2 XINT4.   |
+| CDD_DMA_TRIGGER_CPU2_XINT5 | 40| TRIGGER CPU2 XINT5.   |
+| CDD_DMA_TRIGGER_CPU3_XINT1 | 41| TRIGGER CPU3 XINT1.   |
+| CDD_DMA_TRIGGER_CPU3_XINT2 | 42| TRIGGER CPU3 XINT2.   |
+| CDD_DMA_TRIGGER_CPU3_XINT3 | 43| TRIGGER CPU3 XINT3.   |
+| CDD_DMA_TRIGGER_CPU3_XINT4 | 44| TRIGGER CPU3 XINT4.   |
+| CDD_DMA_TRIGGER_CPU3_XINT5 | 45| TRIGGER CPU3 XINT5.   |
+| CDD_DMA_TRIGGER_EPWM1SOCA | 46| TRIGGER EPWM1SOCA.   |
+| CDD_DMA_TRIGGER_EPWM1SOCB | 47| TRIGGER EPWM1SOCB.   |
+| CDD_DMA_TRIGGER_EPWM2SOCA | 48| TRIGGER EPWM2SOCA.   |
+| CDD_DMA_TRIGGER_EPWM2SOCB | 49| TRIGGER EPWM2SOCB.   |
+| CDD_DMA_TRIGGER_EPWM3SOCA | 50| TRIGGER EPWM3SOCA.   |
+| CDD_DMA_TRIGGER_EPWM3SOCB | 51| TRIGGER EPWM3SOCB.   |
+| CDD_DMA_TRIGGER_EPWM4SOCA | 52| TRIGGER EPWM4SOCA.   |
+| CDD_DMA_TRIGGER_EPWM4SOCB | 53| TRIGGER EPWM4SOCB.   |
+| CDD_DMA_TRIGGER_EPWM5SOCA | 54| TRIGGER EPWM5SOCA.   |
+| CDD_DMA_TRIGGER_EPWM5SOCB | 55| TRIGGER EPWM5SOCB.   |
+| CDD_DMA_TRIGGER_EPWM6SOCA | 56| TRIGGER EPWM6SOCA.   |
+| CDD_DMA_TRIGGER_EPWM6SOCB | 57| TRIGGER EPWM6SOCB.   |
+| CDD_DMA_TRIGGER_EPWM7SOCA | 58| TRIGGER EPWM7SOCA.   |
+| CDD_DMA_TRIGGER_EPWM7SOCB | 59| TRIGGER EPWM7SOCB.   |
+| CDD_DMA_TRIGGER_EPWM8SOCA | 60| TRIGGER EPWM8SOCA.   |
+| CDD_DMA_TRIGGER_EPWM8SOCB | 61| TRIGGER EPWM8SOCB.   |
+| CDD_DMA_TRIGGER_EPWM9SOCA | 62| TRIGGER EPWM9SOCA.   |
+| CDD_DMA_TRIGGER_EPWM9SOCB | 63| TRIGGER EPWM9SOCB.   |
+| CDD_DMA_TRIGGER_EPWM10SOCA | 64| TRIGGER EPWM10SOCA.   |
+| CDD_DMA_TRIGGER_EPWM10SOCB | 65| TRIGGER EPWM10SOCB.   |
+| CDD_DMA_TRIGGER_EPWM11SOCA | 66| TRIGGER EPWM11SOCA.   |
+| CDD_DMA_TRIGGER_EPWM11SOCB | 67| TRIGGER EPWM11SOCB.   |
+| CDD_DMA_TRIGGER_EPWM12SOCA | 68| TRIGGER EPWM12SOCA.   |
+| CDD_DMA_TRIGGER_EPWM12SOCB | 69| TRIGGER EPWM12SOCB.   |
+| CDD_DMA_TRIGGER_EPWM13SOCA | 70| TRIGGER EPWM13SOCA.   |
+| CDD_DMA_TRIGGER_EPWM13SOCB | 71| TRIGGER EPWM13SOCB.   |
+| CDD_DMA_TRIGGER_EPWM14SOCA | 72| TRIGGER EPWM14SOCA.   |
+| CDD_DMA_TRIGGER_EPWM14SOCB | 73| TRIGGER EPWM14SOCB.   |
+| CDD_DMA_TRIGGER_EPWM15SOCA | 74| TRIGGER EPWM15SOCA.   |
+| CDD_DMA_TRIGGER_EPWM15SOCB | 75| TRIGGER EPWM15SOCB.   |
+| CDD_DMA_TRIGGER_EPWM16SOCA | 76| TRIGGER EPWM16SOCA.   |
+| CDD_DMA_TRIGGER_EPWM16SOCB | 77| TRIGGER EPWM16SOCB.   |
+| CDD_DMA_TRIGGER_EPWM17SOCA | 78| TRIGGER EPWM17SOCA.   |
+| CDD_DMA_TRIGGER_EPWM17SOCB | 79| TRIGGER EPWM17SOCB.   |
+| CDD_DMA_TRIGGER_EPWM18SOCA | 80| TRIGGER EPWM18SOCA.   |
+| CDD_DMA_TRIGGER_EPWM18SOCB | 81| TRIGGER EPWM18SOCB.   |
+| CDD_DMA_TRIGGER_TINT0 | 94| TRIGGER CPU1 TINT0.   |
+| CDD_DMA_TRIGGER_TINT1 | 95| TRIGGER CPU1 TINT1.   |
+| CDD_DMA_TRIGGER_TINT2 | 96| TRIGGER CPU1 TINT2.   |
+| CDD_DMA_TRIGGER_CPU2_TINT0 | 97| TRIGGER CPU2 TINT0.   |
+| CDD_DMA_TRIGGER_CPU2_TINT1 | 98| TRIGGER CPU2 TINT1.   |
+| CDD_DMA_TRIGGER_CPU2_TINT2 | 99| TRIGGER CPU2 TINT2.   |
+| CDD_DMA_TRIGGER_CPU3_TINT0 | 100| TRIGGER CPU3 TINT0.   |
+| CDD_DMA_TRIGGER_CPU3_TINT1 | 101| TRIGGER CPU3 TINT1.   |
+| CDD_DMA_TRIGGER_CPU3_TINT2 | 102| TRIGGER CPU3 TINT2.   |
+| CDD_DMA_TRIGGER_ECAP1 | 112| TRIGGER ECAP1.   |
+| CDD_DMA_TRIGGER_ECAP2 | 113| TRIGGER ECAP2.   |
+| CDD_DMA_TRIGGER_ECAP3 | 114| TRIGGER ECAP3.   |
+| CDD_DMA_TRIGGER_ECAP4 | 115| TRIGGER ECAP4.   |
+| CDD_DMA_TRIGGER_ECAP5 | 116| TRIGGER ECAP5.   |
+| CDD_DMA_TRIGGER_ECAP6 | 117| TRIGGER ECAP6.   |
+| CDD_DMA_TRIGGER_LINATX | 120| TRIGGER LINATX.   |
+| CDD_DMA_TRIGGER_LINARX | 121| TRIGGER LINARX.   |
+| CDD_DMA_TRIGGER_LINBTX | 122| TRIGGER LINBTX.   |
+| CDD_DMA_TRIGGER_LINBRX | 123| TRIGGER LINBRX.   |
+| CDD_DMA_TRIGGER_SYNC | 124| TRIGGER SYNC.   |
+| CDD_DMA_TRIGGER_SPIATX | 125| TRIGGER SPIATX.   |
+| CDD_DMA_TRIGGER_SPIARX | 126| TRIGGER SPIARX.   |
+| CDD_DMA_TRIGGER_SPIBTX | 127| TRIGGER SPIBTX.   |
+| CDD_DMA_TRIGGER_SPIBRX | 128| TRIGGER SPIBRX.   |
+| CDD_DMA_TRIGGER_SPICTX | 129| TRIGGER SPICTX.   |
+| CDD_DMA_TRIGGER_SPICRX | 130| TRIGGER SPICRX.   |
+| CDD_DMA_TRIGGER_SPIDTX | 131| TRIGGER SPIDTX.   |
+| CDD_DMA_TRIGGER_SPIDRX | 132| TRIGGER SPIDRX.   |
+| CDD_DMA_TRIGGER_SPIETX | 133| TRIGGER SPIETX.   |
+| CDD_DMA_TRIGGER_SPIERX | 134| TRIGGER SPIERX.   |
+| CDD_DMA_TRIGGER_CLB1INT | 135| TRIGGER CLB1INT.   |
+| CDD_DMA_TRIGGER_CLB2INT | 136| TRIGGER CLB2INT.   |
+| CDD_DMA_TRIGGER_CLB3INT | 137| TRIGGER CLB3INT.   |
+| CDD_DMA_TRIGGER_CLB4INT | 138| TRIGGER CLB4INT.   |
+| CDD_DMA_TRIGGER_CLB5INT | 139| TRIGGER CLB5INT.   |
+| CDD_DMA_TRIGGER_CLB6INT | 140| TRIGGER CLB6INT.   |
+| CDD_DMA_TRIGGER_FSITXA | 143| TRIGGER FSITXA.   |
+| CDD_DMA_TRIGGER_FSIRXA | 144| TRIGGER FSIRXA.   |
+| CDD_DMA_TRIGGER_FSIA_DATA_TAG_MATCH | 145| TRIGGER FSIA DATA TAG MATCH.   |
+| CDD_DMA_TRIGGER_FSIA_PING_TAG_MATCH | 146| TRIGGER FSIA PING TAG MATCH.   |
+| CDD_DMA_TRIGGER_FSIRXB | 148| TRIGGER FSIRXB.   |
+| CDD_DMA_TRIGGER_FSITXB | 147| TRIGGER FSITXB.   |
+| CDD_DMA_TRIGGER_FSIB_DATA_TAG_MATCH | 149| TRIGGER FSIB DATA TAG MATCH.   |
+| CDD_DMA_TRIGGER_FSIB_PING_TAG_MATCH | 150| TRIGGER FSIB PING TAG MATCH.   |
+| CDD_DMA_TRIGGER_FSIRXC | 152| TRIGGER FSIRXC.   |
+| CDD_DMA_TRIGGER_FSITXC | 151| TRIGGER FSITXC.   |
+| CDD_DMA_TRIGGER_FSIC_DATA_TAG_MATCH | 153| TRIGGER FSIC DATA TAG MATCH.   |
+| CDD_DMA_TRIGGER_FSIC_PING_TAG_MATCH | 154| TRIGGER FSIC PING TAG MATCH.   |
+| CDD_DMA_TRIGGER_FSITXD | 155| TRIGGER FSITXD.   |
+| CDD_DMA_TRIGGER_FSIRXD | 156| TRIGGER FSIRXD.   |
+| CDD_DMA_TRIGGER_FSID_DATA_TAG_MATCH | 157| TRIGGER FSID DATA TAG MATCH.   |
+| CDD_DMA_TRIGGER_FSID_PING_TAG_MATCH | 158| TRIGGER FSID PING TAG MATCH.   |
+| CDD_DMA_TRIGGER_CPU1_DLT | 161| TRIGGER CPU1 DLT.   |
+| CDD_DMA_TRIGGER_CPU3_DLT | 163| TRIGGER CPU3 DLT.   |
+| CDD_DMA_TRIGGER_CPU2_DLT | 162| TRIGGER CPU2 DLT.   |
+| CDD_DMA_TRIGGER_UARTARX | 167| TRIGGER UARTARX.   |
+| CDD_DMA_TRIGGER_UARTATX | 168| TRIGGER UARTATX.   |
+| CDD_DMA_TRIGGER_UARTBTX | 169| TRIGGER UARTBTX.   |
+| CDD_DMA_TRIGGER_UARTBRX | 170| TRIGGER UARTBRX.   |
+| CDD_DMA_TRIGGER_UARTCTX | 171| TRIGGER UARTCTX.   |
+| CDD_DMA_TRIGGER_UARTCRX | 172| TRIGGER UARTCRX.   |
+| CDD_DMA_TRIGGER_UARTDTX | 173| TRIGGER UARTDTX.   |
+| CDD_DMA_TRIGGER_UARTDRX | 174| TRIGGER UARTDRX.   |
+| CDD_DMA_TRIGGER_UARTETX | 175| TRIGGER UARTETX.   |
+| CDD_DMA_TRIGGER_UARTERX | 176| TRIGGER UARTERX.   |
+| CDD_DMA_TRIGGER_UARTFTX | 177| TRIGGER UARTFTX.   |
+| CDD_DMA_TRIGGER_UARTFRX | 178| TRIGGER UARTFRX.   |
+| CDD_DMA_TRIGGER_DTHE_SHA_DMA_S_CTXIN_REQ | 179| TRIGGER DTHE SHA DMA S CTXIN REQ.   |
+| CDD_DMA_TRIGGER_DTHE_SHA_DMA_S_DATAIN_REQ | 180| TRIGGER DTHE SHA DMA S DATAIN REQ.   |
+| CDD_DMA_TRIGGER_DTHE_SHA_DMA_S_CTXOUT_REQ | 181| TRIGGER DTHE SHA DMA S CTXOUT REQ.   |
+| CDD_DMA_TRIGGER_DTHE_SHA_DMA_P_CTXIN_REQ | 182| TRIGGER DTHE SHA DMA P CTXIN REQ.   |
+| CDD_DMA_TRIGGER_DTHE_SHA_DMA_P_DATAIN_REQ | 183| TRIGGER DTHE SHA DMA P DATAIN REQ.   |
+| CDD_DMA_TRIGGER_DTHE_SHA_DMA_P_CTXOUT_REQ | 184| TRIGGER DTHE SHA DMA P CTXOUT REQ.   |
+| CDD_DMA_TRIGGER_DTHE_AES_DMA_S_CTXIN_REQ | 185| TRIGGER DTHE AES DMA S CTXIN REQ.   |
+| CDD_DMA_TRIGGER_DTHE_AES_DMA_S_DATAIN_REQ | 186| TRIGGER DTHE AES DMA S DATAIN REQ.   |
+| CDD_DMA_TRIGGER_DTHE_AES_DMA_S_DATAOUT_REQ | 187| TRIGGER DTHE AES DMA S DATAOUT REQ.   |
+| CDD_DMA_TRIGGER_DTHE_AES_DMA_S_CTXOUT_REQ | 188| TRIGGER DTHE AES DMA S CTXOUT REQ.   |
+| CDD_DMA_TRIGGER_DTHE_AES_DMA_P_CTXIN_REQ | 189| TRIGGER DTHE AES DMA P CTXIN REQ.   |
+| CDD_DMA_TRIGGER_DTHE_AES_DMA_P_DATAIN_REQ | 190| TRIGGER DTHE AES DMA P DATAIN REQ.   |
+| CDD_DMA_TRIGGER_DTHE_AES_DMA_P_DATAOUT_REQ | 191| TRIGGER DTHE AES DMA P DATAOUT REQ.   |
+| CDD_DMA_TRIGGER_DTHE_AES_DMA_P_CTXOUT_REQ | 192| TRIGGER DTHE AES DMA P CTXOUT REQ.   |
+| CDD_DMA_TRIGGER_DTHE_SM3_CTXIN_REQ | 193| TRIGGER DTHE SM3 CTXIN REQ.   |
+| CDD_DMA_TRIGGER_DTHE_SM3_DATAIN_REQ | 194| TRIGGER DTHE SM3 DATAIN REQ.   |
+| CDD_DMA_TRIGGER_DTHE_SM3_CTXOUT_REQ | 195| TRIGGER DTHE SM3 CTXOUT REQ.   |
+| CDD_DMA_TRIGGER_DTHE_SM4_CTXIN_REQ | 196| TRIGGER DTHE SM4 CTXIN REQ.   |
+| CDD_DMA_TRIGGER_DTHE_SM4_DATAIN_REQ | 197| TRIGGER DTHE SM4 DATAIN REQ.   |
+| CDD_DMA_TRIGGER_DTHE_SM4_DATAOUT_REQ | 198| TRIGGER DTHE SM4 DATAOUT REQ.   |
+| CDD_DMA_TRIGGER_DTHE_SM4_CTXOUT_REQ | 199| TRIGGER DTHE SM4 CTXOUT REQ.   |
+| CDD_DMA_TRIGGER_EPG | 200| TRIGGER EPG.   |
+| CDD_DMA_TRIGGER_SDFM1FLT1 | 201| TRIGGER SDFM1FLT1.   |
+| CDD_DMA_TRIGGER_SDFM1FLT2 | 202| TRIGGER SDFM1FLT2.   |
+| CDD_DMA_TRIGGER_SDFM1FLT3 | 203| TRIGGER SDFM1FLT3.   |
+| CDD_DMA_TRIGGER_SDFM1FLT4 | 204| TRIGGER SDFM1FLT4.   |
+| CDD_DMA_TRIGGER_SDFM2FLT1 | 205| TRIGGER SDFM2FLT1.   |
+| CDD_DMA_TRIGGER_SDFM2FLT2 | 206| TRIGGER SDFM2FLT2.   |
+| CDD_DMA_TRIGGER_SDFM2FLT3 | 207| TRIGGER SDFM2FLT3.   |
+| CDD_DMA_TRIGGER_SDFM2FLT4 | 208| TRIGGER SDFM2FLT4.   |
+| CDD_DMA_TRIGGER_SDFM3FLT1 | 209| TRIGGER SDFM3FLT1.   |
+| CDD_DMA_TRIGGER_SDFM3FLT2 | 210| TRIGGER SDFM3FLT2.   |
+| CDD_DMA_TRIGGER_SDFM3FLT3 | 211| TRIGGER SDFM3FLT3.   |
+| CDD_DMA_TRIGGER_SDFM3FLT4 | 212| TRIGGER SDFM3FLT4.   |
+| CDD_DMA_TRIGGER_SDFM4FLT1 | 213| TRIGGER SDFM4FLT1.   |
+| CDD_DMA_TRIGGER_SDFM4FLT2 | 214| TRIGGER SDFM4FLT2.   |
+| CDD_DMA_TRIGGER_SDFM4FLT3 | 215| TRIGGER SDFM4FLT3.   |
+| CDD_DMA_TRIGGER_SDFM4FLT4 | 216| TRIGGER SDFM4FLT4.   |
+| CDD_DMA_TRIGGER_SENT1 | 217| TRIGGER SENT1.   |
+| CDD_DMA_TRIGGER_SENT2 | 218| TRIGGER SENT2.   |
+| CDD_DMA_TRIGGER_SENT3 | 219| TRIGGER SENT3.   |
+| CDD_DMA_TRIGGER_SENT4 | 220| TRIGGER SENT4.   |
+| CDD_DMA_TRIGGER_SENT5 | 221| TRIGGER SENT5.   |
+| CDD_DMA_TRIGGER_SENT6 | 222| TRIGGER SENT6.   |
+| CDD_DMA_TRIGGER_WADI1 | 223| TRIGGER WADI1.   |
+| CDD_DMA_TRIGGER_WADI2 | 224| TRIGGER WADI2.   |
+| CDD_DMA_TRIGGER_RTDMA_CH1INT | 240| TRIGGER RTDMA CH1INT.   |
+| CDD_DMA_TRIGGER_RTDMA_CH2INT | 241| TRIGGER RTDMA CH2INT.   |
+| CDD_DMA_TRIGGER_RTDMA_CH3INT | 242| TRIGGER RTDMA CH3INT.   |
+| CDD_DMA_TRIGGER_RTDMA_CH4INT | 243| TRIGGER RTDMA CH4INT.   |
+| CDD_DMA_TRIGGER_RTDMA_CH5INT | 244| TRIGGER RTDMA CH5INT.   |
+| CDD_DMA_TRIGGER_RTDMA_CH6INT | 245| TRIGGER RTDMA CH6INT.   |
+| CDD_DMA_TRIGGER_RTDMA_CH7INT | 246| TRIGGER RTDMA CH7INT.   |
+| CDD_DMA_TRIGGER_RTDMA_CH8INT | 247| TRIGGER RTDMA CH8INT.   |
+| CDD_DMA_TRIGGER_RTDMA_CH9INT | 248| TRIGGER RTDMA CH9INT.   |
+| CDD_DMA_TRIGGER_RTDMA_CH10INT | 249| TRIGGER RTDMA CH10INT.   |
+
+
+
+
+**Brief**: 
+Peripheral event trigger source select type. 
+
+
+
+### typedef Cdd_Dma_NotifyType
+```
+typedef void(* Cdd_Dma_NotifyType) (uint8 Channel_Index);
+```
+
+
+**Brief**: 
+Channel notification callback function pointer. 
+
+
+
+### typedef Cdd_Dma_MpuChmaskType
+```
+typedef uint16 Cdd_Dma_MpuChmaskType;
+```
+
+
+**Brief**: 
+MPU Region channel mask parameter. 
+
+
+
+
+## Structures
+|   Name         | Brief          |
+| -------------- | -------------- |
+| **[Cdd_Dma_ChannelStatus](../Classes/structCdd__Dma__ChannelStatus.md)** | DMA Channel status structure.  |
+| **[Cdd_Dma_ChannelParamsType](../Classes/structCdd__Dma__ChannelParamsType.md)** | DMA Channel properties.  |
+| **[Cdd_Dma_TransferSizeType](../Classes/structCdd__Dma__TransferSizeType.md)** | Burst and Transfer size parameter.  |
+| **[Cdd_Dma_TransferSrcStepType](../Classes/structCdd__Dma__TransferSrcStepType.md)** | Source burst step and transfer step parameter.  |
+| **[Cdd_Dma_TransferDestStepType](../Classes/structCdd__Dma__TransferDestStepType.md)** | Destination burst step and transfer step parameter.  |
+| **[Cdd_Dma_TransferSrcWrapType](../Classes/structCdd__Dma__TransferSrcWrapType.md)** | Source wrap size, wrap step and beginning address parameter.  |
+| **[Cdd_Dma_TransferDestWrapType](../Classes/structCdd__Dma__TransferDestWrapType.md)** | Destination wrap size, wrap step and beginning address parameter.  |
+| **[Cdd_Dma_TransferParamsType](../Classes/structCdd__Dma__TransferParamsType.md)** | DMA transfer properties.  |
+| **[Cdd_Dma_MpuRegionCfgType](../Classes/structCdd__Dma__MpuRegionCfgType.md)** | DMA Channel configuration structure.  |
+| **[Cdd_Dma_HwInstanceCfgType](../Classes/structCdd__Dma__HwInstanceCfgType.md)** | CDD DMA config type.  |
+| **[Cdd_Dma_ChannelCfgType](../Classes/structCdd__Dma__ChannelCfgType.md)** | CDD DMA channel config type.  |
+| **[Cdd_Dma_ConfigType](../Classes/structCdd__Dma__ConfigType.md)** | CDD DMA config type.  |
+
+
+
+
+## Defines
+
+| Name           |  Brief     |
+| -------------- | ---------- |
+| CDD_DMA_SW_MAJOR_VERSION   | Driver Implementation Major Version.  |
+| CDD_DMA_SW_MINOR_VERSION   | Driver Implementation Minor Version.  |
+| CDD_DMA_SW_PATCH_VERSION   | Driver Implementation Patch Version.  |
+| CDD_DMA_AR_RELEASE_MAJOR_VERSION   | AUTOSAR Major version specification implemented by CDD_DMA Driver.  |
+| CDD_DMA_AR_RELEASE_MINOR_VERSION   | AUTOSAR Minor version specification implemented by CDD_DMA Driver.  |
+| CDD_DMA_AR_RELEASE_REVISION_VERSION   | AUTOSAR Patch version specification implemented by CDD_DMA Driver.  |
+| CDD_DMA_VENDOR_ID   | Texas Instruments Vendor ID.  |
+| CDD_DMA_MODULE_ID   | CDD DMA Driver Module ID.  |
+| CDD_DMA_INSTANCE_ID   | CDD DMA Instance ID.  |
+| CDD_DMA_E_UNINIT   | API service used without module initialization.  |
+| CDD_DMA_E_ALREADY_INITIALIZED   | API called for reinitialization of already initialized DMA driver.  |
+| CDD_DMA_E_INIT_FAILED   | Initialization API failed.  |
+| CDD_DMA_E_PARAM_POINTER   | API service called with invalid parameter pointer.  |
+| CDD_DMA_E_PARAM_VALUE   | API service called with invalid parameter pointer.  |
+| CDD_DMA_E_BUSY   | API service called during ongoing process.  |
+| CDD_DMA_E_PERIPHERAL_EVENT_TRIGGER_DISABLED   | API service called to force or clear peripheral event trigger when peripheral event trigger is disabled.  |
+| CDD_DMA_E_PERIPHERAL_EVENT_TRIGGER_ENABLED   | API service called to enable peripheral event trigger when peripheral event trigger is already enabled.  |
+| CDD_DMA_E_ALREADY_RUNNING   | API service called to start a channel when the channel is already running.  |
+| CDD_DMA_E_ALREADY_HALTED   | API service called to halt a channel when the channel already halted.  |
+| CDD_DMA_E_DMACFG_COMMITTED   | API service called to modify DMA configurable properties when DMA configurable properties are committed.  |
+| CDD_DMA_E_CHCFG_COMMITTED   | API service called to modify DMA channel properties when DMA channel properties are committed.  |
+| CDD_DMA_E_MPUR_COMMITTED   | API service called to modify DMA MPU region properties when DMA MPU region properties are committed.  |
+| CDD_DMA_E_MPUCFG_COMMITTED   | API service called to enable or disable MPU when DMA MPU configuration are committed.  |
+| CDD_DMA_E_NO_OVERFLOW   | API service called to clear error flag when no overflow is detected.  |
+| CDD_DMA_E_NO_TRIGGER   | API service called to clear peripheral event trigger when no event trigger exists.  |
+| CDD_DMA_SID_GET_VERSION_INFO   | Cdd_Dma_GetVersionInfo() API Service ID.  |
+| CDD_DMA_SID_INIT   | Cdd_Dma_Init() API Service ID.  |
+| CDD_DMA_SID_DEINIT   | Cdd_Dma_DeInit() API Service ID.  |
+| CDD_DMA_SID_SET_CHANNEL_PROPERTIES   | Cdd_Dma_SetChannelProperties() API Service ID.  |
+| CDD_DMA_SID_SET_TRANSFER_PROPERTIES   | Cdd_Dma_SetTransferProperties() API Service ID.  |
+| CDD_DMA_SID_SET_TRANSFER_SIZE   | Cdd_Dma_SetTransferSize() API Service ID.  |
+| CDD_DMA_SID_SET_TRANSFER_SRC_PROPERTIES   | Cdd_Dma_SetTransferSrcProperties() API Service ID.  |
+| CDD_DMA_SID_SET_TRANSFER_DEST_PROPERTIES   | Cdd_Dma_SetTransferDestProperties() API Service ID.  |
+| CDD_DMA_SID_SET_TRANSFER_SRC_ADDRESS   | Cdd_Dma_SetTransferSrcAddress() API Service ID.  |
+| CDD_DMA_SID_SET_TRANSFER_DEST_ADDRESS   | Cdd_Dma_SetTransferDestAddress() API Service ID.  |
+| CDD_DMA_SID_SET_TRANSFER_WRAP_SRC_PROPERTIES   | Cdd_Dma_SetTransferWrapSrcProperties() API Service ID.  |
+| CDD_DMA_SID_SET_TRANSFER_WRAP_DEST_PROPERTIES   | Cdd_Dma_SetTransferWrapDestProperties() API Service ID.  |
+| CDD_DMA_SID_ENABLE_PERIPHERAL_EVENT_TRIGGER   | Cdd_Dma_EnablePeripheralEventTrigger() API Service ID.  |
+| CDD_DMA_SID_DISABLE_PERIPHERAL_EVENT_TRIGGER   | Cdd_Dma_DisablePeripheralEventTrigger() API Service ID.  |
+| CDD_DMA_SID_SET_PERIPHERAL_EVENT_TRIGGER_SOURCE   | Cdd_Dma_SetPeripheralEventTriggerSource() API Service ID.  |
+| CDD_DMA_SID_START_CHANNEL_TRANSFER   | Cdd_Dma_StartChannelTransfer() API Service ID.  |
+| CDD_DMA_SID_STOP_CHANNEL_TRANSFER   | Cdd_Dma_StopChannelTransfer() API Service ID.  |
+| CDD_DMA_SID_FORCE_PERIPHERAL_EVENT_TRIGGER   | Cdd_Dma_ForcePeripheralEventTrigger() API Service ID.  |
+| CDD_DMA_SID_CLEAR_PERIPHERAL_EVENT_TRIGGER   | Cdd_Dma_ClearPeripheralEventTrigger() API Service ID.  |
+| CDD_DMA_SID_TRIGGER_SOFT_RESET   | Cdd_Dma_TriggerSoftReset() API Service ID.  |
+| CDD_DMA_SID_SET_CHANNEL_PRIORITY   | Cdd_Dma_SetChannelPriority() API Service ID.  |
+| CDD_DMA_SID_GET_CHANNEL_STATUS   | Cdd_Dma_GetChannelStatus() API Service ID.  |
+| CDD_DMA_SID_CLEAR_ERROR_FLAG   | Cdd_Dma_ClearErrorFlag() API Service ID.  |
+| CDD_DMA_SID_SET_CHANNEL_COMMIT   | Cdd_Dma_SetChannelCommit() API Service ID.  |
+| CDD_DMA_SID_SET_DMACFG_COMMIT   | Cdd_Dma_SetDmaCfgCommit() API Service ID.  |
+| CDD_DMA_SID_SET_MPUR_COMMIT   | Cdd_Dma_SetMpuRegionCommit() API Service ID.  |
+| CDD_DMA_SID_SET_MPUCFG_COMMIT   | Cdd_Dma_SetMpuCfgCommit() API Service ID.  |
+
+## Functions
+
+| Return type    | Function Name           |      Brief        |
+| -------------- | ----------------------- | ----------------- |
+| void | **[Cdd_Dma_GetVersionInfo](../Modules/group__CDD__DMA.md#function-cdd_dma_getversioninfo)**(Std_VersionInfoType * VersionInfoPtr)| Service to provide the version information of Cdd Dma module.  |
+| void | **[Cdd_Dma_Init](../Modules/group__CDD__DMA.md#function-cdd_dma_init)**(const [Cdd_Dma_ConfigType](../Classes/structCdd__Dma__ConfigType.md) * ConfigPtr)| Service to initialize CDD DMA driver.  |
+| void | **[Cdd_Dma_DeInit](../Modules/group__CDD__DMA.md#function-cdd_dma_deinit)**(void )| Service to deinitialize CDD DMA driver.  |
+| Std_ReturnType | **[Cdd_Dma_SetChannelProperties](../Modules/group__CDD__DMA.md#function-cdd_dma_setchannelproperties)**(uint8 ChannelId, [Cdd_Dma_ChannelParamsType](../Classes/structCdd__Dma__ChannelParamsType.md) ChannelProperties)| Service to set the channel properties of a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetTransferProperties](../Modules/group__CDD__DMA.md#function-cdd_dma_settransferproperties)**(uint8 ChannelId, [Cdd_Dma_TransferParamsType](../Classes/structCdd__Dma__TransferParamsType.md) TransferProperties)| Service to set the transfer properties of a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetTransferSize](../Modules/group__CDD__DMA.md#function-cdd_dma_settransfersize)**(uint8 ChannelId, uint8 BurstSize, uint16 TransferSize)| Service to set the burst size and transfer size of a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetTransferSrcProperties](../Modules/group__CDD__DMA.md#function-cdd_dma_settransfersrcproperties)**(uint8 ChannelId, sint16 SrcBurstStep, sint16 SrcTransferStep)| Service to set the transfer source properties : source burst step, source transfer step of a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetTransferDestProperties](../Modules/group__CDD__DMA.md#function-cdd_dma_settransferdestproperties)**(uint8 ChannelId, sint16 DestBurstStep, sint16 DestTransferStep)| Service to set the transfer destination properties : destination burst step, destination transfer step of a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetTransferSrcAddress](../Modules/group__CDD__DMA.md#function-cdd_dma_settransfersrcaddress)**(uint8 ChannelId, uint32 SrcAddress)| Service to set the transfer source address of a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetTransferDestAddress](../Modules/group__CDD__DMA.md#function-cdd_dma_settransferdestaddress)**(uint8 ChannelId, uint32 DestAddress)| Service to set the transfer destination address of a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetTransferWrapSrcProperties](../Modules/group__CDD__DMA.md#function-cdd_dma_settransferwrapsrcproperties)**(uint8 ChannelId, uint16 SrcWrapSize, sint16 SrcWrapStep, uint32 SrcBegAddress)| Service to set the transfer source wrap properties of a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetTransferWrapDestProperties](../Modules/group__CDD__DMA.md#function-cdd_dma_settransferwrapdestproperties)**(uint8 ChannelId, uint16 DestWrapSize, sint16 DestWrapStep, uint32 DestBegAddress)| Service to set the transfer destination wrap properties of a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_EnablePeripheralEventTrigger](../Modules/group__CDD__DMA.md#function-cdd_dma_enableperipheraleventtrigger)**(uint8 ChannelId)| Service to enable peripheral event triggers of a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_DisablePeripheralEventTrigger](../Modules/group__CDD__DMA.md#function-cdd_dma_disableperipheraleventtrigger)**(uint8 ChannelId)| Service to disable peripheral event triggers of a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetPeripheralEventTriggerSource](../Modules/group__CDD__DMA.md#function-cdd_dma_setperipheraleventtriggersource)**(uint8 ChannelId, [Cdd_Dma_PeriEvtTriggerSrcType](../Modules/group__CDD__DMA.md#enum-cdd_dma_perievttriggersrctype) PeripheralEventTrigSrc)| Service to set the peripheral event trigger source for a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_StartChannelTransfer](../Modules/group__CDD__DMA.md#function-cdd_dma_startchanneltransfer)**(uint8 ChannelId)| Service to start or enable a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_StopChannelTransfer](../Modules/group__CDD__DMA.md#function-cdd_dma_stopchanneltransfer)**(uint8 ChannelId)| Service to stop or disable a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_ForcePeripheralEventTrigger](../Modules/group__CDD__DMA.md#function-cdd_dma_forceperipheraleventtrigger)**(uint8 ChannelId)| Service to force the peripheral event trigger for the channel.  |
+| Std_ReturnType | **[Cdd_Dma_ClearPeripheralEventTrigger](../Modules/group__CDD__DMA.md#function-cdd_dma_clearperipheraleventtrigger)**(uint8 ChannelId)| Service to clear the peripheral event trigger for the channel.  |
+| Std_ReturnType | **[Cdd_Dma_TriggerSoftReset](../Modules/group__CDD__DMA.md#function-cdd_dma_triggersoftreset)**(uint8 ChannelId)| Service to trigger a soft reset for the channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetChannelPriority](../Modules/group__CDD__DMA.md#function-cdd_dma_setchannelpriority)**(uint8 ChannelId, [Cdd_Dma_ChannelPriority](../Modules/group__CDD__DMA.md#enum-cdd_dma_channelpriority) Priority)| Service to set channel priority.  |
+| void | **[Cdd_Dma_GetChannelStatus](../Modules/group__CDD__DMA.md#function-cdd_dma_getchannelstatus)**(uint8 ChannelId, [Cdd_Dma_ChannelStatus](../Classes/structCdd__Dma__ChannelStatus.md) * ChannelStatus)| Service to get the channel status : peripheral event trigger status, transfer status, burst status, run status and overflow status.  |
+| Std_ReturnType | **[Cdd_Dma_ClearErrorFlag](../Modules/group__CDD__DMA.md#function-cdd_dma_clearerrorflag)**(uint8 ChannelId)| Service to clear the overflow error flag for a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetDmaCfgCommit](../Modules/group__CDD__DMA.md#function-cdd_dma_setdmacfgcommit)**(uint8 HwInstanceId)| Service to commit DMA configurable properties such as priority scheme, channel priority and emulation mode for a specific instance.  |
+| Std_ReturnType | **[Cdd_Dma_SetChannelCommit](../Modules/group__CDD__DMA.md#function-cdd_dma_setchannelcommit)**(uint8 ChannelId)| Service to commit DMA channel configurations for a specific channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetMpuCfgCommit](../Modules/group__CDD__DMA.md#function-cdd_dma_setmpucfgcommit)**(uint8 HwInstanceId)| Service to commit Mpu configuration: MPUEN for a specific instance.  |
+| Std_ReturnType | **[Cdd_Dma_SetMpuRegionCommit](../Modules/group__CDD__DMA.md#function-cdd_dma_setmpuregioncommit)**(uint16 MpuRegionId)| Service to commit Mpu Region configurations for a specific MPU region.  |
+
+
+
+### function Cdd_Dma_GetVersionInfo
+
+```
+void Cdd_Dma_GetVersionInfo(
+    Std_VersionInfoType * VersionInfoPtr
+)
+```
+
+
+**Brief**: 
+Service to provide the version information of Cdd Dma module. 
+
+**Parameters**: 
+
+  
+* **VersionInfoPtr** is the pointer to CDD DMA driver version information. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: This API is available only if CDD_DMA_GET_VERSION_INFO_API is STD_ON 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_Init
+
+```
+void Cdd_Dma_Init(
+    const Cdd_Dma_ConfigType * ConfigPtr
+)
+```
+
+
+**Brief**: 
+Service to initialize CDD DMA driver. 
+
+**Parameters**: 
+
+  
+* **ConfigPtr** is the NULL pointer for pre compile variant from plugin 
+
+
+**Return**: None 
+
+**Precondition**: Preconditions - Driver not already initialized 
+
+**Postcondition**: Postconditions - Driver in initialized state 
+
+### function Cdd_Dma_DeInit
+
+```
+void Cdd_Dma_DeInit(
+    void 
+)
+```
+
+
+**Brief**: 
+Service to deinitialize CDD DMA driver. 
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetChannelProperties
+
+```
+Std_ReturnType Cdd_Dma_SetChannelProperties(
+    uint8 ChannelId,
+    Cdd_Dma_ChannelParamsType ChannelProperties
+)
+```
+
+
+**Brief**: 
+Service to set the channel properties of a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which the channel properties are configured 
+  
+* **ChannelProperties** Structure of type Cdd_Dma_ChannelParamsType which contains the channel properties to be set. 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully set channel properties 
+<br> 
+  
+* **E_NOT_OK** Failed to set channel properties 
+<br> 
+
+
+**Return**: Status of setting channel properties 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetTransferProperties
+
+```
+Std_ReturnType Cdd_Dma_SetTransferProperties(
+    uint8 ChannelId,
+    Cdd_Dma_TransferParamsType TransferProperties
+)
+```
+
+
+**Brief**: 
+Service to set the transfer properties of a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which the transfer properties are configured 
+  
+* **TransferProperties** Structure of type Cdd_Dma_TransferParamsType which contains the transfer properties to be set 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully set transfer properties 
+<br> 
+  
+* **E_NOT_OK** Failed to set transfer properties 
+<br> 
+
+
+**Return**: Status of setting transfer properties 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetTransferSize
+
+```
+Std_ReturnType Cdd_Dma_SetTransferSize(
+    uint8 ChannelId,
+    uint8 BurstSize,
+    uint16 TransferSize
+)
+```
+
+
+**Brief**: 
+Service to set the burst size and transfer size of a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which the transfer size properties are configured 
+  
+* **BurstSize** Number of words transferred per burst 
+  
+* **TransferSize** Total number of bursts in the transfer 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully set burst size and transfer size 
+<br> 
+  
+* **E_NOT_OK** Failed to set burst size and transfer size 
+<br> 
+
+
+**Return**: Status of setting burst size and transfer size 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetTransferSrcProperties
+
+```
+Std_ReturnType Cdd_Dma_SetTransferSrcProperties(
+    uint8 ChannelId,
+    sint16 SrcBurstStep,
+    sint16 SrcTransferStep
+)
+```
+
+
+**Brief**: 
+Service to set the transfer source properties : source burst step, source transfer step of a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which the source burst step and source transfer step properties are configured 
+  
+* **SrcBurstStep** Source burst step 
+  
+* **SrcTransferStep** Source transfer step 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully set transfer source properties 
+<br> 
+  
+* **E_NOT_OK** Failed to set transfer source properties 
+<br> 
+
+
+**Return**: Status of setting transfer source properties : source burst step, source transfer step 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetTransferDestProperties
+
+```
+Std_ReturnType Cdd_Dma_SetTransferDestProperties(
+    uint8 ChannelId,
+    sint16 DestBurstStep,
+    sint16 DestTransferStep
+)
+```
+
+
+**Brief**: 
+Service to set the transfer destination properties : destination burst step, destination transfer step of a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which the destination burst step and destination transfer step properties are configured 
+  
+* **DestBurstStep** Destination burst step 
+  
+* **DestTransferStep** Destination transfer step 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully set transfer destination properties 
+<br> 
+  
+* **E_NOT_OK** Failed to set transfer destination properties 
+<br> 
+
+
+**Return**: Status of setting transfer destination properties : destination burst step, destination transfer step 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetTransferSrcAddress
+
+```
+Std_ReturnType Cdd_Dma_SetTransferSrcAddress(
+    uint8 ChannelId,
+    uint32 SrcAddress
+)
+```
+
+
+**Brief**: 
+Service to set the transfer source address of a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which the source address is configured 
+  
+* **SrcAddress** Transfer source address 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully set transfer source address. 
+<br> 
+  
+* **E_NOT_OK** Failed to set source address. 
+<br> 
+
+
+**Return**: Status of setting transfer source address 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetTransferDestAddress
+
+```
+Std_ReturnType Cdd_Dma_SetTransferDestAddress(
+    uint8 ChannelId,
+    uint32 DestAddress
+)
+```
+
+
+**Brief**: 
+Service to set the transfer destination address of a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which the destination address is configured 
+  
+* **DestAddress** Transfer destination address 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully set transfer destination address 
+<br> 
+  
+* **E_NOT_OK** Failed to set destination address 
+<br> 
+
+
+**Return**: Status of setting transfer destination address 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetTransferWrapSrcProperties
+
+```
+Std_ReturnType Cdd_Dma_SetTransferWrapSrcProperties(
+    uint8 ChannelId,
+    uint16 SrcWrapSize,
+    sint16 SrcWrapStep,
+    uint32 SrcBegAddress
+)
+```
+
+
+**Brief**: 
+Service to set the transfer source wrap properties of a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which the source wrap properties are configured 
+  
+* **SrcWrapSize** Source wrap size 
+  
+* **SrcWrapStep** Source wrap step 
+  
+* **SrcBegAddress** Source beginning address 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully set source wrap properties 
+<br> 
+  
+* **E_NOT_OK** Failed to set source wrap properties 
+<br> 
+
+
+**Return**: Status of setting source wrap properties 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetTransferWrapDestProperties
+
+```
+Std_ReturnType Cdd_Dma_SetTransferWrapDestProperties(
+    uint8 ChannelId,
+    uint16 DestWrapSize,
+    sint16 DestWrapStep,
+    uint32 DestBegAddress
+)
+```
+
+
+**Brief**: 
+Service to set the transfer destination wrap properties of a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which the destination wrap properties are configured 
+  
+* **DestWrapSize** Destination wrap size 
+  
+* **DestWrapStep** Destination wrap step 
+  
+* **DestBegAddress** Destination beginning address 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully set destination wrap properties 
+<br> 
+  
+* **E_NOT_OK** Failed to set destination wrap properties 
+<br> 
+
+
+**Return**: Status of setting destination wrap properties 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_EnablePeripheralEventTrigger
+
+```
+Std_ReturnType Cdd_Dma_EnablePeripheralEventTrigger(
+    uint8 ChannelId
+)
+```
+
+
+**Brief**: 
+Service to enable peripheral event triggers of a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which trigger shall be enabled 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully enabled peripheral event trigger 
+<br> 
+  
+* **E_NOT_OK** Failed to enable peripheral event trigger 
+<br> 
+
+
+**Return**: Status of peripheral event trigger enabling 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_DisablePeripheralEventTrigger
+
+```
+Std_ReturnType Cdd_Dma_DisablePeripheralEventTrigger(
+    uint8 ChannelId
+)
+```
+
+
+**Brief**: 
+Service to disable peripheral event triggers of a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which trigger shall be disabled 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully disabled peripheral event trigger 
+<br> 
+  
+* **E_NOT_OK** Failed to disabled peripheral event trigger 
+<br> 
+
+
+**Return**: Status of peripheral event trigger disabling 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetPeripheralEventTriggerSource
+
+```
+Std_ReturnType Cdd_Dma_SetPeripheralEventTriggerSource(
+    uint8 ChannelId,
+    Cdd_Dma_PeriEvtTriggerSrcType PeripheralEventTrigSrc
+)
+```
+
+
+**Brief**: 
+Service to set the peripheral event trigger source for a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which trigger source shall be set 
+  
+* **PeripheralEventTrigSrc** : Peripheral event trigger source value 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully set peripheral event trigger source 
+<br> 
+  
+* **E_NOT_OK** Failed to set peripheral event trigger source 
+<br> 
+
+
+**Return**: Status of setting peripheral event trigger source 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_StartChannelTransfer
+
+```
+Std_ReturnType Cdd_Dma_StartChannelTransfer(
+    uint8 ChannelId
+)
+```
+
+
+**Brief**: 
+Service to start or enable a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel which shall be enabled 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully enabled the DMA channel 
+<br> 
+  
+* **E_NOT_OK** Failed to enable the DMA channel 
+<br> 
+
+
+**Return**: Status of enabling the DMA channel 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_StopChannelTransfer
+
+```
+Std_ReturnType Cdd_Dma_StopChannelTransfer(
+    uint8 ChannelId
+)
+```
+
+
+**Brief**: 
+Service to stop or disable a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which transfer shall be stopped 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully disabled the DMA channel 
+<br> 
+  
+* **E_NOT_OK** Failed to disable the DMA channel 
+<br> 
+
+
+**Return**: Status of stoping the DMA channel 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_ForcePeripheralEventTrigger
+
+```
+Std_ReturnType Cdd_Dma_ForcePeripheralEventTrigger(
+    uint8 ChannelId
+)
+```
+
+
+**Brief**: 
+Service to force the peripheral event trigger for the channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the DMA channel for which trigger shall be forced 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully forced trigger for the DMA channel 
+<br> 
+  
+* **E_NOT_OK** Failed to force trigger for the DMA channel 
+<br> 
+
+
+**Return**: Status of forcing DMA channel trigger 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_ClearPeripheralEventTrigger
+
+```
+Std_ReturnType Cdd_Dma_ClearPeripheralEventTrigger(
+    uint8 ChannelId
+)
+```
+
+
+**Brief**: 
+Service to clear the peripheral event trigger for the channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which trigger shall be cleared 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully cleared trigger for the DMA channel 
+<br> 
+  
+* **E_NOT_OK** Failed to clear trigger for the DMA channel 
+<br> 
+
+
+**Return**: Status of clearing DMA channel trigger 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_TriggerSoftReset
+
+```
+Std_ReturnType Cdd_Dma_TriggerSoftReset(
+    uint8 ChannelId
+)
+```
+
+
+**Brief**: 
+Service to trigger a soft reset for the channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which for which soft trigger shall be triggered 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully triggered soft reset for the DMA channel 
+<br> 
+  
+* **E_NOT_OK** Failed to trigger soft reset for the DMA channel 
+<br> 
+
+
+**Return**: Status of trigerring soft reset 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetChannelPriority
+
+```
+Std_ReturnType Cdd_Dma_SetChannelPriority(
+    uint8 ChannelId,
+    Cdd_Dma_ChannelPriority Priority
+)
+```
+
+
+**Brief**: 
+Service to set channel priority. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which priority shall be set 
+  
+* **Priority** : Channel priority to be assigned 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully set channel priority for the DMA channel 
+<br> 
+  
+* **E_NOT_OK** Failed to set channel priority for the DMA channel 
+<br> 
+
+
+**Return**: Status of setting channel priority 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_GetChannelStatus
+
+```
+void Cdd_Dma_GetChannelStatus(
+    uint8 ChannelId,
+    Cdd_Dma_ChannelStatus * ChannelStatus
+)
+```
+
+
+**Brief**: 
+Service to get the channel status : peripheral event trigger status, transfer status, burst status, run status and overflow status. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which the status shall be read 
+  
+* **ChannelStatus** : Pointer to the structure of type Cdd_Dma_ChannelStatus where the channel status will be copied 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_ClearErrorFlag
+
+```
+Std_ReturnType Cdd_Dma_ClearErrorFlag(
+    uint8 ChannelId
+)
+```
+
+
+**Brief**: 
+Service to clear the overflow error flag for a DMA channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which the overflow error needs to be cleared 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully cleared overflow error flag 
+<br> 
+  
+* **E_NOT_OK** Failed to clear overflow error flag 
+<br> 
+
+
+**Return**: Status of clearing the overflow error flag 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetDmaCfgCommit
+
+```
+Std_ReturnType Cdd_Dma_SetDmaCfgCommit(
+    uint8 HwInstanceId
+)
+```
+
+
+**Brief**: 
+Service to commit DMA configurable properties such as priority scheme, channel priority and emulation mode for a specific instance. 
+
+**Parameters**: 
+
+  
+* **HwInstanceId** Symbolic name of the DMA hardware instance 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully commited DMA configurations 
+<br> 
+  
+* **E_NOT_OK** Failed to commit DMA configurations 
+<br> 
+
+
+**Return**: Status of commiting DMA configurations 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetChannelCommit
+
+```
+Std_ReturnType Cdd_Dma_SetChannelCommit(
+    uint8 ChannelId
+)
+```
+
+
+**Brief**: 
+Service to commit DMA channel configurations for a specific channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** Symbolic name of the DMA channel 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully commited DMA channel configurations 
+<br> 
+  
+* **E_NOT_OK** Failed to commit DMA channel configurations 
+<br> 
+
+
+**Return**: Status of commiting DMA channel configurations 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetMpuCfgCommit
+
+```
+Std_ReturnType Cdd_Dma_SetMpuCfgCommit(
+    uint8 HwInstanceId
+)
+```
+
+
+**Brief**: 
+Service to commit Mpu configuration: MPUEN for a specific instance. 
+
+**Parameters**: 
+
+  
+* **HwInstanceId** Symbolic name of the DMA hardware instance 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully commited Mpu configuration 
+<br> 
+  
+* **E_NOT_OK** Failed to commit Mpu configuration 
+<br> 
+
+
+**Return**: Status of commiting Mpu configuration 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_SetMpuRegionCommit
+
+```
+Std_ReturnType Cdd_Dma_SetMpuRegionCommit(
+    uint16 MpuRegionId
+)
+```
+
+
+**Brief**: 
+Service to commit Mpu Region configurations for a specific MPU region. 
+
+**Parameters**: 
+
+  
+* **MpuRegionId** Symbolic name of the DMA MPU region 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully commited Mpu Region configuration 
+<br> 
+  
+* **E_NOT_OK** Failed to commit Mpu Region configuration 
+<br> 
+
+
+**Return**: Status of commiting Mpu Region configuration 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+
+
+
+

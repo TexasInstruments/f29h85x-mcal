@@ -117,6 +117,7 @@ extern "C" {
  * Exported Type Declarations
  *********************************************************************************************************************/
 /** \brief Channel object structure */
+/* Design: MCAL-36250*/
 typedef struct Cdd_Ecap_ChannelObjTag
 {
 #if (CDD_ECAP_TIMESTAMP_API == STD_ON)
@@ -193,6 +194,7 @@ typedef struct Cdd_Ecap_ChannelObjTag
 } Cdd_Ecap_DrvObjType;
 
 /** \brief CDD ECAP configuration structure internal to driver */
+/* Design: MCAL-36251, MCAL-36294*/
 typedef struct
 {
     /** \brief ECAP channel object */

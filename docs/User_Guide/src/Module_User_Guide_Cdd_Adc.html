@@ -24,7 +24,7 @@
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="5.12. CDD ECAP Module" href="Module_User_Guide_Cdd_Ecap.html" />
+    <link rel="next" title="5.12. CDD DMA Module" href="Module_User_Guide_Cdd_Dma.html" />
     <link rel="prev" title="5.10. WDG Module" href="Module_User_Guide_Wdg.html" /> 
 </head>
 
@@ -83,8 +83,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#hardware-features">5.11.4. Hardware Features</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">5.11.4.1. Hardware Features supported</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#features-not-supported-by-hardware">5.11.4.2. Features not supported by Hardware</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#features-not-supported-by-the-driver">5.11.4.3. Features Not supported by the driver</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#non-compliance">5.11.4.4. Non compliance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-variant-specific-limitations">5.11.4.3. Device-Variant Specific Limitations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#features-not-supported-by-the-driver">5.11.4.4. Features Not supported by the driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-compliance">5.11.4.5. Non compliance</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#source-files">5.11.5. Source files</a></li>
@@ -95,44 +96,44 @@
 <li class="toctree-l4"><a class="reference internal" href="#error-codes">5.11.6.4. Error codes</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#used-resources">5.11.7. Used resources</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">5.11.7.1. Interrupt Handling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#instance-support">5.11.7.2. Instance support</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">5.11.7.3. Hardware-Software Mapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#silicon-errata-workarounds-and-recommendation">5.11.7. Silicon errata workarounds and recommendation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#used-resources">5.11.8. Used resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">5.11.8.1. Interrupt Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instance-support">5.11.8.2. Instance support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">5.11.8.3. Hardware-Software Mapping</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#integration-description">5.11.8. Integration description</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#adc-dma-integration-guide">5.11.8.1. ADC + DMA Integration Guide</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">5.11.8.2. Dependent modules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#resource-allocator">5.11.8.3. Resource Allocator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-description">5.11.9. Integration description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#adc-dma-integration-guide">5.11.9.1. ADC + DMA Integration Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">5.11.9.2. Dependent modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resource-allocator">5.11.9.3. Resource Allocator</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#configuration">5.11.9. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">5.11.9.1. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddadcconfigset">5.11.9.2. CddAdcConfigSet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cddadcgeneral">5.11.9.3. CddAdcGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-adc-module">5.11.9.4. Steps To Configure Cdd_Adc Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">5.11.10. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">5.11.10.1. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-adc-module">5.11.10.2. Steps To Configure Cdd_Adc Module</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#examples">5.11.10. Examples</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#cdd-adc-example-glbswtrig">5.11.10.1. Cdd_Adc_Example_GlbSwTrig</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cdd-adc-example-ppb-trigrepeater">5.11.10.2. Cdd_Adc_Example_Ppb_TrigRepeater</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cdd-adc-example-tempsensor">5.11.10.3. Cdd_Adc_Example_TempSensor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cdd-adc-example-differential">5.11.10.4. Cdd_Adc_Example_Differential</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cdd-adc-example-dmatransfer">5.11.10.5. Cdd_Adc_Example_DmaTransfer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#example-file-structure">5.11.10.6. Example File Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">5.11.11. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-adc-example-glbswtrig">5.11.11.1. Cdd_Adc_Example_GlbSwTrig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-adc-example-ppb-trigrepeater">5.11.11.2. Cdd_Adc_Example_Ppb_TrigRepeater</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-adc-example-tempsensor">5.11.11.3. Cdd_Adc_Example_TempSensor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-adc-example-swhwconversion">5.11.11.4. Cdd_Adc_Example_SwHwConversion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-adc-example-dmatransfer">5.11.11.5. Cdd_Adc_Example_DmaTransfer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-file-structure">5.11.11.6. Example File Structure</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">5.12. CDD ECAP Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">5.13. CDD I2C Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">5.14. CDD IPC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">5.15. CDD PWM Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">5.16. CDD SENT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">5.17. CDD XBAR Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">5.18. CDD UART Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">5.19. RTDMA Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Dma.html">5.12. CDD DMA Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">5.13. CDD ECAP Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">5.14. CDD I2C Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">5.15. CDD IPC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">5.16. CDD PWM Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">5.17. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">5.18. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">5.19. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">5.20. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">6. Migration Guide</a></li>
@@ -295,6 +296,10 @@
 <section id="functional-overview">
 <h2><span class="section-number">5.11.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
 <p>The ADC peripheral initializes and controls the internal Analogue Digital Converter Unit(s) of the microcontroller. The ADC peripheral in the device is Successive Approximation (SAR) type of ADC . The ADC peripherals on this device support selectable resolution of either 16 bit or 12 bit.The ADC is composed of a core and a wrapper; the core is composed of the analog circuits which include the channel select MUX, the Sample-and-Hold (S/H) circuit, the successive approximation circuits, voltage reference circuits, and other analog support circuits. The wrapper is composed of the digital circuits that configure and control the ADC. These circuits include the logic for programmable conversions, result registers, interfaces to analog circuits, interfaces to the peripheral buses,post-processing circuits, and interfaces to other on-chip peripherals.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>ADC Converter Enable Timing:</strong> The application should wait for the necessary delay after all ADC converters have begun powering up(Cdd_Adc_Init) before triggering any SOC conversion. Refer to the device data sheet for the specific timing requirement. This delay ensures proper ADC initialization and stable operation.</p>
+</div>
 </section>
 <section id="hardware-features">
 <h2><span class="section-number">5.11.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
@@ -307,6 +312,17 @@
 <li><p>Selectable internal reference of 2.5V or 3.3V.</p></li>
 <li><p>Differential signal conversions and Single-ended signal conversions.</p></li>
 <li><p>Input multiplexer with up to 80 channels (single-ended) or 40 channels (differential).</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>F29P32x Device Variant Limitations: On F29P32x devices, the following features are not supported:</p>
+<ul class="simple">
+<li><p>16-bit resolution mode: F29P32x ADC instances support 12-bit resolution only.</p></li>
+<li><p>Differential signal conversion mode: F29P32x ADC instances support single-ended conversions only.</p></li>
+</ul>
+<p>See <a class="reference internal" href="#device-variant-specific-limitations">Device-Variant Specific Limitations</a> for details.</p>
+</div>
+<ul class="simple">
 <li><p>External channel mux option to expand available ADC channels.</p></li>
 <li><p>32 configurable SOCs.</p></li>
 <li><p>32 individually addressable result registers.</p></li>
@@ -366,8 +382,20 @@ compare match, or both)</p></li>
 <li><p>Temperature sensor sampled in 16-bit mode. It can cause incorrect ADC results.To sample the temperature sensor, the ADC must be in single-ended 12-bit mode.</p></li>
 </ul>
 </section>
+<section id="device-variant-specific-limitations">
+<h3><span class="section-number">5.11.4.3. </span>Device-Variant Specific Limitations<a class="headerlink" href="#device-variant-specific-limitations" title="Link to this heading"></a></h3>
+<p><strong>F29P32x devices:</strong></p>
+<ul class="simple">
+<li><p><strong>16-bit resolution mode is not supported.</strong> F29P32x ADC instances support 12-bit resolution only.</p></li>
+<li><p><strong>Differential signal conversion mode is not supported.</strong> F29P32x ADC instances support single-ended conversions only.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The device family is selected in the Resource Allocator module. Ensure the correct device variant (F29P32x, F29H85x, or F29P58x) is configured in the Resource Allocator so that device-specific constraints are applied correctly.</p>
+</div>
+</section>
 <section id="features-not-supported-by-the-driver">
-<h3><span class="section-number">5.11.4.3. </span>Features Not supported by the driver<a class="headerlink" href="#features-not-supported-by-the-driver" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.4.4. </span>Features Not supported by the driver<a class="headerlink" href="#features-not-supported-by-the-driver" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Burst mode</p></li>
 <li><p>PPB external hardware sync input</p></li>
@@ -375,7 +403,7 @@ compare match, or both)</p></li>
 </ul>
 </section>
 <section id="non-compliance">
-<h3><span class="section-number">5.11.4.4. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.4.5. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
 <p>None</p>
 </section>
 </section>
@@ -422,7 +450,12 @@ compare match, or both)</p></li>
 <h2><span class="section-number">5.11.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
 <section id="memory-mapping">
 <h3><span class="section-number">5.11.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
-<p>Will be added in later release</p>
+<p>The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.</p>
+<p>Reference memory map files can be found at:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+</pre></div>
+</div>
+<p>The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.</p>
 </section>
 <section id="scheduling">
 <h3><span class="section-number">5.11.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
@@ -541,19 +574,33 @@ compare match, or both)</p></li>
 <td><p>CDD_ADC_E_ALREADY_SET</p></td>
 <td><p>0x21U</p></td>
 </tr>
-<tr class="row-even"><td><p>API called with wrong processing mode (e.g., DMA mode API called on non-DMA group)</p></td>
-<td><p>CDD_ADC_E_WRONG_PROCESSING_MODE</p></td>
-<td><p>0x25U</p></td>
-</tr>
 </tbody>
 </table>
 </section>
 </section>
 </section>
+<section id="silicon-errata-workarounds-and-recommendation">
+<h2><span class="section-number">5.11.7. </span>Silicon errata workarounds and recommendation<a class="headerlink" href="#silicon-errata-workarounds-and-recommendation" title="Link to this heading"></a></h2>
+<p>For detailed silicon errata, refer to the <a class="reference external" href="https://www.ti.com/lit/er/sprz569c/sprz569c.pdf">F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata</a>.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Advisory</p></th>
+<th class="head"><p>Workaround in MCAL driver</p></th>
+<th class="head"><p>Recommended actions for user</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ADC: Interrupts may stop if INTxCONT (Continue-to-Interrupt Mode) is not set</p></td>
+<td><p>1. Use Continue-to-Interrupt Mode to prevent the ADCINTFLG from blocking additional ADC interrupts (enable <code class="docutils literal notranslate"><span class="pre">CddAdcContinueToInterruptMode</span></code> for the specified interrupt in EB Tresos to use ContinueToInterrupt mode). <br>2. Check for an overflow condition(ADCINTOVF flag status) in the ISR when clearing the ADCINTFLG: check ADCINTOVF immediately after writing to ADCINTFLGCLR; if it is set, clear ADCINTOVF and write ADCINTFLGCLR a second time to ensure the ADCINTFLG is cleared. The ADCINTOVF register will be set, indicating an ADC conversion interrupt was lost.</p></td>
+<td><p>Ensure there is always sufficient time to service the ADC ISR and clear the ADCINTFLG before the next ADC interrupt occurs to avoid this condition.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="used-resources">
-<h2><span class="section-number">5.11.7. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.11.8. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
 <section id="interrupt-handling">
-<h3><span class="section-number">5.11.7.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.8.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
 <p>Cdd_Adc driver provides ISRs. The ISRs are implemented in the Cdd_Adc_Irq.c file.
 Interrupt and the category should be selected in the Cdd_Adc plugin.The Interrupt ID associated with the ADC instance is mentioned in the TRM (also, please refer the Example application).</p>
 <table class="docutils align-default">
@@ -645,9 +692,15 @@ Interrupt and the category should be selected in the Cdd_Adc plugin.The Interrup
 <p>Same Interrupt Category needs to be configured in both Cdd_Adc and OS Module.
 Since all the PPBs in an ADC hardware share the same interrupt, the category must match for all the PPB containers under an ADC hardware unit container.</p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Early Interrupt Pulse Mode (CddAdcInterruptPulseMode = CDD_ADC_PULSE_END_OF_ACQ_WIN):</strong> In early interrupt mode, the ADC interrupt is triggered before the conversion results are ready, allowing the application to perform necessary pre-work so that it can act on the ADC results immediately when they become available.
+The <code class="docutils literal notranslate"><span class="pre">CddAdcInterruptCycleoffset</span></code> parameter configures the number of additional SYSCLK cycles after the falling edge of the SOC pulse(at the end of the acquisition window) before the ADCINT flag is set. If the configured delay extends beyond the End-Of-Conversion (EOC), the interrupt is generated at EOC.
+The driver ISR does not poll the ADCINTxRESULT flag to verify the result latch status before reading. It is recommended to configure a sufficient <code class="docutils literal notranslate"><span class="pre">CddAdcInterruptCycleoffset</span></code> delay to ensure the results are ready.</p>
+</div>
 </section>
 <section id="instance-support">
-<h3><span class="section-number">5.11.7.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.8.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>CPU instances</p></th>
@@ -668,7 +721,7 @@ Since all the PPBs in an ADC hardware share the same interrupt, the category mus
 </table>
 </section>
 <section id="hardware-software-mapping">
-<h3><span class="section-number">5.11.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.8.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
 <p>Below image shows Cdd_Adc driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Technical Reference Manual.</p>
 <figure class="align-center" id="id21">
 <img alt="Cdd_Adc HW/SW Mapping" src="../_images/Cdd_Adc_Hw_Sw_Mapping.png" />
@@ -679,19 +732,19 @@ Since all the PPBs in an ADC hardware share the same interrupt, the category mus
 </section>
 </section>
 <section id="integration-description">
-<h2><span class="section-number">5.11.8. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.11.9. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
 <section id="adc-dma-integration-guide">
-<h3><span class="section-number">5.11.8.1. </span>ADC + DMA Integration Guide<a class="headerlink" href="#adc-dma-integration-guide" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.9.1. </span>ADC + DMA Integration Guide<a class="headerlink" href="#adc-dma-integration-guide" title="Link to this heading"></a></h3>
 <section id="overview">
-<h4><span class="section-number">5.11.8.1.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.9.1.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h4>
 <p>The F29x MCAL ADC driver supports integration with the Real-Time Direct Memory Access (RTDMA) controller. This integration enables automatic transfer of ADC conversion results to memory without CPU intervention, allowing higher sampling rates and freeing the CPU for other tasks.</p>
 </section>
 <section id="enabling-dma-mode">
-<h4><span class="section-number">5.11.8.1.2. </span>Enabling DMA Mode<a class="headerlink" href="#enabling-dma-mode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.9.1.2. </span>Enabling DMA Mode<a class="headerlink" href="#enabling-dma-mode" title="Link to this heading"></a></h4>
 <p>DMA mode is enabled at the group level using the boolean parameter <code class="docutils literal notranslate"><span class="pre">CddAdcEnableDma</span></code> in EB Tresos configuration tool. Since no MCAL RTDMA driver is available, the application must use the SDK’s RTDMA driver for integration.</p>
 </section>
 <section id="api-behavior-in-dma-mode">
-<h4><span class="section-number">5.11.8.1.3. </span>API Behavior in DMA Mode<a class="headerlink" href="#api-behavior-in-dma-mode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.9.1.3. </span>API Behavior in DMA Mode<a class="headerlink" href="#api-behavior-in-dma-mode" title="Link to this heading"></a></h4>
 <p>When DMA is enabled for a group:</p>
 <ul class="simple">
 <li><p><strong>Group Status Updates</strong>: The ADC ISR does not execute in DMA mode. Therefore, group status updates (e.g., BUSY to COMPLETED), result pointer updates, and re-triggering of software-triggered group conversions do not occur automatically.</p></li>
@@ -706,7 +759,7 @@ Since all the PPBs in an ADC hardware share the same interrupt, the category mus
 </div>
 </section>
 <section id="integration-steps">
-<h4><span class="section-number">5.11.8.1.4. </span>Integration Steps<a class="headerlink" href="#integration-steps" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.9.1.4. </span>Integration Steps<a class="headerlink" href="#integration-steps" title="Link to this heading"></a></h4>
 <p>To integrate ADC with DMA:</p>
 <ol class="arabic simple">
 <li><p>Enable DMA mode for the ADC group in EB Tresos configuration</p></li>
@@ -721,14 +774,14 @@ Since all the PPBs in an ADC hardware share the same interrupt, the category mus
 </section>
 </section>
 <section id="dependent-modules">
-<h3><span class="section-number">5.11.8.2. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.9.2. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
 <section id="det">
-<h4><span class="section-number">5.11.8.2.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.9.2.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
 <p>This driver depends on the DET in order to report development and runtime errors.
 The detection of development errors is configurable ON/OFF. The switch CDD_ADC_DEV_ERROR_DETECT will activate or deactivate the detection of development errors. Runtime errors are reported even when CDD_ADC_DEV_ERROR_DETECT is OFF.</p>
 </section>
 <section id="schm">
-<h4><span class="section-number">5.11.8.2.2. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.9.2.2. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
 <p>If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that CDD ADC module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.</p>
 <p>The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter <strong>RteExclusiveAreaImplMechanism</strong>. This parameter is an input for RTE generator.</p>
 <p>For CDD_ADC Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:</p>
@@ -750,53 +803,76 @@ The detection of development errors is configurable ON/OFF. The switch CDD_ADC_D
 </table>
 </section>
 <section id="mcu">
-<h4><span class="section-number">5.11.8.2.3. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.9.2.3. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
 <p>MCU Module is required for the ADC clock initialization.</p>
 </section>
 <section id="port">
-<h4><span class="section-number">5.11.8.2.4. </span>Port<a class="headerlink" href="#port" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.9.2.4. </span>Port<a class="headerlink" href="#port" title="Link to this heading"></a></h4>
 <p>The Port module configures the analog port pins used for the ADC driver. Hence, the Port driver has to be initialized prior to use ADC functions and to observe proper conversion results. Otherwise incorrect conversion results will be observed.</p>
 </section>
 <section id="os">
-<h4><span class="section-number">5.11.8.2.5. </span>OS<a class="headerlink" href="#os" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.9.2.5. </span>OS<a class="headerlink" href="#os" title="Link to this heading"></a></h4>
 <p>The Cdd_Adc driver uses interrupts and therefore depends on OS, which configures the interrupts.</p>
 </section>
 </section>
 <section id="resource-allocator">
-<h3><span class="section-number">5.11.8.3. </span>Resource Allocator<a class="headerlink" href="#resource-allocator" title="Link to this heading"></a></h3>
-<p>The ADC module references the Resource Allocator for device, package, and variant configuration. See the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a> for details on configuring device-specific settings.</p>
+<h3><span class="section-number">5.11.9.3. </span>Resource Allocator<a class="headerlink" href="#resource-allocator" title="Link to this heading"></a></h3>
+<p>The ADC module uses the Resource Allocator to allocate ADC peripheral instances to CPU cores and configure their memory-mapped base addresses. Each allocation is placed inside a <strong>Context</strong> that maps to a CPU core (e.g. <code class="docutils literal notranslate"><span class="pre">CPU1</span></code>). The <strong>CurrentContext</strong> parameter in the Resource Allocator selects which Context is active for MCAL execution. See the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a> for details on configuring device-specific settings.</p>
+<p>The ADC Context container supports four types of allocations:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Cdd_AdcAllocatedInstance</span></code></strong>: Allocates an ADC hardware instance. <strong>InstanceName</strong> uses the <code class="docutils literal notranslate"><span class="pre">CDD_</span></code> prefix (e.g. <code class="docutils literal notranslate"><span class="pre">CDD_ADCA</span></code>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">CddAdcSafetyCheckerInstance</span></code></strong>: Allocates an ADC safety checker instance (e.g. <code class="docutils literal notranslate"><span class="pre">ADCSAFETYCHECK1</span></code>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">CddAdcCheckerInterruptEvtInstance</span></code></strong>: Allocates an ADC safety checker interrupt event instance (e.g. <code class="docutils literal notranslate"><span class="pre">ADCSAFETYCHECKINTEVT1</span></code>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">CddAdcGlobalSoftwareForce</span></code></strong>: Allocates the ADC global software force registers (max 1, shared across all CPUs).</p></li>
+</ul>
+<p>Each allocation supports <strong>Frame</strong> (<code class="docutils literal notranslate"><span class="pre">FRAME0</span></code>–<code class="docutils literal notranslate"><span class="pre">FRAME3</span></code>), <strong>DebugHaltEnabled</strong>, and <strong>StandbyModeEnabled</strong> parameters. The <strong>BaseAddr</strong> is auto-calculated based on the selected instance and frame.</p>
 <section id="resource-allocator-usage-example">
-<h4><span class="section-number">5.11.8.3.1. </span>Resource Allocator Usage Example<a class="headerlink" href="#resource-allocator-usage-example" title="Link to this heading"></a></h4>
-<p>To allocate ADCA to CPU1 using FRAME0:</p>
+<h4><span class="section-number">5.11.9.3.1. </span>Resource Allocator Usage Example<a class="headerlink" href="#resource-allocator-usage-example" title="Link to this heading"></a></h4>
+<p>To allocate CDD_ADCA to CPU1 using FRAME0:</p>
 <ol class="arabic simple">
-<li><p>In the Resource Allocator configuration, create a new Adc instance allocation</p></li>
-<li><p>Set <strong>InstanceName</strong> to <code class="docutils literal notranslate"><span class="pre">ADCA</span></code></p></li>
+<li><p>In the Resource Allocator configuration, create a new <code class="docutils literal notranslate"><span class="pre">Cdd_AdcAllocatedInstance</span></code> under the CPU1 Context</p></li>
+<li><p>Set <strong>InstanceName</strong> to <code class="docutils literal notranslate"><span class="pre">CDD_ADCA</span></code></p></li>
 <li><p>Set <strong>Frame</strong> to <code class="docutils literal notranslate"><span class="pre">FRAME0</span></code></p></li>
-<li><p>The <strong>BaseAddr</strong> will be automatically calculated as <code class="docutils literal notranslate"><span class="pre">ADCA_DRIVER_BASE_FRAME(0U)</span></code></p></li>
+<li><p>The <strong>BaseAddr</strong> will be automatically calculated as <code class="docutils literal notranslate"><span class="pre">ADCA_BASE_FRAME(0U)</span></code></p></li>
+<li><p>Optionally add <code class="docutils literal notranslate"><span class="pre">CddAdcSafetyCheckerInstance</span></code>, <code class="docutils literal notranslate"><span class="pre">CddAdcCheckerInterruptEvtInstance</span></code>, and <code class="docutils literal notranslate"><span class="pre">CddAdcGlobalSoftwareForce</span></code> allocations as needed</p></li>
 </ol>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Resource Allocator Configuration:
-├── AdcInstanceAllocation
-│   ├── InstanceName: ADCA
-│   ├── Frame: FRAME0
-│   └── BaseAddr: ADCA_DRIVER_BASE_FRAME(0U)
+├── Context (Core: CPU1)
+│   └── Cdd_Adc
+│       ├── Cdd_AdcAllocatedInstance
+│       │   ├── InstanceName: CDD_ADCA
+│       │   ├── Frame: FRAME0
+│       │   ├── BaseAddr: ADCA_BASE_FRAME(0U)  [auto-calculated]
+│       │   ├── DebugHaltEnabled: true
+│       │   └── StandbyModeEnabled: true
+│       ├── CddAdcSafetyCheckerInstance
+│       │   ├── SafetyCheckerInstance: ADCSAFETYCHECK1
+│       │   ├── Frame: FRAME0
+│       │   └── BaseAddr: ADCSAFETYCHECK1_BASE_FRAME(0U)  [auto-calculated]
+│       ├── CddAdcCheckerInterruptEvtInstance
+│       │   ├── SafetyCheckerIntEvtInstance: ADCSAFETYCHECKINTEVT1
+│       │   ├── Frame: FRAME0
+│       │   └── BaseAddr: ADCSAFETYCHECKINTEVT1_BASE_FRAME(0U)  [auto-calculated]
+│       └── CddAdcGlobalSoftwareForce  [max 1, shared across all CPUs]
+│           ├── Frame: FRAME0
+│           └── GlbSwFrcBaseAddr: ADCGLOBAL_BASE_FRAME(0U)  [auto-calculated]
 </pre></div>
 </div>
 </section>
 </section>
 </section>
 <section id="configuration">
-<h2><span class="section-number">5.11.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.11.10. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>The Cdd_Adc Driver implementation supports only Pre-Compile configuration variant. The driver needs the generated configuration header file Cdd_Adc_Cfg.h as an input file to work.
 The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the driver configuration.</p>
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files. If edited manually the driver may behavior might deviate from the expected behavior.</p>
 <section id="configuration-parameters">
-<h3><span class="section-number">5.11.9.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
-</section>
+<h3><span class="section-number">5.11.10.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
 <section id="cddadcconfigset">
-<h3><span class="section-number">5.11.9.2. </span>CddAdcConfigSet<a class="headerlink" href="#cddadcconfigset" title="Link to this heading"></a></h3>
+<h4><span class="section-number">5.11.10.1.1. </span>CddAdcConfigSet<a class="headerlink" href="#cddadcconfigset" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters and sub containers of the Cdd Adc module.</p>
 <section id="cddadcenabletemperaturesensor">
-<h4><span class="section-number">5.11.9.2.1. </span>CddAdcEnableTemperatureSensor<a class="headerlink" href="#cddadcenabletemperaturesensor" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.1. </span>CddAdcEnableTemperatureSensor<a class="headerlink" href="#cddadcenabletemperaturesensor" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -829,7 +905,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadclocktemperaturesensor">
-<h4><span class="section-number">5.11.9.2.2. </span>CddAdcLockTemperatureSensor<a class="headerlink" href="#cddadclocktemperaturesensor" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.2. </span>CddAdcLockTemperatureSensor<a class="headerlink" href="#cddadclocktemperaturesensor" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -862,7 +938,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcinternaltestinput">
-<h4><span class="section-number">5.11.9.2.3. </span>CddAdcInternalTestInput<a class="headerlink" href="#cddadcinternaltestinput" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.3. </span>CddAdcInternalTestInput<a class="headerlink" href="#cddadcinternaltestinput" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -898,7 +974,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadchwunitanalogrefabvoltagemode">
-<h4><span class="section-number">5.11.9.2.4. </span>CddAdcHwUnitAnalogRefABVoltageMode<a class="headerlink" href="#cddadchwunitanalogrefabvoltagemode" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.4. </span>CddAdcHwUnitAnalogRefABVoltageMode<a class="headerlink" href="#cddadchwunitanalogrefabvoltagemode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -934,7 +1010,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadchwunitanalogrefabvoltage">
-<h4><span class="section-number">5.11.9.2.5. </span>CddAdcHwUnitAnalogRefABVoltage<a class="headerlink" href="#cddadchwunitanalogrefabvoltage" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.5. </span>CddAdcHwUnitAnalogRefABVoltage<a class="headerlink" href="#cddadchwunitanalogrefabvoltage" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -970,7 +1046,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadchwunitanalogrefcdevoltagemode">
-<h4><span class="section-number">5.11.9.2.6. </span>CddAdcHwUnitAnalogRefCDEVoltageMode<a class="headerlink" href="#cddadchwunitanalogrefcdevoltagemode" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.6. </span>CddAdcHwUnitAnalogRefCDEVoltageMode<a class="headerlink" href="#cddadchwunitanalogrefcdevoltagemode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1006,7 +1082,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadchwunitanalogrefcdevoltage">
-<h4><span class="section-number">5.11.9.2.7. </span>CddAdcHwUnitAnalogRefCDEVoltage<a class="headerlink" href="#cddadchwunitanalogrefcdevoltage" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.7. </span>CddAdcHwUnitAnalogRefCDEVoltage<a class="headerlink" href="#cddadchwunitanalogrefcdevoltage" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1042,10 +1118,11 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadchwunit">
-<h4><span class="section-number">5.11.9.2.8. </span>CddAdcHwUnit<a class="headerlink" href="#cddadchwunit" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.8. </span>CddAdcHwUnit<a class="headerlink" href="#cddadchwunit" title="Link to this heading"></a></h5>
 <p>This container contains the driver configuration (parameters) for the ADC Hardware Unit</p>
+</section>
 <section id="cddadchwinstance">
-<h5><span class="section-number">5.11.9.2.8.1. </span>CddAdcHwInstance<a class="headerlink" href="#cddadchwinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.9. </span>CddAdcHwInstance<a class="headerlink" href="#cddadchwinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1078,7 +1155,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadchwunitid">
-<h5><span class="section-number">5.11.9.2.8.2. </span>CddAdcHwUnitId<a class="headerlink" href="#cddadchwunitid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.10. </span>CddAdcHwUnitId<a class="headerlink" href="#cddadchwunitid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1111,7 +1188,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcsocprioritymode">
-<h5><span class="section-number">5.11.9.2.8.3. </span>CddAdcSocPriorityMode<a class="headerlink" href="#cddadcsocprioritymode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.11. </span>CddAdcSocPriorityMode<a class="headerlink" href="#cddadcsocprioritymode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1123,7 +1200,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 <td><p>CddAdcSocPriorityMode</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>This parameter defines the SOC priority of the ADC hardware unit.                                 If the selected priority is 0 then all SOCs are handled in round robin mode,for any other                                value channels with SOC number below the Priority value are handled in high priority mode and                                  the rest of the SOCs will be handled in round robin mode.                                 By default round robin mode is configured.</p></td>
+<td><p>This parameter defines the SOC priority of the ADC hardware unit.                                 If the selected priority is 0 then all SOCs are handled in round robin mode,for any other                               value channels with SOC number below the Priority value are handled in high priority mode and                                 the rest of the SOCs will be handled in round robin mode.                                 By default round robin mode is configured.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Origin</strong></p></td>
 <td><p>Texas Instruments</p></td>
@@ -1150,7 +1227,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadchwunitresolution">
-<h5><span class="section-number">5.11.9.2.8.4. </span>CddAdcHwUnitResolution<a class="headerlink" href="#cddadchwunitresolution" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.12. </span>CddAdcHwUnitResolution<a class="headerlink" href="#cddadchwunitresolution" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1186,7 +1263,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadchwunitsignalmode">
-<h5><span class="section-number">5.11.9.2.8.5. </span>CddAdcHwUnitSignalMode<a class="headerlink" href="#cddadchwunitsignalmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.13. </span>CddAdcHwUnitSignalMode<a class="headerlink" href="#cddadchwunitsignalmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1222,7 +1299,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadchwunitclockprescale">
-<h5><span class="section-number">5.11.9.2.8.6. </span>CddAdcHwUnitClockPrescale<a class="headerlink" href="#cddadchwunitclockprescale" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.14. </span>CddAdcHwUnitClockPrescale<a class="headerlink" href="#cddadchwunitclockprescale" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1258,7 +1335,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcclock">
-<h5><span class="section-number">5.11.9.2.8.7. </span>CddAdcClock<a class="headerlink" href="#cddadcclock" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.15. </span>CddAdcClock<a class="headerlink" href="#cddadcclock" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1297,7 +1374,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadchwexternalmuxselect">
-<h5><span class="section-number">5.11.9.2.8.8. </span>CddAdcHwExternalMuxSelect<a class="headerlink" href="#cddadchwexternalmuxselect" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.16. </span>CddAdcHwExternalMuxSelect<a class="headerlink" href="#cddadchwexternalmuxselect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1330,7 +1407,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadchwexternalmuxpreselectenable">
-<h5><span class="section-number">5.11.9.2.8.9. </span>CddAdcHwExternalMuxPreselectEnable<a class="headerlink" href="#cddadchwexternalmuxpreselectenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.17. </span>CddAdcHwExternalMuxPreselectEnable<a class="headerlink" href="#cddadchwexternalmuxpreselectenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1372,7 +1449,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcinterruptpulsemode">
-<h5><span class="section-number">5.11.9.2.8.10. </span>CddAdcInterruptPulseMode<a class="headerlink" href="#cddadcinterruptpulsemode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.18. </span>CddAdcInterruptPulseMode<a class="headerlink" href="#cddadcinterruptpulsemode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1408,7 +1485,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcinterruptcycleoffset">
-<h5><span class="section-number">5.11.9.2.8.11. </span>CddAdcInterruptCycleoffset<a class="headerlink" href="#cddadcinterruptcycleoffset" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.19. </span>CddAdcInterruptCycleoffset<a class="headerlink" href="#cddadcinterruptcycleoffset" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1447,7 +1524,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcopenshortdetectmode">
-<h5><span class="section-number">5.11.9.2.8.12. </span>CddAdcOpenShortDetectMode<a class="headerlink" href="#cddadcopenshortdetectmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.20. </span>CddAdcOpenShortDetectMode<a class="headerlink" href="#cddadcopenshortdetectmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1483,7 +1560,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadchwinstanceref">
-<h5><span class="section-number">5.11.9.2.8.13. </span>CddAdcHwInstanceRef<a class="headerlink" href="#cddadchwinstanceref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.21. </span>CddAdcHwInstanceRef<a class="headerlink" href="#cddadchwinstanceref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1513,7 +1590,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcclockreference">
-<h5><span class="section-number">5.11.9.2.8.14. </span>CddAdcClockReference<a class="headerlink" href="#cddadcclockreference" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.22. </span>CddAdcClockReference<a class="headerlink" href="#cddadcclockreference" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1542,12 +1619,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadcgroup">
-<h4><span class="section-number">5.11.9.2.9. </span>CddAdcGroup<a class="headerlink" href="#cddadcgroup" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.23. </span>CddAdcGroup<a class="headerlink" href="#cddadcgroup" title="Link to this heading"></a></h5>
 <p>This container contains the Group configuration (parameters).</p>
+</section>
 <section id="cddadcgrouppriority">
-<h5><span class="section-number">5.11.9.2.9.1. </span>CddAdcGroupPriority<a class="headerlink" href="#cddadcgrouppriority" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.24. </span>CddAdcGroupPriority<a class="headerlink" href="#cddadcgrouppriority" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1583,7 +1660,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcgroupsocmask">
-<h5><span class="section-number">5.11.9.2.9.2. </span>CddAdcGroupSocMask<a class="headerlink" href="#cddadcgroupsocmask" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.25. </span>CddAdcGroupSocMask<a class="headerlink" href="#cddadcgroupsocmask" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1622,7 +1699,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcgroupconversionmode">
-<h5><span class="section-number">5.11.9.2.9.3. </span>CddAdcGroupConversionMode<a class="headerlink" href="#cddadcgroupconversionmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.26. </span>CddAdcGroupConversionMode<a class="headerlink" href="#cddadcgroupconversionmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1658,7 +1735,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcgrouptrigsrctype">
-<h5><span class="section-number">5.11.9.2.9.4. </span>CddAdcGroupTrigSrcType<a class="headerlink" href="#cddadcgrouptrigsrctype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.27. </span>CddAdcGroupTrigSrcType<a class="headerlink" href="#cddadcgrouptrigsrctype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1694,7 +1771,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcgrouptrigsrc">
-<h5><span class="section-number">5.11.9.2.9.5. </span>CddAdcGroupTrigSrc<a class="headerlink" href="#cddadcgrouptrigsrc" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.28. </span>CddAdcGroupTrigSrc<a class="headerlink" href="#cddadcgrouptrigsrc" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1730,7 +1807,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcgroupaccessmode">
-<h5><span class="section-number">5.11.9.2.9.6. </span>CddAdcGroupAccessMode<a class="headerlink" href="#cddadcgroupaccessmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.29. </span>CddAdcGroupAccessMode<a class="headerlink" href="#cddadcgroupaccessmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1766,7 +1843,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcgrouphwtrigsignal">
-<h5><span class="section-number">5.11.9.2.9.7. </span>CddAdcGroupHwTrigSignal<a class="headerlink" href="#cddadcgrouphwtrigsignal" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.30. </span>CddAdcGroupHwTrigSignal<a class="headerlink" href="#cddadcgrouphwtrigsignal" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1802,7 +1879,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcgroupstreamingbuffermode">
-<h5><span class="section-number">5.11.9.2.9.8. </span>CddAdcGroupStreamingBufferMode<a class="headerlink" href="#cddadcgroupstreamingbuffermode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.31. </span>CddAdcGroupStreamingBufferMode<a class="headerlink" href="#cddadcgroupstreamingbuffermode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1838,7 +1915,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcgroupstreamingnumsamples">
-<h5><span class="section-number">5.11.9.2.9.9. </span>CddAdcGroupStreamingNumSamples<a class="headerlink" href="#cddadcgroupstreamingnumsamples" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.32. </span>CddAdcGroupStreamingNumSamples<a class="headerlink" href="#cddadcgroupstreamingnumsamples" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1877,7 +1954,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcenabledma">
-<h5><span class="section-number">5.11.9.2.9.10. </span>CddAdcEnableDma<a class="headerlink" href="#cddadcenabledma" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.33. </span>CddAdcEnableDma<a class="headerlink" href="#cddadcenabledma" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1910,7 +1987,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcinterruptcategory">
-<h5><span class="section-number">5.11.9.2.9.11. </span>CddAdcInterruptCategory<a class="headerlink" href="#cddadcinterruptcategory" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.34. </span>CddAdcInterruptCategory<a class="headerlink" href="#cddadcinterruptcategory" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1946,7 +2023,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcgroupnotification">
-<h5><span class="section-number">5.11.9.2.9.12. </span>CddAdcGroupNotification<a class="headerlink" href="#cddadcgroupnotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.35. </span>CddAdcGroupNotification<a class="headerlink" href="#cddadcgroupnotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1988,7 +2065,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcinterruptselect">
-<h5><span class="section-number">5.11.9.2.9.13. </span>CddAdcInterruptSelect<a class="headerlink" href="#cddadcinterruptselect" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.36. </span>CddAdcInterruptSelect<a class="headerlink" href="#cddadcinterruptselect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2024,7 +2101,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcinterruptsocselect">
-<h5><span class="section-number">5.11.9.2.9.14. </span>CddAdcInterruptSocSelect<a class="headerlink" href="#cddadcinterruptsocselect" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.37. </span>CddAdcInterruptSocSelect<a class="headerlink" href="#cddadcinterruptsocselect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2060,7 +2137,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadccontinuetointerruptmode">
-<h5><span class="section-number">5.11.9.2.9.15. </span>CddAdcContinueToInterruptMode<a class="headerlink" href="#cddadccontinuetointerruptmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.38. </span>CddAdcContinueToInterruptMode<a class="headerlink" href="#cddadccontinuetointerruptmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2072,7 +2149,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 <td><p>CddAdcContinueToInterruptMode</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>This parameters enables/disables the continue to interrupt mode for the specified interrupt.</p></td>
+<td><p>This parameters enables/disables the continue to interrupt mode for the specified interrupt.When this mode is enabled then interrupt is generated irrespective of whether the flag bit is cleared or not else No further ADCINT pulses are generated until ADCINT flag is cleared.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Origin</strong></p></td>
 <td><p>Texas Instruments</p></td>
@@ -2093,7 +2170,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadctrigrepeaterreference">
-<h5><span class="section-number">5.11.9.2.9.16. </span>CddAdcTrigRepeaterReference<a class="headerlink" href="#cddadctrigrepeaterreference" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.39. </span>CddAdcTrigRepeaterReference<a class="headerlink" href="#cddadctrigrepeaterreference" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2131,12 +2208,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadcchannel">
-<h4><span class="section-number">5.11.9.2.10. </span>CddAdcChannel<a class="headerlink" href="#cddadcchannel" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.40. </span>CddAdcChannel<a class="headerlink" href="#cddadcchannel" title="Link to this heading"></a></h5>
 <p>This container contains the channel configuration (parameters) depending on the hardware capability.</p>
+</section>
 <section id="cddadcchannelid">
-<h5><span class="section-number">5.11.9.2.10.1. </span>CddAdcChannelId<a class="headerlink" href="#cddadcchannelid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.41. </span>CddAdcChannelId<a class="headerlink" href="#cddadcchannelid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2175,7 +2252,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcsocnumber">
-<h5><span class="section-number">5.11.9.2.10.2. </span>CddAdcSocNumber<a class="headerlink" href="#cddadcsocnumber" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.42. </span>CddAdcSocNumber<a class="headerlink" href="#cddadcsocnumber" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2214,7 +2291,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcsocexternalchannelselect">
-<h5><span class="section-number">5.11.9.2.10.3. </span>CddAdcSocExternalChannelSelect<a class="headerlink" href="#cddadcsocexternalchannelselect" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.43. </span>CddAdcSocExternalChannelSelect<a class="headerlink" href="#cddadcsocexternalchannelselect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2253,7 +2330,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcchannelsamplewindow">
-<h5><span class="section-number">5.11.9.2.10.4. </span>CddAdcChannelSampleWindow<a class="headerlink" href="#cddadcchannelsamplewindow" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.44. </span>CddAdcChannelSampleWindow<a class="headerlink" href="#cddadcchannelsamplewindow" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2291,12 +2368,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadctriggerrepeater">
-<h4><span class="section-number">5.11.9.2.11. </span>CddAdcTriggerRepeater<a class="headerlink" href="#cddadctriggerrepeater" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.45. </span>CddAdcTriggerRepeater<a class="headerlink" href="#cddadctriggerrepeater" title="Link to this heading"></a></h5>
 <p>This container contains the trigger repeater configuration (parameters) depending on the hardware capability. To have this container enabled trigger source type should be hardware, trigger source should be one of the repeaters and trigger repeater should be enabled in the CddAdcGeneral container.</p>
+</section>
 <section id="cddadcrepeaterinstance">
-<h5><span class="section-number">5.11.9.2.11.1. </span>CddAdcRepeaterInstance<a class="headerlink" href="#cddadcrepeaterinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.46. </span>CddAdcRepeaterInstance<a class="headerlink" href="#cddadcrepeaterinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2335,7 +2412,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcrepeatertriggersrc">
-<h5><span class="section-number">5.11.9.2.11.2. </span>CddAdcRepeaterTriggerSrc<a class="headerlink" href="#cddadcrepeatertriggersrc" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.47. </span>CddAdcRepeaterTriggerSrc<a class="headerlink" href="#cddadcrepeatertriggersrc" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2371,7 +2448,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcrepeatermode">
-<h5><span class="section-number">5.11.9.2.11.3. </span>CddAdcRepeaterMode<a class="headerlink" href="#cddadcrepeatermode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.48. </span>CddAdcRepeaterMode<a class="headerlink" href="#cddadcrepeatermode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2407,7 +2484,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadctriggercount">
-<h5><span class="section-number">5.11.9.2.11.4. </span>CddAdcTriggerCount<a class="headerlink" href="#cddadctriggercount" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.49. </span>CddAdcTriggerCount<a class="headerlink" href="#cddadctriggercount" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2446,7 +2523,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadctriggerphasedelay">
-<h5><span class="section-number">5.11.9.2.11.5. </span>CddAdcTriggerPhaseDelay<a class="headerlink" href="#cddadctriggerphasedelay" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.50. </span>CddAdcTriggerPhaseDelay<a class="headerlink" href="#cddadctriggerphasedelay" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2485,7 +2562,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadctriggerspreaddelay">
-<h5><span class="section-number">5.11.9.2.11.6. </span>CddAdcTriggerSpreadDelay<a class="headerlink" href="#cddadctriggerspreaddelay" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.51. </span>CddAdcTriggerSpreadDelay<a class="headerlink" href="#cddadctriggerspreaddelay" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2523,12 +2600,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadcppbconfig">
-<h4><span class="section-number">5.11.9.2.12. </span>CddAdcPpbConfig<a class="headerlink" href="#cddadcppbconfig" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.52. </span>CddAdcPpbConfig<a class="headerlink" href="#cddadcppbconfig" title="Link to this heading"></a></h5>
 <p>This container contains the PPB configuration (parameters) of the PPB.</p>
+</section>
 <section id="cddadcppbinstance">
-<h5><span class="section-number">5.11.9.2.12.1. </span>CddAdcPpbInstance<a class="headerlink" href="#cddadcppbinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.53. </span>CddAdcPpbInstance<a class="headerlink" href="#cddadcppbinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2567,7 +2644,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbsocnumber">
-<h5><span class="section-number">5.11.9.2.12.2. </span>CddAdcPpbSocNumber<a class="headerlink" href="#cddadcppbsocnumber" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.54. </span>CddAdcPpbSocNumber<a class="headerlink" href="#cddadcppbsocnumber" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2606,7 +2683,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbcalibrationoffset">
-<h5><span class="section-number">5.11.9.2.12.3. </span>CddAdcPpbCalibrationOffset<a class="headerlink" href="#cddadcppbcalibrationoffset" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.55. </span>CddAdcPpbCalibrationOffset<a class="headerlink" href="#cddadcppbcalibrationoffset" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2618,7 +2695,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 <td><p>CddAdcPpbCalibrationOffset</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>This parameters configures the offset calibration for the ADC channel.For values from 0 to 511,the configured value will be subtracted from the PPB result.                                  For values from 512,(1024 - CddAdcPpbCalibrationOffset) value will be added to the PPB result. In case multiple PPBs point to the same SOC,                                 only the OFFCAL of the lowest PPB ID will be applied.                                 This offset value will be subtracted from the raw conversion result and stores the value in the ADC result register.                                  The addition/subtraction satureated at o on the low ed and either 4095/65536 on the high end for 12-bit and 16-bit respectively.</p></td>
+<td><p>This parameters configures the offset calibration for the ADC channel.For values from 0 to 511,the configured value will be subtracted from the PPB result.                                 For values from 512,(1024 - CddAdcPpbCalibrationOffset) value will be added to the PPB result. In case multiple PPBs point to the same SOC,                                 only the OFFCAL of the lowest PPB ID will be applied.                                 This offset value will be subtracted from the raw conversion result and stores the value in the ADC result register.                                 The addition/subtraction satureated at o on the low ed and either 4095/65536 on the high end for 12-bit and 16-bit respectively.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Origin</strong></p></td>
 <td><p>Texas Instruments</p></td>
@@ -2645,7 +2722,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbreferenceoffset">
-<h5><span class="section-number">5.11.9.2.12.4. </span>CddAdcPpbReferenceOffset<a class="headerlink" href="#cddadcppbreferenceoffset" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.56. </span>CddAdcPpbReferenceOffset<a class="headerlink" href="#cddadcppbreferenceoffset" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2657,7 +2734,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 <td><p>CddAdcPpbReferenceOffset</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>This parameters configures the reference offset value for the ADC channel.In 12-bit mode the reference offset shouldn’t exceed                                    4095 in 12-bit and 65535 in 16-bit mode.</p></td>
+<td><p>This parameters configures the reference offset value for the ADC channel.In 12-bit mode the reference offset shouldn’t exceed                                   4095 in 12-bit and 65535 in 16-bit mode.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Origin</strong></p></td>
 <td><p>Texas Instruments</p></td>
@@ -2684,7 +2761,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbdeltaenable">
-<h5><span class="section-number">5.11.9.2.12.5. </span>CddAdcPpbDeltaEnable<a class="headerlink" href="#cddadcppbdeltaenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.57. </span>CddAdcPpbDeltaEnable<a class="headerlink" href="#cddadcppbdeltaenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2717,7 +2794,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbenabletwoscomplement">
-<h5><span class="section-number">5.11.9.2.12.6. </span>CddAdcPpbEnableTwosComplement<a class="headerlink" href="#cddadcppbenabletwoscomplement" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.58. </span>CddAdcPpbEnableTwosComplement<a class="headerlink" href="#cddadcppbenabletwoscomplement" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2750,7 +2827,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbabsoluteenable">
-<h5><span class="section-number">5.11.9.2.12.7. </span>CddAdcPpbAbsoluteEnable<a class="headerlink" href="#cddadcppbabsoluteenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.59. </span>CddAdcPpbAbsoluteEnable<a class="headerlink" href="#cddadcppbabsoluteenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2783,7 +2860,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbcyclebycycleenable">
-<h5><span class="section-number">5.11.9.2.12.8. </span>CddAdcPpbCyclebyCycleEnable<a class="headerlink" href="#cddadcppbcyclebycycleenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.60. </span>CddAdcPpbCyclebyCycleEnable<a class="headerlink" href="#cddadcppbcyclebycycleenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2816,7 +2893,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbcomparesource">
-<h5><span class="section-number">5.11.9.2.12.9. </span>CddAdcPpbCompareSource<a class="headerlink" href="#cddadcppbcomparesource" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.61. </span>CddAdcPpbCompareSource<a class="headerlink" href="#cddadcppbcomparesource" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2852,7 +2929,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbtriphighlimit">
-<h5><span class="section-number">5.11.9.2.12.10. </span>CddAdcPpbTripHighLimit<a class="headerlink" href="#cddadcppbtriphighlimit" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.62. </span>CddAdcPpbTripHighLimit<a class="headerlink" href="#cddadcppbtriphighlimit" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2864,7 +2941,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 <td><p>CddAdcPpbTripHighLimit</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>High limit - used for limit checking for all types of PB results.                                  When comparing to an ADCPPBxRESULT register, the upper bits will be ignored:TRIPHI[23:17] will be ignored in 16 bit mode and                                  TRIPHI[23:13] will be ignored in 12 bit mode</p></td>
+<td><p>High limit - used for limit checking for all types of PB results.                                 When comparing to an ADCPPBxRESULT register, the upper bits will be ignored:TRIPHI[23:17] will be ignored in 16 bit mode and                                 TRIPHI[23:13] will be ignored in 12 bit mode</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Origin</strong></p></td>
 <td><p>Texas Instruments</p></td>
@@ -2891,7 +2968,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbextendedtriplowenable">
-<h5><span class="section-number">5.11.9.2.12.11. </span>CddAdcPpbExtendedTripLowEnable<a class="headerlink" href="#cddadcppbextendedtriplowenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.63. </span>CddAdcPpbExtendedTripLowEnable<a class="headerlink" href="#cddadcppbextendedtriplowenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2924,7 +3001,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbtriplowlimit">
-<h5><span class="section-number">5.11.9.2.12.12. </span>CddAdcPpbTripLowLimit<a class="headerlink" href="#cddadcppbtriplowlimit" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.64. </span>CddAdcPpbTripLowLimit<a class="headerlink" href="#cddadcppbtriplowlimit" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2936,7 +3013,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 <td><p>CddAdcPpbTripLowLimit</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>Extended trip low limit - used for limit checking.When comparing to an ADCPPBxRESULT register, the upper bits will be ignored:                                  TRIPLO2[23:17] will be ignored in 16 bit mode and TRIPLO2[23:13] will be ignored in 12 bit mode</p></td>
+<td><p>Extended trip low limit - used for limit checking.When comparing to an ADCPPBxRESULT register, the upper bits will be ignored:                                 TRIPLO2[23:17] will be ignored in 16 bit mode and TRIPLO2[23:13] will be ignored in 12 bit mode</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Origin</strong></p></td>
 <td><p>Texas Instruments</p></td>
@@ -2963,7 +3040,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbtriphigheventenable">
-<h5><span class="section-number">5.11.9.2.12.13. </span>CddAdcPpbTripHighEventEnable<a class="headerlink" href="#cddadcppbtriphigheventenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.65. </span>CddAdcPpbTripHighEventEnable<a class="headerlink" href="#cddadcppbtriphigheventenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2996,7 +3073,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbtriploweventenable">
-<h5><span class="section-number">5.11.9.2.12.14. </span>CddAdcPpbTripLowEventEnable<a class="headerlink" href="#cddadcppbtriploweventenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.66. </span>CddAdcPpbTripLowEventEnable<a class="headerlink" href="#cddadcppbtriploweventenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3029,7 +3106,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbzerocrossingeventenable">
-<h5><span class="section-number">5.11.9.2.12.15. </span>CddAdcPpbZeroCrossingEventEnable<a class="headerlink" href="#cddadcppbzerocrossingeventenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.67. </span>CddAdcPpbZeroCrossingEventEnable<a class="headerlink" href="#cddadcppbzerocrossingeventenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3062,7 +3139,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbtriphighinterruptenable">
-<h5><span class="section-number">5.11.9.2.12.16. </span>CddAdcPpbTripHighInterruptEnable<a class="headerlink" href="#cddadcppbtriphighinterruptenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.68. </span>CddAdcPpbTripHighInterruptEnable<a class="headerlink" href="#cddadcppbtriphighinterruptenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3095,7 +3172,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbtriplowinterruptenable">
-<h5><span class="section-number">5.11.9.2.12.17. </span>CddAdcPpbTripLowInterruptEnable<a class="headerlink" href="#cddadcppbtriplowinterruptenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.69. </span>CddAdcPpbTripLowInterruptEnable<a class="headerlink" href="#cddadcppbtriplowinterruptenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3128,7 +3205,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbzerocrossinginterruptenable">
-<h5><span class="section-number">5.11.9.2.12.18. </span>CddAdcPpbZeroCrossingInterruptEnable<a class="headerlink" href="#cddadcppbzerocrossinginterruptenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.70. </span>CddAdcPpbZeroCrossingInterruptEnable<a class="headerlink" href="#cddadcppbzerocrossinginterruptenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3161,7 +3238,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadceventinterruptcategory">
-<h5><span class="section-number">5.11.9.2.12.19. </span>CddAdcEventInterruptCategory<a class="headerlink" href="#cddadceventinterruptcategory" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.71. </span>CddAdcEventInterruptCategory<a class="headerlink" href="#cddadceventinterruptcategory" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3206,7 +3283,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbeventinterruptnotification">
-<h5><span class="section-number">5.11.9.2.12.20. </span>CddAdcPpbEventInterruptNotification<a class="headerlink" href="#cddadcppbeventinterruptnotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.72. </span>CddAdcPpbEventInterruptNotification<a class="headerlink" href="#cddadcppbeventinterruptnotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3248,7 +3325,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbaccumulationcountlimit">
-<h5><span class="section-number">5.11.9.2.12.21. </span>CddAdcPpbAccumulationCountLimit<a class="headerlink" href="#cddadcppbaccumulationcountlimit" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.73. </span>CddAdcPpbAccumulationCountLimit<a class="headerlink" href="#cddadcppbaccumulationcountlimit" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3287,7 +3364,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbrightshift">
-<h5><span class="section-number">5.11.9.2.12.22. </span>CddAdcPpbRightShift<a class="headerlink" href="#cddadcppbrightshift" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.74. </span>CddAdcPpbRightShift<a class="headerlink" href="#cddadcppbrightshift" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3326,7 +3403,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbtripfilterenable">
-<h5><span class="section-number">5.11.9.2.12.23. </span>CddAdcPpbTripFilterEnable<a class="headerlink" href="#cddadcppbtripfilterenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.75. </span>CddAdcPpbTripFilterEnable<a class="headerlink" href="#cddadcppbtripfilterenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3359,7 +3436,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbchannel">
-<h5><span class="section-number">5.11.9.2.12.24. </span>CddAdcPpbChannel<a class="headerlink" href="#cddadcppbchannel" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.76. </span>CddAdcPpbChannel<a class="headerlink" href="#cddadcppbchannel" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3388,12 +3465,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadctripfilterconfig">
-<h4><span class="section-number">5.11.9.2.13. </span>CddAdcTripFilterConfig<a class="headerlink" href="#cddadctripfilterconfig" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.77. </span>CddAdcTripFilterConfig<a class="headerlink" href="#cddadctripfilterconfig" title="Link to this heading"></a></h5>
 <p>This container contains the channel configuration (parameters) depending on the hardware capability.</p>
+</section>
 <section id="cddadctripfilterclk">
-<h5><span class="section-number">5.11.9.2.13.1. </span>CddAdcTripFilterClk<a class="headerlink" href="#cddadctripfilterclk" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.78. </span>CddAdcTripFilterClk<a class="headerlink" href="#cddadctripfilterclk" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3432,7 +3509,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadctripfiltertreshold">
-<h5><span class="section-number">5.11.9.2.13.2. </span>CddAdcTripFilterTreshold<a class="headerlink" href="#cddadctripfiltertreshold" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.79. </span>CddAdcTripFilterTreshold<a class="headerlink" href="#cddadctripfiltertreshold" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3471,7 +3548,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadctripfiltersamplewindow">
-<h5><span class="section-number">5.11.9.2.13.3. </span>CddAdcTripFilterSampleWindow<a class="headerlink" href="#cddadctripfiltersamplewindow" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.80. </span>CddAdcTripFilterSampleWindow<a class="headerlink" href="#cddadctripfiltersamplewindow" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3510,7 +3587,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadctripfilterlowenable">
-<h5><span class="section-number">5.11.9.2.13.4. </span>CddAdcTripFilterLowEnable<a class="headerlink" href="#cddadctripfilterlowenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.81. </span>CddAdcTripFilterLowEnable<a class="headerlink" href="#cddadctripfilterlowenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3543,7 +3620,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadctripfilterhighenable">
-<h5><span class="section-number">5.11.9.2.13.5. </span>CddAdcTripFilterHighEnable<a class="headerlink" href="#cddadctripfilterhighenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.82. </span>CddAdcTripFilterHighEnable<a class="headerlink" href="#cddadctripfilterhighenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3575,12 +3652,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadcglobalswtrigger">
-<h4><span class="section-number">5.11.9.2.14. </span>CddAdcGlobalSwTrigger<a class="headerlink" href="#cddadcglobalswtrigger" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.83. </span>CddAdcGlobalSwTrigger<a class="headerlink" href="#cddadcglobalswtrigger" title="Link to this heading"></a></h5>
 <p>This container configures the global software trigger.When configured Soc mask of all added ADC instances should match.</p>
+</section>
 <section id="cddadcglbswtrigid">
-<h5><span class="section-number">5.11.9.2.14.1. </span>CddAdcGlbSwTrigId<a class="headerlink" href="#cddadcglbswtrigid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.84. </span>CddAdcGlbSwTrigId<a class="headerlink" href="#cddadcglbswtrigid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3618,13 +3695,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadchwgroup">
-<h4><span class="section-number">5.11.9.2.15. </span>CddAdcHwGroup<a class="headerlink" href="#cddadchwgroup" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.85. </span>CddAdcHwGroup<a class="headerlink" href="#cddadchwgroup" title="Link to this heading"></a></h5>
 <p>This container contains the parameter for configuring the hardware for the global software trigger feature.</p>
 </section>
 <section id="id1">
-<h4><span class="section-number">5.11.9.2.16. </span>CddAdcHwUnit<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.86. </span>CddAdcHwUnit<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3655,8 +3731,9 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tr>
 </tbody>
 </table>
+</section>
 <section id="cddadcsocmask">
-<h5><span class="section-number">5.11.9.2.16.1. </span>CddAdcSocMask<a class="headerlink" href="#cddadcsocmask" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.87. </span>CddAdcSocMask<a class="headerlink" href="#cddadcsocmask" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3695,7 +3772,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadchwgroupref">
-<h5><span class="section-number">5.11.9.2.16.2. </span>CddAdcHwGroupRef<a class="headerlink" href="#cddadchwgroupref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.88. </span>CddAdcHwGroupRef<a class="headerlink" href="#cddadchwgroupref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3724,12 +3801,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadcresultcheckerunit">
-<h4><span class="section-number">5.11.9.2.17. </span>CddAdcResultCheckerUnit<a class="headerlink" href="#cddadcresultcheckerunit" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.89. </span>CddAdcResultCheckerUnit<a class="headerlink" href="#cddadcresultcheckerunit" title="Link to this heading"></a></h5>
 <p>This container contains the safety result checker configuration (parameters).</p>
+</section>
 <section id="cddadccheckerid">
-<h5><span class="section-number">5.11.9.2.17.1. </span>CddAdcCheckerId<a class="headerlink" href="#cddadccheckerid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.90. </span>CddAdcCheckerId<a class="headerlink" href="#cddadccheckerid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3762,7 +3839,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadccheckertolerance">
-<h5><span class="section-number">5.11.9.2.17.2. </span>CddAdcCheckerTolerance<a class="headerlink" href="#cddadccheckertolerance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.91. </span>CddAdcCheckerTolerance<a class="headerlink" href="#cddadccheckertolerance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3801,7 +3878,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadccheckerinstanceref">
-<h5><span class="section-number">5.11.9.2.17.3. </span>CddAdcCheckerInstanceRef<a class="headerlink" href="#cddadccheckerinstanceref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.92. </span>CddAdcCheckerInstanceRef<a class="headerlink" href="#cddadccheckerinstanceref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3830,12 +3907,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadcselresconfig1">
-<h4><span class="section-number">5.11.9.2.18. </span>CddAdcSelResConfig1<a class="headerlink" href="#cddadcselresconfig1" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.93. </span>CddAdcSelResConfig1<a class="headerlink" href="#cddadcselresconfig1" title="Link to this heading"></a></h5>
 <p>This container contains the checker result1 configuration (parameters) whose results will be compared.</p>
+</section>
 <section id="cddadccheckerresulttype">
-<h5><span class="section-number">5.11.9.2.18.1. </span>CddAdcCheckerResultType<a class="headerlink" href="#cddadccheckerresulttype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.94. </span>CddAdcCheckerResultType<a class="headerlink" href="#cddadccheckerresulttype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3871,7 +3948,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcchannelreference">
-<h5><span class="section-number">5.11.9.2.18.2. </span>CddAdcChannelReference<a class="headerlink" href="#cddadcchannelreference" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.95. </span>CddAdcChannelReference<a class="headerlink" href="#cddadcchannelreference" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3910,7 +3987,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbreference">
-<h5><span class="section-number">5.11.9.2.18.3. </span>CddAdcPpbReference<a class="headerlink" href="#cddadcppbreference" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.96. </span>CddAdcPpbReference<a class="headerlink" href="#cddadcppbreference" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3948,12 +4025,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadcselresconfig2">
-<h4><span class="section-number">5.11.9.2.19. </span>CddAdcSelResConfig2<a class="headerlink" href="#cddadcselresconfig2" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.97. </span>CddAdcSelResConfig2<a class="headerlink" href="#cddadcselresconfig2" title="Link to this heading"></a></h5>
 <p>This container contains the checker result2 configuration (parameters) whose results will be compared.</p>
+</section>
 <section id="id2">
-<h5><span class="section-number">5.11.9.2.19.1. </span>CddAdcCheckerResultType<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.98. </span>CddAdcCheckerResultType<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3989,7 +4066,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="id3">
-<h5><span class="section-number">5.11.9.2.19.2. </span>CddAdcChannelReference<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.99. </span>CddAdcChannelReference<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4028,7 +4105,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="id4">
-<h5><span class="section-number">5.11.9.2.19.3. </span>CddAdcPpbReference<a class="headerlink" href="#id4" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.100. </span>CddAdcPpbReference<a class="headerlink" href="#id4" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4066,12 +4143,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadccheckerintevtconfig">
-<h4><span class="section-number">5.11.9.2.20. </span>CddAdcCheckerIntEvtConfig<a class="headerlink" href="#cddadccheckerintevtconfig" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.101. </span>CddAdcCheckerIntEvtConfig<a class="headerlink" href="#cddadccheckerintevtconfig" title="Link to this heading"></a></h5>
 <p>This container configures the triggers for interrupts and events from the safety checker units.</p>
+</section>
 <section id="cddadcintevtid">
-<h5><span class="section-number">5.11.9.2.20.1. </span>CddAdcIntEvtId<a class="headerlink" href="#cddadcintevtid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.102. </span>CddAdcIntEvtId<a class="headerlink" href="#cddadcintevtid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4104,7 +4181,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadccheckerintevtinstanceref">
-<h5><span class="section-number">5.11.9.2.20.2. </span>CddAdcCheckerIntEvtInstanceRef<a class="headerlink" href="#cddadccheckerintevtinstanceref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.103. </span>CddAdcCheckerIntEvtInstanceRef<a class="headerlink" href="#cddadccheckerintevtinstanceref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4133,12 +4210,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadccheckerintevtconfiguration">
-<h4><span class="section-number">5.11.9.2.21. </span>CddAdcCheckerIntEvtConfiguration<a class="headerlink" href="#cddadccheckerintevtconfiguration" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.104. </span>CddAdcCheckerIntEvtConfiguration<a class="headerlink" href="#cddadccheckerintevtconfiguration" title="Link to this heading"></a></h5>
 <p>Configure interrupts and events for the safety checker instance for the specified interrupt event block.</p>
+</section>
 <section id="cddadcsafetycheckerinstance">
-<h5><span class="section-number">5.11.9.2.21.1. </span>CddAdcSafetyCheckerInstance<a class="headerlink" href="#cddadcsafetycheckerinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.105. </span>CddAdcSafetyCheckerInstance<a class="headerlink" href="#cddadcsafetycheckerinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4167,12 +4244,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadccheckerintsource">
-<h4><span class="section-number">5.11.9.2.22. </span>CddAdcCheckerIntSource<a class="headerlink" href="#cddadccheckerintsource" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.106. </span>CddAdcCheckerIntSource<a class="headerlink" href="#cddadccheckerintsource" title="Link to this heading"></a></h5>
 <p>This container selects the source of the safety checker interrupt.</p>
+</section>
 <section id="cddadccheckerres1ovf">
-<h5><span class="section-number">5.11.9.2.22.1. </span>CddAdcCheckerRes1Ovf<a class="headerlink" href="#cddadccheckerres1ovf" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.107. </span>CddAdcCheckerRes1Ovf<a class="headerlink" href="#cddadccheckerres1ovf" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4205,7 +4282,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadccheckerres2ovf">
-<h5><span class="section-number">5.11.9.2.22.2. </span>CddAdcCheckerRes2Ovf<a class="headerlink" href="#cddadccheckerres2ovf" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.108. </span>CddAdcCheckerRes2Ovf<a class="headerlink" href="#cddadccheckerres2ovf" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4238,7 +4315,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadccheckeroot">
-<h5><span class="section-number">5.11.9.2.22.3. </span>CddAdcCheckerOot<a class="headerlink" href="#cddadccheckeroot" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.109. </span>CddAdcCheckerOot<a class="headerlink" href="#cddadccheckeroot" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4270,12 +4347,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadccheckerevt1source">
-<h4><span class="section-number">5.11.9.2.23. </span>CddAdcCheckerEvt1Source<a class="headerlink" href="#cddadccheckerevt1source" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.110. </span>CddAdcCheckerEvt1Source<a class="headerlink" href="#cddadccheckerevt1source" title="Link to this heading"></a></h5>
 <p>This container selects the source of the safety checker event signal.</p>
+</section>
 <section id="id5">
-<h5><span class="section-number">5.11.9.2.23.1. </span>CddAdcCheckerRes1Ovf<a class="headerlink" href="#id5" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.111. </span>CddAdcCheckerRes1Ovf<a class="headerlink" href="#id5" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4308,7 +4385,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="id6">
-<h5><span class="section-number">5.11.9.2.23.2. </span>CddAdcCheckerRes2Ovf<a class="headerlink" href="#id6" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.112. </span>CddAdcCheckerRes2Ovf<a class="headerlink" href="#id6" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4341,7 +4418,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="id7">
-<h5><span class="section-number">5.11.9.2.23.3. </span>CddAdcCheckerOot<a class="headerlink" href="#id7" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.113. </span>CddAdcCheckerOot<a class="headerlink" href="#id7" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4373,12 +4450,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadccheckerevt2source">
-<h4><span class="section-number">5.11.9.2.24. </span>CddAdcCheckerEvt2Source<a class="headerlink" href="#cddadccheckerevt2source" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.114. </span>CddAdcCheckerEvt2Source<a class="headerlink" href="#cddadccheckerevt2source" title="Link to this heading"></a></h5>
 <p>This container selects the source of the safety checker event signal.</p>
+</section>
 <section id="id8">
-<h5><span class="section-number">5.11.9.2.24.1. </span>CddAdcCheckerRes1Ovf<a class="headerlink" href="#id8" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.115. </span>CddAdcCheckerRes1Ovf<a class="headerlink" href="#id8" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4411,7 +4488,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="id9">
-<h5><span class="section-number">5.11.9.2.24.2. </span>CddAdcCheckerRes2Ovf<a class="headerlink" href="#id9" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.116. </span>CddAdcCheckerRes2Ovf<a class="headerlink" href="#id9" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4444,7 +4521,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="id10">
-<h5><span class="section-number">5.11.9.2.24.3. </span>CddAdcCheckerOot<a class="headerlink" href="#id10" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.117. </span>CddAdcCheckerOot<a class="headerlink" href="#id10" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4476,12 +4553,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadccheckerevt3source">
-<h4><span class="section-number">5.11.9.2.25. </span>CddAdcCheckerEvt3Source<a class="headerlink" href="#cddadccheckerevt3source" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.118. </span>CddAdcCheckerEvt3Source<a class="headerlink" href="#cddadccheckerevt3source" title="Link to this heading"></a></h5>
 <p>This container selects the source of the safety checker event signal.</p>
+</section>
 <section id="id11">
-<h5><span class="section-number">5.11.9.2.25.1. </span>CddAdcCheckerRes1Ovf<a class="headerlink" href="#id11" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.119. </span>CddAdcCheckerRes1Ovf<a class="headerlink" href="#id11" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4514,7 +4591,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="id12">
-<h5><span class="section-number">5.11.9.2.25.2. </span>CddAdcCheckerRes2Ovf<a class="headerlink" href="#id12" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.120. </span>CddAdcCheckerRes2Ovf<a class="headerlink" href="#id12" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4547,7 +4624,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="id13">
-<h5><span class="section-number">5.11.9.2.25.3. </span>CddAdcCheckerOot<a class="headerlink" href="#id13" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.121. </span>CddAdcCheckerOot<a class="headerlink" href="#id13" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4579,12 +4656,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
-</section>
 <section id="cddadccheckerevt4source">
-<h4><span class="section-number">5.11.9.2.26. </span>CddAdcCheckerEvt4Source<a class="headerlink" href="#cddadccheckerevt4source" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.1.122. </span>CddAdcCheckerEvt4Source<a class="headerlink" href="#cddadccheckerevt4source" title="Link to this heading"></a></h5>
 <p>This container selects the source of the safety checker event signal.</p>
+</section>
 <section id="id14">
-<h5><span class="section-number">5.11.9.2.26.1. </span>CddAdcCheckerRes1Ovf<a class="headerlink" href="#id14" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.123. </span>CddAdcCheckerRes1Ovf<a class="headerlink" href="#id14" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4617,7 +4694,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="id15">
-<h5><span class="section-number">5.11.9.2.26.2. </span>CddAdcCheckerRes2Ovf<a class="headerlink" href="#id15" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.124. </span>CddAdcCheckerRes2Ovf<a class="headerlink" href="#id15" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4650,7 +4727,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="id16">
-<h5><span class="section-number">5.11.9.2.26.3. </span>CddAdcCheckerOot<a class="headerlink" href="#id16" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.11.10.1.1.125. </span>CddAdcCheckerOot<a class="headerlink" href="#id16" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4683,12 +4760,11 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 </section>
-</section>
 <section id="cddadcgeneral">
-<h3><span class="section-number">5.11.9.3. </span>CddAdcGeneral<a class="headerlink" href="#cddadcgeneral" title="Link to this heading"></a></h3>
+<h4><span class="section-number">5.11.10.1.2. </span>CddAdcGeneral<a class="headerlink" href="#cddadcgeneral" title="Link to this heading"></a></h4>
 <p>General configuration (parameters) of the ADC Driver software module.</p>
 <section id="cddadcdeinitapi">
-<h4><span class="section-number">5.11.9.3.1. </span>CddAdcDeInitApi<a class="headerlink" href="#cddadcdeinitapi" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.2.1. </span>CddAdcDeInitApi<a class="headerlink" href="#cddadcdeinitapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4721,7 +4797,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcdeverrordetect">
-<h4><span class="section-number">5.11.9.3.2. </span>CddAdcDevErrorDetect<a class="headerlink" href="#cddadcdeverrordetect" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.2.2. </span>CddAdcDevErrorDetect<a class="headerlink" href="#cddadcdeverrordetect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4754,7 +4830,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcenablestartstopgroupapi">
-<h4><span class="section-number">5.11.9.3.3. </span>CddAdcEnableStartStopGroupApi<a class="headerlink" href="#cddadcenablestartstopgroupapi" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.2.3. </span>CddAdcEnableStartStopGroupApi<a class="headerlink" href="#cddadcenablestartstopgroupapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4787,7 +4863,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcenableglobalsoftwaretrigger">
-<h4><span class="section-number">5.11.9.3.4. </span>CddAdcEnableGlobalSoftwareTrigger<a class="headerlink" href="#cddadcenableglobalsoftwaretrigger" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.2.4. </span>CddAdcEnableGlobalSoftwareTrigger<a class="headerlink" href="#cddadcenableglobalsoftwaretrigger" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4820,7 +4896,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcnotifcapability">
-<h4><span class="section-number">5.11.9.3.5. </span>CddAdcNotifCapability<a class="headerlink" href="#cddadcnotifcapability" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.2.5. </span>CddAdcNotifCapability<a class="headerlink" href="#cddadcnotifcapability" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4853,7 +4929,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadchwtriggerapi">
-<h4><span class="section-number">5.11.9.3.6. </span>CddAdcHwTriggerApi<a class="headerlink" href="#cddadchwtriggerapi" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.2.6. </span>CddAdcHwTriggerApi<a class="headerlink" href="#cddadchwtriggerapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4886,7 +4962,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcppbenable">
-<h4><span class="section-number">5.11.9.3.7. </span>CddAdcPpbEnable<a class="headerlink" href="#cddadcppbenable" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.2.7. </span>CddAdcPpbEnable<a class="headerlink" href="#cddadcppbenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4919,7 +4995,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcreadgroupapi">
-<h4><span class="section-number">5.11.9.3.8. </span>CddAdcReadGroupApi<a class="headerlink" href="#cddadcreadgroupapi" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.2.8. </span>CddAdcReadGroupApi<a class="headerlink" href="#cddadcreadgroupapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4952,7 +5028,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcsafetycheckerenable">
-<h4><span class="section-number">5.11.9.3.9. </span>CddAdcSafetyCheckerEnable<a class="headerlink" href="#cddadcsafetycheckerenable" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.2.9. </span>CddAdcSafetyCheckerEnable<a class="headerlink" href="#cddadcsafetycheckerenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4985,7 +5061,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </table>
 </section>
 <section id="cddadcsetresolutionapi">
-<h4><span class="section-number">5.11.9.3.10. </span>CddAdcSetResolutionApi<a class="headerlink" href="#cddadcsetresolutionapi" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.11.10.1.2.10. </span>CddAdcSetResolutionApi<a class="headerlink" href="#cddadcsetresolutionapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -5017,9 +5093,43 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </tbody>
 </table>
 </section>
+<section id="cddadcversioninfoapi">
+<h5><span class="section-number">5.11.10.1.2.11. </span>CddAdcVersionInfoApi<a class="headerlink" href="#cddadcversioninfoapi" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddAdcVersionInfoApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes the service Cdd_Adc_GetVersionInfo() from the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
 </section>
 <section id="steps-to-configure-cdd-adc-module">
-<h3><span class="section-number">5.11.9.4. </span>Steps To Configure Cdd_Adc Module<a class="headerlink" href="#steps-to-configure-cdd-adc-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.10.2. </span>Steps To Configure Cdd_Adc Module<a class="headerlink" href="#steps-to-configure-cdd-adc-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool, load Cdd_Adc module. Select the Precompile Config Variant.</p></li>
 <li><p>Configure the required parameters.</p></li>
@@ -5028,12 +5138,16 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </section>
 </section>
 <section id="examples">
-<h2><span class="section-number">5.11.10. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.11.11. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 <p>The example applications demonstrates usecases of the Cdd_Adc driver APIs. The examples are explained below in detailed .</p>
 <section id="cdd-adc-example-glbswtrig">
-<h3><span class="section-number">5.11.10.1. </span>Cdd_Adc_Example_GlbSwTrig<a class="headerlink" href="#cdd-adc-example-glbswtrig" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.11.1. </span>Cdd_Adc_Example_GlbSwTrig<a class="headerlink" href="#cdd-adc-example-glbswtrig" title="Link to this heading"></a></h3>
 <section id="overview-of-cdd-adc-example-glbswtrig">
-<h4><span class="section-number">5.11.10.1.1. </span>Overview of Cdd_Adc_Example_GlbSwTrig<a class="headerlink" href="#overview-of-cdd-adc-example-glbswtrig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.1.1. </span>Overview of Cdd_Adc_Example_GlbSwTrig<a class="headerlink" href="#overview-of-cdd-adc-example-glbswtrig" title="Link to this heading"></a></h4>
+<p>This example demonstrates how to use the global software trigger. It also demonstrates how PPB trip high and trip low limits work. The group conversion started with <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_StartGlobalSwTrig</span></code> must be stopped with <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_StopGlobalSwTrig</span></code>. <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_StartGroupConversion</span></code> cannot be used before <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_StopGlobalSwTrig</span></code> to start a new group conversion for a group that was already started with <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_StartGlobalSwTrig</span></code>. First stop the global software trigger and then start the normal software group conversion.</p>
+<p>When ADCAIN1 is connected to GND, the PPB result of PPB1 (linked to ADCAIN1) will be less than the configured trip low limit, setting the trip low event flag.
+The PPB result of PPB2 (linked to ADCAIN1) will be greater than the configured trip high limit, setting the trip high event flag.
+These events generate a PPB event interrupt to the CPU. While executing the PPB event ISR, the notifications corresponding to the set event flags are called. In this application, the notification count is incremented every time a notification is called.</p>
 <ul class="simple">
 <li><p>Cdd_Adc_Example_GlbSwTrig</p>
 <ul>
@@ -5044,34 +5158,47 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 <li><p>Initialize Cdd_Adc driver using Cdd_Adc_Init()</p></li>
 </ul>
 </li>
-<li><p>Start global software trigger Id 0 conversion</p></li>
-<li><p>Re-trigger the global software conversion</p></li>
-<li><p>Stop the global software conversion with Cdd_Adc_StopGlobalSwTrig API</p></li>
-<li><p>Start software group 1 conversion with Cdd_Adc_StartGroupConversion</p></li>
-<li><p>After the group conversion is done,print the execution successful statement.</p></li>
+<li><p>Connect ADCAIN1 to GND to observe PPB trip high and trip low interrupts.</p></li>
+<li><p>Start global software trigger Id 0 conversion.</p></li>
+<li><p>Wait until all group conversions are completed and the PPB trip notification count is as expected.</p></li>
+<li><p>Re-trigger the global software conversion.</p></li>
+<li><p>Wait until all group conversions are completed and the PPB trip notification count is as expected.</p></li>
+<li><p>Stop the global software conversion with <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_StopGlobalSwTrig</span></code> API.</p></li>
+<li><p>Start software group 1 conversion with <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_StartGroupConversion</span></code>.</p></li>
+<li><p>Wait until the group conversion is complete.</p></li>
+<li><p>Print the execution successful statement.</p></li>
+<li><p>Conversion results can be observed from the buffer.</p></li>
 </ul>
 </li>
 </ul>
 </section>
 <section id="setup-required-to-run-cdd-adc-example-glbswtrig">
-<h4><span class="section-number">5.11.10.1.2. </span>Setup required to run Cdd_Adc_Example_GlbSwTrig<a class="headerlink" href="#setup-required-to-run-cdd-adc-example-glbswtrig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.1.2. </span>Setup required to run Cdd_Adc_Example_GlbSwTrig<a class="headerlink" href="#setup-required-to-run-cdd-adc-example-glbswtrig" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p>Install Code Composer Studio(CCS) latest version</p></li>
-<li><p>Install latest c29 compiler</p></li>
 <li><p>Connect the hardware and power up</p></li>
 <li><p>Connect the uart set up to check the log on serial console</p></li>
-<li><p>Provide 0.5V voltage to the pin ADCAIN1 (A1) to observe the trips generating from PPB</p></li>
+<li><p>All ADC instances are configured for 2.5V internal reference voltage mode.</p></li>
+<li><p>Connect GND to ADCAIN1 pin to observe PPB trip interrupts.</p></li>
+<li><p>Connect desired voltage to ADCAIN0 and ADCAIN6 pins.</p></li>
+<li><p>Connect desired voltage to ADCBIN1, ADCBIN2 and ADCBIN3 pins.</p></li>
+<li><p>Connect desired voltage to ADCCIN0, ADCCIN25 and ADCCIN27 pins.</p></li>
+<li><p>Connect desired voltage to ADCDIN26 and ADCDIN27 pins.</p></li>
+<li><p>Connect desired voltage to ADCEIN24 and ADCEIN28 pins.</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>ADCD and ADCE instances are not configured in this example for F29P32x devices.</p>
+</div>
 </section>
 <section id="how-to-run-cdd-adc-example-glbswtrig">
-<h4><span class="section-number">5.11.10.1.3. </span>How to run Cdd_Adc_Example_GlbSwTrig<a class="headerlink" href="#how-to-run-cdd-adc-example-glbswtrig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.1.3. </span>How to run Cdd_Adc_Example_GlbSwTrig<a class="headerlink" href="#how-to-run-cdd-adc-example-glbswtrig" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Open CCS and Import Cdd_Adc_Example_GlbSwTrig</p></li>
 <li><p>Build project and start debug project</p></li>
 </ul>
 </section>
 <section id="sample-log-of-cdd-adc-example-glbswtrig">
-<h4><span class="section-number">5.11.10.1.4. </span>Sample Log of Cdd_Adc_Example_GlbSwTrig<a class="headerlink" href="#sample-log-of-cdd-adc-example-glbswtrig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.1.4. </span>Sample Log of Cdd_Adc_Example_GlbSwTrig<a class="headerlink" href="#sample-log-of-cdd-adc-example-glbswtrig" title="Link to this heading"></a></h4>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Executing</span><span class="w"> </span><span class="n">Cdd_Adc_Example_GlbSwTrig</span><span class="w"> </span><span class="n">example</span>
 <span class="n">Started</span><span class="w"> </span><span class="n">globalswtrigger</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">conversion</span>
 <span class="n">Completed</span><span class="w"> </span><span class="n">globalswtrigger</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">conversion</span>
@@ -5089,41 +5216,57 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </section>
 </section>
 <section id="cdd-adc-example-ppb-trigrepeater">
-<h3><span class="section-number">5.11.10.2. </span>Cdd_Adc_Example_Ppb_TrigRepeater<a class="headerlink" href="#cdd-adc-example-ppb-trigrepeater" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.11.2. </span>Cdd_Adc_Example_Ppb_TrigRepeater<a class="headerlink" href="#cdd-adc-example-ppb-trigrepeater" title="Link to this heading"></a></h3>
 <section id="overview-of-cdd-adc-example-ppb-trigrepeater">
-<h4><span class="section-number">5.11.10.2.1. </span>Overview of Cdd_Adc_Example_Ppb_TrigRepeater<a class="headerlink" href="#overview-of-cdd-adc-example-ppb-trigrepeater" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.2.1. </span>Overview of Cdd_Adc_Example_Ppb_TrigRepeater<a class="headerlink" href="#overview-of-cdd-adc-example-ppb-trigrepeater" title="Link to this heading"></a></h4>
+<p>This example verifies the Cdd_Adc PPB and trigger repeater features together.</p>
+<p>For PPB1 (linked to ADCAIN28), the PPB result is compared against PPB trip limits. When a non-zero voltage is provided, the PPB result will exceed the trip high limit, setting the trip high event flag.
+For PPB2 (linked to ADCAIN0), a non-zero ADC conversion result is produced; the two’s complement of that value will be negative and less than the PPB trip low limit, setting the trip low event flag.
+For PPB3 (linked to ADCAIN6), the PPB partial sum value is compared against PPB trip limits; when a non-zero voltage is provided, the partial PPB sum will exceed the trip high limit, setting the trip high event flag. A PPB event interrupt is generated to the CPU. While executing the PPB event ISR, the notifications corresponding to the set event flags are called.</p>
 <ul class="simple">
+<li><p>Cdd_Adc_Example_Ppb_TrigRepeater</p>
+<ul>
 <li><p>EcuM_Init()</p>
 <ul>
 <li><p>Initialize clock to 200 MHz using Mcu_Init()</p></li>
 <li><p>Initialize pins in analog mode with Port_Init()</p></li>
 <li><p>Initialize Cdd_Adc driver using Cdd_Adc_Init()</p></li>
+<li><p>Initialize Gpt driver using Gpt_Init() to use start timer API. Timer interrupt acts as a hardware trigger source for ADC sample conversion in this example.</p></li>
 </ul>
 </li>
-<li><p>Verification of Cdd_Adc PPB and trigger repeater features functionalities together</p></li>
 <li><p>Verify group conversions with trigger repeater as the trigger source. CPU1 timer interrupt as the trigger source for the trigger repeater.</p></li>
-<li><p>Verification group conversions in oversampling and undersampling trigger repeater mode.</p></li>
-<li><p>Verification of trigger repeater groups with normal hardware and software triggered groups.</p></li>
+<li><p>Group0 and Group3 are triggered by trigger repeater configured in over-sampling mode.</p></li>
+<li><p>Group1 is triggered by trigger repeater configured in under-sampling mode.</p></li>
+<li><p>Group2 is triggered by timer interrupt.</p></li>
+<li><p>Group4 is configured for continuous conversions triggered by software.</p></li>
+<li><p>Group5 is triggered by the ADC interrupt generated by Group4 after a round of channel conversions.</p></li>
+<li><p>Number of timer interrupts required to complete the group conversions in over-sampling and under-sampling modes are printed.</p></li>
+<li><p>The ADC conversion results can be observed in the buffer.</p></li>
+</ul>
+</li>
 </ul>
 </section>
 <section id="setup-required-to-run-cdd-adc-example-ppb-trigrepeater">
-<h4><span class="section-number">5.11.10.2.2. </span>Setup required to run Cdd_Adc_Example_Ppb_TrigRepeater<a class="headerlink" href="#setup-required-to-run-cdd-adc-example-ppb-trigrepeater" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.2.2. </span>Setup required to run Cdd_Adc_Example_Ppb_TrigRepeater<a class="headerlink" href="#setup-required-to-run-cdd-adc-example-ppb-trigrepeater" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p>Install Code Composer Studio(CCS) latest version</p></li>
-<li><p>Install latest c29 compiler</p></li>
 <li><p>Connect the hardware and power up</p></li>
 <li><p>Connect the uart set up to check the log on serial console</p></li>
+<li><p>ADCA and ADCB instances are configured for 2.5V internal reference voltage mode.</p></li>
+<li><p>Connect a non-zero voltage to ADCAIN0 pin to observe PPB trip low interrupt.</p></li>
+<li><p>Connect a non-zero voltage (greater than 0.7mV) to ADCAIN28 and ADCAIN6 pins to observe PPB trip high interrupt.</p></li>
+<li><p>Connect desired voltage to ADCAIN0, ADCAIN1, ADCAIN6, ADCAIN7, ADCAIN28, ADCAIN30 and ADCAIN31 pins.</p></li>
+<li><p>Connect desired voltage to ADCDIN0 and ADCDIN1 pins.</p></li>
 </ul>
 </section>
 <section id="how-to-run-cdd-adc-example-ppb-trigrepeater">
-<h4><span class="section-number">5.11.10.2.3. </span>How to run Cdd_Adc_Example_Ppb_TrigRepeater<a class="headerlink" href="#how-to-run-cdd-adc-example-ppb-trigrepeater" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.2.3. </span>How to run Cdd_Adc_Example_Ppb_TrigRepeater<a class="headerlink" href="#how-to-run-cdd-adc-example-ppb-trigrepeater" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Open CCS and Import Cdd_Adc_Example_Ppb_TrigRepeater</p></li>
 <li><p>Build project and start debug project</p></li>
 </ul>
 </section>
 <section id="sample-log-of-cdd-adc-example-ppb-trigrepeater">
-<h4><span class="section-number">5.11.10.2.4. </span>Sample Log of Cdd_Adc_Example_Ppb_TrigRepeater<a class="headerlink" href="#sample-log-of-cdd-adc-example-ppb-trigrepeater" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.2.4. </span>Sample Log of Cdd_Adc_Example_Ppb_TrigRepeater<a class="headerlink" href="#sample-log-of-cdd-adc-example-ppb-trigrepeater" title="Link to this heading"></a></h4>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Executing</span><span class="w"> </span><span class="n">Cdd_Adc_Example_Ppb_TrigRepeater</span><span class="w"> </span><span class="n">example</span>
 <span class="n">Gpt</span><span class="w"> </span><span class="n">Interrupt</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">undersampling</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">80</span>
 <span class="n">Gpt</span><span class="w"> </span><span class="n">Interrupt</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">oversampling</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">4</span>
@@ -5136,9 +5279,10 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </section>
 </section>
 <section id="cdd-adc-example-tempsensor">
-<h3><span class="section-number">5.11.10.3. </span>Cdd_Adc_Example_TempSensor<a class="headerlink" href="#cdd-adc-example-tempsensor" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.11.3. </span>Cdd_Adc_Example_TempSensor<a class="headerlink" href="#cdd-adc-example-tempsensor" title="Link to this heading"></a></h3>
 <section id="overview-of-cdd-adc-example-tempsensor">
-<h4><span class="section-number">5.11.10.3.1. </span>Overview Of Cdd_Adc_Example_TempSensor<a class="headerlink" href="#overview-of-cdd-adc-example-tempsensor" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.3.1. </span>Overview Of Cdd_Adc_Example_TempSensor<a class="headerlink" href="#overview-of-cdd-adc-example-tempsensor" title="Link to this heading"></a></h4>
+<p>Channel ID 20 on ADCA and ADCC are both connected to the temperature sensor internally. The ADC conversion results can be passed to <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_GetTemperatureC</span></code> and <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_GetTemperatureK</span></code> APIs to get the temperature value in Celsius and Kelvin respectively.</p>
 <ul class="simple">
 <li><p>Cdd_Adc_Example_TempSensor</p>
 <ul>
@@ -5147,32 +5291,30 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 <li><p>Initialize clock to 200 MHz using Mcu_Init()</p></li>
 <li><p>Initialize pins using Port_Init() to see the print statements on the console</p></li>
 <li><p>Initialize Cdd_Adc driver using Cdd_Adc_Init()</p></li>
+<li><p>Initialize Gpt driver using Gpt_Init() to use start timer API. Timer interrupt acts as a hardware trigger source for ADC sample conversion in this example.</p></li>
 </ul>
 </li>
-<li><p>Verification of Cdd_Adc temperature sensor values</p></li>
+<li><p>Verification of Cdd_Adc temperature sensor values.</p></li>
 </ul>
 </li>
-<li><p>Channel ID 20 on ADCA and ADCC are both connected to the temperature sensor internally. The ADC conversion results can be passed to GetTemperatureC &amp; GetTemperatureC APIs to get the temperature value in Celsius and Kelvin respectively.</p></li>
 </ul>
 </section>
 <section id="setup-required-to-run-cdd-adc-example-tempsensor">
-<h4><span class="section-number">5.11.10.3.2. </span>Setup required to run Cdd_Adc_Example_TempSensor<a class="headerlink" href="#setup-required-to-run-cdd-adc-example-tempsensor" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.3.2. </span>Setup required to run Cdd_Adc_Example_TempSensor<a class="headerlink" href="#setup-required-to-run-cdd-adc-example-tempsensor" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p>Install Code Composer Studio(CCS) latest version</p></li>
-<li><p>Install latest C29 compiler</p></li>
 <li><p>Connect the hardware and power up</p></li>
 <li><p>Connect the uart and set up the baudrate to check the log on serial console</p></li>
 </ul>
 </section>
 <section id="how-to-run-cdd-adc-example-tempsensor">
-<h4><span class="section-number">5.11.10.3.3. </span>How to run Cdd_Adc_Example_TempSensor<a class="headerlink" href="#how-to-run-cdd-adc-example-tempsensor" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.3.3. </span>How to run Cdd_Adc_Example_TempSensor<a class="headerlink" href="#how-to-run-cdd-adc-example-tempsensor" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Open CCS and import Cdd_Adc_Example_TempSensor Example</p></li>
 <li><p>Build project and start debug project</p></li>
 </ul>
 </section>
 <section id="sample-log-of-cdd-adc-example-tempsensor">
-<h4><span class="section-number">5.11.10.3.4. </span>Sample Log of Cdd_Adc_Example_TempSensor<a class="headerlink" href="#sample-log-of-cdd-adc-example-tempsensor" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.3.4. </span>Sample Log of Cdd_Adc_Example_TempSensor<a class="headerlink" href="#sample-log-of-cdd-adc-example-tempsensor" title="Link to this heading"></a></h4>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Executing</span><span class="w"> </span><span class="n">Cdd_Adc_Example_TempSensor</span><span class="w"> </span><span class="n">example</span>
 <span class="n">Temperature</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">Celsius</span><span class="w"> </span><span class="n">converted</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">ADCA</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">15</span>
 <span class="n">Temperature</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">Kelvin</span><span class="w"> </span><span class="n">converted</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">ADCA</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">288</span>
@@ -5183,57 +5325,91 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </div>
 </section>
 </section>
-<section id="cdd-adc-example-differential">
-<h3><span class="section-number">5.11.10.4. </span>Cdd_Adc_Example_Differential<a class="headerlink" href="#cdd-adc-example-differential" title="Link to this heading"></a></h3>
-<section id="overview-of-cdd-adc-example-differential">
-<h4><span class="section-number">5.11.10.4.1. </span>Overview of Cdd_Adc_Example_Differential<a class="headerlink" href="#overview-of-cdd-adc-example-differential" title="Link to this heading"></a></h4>
+<section id="cdd-adc-example-swhwconversion">
+<h3><span class="section-number">5.11.11.4. </span>Cdd_Adc_Example_SwHwConversion<a class="headerlink" href="#cdd-adc-example-swhwconversion" title="Link to this heading"></a></h3>
+<section id="overview-of-cdd-adc-example-swhwconversion">
+<h4><span class="section-number">5.11.11.4.1. </span>Overview of Cdd_Adc_Example_SwHwConversion<a class="headerlink" href="#overview-of-cdd-adc-example-swhwconversion" title="Link to this heading"></a></h4>
+<p>This example demonstrates software and hardware triggered ADC conversions and external voltage reference configuration. Additionally, this example demonstrates differential signal conversion mode and dynamic resolution switching, which are supported only on specific device variants.
+The example also captures the delay stamp, which represents the number of system clock cycles between the group trigger and the actual start of conversion. The delay stamp API can only be called for PPBs linked to hardware-triggered groups.</p>
+<p>ADC supports two signal modes:</p>
 <ul class="simple">
-<li><p>Cdd_Adc_Example_Differential</p>
+<li><p><strong>Single-ended mode:</strong> The input voltage to the converter is sampled through a single pin (ADCINx), referenced to VREFLO.</p></li>
+<li><p><strong>Differential signaling mode:</strong> The input voltage to the converter is sampled through a pair of input pins — a positive input (ADCINxP) and a negative input (ADCINxN). The actual input voltage is the difference between the two (ADCINxP − ADCINxN).</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On F29P32x devices, differential signal conversion mode and 16-bit resolution are not supported. See <a class="reference internal" href="#device-variant-specific-limitations">Device-Variant Specific Limitations</a> for details.</p>
+</div>
+<ul class="simple">
+<li><p>Cdd_Adc_Example_SwHwConversion</p>
 <ul>
 <li><p>EcuM_Init()</p>
 <ul>
 <li><p>Initialize clock to 200 MHz using Mcu_Init()</p></li>
 <li><p>Initialize pins in analog mode with Port_Init()</p></li>
 <li><p>Initialize Cdd_Adc driver using Cdd_Adc_Init()</p></li>
+<li><p>Initialize Gpt driver using Gpt_Init() to use start timer API. Timer interrupt acts as a hardware trigger source for ADC sample conversion in this example.</p></li>
 </ul>
 </li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Adc_SetupResultBuffer</span></code> API sets up the result buffer for the specified group. Channel conversion results that are linked to the group will be copied to this buffer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Adc_EnableGroupNotification</span></code> API enables notification for the specified group.</p></li>
+<li><p>Wait until all group conversions are complete.</p></li>
+<li><p>Print Group0 and Group1 channel conversion results.</p></li>
+<li><p>Change the resolution of the ADCA instance to 12-bit and ADCB instance to 16-bit.</p></li>
+<li><p>Start the group conversions again and observe conversion results in result buffer.</p></li>
+<li><p>Wait until all group conversions are complete.</p></li>
+<li><p>Delay stamp is captured for the hardware triggered group.</p></li>
+<li><p>Print Group0 and Group1 channel conversion results.</p></li>
+<li><p>The ADC conversion results before and after the resolution change can be observed in the result buffer.</p></li>
 </ul>
 </li>
-<li><p>Delay stamp is captured for the hardware triggered group</p></li>
-<li><p>ADC conversion results can be observed before and after the resolution change by checking the result buffer</p></li>
 </ul>
 </section>
-<section id="setup-required-to-run-cdd-adc-example-differential">
-<h4><span class="section-number">5.11.10.4.2. </span>Setup required to run Cdd_Adc_Example_Differential<a class="headerlink" href="#setup-required-to-run-cdd-adc-example-differential" title="Link to this heading"></a></h4>
+<section id="setup-required-to-run-cdd-adc-example-swhwconversion">
+<h4><span class="section-number">5.11.11.4.2. </span>Setup required to run Cdd_Adc_Example_SwHwConversion<a class="headerlink" href="#setup-required-to-run-cdd-adc-example-swhwconversion" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p>Install Code Composer Studio(CCS) latest version</p></li>
-<li><p>Install latest C29 compiler</p></li>
 <li><p>Connect the hardware and power up</p></li>
 <li><p>Connect the uart and set up the baudrate to check the log on serial console</p></li>
-<li><p>Connect external voltage to VREFHIAB pin and VREFLOAB to GND.</p></li>
-<li><p>Connect available voltage to ADCAIN2,ADCAIN3 pins whose difference is considered as the input for the conversion. Similarly connect voltage to ADCAIN4 and ADCAIN5 pins and observe the ADC conversion results from the buffer.</p></li>
-<li><p>Connect available voltage to ADCBIN4,ADCBIN5 pins whose difference is considered as the input for the conversion. Similarly connect voltage to ADCBIN6 and ADCBIN7 pins and observe the ADC conversion results from the buffer.</p></li>
+<li><p>Since ADCA and ADCB are configured for external voltage reference mode, connect external voltage to VREFHIAB pin and VREFLOAB to GND (Put Switch S3 as per external voltage reference mode and S4 as per internal reference mode).</p></li>
+<li><p>ADCD is configured for 3.3V internal reference voltage mode.</p></li>
+<li><p>Connect available voltage to ADCAIN2, ADCAIN3 pins. Similarly connect voltage to ADCAIN4 and ADCAIN5 pins and observe the ADC conversion results from the buffer.</p></li>
+<li><p>Connect available voltage to ADCBIN4, ADCBIN5 pins. Similarly connect voltage to ADCBIN6 and ADCBIN7 pins and observe the ADC conversion results from the buffer.</p></li>
+<li><p>Connect desired voltage to ADCDIN0, ADCDIN1, ADCDIN2 and ADCDIN3 pins.</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For differential signal conversion, the difference between the two connected pin voltages is considered as the input for the conversion (e.g., ADCAIN2 − ADCAIN3, ADCBIN4 − ADCBIN5).</p>
+</div>
 </section>
-<section id="how-to-run-cdd-adc-example-differential">
-<h4><span class="section-number">5.11.10.4.3. </span>How to run Cdd_Adc_Example_Differential<a class="headerlink" href="#how-to-run-cdd-adc-example-differential" title="Link to this heading"></a></h4>
+<section id="how-to-run-cdd-adc-example-swhwconversion">
+<h4><span class="section-number">5.11.11.4.3. </span>How to run Cdd_Adc_Example_SwHwConversion<a class="headerlink" href="#how-to-run-cdd-adc-example-swhwconversion" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p>Open CCS and import Cdd_Adc_Example_TempSensor Example</p></li>
+<li><p>Open CCS and import Cdd_Adc_Example_SwHwConversion Example</p></li>
 <li><p>Build project and start debug project</p></li>
 </ul>
 </section>
-<section id="sample-log-of-cdd-adc-example-differential">
-<h4><span class="section-number">5.11.10.4.4. </span>Sample Log of Cdd_Adc_Example_Differential<a class="headerlink" href="#sample-log-of-cdd-adc-example-differential" title="Link to this heading"></a></h4>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Executing</span><span class="w"> </span><span class="n">Cdd_Adc_Example_Differential</span><span class="w"> </span><span class="n">example</span>
+<section id="sample-log-of-cdd-adc-example-swhwconversion">
+<h4><span class="section-number">5.11.11.4.4. </span>Sample Log of Cdd_Adc_Example_SwHwConversion<a class="headerlink" href="#sample-log-of-cdd-adc-example-swhwconversion" title="Link to this heading"></a></h4>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Executing</span><span class="w"> </span><span class="n">Cdd_Adc_Example_SwHwConversion</span><span class="w"> </span><span class="n">example</span>
+<span class="n">CDD</span><span class="w"> </span><span class="n">ADC</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="o">---------------------</span>
+<span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">255</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
 <span class="n">Delaystamp</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">PPB2</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">59</span>
 <span class="n">Delaystamp</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">PPB2</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">59</span>
 <span class="n">Delaystamp</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">PPB2</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">59</span>
 <span class="n">ADCA</span><span class="w"> </span><span class="n">Group0</span><span class="w"> </span><span class="n">conversion</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="mi">16</span><span class="n">bit</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="n">are</span><span class="o">:</span>
-<span class="n">Channel0</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">32756</span>
-<span class="n">Channel1</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">65523</span>
+<span class="n">Channel0</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">32762</span>
+<span class="n">Channel1</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">31983</span>
 <span class="n">ADCB</span><span class="w"> </span><span class="n">Group1</span><span class="w"> </span><span class="n">conversion</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="mi">12</span><span class="n">bit</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="n">are</span><span class="o">:</span>
-<span class="n">Channel0</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">21</span>
-<span class="n">Channel1</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">4050</span>
+<span class="n">Channel0</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Channel1</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">1345</span>
+<span class="n">ADCD</span><span class="w"> </span><span class="n">Group2</span><span class="w"> </span><span class="n">conversion</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="n">are</span><span class="o">:</span>
+<span class="n">Channel0</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">49</span>
+<span class="n">Channel1</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">101</span>
 <span class="n">Change</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">ADCA</span><span class="w"> </span><span class="n">resolution</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">12</span><span class="o">-</span><span class="n">bit</span>
 <span class="n">Change</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">ADCB</span><span class="w"> </span><span class="n">resolution</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">16</span><span class="o">-</span><span class="n">bit</span>
 <span class="n">Delaystamp</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">PPB2</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">59</span>
@@ -5241,63 +5417,67 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 <span class="n">Delaystamp</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">PPB2</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">59</span>
 <span class="n">ADCA</span><span class="w"> </span><span class="n">Group0</span><span class="w"> </span><span class="n">conversion</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="mi">12</span><span class="n">bit</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="n">are</span><span class="o">:</span>
 <span class="n">Channel0</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">2047</span>
-<span class="n">Channel1</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">4095</span>
+<span class="n">Channel1</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">2042</span>
 <span class="n">ADCB</span><span class="w"> </span><span class="n">Group1</span><span class="w"> </span><span class="n">conversion</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="mi">16</span><span class="n">bit</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="n">are</span><span class="o">:</span>
-<span class="n">Channel0</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">291</span>
-<span class="n">Channel1</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">65421</span>
-<span class="n">Cdd_Adc_Example_Differential</span><span class="w"> </span><span class="n">executed</span><span class="w"> </span><span class="n">successfully</span>
+<span class="n">Channel0</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">37</span>
+<span class="n">Channel1</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">10962</span>
+<span class="n">ADCD</span><span class="w"> </span><span class="n">Group2</span><span class="w"> </span><span class="n">conversion</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="n">are</span><span class="o">:</span>
+<span class="n">Channel0</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Channel1</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">34</span>
+<span class="n">Cdd_Adc_Example_SwHwConversion</span><span class="w"> </span><span class="n">executed</span><span class="w"> </span><span class="n">successfully</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="cdd-adc-example-dmatransfer">
-<h3><span class="section-number">5.11.10.5. </span>Cdd_Adc_Example_DmaTransfer<a class="headerlink" href="#cdd-adc-example-dmatransfer" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.11.5. </span>Cdd_Adc_Example_DmaTransfer<a class="headerlink" href="#cdd-adc-example-dmatransfer" title="Link to this heading"></a></h3>
 <section id="overview-of-cdd-adc-example-dmatransfer">
-<h4><span class="section-number">5.11.10.5.1. </span>Overview of Cdd_Adc_Example_DmaTransfer<a class="headerlink" href="#overview-of-cdd-adc-example-dmatransfer" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.5.1. </span>Overview of Cdd_Adc_Example_DmaTransfer<a class="headerlink" href="#overview-of-cdd-adc-example-dmatransfer" title="Link to this heading"></a></h4>
+<p>This example demonstrates the DMA integration with the CDD ADC driver.</p>
 <ul class="simple">
 <li><p>Cdd_Adc_Example_DmaTransfer</p>
 <ul>
 <li><p>EcuM_Init()</p>
 <ul>
 <li><p>Initialize clock to 200 MHz using Mcu_Init()</p></li>
-<li><p>Initialize pins with Port_Init()</p></li>
+<li><p>Initialize pins using Port_Init() to see the print statements on the console</p></li>
 <li><p>Initialize Cdd_Adc driver using Cdd_Adc_Init()</p></li>
-<li><p>Initialize Cdd_Pwm driver using Cdd_Pwm_Init() to trigger ADC group conversion</p></li>
+<li><p>Initialize Cdd_Pwm driver using Cdd_Pwm_Init()</p></li>
 </ul>
 </li>
-<li><p>Connect voltage to configured channels to observe data transfer from source to destination</p></li>
-<li><p>Configure RTDMA to transfer ADC conversion results to a buffer after ADC results are latched into the registers</p></li>
-<li><p>Configure PWM to a specific frequency waveform and enable events to ADC to trigger group conversion</p></li>
-<li><p>Start DMA channel</p></li>
-<li><p>Call EnableHardwareTrigger API to start the group conversion</p></li>
-<li><p>Events from PWM trigger group conversion periodically and after every round of group conversion the generated ADC interrupt triggers DMA transfer</p></li>
-<li><p>Continue this for some time and observe the results getting transferred to the destination buffer by DMA</p></li>
-<li><p>Call DisableHardwareTrigger to stop further triggers from PWM to ADC</p></li>
-<li><p>Stop DMA channel</p></li>
-<li><p>Print DMA notification count and a set of group conversion results. Finally, print the success statement</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AppUtils_Init()</span></code> to initialize App Utils</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_Init()</span></code> to initialize DMA</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Pwm_ConfigureHardware()</span></code> to initialize PWM and generate 64KHz frequency waveform</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_EnableHardwareTrigger</span></code> API to start the group conversion</p></li>
+<li><p>For every 15.625us a trigger is generated to ADC for conversion</p></li>
+<li><p>The result buffer is updated by DMA after the group is done and the interrupt is generated</p></li>
+<li><p>Continue this for 1 second and observe the behaviour</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_DisableHardwareTrigger</span></code> to stop further triggers from PWM to ADC</p></li>
+<li><p>Wait until group status is IDLE</p></li>
+<li><p>Print the success statement after the example is executed successfully</p></li>
+<li><p>Observe the ADC conversion results in the buffer</p></li>
 </ul>
 </li>
 </ul>
 </section>
 <section id="setup-required-to-run-cdd-adc-example-dmatransfer">
-<h4><span class="section-number">5.11.10.5.2. </span>Setup required to run Cdd_Adc_Example_DmaTransfer<a class="headerlink" href="#setup-required-to-run-cdd-adc-example-dmatransfer" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.5.2. </span>Setup required to run Cdd_Adc_Example_DmaTransfer<a class="headerlink" href="#setup-required-to-run-cdd-adc-example-dmatransfer" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p>Install Code Composer Studio (CCS) latest version</p></li>
-<li><p>Install latest C29 compiler</p></li>
 <li><p>Connect the hardware and power up</p></li>
 <li><p>Connect the UART setup to check the log on serial console</p></li>
-<li><p>Provide voltage to configured pins to observe channel conversion results at the destination</p></li>
+<li><p>ADCA is configured for 2.5V internal reference voltage mode.</p></li>
+<li><p>Connect desired voltage to ADCAIN0, ADCAIN1, ADCAIN6, ADCAIN7, ADCAIN28, ADCAIN29, ADCAIN30 and ADCAIN31 pins.</p></li>
 </ul>
 </section>
 <section id="how-to-run-cdd-adc-example-dmatransfer">
-<h4><span class="section-number">5.11.10.5.3. </span>How to run Cdd_Adc_Example_DmaTransfer<a class="headerlink" href="#how-to-run-cdd-adc-example-dmatransfer" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.5.3. </span>How to run Cdd_Adc_Example_DmaTransfer<a class="headerlink" href="#how-to-run-cdd-adc-example-dmatransfer" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Open CCS and import Cdd_Adc_Example_DmaTransfer</p></li>
 <li><p>Build project and start debug project</p></li>
 </ul>
 </section>
 <section id="sample-log-of-cdd-adc-example-dmatransfer">
-<h4><span class="section-number">5.11.10.5.4. </span>Sample Log of Cdd_Adc_Example_DmaTransfer<a class="headerlink" href="#sample-log-of-cdd-adc-example-dmatransfer" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.11.11.5.4. </span>Sample Log of Cdd_Adc_Example_DmaTransfer<a class="headerlink" href="#sample-log-of-cdd-adc-example-dmatransfer" title="Link to this heading"></a></h4>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Executing</span><span class="w"> </span><span class="n">Cdd_Adc_Example_DmaTransfer</span><span class="w"> </span><span class="n">example</span>
 <span class="n">Total</span><span class="w"> </span><span class="n">DMA</span><span class="w"> </span><span class="n">interrupts</span><span class="w"> </span><span class="n">generated</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="mi">320000</span>
 <span class="n">All</span><span class="w"> </span><span class="n">ADC</span><span class="w"> </span><span class="n">conversion</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="n">have</span><span class="w"> </span><span class="n">been</span><span class="w"> </span><span class="n">transferred</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">destination</span><span class="w"> </span><span class="n">through</span><span class="w"> </span><span class="n">DMA</span>
@@ -5316,7 +5496,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 </section>
 </section>
 <section id="example-file-structure">
-<h3><span class="section-number">5.11.10.6. </span>Example File Structure<a class="headerlink" href="#example-file-structure" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.11.6. </span>Example File Structure<a class="headerlink" href="#example-file-structure" title="Link to this heading"></a></h3>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />
@@ -5378,7 +5558,7 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Module_User_Guide_Wdg.html" class="btn btn-neutral float-left" title="5.10. WDG Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Module_User_Guide_Cdd_Ecap.html" class="btn btn-neutral float-right" title="5.12. CDD ECAP Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Module_User_Guide_Cdd_Dma.html" class="btn btn-neutral float-right" title="5.12. CDD DMA Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

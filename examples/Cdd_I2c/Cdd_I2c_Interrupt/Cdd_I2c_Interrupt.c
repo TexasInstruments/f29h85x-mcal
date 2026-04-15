@@ -179,8 +179,8 @@ int main(void)
 {
     Std_ReturnType retVal;
 
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
 
     AppUtils_Init(200000000U);
 

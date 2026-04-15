@@ -85,11 +85,11 @@
  * AUTOSAR version information check.
  *
  ****************************************************************************/
-#if ((CAN_SW_MAJOR_VERSION != (3U)) || (CAN_SW_MINOR_VERSION != (1U)))
+#if ((CAN_SW_MAJOR_VERSION != (4U)) || (CAN_SW_MINOR_VERSION != (0U)))
     #error "Version numbers of Can_PBcfg.c and Can.h are inconsistent!"
 #endif
 
-#if ((CAN_CFG_MAJOR_VERSION != (3U)) || (CAN_CFG_MINOR_VERSION != (1U)))
+#if ((CAN_CFG_MAJOR_VERSION != (4U)) || (CAN_CFG_MINOR_VERSION != (0U)))
     #error "Version numbers of Can_PBcfg.c and Can_Cfg.h are inconsistent!"
 #endif
 
@@ -133,14 +133,14 @@ CONST(Can_BaudConfigType, CAN_CONFIG_DATA) CanConfigSet_CanController_0_CanContr
 
 /*List of the Baudrate structures */
 
-CONST(Can_BaudConfigType*, CAN_CONFIG_DATA) CanConfigSet_CanController_0_BaudRateConfigList[1]=
+CONSTP2CONST(Can_BaudConfigType, CAN_CONFIG_DATA, CAN_APPL_CONST) CanConfigSet_CanController_0_BaudRateConfigList[1]=
 {
    &CanConfigSet_CanController_0_CanControllerBaudrateConfig_0};
 
 
 /*List of the Controller structures */
 
-CONST(Can_ControllerType*, CAN_CONFIG_DATA) CanConfigSet_CanController_List[]=
+CONSTP2CONST(Can_ControllerType, CAN_CONFIG_DATA, CAN_APPL_CONST) CanConfigSet_CanController_List[]=
 {
     &CanConfigSet_CanController_0};
 
@@ -155,7 +155,7 @@ CONST(Can_HwFilterType, CAN_CONFIG_DATA) CanHardwareObject_1_CanHwFilter_0 =
 
 
 /* List of all standard and extended filter elements per hardware objects */
-CONST(Can_HwFilterType*, CAN_CONFIG_DATA) CanHardwareObject_1_CanHwFilter_List[] =
+CONSTP2CONST(Can_HwFilterType, CAN_CONFIG_DATA, CAN_APPL_CONST) CanHardwareObject_1_CanHwFilter_List[] =
 {
      &CanHardwareObject_1_CanHwFilter_0,
 };
@@ -204,7 +204,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) CanConfigSet_CanHardwareObject_1 =
 
 /* List of the Mailboxes */
 
-CONST(Can_MailboxType*, CAN_CONFIG_DATA) CanConfigSet_CanHardwareObject_List[] =
+CONSTP2CONST(Can_MailboxType, CAN_CONFIG_DATA, CAN_APPL_CONST) CanConfigSet_CanHardwareObject_List[] =
 {
    &CanConfigSet_CanHardwareObject_0,
    &CanConfigSet_CanHardwareObject_1};

@@ -67,6 +67,10 @@
  *
  *  Description:  This example demonstrates the DMA integration with CDD ADC driver.
  *
+ * Setup required for the example:
+ * ADCA is configured for 2.5V internal reference voltage mode.
+ * Connect desired voltage to ADCAIN0,ADCAIN1,ADCAIN6,ADCAIN7,ADCAIN28,ADCAIN29,ADCAIN30 & ADCAIN31 pins.
+ *
  * Steps followed in the example:
  * EcuM_Init()
  * - Initialize clock to 200 MHz using Mcu_Init()
@@ -74,7 +78,7 @@
  * - Initialize Cdd_Adc driver using Cdd_Adc_Init()
  * - Initialize Cdd_Pwm driver using Cdd_Pwm_Init()
  * AppUtils_Init() to initailize App Utils
- * Configure_Rtdma() to initialize DMA
+ * Cdd_Dma_Init() to initialize DMA
  * Cdd_Pwm_ConfigureHardware() to initialize PWM and generate 64KHz frequency waveform
  * Call EnableHardwareTrigger API to start the group conversion
  * For every 15.625us a trigger is generated to ADC for conversion.
@@ -87,6 +91,7 @@
  * Wait until group status is IDLE
  *
  * Print the success statement after the example is executed successfully.
+ * Observe the ADC conversion results in the buffer.
  *
  *********************************************************************************************************************/
 
@@ -102,7 +107,7 @@
 #include "Port.h"
 #include "Mcu.h"
 #include "Cdd_Pwm.h"
-#include "Rtdma.h"
+#include "Cdd_Dma.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -114,21 +119,13 @@
 
 #define CDD_PWM_EVENT_COUNT (1U)
 
-#define RTDMA1CH1_SRC_BURSTSTEP  2U
-#define RTDMA1CH1_DEST_BURSTSTEP 2U
-#define RTDMA1CH1_BURSTSIZE      16U
+#define CDD_DMA1CH1_SRC_BURSTSTEP  2U
+#define CDD_DMA1CH1_DEST_BURSTSTEP 2U
+#define CDD_DMA1CH1_BURSTSIZE      16U
 
-#define RTDMA1CH1_SRC_TRANSFERSTEP  2U
-#define RTDMA1CH1_DEST_TRANSFERSTEP 2U
-#define RTDMA1CH1_TRANSFERSIZE      1U
-
-#define RTDMA1CH1_SRC_WRAPSTEP  (0U)
-#define RTDMA1CH1_DEST_WRAPSTEP (2U)
-
-#define RTDMA1CH1_SRC_WRAPSIZE  (1U)
-#define RTDMA1CH1_DEST_WRAPSIZE (1U)
-
-#define DATASIZE 16U
+#define CDD_DMA1CH1_SRC_TRANSFERSTEP  2U
+#define CDD_DMA1CH1_DEST_TRANSFERSTEP 2U
+#define CDD_DMA1CH1_TRANSFERSIZE      1U
 
 #define CDD_ADC_STREAMING_SAMPLE_COUNT (32U)
 
@@ -170,16 +167,16 @@ Std_VersionInfoType Cdd_Adc_VersionInfo;
  *********************************************************************************************************************/
 
 void Cdd_Pwm_ConfigureHardware();
-void Configure_Rtdma();
+void Configure_Cdd_Dma();
 
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
 
-/* Rtdma 1 channel ISR */
-MCAL_LIB_INT_ISR(Rtdma1_Isr)
+/* DMA notification callback */
+void Cdd_Adc_Dma_notification(uint8 Channel_Index)
 {
-    /* DMA ISR */
+    /* DMA notification */
     Cdd_Adc_DmaSampleCount++;
     Cdd_Adc_DmaIsrCount++;
 
@@ -189,51 +186,44 @@ MCAL_LIB_INT_ISR(Rtdma1_Isr)
         Cdd_Adc_DmaSampleCount = 0U;
     }
 
-    /* Update the source and destination address of the RTDMA channel */
-    DMA_configAddresses(RTDMA1CH1_BASE, (Cdd_Adc_ValueGroupType *)(&Cdd_Adc_Buffer[Cdd_Adc_DmaSampleCount][0U]),
-                        (Cdd_Adc_ValueGroupType *)ADCARESULT_BASE);
+    /* Update the destination address of the DMA channel for next transfer */
+    Cdd_Dma_SetTransferDestAddress(Cdd_DmaConf_CddDmaChannel_CddDmaChannel_0,
+                                   (uint32)(&Cdd_Adc_Buffer[Cdd_Adc_DmaSampleCount][0U]));
 }
 
-void Configure_Rtdma()
+void Configure_Cdd_Dma()
 {
-    /* Perform a hard reset on DMA */
-    DMA_initController(RTDMA1_BASE);
+    Cdd_Dma_ChannelParamsType channelParams;
 
-    /* Allow DMA to run free on emulation suspend */
-    DMA_setEmulationMode(RTDMA1_BASE, DMA_EMULATION_FREE_RUN);
+    /* Configure channel properties */
+    channelParams.DataSize                 = CDD_DMA_CHANNEL_DATASIZE_MODE_16;
+    channelParams.WrDataSize               = CDD_DMA_CHANNEL_WR_DATASIZE_MODE_16;
+    channelParams.OneShotMode              = CDD_DMA_ONESHOT_MODE_DISABLED;
+    channelParams.ContinuousMode           = CDD_DMA_CONTINUOUS_MODE_ENABLED;
+    channelParams.ChannelIntEnable         = CDD_DMA_CHANNEL_INTERRUPT_ENABLED;
+    channelParams.ChIntMode                = CDD_DMA_INT_END_OF_TRANSFER;
+    channelParams.OverflowIntEnable        = CDD_DMA_OVERFLOW_INTERRUPT_DISABLED;
+    channelParams.PeripheralEvntTrigEnable = CDD_DMA_PERI_EVT_TRIG_ENABLED;
+    channelParams.PeripheralEventTrigSrc   = CDD_DMA_TRIGGER_ADCA1;
 
-    DMA_setPriorityMode(RTDMA1_BASE, DMA_PRIORITY_SOFTWARE_CONFIG);
+    Cdd_Dma_SetChannelProperties(Cdd_DmaConf_CddDmaChannel_CddDmaChannel_0, channelParams);
 
-    /* Disabling MPU region */
-    DMA_disableMPU(RTDMA1_MPU_BASE);
+    /* Configure transfer size: burst size and transfer size */
+    Cdd_Dma_SetTransferSize(Cdd_DmaConf_CddDmaChannel_CddDmaChannel_0, CDD_DMA1CH1_BURSTSIZE, CDD_DMA1CH1_TRANSFERSIZE);
 
-    /* Set channel priority */
-    DMA_setChannelPriority(RTDMA1_BASE, DMA_CH1, DMA_CHPRIORITY1);
+    /* Configure source properties: burst step and transfer step */
+    Cdd_Dma_SetTransferSrcProperties(Cdd_DmaConf_CddDmaChannel_CddDmaChannel_0, CDD_DMA1CH1_SRC_BURSTSTEP,
+                                     CDD_DMA1CH1_SRC_TRANSFERSTEP);
 
-    /* DMA channel 1 set up for ADCA */
-    DMA_configAddresses(RTDMA1CH1_BASE, (Cdd_Adc_ValueGroupType *)&Cdd_Adc_Buffer[0U][0U],
-                        (Cdd_Adc_ValueGroupType *)ADCARESULT_BASE);
+    /* Configure destination properties: burst step and transfer step */
+    Cdd_Dma_SetTransferDestProperties(Cdd_DmaConf_CddDmaChannel_CddDmaChannel_0, CDD_DMA1CH1_DEST_BURSTSTEP,
+                                      CDD_DMA1CH1_DEST_TRANSFERSTEP);
 
-    /* Perform enough bursts(16 bytes) to fill the results buffer.
-     * Data will be transferred 16 bits at a time.
-     */
-    DMA_configBurst(RTDMA1CH1_BASE, RTDMA1CH1_BURSTSIZE, RTDMA1CH1_SRC_BURSTSTEP, RTDMA1CH1_DEST_BURSTSTEP);
+    /* Set source address (ADCA result register - fixed) */
+    Cdd_Dma_SetTransferSrcAddress(Cdd_DmaConf_CddDmaChannel_CddDmaChannel_0, (uint32)ADCARESULT_BASE);
 
-    /* Configure transfer step */
-    DMA_configTransfer(RTDMA1CH1_BASE, RTDMA1CH1_TRANSFERSIZE, RTDMA1CH1_SRC_TRANSFERSTEP, RTDMA1CH1_DEST_TRANSFERSTEP);
-
-    /* When one-shot is disabled and continuous mode is enabled:
-     * Transfer one burst upon one trigger and keep the channel enabled, when next trigger comes,
-     * next burst will be transferred
-     */
-    DMA_configMode(RTDMA1CH1_BASE, DMA_TRIGGER_ADCA1,
-                   (DMA_CFG_ONESHOT_DISABLE | DMA_CFG_CONTINUOUS_ENABLE | DMA_CFG_SIZE_16BIT));
-
-    /* Enable the trigger to DMA */
-    DMA_enableTrigger(RTDMA1CH1_BASE);
-    DMA_disableOverrunInterrupt(RTDMA1CH1_BASE);
-    DMA_setInterruptMode(RTDMA1CH1_BASE, DMA_INT_AT_END);
-    DMA_enableInterrupt(RTDMA1CH1_BASE);
+    /* Set initial destination address (first buffer location) */
+    Cdd_Dma_SetTransferDestAddress(Cdd_DmaConf_CddDmaChannel_CddDmaChannel_0, (uint32)(&Cdd_Adc_Buffer[0U][0U]));
 }
 
 void Cdd_Pwm_ConfigureHardware()
@@ -276,8 +266,8 @@ void Cdd_Pwm_ConfigureHardware()
 
 int main()
 {
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     /* To print the statements */
     AppUtils_Init(200000000U);
     AppUtils_Printf("Executing Cdd_Adc_Example_DmaTransfer example\n");
@@ -293,14 +283,13 @@ int main()
     AppUtils_Printf("SW Patch Version    : %d\n", Cdd_Adc_VersionInfo.sw_patch_version);
 #endif
 
-    /* Configure DMA */
-    Configure_Rtdma();
+    Configure_Cdd_Dma();
 
     /* Configure PWM instance */
     Cdd_Pwm_ConfigureHardware();
 
     /* Start DMA channel */
-    DMA_startChannel(RTDMA1CH1_BASE);
+    Cdd_Dma_StartChannelTransfer(Cdd_DmaConf_CddDmaChannel_CddDmaChannel_0);
 
     /* Start the hardware group conversion.
      * Cdd_Adc_SetupResultBuffer is not required because DMA mode is enabled for the group.
@@ -317,7 +306,7 @@ int main()
     Cdd_Adc_DisableHardwareTrigger(CddAdcConf_CddAdcGroup_CddAdcGroup_0);
 
     /* Stop DMA channel */
-    DMA_stopChannel(RTDMA1CH1_BASE);
+    Cdd_Dma_StopChannelTransfer(Cdd_DmaConf_CddDmaChannel_CddDmaChannel_0);
 
     AppUtils_Printf("Total DMA interrupts generated are %d\n", Cdd_Adc_DmaIsrCount);
     AppUtils_Printf("All ADC conversion results have been transferred to the destination through DMA\n");

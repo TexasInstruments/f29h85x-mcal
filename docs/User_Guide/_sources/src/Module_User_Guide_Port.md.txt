@@ -173,7 +173,15 @@ Port Header File Structure
 
 #### Memory Mapping
 
-Will be added in later release
+The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.
+
+Reference memory map files can be found at:
+
+```text
+{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+```
+
+The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.
 
 #### Scheduling
 
@@ -278,6 +286,10 @@ When configuring the Port module in EB Tresos:
 * Available pin options in PortPinName and PortPinPeripheralSignal are filtered based on the selected package
 * Only pins that exist on the selected package variant are shown as configurable options
 
+**Multi-core Consideration:**
+
+On F29H85x, PinMux configuration can only be performed from CPU1. Therefore, the Port module running on CPU1 sets the PinMux settings for all GPIO pins used across all CPU cores in the system. The **PortPinCoreSelect** parameter in the Port configuration specifies which CPU core owns each pin, but the actual PinMux register writes are always performed by CPU1.
+
 **Benefits:**
 
 * Prevents configuration of pins that don't exist on the target package
@@ -305,10 +317,10 @@ Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Treso
 
 
 
-#### PortConfigSet
+##### PortConfigSet
 This container contains the configuration parameters and sub containers of the AUTOSAR Port module.
 
-##### PortContainer
+###### PortContainer
 Container collecting the PortPins.
 
 ###### PortNumberOfPortPins
@@ -326,7 +338,7 @@ Container collecting the PortPins.
 | **Max-value** | 256 |
 | **Min-value** | 1 |
 
-##### PortPin
+###### PortPin
 Configuration of the individual port pins.
 
 ###### PortPinPeripheral
@@ -596,10 +608,10 @@ Configuration of the individual port pins.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-#### PortGeneral
+##### PortGeneral
 Module wide configuration parameters of the PORT driver.
 
-##### PortDevErrorDetect
+###### PortDevErrorDetect
 
 | Item ||
 |--------|---------------|
@@ -612,7 +624,7 @@ Module wide configuration parameters of the PORT driver.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### PortSetPinDirectionApi
+###### PortSetPinDirectionApi
 
 | Item ||
 |--------|---------------|
@@ -625,7 +637,7 @@ Module wide configuration parameters of the PORT driver.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### PortSetPinModeApi
+###### PortSetPinModeApi
 
 | Item ||
 |--------|---------------|
@@ -638,13 +650,26 @@ Module wide configuration parameters of the PORT driver.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### PortVersionInfoApi
+###### PortVersionInfoApi
 
 | Item ||
 |--------|---------------|
 | **Name** | PortVersionInfoApi |
 | **Description** | Pre-processor switch to enable / disable the API to read out the modules version information. |
 | **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### PortLockConfiguration
+
+| Item ||
+|--------|---------------|
+| **Name** | PortLockConfiguration |
+| **Description** | Lock All pins configuration. |
+| **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Post-Build-Time | VARIANT-POST-BUILD |
@@ -686,8 +711,6 @@ The example application demonstrates use of Port module, the list below identifi
 
 #### Setup required to run example
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 
 #### How to run examples
 

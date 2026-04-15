@@ -85,11 +85,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CAN_SW_MAJOR_VERSION != (3U)) || (CAN_SW_MINOR_VERSION != (1U)))
+#if ((CAN_SW_MAJOR_VERSION != (4U)) || (CAN_SW_MINOR_VERSION != (0U)))
     #error "Version numbers of Can_cfg.c and Can.h are inconsistent!"
 #endif
 
-#if ((CAN_CFG_MAJOR_VERSION != (3U)) || (CAN_CFG_MINOR_VERSION != (1U)))
+#if ((CAN_CFG_MAJOR_VERSION != (4U)) || (CAN_CFG_MINOR_VERSION != (0U)))
     #error "Version numbers of Can_cfg.c and Can_Cfg.h are inconsistent!"
 #endif
 
@@ -151,7 +151,7 @@ CONST(Can_ControllerType, CAN_CONFIG_DATA) CanConfigSet_CanController_0 =
  */
 
 /* Overall list of Icom configurations */
-CONST(Can_IcomConfigType*, CAN_CONFIG_DATA) Can_IcomConfigurationList[] =
+CONSTP2CONST(Can_IcomConfigType, CAN_CONFIG_DATA, CAN_APPL_CONST) Can_IcomConfigurationList[] =
 {
 };
 

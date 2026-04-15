@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Can_MemMap.h
- *  Project:    C29x MCAL
- *  Module:     CAN
  *  Generator:  None
  *
  *  Description:  Memory Map template file for Can module.
+ *                This source code is for reference only, it should not be used as-is in a
+ *                typical customer applications
  *
  *********************************************************************************************************************/
 
@@ -191,6 +191,7 @@
 #define MEMMAP_SECTION_OPEN
 #define CAN_VAR_INIT_8_OPEN
 #pragma clang section data = ".CAN_VAR_INIT_8"
+#pragma clang section bss = ".CAN_VAR_NO_INIT_8"
 #undef CAN_START_SEC_VAR_INIT_8
 #undef MEMMAP_ERROR
 
@@ -206,6 +207,7 @@
 #endif
 #undef CAN_VAR_INIT_8_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef CAN_STOP_SEC_VAR_INIT_8
 #undef MEMMAP_ERROR
             
@@ -269,6 +271,7 @@
 #define MEMMAP_SECTION_OPEN
 #define CAN_VAR_INIT_UNSPECIFIED_OPEN
 #pragma clang section data = ".CAN_VAR_INIT_UNSPECIFIED"
+#pragma clang section bss = ".CAN_VAR_NO_INIT_UNSPECIFIED"
 #undef CAN_START_SEC_VAR_INIT_UNSPECIFIED
 #undef MEMMAP_ERROR
 
@@ -284,6 +287,7 @@
 #endif
 #undef CAN_VAR_INIT_UNSPECIFIED_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef CAN_STOP_SEC_VAR_INIT_UNSPECIFIED
 #undef MEMMAP_ERROR
             

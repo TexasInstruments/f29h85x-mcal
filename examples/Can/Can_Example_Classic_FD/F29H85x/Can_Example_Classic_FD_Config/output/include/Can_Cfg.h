@@ -99,9 +99,9 @@ extern "C" {
  *
  *****************************************************************************/
  /** \brief Can configuration Major Version. */
-#define CAN_CFG_MAJOR_VERSION    (3U) 
+#define CAN_CFG_MAJOR_VERSION    (4U) 
 /** \brief Can configuration Minor Version. */
-#define CAN_CFG_MINOR_VERSION    (1U)
+#define CAN_CFG_MINOR_VERSION    (0U)
 /** \brief Can configuration Patch Version. */
 #define CAN_CFG_PATCH_VERSION    (0U)
 
@@ -468,7 +468,7 @@ extern CONST(struct Can_BaudConfigType_s, CAN_CONFIG_DATA) CanConfigSet_CanContr
 
 /*List of the Baudrate structures */
 
-extern CONST(struct Can_BaudConfigType_s*, CAN_CONFIG_DATA) CanConfigSet_CanController_0_BaudRateConfigList[1];
+extern CONSTP2CONST(struct Can_BaudConfigType_s, CAN_CONFIG_DATA, CAN_APPL_CONST) CanConfigSet_CanController_0_BaudRateConfigList[1];
 
 /* Controller structure for CanConfigSet_CanController_0*/
 extern CONST(struct Can_ControllerType_s, CAN_CONFIG_DATA) CanConfigSet_CanController_0;
@@ -477,7 +477,7 @@ extern CONST(struct Can_ControllerType_s, CAN_CONFIG_DATA) CanConfigSet_CanContr
 
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
 
-extern CONST(struct Can_IcomConfigType_s*, CAN_CONFIG_DATA) Can_IcomConfigurationList[0];
+extern CONSTP2CONST(struct Can_IcomConfigType_s, CAN_CONFIG_DATA, CAN_APPL_CONST) Can_IcomConfigurationList[0];
 #endif
 
 

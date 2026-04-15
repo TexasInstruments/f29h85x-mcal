@@ -111,7 +111,7 @@ extern "C" {
 /** \brief Spi configuration Minor Version */
 #define SPI_CFG_MINOR_VERSION           (1U)
 /** \brief Spi configuration Patch Version */
-#define SPI_CFG_PATCH_VERSION           (0U)
+#define SPI_CFG_PATCH_VERSION           (1U)
 
 
 /**
@@ -267,14 +267,6 @@ extern "C" {
 /*
  All below macros are used for enabling the ISR for a particular hardware.
  */
-
-/** \brief Enable/disable SPI Instance ISR */
-#define SPI_UNIT_SPIA_ACTIVE
-/*
- * Design : MCAL-25154
- */
-/** \brief Macro defining SPI Instance ISR type */
-#define SPI_SPIA_ISR_CAT1_RTINT
 
 
 /** \brief Symbolic Name Channel Id  - 0 SpiChannel_0 */

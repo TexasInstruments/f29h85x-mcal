@@ -168,7 +168,15 @@ Cdd Ipc Header File Structure
 
 #### Memory Mapping
 
-Will be added in later release
+The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.
+
+Reference memory map files can be found at:
+
+```text
+{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+```
+
+The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.
 
 #### Scheduling
 
@@ -277,7 +285,7 @@ For Cdd_Ipc Module, data consistency and exclusive access to critical sections a
 
 #### Multi-core and Resource allocator
 
-Not Supported
+The IPC module is not managed by the Resource Allocator. The IPC (Inter-Processor Communication) module uses hardware mailbox and flag registers that are shared between CPU cores by design and do not require per-core resource allocation through the Resource Allocator. No Resource Allocator instance allocation is needed for the IPC module.
 
 ### Configuration
 
@@ -295,10 +303,10 @@ Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Treso
 
 
 
-#### CddIpcConfig
+##### CddIpcConfig
 This container contains the configuration parameters and sub containers of the Cdd_Ipc module.
 
-##### CddIpcRemoteCoreConfig
+###### CddIpcRemoteCoreConfig
 This container contains the configuration parameters of the remote cores.
 
 ###### CddIpcRemoteCore
@@ -314,7 +322,7 @@ This container contains the configuration parameters of the remote cores.
 | **Default-value** | CDD_IPC_CPU1 |
 | **Range** | CDD_IPC_CPU1<br>CDD_IPC_CPU2<br>CDD_IPC_CPU3 |
 
-##### CddIpcTxInstanceConfig
+###### CddIpcTxInstanceConfig
 This container contains the configuration parameters of the CddIpc Instances.
 
 ###### CddIpcTxInstance
@@ -387,7 +395,7 @@ This container contains the configuration parameters of the CddIpc channels.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddIpcRxInstanceConfig
+###### CddIpcRxInstanceConfig
 This container contains the configuration parameters of the CddIpc Instances.
 
 ###### CddIpcRxInstance
@@ -473,13 +481,13 @@ This container contains the configuration parameters of the CddIpc channels.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-#### CddComStackContribution
+##### CddComStackContribution
 Contribution of COM Stack modules.
 
-##### CddPduRLowerLayerContribution
+###### CddPduRLowerLayerContribution
 Parameters that are necessary for the configuration of a Complex Driver that serves as the LowerLayer of the Pdu Router module.
 
-##### CddPduRLowerLayerRxPdu
+###### CddPduRLowerLayerRxPdu
 This container specifies Rx PDUs that are exchanged between the CDD and the standardized BSW module.
 
 ###### CddPduRApiType
@@ -529,7 +537,7 @@ This container specifies Rx PDUs that are exchanged between the CDD and the stan
 | **Origin** | AUTOSAR_ECUC |
 | **Post-Build-Variant-Value** | false |
 
-##### CddPduRLowerLayerTxPdu
+###### CddPduRLowerLayerTxPdu
 This container specifies Tx PDUs that are exchanged between the CDD and the standardized BSW module.
 
 ###### CddPduRApiType
@@ -566,10 +574,10 @@ This container specifies Tx PDUs that are exchanged between the CDD and the stan
 | **Origin** | AUTOSAR_ECUC |
 | **Post-Build-Variant-Value** | false |
 
-#### CddIpcGeneral
+##### CddIpcGeneral
 Contains the general configuration parameters of the module.
 
-##### CddIpcDevErrorDetect
+###### CddIpcDevErrorDetect
 
 | Item ||
 |--------|---------------|
@@ -581,7 +589,7 @@ Contains the general configuration parameters of the module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddIpcVersionInfoApi
+###### CddIpcVersionInfoApi
 
 | Item ||
 |--------|---------------|
@@ -593,7 +601,7 @@ Contains the general configuration parameters of the module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddIpcIntegrationWithAsrComStackEnable
+###### CddIpcIntegrationWithAsrComStackEnable
 
 | Item ||
 |--------|---------------|
@@ -605,7 +613,7 @@ Contains the general configuration parameters of the module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddIpcReservedInstances
+###### CddIpcReservedInstances
 
 | Item ||
 |--------|---------------|
@@ -619,7 +627,7 @@ Contains the general configuration parameters of the module.
 | **Max-value** | 3 |
 | **Min-value** | 0 |
 
-##### CddIpcMainFunctionReadPeriod
+###### CddIpcMainFunctionReadPeriod
 
 | Item ||
 |--------|---------------|
@@ -633,7 +641,7 @@ Contains the general configuration parameters of the module.
 | **Max-value** | INF |
 | **Min-value** | 1.0E-6 |
 
-##### CddIpcTimeoutDuration
+###### CddIpcTimeoutDuration
 
 | Item ||
 |--------|---------------|
@@ -646,6 +654,17 @@ Contains the general configuration parameters of the module.
 | **Default-value** | 0.1 |
 | **Max-value** | INF |
 | **Min-value** | 1.0E-6 |
+
+###### CddIpcCounterClockRef
+
+| Item ||
+|--------|---------------|
+| **Name** | CddIpcCounterClockRef |
+| **Description** | This parameter contains a reference to the sysClock to calculate clock cycles for IPC free run counter, which is used by the CDD IPC driver. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 #### Steps To Configure Cdd Ipc Module
 
 1. Open EB Tresos configurator tool, load Cdd_Ipc module. Select the Precompile Config Variant.
@@ -671,8 +690,6 @@ The example applications demonstrates usecases of the Cdd Ipc driver APIs. The e
 
 #### Setup required to run Cdd_Ipc_Example_Interrupt_C29x1
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 
@@ -704,8 +721,6 @@ The example applications demonstrates usecases of the Cdd Ipc driver APIs. The e
 
 #### Setup required to run Cdd_Ipc_Example_Polling_C29x1
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 

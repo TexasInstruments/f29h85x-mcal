@@ -537,21 +537,18 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
 
     if (Cdd_Pwm_IsInitialized == FALSE)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_ENABLE_NOTIFICATION,
                               CDD_PWM_E_UNINIT);
     }
     else if (CDD_PWM_CHANNEL_COUNT <= ChannelId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_ENABLE_NOTIFICATION,
                               CDD_PWM_E_INVALID_ID);
     }
     else if (CDD_PWM_EDGE_NONE <= EdgeNotification)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_ENABLE_NOTIFICATION,
                               CDD_PWM_E_INVALID_EDGENOTIFICATION);
@@ -571,20 +568,17 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
 
     if (FALSE == Cdd_Pwm_IsInitialized)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the driver not initialised */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_INTEVTCOUNT, CDD_PWM_E_UNINIT);
     }
     else if (CDD_PWM_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_INTEVTCOUNT,
                               CDD_PWM_E_INVALID_ID);
     }
     else if (15U < EventCount)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_INTEVTCOUNT,
                               CDD_PWM_E_INVALID_VALUE);
@@ -609,21 +603,18 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_CTRCMP_SHADOWLOADMODE,
                               CDD_PWM_E_INVALID_ID);
     }
     else if (CDD_PWM_COUNTER_COMPARE_D < CompModule)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_CTRCMP_SHADOWLOADMODE,
                               CDD_PWM_E_INVALID_CTRCOMPARE);
     }
     else if (CDD_PWM_COMP_LOAD_ON_SYNC_ONLY < LoadMode)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_CTRCMP_SHADOWLOADMODE,
                               CDD_PWM_E_INVALID_VALUE);
@@ -644,21 +635,18 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_OUTPUT_B < EpwmOutput)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_AQACTION,
                               CDD_PWM_E_INVALID_OUTPUT_CHANNEL);
     }
     else if (CDD_PWM_AQ_OUTPUT_TOGGLE < Output)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_AQACTION,
                               CDD_PWM_E_INVALID_VALUE);
     }
     else if (CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB < Event)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_AQACTION,
                               CDD_PWM_E_INVALID_EVENT);
@@ -678,21 +666,18 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_DBODELAY_POLARITY,
                               CDD_PWM_E_INVALID_ID);
     }
     else if (CDD_PWM_DB_RED < DelayMode)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_DBODELAY_POLARITY,
                               CDD_PWM_E_INVALID_VALUE);
     }
     else if (CDD_PWM_DB_POLARITY_ACTIVE_LOW < Polarity)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_DBODELAY_POLARITY,
                               CDD_PWM_E_INVALID_POLARITY);
@@ -712,21 +697,18 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE) Cdd_Pwm_SetTripZoneDigitalCompareEvent
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_TZDC_EVTCONDITION,
                               CDD_PWM_E_INVALID_ID);
     }
     else if ((uint8)CDD_PWM_TZ_DC_OUTPUT_B2 < (uint8)DcType)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_TZDC_EVTCONDITION,
                               CDD_PWM_E_INVALID_VALUE);
     }
     else if ((uint8)CDD_PWM_TZ_EVENT_DCXL_HIGH_DCXH_LOW < (uint8)DcEvent)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_TZDC_EVTCONDITION,
                               CDD_PWM_E_INVALID_EVENT);
@@ -747,20 +729,17 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_TZACTION, CDD_PWM_E_INVALID_ID);
     }
     else if (CDD_PWM_TZ_ACTION_EVENT_DCBEVT2 < TzEvent)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_TZACTION,
                               CDD_PWM_E_INVALID_EVENT);
     }
     else if (CDD_PWM_TZ_ACTION_DISABLE < TzAction)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_TZACTION,
                               CDD_PWM_E_INVALID_VALUE);
@@ -781,21 +760,18 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_TZADVACTION,
                               CDD_PWM_E_INVALID_ID);
     }
     else if (CDD_PWM_TZ_ADV_ACTION_EVENT_TZB_D < TzAdvEvent)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_TZADVACTION,
                               CDD_PWM_E_INVALID_EVENT);
     }
     else if (CDD_PWM_TZ_ADV_ACTION_DISABLE < TzAdvAction)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_TZADVACTION,
                               CDD_PWM_E_INVALID_VALUE);
@@ -816,14 +792,12 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_TZ_ADV_ACTION_EVENT_DCXEVT2_D < TzAdvDCEvent)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_TZADV_DCACTION,
                               CDD_PWM_E_INVALID_EVENT);
     }
     else if (CDD_PWM_TZ_ADV_ACTION_DISABLE < TzAdvDCAction)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_TZADV_DCACTION,
                               CDD_PWM_E_INVALID_VALUE);
@@ -844,20 +818,17 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_ADCTRIGSRC, CDD_PWM_E_INVALID_ID);
     }
     else if (CDD_PWM_SOC_B < AdcSocType)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_ADCTRIGSRC,
                               CDD_PWM_E_INVALID_ADCSOC_TYPE);
     }
     else if (CDD_PWM_SOC_TBCTR_D_CMPD < SocSource)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_ADCTRIGSRC,
                               CDD_PWM_E_INVALID_EVENT);
@@ -877,21 +848,18 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_ADCTRIGEVTPRESCALE,
                               CDD_PWM_E_INVALID_ID);
     }
     else if (CDD_PWM_SOC_B < AdcSocType)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_ADCTRIGEVTPRESCALE,
                               CDD_PWM_E_INVALID_ADCSOC_TYPE);
     }
     else if (15U < PreScaleCount)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_ADCTRIGEVTPRESCALE,
                               CDD_PWM_E_INVALID_VALUE);
@@ -911,19 +879,16 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (FALSE == Cdd_Pwm_IsInitialized)
     {
-        /* Design: MCAL-33949,MCAL-34747,MCAL-34748 */
         /* Report DET error if the driver not initialised */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, ApiId, CDD_PWM_E_UNINIT);
     }
     else if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, ApiId, CDD_PWM_E_INVALID_ID);
     }
     else if (CDD_PWM_DC_TRIP_COMBINATION < TripInput)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, ApiId, CDD_PWM_E_INVALID_EVENT);
     }
@@ -943,19 +908,16 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, ApiId, CDD_PWM_E_INVALID_ID);
     }
     else if (CDD_PWM_OUTPUT_B < OutputChannel)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, ApiId, CDD_PWM_E_INVALID_OUTPUT_CHANNEL);
     }
     else if (CDD_PWM_DC_EVENT_2 < DcEvent)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, ApiId, CDD_PWM_E_INVALID_EVENT);
     }
@@ -973,21 +935,21 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
+        /* Design: MCAL-34401 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_VALLEYTRIGEDGECNT,
                               CDD_PWM_E_INVALID_ID);
     }
     else if (15U < StartCount)
     {
-        /* Design: MCAL-33949 */
+        /* Design: MCAL-34760 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_VALLEYTRIGEDGECNT,
                               CDD_PWM_E_INVALID_VALUE);
     }
     else if (15U < StopCount)
     {
-        /* Design: MCAL-33949 */
+        /* Design: MCAL-34761 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_VALLEYTRIGEDGECNT,
                               CDD_PWM_E_INVALID_EVENT);
@@ -1007,21 +969,18 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_XCMP_SHADOW3 < ShadowSet)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_XCMPAQACTION,
                               CDD_PWM_E_INVALID_SHDSET);
     }
     else if (CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_XCMP8 < Event)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_XCMPAQACTION,
                               CDD_PWM_E_INVALID_EVENT);
     }
     else if (CDD_PWM_AQ_OUTPUT_TOGGLE < Output)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_XCMPAQACTION,
                               CDD_PWM_E_INVALID_VALUE);
@@ -1042,21 +1001,18 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_XCMPSHD_REPBUFCOUNT,
                               CDD_PWM_E_INVALID_ID);
     }
     else if ((CDD_PWM_XCMP_SHADOW3 < Bufferset) || (Bufferset < CDD_PWM_XCMP_SHADOW2))
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_XCMPSHD_REPBUFCOUNT,
                               CDD_PWM_E_INVALID_EVENT);
     }
     else if (7U < Count)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_XCMPSHD_REPBUFCOUNT,
                               CDD_PWM_E_INVALID_VALUE);
@@ -1077,19 +1033,16 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
 
     if (FALSE == Cdd_Pwm_IsInitialized)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the driver not initialised */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, ApiId, CDD_PWM_E_UNINIT);
     }
     else if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, ApiId, CDD_PWM_E_INVALID_ID);
     }
     else if (CDD_PWM_OUTPUT_B < OutputChannel)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the output channel doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, ApiId, CDD_PWM_E_INVALID_OUTPUT_CHANNEL);
     }
@@ -1108,19 +1061,16 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (FALSE == Cdd_Pwm_IsInitialized)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the driver not initialised */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, ApiId, CDD_PWM_E_UNINIT);
     }
     else if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, ApiId, CDD_PWM_E_INVALID_ID);
     }
     else if ((CDD_PWM_DC_TRIPINPUT_COMBO_MAX < (uint16)TripInput) || (TripInput < CDD_PWM_DC_COMBINATIONAL_TRIPIN1))
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, ApiId, CDD_PWM_E_INVALID_EVENT);
     }
@@ -1140,21 +1090,18 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_ADCTRIGEVTCNTINITVAL,
                               CDD_PWM_E_INVALID_ID);
     }
     else if (CDD_PWM_SOC_B < AdcSocType)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_ADCTRIGEVTCNTINITVAL,
                               CDD_PWM_E_INVALID_ADCSOC_TYPE);
     }
     else if (15U < EventCount)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_ADCTRIGEVTCNTINITVAL,
                               CDD_PWM_E_INVALID_EVENT);
@@ -1175,21 +1122,18 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_MIXEVTTRIGSRC,
                               CDD_PWM_E_INVALID_ID);
     }
     else if (CDD_PWM_ETMIX_SOCB < EtMixSignal)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_MIXEVTTRIGSRC,
                               CDD_PWM_E_INVALID_EVENT);
     }
     else if (CDD_PWM_ETMIX_DCAEVT1 < InterruptSource)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_MIXEVTTRIGSRC,
                               CDD_PWM_E_INVALID_VALUE);
@@ -1210,21 +1154,18 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_CLOCKPRESCALE,
                               CDD_PWM_E_INVALID_ID);
     }
     else if (CDD_PWM_CLOCK_DIVIDER_128 < Prescaler)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_CLOCKPRESCALE,
                               CDD_PWM_E_INVALID_VALUE);
     }
     else if (CDD_PWM_HSCLOCK_DIVIDER_14 < HighSpeedPrescaler)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_CLOCKPRESCALE,
                               CDD_PWM_E_INVALID_PRESCALE);
@@ -1245,20 +1186,17 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
 
     if (FALSE == Cdd_Pwm_IsInitialized)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the driver not initialised */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_INTEVTCOUNT, CDD_PWM_E_UNINIT);
     }
     else if (CDD_PWM_HW_AND_XLINK_COUNT <= InstanceId)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_INTEVTCOUNT,
                               CDD_PWM_E_INVALID_ID);
     }
     else if (15U < EventCount)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_INTEVTCOUNT,
                               CDD_PWM_E_INVALID_VALUE);
@@ -1288,7 +1226,6 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_Init(P2CONST(Cdd_Pwm_ConfigType, AUTOMATIC, CDD
     /* Design: MCAL-33888 */
     if (Cdd_Pwm_IsInitialized != FALSE)
     {
-        /* Design: MCAL-33949 */
         /* Report Det error if the driver is already initialized */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_INIT, CDD_PWM_E_ALREADY_INITIALIZED);
     }
@@ -1296,7 +1233,6 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_Init(P2CONST(Cdd_Pwm_ConfigType, AUTOMATIC, CDD
     /* Design: MCAL-33889 */
     else if (CfgPtr != NULL_PTR)
     {
-        /* Design: MCAL-33949 */
         /* Report Det error if the passed configuration pointer is not NULL_PTR for pre-compile
          * build variant */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_INIT, CDD_PWM_E_PARAM_POINTER);
@@ -1304,7 +1240,6 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_Init(P2CONST(Cdd_Pwm_ConfigType, AUTOMATIC, CDD
 #else
     else if (CfgPtr == NULL_PTR)
     {
-        /* Design: MCAL-33949 */
         /* Report Det error if the passed configuration pointer is NULL_PTR for non pre-compile
          * build variant*/
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_INIT, CDD_PWM_E_PARAM_POINTER);
@@ -1339,7 +1274,6 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_DeInit(void)
     /* Design: MCAL-33900 */
     if (Cdd_Pwm_IsInitialized == FALSE)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_DEINIT, CDD_PWM_E_UNINIT);
     }
@@ -1365,7 +1299,6 @@ Cdd_Pwm_SetDutyCycle(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId, VAR(Cdd_Pwm_
     /* Design: MCAL-33901 */
     if (Cdd_Pwm_IsInitialized == FALSE)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_DUTY_CYCLE, CDD_PWM_E_UNINIT);
     }
@@ -1523,7 +1456,7 @@ Cdd_Pwm_EnableNotification(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId,
     {
         if (0U == Cdd_Pwm_DrvObj.hwunitobj[(Cdd_Pwm_CfgPtr->channelcfg[ChannelId].hw_index)].inteventcount)
         {
-            /* Design: MCAL-33925 */
+            /* Design: MCAL-34554 */
             /* Report DET error if the notification function doesn't exist */
             (void)Det_ReportRuntimeError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_ENABLE_NOTIFICATION,
                                          CDD_PWM_E_INVALID_INTEVTCOUNT);
@@ -1537,6 +1470,7 @@ Cdd_Pwm_EnableNotification(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId,
         }
         else
         {
+            /* Design: MCAL-33925 */
             /* Notification is already enabled disable it first before requesting it again for
              * another channel */
             (void)Det_ReportRuntimeError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_ENABLE_NOTIFICATION,
@@ -1634,14 +1568,12 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_Init(P2CONST(Cdd_Pwm_ConfigType, AUTOMATIC, CDD
 #if (STD_ON == CDD_PWM_DEV_ERROR_DETECT)
     if (Cdd_Pwm_IsInitialized != FALSE)
     {
-        /* Design: MCAL-33949 */
         /* Report Det error if the driver is already initialized */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_INIT, CDD_PWM_E_ALREADY_INITIALIZED);
     }
 #if (STD_ON == CDD_PWM_PRE_COMPILE_VARIANT)
     else if (CfgPtr != NULL_PTR)
     {
-        /* Design: MCAL-33949 */
         /* Report Det error if the passed configuration pointer is not NULL_PTR for pre-compile
          * build variant */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_INIT, CDD_PWM_E_PARAM_POINTER);
@@ -1649,7 +1581,6 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_Init(P2CONST(Cdd_Pwm_ConfigType, AUTOMATIC, CDD
 #else
     else if (CfgPtr == NULL_PTR)
     {
-        /* Design: MCAL-33949 */
         /* Report Det error if the passed configuration pointer is NULL_PTR for non pre-compile
          * build variant*/
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_INIT, CDD_PWM_E_PARAM_POINTER);
@@ -1684,7 +1615,6 @@ Cdd_Pwm_EnableNotification(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId)
 #if (STD_ON == CDD_PWM_DEV_ERROR_DETECT)
     if (FALSE == Cdd_Pwm_IsInitialized)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the driver not initialised before calling Cdd_Pwm_EnableNotification
          */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_ENABLE_NOTIFICATION,
@@ -1692,14 +1622,12 @@ Cdd_Pwm_EnableNotification(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId)
     }
     else if (InstanceId >= CDD_PWM_COUNT)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_ENABLE_NOTIFICATION,
                               CDD_PWM_E_INVALID_ID);
     }
     else if ((Cdd_Pwm_NotificationType)NULL_PTR == Cdd_Pwm_CfgPtr->hwunitcfg[InstanceId].notification)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the group notification function doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_ENABLE_NOTIFICATION,
                               CDD_PWM_E_NOTIF_CAPABILITY);
@@ -1719,7 +1647,6 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_DisableNotification(VAR(Cdd_Pwm_InstanceType, A
 #if (STD_ON == CDD_PWM_DEV_ERROR_DETECT)
     if (FALSE == Cdd_Pwm_IsInitialized)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the driver not initialised before calling Cdd_Pwm_EnableNotification
          */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_DISABLE_NOTIFICATION,
@@ -1727,14 +1654,12 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_DisableNotification(VAR(Cdd_Pwm_InstanceType, A
     }
     else if (InstanceId >= CDD_PWM_COUNT)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_DISABLE_NOTIFICATION,
                               CDD_PWM_E_INVALID_ID);
     }
     else if ((Cdd_Pwm_NotificationType)NULL_PTR == Cdd_Pwm_CfgPtr->hwunitcfg[InstanceId].notification)
     {
-        /* Design: MCAL-33949 */
         /* Report DET error if the group notification function doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_DISABLE_NOTIFICATION,
                               CDD_PWM_E_NOTIF_CAPABILITY);
@@ -2642,7 +2567,7 @@ Cdd_Pwm_SetActionQualifierShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) In
 {
     uint32 base;
 #if (STD_ON == CDD_PWM_DEV_ERROR_DETECT)
-    /* Design: MCAL-34045,MCAL-34768,MCAL-34769 */
+    /* Design: MCAL-34045,MCAL-34767,MCAL-34768,MCAL-34769 */
     Std_ReturnType return_value = Cdd_Pwm_ChannelDetCheck(InstanceId, OutputChannel, CDD_PWM_SID_SET_AQSHDLOADMODE);
 
     if ((E_OK == return_value) && (CDD_PWM_AQ_LOAD_ON_SYNC_ONLY < LoadMode))
@@ -5645,7 +5570,7 @@ Cdd_Pwm_SelectCaptureTripInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                                VAR(Cdd_Pwm_CaptureInputType, AUTOMATIC) DcType)
 {
 #if (STD_ON == CDD_PWM_DEV_ERROR_DETECT)
-    /* Design: MCAL-34384, */
+    /* Design: MCAL-34384,MCAL-34747,MCAL-34748 */
     Std_ReturnType return_value =
         Cdd_Pwm_DigitalCompareTripInputDetCheck(InstanceId, TripInput, CDD_PWM_SID_SEL_CAPTRIPINPUT);
 

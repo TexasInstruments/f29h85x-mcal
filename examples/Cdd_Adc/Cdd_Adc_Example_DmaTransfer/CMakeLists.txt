@@ -40,10 +40,9 @@ if(NOT TARGET Cdd_Pwm)
                      ${CMAKE_BINARY_DIR}/Cdd_Pwm)
 endif()
 
-if(NOT TARGET Adc_Rtdma)
-    add_subdirectory(
-        ${PROJECT_ROOT_DIRECTORY}/examples/Cdd_Adc/Cdd_Adc_Example_DmaTransfer/sdk_rtdma
-        ${CMAKE_BINARY_DIR}/Adc_Rtdma)
+if(NOT TARGET Cdd_Dma)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Cdd_Dma
+                     ${CMAKE_BINARY_DIR}/Cdd_Dma)
 endif()
 
 if(NOT TARGET Cdd_Adc)
@@ -89,6 +88,12 @@ if(NOT TARGET SchM_Port)
         ${CMAKE_BINARY_DIR}/Cdd_Adc/Cdd_Adc_Example_DmaTransfer/SchM_Port)
 endif()
 
+if(NOT TARGET SchM_Cdd_Dma)
+    add_subdirectory(
+        ${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Cdd_Dma/
+        ${CMAKE_BINARY_DIR}/Cdd_Adc/Cdd_Adc_Example_DmaTransfer/SchM_Cdd_Dma)
+endif()
+
 if(NOT TARGET Cdd_Adc_Example_DmaTransfer_Config)
     add_subdirectory(
         ${CMAKE_CURRENT_SOURCE_DIR}/${BUILD_DEVICE}/Cdd_Adc_Example_DmaTransfer_Config/
@@ -127,9 +132,11 @@ target_link_libraries(
             Mcu
             Port
             Cdd_Pwm
+            Cdd_Dma
             SchM_Cdd_Pwm
             SchM_Port
             SchM_Mcu
+            SchM_Cdd_Dma
             Cdd_Adc
             hw_include
             AUTOSAR_Types
@@ -139,7 +146,6 @@ target_link_libraries(
             MemMap
             EcuM
             Os
-            Adc_Rtdma
             SchM_Cdd_Adc)
 
 # This command is used to move the .xml and .map files

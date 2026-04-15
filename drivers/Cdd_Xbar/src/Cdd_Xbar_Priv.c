@@ -116,7 +116,6 @@
 /*
  * Design: MCAL-25761
  */
-#if (0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS)
 FUNC(void, CDD_XBAR_CODE)
 Cdd_Xbar_InSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) InputSelect,
                   P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, VAR(boolean, AUTOMATIC) Selection)
@@ -124,7 +123,7 @@ Cdd_Xbar_InSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) InputSelect,
     VAR(uint32, AUTOMATIC) inputxselectaddress;
 
     /* Offset same as (InputSelect * 4) */
-    inputxselectaddress = INPUTXBAR_BASE + INPUT_XBAR_O_INPUTSELECT(*InputSelect - 1U);
+    inputxselectaddress = INPUTXBAR_BASE + INPUT_XBAR_O_INPUTSELECT((uint32)*InputSelect - 1U);
 
     if (TRUE == Selection)
     {
@@ -190,7 +189,6 @@ Cdd_Xbar_InSelectLock(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) InputSelect)
 
     return;
 }
-#endif /* 0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS*/
 
 /*
  * Design: MCAL-25769
@@ -229,19 +227,18 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_OutLock(void)
 /*
  * Design: MCAL-25762
  */
-#if (0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS)
 FUNC(void, CDD_XBAR_CODE)
 Cdd_Xbar_OutSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
                    P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, VAR(boolean, AUTOMATIC) Selection)
 {
     VAR(uint32, AUTOMATIC) outputgroupselectaddress;
-    VAR(uint8, AUTOMATIC) groupnumber = CDD_XBAR_GET_GROUP_NUMBER(*InputLine);
+    VAR(uint8, AUTOMATIC) groupnumber = Cdd_Xbar_GetGroupNumber(*InputLine);
 
     /* Direct Formula for Group Select Address:
       OUTPUTXBAR_BASE + 0x100 + (GroupNumber * 4) + (OutputLine * 0x40); */
     outputgroupselectaddress =
-        (uint32)(OUTPUTXBAR_BASE + (OUTPUT_XBAR_O_OUTPUTXBARG0SEL(*OutputLine - 1U)) +
-                 ((groupnumber) * (OUTPUT_XBAR_O_OUTPUTXBARG1SEL(0U) - OUTPUT_XBAR_O_OUTPUTXBARG0SEL(0U))));
+        (OUTPUTXBAR_BASE + (OUTPUT_XBAR_O_OUTPUTXBARG0SEL((uint32)*OutputLine - 1U)) +
+         ((uint32)(groupnumber) * (OUTPUT_XBAR_O_OUTPUTXBARG1SEL(0U) - OUTPUT_XBAR_O_OUTPUTXBARG0SEL(0U))));
 
     if (TRUE == Selection)
     {
@@ -353,8 +350,9 @@ Cdd_Xbar_OutputLatchFlagStatus(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputL
 {
     VAR(boolean, AUTOMATIC) latch = FALSE;
     VAR(uint32, AUTOMATIC)
-    outputxflagaddress = (uint32)(*OutputXbarFlagBaseAddress + ((*OutputLine - 1U) * XBAR_OUTPUTXBAR_FLAGS_OFFSET) +
-                                  OUTPUT_XBAR_O_OUTPUTXBARFLAG);
+    outputxflagaddress =
+        (uint32)(*OutputXbarFlagBaseAddress + (((uint32)*OutputLine - 1U) * XBAR_OUTPUTXBAR_FLAGS_OFFSET) +
+                 OUTPUT_XBAR_O_OUTPUTXBARFLAG);
 
     if ((HWREG(outputxflagaddress) & OUTPUT_XBAR_OUTPUTXBARFLAG_FLG) != 0U)
     {
@@ -372,8 +370,9 @@ Cdd_Xbar_OutputLatchFlagForce(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLi
                               P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) OutputXbarFlagBaseAddress)
 {
     VAR(uint32, AUTOMATIC)
-    outputxflagaddress = (uint32)(*OutputXbarFlagBaseAddress + ((*OutputLine - 1U) * XBAR_OUTPUTXBAR_FLAGS_OFFSET) +
-                                  OUTPUT_XBAR_O_OUTPUTXBARFLAGFORCE);
+    outputxflagaddress =
+        (uint32)(*OutputXbarFlagBaseAddress + (((uint32)*OutputLine - 1U) * XBAR_OUTPUTXBAR_FLAGS_OFFSET) +
+                 OUTPUT_XBAR_O_OUTPUTXBARFLAGFORCE);
 
     HWREG(outputxflagaddress) = OUTPUT_XBAR_OUTPUTXBARFLAGFORCE_FLG;
 
@@ -388,8 +387,9 @@ Cdd_Xbar_OutputLatchFlagClear(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLi
                               P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) OutputXbarFlagBaseAddress)
 {
     VAR(uint32, AUTOMATIC)
-    outputxflagaddress = (uint32)(*OutputXbarFlagBaseAddress + ((*OutputLine - 1U) * XBAR_OUTPUTXBAR_FLAGS_OFFSET) +
-                                  OUTPUT_XBAR_O_OUTPUTXBARFLAGCLEAR);
+    outputxflagaddress =
+        (uint32)(*OutputXbarFlagBaseAddress + (((uint32)*OutputLine - 1U) * XBAR_OUTPUTXBAR_FLAGS_OFFSET) +
+                 OUTPUT_XBAR_O_OUTPUTXBARFLAGCLEAR);
 
     HWREG(outputxflagaddress) = OUTPUT_XBAR_OUTPUTXBARFLAGCLEAR_FLG;
 
@@ -533,7 +533,7 @@ Cdd_Xbar_OutOutputState(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
     VAR(Cdd_Xbar_OutputlevelType, AUTOMATIC) output = ((Cdd_Xbar_OutputlevelType)STD_LOW);
     VAR(uint32, AUTOMATIC)
     outputxoutstatusaddress =
-        (uint32)(*OutputXbarFlagBaseAddress + (((*OutputLine) - 1U) * (XBAR_OUTPUTXBAR_FLAGS_OFFSET)) +
+        (uint32)(*OutputXbarFlagBaseAddress + (((uint32)(*OutputLine) - 1U) * (XBAR_OUTPUTXBAR_FLAGS_OFFSET)) +
                  OUTPUT_XBAR_O_OUTPUTXBARSTATUS);
 
     /* Check Output status bit for enablement */
@@ -544,7 +544,6 @@ Cdd_Xbar_OutOutputState(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
 
     return output;
 }
-#endif /* 0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS*/
 
 /*
  * Design: MCAL-25784
@@ -570,7 +569,6 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_ClbLock(void)
 {
     VAR(uint32, AUTOMATIC) clbxlockaddress = CLBXBAR_BASE + CLB_XBAR_O_CLBXBARLOCK;
     VAR(uint32, AUTOMATIC) key             = (uint32)CDD_XBAR_LOCK_KEY << CDD_XBAR_LOCK_KEY_SHIFT;
-    ;
 
     if (FALSE == Cdd_Xbar_ClbLockStatus())
     {
@@ -584,16 +582,15 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_ClbLock(void)
 /*
  * Design: MCAL-25764
  */
-#if (0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS)
 FUNC(void, CDD_XBAR_CODE)
 Cdd_Xbar_ClbSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
                    P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, VAR(boolean, AUTOMATIC) Selection)
 {
-    VAR(uint8, AUTOMATIC) groupnumber = CDD_XBAR_GET_GROUP_NUMBER(*InputLine);
+    VAR(uint8, AUTOMATIC) groupnumber = Cdd_Xbar_GetGroupNumber(*InputLine);
     VAR(uint32, AUTOMATIC) clbxgroupselectaddress;
 
-    clbxgroupselectaddress = (uint32)(CLBXBAR_BASE + (CLB_XBAR_O_CLBXBARG0SEL(*OutputLine - 1U)) +
-                                      ((groupnumber) * (CLB_XBAR_O_CLBXBARG1SEL(0U) - CLB_XBAR_O_CLBXBARG0SEL(0U))));
+    clbxgroupselectaddress = (CLBXBAR_BASE + (CLB_XBAR_O_CLBXBARG0SEL((uint32)*OutputLine - 1U)) +
+                              ((uint32)(groupnumber) * (CLB_XBAR_O_CLBXBARG1SEL(0U) - CLB_XBAR_O_CLBXBARG0SEL(0U))));
 
     if (TRUE == Selection)
     {
@@ -651,7 +648,6 @@ Cdd_Xbar_ClbOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLi
 
     return inversion;
 }
-#endif /* 0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS*/
 
 /*
  * Design: MCAL-25780
@@ -690,16 +686,15 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_EpwmLock(void)
 /*
  * Design: MCAL-25763
  */
-#if (0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS)
 FUNC(void, CDD_XBAR_CODE)
 Cdd_Xbar_EpwmSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
                     P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, VAR(boolean, AUTOMATIC) Selection)
 {
     VAR(uint32, AUTOMATIC) epwmxgroupselectaddress;
-    VAR(uint8, AUTOMATIC) groupnumber = CDD_XBAR_GET_GROUP_NUMBER(*InputLine);
+    VAR(uint8, AUTOMATIC) groupnumber = Cdd_Xbar_GetGroupNumber(*InputLine);
 
-    epwmxgroupselectaddress = (uint32)(EPWMXBAR_BASE + (EPWM_XBAR_O_PWMXBARG0SEL(*OutputLine - 1U)) +
-                                       ((groupnumber) * (EPWM_XBAR_O_PWMXBARG1SEL(0U) - EPWM_XBAR_O_PWMXBARG0SEL(0U))));
+    epwmxgroupselectaddress = (EPWMXBAR_BASE + (EPWM_XBAR_O_PWMXBARG0SEL((uint32)*OutputLine - 1U)) +
+                               ((uint32)(groupnumber) * (EPWM_XBAR_O_PWMXBARG1SEL(0U) - EPWM_XBAR_O_PWMXBARG0SEL(0U))));
 
     if (TRUE == Selection)
     {
@@ -757,7 +752,6 @@ Cdd_Xbar_EpwmOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputL
 
     return inversion;
 }
-#endif /* 0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS*/
 
 /*
  * Design: MCAL-25788
@@ -796,16 +790,15 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_MdlLock(void)
 /*
  * Design: MCAL-25765
  */
-#if (0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS)
 FUNC(void, CDD_XBAR_CODE)
 Cdd_Xbar_MdlSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
                    P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, VAR(boolean, AUTOMATIC) Selection)
 {
-    VAR(uint8, AUTOMATIC) groupnumber = CDD_XBAR_GET_GROUP_NUMBER(*InputLine);
+    VAR(uint8, AUTOMATIC) groupnumber = Cdd_Xbar_GetGroupNumber(*InputLine);
     VAR(uint32, AUTOMATIC) mdlxgroupselectaddress;
 
-    mdlxgroupselectaddress = (uint32)(MDLXBAR_BASE + (MDL_XBAR_O_MDLXBARG0SEL(*OutputLine - 1U)) +
-                                      ((groupnumber) * (MDL_XBAR_O_MDLXBARG1SEL(0U) - MDL_XBAR_O_MDLXBARG0SEL(0U))));
+    mdlxgroupselectaddress = (MDLXBAR_BASE + (MDL_XBAR_O_MDLXBARG0SEL((uint32)*OutputLine - 1U)) +
+                              ((uint32)(groupnumber) * (MDL_XBAR_O_MDLXBARG1SEL(0U) - MDL_XBAR_O_MDLXBARG0SEL(0U))));
 
     if (TRUE == Selection)
     {
@@ -863,7 +856,6 @@ Cdd_Xbar_MdlOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLi
 
     return inversion;
 }
-#endif /* 0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS*/
 
 /*
  * Design: MCAL-25792
@@ -902,16 +894,15 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_IclLock(void)
 /*
  * Design: MCAL-25766
  */
-#if (0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS)
 FUNC(void, CDD_XBAR_CODE)
 Cdd_Xbar_IclSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
                    P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, VAR(boolean, AUTOMATIC) Selection)
 {
-    VAR(uint8, AUTOMATIC) groupnumber = CDD_XBAR_GET_GROUP_NUMBER(*InputLine);
+    VAR(uint8, AUTOMATIC) groupnumber = Cdd_Xbar_GetGroupNumber(*InputLine);
     VAR(uint32, AUTOMATIC) iclxgroupselectaddress;
 
-    iclxgroupselectaddress = (uint32)(ICLXBAR_BASE + (ICL_XBAR_O_ICLXBARG0SEL(*OutputLine - 1U)) +
-                                      ((groupnumber) * (ICL_XBAR_O_ICLXBARG1SEL(0U) - ICL_XBAR_O_ICLXBARG0SEL(0U))));
+    iclxgroupselectaddress = (ICLXBAR_BASE + (ICL_XBAR_O_ICLXBARG0SEL((uint32)*OutputLine - 1U)) +
+                              ((uint32)(groupnumber) * (ICL_XBAR_O_ICLXBARG1SEL(0U) - ICL_XBAR_O_ICLXBARG0SEL(0U))));
 
     if (TRUE == Selection)
     {
@@ -968,7 +959,6 @@ Cdd_Xbar_IclOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLi
 
     return inversion;
 }
-#endif /* 0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS*/
 
 #if (STD_ON == CDD_XBAR_INPUT_FLAG_API)
 /* Design: MCAL-28159 */
@@ -978,8 +968,8 @@ Cdd_Xbar_InFlagStatus(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag,
 {
     VAR(boolean, AUTOMATIC) status = FALSE;
     VAR(uint32, AUTOMATIC)
-    xbarflagaddress = (uint32)(*InputFlagBaseAddress + (((CDD_XBAR_INPUT_FLAG_NUMBER(InputFlag))-1U) * 4U));
-    VAR(uint32, AUTOMATIC) inversionmask = (uint32)1U << (CDD_XBAR_INPUT_FLAG_BIT(InputFlag));
+    xbarflagaddress = (uint32)(*InputFlagBaseAddress + (((uint32)(Cdd_Xbar_GetInputFlagNumber(InputFlag))-1U) * 4U));
+    VAR(uint32, AUTOMATIC) inversionmask = (uint32)1U << (Cdd_Xbar_GetInputFlagBit(InputFlag));
 
     if (inversionmask == (HWREG(xbarflagaddress) & inversionmask))
     {
@@ -996,8 +986,8 @@ Cdd_Xbar_InFlagClear(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag,
 {
     VAR(uint32, AUTOMATIC)
     xbarflagaddress =
-        (uint32)(*InputFlagBaseAddress + XBAR_O_CLR1 + (((CDD_XBAR_INPUT_FLAG_NUMBER(InputFlag))-1U) * 4U));
-    VAR(uint32, AUTOMATIC) inversionmask = (uint32)1U << (CDD_XBAR_INPUT_FLAG_BIT(InputFlag));
+        (uint32)(*InputFlagBaseAddress + XBAR_O_CLR1 + (((uint32)(Cdd_Xbar_GetInputFlagNumber(InputFlag))-1U) * 4U));
+    VAR(uint32, AUTOMATIC) inversionmask = (uint32)1U << (Cdd_Xbar_GetInputFlagBit(InputFlag));
 
     /* Set flag clear bit to 1 */
     HWREG(xbarflagaddress) |= inversionmask;
@@ -1006,13 +996,12 @@ Cdd_Xbar_InFlagClear(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag,
 }
 #endif /* STD_ON == CDD_XBAR_INPUT_FLAG_API */
 
-#if (0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS)
-
 FUNC(void, CDD_XBAR_CODE)
 Cdd_Xbar_SetIntrType(VAR(Cdd_Xbar_ExternalIntNum, AUTOMATIC) ExtIntNum, VAR(Cdd_Xbar_IntType, AUTOMATIC) IntType)
 {
     /* Write the selected polarity to the appropriate register */
-    HWREGH(XINT_BASE + ExtIntNum) = (HWREGH(XINT_BASE + ExtIntNum) & ~XINT_1CR_POLARITY_M) | IntType;
+    HWREGH(XINT_BASE + (uint32)ExtIntNum) =
+        (HWREGH(XINT_BASE + (uint32)ExtIntNum) & (uint16)(~XINT_1CR_POLARITY_M)) | (uint16)IntType;
 }
 
 FUNC(void, CDD_XBAR_CODE)
@@ -1021,12 +1010,12 @@ Cdd_Xbar_EnableIntr(VAR(Cdd_Xbar_ExternalIntNum, AUTOMATIC) ExtIntNum, VAR(boole
     if (TRUE == Enable)
     {
         /* Set the enable bit for the specified interrupt */
-        HWREGH(XINT_BASE + ExtIntNum) |= XINT_1CR_ENABLE;
+        HWREGH(XINT_BASE + (uint32)ExtIntNum) |= (uint16)XINT_1CR_ENABLE;
     }
     else
     {
         /* Clear the enable bit for the specified interrupt */
-        HWREGH(XINT_BASE + ExtIntNum) &= ~XINT_1CR_ENABLE;
+        HWREGH(XINT_BASE + (uint32)ExtIntNum) &= (uint16)(~XINT_1CR_ENABLE);
     }
 }
 
@@ -1037,8 +1026,6 @@ Cdd_Xbar_GetIntrCounter(VAR(Cdd_Xbar_ExternalIntNum, AUTOMATIC) ExtIntNum)
      * interrupt */
     return (HWREGH(XINT_BASE + XINT_O_1CTR + (uint16)ExtIntNum));
 }
-
-#endif /* 0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS */
 
 #define CDD_XBAR_STOP_SEC_CODE
 #include "Cdd_Xbar_MemMap.h"

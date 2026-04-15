@@ -91,6 +91,13 @@ if(NOT TARGET DeviceSupport)
                      ${CMAKE_BINARY_DIR}/DeviceSupport)
 endif()
 
+# Create imported library target for Flash API
+add_library(F29H85x_NWFlashAPI STATIC IMPORTED)
+set_target_properties(
+    F29H85x_NWFlashAPI
+    PROPERTIES IMPORTED_LOCATION
+               "${CMAKE_CURRENT_SOURCE_DIR}/F29H85x_NWFlashAPI_v21.00.01.lib")
+
 add_link_options(-Wl,--stack_size=0x1000)
 add_link_options(
     -Wl,--xml_link_info=${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_linkInfo.xml
@@ -124,7 +131,7 @@ target_link_libraries(
             Dem
             DeviceSupport
             AppUtils
-            ${CMAKE_CURRENT_SOURCE_DIR}/F29H85x_NWFlashAPI_v21.00.01.lib)
+            F29H85x_NWFlashAPI)
 # This command is used to move the .xml and .map files
 add_custom_command(
     TARGET ${PROJECT_NAME}

@@ -569,7 +569,7 @@ extern CONST(struct Can_BaudConfigType_s, CAN_CONFIG_DATA) [!"../../../../@name"
 /*List of the Baudrate structures */
 [!LOOP "CanConfigSet"!][!LOOP "CanController/*"!][!//
 
-extern CONST(struct Can_BaudConfigType_s*, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!]_BaudRateConfigList[[!"num:i(count(CanControllerBaudrateConfig/*))"!]];
+extern CONSTP2CONST(struct Can_BaudConfigType_s, CAN_CONFIG_DATA, CAN_APPL_CONST) [!"../../@name"!]_[!"@name"!]_BaudRateConfigList[[!"num:i(count(CanControllerBaudrateConfig/*))"!]];
 [!ENDLOOP!][!ENDLOOP!][!//
 
 [!LOOP "CanConfigSet"!][!LOOP "CanController/*"!][!//
@@ -585,7 +585,7 @@ extern CONST(struct Can_ControllerType_s, CAN_CONFIG_DATA) [!"../../@name"!]_[!"
 extern CONST(struct Can_IcomConfigType_s, CAN_CONFIG_DATA) Can_[!"@name"!];
 [!ENDLOOP!][!//
 
-extern CONST(struct Can_IcomConfigType_s*, CAN_CONFIG_DATA) Can_IcomConfigurationList[[!"num:i(count(CanConfigSet/CanIcom/CanIcomConfig/*))"!]];
+extern CONSTP2CONST(struct Can_IcomConfigType_s, CAN_CONFIG_DATA, CAN_APPL_CONST) Can_IcomConfigurationList[[!"num:i(count(CanConfigSet/CanIcom/CanIcomConfig/*))"!]];
 #endif
 [!ENDIF!]
 [!ENDSELECT!]

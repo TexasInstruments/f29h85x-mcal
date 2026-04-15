@@ -106,12 +106,8 @@
 #define CDD_ECAP_START_SEC_VAR_INIT_PTR
 #include "Cdd_Ecap_MemMap.h"
 P2VAR(Cdd_Ecap_ChObjType, AUTOMATIC, CDD_ECAP_VAR_INIT) Cdd_Ecap_ObjPtr = NULL_PTR;
-#define CDD_ECAP_STOP_SEC_VAR_INIT_PTR
-#include "Cdd_Ecap_MemMap.h"
 
 /* Cdd_Ecap configuration pointer to access driver configuration. */
-#define CDD_ECAP_START_SEC_VAR_INIT_PTR
-#include "Cdd_Ecap_MemMap.h"
 P2CONST(Cdd_Ecap_ConfigType, AUTOMATIC, CDD_ECAP_CONST) Cdd_Ecap_CfgPtr = NULL_PTR;
 #define CDD_ECAP_STOP_SEC_VAR_INIT_PTR
 #include "Cdd_Ecap_MemMap.h"
@@ -307,15 +303,18 @@ static FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_Timestamp_ISRProcess(Cdd_Ecap_ChannelT
 #define CDD_ECAP_START_SEC_CODE
 #include "Cdd_Ecap_MemMap.h"
 
+/* Design: MCAL-36264*/
 void Cdd_Ecap_reArm(uint32 baseAddr)
 {
     HWREGH(baseAddr + ECAP_O_ECCTL2) |= ECAP_ECCTL2_REARM;
 }
+/* Design: MCAL-36260*/
 void Cdd_Ecap_captureLoadingEnable(uint32 baseAddr)
 {
     HWREG(baseAddr + ECAP_O_ECCTL1) |= ECAP_ECCTL1_CAPLDEN;
 }
 
+/* Design: MCAL-36261*/
 void Cdd_Ecap_captureLoadingDisable(uint32 baseAddr)
 {
     HWREG(baseAddr + ECAP_O_ECCTL1) &= ~ECAP_ECCTL1_CAPLDEN;
@@ -341,6 +340,7 @@ void Cdd_Ecap_cap4Reset(uint32 baseAddr)
     HWREG(baseAddr + ECAP_O_CAP4) |= (uint32)(0U);
 }
 
+/* Design: MCAL-36265*/
 void Cdd_Ecap_prescaleConfig(uint32 baseAddr, uint32 prescale)
 {
     uint32 temp_addr;
@@ -350,6 +350,7 @@ void Cdd_Ecap_prescaleConfig(uint32 baseAddr, uint32 prescale)
     HWREGH(temp_addr) = ((HWREGH(temp_addr) & (~ECAP_ECCTL1_PRESCALE_M)) | (prescale << ECAP_ECCTL1_PRESCALE_S));
 }
 
+/* Design: MCAL-36266*/
 void Cdd_Ecap_enableCaptureMode(uint32 baseAddr)
 {
     uint32 temp_addr = baseAddr + ECAP_O_ECCTL2;
@@ -358,6 +359,7 @@ void Cdd_Ecap_enableCaptureMode(uint32 baseAddr)
     HWREGH(temp_addr) &= ~ECAP_ECCTL2_CAP_APWM;
 }
 
+/* Design: MCAL-36267*/
 uint32 Cdd_Ecap_timeStampRead(uint32 baseAddr, uint32 capEvtFlag)
 {
     uint32 count = 0U;
@@ -368,6 +370,7 @@ uint32 Cdd_Ecap_timeStampRead(uint32 baseAddr, uint32 capEvtFlag)
     return (count);
 }
 
+/* Design: MCAL-36268*/
 void Cdd_Ecap_captureEvtPolarityConfig(uint32 baseAddr, uint32 capEvt1pol, uint32 capEvt2pol, uint32 capEvt3pol,
                                        uint32 capEvt4pol)
 {
@@ -387,6 +390,7 @@ void Cdd_Ecap_captureEvtPolarityConfig(uint32 baseAddr, uint32 capEvt1pol, uint3
     HWREGH(temp_addr) = ((HWREGH(temp_addr) & mask) | value);
 }
 
+/* Design: MCAL-36269*/
 void Cdd_Ecap_captureEvtCntrRstConfig(uint32 baseAddr, uint32 counterRst1, uint32 counterRst2, uint32 counterRst3,
                                       uint32 counterRst4)
 {
@@ -405,6 +409,7 @@ void Cdd_Ecap_captureEvtCntrRstConfig(uint32 baseAddr, uint32 counterRst1, uint3
     HWREGH(temp_addr) = ((HWREGH(temp_addr) & mask) | value);
 }
 
+/* Design: MCAL-36270*/
 void Cdd_Ecap_continuosModeConfig(uint32 baseAddr, uint16 event)
 {
     uint32 temp_addr = baseAddr + ECAP_O_ECCTL2;
@@ -417,6 +422,7 @@ void Cdd_Ecap_continuosModeConfig(uint32 baseAddr, uint16 event)
         ((HWREGH(temp_addr) & (~ECAP_ECCTL2_STOP_WRAP_M)) | (((uint16)event) << ECAP_ECCTL2_STOP_WRAP_S));
 }
 
+/* Design: MCAL-36271*/
 void Cdd_Ecap_counterControl(uint32 baseAddr, uint32 flag)
 {
     if (flag == CDD_ECAP_COUNTER_STOP)
@@ -429,6 +435,7 @@ void Cdd_Ecap_counterControl(uint32 baseAddr, uint32 flag)
     }
 }
 
+/* Design: MCAL-36272*/
 void Cdd_Ecap_globalIntrClear(uint32 baseAddr)
 {
     uint32 temp_addr = baseAddr + ECAP_O_ECCLR;
@@ -437,18 +444,21 @@ void Cdd_Ecap_globalIntrClear(uint32 baseAddr)
     HWREGH(temp_addr) = ECAP_ECCLR_INT;
 }
 
+/* Design: MCAL-36273*/
 void Cdd_Ecap_intrEnable(uint32 baseAddr, uint16 flag)
 {
     uint32 temp_addr   = baseAddr + ECAP_O_ECEINT;
     HWREGH(temp_addr) |= flag;
 }
 
+/* Design: MCAL-36262*/
 void Cdd_Ecap_intrDisable(uint32 baseAddr, uint32 flag)
 {
     uint32 temp_addr   = baseAddr + ECAP_O_ECEINT;
     HWREGH(temp_addr) &= ~flag;
 }
 
+/* Design: MCAL-36274*/
 uint32 Cdd_Ecap_getIntrStatus(uint32 baseAddr, uint32 flag)
 {
     uint32 temp_addr = baseAddr + ECAP_O_ECFLG;
@@ -456,6 +466,7 @@ uint32 Cdd_Ecap_getIntrStatus(uint32 baseAddr, uint32 flag)
     return (value & flag);
 }
 
+/* Design: MCAL-36263*/
 void Cdd_Ecap_intrStatusClear(uint32 baseAddr, uint16 flag)
 {
     uint32 temp_addr = baseAddr + ECAP_O_ECCLR;
@@ -464,6 +475,7 @@ void Cdd_Ecap_intrStatusClear(uint32 baseAddr, uint16 flag)
     HWREGH(temp_addr) |= flag;
 }
 
+/* Design: MCAL-36275*/
 void Cdd_Ecap_setEmulationMode(uint32 baseAddr, Cdd_Ecap_EmulationMode mode)
 {
     uint32 temp_addr = baseAddr + ECAP_O_ECCTL1;
@@ -472,6 +484,7 @@ void Cdd_Ecap_setEmulationMode(uint32 baseAddr, Cdd_Ecap_EmulationMode mode)
     HWREGH(temp_addr) = ((HWREGH(temp_addr) & (~ECAP_ECCTL1_FREE_SOFT_M)) | ((uint16)mode << ECAP_ECCTL1_FREE_SOFT_S));
 }
 
+/* Design: MCAL-36259*/
 void Cdd_Ecap_selectECAPInput(uint32 baseAddr, Cdd_Ecap_InputSelect input)
 {
     uint32 temp_addr = baseAddr + ECAP_O_ECCTL0;
@@ -480,64 +493,75 @@ void Cdd_Ecap_selectECAPInput(uint32 baseAddr, Cdd_Ecap_InputSelect input)
     HWREGH(temp_addr) = ((HWREGH(temp_addr) & ~ECAP_ECCTL0_INPUTSEL_M) | (uint16)input);
 }
 
+/* Design: MCAL-36276*/
 void Cdd_Ecap_clearGlobalInterrupt(uint32 baseAddr)
 {
     /* Write to INT bit */
     HWREGH(baseAddr + ECAP_O_ECCLR) = ECAP_ECCLR_INT;
 }
 #if (STD_ON == CDD_ECAP_HR_API)
+/* Design: MCAL-36277*/
 void Cdd_Ecap_HRCAP_enableHighResolution(uint32 baseAddr)
 {
     HWREGH(baseAddr + ECAP_O_HRCTL) |= ECAP_HRCTL_HRE;
     return;
 }
 
+/* Design: MCAL-36279*/
 void Cdd_Ecap_HRCAP_enableHighResolutionClock(uint32 baseAddr)
 {
     HWREGH(baseAddr + ECAP_O_HRCTL) |= ECAP_HRCTL_HRCLKE;
     return;
 }
 
+/* Design: MCAL-36281*/
 void Cdd_Ecap_HRCAP_startCalibration(uint32 baseAddr)
 {
     HWREGH(baseAddr + ECAP_O_HRCTL) |= ECAP_HRCTL_CALIBSTART;
     return;
 }
 
+/* Design: MCAL-36282*/
 void Cdd_Ecap_HRCAP_setCalibrationMode(uint32 baseAddr)
 {
     HWREGH(baseAddr + ECAP_O_HRCTL) |= ECAP_HRCTL_CALIBCONT;
     return;
 }
 
+/* Design: MCAL-36283*/
 void Cdd_Ecap_HRCAP_enableCalibrationInterrupt(uint32 baseAddr, uint16 intFlags)
 {
     HWREGH(baseAddr + ECAP_O_HRINTEN) |= intFlags;
     return;
 }
 
+/* Design: MCAL-36285*/
 Cdd_Ecap_ChannelHrInterruptType Cdd_Ecap_HRCAP_getCalibrationFlags(uint32 baseAddr)
 {
     return ((Cdd_Ecap_ChannelHrInterruptType)(HWREGH(baseAddr + ECAP_O_HRFLG) & 0x7U));
 }
 
+/* Design: MCAL-36286*/
 void Cdd_Ecap_HRCAP_clearCalibrationFlags(uint32 baseAddr, uint16 flags)
 {
     HWREGH(baseAddr + ECAP_O_HRCLR) = flags;
 }
 
+/* Design: MCAL-36289*/
 void Cdd_Ecap_HRCAP_setCalibrationPeriod(uint32 baseAddr, uint32 sysclkHz)
 {
     HWREG(baseAddr + ECAP_O_HRCALPRD) = (sysclkHz * 1600000U);
     return;
 }
 
+/* Design: MCAL-36291*/
 Cdd_Ecap_ValueType Cdd_Ecap_HRCAP_getCalibrationClockPeriod(uint32                                baseAddr,
                                                             Cdd_Ecap_HrCap_CalibrationClockSource ClockSource)
 {
     return (HWREG(baseAddr + ECAP_O_HRSYSCLKCAP + ((uint32)ClockSource * 2UL)));
 }
 
+/* Design: MCAL-36292*/
 Cdd_Ecap_ChannelHrScaleType Cdd_Ecap_HRCAP_getScaleFactor(uint32 baseAddr, Cdd_Ecap_ChannelType Channel)
 {
     Cdd_Ecap_ChannelHrScaleType result = CDD_ECAP_SF_NOTREADY;
@@ -556,6 +580,7 @@ Cdd_Ecap_ChannelHrScaleType Cdd_Ecap_HRCAP_getScaleFactor(uint32 baseAddr, Cdd_E
     return result;
 }
 
+/* Design: MCAL-36293*/
 Cdd_Ecap_ChannelHrScaleType Cdd_Ecap_HRCAP_convertEventTimeStamp(uint32                      timeStamp,
                                                                  Cdd_Ecap_ChannelHrScaleType scaleFactor)
 {
@@ -564,6 +589,7 @@ Cdd_Ecap_ChannelHrScaleType Cdd_Ecap_HRCAP_convertEventTimeStamp(uint32         
             (Cdd_Ecap_ChannelHrScaleType)128.0);
 }
 #endif
+/* Design: MCAL-36252*/
 void Cdd_Ecap_ResetChObj(void)
 {
     uint32 chNum = 0;
@@ -614,6 +640,7 @@ void Cdd_Ecap_ResetChObj(void)
     return;
 }
 
+/* Design: MCAL-36253*/
 void Cdd_Ecap_CopyConfig(Cdd_Ecap_ChObjType *chObj, const Cdd_Ecap_ConfigType *chCfg)
 {
     /* Set the global driver object pointer */
@@ -623,6 +650,7 @@ void Cdd_Ecap_CopyConfig(Cdd_Ecap_ChObjType *chObj, const Cdd_Ecap_ConfigType *c
     return;
 }
 
+/* Design: MCAL-36254*/
 void Cdd_Ecap_HwUnitInit(void)
 {
     uint32 baseAddr;
@@ -634,6 +662,7 @@ void Cdd_Ecap_HwUnitInit(void)
 #if (STD_ON == CDD_ECAP_HR_API)
         if (Cdd_Ecap_CfgPtr->chCfg[chNum].hr_enable == TRUE)
         {
+            /* Design: MCAL-36051*/
             Cdd_Ecap_HRCAP_enableHighResolutionClock(Cdd_Ecap_CfgPtr->chCfg[chNum].hr_base_addr);
             McalLib_DelayUsec(1);
             Cdd_Ecap_HRCAP_enableHighResolution(Cdd_Ecap_CfgPtr->chCfg[chNum].hr_base_addr);
@@ -642,6 +671,7 @@ void Cdd_Ecap_HwUnitInit(void)
 #endif
 
         /* Disable and Clear Interrupts */
+        /* Design: MCAL-36087*/
         Cdd_Ecap_intrDisable(baseAddr, CDD_ECAP_INT_ALL);
         Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_INT_ALL);
 
@@ -661,6 +691,7 @@ void Cdd_Ecap_HwUnitInit(void)
     return;
 }
 
+/* Design: MCAL-36255*/
 void Cdd_Ecap_ConfigEcap(uint32 baseAddr, Cdd_Ecap_ActivationType activation, Cdd_Ecap_CounterRstType cntRst,
                          Cdd_Ecap_IntrCapSelect capture, uint32 Channel)
 {
@@ -758,6 +789,7 @@ void Cdd_Ecap_ConfigEcap(uint32 baseAddr, Cdd_Ecap_ActivationType activation, Cd
 }
 
 #if (STD_ON == CDD_ECAP_TIMESTAMP_API)
+/* Design: MCAL-36257*/
 void Cdd_Ecap_TimeStamp_Init(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_ValueType *StartPtr, uint16 Size,
                              uint16 NotifyInterval)
 {
@@ -768,6 +800,7 @@ void Cdd_Ecap_TimeStamp_Init(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_ValueType *S
     Cdd_Ecap_ObjPtr->chObj[Channel].NotificationCounter   = 0U;
 }
 
+/* Design: MCAL-36258*/
 void Cdd_Ecap_TimeStamp_Clear(Cdd_Ecap_ChannelType Channel)
 {
     Cdd_Ecap_ObjPtr->chObj[Channel].NextTimeStampIndexPtr = (Cdd_Ecap_ValueType *)NULL_PTR;
@@ -780,6 +813,7 @@ void Cdd_Ecap_TimeStamp_Clear(Cdd_Ecap_ChannelType Channel)
 
 #if (STD_ON == CDD_ECAP_SIGNAL_MEASUREMENT_API)
 /*Reset Signal measurement runtime struct*/
+/* Design: MCAL-36256*/
 void Cdd_Ecap_SignalMeasurement_Init(Cdd_Ecap_ChannelType Channel)
 {
     Cdd_Ecap_ObjPtr->chObj[Channel].cap1                 = 0U;
@@ -843,6 +877,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_Timestamp_ISR(Cdd_Ecap_ChannelType Channel)
 #endif
 
 #if (STD_ON == CDD_ECAP_TIMESTAMP_API)
+/* Design: MCAL-36217, MCAL-36218, MCAL-36219, MCAL-36220, MCAL-36221, MCAL-36222*/
 static FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_Timestamp_ISRProcess(Cdd_Ecap_ChannelType Channel)
 {
     uint32 baseAddr;
@@ -898,6 +933,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_Timestamp_ProcessNotification(uint8 chNum)
 /*******************************************************************************
  *   Function Name : Cdd_Ecap_EdgeDetect_ProcessNotification
  ******************************************************************************/
+/* Design: MCAL-36223, MCAL-36224, MCAL-36225*/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EdgeDetect_ProcessNotification(uint8 chNum, uint32 baseAddr)
 {
     Cdd_Ecap_ObjPtr->chObj[chNum].InputState = CDD_ECAP_ACTIVE;
@@ -918,6 +954,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EdgeDetect_ProcessNotification(uint8 chNum, u
 /*******************************************************************************
  *   Function Name : Cdd_Ecap_SignalMeasurement_ProcessCevt1
  ******************************************************************************/
+/* Design: MCAL-36226, MCAL-36227, MCAL-36228, MCAL-36229, MCAL-36230, MCAL-36231*/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SignalMeasurement_ProcessCevt1(uint8 chNum, uint32 baseAddr)
 {
     Cdd_Ecap_ValueType highTime;
@@ -1351,6 +1388,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_CheckHrOverFlowStatus(uint8 chNum)
  *
  *  Function is called from interrupt level
  ******************************************************************************/
+/* Design: MCAL-36232, MCAL-36233, MCAL-36234, MCAL-36235, MCAL-36236*/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HR_ISR(Cdd_Ecap_ChannelType Channel)
 {
     uint8 chNum = 0U;

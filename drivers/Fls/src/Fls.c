@@ -89,12 +89,12 @@
 #endif
 
 /* AUTOSAR version information check has to match definition in header file */
-#if ((FLS_SW_MAJOR_VERSION != (3U)) || (FLS_SW_MINOR_VERSION != (1U)))
+#if ((FLS_SW_MAJOR_VERSION != (3U)) || (FLS_SW_MINOR_VERSION != (2U)))
 #error "Fls: Software Version Numbers are inconsistent!!"
 #endif
 
 /* AUTOSAR version information check has to match definition in FLS_Cfg.h file */
-#if ((FLS_CFG_MAJOR_VERSION != (3U)) || (FLS_CFG_MINOR_VERSION != (1U)))
+#if ((FLS_CFG_MAJOR_VERSION != (3U)) || (FLS_CFG_MINOR_VERSION != (2U)))
 #error "Version numbers of Fls.c and Fls_Cfg.h are inconsistent!"
 #endif
 /*********************************************************************************************************************
@@ -112,36 +112,27 @@
 /*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
-#define FLS_START_SEC_VAR_NO_INIT_UNSPECIFIED
+#define FLS_START_SEC_VAR_NO_INIT_32
 #include "Fls_MemMap.h"
 
 extern VAR(uint32, FLS_VAR_NO_INIT_32) Fls_CMD_WE_Protection_A_Mask; /* protection for the first 32 sectors */
 extern VAR(uint32, FLS_VAR_NO_INIT_32) Fls_CMD_WE_Protection_B_Mask; /* protection for the 32 – 256 sectors */
-extern VAR(uint32, FLS_VAR_NO_INIT_32) Fls_u32UserFlashConfig;       /* User flash configuration */
-
-#define FLS_STOP_SEC_VAR_NO_INIT_UNSPECIFIED
-#include "Fls_MemMap.h"
-
-#define FLS_START_SEC_VAR_INIT_UNSPECIFIED
-#include "Fls_MemMap.h"
-
-/* \brief FLS driver object
- *  Design: MCAL-30888
- */
-Fls_DriverObjType Fls_DrvObj = {
-    .status = MEMIF_UNINIT /* 0x0, defined in Memif_Types.h*/
-};
-
-#define FLS_STOP_SEC_VAR_INIT_UNSPECIFIED
-#include "Fls_MemMap.h"
-
-#define FLS_START_SEC_VAR_NO_INIT_32
-#include "Fls_MemMap.h"
 
 /*Set Erase Type Parameters */
 VAR(uint32, FLS_VAR_NO_INIT_32) sector_or_banksize;
 
 #define FLS_STOP_SEC_VAR_NO_INIT_32
+#include "Fls_MemMap.h"
+
+#define FLS_START_SEC_VAR_NO_INIT_UNSPECIFIED
+#include "Fls_MemMap.h"
+
+/* \brief FLS driver object
+ *  Design: MCAL-30888
+ */
+Fls_DriverObjType Fls_DrvObj;
+
+#define FLS_STOP_SEC_VAR_NO_INIT_UNSPECIFIED
 #include "Fls_MemMap.h"
 
 /*********************************************************************************************************************
@@ -283,10 +274,13 @@ FUNC(void, FLS_CODE) Fls_Init(P2CONST(Fls_ConfigType, AUTOMATIC, FLS_CONFIG_DATA
          * This function must also be called whenever System frequency or RWAIT is
          * changed.
          **/
-        Fls_SSU_claimFlashSemaphore();
-        CPU_SYS_CLOCK_MHZ = FLS_CPU_CLOCK_FREQ / FLS_CONV_TO_MHZ;
-        oReturnCheck      = Fls_Fapi_initializeAPI(CPU_SYS_CLOCK_MHZ);
-        Fls_SSU_releaseFlashSemaphore();
+        oReturnCheck = Fls_SSU_claimFlashSemaphore();
+        if (oReturnCheck == E_OK)
+        {
+            CPU_SYS_CLOCK_MHZ = FLS_CPU_CLOCK_FREQ / FLS_CONV_TO_MHZ;
+            oReturnCheck      = Fls_Fapi_initializeAPI(CPU_SYS_CLOCK_MHZ);
+            Fls_SSU_releaseFlashSemaphore();
+        }
         if (oReturnCheck != E_OK)
         {
             /* Check Flash API documentation for possible errors */
@@ -392,6 +386,18 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_Erase(Fls_AddressType TargetAddress, Fls_Leng
              * MEMIF_JOB_PENDING*/
             Fls_DrvObj.jobResultType = MEMIF_JOB_PENDING;
             Fls_DrvObj.jobType       = FLS_JOB_ERASE;
+
+            /* Reset erase FSM state so that residual state from a previous job (e.g. from a
+             * Fls_Cancel() mid-operation) does not carry over. All sub-state counters are
+             * Fls_DrvObj fields and are reset directly here.
+             */
+            Fls_DrvObj.sectorEraseStage     = FLS_S_EDEFAULT;
+            Fls_DrvObj.sectorErasePreCheck  = FLS_ERASE_FSM_READY_CHECK;
+            Fls_DrvObj.sectorErasePostCheck = FLS_ERASE_FSM_READY_CHECK;
+            Fls_DrvObj.bankEraseStage       = FLS_S_EDEFAULT;
+            Fls_DrvObj.bankErasePreCheck    = FLS_ERASE_FSM_READY_CHECK;
+            Fls_DrvObj.bankErasePostCheck   = FLS_ERASE_FSM_READY_CHECK;
+            Fls_DrvObj.erasePostFapiFsmDone = 0U;
 
             /*  [ SWS_Fls_00221 ] */
             Fls_DrvObj.flashAddr   = eraseStartAddress;
@@ -641,6 +647,18 @@ Fls_Write(Fls_AddressType TargetAddress, P2VAR(const uint8, AUTOMATIC, FLS_APPL_
              * MEMIF_BUSY*/
             Fls_DrvObj.status  = MEMIF_BUSY;
             Fls_DrvObj.jobType = FLS_JOB_WRITE;
+
+            /* Reset write FSM state so that a previous job's residual state (e.g. from a
+             * Fls_Cancel() while the FSM was busy in POSTCHECK) does not carry over into
+             * this new job. Fls_DrvObj.writePostFapiFsmBusy=1 would skip the pre-write blank
+             * check and jobStartCount capture on the first chunk. All sub-state counters are
+             * Fls_DrvObj fields and are reset directly here.
+             */
+            Fls_DrvObj.writePostFapiFsmBusy = 0U;
+            Fls_DrvObj.writeChunkComplete   = 0U;
+            Fls_DrvObj.flashWriteStage      = FLS_S_WDEFAULT;
+            Fls_DrvObj.writePreCheck        = FLS_WRITE_FSM_READY_CHECK;
+            Fls_DrvObj.writePostCheck       = FLS_WRITE_FSM_READY_CHECK;
 
             /* SWS_Fls_00226*/
             Fls_DrvObj.flashAddr   = writeStartAddress;

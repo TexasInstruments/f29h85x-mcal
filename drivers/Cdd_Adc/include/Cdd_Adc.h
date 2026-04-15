@@ -97,7 +97,7 @@ extern "C" {
 /** \brief Driver Implementation Minor Version */
 #define CDD_ADC_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_ADC_SW_PATCH_VERSION (1U)
+#define CDD_ADC_SW_PATCH_VERSION (2U)
 
 /*  Defines for CDD_ADC Driver AUTOSAR version used for compatibility checks. */
 /** \brief AUTOSAR Major version specification implemented by CDD_ADC Driver*/
@@ -432,6 +432,7 @@ typedef struct Cdd_Adc_GroupCfgTag
     boolean                   continuetoint;
     /** \brief  Boolean to detetrmine if the interrupt is configured as a trigger source for the
      * group */
+    /* Design: MCAL-31118 */
     Cdd_Adc_IntSocTriggerType intsocsel;
 #if (STD_ON == CDD_ADC_GRP_NOTIF_CAPABILITY_API)
     /** \brief  Group end notification callback fxn pointer */
@@ -510,17 +511,17 @@ typedef struct Cdd_Adc_HwUnitCfgTag
 #endif
 
     /** \brief  ADC HW unit result base addr */
-    uint32  base_addr;
+    uint32        base_addr;
     /** \brief  ADC result registers base */
-    uint32  result_baseaddr;
+    uint32        result_baseaddr;
     /** \brief  Analog reference select */
-    uint16  analogrefsel;
+    uint16        analogrefsel;
     /** \brief Analog reference voltage select */
-    uint16  analogrefvoltsel;
+    uint16        analogrefvoltsel;
     /** \brief Trim address */
-    uint32 *inltrimaddress;
+    const uint32 *inltrimaddress;
     /** \brief INL trim values */
-    uint8   numadc_inltrim;
+    uint8         numadc_inltrim;
 } Cdd_Adc_HwUnitCfgType;
 
 #if (STD_ON == CDD_ADC_SAFETY_CHECK_API)

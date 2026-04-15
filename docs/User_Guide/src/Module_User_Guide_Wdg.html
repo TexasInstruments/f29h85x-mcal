@@ -107,9 +107,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">5.10.10. Configuration</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">5.10.10.1. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#wdgdemeventparameterrefs">5.10.10.2. WdgDemEventParameterRefs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#wdggeneral">5.10.10.3. WdgGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-wdg-module">5.10.10.4. Steps To Configure Wdg Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-wdg-module">5.10.10.2. Steps To Configure Wdg Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">5.10.11. Examples</a><ul>
@@ -122,14 +120,15 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">5.11. CDD ADC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">5.12. CDD ECAP Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">5.13. CDD I2C Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">5.14. CDD IPC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">5.15. CDD PWM Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">5.16. CDD SENT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">5.17. CDD XBAR Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">5.18. CDD UART Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">5.19. RTDMA Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Dma.html">5.12. CDD DMA Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">5.13. CDD ECAP Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">5.14. CDD I2C Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">5.15. CDD IPC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">5.16. CDD PWM Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">5.17. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">5.18. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">5.19. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">5.20. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">6. Migration Guide</a></li>
@@ -336,7 +335,12 @@ To set the window minimum, write the desired minimum watchdog count to the WDWCR
 <h2><span class="section-number">5.10.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
 <section id="memory-mapping">
 <h3><span class="section-number">5.10.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
-<p>Will be added in later release</p>
+<p>The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.</p>
+<p>Reference memory map files can be found at:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+</pre></div>
+</div>
+<p>The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.</p>
 </section>
 <section id="scheduling">
 <h3><span class="section-number">5.10.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
@@ -464,7 +468,7 @@ To set the window minimum, write the desired minimum watchdog count to the WDWCR
 </section>
 <section id="multi-core-and-resource-allocator">
 <h3><span class="section-number">5.10.9.2. </span>Multi-core and Resource allocator<a class="headerlink" href="#multi-core-and-resource-allocator" title="Link to this heading"></a></h3>
-<p>Not Supported</p>
+<p>The WDG module is not managed by the Resource Allocator. The Watchdog timer on F29H85x is a system-level peripheral that is exclusively controlled by CPU1 and cannot be allocated to other cores. Because the Watchdog is not a shareable, multi-core resource, it is not represented in the Resource Allocator configuration. No Resource Allocator instance allocation is needed for the WDG module.</p>
 </section>
 </section>
 <section id="configuration">
@@ -474,9 +478,8 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
 <section id="configuration-parameters">
 <h3><span class="section-number">5.10.10.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
-</section>
 <section id="wdgdemeventparameterrefs">
-<h3><span class="section-number">5.10.10.2. </span>WdgDemEventParameterRefs<a class="headerlink" href="#wdgdemeventparameterrefs" title="Link to this heading"></a></h3>
+<h4><span class="section-number">5.10.10.1.1. </span>WdgDemEventParameterRefs<a class="headerlink" href="#wdgdemeventparameterrefs" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -488,7 +491,7 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 <td><p>WdgDemEventParameterRefs</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>Reference to the DemEventParameter which shall be issued when the error “Setting a watchdog mode failed (during initialization or mode switch)” has occurred.</p></td>
+<td><p>Container for the references to DemEventParameter elements which shall be invoked using the API Dem_SetEventStatus in case the corresponding error occurs. The EventId is taken from the referenced DemEventParameter’s DemEventId symbolic value. The standardized errors are provided in this container and can be extended by vendor-specific error references.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Post-build-variant-multiplicity</strong></p></td>
 <td><p>false</p></td>
@@ -527,10 +530,10 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 </table>
 </section>
 <section id="wdggeneral">
-<h3><span class="section-number">5.10.10.3. </span>WdgGeneral<a class="headerlink" href="#wdggeneral" title="Link to this heading"></a></h3>
+<h4><span class="section-number">5.10.10.1.2. </span>WdgGeneral<a class="headerlink" href="#wdggeneral" title="Link to this heading"></a></h4>
 <p>All general parameters of the watchdog driver are collected here.</p>
 <section id="wdgdeverrordetect">
-<h4><span class="section-number">5.10.10.3.1. </span>WdgDevErrorDetect<a class="headerlink" href="#wdgdeverrordetect" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.10.10.1.2.1. </span>WdgDevErrorDetect<a class="headerlink" href="#wdgdeverrordetect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -569,7 +572,7 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 </table>
 </section>
 <section id="wdgdisableallowed">
-<h4><span class="section-number">5.10.10.3.2. </span>WdgDisableAllowed<a class="headerlink" href="#wdgdisableallowed" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.10.10.1.2.2. </span>WdgDisableAllowed<a class="headerlink" href="#wdgdisableallowed" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -608,7 +611,7 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 </table>
 </section>
 <section id="wdgindex">
-<h4><span class="section-number">5.10.10.3.3. </span>WdgIndex<a class="headerlink" href="#wdgindex" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.10.10.1.2.3. </span>WdgIndex<a class="headerlink" href="#wdgindex" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -653,7 +656,7 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 </table>
 </section>
 <section id="wdginitialtimeout">
-<h4><span class="section-number">5.10.10.3.4. </span>WdgInitialTimeout<a class="headerlink" href="#wdginitialtimeout" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.10.10.1.2.4. </span>WdgInitialTimeout<a class="headerlink" href="#wdginitialtimeout" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -698,7 +701,7 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 </table>
 </section>
 <section id="wdgmaxtimeout">
-<h4><span class="section-number">5.10.10.3.5. </span>WdgMaxTimeout<a class="headerlink" href="#wdgmaxtimeout" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.10.10.1.2.5. </span>WdgMaxTimeout<a class="headerlink" href="#wdgmaxtimeout" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -743,7 +746,7 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 </table>
 </section>
 <section id="wdgrunarea">
-<h4><span class="section-number">5.10.10.3.6. </span>WdgRunArea<a class="headerlink" href="#wdgrunarea" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.10.10.1.2.6. </span>WdgRunArea<a class="headerlink" href="#wdgrunarea" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -785,7 +788,7 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 </table>
 </section>
 <section id="wdgtriggerlocation">
-<h4><span class="section-number">5.10.10.3.7. </span>WdgTriggerLocation<a class="headerlink" href="#wdgtriggerlocation" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.10.10.1.2.7. </span>WdgTriggerLocation<a class="headerlink" href="#wdgtriggerlocation" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -824,7 +827,7 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 </table>
 </section>
 <section id="wdgversioninfoapi">
-<h4><span class="section-number">5.10.10.3.8. </span>WdgVersionInfoApi<a class="headerlink" href="#wdgversioninfoapi" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.10.10.1.2.8. </span>WdgVersionInfoApi<a class="headerlink" href="#wdgversioninfoapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -866,8 +869,9 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 </table>
 </section>
 </section>
+</section>
 <section id="steps-to-configure-wdg-module">
-<h3><span class="section-number">5.10.10.4. </span>Steps To Configure Wdg Module<a class="headerlink" href="#steps-to-configure-wdg-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.10.10.2. </span>Steps To Configure Wdg Module<a class="headerlink" href="#steps-to-configure-wdg-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool, load Wdg and Dem modules. Select the Config Variant ( Precompile/Post-Build/Link-Time)</p></li>
 <li><p>Open DEM module plugin and register DEM event “WDG_E_DISABLE_REJECTED” &amp; “WDG_E_MODE_FAILED” to report extended production errors</p></li>
@@ -901,8 +905,6 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 <section id="setup-required-to-run-wdg-example-service">
 <h4><span class="section-number">5.10.11.1.2. </span>Setup required to run Wdg_Example_Service<a class="headerlink" href="#setup-required-to-run-wdg-example-service" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p>Install Code Composer Studio latest version</p></li>
-<li><p>Install latest C29 compiler</p></li>
 <li><p>Connect the hardware and power up</p></li>
 <li><p>Connect the uart set up to check the log on serial console</p></li>
 </ul>
@@ -957,8 +959,6 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 <section id="setup-required-to-run-wdg-example-interrupt">
 <h4><span class="section-number">5.10.11.2.2. </span>Setup required to run Wdg_Example_Interrupt<a class="headerlink" href="#setup-required-to-run-wdg-example-interrupt" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p>Install Code Composer Studio latest version</p></li>
-<li><p>Install latest C29 compiler</p></li>
 <li><p>Connect the hardware and power up</p></li>
 <li><p>Connect the uart set up to check the log on serial console</p></li>
 </ul>
@@ -1017,8 +1017,6 @@ The associated Wdg driver configuration generated source files are <strong>Wdg_C
 <section id="setup-required-to-run-wdg-example-reset">
 <h4><span class="section-number">5.10.11.3.2. </span>Setup required to run Wdg_Example_Reset<a class="headerlink" href="#setup-required-to-run-wdg-example-reset" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p>Install Code Composer Studio latest version</p></li>
-<li><p>Install latest C29 compiler</p></li>
 <li><p>Connect the hardware and power up</p></li>
 <li><p>Connect the uart set up to check the log on serial console</p></li>
 </ul>

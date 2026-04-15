@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Cdd_Xbar_MemMap.h
- *  Project:    C29x MCAL
- *  Module:     CDD_XBAR
  *  Generator:  None
  *
  *  Description:  Memory Map template file for Cdd_Xbar module.
+ *                This source code is for reference only, it should not be used as-is in a
+ *                typical customer applications
  *
  *********************************************************************************************************************/
 
@@ -165,6 +165,7 @@
 #define MEMMAP_SECTION_OPEN
 #define CDD_XBAR_VAR_INIT_8_OPEN
 #pragma clang section data = ".CDD_XBAR_VAR_INIT_8"
+#pragma clang section bss = ".CDD_XBAR_VAR_NO_INIT_8"
 #undef CDD_XBAR_START_SEC_VAR_INIT_8
 #undef MEMMAP_ERROR
 
@@ -180,6 +181,7 @@
 #endif
 #undef CDD_XBAR_VAR_INIT_8_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef CDD_XBAR_STOP_SEC_VAR_INIT_8
 #undef MEMMAP_ERROR
             
@@ -191,6 +193,7 @@
 #define MEMMAP_SECTION_OPEN
 #define CDD_XBAR_VAR_INIT_PTR_OPEN
 #pragma clang section data = ".CDD_XBAR_VAR_INIT_PTR"
+#pragma clang section bss = ".CDD_XBAR_VAR_NO_INIT_PTR"
 #undef CDD_XBAR_START_SEC_VAR_INIT_PTR
 #undef MEMMAP_ERROR
 
@@ -206,6 +209,7 @@
 #endif
 #undef CDD_XBAR_VAR_INIT_PTR_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef CDD_XBAR_STOP_SEC_VAR_INIT_PTR
 #undef MEMMAP_ERROR
             

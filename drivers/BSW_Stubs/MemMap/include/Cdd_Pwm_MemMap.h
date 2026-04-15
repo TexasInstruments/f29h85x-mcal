@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Cdd_Pwm_MemMap.h
- *  Project:    C29x MCAL
- *  Module:     CDD_PWM
  *  Generator:  None
  *
  *  Description:  Memory Map template file for Cdd_Pwm module.
+ *                This source code is for reference only, it should not be used as-is in a
+ *                typical customer applications
  *
  *********************************************************************************************************************/
 
@@ -165,6 +165,7 @@
 #define MEMMAP_SECTION_OPEN
 #define CDD_PWM_VAR_INIT_PTR_OPEN
 #pragma clang section data = ".CDD_PWM_VAR_INIT_PTR"
+#pragma clang section bss = ".CDD_PWM_VAR_NO_INIT_PTR"
 #undef CDD_PWM_START_SEC_VAR_INIT_PTR
 #undef MEMMAP_ERROR
 
@@ -180,6 +181,7 @@
 #endif
 #undef CDD_PWM_VAR_INIT_PTR_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef CDD_PWM_STOP_SEC_VAR_INIT_PTR
 #undef MEMMAP_ERROR
             
@@ -243,6 +245,7 @@
 #define MEMMAP_SECTION_OPEN
 #define CDD_PWM_VAR_INIT_BOOLEAN_OPEN
 #pragma clang section data = ".CDD_PWM_VAR_INIT_BOOLEAN"
+#pragma clang section bss = ".CDD_PWM_VAR_NO_INIT_BOOLEAN"
 #undef CDD_PWM_START_SEC_VAR_INIT_BOOLEAN
 #undef MEMMAP_ERROR
 
@@ -258,7 +261,36 @@
 #endif
 #undef CDD_PWM_VAR_INIT_BOOLEAN_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef CDD_PWM_STOP_SEC_VAR_INIT_BOOLEAN
+#undef MEMMAP_ERROR
+            
+#elif defined CDD_PWM_START_SEC_VAR_INIT_16
+#ifdef MEMMAP_SECTION_OPEN
+    #error "Memory section VAR_INIT_16 is already opened, Cannot reopen section using \
+           CDD_PWM_START_SEC_VAR_INIT_16 ."
+#endif
+#define MEMMAP_SECTION_OPEN
+#define CDD_PWM_VAR_INIT_16_OPEN
+#pragma clang section data = ".CDD_PWM_VAR_INIT_16"
+#pragma clang section bss = ".CDD_PWM_VAR_NO_INIT_16"
+#undef CDD_PWM_START_SEC_VAR_INIT_16
+#undef MEMMAP_ERROR
+
+#elif defined CDD_PWM_STOP_SEC_VAR_INIT_16
+#ifndef MEMMAP_SECTION_OPEN
+#error "Memory section VAR_INIT_16 is not open, Cannot close section using \
+         CDD_PWM_STOP_SEC_VAR_INIT_16."
+#endif
+#undef MEMMAP_SECTION_OPEN
+#ifndef CDD_PWM_VAR_INIT_16_OPEN
+    #error "Memory section VAR_INIT_16 is not open ,Cannot close section using \
+           CDD_PWM_STOP_SEC_VAR_INIT_16."
+#endif
+#undef CDD_PWM_VAR_INIT_16_OPEN
+#pragma clang section data = ""
+#pragma clang section bss = ""
+#undef CDD_PWM_STOP_SEC_VAR_INIT_16
 #undef MEMMAP_ERROR
             
 #endif
@@ -320,6 +352,15 @@
 #ifdef CDD_PWM_STOP_SEC_VAR_INIT_BOOLEAN
     #error "multiple memory allocation keywords are defined, Cannot use \
            CDD_PWM_STOP_SEC_VAR_INIT_BOOLEAN."
+#endif
+
+#ifdef CDD_PWM_START_SEC_VAR_INIT_16
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           CDD_PWM_START_SEC_VAR_INIT_16."
+#endif
+#ifdef CDD_PWM_STOP_SEC_VAR_INIT_16
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           CDD_PWM_STOP_SEC_VAR_INIT_16."
 #endif
 
 /*********************************************************************************************************************

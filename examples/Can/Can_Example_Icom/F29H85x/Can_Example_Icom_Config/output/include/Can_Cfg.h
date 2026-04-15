@@ -99,9 +99,9 @@ extern "C" {
  *
  *****************************************************************************/
  /** \brief Can configuration Major Version. */
-#define CAN_CFG_MAJOR_VERSION    (3U) 
+#define CAN_CFG_MAJOR_VERSION    (4U) 
 /** \brief Can configuration Minor Version. */
-#define CAN_CFG_MINOR_VERSION    (1U)
+#define CAN_CFG_MINOR_VERSION    (0U)
 /** \brief Can configuration Patch Version. */
 #define CAN_CFG_PATCH_VERSION    (0U)
 

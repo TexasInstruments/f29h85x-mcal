@@ -123,11 +123,8 @@ static void                    Cdd_I2c_TargetRxData(Cdd_I2c_HwUnitObjType *hwUni
 static void                    Cdd_I2c_TargetTxStart(Cdd_I2c_HwUnitObjType *hwUnitObj);
 static void                    Cdd_I2c_TargetTxStop(Cdd_I2c_HwUnitObjType *hwUnitObj);
 static void                    Cdd_I2c_TargetTxData(Cdd_I2c_HwUnitObjType *hwUnitObj);
-
-#if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
-static Std_ReturnType Cdd_I2c_TargetHwUnitIdCheck(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_HwUnitType hwUnitId,
-                                                  uint8 apiId);
-#endif
+static Cdd_I2c_HwUnitObjType  *Cdd_I2c_TargetGetHwUnitObj(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_HwUnitType hwUnitId,
+                                                          uint8 apiId);
 
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
@@ -144,55 +141,47 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_TargetStart(Cdd_I2c_HwUnitType hwUnit
 {
     Std_ReturnType         retVal = E_OK;
     Cdd_I2c_DriverObjType *drvObj = &Cdd_I2c_DrvObj;
+    Cdd_I2c_HwUnitObjType *hwUnitObj;
 
-#if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
-    retVal = Cdd_I2c_TargetHwUnitIdCheck(drvObj, hwUnitId, CDD_I2C_SID_TARGET_START);
-    if (retVal == (Std_ReturnType)E_OK)
-#endif
+    hwUnitObj = Cdd_I2c_TargetGetHwUnitObj(drvObj, hwUnitId, CDD_I2C_SID_TARGET_START);
+    if ((Cdd_I2c_HwUnitObjType *)NULL_PTR == hwUnitObj)
     {
-        Cdd_I2c_HwUnitObjType *hwUnitObj;
+        retVal = E_NOT_OK;
+    }
+    else
+    {
+        Cdd_I2c_TargetSetState(hwUnitObj, CDD_I2C_TARGET_STATE_IDLE);
 
-        hwUnitObj = Cdd_I2c_GetHwUnitObj(drvObj, hwUnitId);
-        if ((Cdd_I2c_HwUnitObjType *)NULL_PTR != hwUnitObj)
+        /* Set 10-bit mode */
+        if (CDD_I2C_ADDRESS_10_BIT == hwUnitObj->hwUnitCfg->addressScheme)
         {
-            Cdd_I2c_TargetSetState(hwUnitObj, CDD_I2C_TARGET_STATE_IDLE);
-
-            /* Set 10-bit mode */
-            if (CDD_I2C_ADDRESS_10_BIT == hwUnitObj->hwUnitCfg->addressScheme)
-            {
-                Cdd_I2c_HwSetMode(hwUnitObj->baseAddr, I2C_MDR_XA, I2C_MDR_XA);
-            }
-            else
-            {
-                Cdd_I2c_HwSetMode(hwUnitObj->baseAddr, I2C_MDR_XA, 0U);
-            }
-            Cdd_I2c_DisableFifo(hwUnitObj->baseAddr);
-            Cdd_I2c_HwSetDataCount(hwUnitObj->baseAddr, 0U); /* Not used in target mode */
-
-            /*
-             * From F29xx TRM, Basic I2C Interrupt Requests
-             *
-             * The normal transmit interrupt timing makes it possible for stale data to remain in
-             * the transmit buffer if a transaction is aborted in the middle of a byte. To avoid this,
-             * set the FCM bit in the I2CEMDR register. When this bit is set, the transmit data ready
-             * interrupt is generated only when data is required for a bus transaction.
-             *
-             * In master mode, the interrupt is first generated when the ACK of the address byte is received.
-             * In slave mode, the interrupt is first generated when the address is matched. Further interrupts
-             * are generated when the data is ACKed. In this mode, XRDY is asserted at the same time as
-             * the transmit ready interrupt.
-             */
-            Cdd_I2c_SetExtCompatibilityMode(hwUnitObj->baseAddr, I2C_EMDR_FCM);
-
-            /* Clear any stale status flags before enabling interrupts */
-            Cdd_I2c_HwClearAllStatus(hwUnitObj->baseAddr);
-            Cdd_I2c_HwEnableIntr(hwUnitObj->baseAddr, CDD_I2C_HW_INTR_ENABLE_MASK_TARGET);
+            Cdd_I2c_HwSetMode(hwUnitObj->baseAddr, I2C_MDR_XA, I2C_MDR_XA);
         }
         else
         {
-            /* With DET this should never happen - this helps in non DET mode */
-            retVal = E_NOT_OK;
+            Cdd_I2c_HwSetMode(hwUnitObj->baseAddr, I2C_MDR_XA, 0U);
         }
+        Cdd_I2c_DisableFifo(hwUnitObj->baseAddr);
+        Cdd_I2c_HwSetDataCount(hwUnitObj->baseAddr, 0U); /* Not used in target mode */
+
+        /*
+         * From F29xx TRM, Basic I2C Interrupt Requests
+         *
+         * The normal transmit interrupt timing makes it possible for stale data to remain in
+         * the transmit buffer if a transaction is aborted in the middle of a byte. To avoid this,
+         * set the FCM bit in the I2CEMDR register. When this bit is set, the transmit data ready
+         * interrupt is generated only when data is required for a bus transaction.
+         *
+         * In master mode, the interrupt is first generated when the ACK of the address byte is received.
+         * In slave mode, the interrupt is first generated when the address is matched. Further interrupts
+         * are generated when the data is ACKed. In this mode, XRDY is asserted at the same time as
+         * the transmit ready interrupt.
+         */
+        Cdd_I2c_SetExtCompatibilityMode(hwUnitObj->baseAddr, I2C_EMDR_FCM);
+
+        /* Clear any stale status flags before enabling interrupts */
+        Cdd_I2c_HwClearAllStatus(hwUnitObj->baseAddr);
+        Cdd_I2c_HwEnableIntr(hwUnitObj->baseAddr, CDD_I2C_HW_INTR_ENABLE_MASK_TARGET);
     }
 
     return retVal;
@@ -202,30 +191,22 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_TargetStop(Cdd_I2c_HwUnitType hwUnitI
 {
     Std_ReturnType         retVal = E_OK;
     Cdd_I2c_DriverObjType *drvObj = &Cdd_I2c_DrvObj;
+    Cdd_I2c_HwUnitObjType *hwUnitObj;
 
-#if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
-    retVal = Cdd_I2c_TargetHwUnitIdCheck(drvObj, hwUnitId, CDD_I2C_SID_TARGET_STOP);
-    if (retVal == (Std_ReturnType)E_OK)
-#endif
+    hwUnitObj = Cdd_I2c_TargetGetHwUnitObj(drvObj, hwUnitId, CDD_I2C_SID_TARGET_STOP);
+    if ((Cdd_I2c_HwUnitObjType *)NULL_PTR == hwUnitObj)
     {
-        Cdd_I2c_HwUnitObjType *hwUnitObj;
+        retVal = E_NOT_OK;
+    }
+    else
+    {
+        /* Disable and clear target interrupts */
+        Cdd_I2c_HwDisableIntr(hwUnitObj->baseAddr, CDD_I2C_HW_INTR_ENABLE_MASK_TARGET);
+        Cdd_I2c_HwClearAllStatus(hwUnitObj->baseAddr);
+        Cdd_I2c_SetExtCompatibilityMode(hwUnitObj->baseAddr, I2C_EMDR_BC);
+        Cdd_I2c_HwSetMode(hwUnitObj->baseAddr, I2C_MDR_XA, 0U);
 
-        hwUnitObj = Cdd_I2c_GetHwUnitObj(drvObj, hwUnitId);
-        if ((Cdd_I2c_HwUnitObjType *)NULL_PTR != hwUnitObj)
-        {
-            /* Disable and clear target interrupts */
-            Cdd_I2c_HwDisableIntr(hwUnitObj->baseAddr, CDD_I2C_HW_INTR_ENABLE_MASK_TARGET);
-            Cdd_I2c_HwClearAllStatus(hwUnitObj->baseAddr);
-            Cdd_I2c_SetExtCompatibilityMode(hwUnitObj->baseAddr, I2C_EMDR_BC);
-            Cdd_I2c_HwSetMode(hwUnitObj->baseAddr, I2C_MDR_XA, 0U);
-
-            Cdd_I2c_TargetSetState(hwUnitObj, CDD_I2C_TARGET_STATE_IDLE);
-        }
-        else
-        {
-            /* With DET this should never happen - this helps in non DET mode */
-            retVal = E_NOT_OK;
-        }
+        Cdd_I2c_TargetSetState(hwUnitObj, CDD_I2C_TARGET_STATE_IDLE);
     }
 
     return retVal;
@@ -235,18 +216,16 @@ FUNC(Std_ReturnType, CDD_I2C_CODE)
 Cdd_I2c_TargetSubmitTxBuffer(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataConstPtrType pTxBuffer,
                              Cdd_I2c_DataLengthType txBufferSize)
 {
-    Std_ReturnType         retVal = E_OK;
-    Cdd_I2c_DriverObjType *drvObj = &Cdd_I2c_DrvObj;
+    Std_ReturnType retVal = E_OK;
 
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
-    retVal = Cdd_I2c_TargetHwUnitIdCheck(drvObj, hwUnitId, CDD_I2C_SID_TARGET_SUBMIT_TX_BUF);
-    if ((retVal == (Std_ReturnType)E_OK) && (pTxBuffer == NULL_PTR))
+    if (pTxBuffer == NULL_PTR)
     {
         (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, CDD_I2C_SID_TARGET_SUBMIT_TX_BUF,
                               CDD_I2C_E_PARAM_ADDRESS);
         retVal = E_NOT_OK;
     }
-    if ((retVal == (Std_ReturnType)E_OK) && (txBufferSize == 0U))
+    if (txBufferSize == 0U)
     {
         (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, CDD_I2C_SID_TARGET_SUBMIT_TX_BUF,
                               CDD_I2C_E_PARAM_LENGTH);
@@ -255,10 +234,15 @@ Cdd_I2c_TargetSubmitTxBuffer(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataConstPtrTy
     if (retVal == (Std_ReturnType)E_OK)
 #endif
     {
+        Cdd_I2c_DriverObjType *drvObj = &Cdd_I2c_DrvObj;
         Cdd_I2c_HwUnitObjType *hwUnitObj;
 
-        hwUnitObj = Cdd_I2c_GetHwUnitObj(drvObj, hwUnitId);
-        if ((Cdd_I2c_HwUnitObjType *)NULL_PTR != hwUnitObj)
+        hwUnitObj = Cdd_I2c_TargetGetHwUnitObj(drvObj, hwUnitId, CDD_I2C_SID_TARGET_SUBMIT_TX_BUF);
+        if ((Cdd_I2c_HwUnitObjType *)NULL_PTR == hwUnitObj)
+        {
+            retVal = E_NOT_OK;
+        }
+        else
         {
             SchM_Enter_Cdd_I2c_CDD_I2C_EXCLUSIVE_AREA_0();
             hwUnitObj->pTxBuffer    = pTxBuffer;
@@ -266,11 +250,6 @@ Cdd_I2c_TargetSubmitTxBuffer(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataConstPtrTy
             hwUnitObj->txCount      = 0U;
             hwUnitObj->txUnderflow  = FALSE;
             SchM_Exit_Cdd_I2c_CDD_I2C_EXCLUSIVE_AREA_0();
-        }
-        else
-        {
-            /* With DET this should never happen - this helps in non DET mode */
-            retVal = E_NOT_OK;
         }
     }
 
@@ -281,18 +260,16 @@ FUNC(Std_ReturnType, CDD_I2C_CODE)
 Cdd_I2c_TargetSubmitRxBuffer(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataPtrType pRxBuffer,
                              Cdd_I2c_DataLengthType rxBufferSize)
 {
-    Std_ReturnType         retVal = E_OK;
-    Cdd_I2c_DriverObjType *drvObj = &Cdd_I2c_DrvObj;
+    Std_ReturnType retVal = E_OK;
 
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
-    retVal = Cdd_I2c_TargetHwUnitIdCheck(drvObj, hwUnitId, CDD_I2C_SID_TARGET_SUBMIT_RX_BUF);
-    if ((retVal == (Std_ReturnType)E_OK) && (pRxBuffer == NULL_PTR))
+    if (pRxBuffer == NULL_PTR)
     {
         (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, CDD_I2C_SID_TARGET_SUBMIT_RX_BUF,
                               CDD_I2C_E_PARAM_ADDRESS);
         retVal = E_NOT_OK;
     }
-    if ((retVal == (Std_ReturnType)E_OK) && (rxBufferSize == 0U))
+    if (rxBufferSize == 0U)
     {
         (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, CDD_I2C_SID_TARGET_SUBMIT_RX_BUF,
                               CDD_I2C_E_PARAM_LENGTH);
@@ -301,10 +278,15 @@ Cdd_I2c_TargetSubmitRxBuffer(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataPtrType pR
     if (retVal == (Std_ReturnType)E_OK)
 #endif
     {
+        Cdd_I2c_DriverObjType *drvObj = &Cdd_I2c_DrvObj;
         Cdd_I2c_HwUnitObjType *hwUnitObj;
 
-        hwUnitObj = Cdd_I2c_GetHwUnitObj(drvObj, hwUnitId);
-        if ((Cdd_I2c_HwUnitObjType *)NULL_PTR != hwUnitObj)
+        hwUnitObj = Cdd_I2c_TargetGetHwUnitObj(drvObj, hwUnitId, CDD_I2C_SID_TARGET_SUBMIT_RX_BUF);
+        if ((Cdd_I2c_HwUnitObjType *)NULL_PTR == hwUnitObj)
+        {
+            retVal = E_NOT_OK;
+        }
+        else
         {
             SchM_Enter_Cdd_I2c_CDD_I2C_EXCLUSIVE_AREA_0();
             hwUnitObj->pRxBuffer    = pRxBuffer;
@@ -312,11 +294,6 @@ Cdd_I2c_TargetSubmitRxBuffer(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataPtrType pR
             hwUnitObj->rxCount      = 0U;
             hwUnitObj->rxOverflow   = FALSE;
             SchM_Exit_Cdd_I2c_CDD_I2C_EXCLUSIVE_AREA_0();
-        }
-        else
-        {
-            /* With DET this should never happen - this helps in non DET mode */
-            retVal = E_NOT_OK;
         }
     }
 
@@ -357,36 +334,32 @@ static void Cdd_I2c_ProcessTargetEvents(Cdd_I2c_HwUnitObjType *hwUnitObj)
     uint16 intCode;
 
     intCode = Cdd_I2c_HwGetIntCode(hwUnitObj->baseAddr);
-    switch (intCode)
+    if (intCode == CDD_I2C_ISRC_INTCODE_SCD)
     {
-        case CDD_I2C_ISRC_INTCODE_SCD:
-            Cdd_I2c_TargetRxStop(hwUnitObj);
-            Cdd_I2c_TargetTxStop(hwUnitObj);
-            break;
-
-        case CDD_I2C_ISRC_INTCODE_RRDY:
-            Cdd_I2c_TargetTxStop(hwUnitObj);
-            Cdd_I2c_TargetRxStart(hwUnitObj);
-            Cdd_I2c_TargetRxData(hwUnitObj);
-            break;
-
-        case CDD_I2C_ISRC_INTCODE_XRDY:
-            Cdd_I2c_TargetRxStop(hwUnitObj);
-            Cdd_I2c_TargetTxStart(hwUnitObj);
-            Cdd_I2c_TargetTxData(hwUnitObj);
-            break;
-
-        case CDD_I2C_ISRC_INTCODE_NACK:
-            if (hwUnitObj->hwUnitCfg->targetErrorNotification != NULL_PTR)
-            {
-                hwUnitObj->hwUnitCfg->targetErrorNotification(hwUnitObj->hwUnitCfg->hwUnitId,
-                                                              CDD_I2C_TARGET_EVENT_NACK);
-            }
-            break;
-
-        default:
-            /* No action for unexpected/unhandled INTCODE */
-            break;
+        Cdd_I2c_TargetRxStop(hwUnitObj);
+        Cdd_I2c_TargetTxStop(hwUnitObj);
+    }
+    if (intCode == CDD_I2C_ISRC_INTCODE_RRDY)
+    {
+        Cdd_I2c_TargetTxStop(hwUnitObj);
+        Cdd_I2c_TargetRxStart(hwUnitObj);
+        Cdd_I2c_TargetRxData(hwUnitObj);
+    }
+    if (intCode == CDD_I2C_ISRC_INTCODE_XRDY)
+    {
+        Cdd_I2c_TargetRxStop(hwUnitObj);
+        Cdd_I2c_TargetTxStart(hwUnitObj);
+        Cdd_I2c_TargetTxData(hwUnitObj);
+    }
+    /* Note: NULL check is added first to get better code coverage */
+    if (hwUnitObj->hwUnitCfg->targetErrorNotification != NULL_PTR)
+    {
+        /* TI_COVERAGE_GAP_START Target Nack error cannot be recreated in test environment */
+        if (intCode == CDD_I2C_ISRC_INTCODE_NACK)
+        {
+            hwUnitObj->hwUnitCfg->targetErrorNotification(hwUnitObj->hwUnitCfg->hwUnitId, CDD_I2C_TARGET_EVENT_NACK);
+        }
+        /* TI_COVERAGE_GAP_STOP */
     }
 }
 
@@ -396,12 +369,10 @@ static void Cdd_I2c_TargetSetState(Cdd_I2c_HwUnitObjType *hwUnitObj, Cdd_I2c_Tar
     if (targetState == CDD_I2C_TARGET_STATE_RX)
     {
         Cdd_I2c_HwSetMode(hwUnitObj->baseAddr, I2C_MDR_TRX, 0U);
-        hwUnitObj->rxCount = 0U;
     }
     else if (targetState == CDD_I2C_TARGET_STATE_TX)
     {
         Cdd_I2c_HwSetMode(hwUnitObj->baseAddr, I2C_MDR_TRX, I2C_MDR_TRX);
-        hwUnitObj->txCount = 0U;
     }
     else
     {
@@ -604,16 +575,17 @@ static void Cdd_I2c_TargetTxData(Cdd_I2c_HwUnitObjType *hwUnitObj)
     }
 }
 
-#if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
-static Std_ReturnType Cdd_I2c_TargetHwUnitIdCheck(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_HwUnitType hwUnitId,
-                                                  uint8 apiId)
+static Cdd_I2c_HwUnitObjType *Cdd_I2c_TargetGetHwUnitObj(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_HwUnitType hwUnitId,
+                                                         uint8 apiId)
 {
-    Std_ReturnType         retVal = E_OK;
-    Cdd_I2c_HwUnitObjType *hwUnitObj;
+    Std_ReturnType         retVal    = E_OK;
+    Cdd_I2c_HwUnitObjType *hwUnitObj = (Cdd_I2c_HwUnitObjType *)NULL_PTR;
 
     if (CDD_I2C_UNINIT == Cdd_I2c_DrvState)
     {
+#if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
         (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, apiId, CDD_I2C_E_UNINIT);
+#endif
         retVal = E_NOT_OK;
     }
 
@@ -622,7 +594,9 @@ static Std_ReturnType Cdd_I2c_TargetHwUnitIdCheck(Cdd_I2c_DriverObjType *drvObj,
         hwUnitObj = Cdd_I2c_GetHwUnitObj(drvObj, hwUnitId);
         if ((Cdd_I2c_HwUnitObjType *)NULL_PTR == hwUnitObj)
         {
+#if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
             (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, apiId, CDD_I2C_E_PARAM_HWUNIT);
+#endif
             retVal = E_NOT_OK;
         }
     }
@@ -631,14 +605,15 @@ static Std_ReturnType Cdd_I2c_TargetHwUnitIdCheck(Cdd_I2c_DriverObjType *drvObj,
     {
         if (hwUnitObj->hwUnitCfg->mode != CDD_I2C_MODE_TARGET)
         {
+#if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
             (void)Det_ReportError(CDD_I2C_MODULE_ID, CDD_I2C_INSTANCE_ID, apiId, CDD_I2C_E_PARAM_MODE);
-            retVal = E_NOT_OK;
+#endif
+            hwUnitObj = (Cdd_I2c_HwUnitObjType *)NULL_PTR;
         }
     }
 
-    return retVal;
+    return hwUnitObj;
 }
-#endif
 
 #define CDD_I2C_STOP_SEC_CODE
 #include "Cdd_I2c_MemMap.h"

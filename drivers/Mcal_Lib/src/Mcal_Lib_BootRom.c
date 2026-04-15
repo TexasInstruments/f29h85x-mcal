@@ -93,12 +93,6 @@
  * Exported Object Definitions
  *********************************************************************************************************************/
 
-/* Bootrom status */
-__attribute__((noinit, retain, location(0x20000800))) const McalLib_BromStatus McalLib_BootRomStatus;
-
-/* Device calibration Data */
-__attribute__((noinit, retain, location(0x20000EDC))) const McalLib_DevCalData McalLib_DeviceCalibrationData;
-
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/
@@ -114,9 +108,15 @@ __attribute__((noinit, retain, location(0x20000EDC))) const McalLib_DevCalData M
 /*********************************************************************************************************************
  *  External Functions Definition
  *********************************************************************************************************************/
-FUNC(void, MCAL_LIB_CODE) McalLib_BootRomStructure(McalLib_BromStatus **BootRomStatus)
+FUNC(CONSTP2CONST(McalLib_BromStatus, AUTOMATIC, MCAL_LIB_CONST), MCAL_LIB_CODE) McalLib_BootRomStructure(void)
 {
-    *BootRomStatus = (McalLib_BromStatus *)&McalLib_BootRomStatus;
+    return McalLib_BootRomStatus;
+}
+
+FUNC(CONSTP2CONST(McalLib_DevCalData, AUTOMATIC, MCAL_LIB_CONST), MCAL_LIB_CODE)
+McalLib_DeviceCalibrationStructure(void)
+{
+    return McalLib_DeviceCalibrationData;
 }
 /*********************************************************************************************************************
  *  Local Functions Definition

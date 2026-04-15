@@ -147,7 +147,15 @@ Cdd_Sent Header File Structure
 
 #### Memory Mapping
 
-Will be added in later release
+The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.
+
+Reference memory map files can be found at:
+
+```text
+{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+```
+
+The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.
 
 #### Scheduling
 
@@ -271,23 +279,29 @@ The Cdd_Sent driver uses interrupts and therefore there is a dependency on the O
 
 #### Resource Allocator
 
-The SENT module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+The SENT module uses the Resource Allocator to allocate SENT peripheral instances to CPU cores and configure their memory-mapped base addresses. Each allocation is placed inside a **Context** that maps to a CPU core (e.g. `CPU1`). The **CurrentContext** parameter in the Resource Allocator selects which Context is active for MCAL execution. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+The **Frame** parameter (`FRAME0`–`FRAME3`) selects the memory-mapped frame for the instance, enabling simultaneous access from different initiators without arbitration stalls. The **BaseAddr** is auto-calculated based on the selected instance and frame. The **DebugHaltEnabled** and **StandbyModeEnabled** parameters control peripheral behaviour during CPU debug halt and standby low-power modes respectively.
 
 ##### Resource Allocator Usage Example
 
 To allocate SENT1 to CPU1 using FRAME0:
 
-1. In the Resource Allocator configuration, create a new Sent instance allocation
+1. In the Resource Allocator configuration, create a new Sent instance allocation under the CPU1 Context
 2. Set **InstanceName** to `SENT1`
 3. Set **Frame** to `FRAME0`
-4. The **BaseAddr** will be automatically calculated as `SENT1_DRIVER_BASE_FRAME(0U)`
+4. The **BaseAddr** will be automatically calculated as `SENT1_BASE_FRAME(0U)`
+5. Optionally configure **DebugHaltEnabled** and **StandbyModeEnabled**
 
 ```text
 Resource Allocator Configuration:
-├── SentInstanceAllocation
-│   ├── InstanceName: SENT1
-│   ├── Frame: FRAME0
-│   └── BaseAddr: SENT1_DRIVER_BASE_FRAME(0U)
+├── Context (Core: CPU1)
+│   └── Cdd_SentAllocatedInstance
+│       ├── InstanceName: SENT1
+│       ├── Frame: FRAME0
+│       ├── BaseAddr: SENT1_BASE_FRAME(0U)  [auto-calculated]
+│       ├── DebugHaltEnabled: true
+│       └── StandbyModeEnabled: true
 ```
 
 ### Configuration
@@ -302,10 +316,10 @@ The generated configuration files should not be modified manually. The config to
 
 
 
-#### CddSentConfig
+##### CddSentConfig
 This container contains the configuration parameters and sub containers of the CddSent module.
 
-##### CddSentController
+###### CddSentController
 This container contains the configuration parameters of the CddSent HW units.
 
 ###### CddSentBaseAddress
@@ -556,7 +570,7 @@ This container contains the configuration parameters of the CddSent HW units.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddSentChannelObject
+###### CddSentChannelObject
 This container contains the configuration parameters of the CddSent channel object
 
 ###### CddSentSensorType
@@ -630,7 +644,7 @@ This container contains the configuration parameters of the CddSent channel obje
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddSentExternalDeviceConfig
+###### CddSentExternalDeviceConfig
 This container contains the configuration parameters of the CddSent MTP triggers.
 
 ###### CddSentMTPSensorType
@@ -876,12 +890,12 @@ This container contains the configuration parameters of the CddSent MTP triggers
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddSentFIFOInterrupts
+###### CddSentFIFOInterrupts
 
 | Item ||
 |--------|---------------|
 | **Name** | CddSentFIFOInterrupts |
-| **Description** | The CPU reads the receiver FIFO when it is empty |
+| **Description** | Valid data interrupts |
 | **Multiplicity-Configuration-Class** | -- |
 | Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Post-build-variant-multiplicity** | false |
@@ -891,85 +905,85 @@ This container contains the configuration parameters of the CddSent MTP triggers
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddSentSlowChannelInterrupts
+###### CddSentSlowChannelInterrupts
 
 | Item ||
 |--------|---------------|
 | **Name** | CddSentSlowChannelInterrupts |
-| **Description** | If there is a format error in slow channel data |
+| **Description** | Valid data interrupts |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddSentFastChannelCRCErrorInterrupts
+###### CddSentFastChannelCRCErrorInterrupts
 
 | Item ||
 |--------|---------------|
 | **Name** | CddSentFastChannelCRCErrorInterrupts |
-| **Description** | When there is a CRC error in sensor 4 fast channel data |
+| **Description** | Valid data interrupts |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddSentFastChannelFrameErrorInterrupts
+###### CddSentFastChannelFrameErrorInterrupts
 
 | Item ||
 |--------|---------------|
 | **Name** | CddSentFastChannelFrameErrorInterrupts |
-| **Description** | When there is a frame error (Invalif nibble) in sensor 4 fast channel data |
+| **Description** | Valid data interrupts |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddSentTimeoutErrorInterrupts
+###### CddSentTimeoutErrorInterrupts
 
 | Item ||
 |--------|---------------|
 | **Name** | CddSentTimeoutErrorInterrupts |
-| **Description** | No responce from sensor 4 in timeout specified |
+| **Description** | Valid data interrupts |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddSentOverflowErrorInterrupts
+###### CddSentOverflowErrorInterrupts
 
 | Item ||
 |--------|---------------|
 | **Name** | CddSentOverflowErrorInterrupts |
-| **Description** | When the sensor 4 channel trigger pulse genarator recieves a trigger reuest while it is busy |
+| **Description** | Valid data interrupts |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddSentSyncErrorInterrupts
+###### CddSentSyncErrorInterrupts
 
 | Item ||
 |--------|---------------|
 | **Name** | CddSentSyncErrorInterrupts |
-| **Description** | The ratio of the calibration pulse to the message length varies by greater than 1/64 or less than -1/64 from one message to another |
+| **Description** | Valid data interrupts |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-#### CddComStackContribution
+##### CddComStackContribution
 Contribution of COM Stack modules.
 
-##### CddPduRLowerLayerContribution
+###### CddPduRLowerLayerContribution
 Parameters that are necessary for the configuration of a Complex Driver that serves as the LowerLayer of the Pdu Router module.
 
-##### CddPduRLowerLayerRxPdu
+###### CddPduRLowerLayerRxPdu
 This container specifies Rx PDUs that are exchanged between the CDD and the standardized BSW module.
 
 ###### CddPduRApiType
@@ -1031,7 +1045,7 @@ This container specifies Rx PDUs that are exchanged between the CDD and the stan
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddPduRLowerLayerTxPdu
+###### CddPduRLowerLayerTxPdu
 This container specifies Tx PDUs that are exchanged between the CDD and the standardized BSW module.
 
 ###### CddPduRApiType
@@ -1078,10 +1092,10 @@ This container specifies Tx PDUs that are exchanged between the CDD and the stan
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-#### CddSentGeneral
+##### CddSentGeneral
 Contains the general configuration parameters of the module.
 
-##### CddInstanceId
+###### CddInstanceId
 
 | Item ||
 |--------|---------------|
@@ -1095,7 +1109,7 @@ Contains the general configuration parameters of the module.
 | **Max-value** | 255 |
 | **Min-value** | 0 |
 
-##### CddSentDevErrorDetect
+###### CddSentDevErrorDetect
 
 | Item ||
 |--------|---------------|
@@ -1107,7 +1121,7 @@ Contains the general configuration parameters of the module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddSentVersionInfoApi
+###### CddSentVersionInfoApi
 
 | Item ||
 |--------|---------------|
@@ -1119,7 +1133,7 @@ Contains the general configuration parameters of the module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddSentIntegrationWithAsrComStackEnable
+###### CddSentIntegrationWithAsrComStackEnable
 
 | Item ||
 |--------|---------------|
@@ -1130,6 +1144,20 @@ Contains the general configuration parameters of the module.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
+
+##### CddSentDemEventParameterRefs
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentDemEventParameterRefs |
+| **Description** | Container for the references to DemEventParameter elements which shall be invoked using the API Dem_SetEventStatus in case the corresponding error occurs. The EventId is taken from the referenced DemEventParameter's DemEventId symbolic value. The standardized errors are provided in this container and can be extended by vendor-specific error references. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Post-build-variant-multiplicity** | false |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 ```{Note}
   For non-zero TOGGLETIME, it has to be larger than previous compare register.
 ```
@@ -1157,8 +1185,6 @@ The example application demonstrates use of Cdd_Sent module, the list below iden
 
 ##### Setup required to run Cdd_Sent_standard
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 * Connect the hardware, sensors and power up
 * Connect the uart set up to check the log on serial console
 
@@ -1220,8 +1246,6 @@ Cdd_Sent HW Setup
 
 ##### Setup required to run Cdd_Sent_Mtp_ExternalTrigger_Source
 
-* Install Code Composer Studio (CCS) latest version
-* Install latest C29 compiler
 * Connect the hardware and power up
 * Connect the UART setup to check the log on serial console
 * Connect GPIO18 to the sensor's SENT channel 4 pin

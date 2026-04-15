@@ -103,7 +103,7 @@ extern "C" {
 #define CDD_IPC_CFG_MINOR_VERSION                (1U)
 
 /** \brief CDD Ipc configuration Patch Version */
-#define CDD_IPC_CFG_PATCH_VERSION                (0U)
+#define CDD_IPC_CFG_PATCH_VERSION                (1U)
 
 /** \brief Switches the pre compile variant ON or OFF */
 #define CDD_IPC_PRE_COMPILE_VARIANT              STD_ON
@@ -199,6 +199,8 @@ typedef enum
 /** \brief IPC Instance type */
 typedef enum
 {
+    /** \brief No IPC instance*/
+    CDD_IPC_INSTANCE_NONE = 0U,
     /** \brief CPU1 - Local core, CPU2 - Remote core, Instance 1 */
     CDD_IPC_CPU1_L_CPU2_R_INST0 = CPU1IPCSEND_BASE + IPC_O_CPU1TOCPU2INTIPCSET(0U),
     /** \brief CPU1 - Local core, CPU2 - Remote core, Instance 2 */

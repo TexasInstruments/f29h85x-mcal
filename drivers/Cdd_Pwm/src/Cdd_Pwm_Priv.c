@@ -124,6 +124,19 @@ P2CONST(Cdd_Pwm_ConfigType, AUTOMATIC, CDD_PWM_CONST) Cdd_Pwm_ConfigPtr = NULL_P
 #define CDD_PWM_STOP_SEC_VAR_INIT_PTR
 #include "Cdd_Pwm_MemMap.h"
 
+#if (STD_ON == CDD_PWM_ADVANCED_MODE_API)
+#if (STD_ON == CDD_PWM_HRPWM_SUPPORTED)
+/* SFO calibration state variables - moved from function scope to file scope for MemMap compliance */
+#define CDD_PWM_START_SEC_VAR_INIT_16
+#include "Cdd_Pwm_MemMap.h"
+static uint16 Cdd_Pwm_SfoHrc1    = 0U; /* holds HRCNT0 count in 65535 HRCNT1 counts */
+static uint16 Cdd_Pwm_SfoHrc2    = 0U; /* holds HRCNT0 count in 65535 HRCNT1 counts */
+static uint16 Cdd_Pwm_SfoTaskptr = 0U; /* SFO state machine task pointer */
+#define CDD_PWM_STOP_SEC_VAR_INIT_16
+#include "Cdd_Pwm_MemMap.h"
+#endif
+#endif
+
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
@@ -4223,8 +4236,7 @@ Cdd_Pwm_PrivHrpwmSetHiResXCmpRegValueOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) I
  ******************************************************************************/
 FUNC(Cdd_Pwm_SfoStatusType, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstanceType Cdd_Pwm_HrpwmCalId)
 {
-    static uint16         hrc1, hrc2; /* holds HRCNT0 count in 65535 HRCNT1 counts */
-    static uint16         taskptr = 0U;
+    /* Static variables moved to file scope for MemMap compliance */
     uint16                Cdd_Pwm_MEP_SF, numer;
     Cdd_Pwm_SfoStatusType status = CDD_PWM_SFO_INCOMPLETE; /* status remains 0 until SFO completes */
     float32               denom;
@@ -4237,7 +4249,7 @@ FUNC(Cdd_Pwm_SfoStatusType, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstan
 
     /* SFO MEP Calibration State Machine */
     /* General Initialization */
-    if (taskptr == 0U)
+    if (Cdd_Pwm_SfoTaskptr == 0U)
     {
         /* Clear all bits */
         HWREGH(Cdd_Pwm_HrCalBase + HRPWMCAL_O_HRPWR) = (uint16)0x0U;
@@ -4251,11 +4263,11 @@ FUNC(Cdd_Pwm_SfoStatusType, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstan
             ((uint16)HRPWMCAL_HRPWR_CNTSEL | (uint16)HRPWMCAL_HRPWR_TESTSEL);
         HWREGH(Cdd_Pwm_HrCalBase + HRPWMCAL_O_HRPWR) |= (uint16)HRPWMCAL_HRPWR_CALPWRON;
 
-        hrc1    = 0U;
-        hrc2    = 0U;
-        taskptr = (uint16)1U;
+        Cdd_Pwm_SfoHrc1    = 0U;
+        Cdd_Pwm_SfoHrc2    = 0U;
+        Cdd_Pwm_SfoTaskptr = (uint16)1U;
     }
-    else if (taskptr == 1U)
+    else if (Cdd_Pwm_SfoTaskptr == 1U)
     {
         /* Initialization for 1st run */
         /* The logic should be reinitialized before every calibration run. Clear all bits in HRPWR */
@@ -4278,9 +4290,9 @@ FUNC(Cdd_Pwm_SfoStatusType, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstan
         HWREGH(Cdd_Pwm_HrCalBase + HRPWMCAL_O_HRPWR) |= (uint16)HRPWMCAL_HRPWR_CALSTART;
 
         /* Update task pointer to next case for next SFO call. */
-        taskptr = (uint16)2U;
+        Cdd_Pwm_SfoTaskptr = (uint16)2U;
     }
-    else if (taskptr == 2U)
+    else if (Cdd_Pwm_SfoTaskptr == 2U)
     {
         /*  Wait for 1st run to complete */
         /* If calibration is not complete, exit SFO() and check again
@@ -4292,16 +4304,16 @@ FUNC(Cdd_Pwm_SfoStatusType, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstan
             HWREGH(Cdd_Pwm_HrCalBase + HRPWMCAL_O_HRPWR) &= (uint16)(~HRPWMCAL_HRPWR_CALSTART);
 
             /* Get 1st count in HRCNT0 (# of ring osc oscillations) */
-            hrc1 = HWREGH(Cdd_Pwm_HrCalBase + HRPWMCAL_O_HRCNT0);
+            Cdd_Pwm_SfoHrc1 = HWREGH(Cdd_Pwm_HrCalBase + HRPWMCAL_O_HRCNT0);
 
             /* Update task pointer to next case for next SFO call. */
-            taskptr = (uint16)3U;
+            Cdd_Pwm_SfoTaskptr = (uint16)3U;
 
             /* Power down the calibration logic */
             HWREGH(Cdd_Pwm_HrCalBase + HRPWMCAL_O_HRPWR) &= (uint16)(~HRPWMCAL_HRPWR_CALPWRON);
         }
     }
-    else if (taskptr == 3U)
+    else if (Cdd_Pwm_SfoTaskptr == 3U)
     {
         /*  Initialization for 2nd run */
         /* Clear all bits in HRPWR */
@@ -4324,9 +4336,9 @@ FUNC(Cdd_Pwm_SfoStatusType, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstan
         HWREGH(Cdd_Pwm_HrCalBase + HRPWMCAL_O_HRPWR) |= (uint16)HRPWMCAL_HRPWR_CALSTART;
 
         /* Move to next case when SFO() is called the next time */
-        taskptr = (uint16)4U;
+        Cdd_Pwm_SfoTaskptr = (uint16)4U;
     }
-    else if (taskptr == 4U)
+    else if (Cdd_Pwm_SfoTaskptr == 4U)
     {
         /* Wait for 2nd run to complete */
         /* If calibration is not complete, exit SFO() and check again next function call */
@@ -4336,10 +4348,10 @@ FUNC(Cdd_Pwm_SfoStatusType, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstan
             HWREGH(Cdd_Pwm_HrCalBase + HRPWMCAL_O_HRPWR) &= (uint16)(~HRPWMCAL_HRPWR_CALSTART);
 
             /* Get the count from HRCNT0 (# of ring osc oscillations) */
-            hrc2 = HWREGH(Cdd_Pwm_HrCalBase + HRPWMCAL_O_HRCNT0);
+            Cdd_Pwm_SfoHrc2 = HWREGH(Cdd_Pwm_HrCalBase + HRPWMCAL_O_HRCNT0);
 
             /* Move to next case when SFO() is called the next time */
-            taskptr = (uint16)5U;
+            Cdd_Pwm_SfoTaskptr = (uint16)5U;
 
             /* Power down the calibration logic */
             HWREGH(Cdd_Pwm_HrCalBase + HRPWMCAL_O_HRPWR) &= (uint16)(~HRPWMCAL_HRPWR_CALPWRON);
@@ -4350,7 +4362,7 @@ FUNC(Cdd_Pwm_SfoStatusType, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstan
         /* For tasptr = 5U */
         /* Process diagnostics data */
         /* Calculate MEP delay time in 1 SYSCLK cycle */
-        denom = (((float32)1U / (float32)hrc2) - ((float32)1U / (float32)hrc1)) * (float32)0xFFFF;
+        denom = (((float32)1U / (float32)Cdd_Pwm_SfoHrc2) - ((float32)1U / (float32)Cdd_Pwm_SfoHrc1)) * (float32)0xFFFF;
 
         /* Calculate # of MEP steps */
         numer = (CDD_PWM_MEP2 - CDD_PWM_MEP1) * 2U;
@@ -4360,7 +4372,7 @@ FUNC(Cdd_Pwm_SfoStatusType, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstan
         Cdd_Pwm_MEP_ScaleFactor = Cdd_Pwm_MEP_SF;
 
         /* Update the task pointer to CDD_PWM_MEP1 calibration initialization task for next call. */
-        taskptr = (uint16)1U;
+        Cdd_Pwm_SfoTaskptr = (uint16)1U;
 
         /* Status is CDD_PWM_SFO_ERROR. So, status will be updated to CDD_PWM_SFO_COMPLETE only if the
          * MEP scale factor is within the range.
@@ -4372,7 +4384,7 @@ FUNC(Cdd_Pwm_SfoStatusType, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstan
         {
             /* Update HRMSTEP register only with DCAL result */
             HWREGH(Cdd_Pwm_HrCalBase + HRPWMCAL_O_HRMSTEP) = Cdd_Pwm_MEP_ScaleFactor;
-            taskptr                                        = 0U;
+            Cdd_Pwm_SfoTaskptr                             = 0U;
             status                                         = CDD_PWM_SFO_COMPLETE;
         }
     }

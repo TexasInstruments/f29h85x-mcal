@@ -135,7 +135,15 @@ Gpt Header File Structure.
 
 #### Memory Mapping
 
-Will be added in later release
+The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.
+
+Reference memory map files can be found at:
+
+```text
+{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+```
+
+The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.
 
 #### Scheduling
 
@@ -234,7 +242,7 @@ MCU Module is required to initialize all the clock to be used by different perip
 
 #### Multi-core and Resource allocator
 
-Not Supported
+The GPT module is not managed by the Resource Allocator. The GPT driver on F29H85x uses CPU timers (CPUTIMER0, CPUTIMER1, CPUTIMER2), which are core-local peripherals tightly coupled to each CPU core. Because CPU timers are inherently core-specific and do not require cross-core resource arbitration, they are not represented in the Resource Allocator configuration. No Resource Allocator instance allocation is needed for the GPT module.
 
 ### Configuration
 
@@ -253,10 +261,10 @@ If CPU Timer2 is used in OS, parameter 'GptUseTimer2InOS' should be checked in G
 
 
 
-#### GptChannelConfigSet
+##### GptChannelConfigSet
 This container is the base of a Configuration Set which contains the configured GPT channels. This way, different configuration sets can be defined for post-build process.
 
-##### GptUseTimer2InOS
+###### GptUseTimer2InOS
 
 | Item ||
 |--------|---------------|
@@ -269,7 +277,7 @@ This container is the base of a Configuration Set which contains the configured 
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### GptChannelConfiguration
+###### GptChannelConfiguration
 Configuration of an individual GPT channel.
 
 ###### GptChannelId
@@ -401,7 +409,7 @@ Configuration of an individual GPT channel.
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### GptWakeupConfiguration
+###### GptWakeupConfiguration
 Function pointer to callback function (for wakeup notification).
 
 ###### GptWakeupSourceRef
@@ -416,10 +424,10 @@ Function pointer to callback function (for wakeup notification).
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-#### GptConfigurationOfOptApiServices
+##### GptConfigurationOfOptApiServices
 This container contains all configuration switches for configuring optional API services of the GPT driver.
 
-##### GptDeinitApi
+###### GptDeinitApi
 
 | Item ||
 |--------|---------------|
@@ -432,7 +440,7 @@ This container contains all configuration switches for configuring optional API 
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### GptEnableDisableNotificationApi
+###### GptEnableDisableNotificationApi
 
 | Item ||
 |--------|---------------|
@@ -445,7 +453,7 @@ This container contains all configuration switches for configuring optional API 
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### GptTimeElapsedApi
+###### GptTimeElapsedApi
 
 | Item ||
 |--------|---------------|
@@ -458,7 +466,7 @@ This container contains all configuration switches for configuring optional API 
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### GptTimeRemainingApi
+###### GptTimeRemainingApi
 
 | Item ||
 |--------|---------------|
@@ -471,7 +479,7 @@ This container contains all configuration switches for configuring optional API 
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### GptVersionInfoApi
+###### GptVersionInfoApi
 
 | Item ||
 |--------|---------------|
@@ -484,7 +492,7 @@ This container contains all configuration switches for configuring optional API 
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### GptWakeupFunctionalityApi
+###### GptWakeupFunctionalityApi
 
 | Item ||
 |--------|---------------|
@@ -497,10 +505,10 @@ This container contains all configuration switches for configuring optional API 
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-#### GptDriverConfiguration
+##### GptDriverConfiguration
 This container contains the module-wide configuration (parameters) of the GPT Driver
 
-##### GptDevErrorDetect
+###### GptDevErrorDetect
 
 | Item ||
 |--------|---------------|
@@ -513,7 +521,7 @@ This container contains the module-wide configuration (parameters) of the GPT Dr
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### GptPredefTimer100us32bitEnable
+###### GptPredefTimer100us32bitEnable
 
 | Item ||
 |--------|---------------|
@@ -526,7 +534,7 @@ This container contains the module-wide configuration (parameters) of the GPT Dr
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### GptPredefTimer1usEnablingGrade
+###### GptPredefTimer1usEnablingGrade
 
 | Item ||
 |--------|---------------|
@@ -540,7 +548,7 @@ This container contains the module-wide configuration (parameters) of the GPT Dr
 | **Default-value** | GPT_PREDEF_TIMER_1US_DISABLED |
 | **Range** | GPT_PREDEF_TIMER_1US_16BIT_ENABLED<br>GPT_PREDEF_TIMER_1US_16_24BIT_ENABLED<br>GPT_PREDEF_TIMER_1US_16_24_32BIT_ENABLED<br>GPT_PREDEF_TIMER_1US_DISABLED |
 
-##### GptReportWakeupSource
+###### GptReportWakeupSource
 
 | Item ||
 |--------|---------------|
@@ -553,8 +561,20 @@ This container contains the module-wide configuration (parameters) of the GPT Dr
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### GptClockReferencePoint
+###### GptClockReferencePoint
 This container contains a parameter, which represents a reference to a container of the type McuClockReferencePoint (defined in module MCU).
+
+###### GptClockReference
+
+| Item ||
+|--------|---------------|
+| **Name** | GptClockReference |
+| **Description** | Reference to a container of the type McuClockReferencePoint, to select an input clock. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 Refer [AUTOSAR_SWS_GPTDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_GPTDriver.pdf) for configuration parameters details
 
 #### Steps To Configure Gpt Module
@@ -592,8 +612,8 @@ Support both Post Build and Pre Compile Configuration Variants
 
 ##### Setup required to run Gpt_Example_Timers example
 
-* Install Code Composer Studio latest version
-* Install C29 compiler
+* Connect the hardware and power up
+* Connect the uart and set up the baudrate to check the log on serial console
 
 ##### How to  run Gpt_Example_Timers example
 
@@ -635,8 +655,8 @@ Support both Post Build and Pre Compile Configuration Variants
 
 ##### Setup required to run Gpt_Example_OneShotMode example
 
-* Install Code Composer Studio latest version
-* Install C29 compiler
+* Connect the hardware and power up
+* Connect the uart and set up the baudrate to check the log on serial console
 
 ##### How to  run Gpt_Example_OneShotMode example
 
@@ -669,8 +689,8 @@ Support both Post Build and Pre Compile Configuration Variants
 
 ##### Setup required to run Gpt_Example_MixedMode example
 
-* Install Code Composer Studio latest version
-* Install C29 compiler
+* Connect the hardware and power up
+* Connect the uart and set up the baudrate to check the log on serial console
 
 ##### How to  run Gpt_Example_MixedMode example
 
@@ -706,10 +726,8 @@ Support both Post Build and Pre Compile Configuration Variants
 
 ##### Setup required to run Gpt_Example_InterruptTimeout example
 
-* Install Code Composer Studio latest version
-* Install C29 compiler
 * Connect the hardware and power up
-* Connect the uart set up to check the log on serial console
+* Connect the uart and set up the baudrate to check the log on serial console
 
 ##### How to  run Gpt_Example_InterruptTimeout example
 
@@ -751,8 +769,8 @@ Support both Post Build and Pre Compile Configuration Variants
 
 ##### Setup required to run Gpt_Example_ContinuousMode example
 
-* Install Code Composer Studio latest version
-* Install C29 compiler
+* Connect the hardware and power up
+* Connect the uart and set up the baudrate to check the log on serial console
 
 ##### How to  run Gpt_Example_ContinuousMode example
 

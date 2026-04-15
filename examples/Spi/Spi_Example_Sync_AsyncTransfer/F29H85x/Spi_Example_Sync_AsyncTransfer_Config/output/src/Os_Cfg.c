@@ -106,6 +106,10 @@
 #define OS_START_SEC_CONFIG_DATA
 #include "Os_MemMap.h"
 
+MCAL_LIB_INT_ISR(Os_Isr156)
+{
+    Os_IsrCat2((Os_IntIdType)156);
+}
 
 /* Os configuration structure */
 CONST(struct Os_ConfigType_s, OS_CONFIG_DATA) Os_Config =
@@ -113,6 +117,23 @@ CONST(struct Os_ConfigType_s, OS_CONFIG_DATA) Os_Config =
     .isr_cfg =
     {
         
+        [0] =
+        {
+            .int_id = (Os_IntIdType)154U,
+            .int_priority = (Os_IntPriorityType)13U,
+            .int_category = (Os_IntCategoryType)CATEGORY_1,
+            .int_funcptr = (Os_IsrFuncPtrType)Spi_A_RxISR,
+            .isr_funcptr = (Os_IsrFuncPtrType)Spi_A_RxISR,
+        },
+
+        [1] =
+        {
+            .int_id = (Os_IntIdType)156U,
+            .int_priority = (Os_IntPriorityType)16U,
+            .int_category = (Os_IntCategoryType)CATEGORY_2,
+            .int_funcptr = (Os_IsrFuncPtrType)Os_Isr156,
+            .isr_funcptr = (Os_IsrFuncPtrType)ISR_Spi_B_RxISR,
+        }
     },
 
     .counter_cfg =
@@ -126,7 +147,7 @@ CONST(struct Os_ConfigType_s, OS_CONFIG_DATA) Os_Config =
         }
     },    
 
-    .threshold = (Os_ThresholdType)0U,
+    .threshold = (Os_ThresholdType)15U,
 };   
 
 #define OS_STOP_SEC_CONFIG_DATA

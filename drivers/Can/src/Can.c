@@ -101,11 +101,11 @@
 #error "AUTOSAR Version Numbers of Can are different"
 #endif
 
-#if ((CAN_SW_MAJOR_VERSION != (3U)) || (CAN_SW_MINOR_VERSION != (1U)))
+#if ((CAN_SW_MAJOR_VERSION != (4U)) || (CAN_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Can.c and Can.h are inconsistent!"
 #endif
 
-#if ((CAN_CFG_MAJOR_VERSION != (3U)) || (CAN_CFG_MINOR_VERSION != (1U)))
+#if ((CAN_CFG_MAJOR_VERSION != (4U)) || (CAN_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Can.c and Can_Cfg.h are inconsistent!"
 #endif
 /*********************************************************************************************************************
@@ -738,6 +738,12 @@ Can_Write(Can_HwHandleType Hth, P2CONST(Can_PduType, AUTOMATIC, CAN_APPL_CONST) 
         ((Std_ReturnType)E_OK == Can_DetCheckWrite2(Hth, PduInfo)))
 #endif
     {
+        /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] In DET‑enabled builds, input validation for Hth and
+         * mailbox type is already performed by Can_DetCheckWrite2(). If these conditions fail, a DET error
+         * is reported and execution does not enter the subsequent if block. Therefore, the false branches of the
+         * mailbox validity check are structurally unreachable in DET‑ON configurations. These branches are
+         * exercised in DET‑OFF builds, so there is no functional or runtime impact.
+         */
         if ((Hth < (Can_HwHandleType)Can_DriverObj.maxMbCnt) &&
             (CAN_TRANSMIT == Can_DriverObj.canMailbox[Hth].mailBoxConfig.CanObjectType))
         {
@@ -752,6 +758,7 @@ Can_Write(Can_HwHandleType Hth, P2CONST(Can_PduType, AUTOMATIC, CAN_APPL_CONST) 
                 returnValue = Can_WriteTxHandlerPriv(pduInfo, PduInfo, Hth, msgController);
             }
         }
+        /* TI_COVERAGE_GAP_STOP */
     }
     return returnValue;
 }
@@ -1210,7 +1217,13 @@ static FUNC(Std_ReturnType, CAN_CODE)
                               (uint8)CAN_E_PARAM_HANDLE);
     }
     /* Check if the data length is incorrect and report a DET error. */
-    /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] This is a false positive. has covered in Tests
+    /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] The False branch of (CanFDMode == TRUE) at the
+     * third sub-condition is logically unreachable. Due to short-circuit evaluation, the third
+     * sub-condition is only evaluated when (CAN_CLASSIC_PAYLOAD_MAX_BYTES < pduInfor->length) is
+     * True (line above). If CanFDMode == FALSE at that point, the second sub-condition would have
+     * already evaluated to True and short-circuited the entire else-if, preventing the third
+     * sub-condition from being reached. Therefore (CanFDMode == TRUE) can only be evaluated as
+     * True, making the False branch a false positive reported by the coverage tool.
      */
     else if ((CAN_FD_PAYLOAD_MAX_BYTES < pduInfor->length) ||
              ((CAN_CLASSIC_PAYLOAD_MAX_BYTES < pduInfor->length) &&

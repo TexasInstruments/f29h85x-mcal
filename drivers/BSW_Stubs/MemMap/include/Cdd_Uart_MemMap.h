@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Cdd_Uart_MemMap.h
- *  Project:    C29x MCAL
- *  Module:     CDD_UART
  *  Generator:  None
  *
  *  Description:  Memory Map template file for Cdd_Uart module.
+ *                This source code is for reference only, it should not be used as-is in a
+ *                typical customer applications
  *
  *********************************************************************************************************************/
 
@@ -113,6 +113,7 @@
 #define MEMMAP_SECTION_OPEN
 #define CDD_UART_VAR_INIT_UNSPECIFIED_OPEN
 #pragma clang section data = ".CDD_UART_VAR_INIT_UNSPECIFIED"
+#pragma clang section bss = ".CDD_UART_VAR_NO_INIT_UNSPECIFIED"
 #undef CDD_UART_START_SEC_VAR_INIT_UNSPECIFIED
 #undef MEMMAP_ERROR
 
@@ -128,6 +129,7 @@
 #endif
 #undef CDD_UART_VAR_INIT_UNSPECIFIED_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef CDD_UART_STOP_SEC_VAR_INIT_UNSPECIFIED
 #undef MEMMAP_ERROR
             
@@ -217,6 +219,7 @@
 #define MEMMAP_SECTION_OPEN
 #define CDD_UART_VAR_INIT_BOOLEAN_OPEN
 #pragma clang section data = ".CDD_UART_VAR_INIT_BOOLEAN"
+#pragma clang section bss = ".CDD_UART_VAR_NO_INIT_BOOLEAN"
 #undef CDD_UART_START_SEC_VAR_INIT_BOOLEAN
 #undef MEMMAP_ERROR
 
@@ -232,7 +235,34 @@
 #endif
 #undef CDD_UART_VAR_INIT_BOOLEAN_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef CDD_UART_STOP_SEC_VAR_INIT_BOOLEAN
+#undef MEMMAP_ERROR
+            
+#elif defined CDD_UART_START_SEC_VAR_NO_INIT_UNSPECIFIED
+#ifdef MEMMAP_SECTION_OPEN
+    #error "Memory section VAR_NO_INIT_UNSPECIFIED is already opened, Cannot reopen section using \
+           CDD_UART_START_SEC_VAR_NO_INIT_UNSPECIFIED ."
+#endif
+#define MEMMAP_SECTION_OPEN
+#define CDD_UART_VAR_NO_INIT_UNSPECIFIED_OPEN
+#pragma clang section bss = ".CDD_UART_VAR_NO_INIT_UNSPECIFIED"
+#undef CDD_UART_START_SEC_VAR_NO_INIT_UNSPECIFIED
+#undef MEMMAP_ERROR
+
+#elif defined CDD_UART_STOP_SEC_VAR_NO_INIT_UNSPECIFIED
+#ifndef MEMMAP_SECTION_OPEN
+#error "Memory section VAR_NO_INIT_UNSPECIFIED is not open, Cannot close section using \
+         CDD_UART_STOP_SEC_VAR_NO_INIT_UNSPECIFIED."
+#endif
+#undef MEMMAP_SECTION_OPEN
+#ifndef CDD_UART_VAR_NO_INIT_UNSPECIFIED_OPEN
+    #error "Memory section VAR_NO_INIT_UNSPECIFIED is not open ,Cannot close section using \
+           CDD_UART_STOP_SEC_VAR_NO_INIT_UNSPECIFIED."
+#endif
+#undef CDD_UART_VAR_NO_INIT_UNSPECIFIED_OPEN
+#pragma clang section bss = ""
+#undef CDD_UART_STOP_SEC_VAR_NO_INIT_UNSPECIFIED
 #undef MEMMAP_ERROR
             
 #endif
@@ -285,6 +315,15 @@
 #ifdef CDD_UART_STOP_SEC_VAR_INIT_BOOLEAN
     #error "multiple memory allocation keywords are defined, Cannot use \
            CDD_UART_STOP_SEC_VAR_INIT_BOOLEAN."
+#endif
+
+#ifdef CDD_UART_START_SEC_VAR_NO_INIT_UNSPECIFIED
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           CDD_UART_START_SEC_VAR_NO_INIT_UNSPECIFIED."
+#endif
+#ifdef CDD_UART_STOP_SEC_VAR_NO_INIT_UNSPECIFIED
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           CDD_UART_STOP_SEC_VAR_NO_INIT_UNSPECIFIED."
 #endif
 
 /*********************************************************************************************************************

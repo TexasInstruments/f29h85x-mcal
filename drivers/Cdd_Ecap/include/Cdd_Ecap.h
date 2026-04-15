@@ -105,7 +105,7 @@ extern "C" {
 /** \brief Driver Implementation Minor Version */
 #define CDD_ECAP_SW_MINOR_VERSION (1U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_ECAP_SW_PATCH_VERSION (0U)
+#define CDD_ECAP_SW_PATCH_VERSION (1U)
 
 /** \brief AUTOSAR Major version specification implemented by CDD_ECAP Driver */
 #define CDD_ECAP_AR_RELEASE_MAJOR_VERSION (4U)
@@ -179,6 +179,10 @@ extern "C" {
  *  Error codes returned by CDD_ECAP functions
  *  @{
  */
+// clang-format off
+/* Design: MCAL-36072, MCAL-36073, MCAL-36074, MCAL-36075, MCAL-36076, MCAL-36077, MCAL-36078, MCAL-36079, MCAL-36080, 
+ * Design: MCAL-36081, MCAL-36082, MCAL-36083, MCAL-36084, MCAL-36085*/
+// clang-format on
 /** \brief API service called with invalid pointer */
 #define CDD_ECAP_E_PARAM_POINTER ((uint8)0x0AU)
 /**
@@ -270,30 +274,37 @@ extern "C" {
 /**
  *  \brief This type defines Value type
  */
+/* Design: MCAL-36052*/
 typedef uint32  Cdd_Ecap_ValueType;
 /**
  *  \brief This type defines return value Cdd_Ecap_GetTimeStampIndex
  */
+/* Design: MCAL-36053*/
 typedef uint32  Cdd_Ecap_IndexType;
 /**
  *  \brief This type defines return value of Cdd_Ecap_GetEdgeNumbers
  */
+/* Design: MCAL-36054*/
 typedef uint32  Cdd_Ecap_EdgeNumberType;
 /**
  *  \brief This type defines Channel type
  */
+/* Design: MCAL-36055*/
 typedef uint8   Cdd_Ecap_ChannelType;
 /**
  *  \brief This type defines Prescaler type
  */
+/* Design: MCAL-36056*/
 typedef uint8   Cdd_Ecap_ChannelPrescalerType;
 /**
  *  \brief This type defines the scale-factor type for HR mode
  */
+/* Design: MCAL-36057*/
 typedef float32 Cdd_Ecap_ChannelHrScaleType;
 /**
  *  \brief This type defines the interrupt flags type for HR mode
  */
+/* Design: MCAL-36058*/
 typedef uint16  Cdd_Ecap_ChannelHrInterruptType;
 
 /**
@@ -351,6 +362,7 @@ typedef enum
 /**
  *  \brief This type defines a input state of CDD_ECAP driver
  */
+/* Design: MCAL-36060*/
 typedef enum
 {
     /** \brief Module is in active state */
@@ -362,6 +374,7 @@ typedef enum
 /**
  *  \brief This type defines Activation range
  */
+/* Design: MCAL-36061*/
 typedef enum
 {
     /** \brief Rising Edge Activation type */
@@ -375,6 +388,7 @@ typedef enum
 /**
  *  \brief This defines the available emulation modes
  */
+/* Design: MCAL-36062*/
 typedef enum
 {
     /** \brief TSCTR is stopped on emulation suspension */
@@ -410,6 +424,7 @@ typedef enum
 /**
  *  \brief This type defines available measurement modes
  */
+/* Design: MCAL-36063, MCAL-36050*/
 typedef enum
 {
     /** \brief Signal Edge Detect Mode */
@@ -425,6 +440,7 @@ typedef enum
 /**
  *  \brief This type defines Signal Measurement Property range
  */
+/* Design: MCAL-36064, MCAL-36049*/
 typedef enum
 {
     /** \brief Signal Low time */
@@ -438,6 +454,7 @@ typedef enum
 /**
  *  \brief This type defines TimeStamp Property range
  */
+/* Design: MCAL-36065*/
 typedef enum
 {
     /** \brief Linear Buffer to be used in Timestamp */
@@ -449,6 +466,7 @@ typedef enum
 /**
  *  \brief This type defines the edge to start the edge capturing
  */
+/* Design: MCAL-36066*/
 typedef enum
 {
     /** \brief Rising Edge Activation type */
@@ -458,11 +476,13 @@ typedef enum
 } Cdd_Ecap_StartLevelType;
 
 /** \brief  Notification callback function pointer  */
+/* Design: MCAL-36067*/
 typedef void (*Cdd_Ecap_NotifyFuncType)(void);
 
 /**
  *  \brief This type defines Duty Cycle struct
  */
+/* Design: MCAL-36068*/
 typedef struct
 {
     /** \brief Active time of Signal */
@@ -474,6 +494,10 @@ typedef struct
 /**
  *  \brief CDD_ECAP Channel Config Structure
  */
+// clang-format off
+/* Design: MCAL-36069, MCAL-36248, MCAL-36249, MCAL-36308, MCAL-36307, MCAL-36306, MCAL-36305, MCAL-36304, MCAL-36303
+ * Design: MCAL-36302, MCAL-36301, MCAL-36300, MCAL-36299, MCAL-36298, MCAL-36297, MCAL-36296, MCAL-36295*/
+// clang-format on
 typedef struct
 {
     /** \brief Base address of CDD_ECAP Channel in use */
@@ -510,6 +534,7 @@ typedef struct
 /**
  *  \brief CDD_ECAP Config Structure
  */
+/* Design: MCAL-36070*/
 typedef struct Cdd_Ecap_ConfigTag
 {
     /** \brief Channel configurations */
@@ -517,6 +542,7 @@ typedef struct Cdd_Ecap_ConfigTag
 } Cdd_Ecap_ConfigType;
 
 /** \brief  CDD_ECAP periodic readback register definition */
+/* Design: MCAL-36071*/
 typedef struct Cdd_Ecap_PeriodicReadBackDataType_s
 {
     /** \brief Register data for ECAP_CAP1 register */

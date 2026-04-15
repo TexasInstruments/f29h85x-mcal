@@ -66,6 +66,8 @@
  *  Generator:  None
  *
  *  Description:  Os stub source file.
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -196,7 +198,7 @@ static FUNC(void,OS_CODE) OS_CounterInit(const Os_CounterCfgType *CounterCfg);
  * \retval None
  *
  *********************************************************************************************************************/
-static FUNC(void,OS_CODE) Interrupt_InitModule(void);
+static FUNC(void,OS_CODE) Os_InitModule(void);
 
 /** \brief Sets the INT Stack Pointer.
  *
@@ -210,7 +212,7 @@ static FUNC(void,OS_CODE) Interrupt_InitModule(void);
  * \retval None
  *
  *********************************************************************************************************************/
-static inline void Interrupt_setINTSP(SSU_StackType Stack);
+static inline void Os_setINTSP(SSU_StackType Stack);
 
 /** \brief Set the Interrupt Link Owner.
  *
@@ -225,7 +227,7 @@ static inline void Interrupt_setINTSP(SSU_StackType Stack);
  * \retval None
  *
  *********************************************************************************************************************/
-static inline void Interrupt_SetLinkOwner(uint32 IntNum, SSU_LinkType LinkOwner);
+static inline void Os_SetLinkOwner(uint32 IntNum, SSU_LinkType LinkOwner);
 
 /** \brief Global enable for INT and RTINT
  *
@@ -240,7 +242,7 @@ static inline void Interrupt_SetLinkOwner(uint32 IntNum, SSU_LinkType LinkOwner)
  * \retval None
  *
  ******************************************************************************/
-static inline void Interrupt_GlobalEnable(void);
+static inline void Os_GlobalEnable(void);
 
 /** \brief Global disable for INT and RTINT.
  *
@@ -256,7 +258,7 @@ static inline void Interrupt_GlobalEnable(void);
  * \retval None
  *
  ******************************************************************************/
-static inline void Interrupt_DisableGlobal(void);
+static inline void Os_DisableGlobal(void);
 
 /** \brief Enables the specified interrupt.
  *
@@ -272,7 +274,7 @@ static inline void Interrupt_DisableGlobal(void);
  * \retval None
  *
  ******************************************************************************/
-static inline void Interrupt_EnableInterrupt(uint8 IntNum);
+static inline void Os_EnableInterrupt(uint8 IntNum);
 
 /** \brief Set the Interrupt Priority Level
  *
@@ -290,7 +292,7 @@ static inline void Interrupt_EnableInterrupt(uint8 IntNum);
  * \retval None
  *
  ******************************************************************************/
-static inline void Interrupt_SetIntPriority(uint8 IntNum, uint8 Priority);
+static inline void Os_SetIntPriority(uint8 IntNum, uint8 Priority);
 
 /** \brief Set the Interrupt Group Mask
  *
@@ -307,7 +309,7 @@ static inline void Interrupt_SetIntPriority(uint8 IntNum, uint8 Priority);
  * \retval None
  *
  ******************************************************************************/
-static inline void Interrupt_SetGroupMask(uint8 GroupMask);
+static inline void Os_SetGroupMask(uint8 GroupMask);
 
 /** \brief Set the threshold for RTINT
  *
@@ -322,7 +324,7 @@ static inline void Interrupt_SetGroupMask(uint8 GroupMask);
  * \retval None
  *
  ******************************************************************************/
-static inline void Interrupt_SetThreshold(uint8 Threshold);
+static inline void Os_SetThreshold(uint8 Threshold);
 
 #if(STD_ON == OS_COUNTER_ENABLE)
 /** \brief Select clock source prescaler
@@ -535,7 +537,7 @@ static FUNC(void,OS_CODE) OS_CounterInit(const Os_CounterCfgType *CounterCfg)
 }
 #endif
 
-static FUNC(void,OS_CODE) Interrupt_InitModule(void)
+static FUNC(void,OS_CODE) Os_InitModule(void)
 {
     /* Initialize the MMR registers */
     HWREG(PIPE_BASE + PIPE_O_MMR_CLR) = 0x3U;
@@ -545,11 +547,11 @@ static FUNC(void,OS_CODE) Interrupt_InitModule(void)
     while(HWREG(PIPE_BASE + PIPE_O_MEM_INIT_STS) != 0x2U);
 
     /*Set INTSP to STACK2 */
-    Interrupt_setINTSP(SSU_STACK2);
+    Os_setINTSP(SSU_STACK2);
 
     MCAL_LIB_EINT;
     /* Enables global interrupt. */
-    Interrupt_GlobalEnable();
+    Os_GlobalEnable();
 
 }
 
@@ -560,73 +562,73 @@ static FUNC(void,OS_CODE) OS_ISRInit(const Os_CfgType *CfgPtr)
         uint8 i=0;
         
         /* Disable INT and RTINT by disabling global enable key.*/
-        Interrupt_DisableGlobal();
+        Os_DisableGlobal();
 
         /* Initialize the PIPE control registers.*/
-        Interrupt_InitModule();
+        Os_InitModule();
 
         /* Configure RTINT threshold */
-        Interrupt_SetThreshold(CfgPtr->threshold);
+        Os_SetThreshold(CfgPtr->threshold);
 
         /* Configure the group mask */
-        Interrupt_SetGroupMask(DISABLE_GROUP_MASK); /* Disable interrupt nesting.*/
+        Os_SetGroupMask(DISABLE_GROUP_MASK); /* Disable interrupt nesting.*/
 
         /* Configure the interrupts */
         for(i=0;i< OS_CFG_MAX_ISR;i++)
         {
             /* Set all link owner of all interrupts to LINK2 */
-            Interrupt_SetLinkOwner((CfgPtr->isr_cfg[i].int_id),SSU_LINK2);
+            Os_SetLinkOwner((CfgPtr->isr_cfg[i].int_id),SSU_LINK2);
 
             /* ISR to be called when an interrupt occurs. */
             HWREG(PIPE_BASE + PIPE_O_INT_VECT_ADDR(CfgPtr->isr_cfg[i].int_id)) = (uint32)(CfgPtr->isr_cfg[i].int_funcptr);
 
             /* Assign the priority level and enable the interrupt.*/         
-            Interrupt_SetIntPriority(CfgPtr->isr_cfg[i].int_id,CfgPtr->isr_cfg[i].int_priority);
-            Interrupt_EnableInterrupt(CfgPtr->isr_cfg[i].int_id);
+            Os_SetIntPriority(CfgPtr->isr_cfg[i].int_id,CfgPtr->isr_cfg[i].int_priority);
+            Os_EnableInterrupt(CfgPtr->isr_cfg[i].int_id);
         }
     }
 }
 
 static inline void
-Interrupt_setINTSP(SSU_StackType Stack)
+Os_setINTSP(SSU_StackType Stack)
 {
     HWREG(PIPE_BASE + PIPE_O_INTSP) = Stack;
 }
 
 static inline void
-Interrupt_SetLinkOwner(uint32 IntNum, SSU_LinkType LinkOwner)
+Os_SetLinkOwner(uint32 IntNum, SSU_LinkType LinkOwner)
 {
     uint32 base = PIPE_BASE + PIPE_O_INT_LINK_OWNER(IntNum);
     HWREG(base) = (HWREG(base) & 0xF0U) | (uint8)LinkOwner;
 }
 
-static inline void Interrupt_GlobalEnable(void)
+static inline void Os_GlobalEnable(void)
 {
     HWREG(PIPE_BASE + PIPE_O_GLOBAL_EN) = (0x3U | PIPE_GLOBAL_EN_KEY);
 }
 
-static inline void Interrupt_DisableGlobal(void)
+static inline void Os_DisableGlobal(void)
 {
     HWREG(PIPE_BASE + PIPE_O_GLOBAL_EN) = PIPE_GLOBAL_EN_KEY;
 }
 
-static inline void Interrupt_EnableInterrupt(uint8 IntNum)
+static inline void Os_EnableInterrupt(uint8 IntNum)
 {
     HWREG(PIPE_BASE + PIPE_O_INT_CTL_L(IntNum)) = PIPE_INT_CTL_L_EN;
 }
 
-static inline void Interrupt_SetIntPriority(uint8 IntNum, uint8 Priority)
+static inline void Os_SetIntPriority(uint8 IntNum, uint8 Priority)
 {
     uint32 base = PIPE_BASE + PIPE_O_INT_CONFIG(IntNum);
     HWREG(base) = (HWREG(base) & ~PIPE_INT_CONFIG_PRI_LEVEL_M) | Priority;
 }
 
-static inline void Interrupt_SetGroupMask(uint8 GroupMask)
+static inline void Os_SetGroupMask(uint8 GroupMask)
 {
     HWREG(PIPE_BASE + PIPE_O_INT_GRP_MASK) = GroupMask;
 }
 
-static inline void Interrupt_SetThreshold(uint8 Threshold)
+static inline void Os_SetThreshold(uint8 Threshold)
 {
     HWREG(PIPE_BASE + PIPE_O_RTINT_THRESHOLD) = Threshold;
 }

@@ -131,14 +131,24 @@ Example:
      - AI coding agents can automatically create working F29 MCAL example projects
      - Compatible with CCS v20.05.00
      - CCS provides additional MCP services (build, debug) that help AI agents catch and fix issues automatically
+     - For more information, see the [CCS User Guide - AI Coding Assistants](https://software-dl.ti.com/ccs/esd/documents/users_guide/index_ai.html)
      - **Disclaimer:** As with any AI-based tooling, results may vary. The AGENTS.md file will be updated iteratively based on feedback. Always review AI-generated code before use.
+  2. **LLM Context Files:**
+     - Added [llms.txt](https://software-dl.ti.com/C2000/docs/mcal/F29H85x/26.00.00/llms.txt) and [llms-full.txt](https://software-dl.ti.com/C2000/docs/mcal/F29H85x/26.00.00/llms-full.txt) files to provide structured project context for AI language models
+     - These files follow the [llms.txt standard](https://llmstxt.org/) to help AI tools better understand the F29x MCAL project structure and APIs
 
 - MCAL / CDD:
+  - New modules added:
+    1. **CDD DMA:**
+       - Added DMA driver with support for memory-to-memory, memory-to-peripheral, and peripheral-to-memory transfers
+       - Includes EB Tresos plugin for configuration
   - Existing modules with enhancements:
     1. **CDD XBAR:**
        - Added support for external interrupt configuration
        - Added APIs to configure external interrupt
        - Updated `Cdd_Xbar_Gpio_interrupt` example to demonstrate external interrupt configuration
+       - Added CDD_XBAR_TRIP1 to EPWM Xbar output lines configuration
+       - Updated EB Tresos plugin to use superset fallback lists for crossbar input line selections across Output, EPWM, CLB, MinDB, and ICL crossbar types
     2. **WDG:**
        - Added new `Wdg_Example_Reset` example demonstrating watchdog timer reset functionality
        - Example shows watchdog timeout behavior when intentionally not serviced
@@ -154,10 +164,18 @@ Example:
        - Restored EPWM6 pin configuration support as per updated specification for F29P32x devices
     6. **CDD IPC:**
        - Updated EB Tresos plugin to use superset fallback lists for IPC remote cores and IPC instance selections
-    7. **CDD XBAR:**
-       - Updated EB Tresos plugin to use superset fallback lists for crossbar input line selections across Output, EPWM, CLB, MinDB, and ICL crossbar types
-    8. **CDD PWM:**
+    7. **CDD PWM:**
        - Restored EPWM6 configuration support as per updated specification for F29P32x devices
+    8. **DIO:**
+       - Added validation in DIO so that it can only refer to PORT pins that are configured as GPIO and mapped to AUTOSAR core i.e. CPU1
+    9. **CAN:**
+       - Updated CAN examples to use GPIO 234 and GPIO 235 for CAN TX/RX pins to align with the physically available pinout on the F29H85X-SOM-EVM board
+    10. **CDD ADC:**
+        - Updated `Cdd_Adc_Example_DmaTransfer` example to use the MCAL Cdd_Dma driver instead of the rtdma library from f29x_sdk
+
+- Build System:
+  - Updated TI C29 Clang compiler and linker version from 2.0.0.STS to 2.2.0.LTS
+  - Updated post-build certificate handling steps across build infrastructure for FLASH image signing
 
 ## Module Version Number
 
@@ -177,23 +195,25 @@ Format: XX.YY.ZZ where:
 
 | Module | Version |
 | --- | --- |
-| MCU | XX.XX.XX |
-| PORT | XX.XX.XX |
-| DIO | XX.XX.XX |
-| GPT | XX.XX.XX |
-| CAN | XX.XX.XX |
-| WDG | XX.XX.XX |
-| LIN | XX.XX.XX |
-| SPI | XX.XX.XX |
-| FLS | XX.XX.XX |
-| CDD ADC | XX.XX.XX |
-| CDD XBAR | XX.XX.XX |
-| CDD SENT | XX.XX.XX |
-| CDD PWM | XX.XX.XX |
-| CDD ECAP | XX.XX.XX |
-| CDD IPC | XX.XX.XX |
-| CDD UART | XX.XX.XX |
-| CDD I2C | XX.XX.XX |
+| MCU | 02.02.00 |
+| PORT | 04.00.00 |
+| DIO | 01.01.00 |
+| GPT | 02.00.03 |
+| CAN | 04.00.00 |
+| WDG | 02.00.02 |
+| LIN | 03.01.01 |
+| SPI | 03.01.01 |
+| FLS | 03.02.00 |
+| CDD ADC | 03.00.02 |
+| CDD XBAR | 03.01.00 |
+| CDD SENT | 03.01.01 |
+| CDD PWM | 03.01.01 |
+| CDD ECAP | 03.01.01 |
+| CDD IPC | 02.01.01 |
+| CDD UART | 03.00.02 |
+| CDD I2C | 01.03.00 |
+| CDD DMA | 01.00.00 |
+| Resource Allocator | 01.01.00 |
 
 ### Note
 
@@ -227,12 +247,24 @@ Example:
 
 | Key | Component/s | Severity | Summary | Affected Version | Impact | Steps to Reproduce | Fix Description |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| MCAL-37005 | Cdd_Adc, Cdd_Ecap, Cdd_Pwm, Spi | S3-Minor | MemMap: Variables placed in incorrect memory sections | C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01 | Variables were placed in unintended memory regions due to incorrect MemMap section marker placement in driver source files. | 1. Build MCAL drivers and check generated MAP file. <br>2. Verify generated memory map and observe module specific data memory location. <br>3. Review driver source files and identify incorrect section marker placement. | Corrected MemMap section marker placement: moved STOP_SEC_CODE to proper location in Cdd_Adc_Priv.c, removed redundant section markers in Cdd_Ecap_Priv.c, moved SFO calibration variables to file scope with proper sections in Cdd_Pwm_Priv.c, and added missing sections around Spi_DriverObjPtr in Spi_Priv.c. |
 | MCAL-36330 | Can | S2-Major | CAN: Continuous CanIf_TxConfirmation() when new transmission is not initiated | C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01 | CanIf_TxConfirmation is received multiple times if new message transmission is not initiated on a HOH. | 1. Send only one CAN message using Can_Write(). <br>2. Schedule Can_MainFunction_Write() continuously. <br>3. Observe that CanIf_TxConfirmation() is called continuously for one message. <br>4. Expectation is CanIf_TxConfirmation() should be called only once after one CAN message transmission. <br>5. Similar issue happens in interrupt context as well. | As hardware register status (transmission and cancellation) does not clear until next transmission request is added, maintain the pending status in software to help identify if the message is already processed. |
 | MCAL-35980 | Can | S3-Minor | CAN: Configuration validation gap for CanMainFunctionRWPeriod in Polling/Mixed Mode | C29xMCAL_01.00.00 <br>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.02.01 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 | Configurator allows a hardware object mapped to a controller configured entirely in Polling mode to have no schedulable function mapped to it without any warning or error. If such configuration exists, hardware object can't be read or written. | 1. Open EB Tresos configuration tool. <br>2. Create a new Can module configuration. <br>3. Configure a CanController with: CanRxProcessing = POLLING, CanTxProcessing = POLLING. <br>4. Create 2 or more CanHardwareObjects that reference this CanController. <br>5. Do not configure any CanMainFunctionRWPeriodRef in HOH and do not make any entry in CanMainFunctionRWPeriods. <br>6. Generate the configuration. <br>7. Observe that no error is generated despite the invalid configuration. | Added configuration validation check in XDM to detect and report an error when a hardware object set to Polling mode has no CanMainFunctionRWPeriodRef mapped to it. |
 | MCAL-35624 | Dio | S3-Minor | DIO: Dio doesn't follow AUTOSAR naming guidelines for typedefs and macros | C29xMCAL_01.00.00 <br>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.02.01 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 | As AUTOSAR naming convention is not followed, these definitions may conflict with other definitions in an application | Review the static and dynamic files of DIO module | Updated all macros in DIO module to follow AUTOSAR naming conventions (Dio_ prefix for all public symbols). |
 | MCAL-35862 | Fls | S2-Major | FLS: Fls_F29Compare casts a byte aligned pointer to a 32-bit aligned pointer and dereferences it, which is illegal | C29xMCAL_01.04.01 | When Fls_f29Compare() is called with a ramAddr that is not 32-bit aligned (e.g. 8-bit aligned), execution will crash in Fls_priv.c in Fls_F29Compare() due to illegal pointer cast and dereference. | 1. Call Fls_f29Compare() with a ramAddr that is not 32-bit aligned (e.g. 8-bit aligned). <br>2. Observe that execution crashes in Fls_priv.c in Fls_F29Compare() at P2VAR(uint32, AUTOMATIC, FLS_APPL_DATA) pu32CheckValueBuffer = (uint32 *)Fls_DrvObj.ramAddr; | Removed the illegal conversion and appropriately internally handle the 8-bit pointer. |
 | MCAL-35789 | Fls | S1-Critical | FLS: Flash API initialization fails due to missing semaphore handling in FlashAPIInit | C29xMCAL_01.04.01 | The Flash API may not be properly initialized, which can cause flash operations to fail or produce unexpected errors. | 1. Call FlashAPIInit without claiming flash semaphore. <br>2. Observe FLC_MMR_Access error. <br>3. Release flash semaphore without claiming it first. <br>4. Observe SSU MMR Error for FMSTAT clear register. | Added semaphore claim and release calls before and after the Flash initialization function. |
 | MCAL-36611 | Port | S3-Minor | PORT: Invalid characters in Peripheral Names and non-compliant Physical Pin ID enum values violate AUTOSAR naming rules | C29xMCAL_01.00.00 <br>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.02.01 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01 | ARXML generation produces non-compliant AUTOSAR short names, causing AUTOSAR validation tools to reject the generated configuration. Downstream BSW configuration tools expecting valid AUTOSAR identifiers would fail. | 1. Open EB Tresos with the Port plugin. <br>2. Create a Port configuration and select the ANALOG peripheral. <br>3. Observe peripheral signal names containing `/` characters (e.g., A0/C24/DACA_OUT). <br>4. Select any pin and observe the PortPhysicalPinId dropdown containing numeric-only entries (e.g., 1, 10). <br>5. Run arxml_gen_Port — generated ARXML contains invalid short names. <br>6. Run vsmd_check_Port — validation failures reported. | Replaced `/` characters in MuxModeSignalType entries with `_` to comply with AUTOSAR short name rules. Added `PORT_PIN_` prefix to numeric-only PhysicalPinNumber values to ensure all ENUMERATION literals start with an alphabetic character. <br>**Note:** Existing Port configurations may require migration. Refer to the [Migration Guide](https://software-dl.ti.com/C2000/docs/mcal/F29H85x/26.00.00/src/MigrationGuide_list.html) for detailed steps. |
+| MCAL-35838 | Fls | S3-Minor | FLS: Incorrect hardcoding of FlsMaxWriteNormalMode to 16 in Fls_Init | C29xMCAL_01.04.01 | `FlsMaxWriteNormalMode` is hardcoded to 16 bytes inside `Fls_Init`, overriding the user-configured value. Setting `FlsMaxWriteNormalMode` to 8 is silently ignored, causing write operations to use the wrong chunk size. | 1. Set `FlsMaxWriteNormalMode` to 8 bytes in the FLS configuration. <br>2. Call `Fls_Init` with this configuration. <br>3. Initiate a Write operation. <br>4. Observe that  `FlsMaxWriteNormalMode` is overridden to 16 bytes internally. | Removed the hardcoded assignment of `FlsMaxWriteNormalMode` in `Fls_Init`. The driver now correctly uses the value from the provided configuration. |
+| MCAL-35849 | Fls | S2-Major | FLS: Missing semaphore acquisition checks | C29xMCAL_01.04.01 | The flash semaphore claim function — called before `Fls_Init`, `Fls_Erase`, and `Fls_Write` — does not verify whether the semaphore was actually acquired. If another core already holds the semaphore, the FLS driver proceeds with the flash operation without exclusive access, which can result in data corruption or unpredictable flash operation failures. | 1. Configure a multi-core system where CPU3 holds the flash semaphore. <br>2. On CPU1, initiate a Flash operation (e.g., `Fls_Erase` or `Fls_Write`). <br>3. Observe that the operation fails. | Added a return value check after each semaphore claim call in `Fls_Init`, `Fls_Erase`, and `Fls_Write`. If the semaphore is not successfully acquired, the operation is aborted and an appropriate error is reported. |
+| MCAL-35885 | Fls | S2-Major | FLS: Bug in Fls_Fapi_issueProgrammingCommand | C29xMCAL_01.04.01 | When `FlsMaxWriteNormalMode` is set to 8 bytes and a write of more than 8 bytes is requested, the second chunk is programmed incorrectly. The start condition offset (`u32StartCondition`) advances correctly, but the source data buffer pointer (`pu8DataBuffer`) is not compensated by the same offset, causing the second chunk to read from the wrong location in the source buffer. | 1. Set `FlsMaxWriteNormalMode` to 8 bytes. <br>2. Initiate a Write operation for 16 bytes. <br>3. Observe that the first 8-byte chunk is written correctly. <br>4. Observe that the second 8-byte chunk is written with incorrect data due to `pu8DataBuffer` not being compensated by the chunk offset. | Corrected the indexing of `pu8DataBuffer` in `Fls_Fapi_issueProgrammingCommand` to be compensated by `u32StartCondition` bytes, ensuring each chunk reads from the correct position in the source data buffer. |
+| MCAL-35964 | Fls | S3-Minor | FLS: Bugs in implementation involving static and globals for Program and Erase | C29xMCAL_01.04.01 | The `Fls_U32FlsWrite_PostFapiFsmReady` and `Fls_SectorBankErase_PostFapiFsmReadyDone` state variables are not initialized at startup and are not reset at job boundaries. If a Write or Erase job is canceled mid-operation, these variables retain stale values that can cause the next job to skip required steps (e.g., pre-write blank check, timeout capture) or behave incorrectly. | 1. Initiate a Write (Program) operation. <br>2. Cancel the operation using `Fls_Cancel()` before it completes. <br>3. Initiate a new Write or Erase operation. <br>4. Observe that the subsequent operation behaves incorrectly due to stale `PostFapiFsmReady` state carried over from the canceled job. | The `postFapiFsmReady` (write PostFSM ready flag) and `Fls_SectorBankErase_PostFapiFsmReadyDone` (erase PostFSM ready flag) state variables are now explicitly reset at driver initialization and at the start of each new job, ensuring no stale state from a previous canceled or failed operation carries over into subsequent jobs. |
+| MCAL-36715 | Fls | S3-Minor | FLS: Timeout implementation is not cumulative | C29xMCAL_01.04.01 | The timeout check for Program and Erase operations does not measure the total elapsed time across multiple `Fls_MainFunction` calls. The start time is reset on each call instead of being captured once at the beginning of the operation, so the timeout never accumulates and will not trigger even when the configured limit has been exceeded. | 1. Enable timeout supervision (`FLS_TIMEOUT_SUPERVISION_ENABLED = STD_ON`). <br>2. Set the timeout value for Erase or Program to approximately 10% of the expected operation duration. <br>3. Initiate an Erase or Program job and observe that no timeout failure is reported, even though the configured limit is far exceeded. | The timeout start time is now captured once per FSM operation — at the point the erase or program command is first issued — and held constant while the FSM remains in the same polling stage across subsequent `Fls_MainFunction` calls. This ensures the elapsed time is measured cumulatively over the full duration of the operation. |
+| MCAL-36722 | Fls | S2-Major | FLS: Failure scenarios in Program and Erase (Sector, Bank) not properly handled | C29xMCAL_01.04.01 | When a failure occurs during a Program or Erase operation, the internal FSM state variables are not reset to their default values. The failed job is reported correctly, but any subsequent job may start from a stale state, leading to unexpected behavior or further failures. | 1. Artificially introduce a failure in a single Erase (Sector or Bank) or Program operation. <br>2. Observe that the failure is reported correctly via the job error notification. <br>3. Initiate a subsequent Erase or Program operation. <br>4. Observe that the subsequent operation does not behave correctly due to stale FSM state carried over from the failed job. | Moved the FSM state variables for Program (write stage, PostFapiFsmReady flag) and Erase (sector erase stage, bank erase stage) into the driver object (`Fls_DrvObj`) so they are explicitly reset on driver initialization and at the start of each new job. Also consolidated the flash semaphore release in the erase job processing path to ensure the semaphore is always released regardless of which optional features (timeout supervision, erase verification) are enabled. |
+| MCAL-36502 | Can | S3-Minor | CAN: Transceiver delay offset and delay filter values are not handled according to AUTOSAR requirement | C29xMCAL_01.04.01 | The `CanControllerTrcvDelayCompensationOffset` and `TxDelayCompFilter` configuration values are expected to be in nanoseconds (range 0–400) per the AUTOSAR SWS, but the driver was treating them as mtq units (range 0–127) and writing them directly to the `MCAN_TDCR` register. This results in incorrect transceiver delay compensation behavior when CAN FD Tx delay compensation is enabled. | 1. Enable Tx Delay compensation in the CAN configuration. <br>2. Configure `CanControllerTrcvDelayCompensationOffset` and `TxDelayCompFilter` with values in the range 0–400 ns in EB Tresos. <br>3. Monitor the `MCAN_TDCR_TDCF` and `MCAN_TDCR_TDCO` registers. | Added proper unit conversion from nanoseconds to mtq (minimum time quantum) units before writing `CanControllerTrcvDelayCompensationOffset` and `TxDelayCompFilter` values to the `MCAN_TDCR` register, ensuring the transceiver delay compensation is applied correctly as per the AUTOSAR specification. |
+| MCAL-35835 | Can, CDD SENT | S3-Minor | CAN, CDD SENT: Pointer-list arrays incorrectly declared using `CONST(Type*, memclass)` instead of `CONSTP2CONST` | C29xMCAL_01.04.01 | Config arrays holding pointers to const objects (e.g., baud-rate config lists, mailbox lists, SENT channel/MTP config lists) were declared with `CONST(Type*, memclass)`, which expands to a non-const pointer to const data. This caused the linker to place these arrays in `.bss`/`.data` sections instead of const/rodata sections, resulting in memmap section check failures for CAN and CDD SENT. No functional behavior is affected at runtime. | 1. Build any CAN or CDD SENT test or example. <br>2. Read the generated MAP file. <br>3. Observe that the MAP file reports unmapped sections (`.bss.CanConfigSet_*_List`, `.data.CddSentConfig_*_List`). | Replaced all `CONST(Type*, memclass)` declarations for pointer-list arrays with the correct `CONSTP2CONST(Type, memclass, ptrclass)` AUTOSAR macro in the EB Tresos generator templates (`Can_Cfg.c`, `Can_PBcfg.c`, `Can_Cfg.h`, `Cdd_Sent_Cfg.c`). Updated the corresponding struct field types in `Can.h` and `Cdd_Sent.h` from `const Type**` to `const Type * const *` to match, and updated the local variable in `Cdd_Sent_Priv.c` that receives a list element from `P2VAR` to `P2CONST`. All CAN and CDD SENT output files must be regenerated from EB Tresos to pick up the template fixes. |
+| MCAL-35808 | Mcal_Lib | S3-Minor | Dependency of Mcal_Lib_MemMap.h for MCAL drivers | C29xMCAL_01.04.01 | Potential MemMap generation issues due to missing function documentation | Mcal_Lib_MemMap.h is included in sys_pmu.c. |  Corrected the MCAL_Lib_Bswmd.arxml with Module definition and other required parameters to create the Module and generate MemMap in Davinci|
+| MCAL-35347 | CDD I2C | S2-Major | I2C: Cancel API is not functional | C29xMCAL_01.04.00 | The `I2C_Cancel` API does not successfully cancel an ongoing I2C transfer in either polling or interrupt mode, which may cause the driver to hang and result in unexpected behavior in applications relying on transfer cancellation. | 1. Start an I2C transfer. <br>2. Immediately cancel the transfer by invoking the `I2C_Cancel` API. <br>3. Observe that the cancellation does not take effect and the driver may hang. | Implemented the `I2C_Cancel` API to correctly abort an ongoing I2C transfer in both polling and interrupt modes, ensuring the driver returns to an idle state after cancellation. |
+| MCAL-32321 | All | S2-Major | All Modules: Link time optimization is not verified for all modules | C29xMCAL_01.03.00 | Link time optimization (LTO) had not been verified across all modules, which could cause unexpected behavior or build issues if enabled. | 1. Add `-flto` flag to compiler options. <br>2. Build the MCAL project. <br>3. Behavior is not verified there might be unexpecetd issues. | Verified link time optimization (LTO) across all MCAL modules. LTO is now supported and validated for all drivers. |
 
 ## Known Issues And Limitations
 
@@ -269,10 +301,6 @@ Example:
   - **CDD IPC:** IPC is validated between CPU1 and CPU3. Since, CPU2 is configured in lockstep in our framework; IPC between CPU1 and CPU2 or CPU2 and CPU3 is not validated.
   - **Fls:** Timeout tests are not performed as FLASH characterization data is not yet available for this device.
   - **Spi:** Board to board Spi communication validated upto 40MHz. 50MHz have been only tested in loopback mode.
-  - **CDD I2C:** Target mode is not supported.
-
-- **Compiler:**
-  - Link Time optimization is currently not supported.
 
 ### New Known Issues
 
@@ -312,8 +340,7 @@ Move issues to "Fixed In This Release" section when resolved.
 
 | Key | Component/s | Severity | Summary | Affected Version | Impact | Steps to Reproduce | Workaround |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| MCAL-35347 | CDD I2C | S2-Major | I2C: Cancel API is not functional | C29xMCAL_01.04.00 | The I2C_Cancel API does not successfully cancel an ongoing I2C transfer, which may cause unexpected behavior in applications relying on transfer cancellation. | 1. Start an I2C transfer.<br>2. Immediately cancel the transfer by invoking the I2C_Cancel API.<br>3. Observe that the cancellation does not take effect. | Do not cancel the ongoing transmission using API. Instead handle this situation in application code. |
-| MCAL-32321 | All | S2-Major | All Modules: Link time optimization is not verified for all modules | C29xMCAL_01.03.00 | Link time optimization (LTO) has not been verified across all modules, which may cause unexpected behavior or build issues if enabled. | 1. Add -flto flag to compiler options.<br>2. Build the MCAL project.<br>3. Run the application and you might observe unexpected behavior. | By default LTO is disabled, user shall not enable it. |
+| - | - | - | - | - | - | - | - |
 
 ## Quality Status
 
@@ -406,5 +433,6 @@ Long Term Support releases are production-ready releases that provide the highes
 This release has dependency on the following tools:
 
 - [CCS](https://www.ti.com/tool/CCSTUDIO) v20.05.00 or above version.
-- [C29Clang Compiler](https://www.ti.com/tool/C2000-CGT) 2.0.0 STS.
+- [C29Clang Compiler](https://www.ti.com/tool/C2000-CGT) 2.2.0 LTS.
 - [EB Tresos](https://www.ti.com/drr/opn/PROCESSOR-SDK-MCAL-EB-TRESOS) (ACG 8.8.12)
+- [OpenSSL](https://slproweb.com/products/Win32OpenSSL.html) v3.x.x

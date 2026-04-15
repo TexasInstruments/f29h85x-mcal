@@ -73,7 +73,7 @@
  *
  *  When using CCS for debugging this Multi-core example, after launching the
  *  debug session,
- *      - Connect to CPU1 and load only the C29x1_merged.out.
+ *      - Connect to CPU1 and load only the Cdd_Ipc_Example_Polling_C29x1.out
  *      - After the program is loaded, run CPU1.
  *      - C29x1 configures and releases CPU3 out of reset
  *      - Connect to CPU3 target now. C29x3.out would have started execution
@@ -146,8 +146,8 @@ int main(void)
     PduInfo.SduDataPtr            = hello;
     PduInfo.SduLength             = strlen((char *)hello);
 
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(200000000U);  // Init App utils to enable prints
 
     AppUtils_Printf("Sample Application - STARTS !!!\n");

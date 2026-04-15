@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Fls_MemMap.h
- *  Project:    C29x MCAL
- *  Module:     FLS
  *  Generator:  None
  *
  *  Description:  Memory Map template file for Fls module.
+ *                This source code is for reference only, it should not be used as-is in a
+ *                typical customer applications
  *
  *********************************************************************************************************************/
 
@@ -165,6 +165,7 @@
 #define MEMMAP_SECTION_OPEN
 #define FLS_VAR_INIT_32_OPEN
 #pragma clang section data = ".FLS_VAR_INIT_32"
+#pragma clang section bss = ".FLS_VAR_NO_INIT_32"
 #undef FLS_START_SEC_VAR_INIT_32
 #undef MEMMAP_ERROR
 
@@ -180,6 +181,7 @@
 #endif
 #undef FLS_VAR_INIT_32_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef FLS_STOP_SEC_VAR_INIT_32
 #undef MEMMAP_ERROR
             
@@ -191,6 +193,7 @@
 #define MEMMAP_SECTION_OPEN
 #define FLS_VAR_INIT_8_OPEN
 #pragma clang section data = ".FLS_VAR_INIT_8"
+#pragma clang section bss = ".FLS_VAR_NO_INIT_8"
 #undef FLS_START_SEC_VAR_INIT_8
 #undef MEMMAP_ERROR
 
@@ -206,6 +209,7 @@
 #endif
 #undef FLS_VAR_INIT_8_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef FLS_STOP_SEC_VAR_INIT_8
 #undef MEMMAP_ERROR
             
@@ -217,6 +221,7 @@
 #define MEMMAP_SECTION_OPEN
 #define FLS_VAR_INIT_UNSPECIFIED_OPEN
 #pragma clang section data = ".FLS_VAR_INIT_UNSPECIFIED"
+#pragma clang section bss = ".FLS_VAR_NO_INIT_UNSPECIFIED"
 #undef FLS_START_SEC_VAR_INIT_UNSPECIFIED
 #undef MEMMAP_ERROR
 
@@ -232,6 +237,7 @@
 #endif
 #undef FLS_VAR_INIT_UNSPECIFIED_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef FLS_STOP_SEC_VAR_INIT_UNSPECIFIED
 #undef MEMMAP_ERROR
             

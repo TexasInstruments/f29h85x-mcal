@@ -123,6 +123,11 @@ CONST(Dio_ChannelGroupType, DIO_CONFIG_DATA) [!"DioChannelGroupIdentification"!]
 };
 [!ENDLOOP!][!ENDLOOP!]
 
+#define DIO_STOP_SEC_CONFIG_DATA
+#include "Dio_MemMap.h"
+
+#define DIO_START_SEC_VAR_INIT_PTR
+#include "Dio_MemMap.h"
 
 [!VAR "var1" = "0"!][!//
 P2CONST(struct Dio_ChannelGroupType_s, DIO_CONFIG_DATA, DIO_CONFIG_DATA) Dio_ChannelGroupRef[DIO_MAX_NO_OF_CHANNEL_GROUPS] =
@@ -131,8 +136,9 @@ P2CONST(struct Dio_ChannelGroupType_s, DIO_CONFIG_DATA, DIO_CONFIG_DATA) Dio_Cha
 [!VAR "var1" = "$var1+1"!][!//
 [!ENDLOOP!][!ENDLOOP!]};
 
-#define DIO_STOP_SEC_CONFIG_DATA
+#define DIO_STOP_SEC_VAR_INIT_PTR
 #include "Dio_MemMap.h"
+
 [!ENDIF!][!ENDSELECT!][!//
 /*********************************************************************************************************************
  * Exported Object Definitions

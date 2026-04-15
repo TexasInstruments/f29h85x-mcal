@@ -118,8 +118,8 @@ CONST(struct Os_ConfigType_s, OS_CONFIG_DATA) Os_Config =
             .int_id = (Os_IntIdType)213U,
             .int_priority = (Os_IntPriorityType)255U,
             .int_category = (Os_IntCategoryType)CATEGORY_1,
-            .int_funcptr = (Os_IsrFuncPtrType)Rtdma1_Isr,
-            .isr_funcptr = (Os_IsrFuncPtrType)Rtdma1_Isr,
+            .int_funcptr = (Os_IsrFuncPtrType)Cdd_Dma_RTDMA1_CH1_Isr,
+            .isr_funcptr = (Os_IsrFuncPtrType)Cdd_Dma_RTDMA1_CH1_Isr,
         }
     },
 

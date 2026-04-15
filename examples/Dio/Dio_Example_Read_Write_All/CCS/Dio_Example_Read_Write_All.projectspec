@@ -2,7 +2,7 @@
   <project
         name="Dio_Example_Read_Write_All"
         device="F29H850TU9"
-        cgtVersion="2.0.0.STS"
+        cgtVersion="2.2.0.LTS"
         outputFormat="ELF"
         linkerCommandFile=""
         toolChain="TICLANG"
@@ -13,10 +13,9 @@
     <configuration name="CPU1_FLASH" compilerBuildOptions="-I${PROJECT_ROOT}/Dio_Example_Read_Write_All -I${C2000MCAL_CONFIG_INCLUDE} -I${C2000MCAL_EXAMPLE_INCLUDE}" compilerBuildOptions_c="-g -DDEBUG -DBUILD_DEVICE_F29H85x -D_FLASH -cl-single-precision-constant -O1 -Wall -Werror" linkerBuildOptions="--emit_warnings_as_errors --diag_suppress=10068 --diag_suppress=10325 --diag_suppress=10063 --entry_point code_start --stack_size=0x1000 --heap_size=0x1000"
     postBuildStep=
        "${CG_TOOL_OBJCOPY} --remove-section=cert --remove-section=.TI.bound:CPU1_Cfg --remove-section=.TI.bound:CPU2_Cfg --remove-section=.TI.bound:CPU3_Cfg -O binary ${ProjName}.out ${ProjName}.bin;
-        $(PYTHON_TOOL) ${COM_TI_F29H85X_MCAL_INSTALL_DIR}/build/toolchain/signing/sign_non_secure.py --b ${ProjName}.bin --c C29 --k ${COM_TI_F29H85X_MCAL_INSTALL_DIR}/build/toolchain/signing/keys/key.pem --o 60 --l 0x10001000;
-        ${CG_TOOL_OBJCOPY} --update-section cert=C29-cert.bin ${ProjName}.out ${ProjName}_cert.out;
-        $(RM) ${ProjName}.out;
-        $(RENAME_TOOL) ${ProjName}_cert.out ${ProjName}.out"
+        $(PYTHON_TOOL) ${COM_TI_F29H85X_MCAL_INSTALL_DIR}/build/toolchain/signing/mcu_rom_image_gen.py --image-bin ${ProjName}.bin --core C29 --swrv 1 --loadaddr 0x10001000 --sign-key ${COM_TI_F29H85X_MCAL_INSTALL_DIR}/build/toolchain/signing/mcu_gpkey.pem --out-image ${ProjName}_cert.bin --device f29h85x --boot FLASH --debug DBG_PUBLIC_ENABLE --img_integ no;
+        ${CG_TOOL_OBJCOPY} --update-section cert=C29-cert-pad.bin ${ProjName}.out ${ProjName}.out;
+        $(RM) ${ProjName}.bin ${ProjName}_cert.bin C29-cert-pad.bin"
     />
 
     <pathVariable name="C2000MCAL_CONFIG_INCLUDE"  path="../Dio_Example_Read_Write_Config/output/include/" scope="project"/>

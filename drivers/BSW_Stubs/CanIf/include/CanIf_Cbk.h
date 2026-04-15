@@ -63,12 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       CanIf_Cbk.h
- *  Project:    C28x MCAL
- *  Module:     Can Interface
  *  Generator:  None
  *
  *  Description:  This file contains interface header for CanIf callback functions.
- *                                                                     
+ *                This source code is for reference only, it should not be used as-is in a
+ *                typical customer applications
  *********************************************************************************************************************/
 #ifndef CANIF_CBK_H
 #define CANIF_CBK_H

@@ -126,7 +126,7 @@ CONST(struct Os_ConfigType_s, OS_CONFIG_DATA) Os_Config =
         }
     },    
 
-    .threshold = (Os_ThresholdType)0U,
+    .threshold = (Os_ThresholdType)15U,
 };   
 
 #define OS_STOP_SEC_CONFIG_DATA

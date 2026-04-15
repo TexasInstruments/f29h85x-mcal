@@ -1682,20 +1682,6 @@ Cdd_Pwm_PrivSetRisingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTO
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivDisableRisingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
-/** \brief Disable the RED (Rising Edge Delay) shadow load mode
- *
- * This function disables the Rising Edge Delay register shadow load mode.
- *
- * \param[in] InstanceId     Numeric ID of the requested PWM instance.
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE)
-Cdd_Pwm_DisableRisingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
-
 /** \brief Set the FED (Falling Edge Delay) shadow load mode
  *
  * This function enables and sets the Falling Edge Delay register shadow load

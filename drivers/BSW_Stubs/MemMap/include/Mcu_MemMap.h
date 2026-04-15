@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Mcu_MemMap.h
- *  Project:    C29x MCAL
- *  Module:     MCU
  *  Generator:  None
  *
  *  Description:  Memory Map template file for Mcu module.
+ *                This source code is for reference only, it should not be used as-is in a
+ *                typical customer applications
  *
  *********************************************************************************************************************/
 
@@ -139,6 +139,7 @@
 #define MEMMAP_SECTION_OPEN
 #define MCU_VAR_INIT_PTR_OPEN
 #pragma clang section data = ".MCU_VAR_INIT_PTR"
+#pragma clang section bss = ".MCU_VAR_NO_INIT_PTR"
 #undef MCU_START_SEC_VAR_INIT_PTR
 #undef MEMMAP_ERROR
 
@@ -154,6 +155,7 @@
 #endif
 #undef MCU_VAR_INIT_PTR_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef MCU_STOP_SEC_VAR_INIT_PTR
 #undef MEMMAP_ERROR
             
@@ -165,6 +167,7 @@
 #define MEMMAP_SECTION_OPEN
 #define MCU_VAR_INIT_BOOLEAN_OPEN
 #pragma clang section data = ".MCU_VAR_INIT_BOOLEAN"
+#pragma clang section bss = ".MCU_VAR_NO_INIT_BOOLEAN"
 #undef MCU_START_SEC_VAR_INIT_BOOLEAN
 #undef MEMMAP_ERROR
 
@@ -180,6 +183,7 @@
 #endif
 #undef MCU_VAR_INIT_BOOLEAN_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef MCU_STOP_SEC_VAR_INIT_BOOLEAN
 #undef MEMMAP_ERROR
             
@@ -217,6 +221,7 @@
 #define MEMMAP_SECTION_OPEN
 #define MCU_VAR_INIT_32_OPEN
 #pragma clang section data = ".MCU_VAR_INIT_32"
+#pragma clang section bss = ".MCU_VAR_NO_INIT_32"
 #undef MCU_START_SEC_VAR_INIT_32
 #undef MEMMAP_ERROR
 
@@ -232,6 +237,7 @@
 #endif
 #undef MCU_VAR_INIT_32_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef MCU_STOP_SEC_VAR_INIT_32
 #undef MEMMAP_ERROR
             

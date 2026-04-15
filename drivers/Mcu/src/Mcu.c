@@ -101,11 +101,11 @@
 #endif
 
 /* vendor specific version information is BCD coded */
-#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (1U)))
+#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (2U)))
 #error "Version numbers of Mcu.c and Mcu.h are inconsistent!"
 #endif
 
-#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (1U)))
+#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (2U)))
 #error "Version numbers of Mcu.c and Mcu_Cfg.h are inconsistent!"
 #endif
 
@@ -150,8 +150,10 @@ P2CONST(Mcu_ConfigType, MCU_CONFIG_DATA, MCU_CONFIG_DATA) Mcu_ConfigObj = NULL_P
 #define MCU_START_SEC_VAR_INIT_32
 #include "Mcu_MemMap.h"
 
+#if (STD_ON == MCU_CFG_INIT_CLOCK_API)
 /* calculated clock values*/
 static VAR(Mcu_CalClkValueType, MCU_VAR_NO_INIT) Mcu_calClock;
+#endif
 /* Selected system clock value */
 static VAR(uint32, MCU_VAR_NO_INIT) Mcu_sysClock = 0;
 
@@ -166,6 +168,7 @@ static VAR(uint32, MCU_VAR_NO_INIT) Mcu_sysClock = 0;
  *  Local Function Prototypes
  *********************************************************************************************************************/
 
+#if (STD_ON == MCU_CFG_INIT_CLOCK_API)
 /** \brief Mcu_ReportClockFailure - This API will report clock failure error to DEM module
  *
  * \param[in] Value set clock functionality return value E_OK or E_NOT_OK
@@ -176,6 +179,7 @@ static VAR(uint32, MCU_VAR_NO_INIT) Mcu_sysClock = 0;
  *
  *********************************************************************************************************************/
 static FUNC(void, MCU_CODE) Mcu_ReportClockFailure(Std_ReturnType Value);
+#endif
 
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
@@ -591,6 +595,7 @@ FUNC(Mcu_RamStateType, MCU_CODE) Mcu_GetRamState(void)
 /*
  * Design: MCAL-28521
  */
+#if (STD_ON == MCU_CFG_INIT_CLOCK_API)
 static FUNC(void, MCU_CODE) Mcu_ReportClockFailure(Std_ReturnType Value)
 {
     if ((Std_ReturnType)E_NOT_OK == Value)
@@ -611,6 +616,7 @@ static FUNC(void, MCU_CODE) Mcu_ReportClockFailure(Std_ReturnType Value)
         /* Do Nothing */
     }
 }
+#endif
 
 #define MCU_STOP_SEC_CODE
 #include "Mcu_MemMap.h"

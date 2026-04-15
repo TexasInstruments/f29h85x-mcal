@@ -113,6 +113,14 @@ CONST(struct Os_ConfigType_s, OS_CONFIG_DATA) Os_Config =
     .isr_cfg =
     {
         
+        [0] =
+        {
+            .int_id = (Os_IntIdType)154U,
+            .int_priority = (Os_IntPriorityType)13U,
+            .int_category = (Os_IntCategoryType)CATEGORY_1,
+            .int_funcptr = (Os_IsrFuncPtrType)Spi_A_RxISR,
+            .isr_funcptr = (Os_IsrFuncPtrType)Spi_A_RxISR,
+        }
     },
 
     .counter_cfg =

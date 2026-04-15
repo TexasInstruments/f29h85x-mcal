@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Cdd_Ecap_MemMap.h
- *  Project:    C29x MCAL
- *  Module:     CDD_ECAP
  *  Generator:  None
  *
  *  Description:  Memory Map template file for Cdd_Ecap module.
+ *                This source code is for reference only, it should not be used as-is in a
+ *                typical customer applications
  *
  *********************************************************************************************************************/
 
@@ -191,6 +191,7 @@
 #define MEMMAP_SECTION_OPEN
 #define CDD_ECAP_VAR_INIT_8_OPEN
 #pragma clang section data = ".CDD_ECAP_VAR_INIT_8"
+#pragma clang section bss = ".CDD_ECAP_VAR_NO_INIT_8"
 #undef CDD_ECAP_START_SEC_VAR_INIT_8
 #undef MEMMAP_ERROR
 
@@ -206,6 +207,7 @@
 #endif
 #undef CDD_ECAP_VAR_INIT_8_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef CDD_ECAP_STOP_SEC_VAR_INIT_8
 #undef MEMMAP_ERROR
             
@@ -233,6 +235,34 @@
 #undef CDD_ECAP_VAR_NO_INIT_UNSPECIFIED_OPEN
 #pragma clang section bss = ""
 #undef CDD_ECAP_STOP_SEC_VAR_NO_INIT_UNSPECIFIED
+#undef MEMMAP_ERROR
+            
+#elif defined CDD_ECAP_START_SEC_VAR_INIT_PTR
+#ifdef MEMMAP_SECTION_OPEN
+    #error "Memory section VAR_INIT_PTR is already opened, Cannot reopen section using \
+           CDD_ECAP_START_SEC_VAR_INIT_PTR ."
+#endif
+#define MEMMAP_SECTION_OPEN
+#define CDD_ECAP_VAR_INIT_PTR_OPEN
+#pragma clang section data = ".CDD_ECAP_VAR_INIT_PTR"
+#pragma clang section bss = ".CDD_ECAP_VAR_NO_INIT_PTR"
+#undef CDD_ECAP_START_SEC_VAR_INIT_PTR
+#undef MEMMAP_ERROR
+
+#elif defined CDD_ECAP_STOP_SEC_VAR_INIT_PTR
+#ifndef MEMMAP_SECTION_OPEN
+#error "Memory section VAR_INIT_PTR is not open, Cannot close section using \
+         CDD_ECAP_STOP_SEC_VAR_INIT_PTR."
+#endif
+#undef MEMMAP_SECTION_OPEN
+#ifndef CDD_ECAP_VAR_INIT_PTR_OPEN
+    #error "Memory section VAR_INIT_PTR is not open ,Cannot close section using \
+           CDD_ECAP_STOP_SEC_VAR_INIT_PTR."
+#endif
+#undef CDD_ECAP_VAR_INIT_PTR_OPEN
+#pragma clang section data = ""
+#pragma clang section bss = ""
+#undef CDD_ECAP_STOP_SEC_VAR_INIT_PTR
 #undef MEMMAP_ERROR
             
 #endif
@@ -285,6 +315,15 @@
 #ifdef CDD_ECAP_STOP_SEC_VAR_NO_INIT_UNSPECIFIED
     #error "multiple memory allocation keywords are defined, Cannot use \
            CDD_ECAP_STOP_SEC_VAR_NO_INIT_UNSPECIFIED."
+#endif
+
+#ifdef CDD_ECAP_START_SEC_VAR_INIT_PTR
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           CDD_ECAP_START_SEC_VAR_INIT_PTR."
+#endif
+#ifdef CDD_ECAP_STOP_SEC_VAR_INIT_PTR
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           CDD_ECAP_STOP_SEC_VAR_INIT_PTR."
 #endif
 
 /*********************************************************************************************************************

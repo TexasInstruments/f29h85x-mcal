@@ -116,9 +116,9 @@
 /* Design: MCAL-30535 */
 /** \brief Cdd Ipc sync instance lookup table. */
 CONST(Cdd_Ipc_InstanceType, CDD_IPC__CONST) Cdd_Ipc_Sync_Instances[CDD_IPC_CORE_COUNT][CDD_IPC_CORE_COUNT] = {
-                                                     {0, CDD_IPC_CPU1_L_CPU2_R_INST0, CDD_IPC_CPU1_L_CPU3_R_INST0},
-                                                     {CDD_IPC_CPU2_L_CPU1_R_INST0, 0, CDD_IPC_CPU2_L_CPU3_R_INST0},
-                                                     {CDD_IPC_CPU3_L_CPU1_R_INST0, CDD_IPC_CP3_L_CPU2_R_INST0, 0}};
+                                                     {CDD_IPC_INSTANCE_NONE, CDD_IPC_CPU1_L_CPU2_R_INST0, CDD_IPC_CPU1_L_CPU3_R_INST0},
+                                                     {CDD_IPC_CPU2_L_CPU1_R_INST0, CDD_IPC_INSTANCE_NONE, CDD_IPC_CPU2_L_CPU3_R_INST0},
+                                                     {CDD_IPC_CPU3_L_CPU1_R_INST0, CDD_IPC_CP3_L_CPU2_R_INST0, CDD_IPC_INSTANCE_NONE}};
 #define CDD_IPC_STOP_SEC_CONST_32
 #include "Cdd_Ipc_MemMap.h"
  

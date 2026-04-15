@@ -66,6 +66,8 @@
  *  Generator:    None
  *
  *  Description:  This file contains Callback function for LinIf MODULE
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *********************************************************************************************************************/
 
 #ifndef LINIF_CBK_H

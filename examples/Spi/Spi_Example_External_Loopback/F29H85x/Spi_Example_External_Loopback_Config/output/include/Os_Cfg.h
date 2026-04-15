@@ -94,7 +94,7 @@ extern "C" {
 
 #define OS_POST_BUILD_VARIANT    (STD_OFF)
 
-#define OS_CFG_MAX_ISR          (0U)
+#define OS_CFG_MAX_ISR          (1U)
 
 #define OS_CFG_MAX_COUNTER      (1U)
 
@@ -119,6 +119,9 @@ extern "C" {
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
+/* Category 1 RTINT ISR function prototype. */
+MCAL_LIB_INT_ISR(Spi_A_RxISR); 
+
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

@@ -105,9 +105,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">5.8.10. Configuration</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">5.8.10.1. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#portconfigset">5.8.10.2. PortConfigSet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#portgeneral">5.8.10.3. PortGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-port-module">5.8.10.4. Steps To Configure Port Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-port-module">5.8.10.2. Steps To Configure Port Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">5.8.11. Examples</a><ul>
@@ -122,14 +120,15 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">5.9. SPI Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">5.10. WDG Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">5.11. CDD ADC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">5.12. CDD ECAP Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">5.13. CDD I2C Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">5.14. CDD IPC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">5.15. CDD PWM Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">5.16. CDD SENT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">5.17. CDD XBAR Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">5.18. CDD UART Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">5.19. RTDMA Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Dma.html">5.12. CDD DMA Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">5.13. CDD ECAP Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">5.14. CDD I2C Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">5.15. CDD IPC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">5.16. CDD PWM Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">5.17. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">5.18. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">5.19. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">5.20. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">6. Migration Guide</a></li>
@@ -412,7 +411,12 @@ Port Driver needs to be initialized as per the available pin package. Refer Devi
 <h2><span class="section-number">5.8.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
 <section id="memory-mapping">
 <h3><span class="section-number">5.8.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
-<p>Will be added in later release</p>
+<p>The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.</p>
+<p>Reference memory map files can be found at:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+</pre></div>
+</div>
+<p>The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.</p>
 </section>
 <section id="scheduling">
 <h3><span class="section-number">5.8.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
@@ -582,6 +586,8 @@ For Port Module, data consistency and exclusive access to critical sections are 
 <li><p>Available pin options in PortPinName and PortPinPeripheralSignal are filtered based on the selected package</p></li>
 <li><p>Only pins that exist on the selected package variant are shown as configurable options</p></li>
 </ul>
+<p><strong>Multi-core Consideration:</strong></p>
+<p>On F29H85x, PinMux configuration can only be performed from CPU1. Therefore, the Port module running on CPU1 sets the PinMux settings for all GPIO pins used across all CPU cores in the system. The <strong>PortPinCoreSelect</strong> parameter in the Port configuration specifies which CPU core owns each pin, but the actual PinMux register writes are always performed by CPU1.</p>
 <p><strong>Benefits:</strong></p>
 <ul class="simple">
 <li><p>Prevents configuration of pins that don’t exist on the target package</p></li>
@@ -606,15 +612,15 @@ The associated Port driver configuration generated source files are <strong>Port
 </div>
 <section id="configuration-parameters">
 <h3><span class="section-number">5.8.10.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
-</section>
 <section id="portconfigset">
-<h3><span class="section-number">5.8.10.2. </span>PortConfigSet<a class="headerlink" href="#portconfigset" title="Link to this heading"></a></h3>
+<h4><span class="section-number">5.8.10.1.1. </span>PortConfigSet<a class="headerlink" href="#portconfigset" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters and sub containers of the AUTOSAR Port module.</p>
 <section id="portcontainer">
-<h4><span class="section-number">5.8.10.2.1. </span>PortContainer<a class="headerlink" href="#portcontainer" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.8.10.1.1.1. </span>PortContainer<a class="headerlink" href="#portcontainer" title="Link to this heading"></a></h5>
 <p>Container collecting the PortPins.</p>
+</section>
 <section id="portnumberofportpins">
-<h5><span class="section-number">5.8.10.2.1.1. </span>PortNumberOfPortPins<a class="headerlink" href="#portnumberofportpins" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.2. </span>PortNumberOfPortPins<a class="headerlink" href="#portnumberofportpins" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -655,12 +661,12 @@ The associated Port driver configuration generated source files are <strong>Port
 </tbody>
 </table>
 </section>
-</section>
 <section id="portpin">
-<h4><span class="section-number">5.8.10.2.2. </span>PortPin<a class="headerlink" href="#portpin" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.8.10.1.1.3. </span>PortPin<a class="headerlink" href="#portpin" title="Link to this heading"></a></h5>
 <p>Configuration of the individual port pins.</p>
+</section>
 <section id="portpinperipheral">
-<h5><span class="section-number">5.8.10.2.2.1. </span>PortPinPeripheral<a class="headerlink" href="#portpinperipheral" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.4. </span>PortPinPeripheral<a class="headerlink" href="#portpinperipheral" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -699,7 +705,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinperipheralinstance">
-<h5><span class="section-number">5.8.10.2.2.2. </span>PortPinPeripheralInstance<a class="headerlink" href="#portpinperipheralinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.5. </span>PortPinPeripheralInstance<a class="headerlink" href="#portpinperipheralinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -738,7 +744,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinperipheralsignal">
-<h5><span class="section-number">5.8.10.2.2.3. </span>PortPinPeripheralSignal<a class="headerlink" href="#portpinperipheralsignal" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.6. </span>PortPinPeripheralSignal<a class="headerlink" href="#portpinperipheralsignal" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -777,7 +783,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portphysicalpinid">
-<h5><span class="section-number">5.8.10.2.2.4. </span>PortPhysicalPinId<a class="headerlink" href="#portphysicalpinid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.7. </span>PortPhysicalPinId<a class="headerlink" href="#portphysicalpinid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -816,7 +822,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinname">
-<h5><span class="section-number">5.8.10.2.2.5. </span>PortPinName<a class="headerlink" href="#portpinname" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.8. </span>PortPinName<a class="headerlink" href="#portpinname" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -855,7 +861,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinid">
-<h5><span class="section-number">5.8.10.2.2.6. </span>PortPinId<a class="headerlink" href="#portpinid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.9. </span>PortPinId<a class="headerlink" href="#portpinid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -897,7 +903,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portanalogmode">
-<h5><span class="section-number">5.8.10.2.2.7. </span>PortAnalogMode<a class="headerlink" href="#portanalogmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.10. </span>PortAnalogMode<a class="headerlink" href="#portanalogmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -936,7 +942,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpininitialmode">
-<h5><span class="section-number">5.8.10.2.2.8. </span>PortPinInitialMode<a class="headerlink" href="#portpininitialmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.11. </span>PortPinInitialMode<a class="headerlink" href="#portpininitialmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -975,7 +981,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpindirection">
-<h5><span class="section-number">5.8.10.2.2.9. </span>PortPinDirection<a class="headerlink" href="#portpindirection" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.12. </span>PortPinDirection<a class="headerlink" href="#portpindirection" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1014,7 +1020,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpindirectionchangeable">
-<h5><span class="section-number">5.8.10.2.2.10. </span>PortPinDirectionChangeable<a class="headerlink" href="#portpindirectionchangeable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.13. </span>PortPinDirectionChangeable<a class="headerlink" href="#portpindirectionchangeable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1050,7 +1056,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinpadconfig">
-<h5><span class="section-number">5.8.10.2.2.11. </span>PortPinPadConfig<a class="headerlink" href="#portpinpadconfig" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.14. </span>PortPinPadConfig<a class="headerlink" href="#portpinpadconfig" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1089,7 +1095,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinpullupconfig">
-<h5><span class="section-number">5.8.10.2.2.12. </span>PortPinPullUpConfig<a class="headerlink" href="#portpinpullupconfig" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.15. </span>PortPinPullUpConfig<a class="headerlink" href="#portpinpullupconfig" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1125,7 +1131,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinqualificationmode">
-<h5><span class="section-number">5.8.10.2.2.13. </span>PortPinQualificationMode<a class="headerlink" href="#portpinqualificationmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.16. </span>PortPinQualificationMode<a class="headerlink" href="#portpinqualificationmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1164,7 +1170,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinqualificationperiod">
-<h5><span class="section-number">5.8.10.2.2.14. </span>PortPinQualificationPeriod<a class="headerlink" href="#portpinqualificationperiod" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.17. </span>PortPinQualificationPeriod<a class="headerlink" href="#portpinqualificationperiod" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1206,7 +1212,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinlevelvalue">
-<h5><span class="section-number">5.8.10.2.2.15. </span>PortPinLevelValue<a class="headerlink" href="#portpinlevelvalue" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.18. </span>PortPinLevelValue<a class="headerlink" href="#portpinlevelvalue" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1245,7 +1251,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpincoreselect">
-<h5><span class="section-number">5.8.10.2.2.16. </span>PortPinCoreSelect<a class="headerlink" href="#portpincoreselect" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.19. </span>PortPinCoreSelect<a class="headerlink" href="#portpincoreselect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1284,7 +1290,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portenablewakeuppinlpm">
-<h5><span class="section-number">5.8.10.2.2.17. </span>PortEnableWakeUpPinLPM<a class="headerlink" href="#portenablewakeuppinlpm" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.20. </span>PortEnableWakeUpPinLPM<a class="headerlink" href="#portenablewakeuppinlpm" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1320,7 +1326,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinmode">
-<h5><span class="section-number">5.8.10.2.2.18. </span>PortPinMode<a class="headerlink" href="#portpinmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.21. </span>PortPinMode<a class="headerlink" href="#portpinmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1368,7 +1374,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinmodechangeable">
-<h5><span class="section-number">5.8.10.2.2.19. </span>PortPinModeChangeable<a class="headerlink" href="#portpinmodechangeable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.22. </span>PortPinModeChangeable<a class="headerlink" href="#portpinmodechangeable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1404,12 +1410,11 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 </section>
-</section>
 <section id="portgeneral">
-<h3><span class="section-number">5.8.10.3. </span>PortGeneral<a class="headerlink" href="#portgeneral" title="Link to this heading"></a></h3>
+<h4><span class="section-number">5.8.10.1.2. </span>PortGeneral<a class="headerlink" href="#portgeneral" title="Link to this heading"></a></h4>
 <p>Module wide configuration parameters of the PORT driver.</p>
 <section id="portdeverrordetect">
-<h4><span class="section-number">5.8.10.3.1. </span>PortDevErrorDetect<a class="headerlink" href="#portdeverrordetect" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.8.10.1.2.1. </span>PortDevErrorDetect<a class="headerlink" href="#portdeverrordetect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1445,7 +1450,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portsetpindirectionapi">
-<h4><span class="section-number">5.8.10.3.2. </span>PortSetPinDirectionApi<a class="headerlink" href="#portsetpindirectionapi" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.8.10.1.2.2. </span>PortSetPinDirectionApi<a class="headerlink" href="#portsetpindirectionapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1481,7 +1486,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portsetpinmodeapi">
-<h4><span class="section-number">5.8.10.3.3. </span>PortSetPinModeApi<a class="headerlink" href="#portsetpinmodeapi" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.8.10.1.2.3. </span>PortSetPinModeApi<a class="headerlink" href="#portsetpinmodeapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1517,7 +1522,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portversioninfoapi">
-<h4><span class="section-number">5.8.10.3.4. </span>PortVersionInfoApi<a class="headerlink" href="#portversioninfoapi" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.8.10.1.2.4. </span>PortVersionInfoApi<a class="headerlink" href="#portversioninfoapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1549,6 +1554,42 @@ The associated Port driver configuration generated source files are <strong>Port
 <tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
 <td><p>false</p></td>
 </tr>
+</tbody>
+</table>
+</section>
+<section id="portlockconfiguration">
+<h5><span class="section-number">5.8.10.1.2.5. </span>PortLockConfiguration<a class="headerlink" href="#portlockconfiguration" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortLockConfiguration</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Lock All pins configuration.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
 <tr class="row-even"><td><p>Refer <a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_PortDriver.pdf">AUTOSAR_SWS_PortDriver section: 10 Configuration specification</a> for more configuration parameters details</p></td>
 <td><p></p></td>
 </tr>
@@ -1560,8 +1601,9 @@ The associated Port driver configuration generated source files are <strong>Port
 </div>
 </section>
 </section>
+</section>
 <section id="steps-to-configure-port-module">
-<h3><span class="section-number">5.8.10.4. </span>Steps To Configure Port Module<a class="headerlink" href="#steps-to-configure-port-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.8.10.2. </span>Steps To Configure Port Module<a class="headerlink" href="#steps-to-configure-port-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool and Select the Config Variant ( Precompile/Post-Build)</p></li>
 <li><p>Go to Port Container tab and create a new container</p></li>
@@ -1600,10 +1642,6 @@ The associated Port driver configuration generated source files are <strong>Port
 </section>
 <section id="setup-required-to-run-example">
 <h3><span class="section-number">5.8.11.2. </span>Setup required to run example<a class="headerlink" href="#setup-required-to-run-example" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>Install Code Composer Studio(CCS) latest version</p></li>
-<li><p>Install latest C29 compiler</p></li>
-</ul>
 </section>
 <section id="how-to-run-examples">
 <h3><span class="section-number">5.8.11.3. </span>How to run examples<a class="headerlink" href="#how-to-run-examples" title="Link to this heading"></a></h3>

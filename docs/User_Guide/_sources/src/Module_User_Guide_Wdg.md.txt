@@ -133,7 +133,15 @@ Wdg Header File Structure
 
 #### Memory Mapping
 
-Will be added in later release
+The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.
+
+Reference memory map files can be found at:
+
+```text
+{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+```
+
+The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.
 
 #### Scheduling
 
@@ -207,7 +215,7 @@ This implementation depends on the DEM in order to report Extended production er
 
 #### Multi-core and Resource allocator
 
-Not Supported
+The WDG module is not managed by the Resource Allocator. The Watchdog timer on F29H85x is a system-level peripheral that is exclusively controlled by CPU1 and cannot be allocated to other cores. Because the Watchdog is not a shareable, multi-core resource, it is not represented in the Resource Allocator configuration. No Resource Allocator instance allocation is needed for the WDG module.
 
 ### Configuration
 
@@ -220,12 +228,12 @@ The generated configuration files should not be modified manually. The config to
 
 
 
-#### WdgDemEventParameterRefs
+##### WdgDemEventParameterRefs
 
 | Item ||
 |--------|---------------|
 | **Name** | WdgDemEventParameterRefs |
-| **Description** | Reference to the DemEventParameter which shall be issued when the error "Setting a watchdog mode failed (during initialization or mode switch)" has occurred. |
+| **Description** | Container for the references to DemEventParameter elements which shall be invoked using the API Dem_SetEventStatus in case the corresponding error occurs. The EventId is taken from the referenced DemEventParameter's DemEventId symbolic value. The standardized errors are provided in this container and can be extended by vendor-specific error references. |
 | **Post-build-variant-multiplicity** | false |
 | **Multiplicity-Configuration-Class** | -- |
 | Link Time | VARIANT-LINK-TIME |
@@ -238,10 +246,10 @@ The generated configuration files should not be modified manually. The config to
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-#### WdgGeneral
+##### WdgGeneral
 All general parameters of the watchdog driver are collected here.
 
-##### WdgDevErrorDetect
+###### WdgDevErrorDetect
 
 | Item ||
 |--------|---------------|
@@ -255,7 +263,7 @@ All general parameters of the watchdog driver are collected here.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### WdgDisableAllowed
+###### WdgDisableAllowed
 
 | Item ||
 |--------|---------------|
@@ -269,7 +277,7 @@ All general parameters of the watchdog driver are collected here.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### WdgIndex
+###### WdgIndex
 
 | Item ||
 |--------|---------------|
@@ -285,7 +293,7 @@ All general parameters of the watchdog driver are collected here.
 | **Max-value** | 255 |
 | **Min-value** | 0 |
 
-##### WdgInitialTimeout
+###### WdgInitialTimeout
 
 | Item ||
 |--------|---------------|
@@ -301,7 +309,7 @@ All general parameters of the watchdog driver are collected here.
 | **Max-value** | 0.1 |
 | **Min-value** | 0.0 |
 
-##### WdgMaxTimeout
+###### WdgMaxTimeout
 
 | Item ||
 |--------|---------------|
@@ -317,7 +325,7 @@ All general parameters of the watchdog driver are collected here.
 | **Max-value** | 7.0 |
 | **Min-value** | 0.0 |
 
-##### WdgRunArea
+###### WdgRunArea
 
 | Item ||
 |--------|---------------|
@@ -332,7 +340,7 @@ All general parameters of the watchdog driver are collected here.
 | **Default-value** | RAM |
 | **Range** | RAM<br>ROM |
 
-##### WdgTriggerLocation
+###### WdgTriggerLocation
 
 | Item ||
 |--------|---------------|
@@ -346,7 +354,7 @@ All general parameters of the watchdog driver are collected here.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | NULL_PTR |
 
-##### WdgVersionInfoApi
+###### WdgVersionInfoApi
 
 | Item ||
 |--------|---------------|
@@ -385,8 +393,6 @@ The example application demonstrates use of Wdg module, the list below identifie
 
 ##### Setup required to run Wdg_Example_Service
 
-* Install Code Composer Studio latest version
-* Install latest C29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 
@@ -412,8 +418,6 @@ The example application demonstrates use of Wdg module, the list below identifie
 
 ##### Setup required to run Wdg_Example_Interrupt
 
-* Install Code Composer Studio latest version
-* Install latest C29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 
@@ -443,8 +447,6 @@ The example application demonstrates use of Wdg module, the list below identifie
 
 ##### Setup required to run Wdg_Example_Reset
 
-* Install Code Composer Studio latest version
-* Install latest C29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 

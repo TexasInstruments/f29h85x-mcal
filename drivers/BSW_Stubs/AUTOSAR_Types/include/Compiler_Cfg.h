@@ -65,8 +65,10 @@
  *  File:       Compiler_Cfg.h
  *  Generator:  Code generation tool (if any)
  *
- *  Description:  It contains module specific parameters (ptrclass and memclass) that are passed to 
- *                the macros defined in Compiler.h                                                           
+ *  Description:  It contains module specific parameters (ptrclass and memclass) that are passed to
+ *                the macros defined in Compiler.h
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *********************************************************************************************************************/
 #ifndef COMPILER_CFG_H
 #define COMPILER_CFG_H

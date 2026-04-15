@@ -82,6 +82,7 @@ extern "C" {
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
+/* Design: MCAL-33854,MCAL-33855,MCAL-33856,MCAL-33857,MCAL-33858,MCAL-33859,MCAL-33860,MCAL-33861 */
 #include "Cdd_Pwm_Cfg.h"
 #include "hw_epwm.h"
 #include "hw_memmap.h"
@@ -182,7 +183,7 @@ extern "C" {
 /** \brief Driver Implementation Minor Version */
 #define CDD_PWM_SW_MINOR_VERSION (1U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_PWM_SW_PATCH_VERSION (0U)
+#define CDD_PWM_SW_PATCH_VERSION (1U)
 
 /*  Defines for CDD_PWM Driver AUTOSAR version used for compatibility checks. */
 /** \brief AUTOSAR Major version specification implemented by CDD_PWM Driver*/
@@ -2470,29 +2471,37 @@ typedef enum
 /* PWM Hardware unit configuration */
 typedef struct Cdd_Pwm_HwUnitCfgTag
 {
+    /* Design: MCAL-33864 */
     /* PWM instance ID */
     uint8                       instance_id;
+    /* Design: MCAL-33871 */
     /* Class type of the PWM channel */
     Cdd_Pwm_ChannelClassType    channelclass;
+    /* Design: MCAL-33866 */
     /* Clock divider */
     Cdd_Pwm_ClockDividerType    clockdivider;
+    /* Design: MCAL-33867 */
     /* High speed clock divider */
     Cdd_Pwm_HighSpeedClkDivType highspeed_clkdiv;
+    /* Design: MCAL-33872 */
     /* Default period */
     Cdd_Pwm_PeriodType          period;
     /* Base address of the PWM channel */
     uint32                      base_addr;
     /* Symmetry of the waveform */
-    Cdd_Pwm_OutputSymmetryType  symmetry; /* Design: MCAL-33852 */
+    Cdd_Pwm_OutputSymmetryType  symmetry; /* Design: MCAL-33852,MCAL-33873 */
+    /* Design: MCAL-33868,MCAL-33869 */
     /* Interrupt enable/disable */
     boolean                     enable_interrupt;
     /* Starting channel ID  */
     uint8                       startchannel;
     /* Last channel ID */
     uint8                       lastchannel;
+    /* Design: MCAL-33865 */
     /* Emulation mode */
     Cdd_Pwm_EmulationModeType   emulation_mode;
 #if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
+    /* Design: MCAL-33870 */
     /* Idle state of the PWM channel */
     Cdd_Pwm_NotificationType notification;
 #endif
@@ -2503,17 +2512,18 @@ typedef struct Cdd_Pwm_HwUnitCfgTag
 typedef struct Cdd_Pwm_ChannelCfgTag
 {
     /* PMW instance index*/
-    uint8                     hw_index;
+    uint8                     hw_index; /* Design: MCAL-33881 */
     /* Output type of the channel */
-    Cdd_Pwm_OutputChannelType outputchannel;
+    Cdd_Pwm_OutputChannelType outputchannel; /* Design: MCAL-33877 */
     /* Default duty cycle */
-    Cdd_Pwm_DutyCycleType     dutycycle;
+    Cdd_Pwm_DutyCycleType     dutycycle; /* Design: MCAL-33880 */
     /* Idle state of the PWM channel */
-    Cdd_Pwm_OutputStateType   idlestate;
+    Cdd_Pwm_OutputStateType   idlestate; /* Design: MCAL-33879 */
     /* Polarity of the PWM channel (Active Low or Active High) */
-    Cdd_Pwm_OutputStateType   polarity;
+    Cdd_Pwm_OutputStateType   polarity; /* Design: MCAL-33878 */
 } Cdd_Pwm_ChannelCfgType;
 
+/* Design: MCAL-33862 */
 /** \brief PWM driver configuration */
 typedef struct Cdd_Pwm_ConfigTag
 {
@@ -2531,6 +2541,7 @@ typedef struct Cdd_Pwm_HwUnitCfgTag
     uint8  instance_id;
     /* Base address of the PWM channel */
     uint32 base_addr;
+    /* Design: MCAL-33874,MCAL-33875,MCAL-33876 */
 #if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
     /* PWM interrupt notification */
     Cdd_Pwm_NotificationType         notification;
@@ -2539,6 +2550,7 @@ typedef struct Cdd_Pwm_HwUnitCfgTag
 #endif
 } Cdd_Pwm_HwUnitCfgType;
 
+/* Design: MCAL-33863 */
 /** \brief PWM driver configuration */
 typedef struct Cdd_Pwm_ConfigTag
 {

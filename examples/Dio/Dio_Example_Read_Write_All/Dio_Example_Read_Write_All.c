@@ -151,9 +151,9 @@ Std_ReturnType Dio_ChnlGroupResponse = E_OK;
 int main(void)
 {
     Std_ReturnType return_value = E_NOT_OK;
-    DeviceSupport_Init();
     /*  Configure the Port A pins direction and init MCU */
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(200000000U);  // Init App utils to enable prints
     AppUtils_Printf("Sample Application - STARTS !!!\n");
     /*  get version Info */

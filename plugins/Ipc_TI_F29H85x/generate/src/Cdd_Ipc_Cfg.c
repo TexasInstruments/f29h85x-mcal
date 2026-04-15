@@ -117,9 +117,9 @@
 /* Design: MCAL-30535 */
 /** \brief Cdd Ipc sync instance lookup table. */
 CONST(Cdd_Ipc_InstanceType, CDD_IPC__CONST) Cdd_Ipc_Sync_Instances[CDD_IPC_CORE_COUNT][CDD_IPC_CORE_COUNT] = {
-                                                     {0, CDD_IPC_CPU1_L_CPU2_R_INST0, CDD_IPC_CPU1_L_CPU3_R_INST0},
-                                                     {CDD_IPC_CPU2_L_CPU1_R_INST0, 0, CDD_IPC_CPU2_L_CPU3_R_INST0},
-                                                     {CDD_IPC_CPU3_L_CPU1_R_INST0, CDD_IPC_CP3_L_CPU2_R_INST0, 0}};
+                                                     {CDD_IPC_INSTANCE_NONE, CDD_IPC_CPU1_L_CPU2_R_INST0, CDD_IPC_CPU1_L_CPU3_R_INST0},
+                                                     {CDD_IPC_CPU2_L_CPU1_R_INST0, CDD_IPC_INSTANCE_NONE, CDD_IPC_CPU2_L_CPU3_R_INST0},
+                                                     {CDD_IPC_CPU3_L_CPU1_R_INST0, CDD_IPC_CP3_L_CPU2_R_INST0, CDD_IPC_INSTANCE_NONE}};
 #define CDD_IPC_STOP_SEC_CONST_32
 #include "Cdd_Ipc_MemMap.h"
  
@@ -138,13 +138,20 @@ CONST(struct Cdd_Ipc_ConfigTag, CDD_IPC_CONFIG_DATA) Cdd_Ipc_Config =
 {
     .Cdd_Ipc_LocalCore = CDD_IPC_[!"node:value(node:ref(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CurrentContext)/Core)"!],
 
+[!VAR "txMaxInput" = "'0'"!][!VAR "txVar" = "0"!]
+[!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*"!]
+[!LOOP "CddIpcTxChannelConfig/*"!][!VAR "txVar" = "$txVar+1"!][!ENDLOOP!]
+[!VAR "txMaxInput" = "concat($txMaxInput,' ',string($txVar))"!][!VAR "txVar" = "0"!]
+[!ENDLOOP!]
+[!VAR "txMaxCount" = "num:i(num:max(text:split($txMaxInput)))"!]
 [!IF "num:i(count(CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*))>0"!]
     .Cdd_Ipc_TxInstanceConfig = 
      {
 [!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*"!]
+[!VAR "txActualCount" = "num:i(count(CddIpcTxChannelConfig/*))"!]
         {
             .Cdd_Ipc_TxInstance = [!"node:value(CddIpcTxInstance)"!],
-            .Cdd_Ipc_TxChannelCount = [!"num:i(count(CddIpcTxChannelConfig/*))"!]U,
+            .Cdd_Ipc_TxChannelCount = [!"$txActualCount"!]U,
             .Cdd_Ipc_TxChannelConfig = 
                 {
 [!LOOP "CddIpcTxChannelConfig/*"!]
@@ -159,19 +166,33 @@ CONST(struct Cdd_Ipc_ConfigTag, CDD_IPC_CONFIG_DATA) Cdd_Ipc_Config =
 [!ENDIF!]
                     },
 [!ENDLOOP!]
+[!FOR "i" = "$txActualCount + 1" TO "$txMaxCount"!]
+                    {
+                        .Cdd_Ipc_ChannelID = 0U,
+                        .Cdd_Ipc_TxProcessing = CDD_IPC_POLLING,
+                        .Cdd_Ipc_HandleID = 0U,
+                    },
+[!ENDFOR!]
                 }
         },
 [!ENDLOOP!]
      },
 [!ENDIF!]
 
+[!VAR "rxMaxInput" = "'0'"!][!VAR "rxVar" = "0"!]
+[!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*"!]
+[!LOOP "CddIpcRxChannelConfig/*"!][!VAR "rxVar" = "$rxVar+1"!][!ENDLOOP!]
+[!VAR "rxMaxInput" = "concat($rxMaxInput,' ',string($rxVar))"!][!VAR "rxVar" = "0"!]
+[!ENDLOOP!]
+[!VAR "rxMaxCount" = "num:i(num:max(text:split($rxMaxInput)))"!]
 [!IF "num:i(count(CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*))>0"!]
     .Cdd_Ipc_RxInstanceConfig = 
     {
 [!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*"!]
+[!VAR "rxActualCount" = "num:i(count(CddIpcRxChannelConfig/*))"!]
         {
             .Cdd_Ipc_RxInstance = [!"node:value(CddIpcRxInstance)"!],
-            .Cdd_Ipc_RxChannelCount = [!"num:i(count(CddIpcRxChannelConfig/*))"!]U,
+            .Cdd_Ipc_RxChannelCount = [!"$rxActualCount"!]U,
             .Cdd_Ipc_RxChannelConfig = 
                  {
 [!LOOP "CddIpcRxChannelConfig/*"!]
@@ -188,6 +209,13 @@ CONST(struct Cdd_Ipc_ConfigTag, CDD_IPC_CONFIG_DATA) Cdd_Ipc_Config =
 [!ENDIF!]
                     },
 [!ENDLOOP!]
+[!FOR "i" = "$rxActualCount + 1" TO "$rxMaxCount"!]
+                    {
+                        .Cdd_Ipc_ChannelID = 0U,
+                        .Cdd_Ipc_UserCallbackFunction = NULL_PTR,
+                        .Cdd_Ipc_HandleID = 0U,
+                    },
+[!ENDFOR!]
                 }
         },
 [!ENDLOOP!]

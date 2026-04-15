@@ -376,7 +376,11 @@ typedef struct
  * Exported Object Declarations
  *********************************************************************************************************************/
 
-extern const McalLib_DevCalData McalLib_DeviceCalibrationData;
+/** \brief Compile-time constant pointer to the BootRom status structure in M0 RAM */
+#define McalLib_BootRomStatus ((const McalLib_BromStatus* const)0x20000800U) /*~ASR~*/
+
+/** \brief Compile-time constant pointer to the Device Calibration Data in M0 RAM */
+#define McalLib_DeviceCalibrationData ((const McalLib_DevCalData* const)0x20000EDCU) /*~ASR~*/
 
 /*********************************************************************************************************************
  *  Exported Function Prototypes
@@ -384,14 +388,24 @@ extern const McalLib_DevCalData McalLib_DeviceCalibrationData;
 
 /** \brief returns the boot rom structure data
  *
- * \param[in] BootRomStatus Structure of BootRom status
  * \pre None
  * \post None
- * \return None
- * \retval None
+ * \return Constant pointer to constant BootRom status structure in M0 RAM
+ * \retval const McalLib_BromStatus * const
  *
  *********************************************************************************************************************/
-FUNC(void, MCAL_LIB_CODE) McalLib_BootRomStructure(McalLib_BromStatus** BootRomStatus);
+FUNC(CONSTP2CONST(McalLib_BromStatus, AUTOMATIC, MCAL_LIB_CONST), MCAL_LIB_CODE) McalLib_BootRomStructure(void);
+
+/** \brief returns the device calibration data structure
+ *
+ * \pre None
+ * \post None
+ * \return Constant pointer to constant Device Calibration Data structure in M0 RAM
+ * \retval const McalLib_DevCalData * const
+ *
+ *********************************************************************************************************************/
+FUNC(CONSTP2CONST(McalLib_DevCalData, AUTOMATIC, MCAL_LIB_CONST), MCAL_LIB_CODE)
+McalLib_DeviceCalibrationStructure(void);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

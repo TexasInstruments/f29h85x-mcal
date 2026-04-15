@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Dio_MemMap.h
- *  Project:    C29x MCAL
- *  Module:     DIO
  *  Generator:  None
  *
  *  Description:  Memory Map template file for Dio module.
+ *                This source code is for reference only, it should not be used as-is in a
+ *                typical customer applications
  *
  *********************************************************************************************************************/
 
@@ -157,6 +157,34 @@
 #undef DIO_STOP_SEC_CONFIG_DATA
 #undef MEMMAP_ERROR
             
+#elif defined DIO_START_SEC_VAR_INIT_PTR
+#ifdef MEMMAP_SECTION_OPEN
+    #error "Memory section VAR_INIT_PTR is already opened, Cannot reopen section using \
+           DIO_START_SEC_VAR_INIT_PTR ."
+#endif
+#define MEMMAP_SECTION_OPEN
+#define DIO_VAR_INIT_PTR_OPEN
+#pragma clang section data = ".DIO_VAR_INIT_PTR"
+#pragma clang section bss = ".DIO_VAR_NO_INIT_PTR"
+#undef DIO_START_SEC_VAR_INIT_PTR
+#undef MEMMAP_ERROR
+
+#elif defined DIO_STOP_SEC_VAR_INIT_PTR
+#ifndef MEMMAP_SECTION_OPEN
+#error "Memory section VAR_INIT_PTR is not open, Cannot close section using \
+         DIO_STOP_SEC_VAR_INIT_PTR."
+#endif
+#undef MEMMAP_SECTION_OPEN
+#ifndef DIO_VAR_INIT_PTR_OPEN
+    #error "Memory section VAR_INIT_PTR is not open ,Cannot close section using \
+           DIO_STOP_SEC_VAR_INIT_PTR."
+#endif
+#undef DIO_VAR_INIT_PTR_OPEN
+#pragma clang section data = ""
+#pragma clang section bss = ""
+#undef DIO_STOP_SEC_VAR_INIT_PTR
+#undef MEMMAP_ERROR
+            
 #endif
 
 
@@ -180,6 +208,15 @@
 #ifdef DIO_STOP_SEC_CONFIG_DATA
     #error "multiple memory allocation keywords are defined, Cannot use \
            DIO_STOP_SEC_CONFIG_DATA."
+#endif
+
+#ifdef DIO_START_SEC_VAR_INIT_PTR
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           DIO_START_SEC_VAR_INIT_PTR."
+#endif
+#ifdef DIO_STOP_SEC_VAR_INIT_PTR
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           DIO_STOP_SEC_VAR_INIT_PTR."
 #endif
 
 /*********************************************************************************************************************

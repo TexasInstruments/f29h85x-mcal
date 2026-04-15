@@ -66,6 +66,8 @@
  *  Generator:  None
  *
  *  Description:  Diagnostic Event Manager header file.                                                           
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *********************************************************************************************************************/
 #ifndef DEM_H
 #define DEM_H

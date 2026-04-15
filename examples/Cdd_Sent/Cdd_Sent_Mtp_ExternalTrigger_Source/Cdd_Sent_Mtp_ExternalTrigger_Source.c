@@ -163,8 +163,8 @@ int main(void)
 
     /* Reset Counters */
     Gpt_InterruptCnt[GPT_CHANNEL_0] = 0;
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(20000000U);
     AppUtils_Printf("Cdd_Sent Driver Sample Application - Starts!!!\n\r");
     /*  get version Info */

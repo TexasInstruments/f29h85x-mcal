@@ -132,7 +132,7 @@ typedef uint16 Cdd_I2c_DataLengthType;
 /** \brief I2C configuration Major Version */
 #define CDD_I2C_CFG_MAJOR_VERSION       (1U)
 /** \brief I2C configuration Minor Version */
-#define CDD_I2C_CFG_MINOR_VERSION       (2U)
+#define CDD_I2C_CFG_MINOR_VERSION       (3U)
 /** \brief I2C configuration Patch Version */
 #define CDD_I2C_CFG_PATCH_VERSION       (0U)
 /** @} */

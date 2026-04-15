@@ -136,7 +136,15 @@ Dio Header File Structure
 
 #### Memory Mapping
 
-Will be added in later release
+The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.
+
+Reference memory map files can be found at:
+
+```text
+{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+```
+
+The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.
 
 #### Scheduling
 
@@ -202,7 +210,7 @@ MCU Module is required to initialize all the clock to be used by different perip
 
 #### Multi-core and Resource allocator
 
-Not Supported
+The DIO module is not managed by the Resource Allocator. GPIO pin core allocation on F29H85x is controlled through the Port module's **PortPinCoreSelect** parameter. The DIO module only operates on GPIO pins that are allocated to CPU1 (the MCAL/AUTOSAR core). No Resource Allocator instance allocation is needed for the DIO module.
 
 ### Configuration
 
@@ -216,10 +224,10 @@ The generated configuration files should not be modified manually. The config to
 
 
 
-#### DioConfig
+##### DioConfig
 This container contains the configuration parameters and sub containers of the AUTOSAR DIO module.
 
-##### DioPort
+###### DioPort
 Configuration of individual DIO ports, consisting of channels and possible channel groups.
 
 ###### DioPortId
@@ -237,7 +245,7 @@ Configuration of individual DIO ports, consisting of channels and possible chann
 | **Max-value** | 7 |
 | **Min-value** | 0 |
 
-##### DioChannel
+###### DioChannel
 Configuration of an individual DIO channel.
 
 ###### DioChannelId
@@ -267,7 +275,7 @@ Configuration of an individual DIO channel.
 | Link-Time | VARIANT-LINK-TIME |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### DioChannelGroup
+###### DioChannelGroup
 Definition and configuration of DIO channel groups. A channel group represents several adjoining DIO channels represented by a logical group.
 
 ###### DioChannelGroupIdentification
@@ -313,10 +321,10 @@ Definition and configuration of DIO channel groups. A channel group represents s
 | **Max-value** | 31 |
 | **Min-value** | 0 |
 
-#### DioGeneral
+##### DioGeneral
 General DIO module configuration parameters.
 
-##### DioDevErrorDetect
+###### DioDevErrorDetect
 
 | Item ||
 |--------|---------------|
@@ -329,7 +337,7 @@ General DIO module configuration parameters.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### DioFlipChannelApi
+###### DioFlipChannelApi
 
 | Item ||
 |--------|---------------|
@@ -341,6 +349,19 @@ General DIO module configuration parameters.
 | Link-Time | VARIANT-LINK-TIME |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
+
+###### DioVersionInfoApi
+
+| Item ||
+|--------|---------------|
+| **Name** | DioVersionInfoApi |
+| **Description** | Adds / removes the service Dio_ GetVersionInfo() from the code. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 #### Steps To Configure Dio Module
 
 1. Open EB Tresos configurator tool and load Port and Dio modules
@@ -367,8 +388,6 @@ The example application demonstrates use of Dio module, the list below identifie
 
 #### Setup required to run example
 
-* Install Code Composer Studio(CCS)
-* Install latest C29 compiler
 
 #### How to run examples
 

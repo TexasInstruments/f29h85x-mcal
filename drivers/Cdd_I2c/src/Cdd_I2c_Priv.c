@@ -304,13 +304,17 @@ Std_ReturnType Cdd_I2c_ResetHwUnitPriv(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_Hw
     }
 
     /* Clear all queued channels and notify their sequences */
-    while ((headNode = Cdd_I2c_UtilsGetHeadNode(&hwUnitObj->llobj)) != NULL_PTR)
+    do
     {
-        chObj = (Cdd_I2c_ChObjType *)headNode->params.data;
-        Cdd_I2c_UtilsUnLinkNodePri(&hwUnitObj->llobj, headNode);
-        chObj->state = CDD_I2C_STATE_COMPLETE;
-        Cdd_I2c_ProcessChCompletion(drvObj, chObj, hwUnitObj, CDD_I2C_CH_RESULT_HW_UNIT_RESET, FALSE);
-    }
+        headNode = Cdd_I2c_UtilsGetHeadNode(&hwUnitObj->llobj);
+        if (headNode != NULL_PTR)
+        {
+            chObj = (Cdd_I2c_ChObjType *)headNode->params.data;
+            Cdd_I2c_UtilsUnLinkNodePri(&hwUnitObj->llobj, headNode);
+            chObj->state = CDD_I2C_STATE_COMPLETE;
+            Cdd_I2c_ProcessChCompletion(drvObj, chObj, hwUnitObj, CDD_I2C_CH_RESULT_HW_UNIT_RESET, FALSE);
+        }
+    } while (headNode != NULL_PTR);
 #endif /* CDD_I2C_CONTROLLER_ACTIVE */
 
     /* Re-init HW so that we can continue with a fresh transaction */

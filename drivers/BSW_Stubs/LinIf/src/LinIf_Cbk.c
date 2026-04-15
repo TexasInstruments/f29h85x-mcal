@@ -66,6 +66,8 @@
  *  Generator:  None
  *
  *  Description:  Functionality related to lin interface module
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************

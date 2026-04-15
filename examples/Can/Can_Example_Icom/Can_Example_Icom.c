@@ -166,8 +166,8 @@ int main(void)
     Pdu.id          = 100U;
     Pdu.sdu         = Can_Data;
     Pdu.swPduHandle = 1;
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(200000000U);  // Init App utils to enable prints
     AppUtils_Printf("Can_Example_Icom : Sample Application - STARTS !!!\n");
 

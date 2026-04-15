@@ -233,7 +233,15 @@ Cdd Ecap Header File Structure
 
 #### Memory Mapping
 
-Will be added in later release
+The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.
+
+Reference memory map files can be found at:
+
+```text
+{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+```
+
+The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.
 
 #### Scheduling
 
@@ -339,23 +347,29 @@ For Cdd_Ecap Module, data consistency and exclusive access to critical sections 
 
 #### Resource Allocator
 
-The ECAP module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+The ECAP module uses the Resource Allocator to allocate ECAP peripheral instances to CPU cores and configure their memory-mapped base addresses. Each allocation is placed inside a **Context** that maps to a CPU core (e.g. `CPU1`). The **CurrentContext** parameter in the Resource Allocator selects which Context is active for MCAL execution. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+The **Frame** parameter (`FRAME0`–`FRAME3`) selects the memory-mapped frame for the instance, enabling simultaneous access from different initiators without arbitration stalls. The **BaseAddr** is auto-calculated based on the selected instance and frame. The **DebugHaltEnabled** and **StandbyModeEnabled** parameters control peripheral behaviour during CPU debug halt and standby low-power modes respectively.
 
 ##### Resource Allocator Usage Example
 
 To allocate ECAP1 to CPU1 using FRAME0:
 
-1. In the Resource Allocator configuration, create a new Ecap instance allocation
+1. In the Resource Allocator configuration, create a new Ecap instance allocation under the CPU1 Context
 2. Set **InstanceName** to `ECAP1`
 3. Set **Frame** to `FRAME0`
-4. The **BaseAddr** will be automatically calculated as `ECAP1_DRIVER_BASE_FRAME(0U)`
+4. The **BaseAddr** will be automatically calculated as `ECAP1_BASE_FRAME(0U)`
+5. Optionally configure **DebugHaltEnabled** and **StandbyModeEnabled**
 
 ```text
 Resource Allocator Configuration:
-├── EcapInstanceAllocation
-│   ├── InstanceName: ECAP1
-│   ├── Frame: FRAME0
-│   └── BaseAddr: ECAP1_DRIVER_BASE_FRAME(0U)
+├── Context (Core: CPU1)
+│   └── Cdd_EcapAllocatedInstance
+│       ├── InstanceName: ECAP1
+│       ├── Frame: FRAME0
+│       ├── BaseAddr: ECAP1_BASE_FRAME(0U)  [auto-calculated]
+│       ├── DebugHaltEnabled: true
+│       └── StandbyModeEnabled: true
 ```
 
 ### Configuration
@@ -374,10 +388,10 @@ Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Treso
 
 
 
-#### CddEcapConfigSet
+##### CddEcapConfigSet
 This container contains the configuration parameters and sub containers of the AUTOSAR CddEcap module.
 
-##### CddEcapChannel
+###### CddEcapChannel
 Configuration of an individual CDD ECAP channel.
 
 ###### CddEcapChannelId
@@ -518,7 +532,7 @@ Configuration of an individual CDD ECAP channel.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddEcapSignalMeasurement
+###### CddEcapSignalMeasurement
 This container contains the configuration (parameters) in case the measurement mode is "CddEcapSignalMeasurement"
 
 ###### CddEcapSignalMeasurementProperty
@@ -534,7 +548,7 @@ This container contains the configuration (parameters) in case the measurement m
 | **Default-value** | CDD_ECAP_HIGH_TIME |
 | **Range** | CDD_ECAP_HIGH_TIME<br>CDD_ECAP_LOW_TIME<br>CDD_ECAP_PERIOD_TIME |
 
-##### CddEcapTimestampMeasurement
+###### CddEcapTimestampMeasurement
 This container contains the configuration (parameters) in case the measurement mode is "CddEcapTimestamp"
 
 ###### CddEcapTimestampMeasurementProperty
@@ -565,7 +579,7 @@ This container contains the configuration (parameters) in case the measurement m
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | NULL_PTR |
 
-##### CddEcapSignalEdgeDetection
+###### CddEcapSignalEdgeDetection
 This container contains the configuration (parameters) in case the measurement mode is "CddEcapSignalEdgeDetection"
 
 ###### CddEcapSignalNotification
@@ -583,10 +597,10 @@ This container contains the configuration (parameters) in case the measurement m
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | NULL_PTR |
 
-#### CddEcapGeneral
+##### CddEcapGeneral
 Configuration of general CDD ECAP parameters.
 
-##### CddEcapDevErrorDetect
+###### CddEcapDevErrorDetect
 
 | Item ||
 |--------|---------------|
@@ -598,7 +612,7 @@ Configuration of general CDD ECAP parameters.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddEcapDeInitApi
+###### CddEcapDeInitApi
 
 | Item ||
 |--------|---------------|
@@ -610,7 +624,7 @@ Configuration of general CDD ECAP parameters.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### CddEcapEdgeCountApi
+###### CddEcapEdgeCountApi
 
 | Item ||
 |--------|---------------|
@@ -622,7 +636,7 @@ Configuration of general CDD ECAP parameters.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddEcapEdgeDetectApi
+###### CddEcapEdgeDetectApi
 
 | Item ||
 |--------|---------------|
@@ -634,7 +648,7 @@ Configuration of general CDD ECAP parameters.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddEcapGetDutyCycleValuesApi
+###### CddEcapGetDutyCycleValuesApi
 
 | Item ||
 |--------|---------------|
@@ -646,7 +660,7 @@ Configuration of general CDD ECAP parameters.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddEcapGetInputStateApi
+###### CddEcapGetInputStateApi
 
 | Item ||
 |--------|---------------|
@@ -658,7 +672,7 @@ Configuration of general CDD ECAP parameters.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddEcapGetTimeElapsedApi
+###### CddEcapGetTimeElapsedApi
 
 | Item ||
 |--------|---------------|
@@ -670,7 +684,7 @@ Configuration of general CDD ECAP parameters.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddEcapGetVersionInfoApi
+###### CddEcapGetVersionInfoApi
 
 | Item ||
 |--------|---------------|
@@ -682,7 +696,7 @@ Configuration of general CDD ECAP parameters.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddEcapSignalMeasurementApi
+###### CddEcapSignalMeasurementApi
 
 | Item ||
 |--------|---------------|
@@ -694,12 +708,24 @@ Configuration of general CDD ECAP parameters.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### CddEcapTimestampApi
+###### CddEcapTimestampApi
 
 | Item ||
 |--------|---------------|
 | **Name** | CddEcapTimestampApi |
 | **Description** | Adds / removes all services related to the timestamping functionality as listed below from the code: CddEcap_StartTimestamp(), CddEcap_StopTimestamp(), CddEcap_GetTimestampIndex(). |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### CddEcapHRConfigApi
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapHRConfigApi |
+| **Description** | Adds / removes all services related to the high resolution functionality as listed below, from the code: . |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -744,8 +770,6 @@ PWM signal (EPWM1_A) is generated on the GPIO0.
 
 #### Setup required to run Cdd_Ecap_Capture_Signal
 
-- Install Code Composer Studio(CCS) latest version
-- Install latest c29 compiler
 - Connect the hardware (Loopback from GPIO0 to GPIO1. On HSEC dock, this is from HSEC49 to HSEC50) and power up
 - Connect the uart set up to check the log on serial console
 
@@ -785,8 +809,6 @@ PWM signal (EPWM1_A) is generated on the GPIO0.
 
 #### Setup required to run Cdd_Ecap_HrMode
 
-- Install Code Composer Studio(CCS) latest version
-- Install latest c29 compiler
 - Connect the hardware (Loopback from GPIO0 to GPIO1. On HSEC dock, this is from HSEC49 to HSEC50) and power up
 - Connect the uart set up to check the log on serial console
 

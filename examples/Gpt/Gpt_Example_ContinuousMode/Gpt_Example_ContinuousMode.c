@@ -126,8 +126,8 @@ int main(void)
     Gpt_InterruptCnt[GPT_CHANNEL_0] = 0;
     Gpt_InterruptCnt[GPT_CHANNEL_1] = 0;
     Gpt_InterruptCnt[GPT_CHANNEL_2] = 0;
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(20000000U);
 
     /* GPT driver Init, Deinit and Init sequence */

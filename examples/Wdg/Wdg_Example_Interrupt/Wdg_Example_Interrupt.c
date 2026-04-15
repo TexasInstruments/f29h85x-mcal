@@ -132,9 +132,9 @@ int main(void)
 {
     Std_ReturnType return_value = E_NOT_OK;
     uint16         Wdg_Timeout  = 0U;
-    DeviceSupport_Init();
 
     EcuM_Init(); /* PORT & MCU Initialization to get configuration settings */
+    DeviceSupport_Init();
 
     AppUtils_Init(200000000U); /* 200 MHZ system clock*/
     AppUtils_Printf("App_Utils Initialization is completed !!!\n");

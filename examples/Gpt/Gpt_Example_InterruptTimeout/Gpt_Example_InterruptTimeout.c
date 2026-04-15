@@ -126,8 +126,8 @@ Std_VersionInfoType Gpt_VersionInfo;
 int main(void)
 {
     sint32 return_value = 0;
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(20000000U); /*default : 200mhz */
 
     /* GPT driver Init, Deinit and Init sequence */

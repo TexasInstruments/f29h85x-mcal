@@ -127,8 +127,8 @@ Std_VersionInfoType Gpt_VersionInfo;
 int main(void)
 {
     sint32 return_value = 0;
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(200000000U);
     AppUtils_Printf("Gpt Driver Sample Application - Starts!!!\n\r");
     AppUtils_Printf("---------------------------------------------------------------\n\n\r");

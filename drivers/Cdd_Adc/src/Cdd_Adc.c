@@ -1348,7 +1348,8 @@ Cdd_Adc_ConfigurePpbNotification(VAR(Cdd_Adc_PpbType, AUTOMATIC) PpbId, VAR(bool
     }
     else if ((Cdd_Adc_PpbNotifyType)NULL_PTR == Cdd_Adc_CfgPtr->ppbcfg[PpbId].ppbevtint_notification)
     {
-        /* Report DET error if the group notification function doesn't exist */
+        /* Design:MCAL-35330 */
+        /* Report DET error if the PPB notification function doesn't exist */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_CONFIGURE_PPB_NOTIFICATION,
                               CDD_ADC_E_NOTIF_CAPABILITY);
     }

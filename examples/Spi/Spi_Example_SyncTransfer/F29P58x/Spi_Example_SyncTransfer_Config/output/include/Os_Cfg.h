@@ -100,7 +100,7 @@ extern "C" {
 
 #define OS_COUNTER_ENABLE       (STD_ON)
 
-#define RTINT_THRESHOLD          (0U)
+#define RTINT_THRESHOLD          (15U)
 
 #define OS_INIT_CONFIG_PC       Os_Config
 

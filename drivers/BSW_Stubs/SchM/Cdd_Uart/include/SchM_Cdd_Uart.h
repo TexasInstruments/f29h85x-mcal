@@ -66,6 +66,8 @@
  *  Generator:    None
  *
  *  Description:  This file contains Cdd_Uart SchM API proto types
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************

@@ -63,10 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       MemIf_Types.h
- *  Project:    C29x MCAL
  *  Generator:  None
  *
  *  Description:  MemIf Types
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *                                                                   
  *********************************************************************************************************************/
  #ifndef MEMIF_TYPES_H

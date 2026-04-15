@@ -105,10 +105,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">5.9.10. Configuration</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">5.9.10.1. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#spidemeventparameterrefs">5.9.10.2. SpiDemEventParameterRefs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#spidriver">5.9.10.3. SpiDriver</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#spigeneral">5.9.10.4. SpiGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-spi-module">5.9.10.5. Steps To Configure Spi Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-spi-module">5.9.10.2. Steps To Configure Spi Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">5.9.11. Examples</a><ul>
@@ -123,14 +120,15 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">5.10. WDG Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">5.11. CDD ADC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">5.12. CDD ECAP Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">5.13. CDD I2C Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">5.14. CDD IPC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">5.15. CDD PWM Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">5.16. CDD SENT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">5.17. CDD XBAR Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">5.18. CDD UART Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">5.19. RTDMA Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Dma.html">5.12. CDD DMA Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">5.13. CDD ECAP Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">5.14. CDD I2C Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">5.15. CDD IPC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">5.16. CDD PWM Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">5.17. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">5.18. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">5.19. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">5.20. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">6. Migration Guide</a></li>
@@ -372,7 +370,12 @@ maximum speed of the I/O buffers used on the SPI pins. See the device data sheet
 <h2><span class="section-number">5.9.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
 <section id="memory-mapping">
 <h3><span class="section-number">5.9.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
-<p>Will be added in later release</p>
+<p>The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.</p>
+<p>Reference memory map files can be found at:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+</pre></div>
+</div>
+<p>The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.</p>
 </section>
 <section id="scheduling">
 <h3><span class="section-number">5.9.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
@@ -585,21 +588,26 @@ The detection of development errors is configurable (ON / OFF), The switch SPI_C
 </section>
 <section id="resource-allocator">
 <h3><span class="section-number">5.9.9.2. </span>Resource Allocator<a class="headerlink" href="#resource-allocator" title="Link to this heading"></a></h3>
-<p>The SPI module references the Resource Allocator for device, package, and variant configuration. See the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a> for details on configuring device-specific settings.</p>
+<p>The SPI module uses the Resource Allocator to allocate SPI peripheral instances to CPU cores and configure their memory-mapped base addresses. Each allocation is placed inside a <strong>Context</strong> that maps to a CPU core (e.g. <code class="docutils literal notranslate"><span class="pre">CPU1</span></code>). The <strong>CurrentContext</strong> parameter in the Resource Allocator selects which Context is active for MCAL execution. See the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a> for details on configuring device-specific settings.</p>
+<p>The <strong>Frame</strong> parameter (<code class="docutils literal notranslate"><span class="pre">FRAME0</span></code>–<code class="docutils literal notranslate"><span class="pre">FRAME3</span></code>) selects the memory-mapped frame for the instance, enabling simultaneous access from different initiators without arbitration stalls. The <strong>BaseAddr</strong> is auto-calculated based on the selected instance and frame. The <strong>DebugHaltEnabled</strong> and <strong>StandbyModeEnabled</strong> parameters control peripheral behaviour during CPU debug halt and standby low-power modes respectively.</p>
 <section id="resource-allocator-usage-example">
 <h4><span class="section-number">5.9.9.2.1. </span>Resource Allocator Usage Example<a class="headerlink" href="#resource-allocator-usage-example" title="Link to this heading"></a></h4>
 <p>To allocate SPIA to CPU1 using FRAME0:</p>
 <ol class="arabic simple">
-<li><p>In the Resource Allocator configuration, create a new Spi instance allocation</p></li>
+<li><p>In the Resource Allocator configuration, create a new Spi instance allocation under the CPU1 Context</p></li>
 <li><p>Set <strong>InstanceName</strong> to <code class="docutils literal notranslate"><span class="pre">SPIA</span></code></p></li>
 <li><p>Set <strong>Frame</strong> to <code class="docutils literal notranslate"><span class="pre">FRAME0</span></code></p></li>
-<li><p>The <strong>BaseAddr</strong> will be automatically calculated as <code class="docutils literal notranslate"><span class="pre">SPIA_DRIVER_BASE_FRAME(0U)</span></code></p></li>
+<li><p>The <strong>BaseAddr</strong> will be automatically calculated as <code class="docutils literal notranslate"><span class="pre">SPIA_BASE_FRAME(0U)</span></code></p></li>
+<li><p>Optionally configure <strong>DebugHaltEnabled</strong> and <strong>StandbyModeEnabled</strong></p></li>
 </ol>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Resource Allocator Configuration:
-├── SpiInstanceAllocation
-│   ├── InstanceName: SPIA
-│   ├── Frame: FRAME0
-│   └── BaseAddr: SPIA_DRIVER_BASE_FRAME(0U)
+├── Context (Core: CPU1)
+│   └── SpiInstanceAllocation
+│       ├── InstanceName: SPIA
+│       ├── Frame: FRAME0
+│       ├── BaseAddr: SPIA_BASE_FRAME(0U)  [auto-calculated]
+│       ├── DebugHaltEnabled: true
+│       └── StandbyModeEnabled: true
 </pre></div>
 </div>
 </section>
@@ -613,9 +621,8 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
 <section id="configuration-parameters">
 <h3><span class="section-number">5.9.10.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
-</section>
 <section id="spidemeventparameterrefs">
-<h3><span class="section-number">5.9.10.2. </span>SpiDemEventParameterRefs<a class="headerlink" href="#spidemeventparameterrefs" title="Link to this heading"></a></h3>
+<h4><span class="section-number">5.9.10.1.1. </span>SpiDemEventParameterRefs<a class="headerlink" href="#spidemeventparameterrefs" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -627,7 +634,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 <td><p>SpiDemEventParameterRefs</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>Reference to configured DEM event to report “Hardware failure”. If the reference is not configured the error shall not be reported.</p></td>
+<td><p>Container for the references to DemEventParameter elements which shall be invoked using the API Dem_SetEventStatus in case the corresponding error occurs. The EventId is taken from the referenced DemEventParameter’s DemEventId symbolic value. The standardized errors are provided in this container and can be extended by vendor-specific error references.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Multiplicity-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
@@ -666,10 +673,10 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spidriver">
-<h3><span class="section-number">5.9.10.3. </span>SpiDriver<a class="headerlink" href="#spidriver" title="Link to this heading"></a></h3>
+<h4><span class="section-number">5.9.10.1.2. </span>SpiDriver<a class="headerlink" href="#spidriver" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters and sub containers of the AUTOSAR Spi module.</p>
 <section id="spimaxchannel">
-<h4><span class="section-number">5.9.10.3.1. </span>SpiMaxChannel<a class="headerlink" href="#spimaxchannel" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.2.1. </span>SpiMaxChannel<a class="headerlink" href="#spimaxchannel" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -714,7 +721,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spimaxjob">
-<h4><span class="section-number">5.9.10.3.2. </span>SpiMaxJob<a class="headerlink" href="#spimaxjob" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.2.2. </span>SpiMaxJob<a class="headerlink" href="#spimaxjob" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -759,7 +766,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spimaxsequence">
-<h4><span class="section-number">5.9.10.3.3. </span>SpiMaxSequence<a class="headerlink" href="#spimaxsequence" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.2.3. </span>SpiMaxSequence<a class="headerlink" href="#spimaxsequence" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -804,7 +811,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spisequencetimeout">
-<h4><span class="section-number">5.9.10.3.4. </span>SpiSequenceTimeOut<a class="headerlink" href="#spisequencetimeout" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.2.4. </span>SpiSequenceTimeOut<a class="headerlink" href="#spisequencetimeout" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -849,7 +856,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spicounterclockref">
-<h4><span class="section-number">5.9.10.3.5. </span>SpiCounterClockRef<a class="headerlink" href="#spicounterclockref" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.2.5. </span>SpiCounterClockRef<a class="headerlink" href="#spicounterclockref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -885,10 +892,11 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spichannel">
-<h4><span class="section-number">5.9.10.3.6. </span>SpiChannel<a class="headerlink" href="#spichannel" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.2.6. </span>SpiChannel<a class="headerlink" href="#spichannel" title="Link to this heading"></a></h5>
 <p>All data needed to configure one SPI-channel</p>
+</section>
 <section id="spichannelid">
-<h5><span class="section-number">5.9.10.3.6.1. </span>SpiChannelId<a class="headerlink" href="#spichannelid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.7. </span>SpiChannelId<a class="headerlink" href="#spichannelid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -933,7 +941,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spichanneltype">
-<h5><span class="section-number">5.9.10.3.6.2. </span>SpiChannelType<a class="headerlink" href="#spichanneltype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.8. </span>SpiChannelType<a class="headerlink" href="#spichanneltype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -975,7 +983,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spidatawidth">
-<h5><span class="section-number">5.9.10.3.6.3. </span>SpiDataWidth<a class="headerlink" href="#spidatawidth" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.9. </span>SpiDataWidth<a class="headerlink" href="#spidatawidth" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1020,7 +1028,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spidefaultdata">
-<h5><span class="section-number">5.9.10.3.6.4. </span>SpiDefaultData<a class="headerlink" href="#spidefaultdata" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.10. </span>SpiDefaultData<a class="headerlink" href="#spidefaultdata" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1080,7 +1088,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiebmaxlength">
-<h5><span class="section-number">5.9.10.3.6.5. </span>SpiEbMaxLength<a class="headerlink" href="#spiebmaxlength" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.11. </span>SpiEbMaxLength<a class="headerlink" href="#spiebmaxlength" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1125,7 +1133,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiibnbuffers">
-<h5><span class="section-number">5.9.10.3.6.6. </span>SpiIbNBuffers<a class="headerlink" href="#spiibnbuffers" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.12. </span>SpiIbNBuffers<a class="headerlink" href="#spiibnbuffers" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1170,7 +1178,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spitransferstart">
-<h5><span class="section-number">5.9.10.3.6.7. </span>SpiTransferStart<a class="headerlink" href="#spitransferstart" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.13. </span>SpiTransferStart<a class="headerlink" href="#spitransferstart" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1211,12 +1219,12 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </tbody>
 </table>
 </section>
-</section>
 <section id="spijob">
-<h4><span class="section-number">5.9.10.3.7. </span>SpiJob<a class="headerlink" href="#spijob" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.2.14. </span>SpiJob<a class="headerlink" href="#spijob" title="Link to this heading"></a></h5>
 <p>All data needed to configure one SPI-Job, amongst others the connection between the internal SPI unit and the special settings for an external device is done.</p>
+</section>
 <section id="spihwunitsynchronous">
-<h5><span class="section-number">5.9.10.3.7.1. </span>SpiHwUnitSynchronous<a class="headerlink" href="#spihwunitsynchronous" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.15. </span>SpiHwUnitSynchronous<a class="headerlink" href="#spihwunitsynchronous" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1228,7 +1236,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 <td><p>SpiHwUnitSynchronous</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>Tags: atp.Status=obsolete</p></td>
+<td><p>If SpiHwUnitSynchronous is set to “SYNCHRONOUS”, the SpiJob uses its containing SpiDriver in a synchronous manner. If it is set to “ASYNCHRONOUS”, it uses the driver in an asynchronous way. If the parameter is not set, the SpiChannel uses the driver also in an asynchronous way.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Multiplicity-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
@@ -1273,7 +1281,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spijobendnotification">
-<h5><span class="section-number">5.9.10.3.7.2. </span>SpiJobEndNotification<a class="headerlink" href="#spijobendnotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.16. </span>SpiJobEndNotification<a class="headerlink" href="#spijobendnotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1327,7 +1335,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spijobid">
-<h5><span class="section-number">5.9.10.3.7.3. </span>SpiJobId<a class="headerlink" href="#spijobid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.17. </span>SpiJobId<a class="headerlink" href="#spijobid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1372,7 +1380,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spijobpriority">
-<h5><span class="section-number">5.9.10.3.7.4. </span>SpiJobPriority<a class="headerlink" href="#spijobpriority" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.18. </span>SpiJobPriority<a class="headerlink" href="#spijobpriority" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1417,7 +1425,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spideviceassignment">
-<h5><span class="section-number">5.9.10.3.7.5. </span>SpiDeviceAssignment<a class="headerlink" href="#spideviceassignment" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.19. </span>SpiDeviceAssignment<a class="headerlink" href="#spideviceassignment" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1452,12 +1460,12 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </tbody>
 </table>
 </section>
-</section>
 <section id="spichannellist">
-<h4><span class="section-number">5.9.10.3.8. </span>SpiChannelList<a class="headerlink" href="#spichannellist" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.2.20. </span>SpiChannelList<a class="headerlink" href="#spichannellist" title="Link to this heading"></a></h5>
 <p>References to SPI channels and their order within the Job.</p>
+</section>
 <section id="spichannelindex">
-<h5><span class="section-number">5.9.10.3.8.1. </span>SpiChannelIndex<a class="headerlink" href="#spichannelindex" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.21. </span>SpiChannelIndex<a class="headerlink" href="#spichannelindex" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1502,7 +1510,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spichannelassignment">
-<h5><span class="section-number">5.9.10.3.8.2. </span>SpiChannelAssignment<a class="headerlink" href="#spichannelassignment" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.22. </span>SpiChannelAssignment<a class="headerlink" href="#spichannelassignment" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1537,12 +1545,12 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </tbody>
 </table>
 </section>
-</section>
 <section id="spisequence">
-<h4><span class="section-number">5.9.10.3.9. </span>SpiSequence<a class="headerlink" href="#spisequence" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.2.23. </span>SpiSequence<a class="headerlink" href="#spisequence" title="Link to this heading"></a></h5>
 <p>All data needed to configure one SPI-sequence</p>
+</section>
 <section id="spiinterruptiblesequence">
-<h5><span class="section-number">5.9.10.3.9.1. </span>SpiInterruptibleSequence<a class="headerlink" href="#spiinterruptiblesequence" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.24. </span>SpiInterruptibleSequence<a class="headerlink" href="#spiinterruptiblesequence" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1581,7 +1589,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiseqendnotification">
-<h5><span class="section-number">5.9.10.3.9.2. </span>SpiSeqEndNotification<a class="headerlink" href="#spiseqendnotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.25. </span>SpiSeqEndNotification<a class="headerlink" href="#spiseqendnotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1635,7 +1643,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spisequenceid">
-<h5><span class="section-number">5.9.10.3.9.3. </span>SpiSequenceId<a class="headerlink" href="#spisequenceid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.26. </span>SpiSequenceId<a class="headerlink" href="#spisequenceid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1680,7 +1688,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spijobassignment">
-<h5><span class="section-number">5.9.10.3.9.4. </span>SpiJobAssignment<a class="headerlink" href="#spijobassignment" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.27. </span>SpiJobAssignment<a class="headerlink" href="#spijobassignment" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1730,12 +1738,12 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </tbody>
 </table>
 </section>
-</section>
 <section id="spiexternaldevice">
-<h4><span class="section-number">5.9.10.3.10. </span>SpiExternalDevice<a class="headerlink" href="#spiexternaldevice" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.2.28. </span>SpiExternalDevice<a class="headerlink" href="#spiexternaldevice" title="Link to this heading"></a></h5>
 <p>The communication settings of an external device. Closely linked to SpiJob.</p>
+</section>
 <section id="spiexternaldeviceid">
-<h5><span class="section-number">5.9.10.3.10.1. </span>SpiExternalDeviceId<a class="headerlink" href="#spiexternaldeviceid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.29. </span>SpiExternalDeviceId<a class="headerlink" href="#spiexternaldeviceid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1780,7 +1788,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spibaudrate">
-<h5><span class="section-number">5.9.10.3.10.2. </span>SpiBaudrate<a class="headerlink" href="#spibaudrate" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.30. </span>SpiBaudrate<a class="headerlink" href="#spibaudrate" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1825,7 +1833,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiclkdivider">
-<h5><span class="section-number">5.9.10.3.10.3. </span>SpiclkDivider<a class="headerlink" href="#spiclkdivider" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.31. </span>SpiclkDivider<a class="headerlink" href="#spiclkdivider" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1870,7 +1878,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spicsidentifier">
-<h5><span class="section-number">5.9.10.3.10.4. </span>SpiCsIdentifier<a class="headerlink" href="#spicsidentifier" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.32. </span>SpiCsIdentifier<a class="headerlink" href="#spicsidentifier" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1909,7 +1917,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spicspolarity">
-<h5><span class="section-number">5.9.10.3.10.5. </span>SpiCsPolarity<a class="headerlink" href="#spicspolarity" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.33. </span>SpiCsPolarity<a class="headerlink" href="#spicspolarity" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1951,7 +1959,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spicsselection">
-<h5><span class="section-number">5.9.10.3.10.6. </span>SpiCsSelection<a class="headerlink" href="#spicsselection" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.34. </span>SpiCsSelection<a class="headerlink" href="#spicsselection" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2008,7 +2016,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spidatashiftedge">
-<h5><span class="section-number">5.9.10.3.10.7. </span>SpiDataShiftEdge<a class="headerlink" href="#spidatashiftedge" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.35. </span>SpiDataShiftEdge<a class="headerlink" href="#spidatashiftedge" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2050,7 +2058,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spienablecs">
-<h5><span class="section-number">5.9.10.3.10.8. </span>SpiEnableCs<a class="headerlink" href="#spienablecs" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.36. </span>SpiEnableCs<a class="headerlink" href="#spienablecs" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2089,7 +2097,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spihwunit">
-<h5><span class="section-number">5.9.10.3.10.9. </span>SpiHwUnit<a class="headerlink" href="#spihwunit" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.37. </span>SpiHwUnit<a class="headerlink" href="#spihwunit" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2131,7 +2139,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spishiftclockidlelevel">
-<h5><span class="section-number">5.9.10.3.10.10. </span>SpiShiftClockIdleLevel<a class="headerlink" href="#spishiftclockidlelevel" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.38. </span>SpiShiftClockIdleLevel<a class="headerlink" href="#spishiftclockidlelevel" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2173,7 +2181,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spidataworddelay">
-<h5><span class="section-number">5.9.10.3.10.11. </span>SpiDataWordDelay<a class="headerlink" href="#spidataworddelay" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.39. </span>SpiDataWordDelay<a class="headerlink" href="#spidataworddelay" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2218,7 +2226,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spisysclockref">
-<h5><span class="section-number">5.9.10.3.10.12. </span>SpiSysClockRef<a class="headerlink" href="#spisysclockref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.40. </span>SpiSysClockRef<a class="headerlink" href="#spisysclockref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2254,7 +2262,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spicsgpioref">
-<h5><span class="section-number">5.9.10.3.10.13. </span>SpiCsGpioRef<a class="headerlink" href="#spicsgpioref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.41. </span>SpiCsGpioRef<a class="headerlink" href="#spicsgpioref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2304,12 +2312,12 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </tbody>
 </table>
 </section>
-</section>
 <section id="spihwunitconfig">
-<h4><span class="section-number">5.9.10.3.11. </span>SpiHwUnitConfig<a class="headerlink" href="#spihwunitconfig" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.2.42. </span>SpiHwUnitConfig<a class="headerlink" href="#spihwunitconfig" title="Link to this heading"></a></h5>
 <p>HW Unit configurations</p>
+</section>
 <section id="spihighspeedmode">
-<h5><span class="section-number">5.9.10.3.11.1. </span>SpiHighSpeedMode<a class="headerlink" href="#spihighspeedmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.43. </span>SpiHighSpeedMode<a class="headerlink" href="#spihighspeedmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2348,7 +2356,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiloopbackmode">
-<h5><span class="section-number">5.9.10.3.11.2. </span>SpiLoopBackMode<a class="headerlink" href="#spiloopbackmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.44. </span>SpiLoopBackMode<a class="headerlink" href="#spiloopbackmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2387,7 +2395,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spififomodeenable">
-<h5><span class="section-number">5.9.10.3.11.3. </span>SpiFifoModeEnable<a class="headerlink" href="#spififomodeenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.45. </span>SpiFifoModeEnable<a class="headerlink" href="#spififomodeenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2426,7 +2434,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiirqtype">
-<h5><span class="section-number">5.9.10.3.11.4. </span>SpiIrqType<a class="headerlink" href="#spiirqtype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.46. </span>SpiIrqType<a class="headerlink" href="#spiirqtype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2468,7 +2476,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spihwunittype">
-<h5><span class="section-number">5.9.10.3.11.5. </span>SpiHwUnitType<a class="headerlink" href="#spihwunittype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.9.10.1.2.47. </span>SpiHwUnitType<a class="headerlink" href="#spihwunittype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2504,12 +2512,11 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 </section>
-</section>
 <section id="spigeneral">
-<h3><span class="section-number">5.9.10.4. </span>SpiGeneral<a class="headerlink" href="#spigeneral" title="Link to this heading"></a></h3>
+<h4><span class="section-number">5.9.10.1.3. </span>SpiGeneral<a class="headerlink" href="#spigeneral" title="Link to this heading"></a></h4>
 <p>General configuration settings for SPI-Handler</p>
 <section id="spicancelapi">
-<h4><span class="section-number">5.9.10.4.1. </span>SpiCancelApi<a class="headerlink" href="#spicancelapi" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.3.1. </span>SpiCancelApi<a class="headerlink" href="#spicancelapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2548,7 +2555,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spichannelbuffersallowed">
-<h4><span class="section-number">5.9.10.4.2. </span>SpiChannelBuffersAllowed<a class="headerlink" href="#spichannelbuffersallowed" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.3.2. </span>SpiChannelBuffersAllowed<a class="headerlink" href="#spichannelbuffersallowed" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2593,7 +2600,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spichannelinternalbuffermaxlength">
-<h4><span class="section-number">5.9.10.4.3. </span>SpiChannelInternalBufferMaxLength<a class="headerlink" href="#spichannelinternalbuffermaxlength" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.3.3. </span>SpiChannelInternalBufferMaxLength<a class="headerlink" href="#spichannelinternalbuffermaxlength" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2638,7 +2645,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spideverrordetect">
-<h4><span class="section-number">5.9.10.4.4. </span>SpiDevErrorDetect<a class="headerlink" href="#spideverrordetect" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.3.4. </span>SpiDevErrorDetect<a class="headerlink" href="#spideverrordetect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2677,7 +2684,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spihwstatusapi">
-<h4><span class="section-number">5.9.10.4.5. </span>SpiHwStatusApi<a class="headerlink" href="#spihwstatusapi" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.3.5. </span>SpiHwStatusApi<a class="headerlink" href="#spihwstatusapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2716,7 +2723,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiinterruptibleseqallowed">
-<h4><span class="section-number">5.9.10.4.6. </span>SpiInterruptibleSeqAllowed<a class="headerlink" href="#spiinterruptibleseqallowed" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.3.6. </span>SpiInterruptibleSeqAllowed<a class="headerlink" href="#spiinterruptibleseqallowed" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2755,7 +2762,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spileveldelivered">
-<h4><span class="section-number">5.9.10.4.7. </span>SpiLevelDelivered<a class="headerlink" href="#spileveldelivered" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.3.7. </span>SpiLevelDelivered<a class="headerlink" href="#spileveldelivered" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2800,7 +2807,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spimainfunctionperiod">
-<h4><span class="section-number">5.9.10.4.8. </span>SpiMainFunctionPeriod<a class="headerlink" href="#spimainfunctionperiod" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.3.8. </span>SpiMainFunctionPeriod<a class="headerlink" href="#spimainfunctionperiod" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2860,7 +2867,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spisupportconcurrentsynctransmit">
-<h4><span class="section-number">5.9.10.4.9. </span>SpiSupportConcurrentSyncTransmit<a class="headerlink" href="#spisupportconcurrentsynctransmit" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.3.9. </span>SpiSupportConcurrentSyncTransmit<a class="headerlink" href="#spisupportconcurrentsynctransmit" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2899,7 +2906,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiusercallbackheaderfile">
-<h4><span class="section-number">5.9.10.4.10. </span>SpiUserCallbackHeaderFile<a class="headerlink" href="#spiusercallbackheaderfile" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.3.10. </span>SpiUserCallbackHeaderFile<a class="headerlink" href="#spiusercallbackheaderfile" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2953,7 +2960,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiversioninfoapi">
-<h4><span class="section-number">5.9.10.4.11. </span>SpiVersionInfoApi<a class="headerlink" href="#spiversioninfoapi" title="Link to this heading"></a></h4>
+<h5><span class="section-number">5.9.10.1.3.11. </span>SpiVersionInfoApi<a class="headerlink" href="#spiversioninfoapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2995,8 +3002,9 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 </section>
+</section>
 <section id="steps-to-configure-spi-module">
-<h3><span class="section-number">5.9.10.5. </span>Steps To Configure Spi Module<a class="headerlink" href="#steps-to-configure-spi-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.9.10.2. </span>Steps To Configure Spi Module<a class="headerlink" href="#steps-to-configure-spi-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool and load Port, Mcu, Ecum, Os, Dem and Spi modules</p></li>
 <li><p>Open PORT module plugin and configure required pins as MISO, MOSI, CLK, CS.</p></li>
@@ -3036,8 +3044,6 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 <section id="setup-required-to-run-spi-example-sync-asynctransfer">
 <h4><span class="section-number">5.9.11.1.2. </span>Setup required to run Spi_Example_Sync_AsyncTransfer<a class="headerlink" href="#setup-required-to-run-spi-example-sync-asynctransfer" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p>Install Code Composer Studio(CCS) latest version</p></li>
-<li><p>Install latest c29 compiler</p></li>
 <li><p>Connect the hardware and power up</p></li>
 <li><p>Connect the uart set up to check the log on serial console</p></li>
 </ul>
@@ -3104,8 +3110,6 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 <section id="setup-required-to-run-spi-example-asynctransfer-interrupt">
 <h4><span class="section-number">5.9.11.2.2. </span>Setup required to run Spi_Example_AsyncTransfer_Interrupt<a class="headerlink" href="#setup-required-to-run-spi-example-asynctransfer-interrupt" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p>Install Code Composer Studio(CCS) latest version</p></li>
-<li><p>Install latest c29 compiler</p></li>
 <li><p>Connect the hardware and power up</p></li>
 <li><p>Connect the uart set up to check the log on serial console</p></li>
 </ul>
@@ -3171,8 +3175,6 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 <section id="setup-required-to-run-spi-example-synctransfer">
 <h4><span class="section-number">5.9.11.3.2. </span>Setup required to run Spi_Example_SyncTransfer<a class="headerlink" href="#setup-required-to-run-spi-example-synctransfer" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p>Install Code Composer Studio(CCS) latest version</p></li>
-<li><p>Install latest c29 compiler</p></li>
 <li><p>Connect the hardware and power up</p></li>
 <li><p>Connect the uart set up to check the log on serial console</p></li>
 </ul>
@@ -3233,8 +3235,6 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 <section id="setup-required-to-run-spi-example-external-loopback">
 <h4><span class="section-number">5.9.11.4.2. </span>Setup required to run Spi_Example_External_Loopback<a class="headerlink" href="#setup-required-to-run-spi-example-external-loopback" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p>Install Code Composer Studio(CCS) latest version</p></li>
-<li><p>Install latest c29 compiler</p></li>
 <li><p>Connect the hardware and power up</p></li>
 <li><p>Makes sure to disable the S2 POCI switch on the XDS110 to OFF (Only when used with SOM EVM) as shown below:</p></li>
 </ul>

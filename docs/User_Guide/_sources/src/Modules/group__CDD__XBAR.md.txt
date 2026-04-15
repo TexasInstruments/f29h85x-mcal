@@ -1488,11 +1488,6 @@ These are the possible levels an output crossbar output can have.
 | CDD_XBAR_SID_SET_EXTERNAL_INTERRUPT_TYPE   | Cdd_Xbar_SetExternalInterruptType()  |
 | CDD_XBAR_SID_SET_EXTERNAL_INTERRUPT_STATE   | Cdd_Xbar_SetExternalInterruptState()  |
 | CDD_XBAR_SID_GET_EXTERNAL_INTERRUPT_COUNTER   | Cdd_Xbar_GetExternalInterruptCounter()  |
-| CDD_XBAR_GET_GROUP_NUMBER (InputLine)  | Get group number for a given input line.  |
-| CDD_XBAR_GET_XBAR_TYPE (xbar)  | Get crossbar type.  |
-| CDD_XBAR_GET_XBAR_INSTANCE (xbar)  | Get crossbar output line.  |
-| CDD_XBAR_INPUT_FLAG_NUMBER (InputFlag)  | Get input flag number for a given input flag.  |
-| CDD_XBAR_INPUT_FLAG_BIT (InputFlag)  | Get the bit corresponding to the input in the input flag.  |
 | CDD_XBAR_CFG_MAJOR_VERSION   | CDD XBar configuration Major Version.  |
 | CDD_XBAR_CFG_MINOR_VERSION   | CDD XBar configuration Minor Version.  |
 | CDD_XBAR_CFG_PATCH_VERSION   | CDD XBar configuration Patch Version.  |
@@ -1681,6 +1676,11 @@ These are the possible levels an output crossbar output can have.
 | Std_ReturnType | **[Cdd_Xbar_SetExternalInterruptState](../Modules/group__CDD__XBAR.md#function-cdd_xbar_setexternalinterruptstate)**([Cdd_Xbar_Type](../Modules/group__CDD__XBAR.md#typedef-cdd_xbar_type) CrossbarUnit, boolean Enable)| Sets the external interrupt state (enable/disable) for the specified input crossbar instance.  |
 | Std_ReturnType | **[Cdd_Xbar_GetExternalInterruptCounter](../Modules/group__CDD__XBAR.md#function-cdd_xbar_getexternalinterruptcounter)**([Cdd_Xbar_Type](../Modules/group__CDD__XBAR.md#typedef-cdd_xbar_type) CrossbarUnit, uint16 * CounterValue)| Gets external interrupt counter value.  |
 | uint32 | **[Cdd_Xbar_Input_Selection_Mask](../Modules/group__CDD__XBAR.md#function-cdd_xbar_input_selection_mask)**(uint32 InputLine)| Get Line Number selection mask.  |
+| uint8 | **[Cdd_Xbar_GetGroupNumber](../Modules/group__CDD__XBAR.md#function-cdd_xbar_getgroupnumber)**(uint16 InputLine)| Get group number for a given input line.  |
+| uint8 | **[Cdd_Xbar_GetXbarType](../Modules/group__CDD__XBAR.md#function-cdd_xbar_getxbartype)**(uint16 xbar)| Get crossbar type.  |
+| uint8 | **[Cdd_Xbar_GetXbarInstance](../Modules/group__CDD__XBAR.md#function-cdd_xbar_getxbarinstance)**(uint16 xbar)| Get crossbar instance.  |
+| uint16 | **[Cdd_Xbar_GetInputFlagNumber](../Modules/group__CDD__XBAR.md#function-cdd_xbar_getinputflagnumber)**([Cdd_Xbar_InputFlagType](../Modules/group__CDD__XBAR.md#enum-cdd_xbar_inputflagtype) InputFlag)| Get input flag number for a given input flag.  |
+| uint16 | **[Cdd_Xbar_GetInputFlagBit](../Modules/group__CDD__XBAR.md#function-cdd_xbar_getinputflagbit)**([Cdd_Xbar_InputFlagType](../Modules/group__CDD__XBAR.md#enum-cdd_xbar_inputflagtype) InputFlag)| Get the bit corresponding to the input in the input flag.  |
 
 
 
@@ -1776,6 +1776,11 @@ Selection of one input line at a time from a group to enable or disable their si
 
 
 **Return**: Status of input selection. 
+
+**Note**: Lock granularity differs by crossbar type:
+
+* For Input Xbar: each instance has an independent lock bit in the INPUTSELECTLOCK register. Only the specific Input Xbar instance that has been locked will reject input selection; all other Input Xbar instances remain configurable independently.
+* For all other crossbar types (Output Xbar, EPWM Xbar, CLB Xbar, MINDB Xbar, ICL Xbar): a single LOCK bit covers the entire crossbar type. Once any instance of these types is locked, input selection is rejected for ALL instances of that crossbar type.
 
 **Precondition**: Preconditions - Driver is already initialized but not locked. 
 
@@ -2304,6 +2309,11 @@ Locks a given Crossbar Entity or its Input Select instance as per the case if it
 
 **Return**: Locking attempt status. 
 
+**Note**: Lock granularity differs by crossbar type:
+
+* For Input Xbar: each instance has an independent lock bit in the INPUTSELECTLOCK register (one bit per input instance, all R/WSonce). Calling this API locks only the specific Input Xbar instance identified by CrossbarUnit; all other Input Xbar instances remain unlocked and independently configurable.
+* For all other crossbar types (Output Xbar, EPWM Xbar, CLB Xbar, MINDB Xbar, ICL Xbar): the hardware provides a single LOCK bit for the entire crossbar type (e.g., OUTPUTXBARLock.LOCK, PWMXBARLock.LOCK). Calling this API on any instance of these types locks ALL instances of that crossbar type simultaneously.
+
 **Precondition**: Preconditions - Driver is already initialized but not locked. 
 
 **Postcondition**: Postconditions - None. 
@@ -2340,6 +2350,11 @@ Tells whether the given Crossbar or its given Input Select line is locked or not
 
 
 **Return**: Status of crossbar lock. 
+
+**Note**: Lock status granularity differs by crossbar type:
+
+* For Input Xbar: each instance has an independent lock bit. This API returns the lock status of the specific Input Xbar instance identified by CrossbarUnit only; other Input Xbar instances may have a different lock status.
+* For all other crossbar types (Output Xbar, EPWM Xbar, CLB Xbar, MINDB Xbar, ICL Xbar): a single LOCK bit covers the entire crossbar type. This API returns the shared lock status for the whole crossbar type, regardless of which specific instance is passed as CrossbarUnit.
 
 **Precondition**: Preconditions - Driver is already initialized. 
 
@@ -2561,6 +2576,141 @@ Returns the line number selection mask for an input line.
 
 
 **Return**: Line Number selection mask. 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Xbar_GetGroupNumber
+
+```
+static inline uint8 Cdd_Xbar_GetGroupNumber(
+    uint16 InputLine
+)
+```
+
+
+**Brief**: 
+Get group number for a given input line. 
+
+Returns the group number extracted from an input line value.
+
+
+**Parameters**: 
+
+  
+* **InputLine** is the crossbar input line. 
+
+
+**Return**: Group number (high byte of InputLine). 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Xbar_GetXbarType
+
+```
+static inline uint8 Cdd_Xbar_GetXbarType(
+    uint16 xbar
+)
+```
+
+
+**Brief**: 
+Get crossbar type. 
+
+Returns the crossbar type extracted from a crossbar value.
+
+
+**Parameters**: 
+
+  
+* **xbar** is the crossbar identifier. 
+
+
+**Return**: Crossbar type (high byte of xbar). 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Xbar_GetXbarInstance
+
+```
+static inline uint8 Cdd_Xbar_GetXbarInstance(
+    uint16 xbar
+)
+```
+
+
+**Brief**: 
+Get crossbar instance. 
+
+Returns the crossbar instance extracted from a crossbar value.
+
+
+**Parameters**: 
+
+  
+* **xbar** is the crossbar identifier. 
+
+
+**Return**: Crossbar instance (low byte of xbar). 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Xbar_GetInputFlagNumber
+
+```
+static inline uint16 Cdd_Xbar_GetInputFlagNumber(
+    Cdd_Xbar_InputFlagType InputFlag
+)
+```
+
+
+**Brief**: 
+Get input flag number for a given input flag. 
+
+Returns the input flag number extracted from an input flag value.
+
+
+**Parameters**: 
+
+  
+* **InputFlag** is the crossbar input flag. 
+
+
+**Return**: Input flag number (high byte of InputFlag). 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Xbar_GetInputFlagBit
+
+```
+static inline uint16 Cdd_Xbar_GetInputFlagBit(
+    Cdd_Xbar_InputFlagType InputFlag
+)
+```
+
+
+**Brief**: 
+Get the bit corresponding to the input in the input flag. 
+
+Returns the input flag bit extracted from an input flag value.
+
+
+**Parameters**: 
+
+  
+* **InputFlag** is the crossbar input flag. 
+
+
+**Return**: Input flag bit (low byte of InputFlag). 
 
 **Precondition**: None 
 

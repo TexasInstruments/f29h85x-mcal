@@ -946,7 +946,48 @@
                           </v:lst>
                         </v:ctr>
                       </v:lst>
-
+                      <v:lst name="Cdd_Dma" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        <v:ctr name="Cdd_Dma" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Cdd_Dma module. This container defines which DMA channels are assigned to this specific CPU context."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="32967750-041c-4d10-a9054-c7708121a285"/>
+                          <v:lst name="CddDmaAllocatedChannel" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" value="20"/>
+                            <v:ctr name="CddDmaAllocatedChannel" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a DMA channel allocated to this CPU context. Each allocated channel can only be used by this context.."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="2e784829-38e8-4635-ae26-a93448792c8f"/>
+                              
+                              <v:ref name="ChannelRef" type="REFERENCE">
+                                <a:a name="DESC" value="EN: Reference to a specific DMA channel from the available DMA hardware instances. This links to a channel defined in the Cdd_Dma hardware instance configuration, allocating it exclusively to this CPU context."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="3434778d-195d-6d78-95ca-884c623367ab"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="REF" value="ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/Cdd_Dma/CddDmaHwInstance/CddDmaChannel"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'ChannelRef'],node:value(.))"
+                                        false="Every DMA channel must be allocated only once."/>
+                                </a:da>
+                              </v:ref>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
                       <v:lst name="Cdd_I2c" type="MAP">
                         <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
                         <a:da name="MIN" value="0"/>
@@ -2893,6 +2934,306 @@
                                           false="Frame and Base address should match. Please run AutoCalc."/>
                     </a:da>
                           </v:var>
+                        </v:ctr>
+                      </v:lst>
+                    </v:ctr>
+                  </v:lst>
+                  <v:lst name="Cdd_Dma" type="MAP">
+                    <a:a name="EDITABLE" type="XPath" expr="node:value(../Mode) = 'SETUP'"/>
+                    <a:da name="MIN" value="0"/>
+                    <a:da name="MAX" value="1"/>
+                    <v:ctr name="Cdd_Dma" type="IDENTIFIABLE">
+                      <a:a name="EDITABLE" type="XPath" expr="node:value(../../Mode) = 'SETUP'"/>
+                      <a:a name="DESC" value="EN: Configuration container for the Cdd_Dma module hardware resources. This defines the available RTDMA hardware instances and their channels that can be allocated to different CPU contexts in the system."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="UUID" value="45229629-052c-8623-a4a3-8106e6652ef8"/>
+                      <v:lst name="CddDmaHwInstance" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_DmaInstanceName')))&quot;,'2')"/>
+                        <v:ctr name="CddDmaHwInstance" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration of a RTDMA hardware instance. Each instance represents a physical RTDMA peripheral with its own set of channels. Multiple instances can be configured if the device supports multiple RTDMA peripherals."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="785e0834-2308-4635-ae44-723582722c10"/>
+                          <v:var name="InstanceName" type="ENUMERATION">
+                            <a:a name="DESC" value="EN: The RTDMA hardware instance. This identifies the physical DMA peripheral on the microcontroller. Each instance must be uniquely named and can only be configured once."/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" value="5387558d-195d-49ed-95ca-50204428a91"/>
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="DEFAULT" value="RTDMA1"/>
+                            <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->node:when(node:value(../../../../../*[@name = 'CPU1_Lockstep']) = 'true', ecu:list('ResourceAllocator_F29H85x.Cdd_DmaInstanceName')[1], ecu:list('ResourceAllocator_F29H85x.Cdd_DmaInstanceName'))&quot;,'RTDMA1')"/>
+                            <a:da name="INVALID" type="Multi">
+                                  <mt:xpath expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Cdd Dma instance must be allocated only once."/>
+                            </a:da>
+                          </v:var>
+                          <v:var name="Frame" type="ENUMERATION">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" value="676a8622-3457-4f22-c4fc-9c6183fb014d"/>
+                            <a:da name="RANGE">
+                              <a:v>FRAME0</a:v>
+                              <a:v>FRAME1</a:v>
+                              <a:v>FRAME2</a:v>
+                              <a:v>FRAME3</a:v>
+                            </a:da>
+                            <a:da name="DEFAULT" value="FRAME0"/>
+                          </v:var>
+                          <v:var name="CddDmaPriorityScheme" type="ENUMERATION">
+                            <a:a name="DESC"
+                                value="EN: Specifies the priority scheme round robin or software configured priority for channels.
+                                If software configured priority is selected, the priority value shall be specified for every channel. "/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" value="bcb83f67-6345-4a01-bfdd-26529feb1eb9"/>
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="RANGE">
+                                <a:v>CDD_DMA_PRIORITY_ROUND_ROBIN</a:v>
+                                <a:v>CDD_DMA_PRIORITY_SOFTWARE_CONFIG</a:v>
+                            </a:da>
+                            <a:da name="DEFAULT" value="CDD_DMA_PRIORITY_ROUND_ROBIN"/>
+                          </v:var>
+                          <v:var name="CddDmaEmulationMode" type="ENUMERATION">
+                              <a:a name="DESC"
+                                  value="EN: This parameter specifies the action when an emulation halt event occurs.
+                                  CDD_DMA_EMULATION_STOP: The DMA completes the current read-write operation,then halts.
+                                  CDD_DMA_EMULATION_FREE_RUN: The DMA continues running during an emulation halt."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" value="2838c86b-81be-4dc8-a76f-58a30b1b1a4d"/>
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                              <a:da name="RANGE">
+                                  <a:v>CDD_DMA_EMULATION_STOP</a:v>
+                                  <a:v>CDD_DMA_EMULATION_FREE_RUN</a:v>
+                              </a:da>
+                              <a:da name="DEFAULT" value="CDD_DMA_EMULATION_STOP"/>
+                          </v:var>
+                          <v:var name="CddDmaMpuEnable" type="BOOLEAN">
+                            <a:a name="DESC"
+                                 value="EN: Enables/Disables Memory Protection Unit (MPU) which provides memory protection support
+                                        and prevents illegal accesses."/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                 type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" value="44cb4230-aab9-45fc-8624-5e312757268a"/>
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="DEFAULT" value="false"/>
+                          </v:var>
+                          <v:lst name="CddDmaMpuRegion" type="MAP">
+                            <a:da name="MIN" value="1"/>
+                            <a:da name="MAX" value="16"/>
+                            <a:da name="ENABLE" type="XPath" expr="(../CddDmaMpuEnable='true')"/>
+                            <a:da name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <v:ctr name="CddDmaMpuRegion" type="IDENTIFIABLE">
+                              <a:a name="DESC"
+                                   value="EN: Configuration container for a DMA Memory Protection Unit (MPU) region. Each MPU region defines a protected memory address range with specific access permissions (read/write/no access) for selected DMA channels."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="UUID" value="4382b6f6-f2ca-496f-8104-212656d88f97"/>
+                              <a:da name="INVALID" type="XPath">
+                                <a:tst expr="text:uniq((../../../../CddDmaHwInstance/*/CddDmaMpuRegion/*/@name),@name)" false="CddDmaMpuRegion name has to be unique across all DMA instances"/>
+                              </a:da>
+                              <v:var name="CddDmaMpuRegionId" type="ENUMERATION">
+                                <a:a name="DESC"
+                                     value="EN: Specifies the MPU Region Id of RTDMA MPU instance."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="d0319405-5924-4b82-9467-51319cff2da8"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_DmaMpuRegions')[1]&quot;,'CDD_DMA1_MPU1')"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_DmaMpuRegions')&quot;,'CDD_DMA1_MPU1')"/>
+                                <a:da name="INVALID" type="XPath"
+                                      expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="MPU Region must be unique.">
+                                </a:da>
+                              </v:var>
+                              <v:var name="CddDmaMpuStartAddress" type="INTEGER">
+                                <a:a name="DESC"
+                                     value="EN:DMA MPU Region Start Address. Granularity of 4KB is mandatory e.g., 0x1000, 0x2000, 0x3000,.."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="DEFAULT_RADIX" value="HEX" />
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="efa76654-5312-46fd-af04-8d8eb3e52d68"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="DEFAULT" value="0"/>
+                                <a:da name="INVALID" type="Range">
+                                  <a:tst expr="&lt;=4294967295"/>
+                                  <a:tst expr="&gt;=0"/>
+                                </a:da>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="(node:value(.) mod 4096) = 0" false="Start address must be aligned to 4KB boundary(e.g., 0x1000, 0x2000, 0x3000)"/>
+                                </a:da>
+                              </v:var>
+                              <v:var name="CddDmaMpuEndAddress" type="INTEGER">
+                                <a:a name="DESC"
+                                     value="EN:DMA MPU Region End Address. Granularity of 4KB is mandatory e.g., 0x0FFF, 0x1FFF, 0x2FFF,.."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="DEFAULT_RADIX" value="HEX" />
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="2b7d2a43-782b-4d75-b082-6083410fa306"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="DEFAULT" value="0"/>
+                                <a:da name="INVALID" type="Range">
+                                  <a:tst expr="&lt;=4294967295"/>
+                                  <a:tst expr="&gt;=0"/>
+                                </a:da>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="((node:value(.)+1) mod 4096) = 0" false="End address must be aligned to 4KB boundary(e.g., 0x0FFF, 0x1FFF, 0x2FFF,..)"/>
+                                  <a:tst expr="node:value(.) &gt;=node:value(../CddDmaMpuStartAddress)" false="Start address must be less than end address"/>
+                                </a:da>
+                              </v:var>
+                              <v:var name="CddDmaMpuAccessPermission" type="ENUMERATION">
+                                <a:a name="DESC"
+                                     value="EN: Specifies the MPU Region access permissions of the RTDMA MPU instance."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="611359b3-d4dc-4221-833c-d51654257930"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE">
+                                    <a:v>CDD_DMA_NO_ACCESS</a:v>
+                                    <a:v>CDD_DMA_READ_ACCESS</a:v>
+                                    <a:v>CDD_DMA_READ_WRITE_ACCESS</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="CDD_DMA_NO_ACCESS"/>
+                              </v:var>
+                              <v:lst name="CddDmaMpuChannelEnable">
+                                <a:da name="MIN" value="1"/>
+                                <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_DmaChannelName')))&quot;,'10')"/>
+                                <a:da name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <v:ref name="CddDmaMpuChannelEnable" type="REFERENCE">
+                                  <a:a name="DESC"
+                                       value="EN: Reference to a DMA channel that will be granted access to this MPU region. Multiple channels can be associated with a single MPU region. Only channels listed here will be allowed to access the memory range defined by this region according to the specified access permissions."/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                    <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="UUID" value="e99c03c1-30ed-4e7a-97ad-255cc4b13996"/>
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:da name="REF"
+                                      value="ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/Cdd_Dma/CddDmaHwInstance/CddDmaChannel"/>
+                                  <a:da name="RANGE" type="XPath">
+                                      <a:tst expr="node:paths(../../../../CddDmaChannel/*)"/>
+                                  </a:da>
+                                  <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Channel selection has to be unique in an MPU Region."/>
+                                  </a:da>
+                                </v:ref>
+                              </v:lst>
+                            </v:ctr>
+                          </v:lst>
+                          <v:lst name="CddDmaChannel" type="MAP">
+                            <a:da name="MIN" value="1"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_DmaChannelName')))&quot;,'10')"/>
+                            <a:da name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <v:ctr name="CddDmaChannel" type="IDENTIFIABLE">
+                              <a:a name="DESC" value="EN: Configuration of a DMA channel within this RTDMA hardware instance. Each channel represents an independent DMA transfer engine that can move data between memory and peripherals. This container defines all available channels (e.g., CH1, CH2, ..., CH10) for the instance, which can then be allocated to specific CPU contexts."/>
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="74ae0d00-15e8-4639-ae26-aa319f792c8f"/>
+                            <v:var name="ChannelName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the DMA channel identifier within this RTDMA instance (e.g., CH1, CH2, CH3, ..., CH10). Each channel provides an independent data transfer path and must be uniquely identified within the instance."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="3434778d-195d-6d78-95ca-884c623367aa"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_DmaChannelName')&quot;,'CH1')"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_DmaChannelName')[1]&quot;,'CH1')"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../.././/*[@name = 'ChannelName'],node:value(.))"
+                                        false="Every ChannelName must be selected only once."/>
+                                </a:da>
+                              </v:var>
+                              <v:var name="BaseAddr" type="STRING">
+                                  <a:a name="DESC" value="EN: Base address of the RTDMA channel. This field represents the macro as defined in hw_memmap.h. The address is automatically calculated based on the instance name, channel name, and selected peripheral frame."/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="UUID" value="8365651e-d645-4d80-9a60-559242a23e98"/>
+                                  <a:a name="EDITABLE" value="false"/>
+                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../../../InstanceName), node:value(../ChannelName), '_BASE_FRAME(',substring-after(node:value(../../../Frame),'FRAME'),'U)')&quot;,'RTDMA1CH1_BASE_FRAME(0U)')"/>
+                                  <a:da name="INVALID" type="XPath">
+                                      <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../../../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+                                      <a:tst expr="(contains(node:value(.),node:value(../ChannelName)))"
+                                          false="Channel name and Base address should match. Please run AutoCalc."/>
+								                  </a:da>
+                              </v:var>
+                              <v:var name="CddDmaChannelPriority" type="INTEGER">
+                                  <a:a name="DESC"
+                                      value="EN: DMA channel priority level for software-configured priority arbitration. Valid values: CDD_DMA_CHPRIORITY0 (0x0 - special condition during arbitration), CDD_DMA_CHPRIORITY1 (0x1 - default priority), CDD_DMA_CHPRIORITY2 (0x2 - medium priority), CDD_DMA_CHPRIORITY3 (0x3 - highest priority). This setting is only used when the DMA instance is configured with software-configured priority scheme; it is ignored in round-robin mode."/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                  <a:a name="UUID" value="4632d1cc-a811-4a84-9039-e1c64b9f42d6"/>
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:da name="DEFAULT" value="1"/>
+                                  <a:da name="INVALID" type="Range">
+                                      <a:tst expr="&lt;=3"/>
+                                      <a:tst expr="&gt;=0"/>
+                                  </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
                         </v:ctr>
                       </v:lst>
                     </v:ctr>

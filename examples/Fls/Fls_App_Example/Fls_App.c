@@ -136,7 +136,6 @@ Std_ReturnType FlsApp_main_handling(void);
  *********************************************************************************************************************/
 static void FlsApp_PlatformInit(void)
 {
-    DeviceSupport_Init();
     Mcu_Init(&Mcu_Config_Mcu_ModuleConfiguration_0);
 
 #if (STD_ON == MCU_CFG_INIT_CLOCK_API)
@@ -152,6 +151,7 @@ static void FlsApp_PlatformInit(void)
     (void)Mcu_DistributePllClock();
 #endif
 #endif
+    DeviceSupport_Init();
 
     Os_StartOS(); /* Initializes Os stub */
     return;

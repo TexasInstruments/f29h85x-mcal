@@ -155,7 +155,7 @@ CONST(Cdd_Sent_MTPConfigType, CDD_SENT_CONFIG_DATA) [!"../../../../@name"!]_[!".
 /* List of MTP Config structures per instance */
 [!LOOP "CddSentConfig"!][!LOOP "CddSentController/*"!][!//
 
-CONST(Cdd_Sent_MTPConfigType*, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_CddSentController_List[[!"$NumChannels"!]] =
+CONSTP2CONST(Cdd_Sent_MTPConfigType, CDD_SENT_CONFIG_DATA, CDD_SENT_CONST) [!"../../@name"!]_CddSentController_List[[!"$NumChannels"!]] =
 {
 [!LOOP "CddSentExternalDeviceConfig/*"!][!//
     [[!"@index"!]] = &[!"../../../../@name"!]_[!"../../@name"!]_[!"@name"!],
@@ -191,7 +191,7 @@ CONST(Cdd_Sent_ChannelConfigType, CDD_SENT_CONFIG_DATA) [!"../../../../@name"!]_
 /* Cdd_Sent HW unit structure defined here for all config sets */
 [!LOOP "CddSentConfig"!][!LOOP "CddSentController/*"!][!//
 
-CONST(Cdd_Sent_ChannelConfigType*, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_CddSentChannelObject_List[[!"$NumChannels"!]] =
+CONSTP2CONST(Cdd_Sent_ChannelConfigType, CDD_SENT_CONFIG_DATA, CDD_SENT_CONST) [!"../../@name"!]_CddSentChannelObject_List[[!"$NumChannels"!]] =
 {
 [!LOOP "CddSentChannelObject/*"!][!//
     [[!"@index"!]] = &[!"../../../../@name"!]_[!"../../@name"!]_[!"@name"!],
@@ -228,12 +228,12 @@ CONST(Cdd_Sent_HWUnitType, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
     .CddSentGlitchFilter   = (uint8 )[!"CddSentGlitchFilter"!]U,
     .CddSentMTP  = (boolean )[!IF "CddSentMTP  ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
     .CddSentMTPChannelCount = (uint8 )[!"num:i(count(CddSentExternalDeviceConfig/*))"!],
-    .CddSentMTPConfigList = (Cdd_Sent_MTPConfigType** )[!"../../@name"!]_CddSentController_List,[!//
+    .CddSentMTPConfigList = [!"../../@name"!]_CddSentController_List,[!//
     [!IF "CddSentMTP !='false'"!]
     .CddSentGlobalWaitTime   = (uint16 )[!"CddSentGlobalWaitTime"!]U,[!//
     [!ENDIF!]
     .CddSentChannelCount = (uint8 )[!"num:i(count(CddSentChannelObject/*))"!],
-    .CddSentChannelConfigList = (Cdd_Sent_ChannelConfigType** )[!"../../@name"!]_CddSentChannelObject_List,
+    .CddSentChannelConfigList = [!"../../@name"!]_CddSentChannelObject_List,
     .CddSentUserCallbackFunction  = (Cdd_Sent_NotifyType) [!IF "(node:empty(CddSentUserCallbackFunction))"!]NULL_PTR[!ELSE!][!"(node:value(CddSentUserCallbackFunction))"!][!ENDIF!],
     .CddSentUserErrorCallbackFunction   = (Cdd_Sent_ErrorNotifyType) [!IF "(node:empty(CddSentUserErrorCallbackFunction))"!]NULL_PTR[!ELSE!][!"(node:value(CddSentUserErrorCallbackFunction))"!][!ENDIF!]
 };

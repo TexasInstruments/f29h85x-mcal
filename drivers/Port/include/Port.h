@@ -109,11 +109,11 @@ extern "C" {
  *
  *****************************************************************************/
 /** \brief Driver Implementation Major Version. */
-#define PORT_SW_MAJOR_VERSION (3U)
+#define PORT_SW_MAJOR_VERSION (4U)
 /** \brief Driver Implementation Minor Version. */
 #define PORT_SW_MINOR_VERSION (0U)
 /**  \brief Driver Implementation Patch Version. */
-#define PORT_SW_PATCH_VERSION (1U)
+#define PORT_SW_PATCH_VERSION (0U)
 
 /*****************************************************************************
  *

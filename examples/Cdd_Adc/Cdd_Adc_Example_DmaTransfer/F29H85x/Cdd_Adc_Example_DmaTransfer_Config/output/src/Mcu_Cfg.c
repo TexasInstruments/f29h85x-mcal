@@ -89,11 +89,11 @@
 /*********************************************************************************************************************
  * AUTOSAR version information check.
  *********************************************************************************************************************/
-#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (1U)))
+#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (2U)))
     #error "Version numbers of Mcu_cfg.c and Mcu.h are inconsistent!"
 #endif
 
-#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (1U)))
+#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (2U)))
     #error "Version numbers of Mcu_cfg.c and Mcu_Cfg.h are inconsistent!"
 #endif
 
@@ -1423,14 +1423,14 @@ static CONST(Mcu_ClockConfigType, MCU_CONFIG_DATA) Mcu_ClkCfgSet0[3] =
         .Mcu_EthercatPhyClkEnable = ((Mcu_EthercatPhyClk)   MCU_ECAT_PHYCLK_ENABLE)
     },
     .Mcu_ExternalClkFreq = ((uint32) 20000000U),
-    .Mcu_SysClkDiv       = ((uint8) 1U),
+    .Mcu_SysClkDiv       = ((uint8) 2U),
     .Mcu_HsmClkDiv       = ((Mcu_HsmClockDiv) MCU_HSMCLK_DIV_16),
     .Mcu_EpwmClkDiv      = ((Mcu_EPWMClkDivider) MCU_EPWMCLK_DIV_1),
     .Mcu_EmifClkDiv      = ((Mcu_EMIFClkDivider) MCU_EMIFCLK_DIV_2),
     
     .Mcu_PllRefDiv       = ((uint8) 1U),
     .Mcu_PllIntMult      = ((uint8) 40U),
-    .Mcu_PllOutDiv       = ((uint8) 2U),
+    .Mcu_PllOutDiv       = ((uint8) 1U),
     },
     {
     .Mcu_ClockSourceId = ((Mcu_ClkSourceIdType) MCU_CLKSRC_XTAL),
@@ -1454,14 +1454,14 @@ static CONST(Mcu_ClockConfigType, MCU_CONFIG_DATA) Mcu_ClkCfgSet0[3] =
         .Mcu_EthercatPhyClkEnable = ((Mcu_EthercatPhyClk)   MCU_ECAT_PHYCLK_ENABLE)
     },
     .Mcu_ExternalClkFreq = ((uint32) 20000000U),
-    .Mcu_SysClkDiv       = ((uint8) 1U),
+    .Mcu_SysClkDiv       = ((uint8) 2U),
     .Mcu_HsmClkDiv       = ((Mcu_HsmClockDiv) MCU_HSMCLK_DIV_16),
     .Mcu_EpwmClkDiv      = ((Mcu_EPWMClkDivider) MCU_EPWMCLK_DIV_2),
     .Mcu_EmifClkDiv      = ((Mcu_EMIFClkDivider) MCU_EMIFCLK_DIV_2),
     
     .Mcu_PllRefDiv       = ((uint8) 1U),
-    .Mcu_PllIntMult      = ((uint8) 30U),
-    .Mcu_PllOutDiv       = ((uint8) 3U),
+    .Mcu_PllIntMult      = ((uint8) 20U),
+    .Mcu_PllOutDiv       = ((uint8) 1U),
     },
     {
     .Mcu_ClockSourceId = ((Mcu_ClkSourceIdType) MCU_CLKSRC_XTAL_SE),
@@ -1485,14 +1485,14 @@ static CONST(Mcu_ClockConfigType, MCU_CONFIG_DATA) Mcu_ClkCfgSet0[3] =
         .Mcu_EthercatPhyClkEnable = ((Mcu_EthercatPhyClk)   MCU_ECAT_PHYCLK_ENABLE)
     },
     .Mcu_ExternalClkFreq = ((uint32) 25000000U),
-    .Mcu_SysClkDiv       = ((uint8) 1U),
+    .Mcu_SysClkDiv       = ((uint8) 2U),
     .Mcu_HsmClkDiv       = ((Mcu_HsmClockDiv) MCU_HSMCLK_DIV_16),
     .Mcu_EpwmClkDiv      = ((Mcu_EPWMClkDivider) MCU_EPWMCLK_DIV_2),
     .Mcu_EmifClkDiv      = ((Mcu_EMIFClkDivider) MCU_EMIFCLK_DIV_2),
     
-    .Mcu_PllRefDiv       = ((uint8) 1U),
-    .Mcu_PllIntMult      = ((uint8) 16U),
-    .Mcu_PllOutDiv       = ((uint8) 2U),
+    .Mcu_PllRefDiv       = ((uint8) 2U),
+    .Mcu_PllIntMult      = ((uint8) 32U),
+    .Mcu_PllOutDiv       = ((uint8) 1U),
     }
 };
 
@@ -1590,7 +1590,13 @@ static CONST(Mcu_PeripheralRegEntryType, MCU_CONFIG_DATA) Mcu_PeripheralConfigSe
         .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_EPWM1),
         .RegValue = (uint32)0x000000C0U
     }
-};
+,
+
+    /* RTDMA1 Configuration - FRAME0 */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_RTDMA1CH),
+        .RegValue = (uint32)0x00000000U
+    }};
 
 /*********************************************************************************************************************
  *  Peripheral Configuration Structure
@@ -1602,7 +1608,7 @@ static CONST(Mcu_PeripheralRegEntryType, MCU_CONFIG_DATA) Mcu_PeripheralConfigSe
 static CONST(Mcu_PeripheralConfigType, MCU_CONFIG_DATA) Mcu_PeripheralConfig =
 {
     .PeripheralConfigEntries = Mcu_PeripheralConfigSet,
-    .PeripheralConfigCount   = 2U
+    .PeripheralConfigCount   = 3U
 };
 
 

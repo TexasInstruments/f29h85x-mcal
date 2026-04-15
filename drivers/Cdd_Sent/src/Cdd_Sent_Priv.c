@@ -305,8 +305,8 @@ Cdd_Sent_HwInitPrv(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_CONST) Confi
 FUNC(void, CDD_SENT_CODE)
 Cdd_Sent_MTPInitPrv(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_CONST) ConfigPtr)
 {
-    P2VAR(Cdd_Sent_MTPConfigType, AUTOMATIC, CDD_SENT_APPL_DATA) MTPSensorConfig = NULL;
-    VAR(uint8, AUTOMATIC) Sensor_Count                                           = (uint8)0U;
+    P2CONST(Cdd_Sent_MTPConfigType, AUTOMATIC, CDD_SENT_CONST) MTPSensorConfig = NULL_PTR;
+    VAR(uint8, AUTOMATIC) Sensor_Count                                         = (uint8)0U;
     VAR(uint32, AUTOMATIC) MtptriggerOffset;
     for (Sensor_Count = 0U; Sensor_Count < ConfigPtr->CddSentMTPChannelCount; Sensor_Count++)
     {

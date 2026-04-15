@@ -118,10 +118,10 @@
 #endif
 
 /* vendor specific version information check */
-#if ((CDD_I2C_SW_MAJOR_VERSION != (1U)) || (CDD_I2C_SW_MINOR_VERSION != (2U)))
+#if ((CDD_I2C_SW_MAJOR_VERSION != (1U)) || (CDD_I2C_SW_MINOR_VERSION != (3U)))
 #error "Version numbers of Cdd_I2c.c and Cdd_I2c.h are not matching!"
 #endif
-#if ((CDD_I2C_CFG_MAJOR_VERSION != (1U)) || (CDD_I2C_CFG_MINOR_VERSION != (2U)))
+#if ((CDD_I2C_CFG_MAJOR_VERSION != (1U)) || (CDD_I2C_CFG_MINOR_VERSION != (3U)))
 #error "Version numbers of Cdd_I2c.c and Cdd_I2c_Cfg.h are not matching!"
 #endif
 

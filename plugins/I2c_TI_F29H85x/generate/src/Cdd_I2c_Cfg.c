@@ -189,11 +189,7 @@ CONST(struct Cdd_I2c_ConfigTag, CDD_I2C_CONFIG_DATA) Cdd_I2c_Config =
     },
 #endif /* CDD_I2C_CONTROLLER_ACTIVE */
 };
-#define CDD_I2C_STOP_SEC_CONFIG_DATA
-#include "Cdd_I2c_MemMap.h"
 
-#define CDD_I2C_START_SEC_CONFIG_CONST_32
-#include "Cdd_I2c_MemMap.h"
 [!VAR "I2CAInstanceConfigured" = "0"!][!VAR "I2CBInstanceConfigured" = "0"!][!//
 CONST(uint32, CDD_I2C_CONST) Cdd_I2c_HwUnitBaseAddr[CDD_I2C_HW_UNIT_MAX] = {
 [!LOOP "CddI2cHwConfig/*"!][!//
@@ -215,7 +211,7 @@ CONST(uint32, CDD_I2C_CONST) Cdd_I2c_HwUnitBaseAddr[CDD_I2C_HW_UNIT_MAX] = {
     I2CB_BASE_FRAME(0U), /* I2CB_BASE_ADDR */
 [!ENDIF!][!//
 };
-#define CDD_I2C_STOP_SEC_CONFIG_CONST_32
+#define CDD_I2C_STOP_SEC_CONFIG_DATA
 #include "Cdd_I2c_MemMap.h"
 
 /*********************************************************************************************************************

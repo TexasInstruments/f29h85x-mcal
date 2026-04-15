@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Port_MemMap.h
- *  Project:    C29x MCAL
- *  Module:     PORT
  *  Generator:  None
  *
  *  Description:  Memory Map template file for Port module.
+ *                This source code is for reference only, it should not be used as-is in a
+ *                typical customer applications
  *
  *********************************************************************************************************************/
 
@@ -165,6 +165,7 @@
 #define MEMMAP_SECTION_OPEN
 #define PORT_VAR_INIT_PTR_OPEN
 #pragma clang section data = ".PORT_VAR_INIT_PTR"
+#pragma clang section bss = ".PORT_VAR_NO_INIT_PTR"
 #undef PORT_START_SEC_VAR_INIT_PTR
 #undef MEMMAP_ERROR
 
@@ -180,6 +181,7 @@
 #endif
 #undef PORT_VAR_INIT_PTR_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef PORT_STOP_SEC_VAR_INIT_PTR
 #undef MEMMAP_ERROR
             
@@ -191,6 +193,7 @@
 #define MEMMAP_SECTION_OPEN
 #define PORT_VAR_INIT_BOOLEAN_OPEN
 #pragma clang section data = ".PORT_VAR_INIT_BOOLEAN"
+#pragma clang section bss = ".PORT_VAR_NO_INIT_BOOLEAN"
 #undef PORT_START_SEC_VAR_INIT_BOOLEAN
 #undef MEMMAP_ERROR
 
@@ -206,6 +209,7 @@
 #endif
 #undef PORT_VAR_INIT_BOOLEAN_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef PORT_STOP_SEC_VAR_INIT_BOOLEAN
 #undef MEMMAP_ERROR
             

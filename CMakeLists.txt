@@ -83,7 +83,9 @@ macro(select_linker_file LINKER_FILE_TYPE CORE)
 
     # Check if we need the "_all" suffix based on LINKER_FILE_TYPE and
     # BUILD_DEVICE
-    if(LINKER_FILE_TYPE MATCHES "ALL")
+    if(("${LINKER_FILE_TYPE}" MATCHES "ALL")
+       AND (("${BUILD_CONFIGURATION}" MATCHES "RAM"))
+       AND (BUILD_DEVICE MATCHES "F29H85x"))
         set(SUFFIX "_all")
     else()
         set(SUFFIX "")
@@ -121,10 +123,13 @@ macro(CPU3MERGE PROJECT_NAME PROJECT_BIN_PATH CPU3_PROJECT_NAME CPU3_OUT_PATH)
         TARGET ${PROJECT_NAME}
         POST_BUILD
         COMMAND
+            ${CMAKE_COMMAND} -E rename ${PROJECT_BIN_PATH}/${PROJECT_NAME}.out
+            ${PROJECT_BIN_PATH}/${PROJECT_NAME}_core1.out
+        COMMAND
             ${CMAKE_OBJCOPY} --update-section
             cpu3app=${CMAKE_CURRENT_BINARY_DIR}/${CPU3_PROJECT_NAME}.bin
-            ${PROJECT_BIN_PATH}/${PROJECT_NAME}.out
-            ${PROJECT_BIN_PATH}/${PROJECT_NAME}_merged.out)
+            ${PROJECT_BIN_PATH}/${PROJECT_NAME}_core1.out
+            ${PROJECT_BIN_PATH}/${PROJECT_NAME}.out)
 
 endmacro()
 
@@ -139,6 +144,7 @@ if(BUILD_CONFIGURATION MATCHES "FLASH")
         add_custom_command(
             TARGET ${PROJECT_NAME}
             POST_BUILD
+            WORKING_DIRECTORY ${PROJECT_BIN_PATH}
             COMMAND
                 ${CMAKE_OBJCOPY} --remove-section=cert
                 --remove-section=.TI.bound:CPU1_Cfg
@@ -147,26 +153,23 @@ if(BUILD_CONFIGURATION MATCHES "FLASH")
                 ${PROJECT_BIN_PATH}/${PROJECT_NAME}.out
                 ${PROJECT_BIN_PATH}/${PROJECT_NAME}.bin
             COMMAND
-                ${python_tool} ${SIGNING_DIRECTORY}/sign_non_secure.py --b
-                "${PROJECT_BIN_PATH}/${PROJECT_NAME}.bin" --c C29 --k
-                ${SIGNING_DIRECTORY}/keys/key.pem --o 60 --l 0x10001000
+                ${python_tool} ${SIGNING_DIRECTORY}/mcu_rom_image_gen.py
+                --image-bin ${PROJECT_BIN_PATH}/${PROJECT_NAME}.bin --core C29
+                --swrv 1 --loadaddr 0x10001000 --sign-key
+                ${SIGNING_DIRECTORY}/mcu_gpkey.pem --out-image
+                ${PROJECT_BIN_PATH}/${PROJECT_NAME}_cert.bin --device f29h85x
+                --boot FLASH --debug DBG_PUBLIC_ENABLE --img_integ no
             COMMAND
                 ${CMAKE_OBJCOPY} --update-section
-                cert=${PROJECT_BIN_PATH}/C29-cert.bin
+                cert=${PROJECT_BIN_PATH}/C29-cert-pad.bin
                 ${PROJECT_BIN_PATH}/${PROJECT_NAME}.out
-                ${PROJECT_BIN_PATH}/${PROJECT_NAME}_cert.out
-            COMMAND ${CMAKE_COMMAND} -E remove -f
-                    "${PROJECT_BIN_PATH}/${PROJECT_NAME}.out"
+                ${PROJECT_BIN_PATH}/${PROJECT_NAME}.out
             COMMAND
-                ${CMAKE_COMMAND} -E rename
-                "${PROJECT_BIN_PATH}/${PROJECT_NAME}_cert.out"
-                "${PROJECT_BIN_PATH}/${PROJECT_NAME}.out"
+                ${CMAKE_COMMAND} -E remove -f
+                "${PROJECT_BIN_PATH}/${PROJECT_NAME}.bin"
+                "${PROJECT_BIN_PATH}/${PROJECT_NAME}_cert.bin"
             COMMAND ${CMAKE_COMMAND} -E remove -f
-                    "${PROJECT_BIN_PATH}/x509-temp.cfg"
-            COMMAND ${CMAKE_COMMAND} -E remove -f
-                    "${PROJECT_BIN_PATH}/${PROJECT_NAME}.bin"
-            COMMAND ${CMAKE_COMMAND} -E remove -f
-                    "${PROJECT_BIN_PATH}/C29-cert.bin")
+                    "${PROJECT_BIN_PATH}/C29-cert-pad.bin")
     endmacro()
 endif()
 

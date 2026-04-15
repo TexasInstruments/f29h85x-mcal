@@ -66,7 +66,7 @@
  *  File:       Cdd_Adc_Cfg.c
  *  Generator:  Elektrobit Tresos
  *
- *  Description:  Cdd_Adc configuration source file                                                       
+ *  Description:  Cdd_Adc configuration source file
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -160,7 +160,7 @@
 [!ERROR!]
 Same Soc can't be selected as input to safety checker for different result type input
 
-[!"$AdcHwUnit"!] SOC[!"$AdcSocNumber"!] is select as input to safety checkers with different result types: 
+[!"$AdcHwUnit"!] SOC[!"$AdcSocNumber"!] is select as input to safety checkers with different result types:
 [!"$InputResultType"!] of [!"$CheckerNumber"!]/[!"$InputNumber"!]
 and  [!"$CurInputResultType"!]  of [!"node:name(../../.)"!]/[!"node:name(../.)"!]
 
@@ -214,7 +214,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .resolution_update = (boolean)([!IF "($update_support = 'true') and (text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_Adc16Bit_Instances'),node:value(CddAdcHwInstance))) and (not((../../CddAdcHwUnitAnalogRefABVoltageMode = 'CDD_ADC_REFERENCE_INTERNAL') and (../../CddAdcHwUnitAnalogRefABVoltage = 'CDD_ADC_REFERENCE_3_3V')))"!]1U[!ELSE!]0U[!ENDIF!]),
             #endif
             .signal_mode = (Cdd_Adc_SignalModeType)[!"CddAdcHwUnitSignalMode"!],
-            .socpriority = (Cdd_Adc_SocPriorityType)[!"CddAdcSocPriorityMode"!]U, 
+            .socpriority = (Cdd_Adc_SocPriorityType)[!"CddAdcSocPriorityMode"!]U,
             .voltref = (Cdd_Adc_RefVoltType)[!IF "(CddAdcHwInstance ='CDD_ADCA' or CddAdcHwInstance = 'CDD_ADCB')"!][!"../../CddAdcHwUnitAnalogRefABVoltage"!][!ELSE!][!"../../CddAdcHwUnitAnalogRefCDEVoltage"!][!ENDIF!],
             .voltrefmode = (Cdd_Adc_RefModeType)[!IF "(CddAdcHwInstance ='CDD_ADCA' or CddAdcHwInstance='CDD_ADCB')"!][!"../../CddAdcHwUnitAnalogRefABVoltageMode"!][!ELSE!][!"../../CddAdcHwUnitAnalogRefCDEVoltageMode"!][!ENDIF!],
 [!IF "num:i(count(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcPpbConfig/*)) > 0"!]
@@ -223,11 +223,11 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 [!ENDIF!]
             .intpulsemode = (Cdd_Adc_EocPulseType)[!"CddAdcInterruptPulseMode"!],
             .intoffset = (uint16)[!"CddAdcInterruptCycleoffset"!]U,
-#if(STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)    
+#if(STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)
             .osdetectmode = ((Cdd_Adc_OsDetectModeType)[!"CddAdcOpenShortDetectMode"!]),
 #endif
-#if(STD_ON == CDD_ADC_EXTCHSEL_CAPABILITY)     
-            .extchnsel = (boolean)([!"num:i(node:when((CddAdcHwExternalMuxSelect = 'false'),0,1))"!]U),       
+#if(STD_ON == CDD_ADC_EXTCHSEL_CAPABILITY)
+            .extchnsel = (boolean)([!"num:i(node:when((CddAdcHwExternalMuxSelect = 'false'),0,1))"!]U),
             .extmuxpreselect = (boolean)([!"num:i(node:when(node:exists(CddAdcHwExternalMuxPreselectEnable),node:when((CddAdcHwExternalMuxPreselectEnable='false'),0,1),0))"!]U),
 #endif
             .startgroupnum = (Cdd_Adc_GroupType)([!"num:i($HwGroupCount)"!]U),
@@ -237,7 +237,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .result_baseaddr = (uint32)( ADCARESULT_BASE + (CDD_ADC_RESULTBASEADDR_STEP*[!"num:i($AdcNum)"!]U)),
             .analogrefsel = (uint16)[!IF "(node:value(CddAdcHwInstance) = 'CDD_ADCA' or node:value(CddAdcHwInstance) = 'CDD_ADCB')"!]ASYSCTL_ANAREFCTL_ANAREFABSEL[!ELSE!]ASYSCTL_ANAREFCTL_ANAREFCDESEL[!ENDIF!],
             .analogrefvoltsel = (uint16)[!IF "(node:value(CddAdcHwInstance) = 'CDD_ADCA' or node:value(CddAdcHwInstance) = 'CDD_ADCB')"!]ASYSCTL_ANAREFCTL_ANAREFAB_2P5SEL[!ELSE!]ASYSCTL_ANAREFCTL_ANAREFCDE_2P5SEL[!ENDIF!],
-            .inltrimaddress = [!IF "(node:value(CddAdcHwInstance) = 'CDD_ADCA')"!]((uint32 *)&McalLib_DeviceCalibrationData.AdcAInlTrim[0U])[!ELSEIF "(node:value(CddAdcHwInstance) = 'CDD_ADCB')"!]((uint32 *)&McalLib_DeviceCalibrationData.AdcBInlTrim[0U])[!ELSEIF "(node:value(CddAdcHwInstance) = 'CDD_ADCC')"!]((uint32 *)&McalLib_DeviceCalibrationData.AdcCInlTrim[0U])[!ELSEIF "(node:value(CddAdcHwInstance) = 'CDD_ADCD')"!]((uint32 *)&McalLib_DeviceCalibrationData.AdcDInlTrim[0U])[!ELSEIF "(node:value(CddAdcHwInstance) = 'CDD_ADCE')"!]((uint32 *)&McalLib_DeviceCalibrationData.AdcEInlTrim[0U])[!ELSE!]((uint32 *)&McalLib_DeviceCalibrationData.AdcAInlTrim[0U])[!ENDIF!],
+            .inltrimaddress = [!IF "(node:value(CddAdcHwInstance) = 'CDD_ADCA')"!]((const uint32 *)&McalLib_DeviceCalibrationData->AdcAInlTrim[0U])[!ELSEIF "(node:value(CddAdcHwInstance) = 'CDD_ADCB')"!]((const uint32 *)&McalLib_DeviceCalibrationData->AdcBInlTrim[0U])[!ELSEIF "(node:value(CddAdcHwInstance) = 'CDD_ADCC')"!]((const uint32 *)&McalLib_DeviceCalibrationData->AdcCInlTrim[0U])[!ELSEIF "(node:value(CddAdcHwInstance) = 'CDD_ADCD')"!]((const uint32 *)&McalLib_DeviceCalibrationData->AdcDInlTrim[0U])[!ELSEIF "(node:value(CddAdcHwInstance) = 'CDD_ADCE')"!]((const uint32 *)&McalLib_DeviceCalibrationData->AdcEInlTrim[0U])[!ELSE!]((const uint32 *)&McalLib_DeviceCalibrationData->AdcAInlTrim[0U])[!ENDIF!],
             .numadc_inltrim = ((uint8)[!IF "(node:value(CddAdcHwInstance) = 'CDD_ADCA' or node:value(CddAdcHwInstance) = 'CDD_ADCB')"!]6U[!ELSE!]3U[!ENDIF!])
         }[!IF "not(node:islast())"!],[!CR!][!ELSE!][!ENDIF!]
         [!NOCODE!][!VAR "PpbCount" = "num:i($PpbCount + num:i(count(CddAdcPpbConfig/*)))"!]
@@ -360,7 +360,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
         [!ENDLOOP!]
         [!VAR "PpbCount" = "0"!][!ENDNOCODE!]
         [!LOOP "CddAdcConfigSet/CddAdcHwUnit/*"!][!LOOP "CddAdcPpbConfig/*"!]
-        [[!"num:i($PpbCount)"!]] =  
+        [[!"num:i($PpbCount)"!]] =
         {
             /* HwunitId: [!"node:value(../../CddAdcHwInstance)"!] */
             .ppb_id = (Cdd_Adc_PpbIdType)([!"CddAdcPpbInstance"!]U),
@@ -377,9 +377,9 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .ppbevtint_notification = (Cdd_Adc_PpbNotifyType)[!IF "not(node:empty(CddAdcPpbEventInterruptNotification))"!][!"CddAdcPpbEventInterruptNotification"!][!ELSE!]NULL_PTR[!ENDIF!],
         #endif
             .ppbcountlimit = (uint16)([!"CddAdcPpbAccumulationCountLimit"!]U),
-            .ppbcfg2 = (uint16)((0x0000U) | (((uint8)[!"CddAdcPpbCompareSource"!])<<14U) | ([!"CddAdcPpbRightShift"!]U)),
+            .ppbcfg2 = (uint16)((0x0000U) | (((uint16)[!"CddAdcPpbCompareSource"!])<<14U) | ([!"CddAdcPpbRightShift"!]U)),
             .tripfilterenable = (boolean)[!"num:i(node:when((CddAdcPpbTripFilterEnable = 'true'),1,0))"!]U,
-            .tripfilctl = (uint16)[!IF "CddAdcPpbTripFilterEnable = 'true'"!]((0x0000U) | (([!"num:i(CddAdcTripFilterConfig/CddAdcTripFilterTreshold)"!]U)<<9U) | (([!"num:i(CddAdcTripFilterConfig/CddAdcTripFilterSampleWindow)"!]U)<<3U) | (([!"num:i(node:when((CddAdcTripFilterConfig/CddAdcTripFilterLowEnable = 'false'),0,1))"!]U)<<1U) | ([!"num:i(node:when((CddAdcTripFilterConfig/CddAdcTripFilterHighEnable = 'false'),0,1))"!]U))[!ELSE!](0x0000U)[!ENDIF!],     
+            .tripfilctl = (uint16)[!IF "CddAdcPpbTripFilterEnable = 'true'"!]((0x0000U) | (((uint16)[!"num:i(CddAdcTripFilterConfig/CddAdcTripFilterTreshold)"!]U)<<9U) | (([!"num:i(CddAdcTripFilterConfig/CddAdcTripFilterSampleWindow)"!]U)<<3U) | (([!"num:i(node:when((CddAdcTripFilterConfig/CddAdcTripFilterLowEnable = 'false'),0,1))"!]U)<<1U) | ([!"num:i(node:when((CddAdcTripFilterConfig/CddAdcTripFilterHighEnable = 'false'),0,1))"!]U))[!ELSE!](0x0000U)[!ENDIF!],
             .tripfilclk = (uint16)[!IF "CddAdcPpbTripFilterEnable = 'true'"!]((0x0000U) | ([!"num:i(CddAdcTripFilterConfig/CddAdcTripFilterClk)"!]U))[!ELSE!](0x0000U)[!ENDIF!]
 
         }[!VAR "PpbCount" = "$PpbCount+1"!][!IF "$PpbCount < num:i(count(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcPpbConfig/*))"!],[!CR!][!ELSE!][!ENDIF!][!ENDLOOP!][!ENDLOOP!]
@@ -396,16 +396,16 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .sample_window = (uint16)([!"CddAdcChannelSampleWindow"!]U),
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
             .extchannelnum = (uint8)([!"CddAdcSocExternalChannelSelect"!]U),
-#endif   
+#endif
             .soc_num =  (uint8)([!"CddAdcSocNumber"!]U)
         }[!VAR "channelnum"="num:i($channelnum+1)"!][!IF "$channelnum < num:i(count(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcGroup/*/CddAdcChannel/*))"!],[!CR!][!ELSE!][!ENDIF!]
         [!ENDLOOP!]
 
     },
-[!IF "(CddAdcGeneral/CddAdcSafetyCheckerEnable = 'true')"!]      
+[!IF "(CddAdcGeneral/CddAdcSafetyCheckerEnable = 'true')"!]
     .checkercfg =
     {
-        .checkerunitcfg = 
+        .checkerunitcfg =
         {
             [!LOOP "CddAdcConfigSet/CddAdcResultCheckerUnit/*"!]
             [[!"@index"!]] =
@@ -413,7 +413,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
                 .checker_id = (Cdd_Adc_CheckerType)([!"num:i(num:i(substring-after(node:value(node:ref(CddAdcCheckerInstanceRef)/SafetyCheckerInstance),'ADCSAFETYCHECK')) - num:i(1))"!]U),
                 .tolerance = (uint32)([!"node:value(CddAdcCheckerTolerance)"!]U),
                 .base_addr = (uint32)([!"node:value(node:ref(CddAdcCheckerInstanceRef)/BaseAddr)"!]),
-                .selresult = 
+                .selresult =
                 {
                     [0] =
                     {
@@ -422,7 +422,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
                         .soc_num = (uint8)([!IF "(CddAdcSelResConfig1/CddAdcCheckerResultType = 'CDD_ADC_SAFETY_CHECKER_INPUT_PPB') or (CddAdcSelResConfig1/CddAdcCheckerResultType = 'CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUM')"!][!"num:i(node:value(concat(node:path(node:ref(CddAdcSelResConfig1/CddAdcPpbReference)),'/CddAdcPpbSocNumber')))"!][!ELSE!][!"num:i(node:value(concat(node:path(node:ref(CddAdcSelResConfig1/CddAdcChannelReference)),'/CddAdcSocNumber')))"!][!ENDIF!]U),
                         .res_type = (Cdd_Adc_CheckerInputType)[!"CddAdcSelResConfig1/CddAdcCheckerResultType"!]
                     },
-                    [1] = 
+                    [1] =
                     {
                         .hwunit_index =  (uint8)([!IF "(node:value(CddAdcSelResConfig2/CddAdcCheckerResultType) = 'CDD_ADC_SAFETY_CHECKER_INPUT_PPB') or (node:value(CddAdcSelResConfig2/CddAdcCheckerResultType) = 'CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUM')"!][!"num:i(node:value(concat(node:path(node:ref(CddAdcSelResConfig2/CddAdcPpbReference)),'/../../CddAdcHwUnitId')))"!][!ELSE!][!"num:i(node:value(concat(node:path(node:ref(CddAdcSelResConfig2/CddAdcChannelReference)),'/../../../../CddAdcHwUnitId')))"!][!ENDIF!]U),
                         .res_num = (uint8)([!IF "(CddAdcSelResConfig2/CddAdcCheckerResultType = 'CDD_ADC_SAFETY_CHECKER_INPUT_PPB')"!][!"num:i(node:value(concat(node:path(node:ref(CddAdcSelResConfig2/CddAdcPpbReference)),'/CddAdcPpbInstance'))+32)"!][!ELSEIF "(CddAdcSelResConfig2/CddAdcCheckerResultType = 'CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUM')"!][!"num:i(node:value(concat(node:path(node:ref(CddAdcSelResConfig2/CddAdcPpbReference)),'/CddAdcPpbInstance'))+36)"!][!ELSE!][!"num:i(node:value(concat(node:path(node:ref(CddAdcSelResConfig2/CddAdcChannelReference)),'/CddAdcSocNumber')))"!][!ENDIF!]U),
@@ -434,11 +434,11 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 
         },
     [!IF "num:i(count(CddAdcConfigSet/CddAdcCheckerIntEvtConfig/*)) > 0"!]
-        .checkerintevtcfg = 
+        .checkerintevtcfg =
         {
             [!LOOP "CddAdcConfigSet/CddAdcCheckerIntEvtConfig/*"!]
             [[!"@index"!]] =
-            {                
+            {
                 [!NOCODE!]
                 [!VAR "Evt1Res1OvfMask" = "num:i(0)"!][!VAR "Evt1Res2OvfMask" = "num:i(0)"!][!VAR "Evt1OotMask" = "num:i(0)"!]
                 [!VAR "Evt2Res1OvfMask" = "0"!][!VAR "Evt2Res2OvfMask" = "0"!][!VAR "Evt2OotMask" = "0"!]
@@ -450,19 +450,19 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
                     [!VAR "Evt1Res1OvfMask" = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerEvt1Source/CddAdcCheckerRes1Ovf) = 'true',1,0)),$CheckerId),$Evt1Res1OvfMask)"!]
                     [!VAR "Evt1Res2OvfMask" = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerEvt1Source/CddAdcCheckerRes2Ovf) = 'true',1,0)),$CheckerId),$Evt1Res2OvfMask)"!]
                     [!VAR "Evt1OotMask"     = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerEvt1Source/CddAdcCheckerOot) = 'true',1,0)),$CheckerId),$Evt1OotMask)"!]
-                    
+
                     [!VAR "Evt2Res1OvfMask" = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerEvt2Source/CddAdcCheckerRes1Ovf) = 'true',1,0)),$CheckerId),$Evt2Res1OvfMask)"!]
                     [!VAR "Evt2Res2OvfMask" = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerEvt2Source/CddAdcCheckerRes2Ovf) = 'true',1,0)),$CheckerId),$Evt2Res2OvfMask)"!]
                     [!VAR "Evt2OotMask"     = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerEvt2Source/CddAdcCheckerOot) = 'true',1,0)),$CheckerId),$Evt2OotMask)"!]
-                    
+
                     [!VAR "Evt3Res1OvfMask" = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerEvt3Source/CddAdcCheckerRes1Ovf) = 'true',1,0)),$CheckerId),$Evt3Res1OvfMask)"!]
                     [!VAR "Evt3Res2OvfMask" = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerEvt3Source/CddAdcCheckerRes2Ovf) = 'true',1,0)),$CheckerId),$Evt3Res2OvfMask)"!]
                     [!VAR "Evt3OotMask"     = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerEvt3Source/CddAdcCheckerOot) = 'true',1,0)),$CheckerId),$Evt3OotMask)"!]
-                    
+
                     [!VAR "Evt4Res1OvfMask" = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerEvt4Source/CddAdcCheckerRes1Ovf) = 'true',1,0)),$CheckerId),$Evt4Res1OvfMask)"!]
                     [!VAR "Evt4Res2OvfMask" = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerEvt4Source/CddAdcCheckerRes2Ovf) = 'true',1,0)),$CheckerId),$Evt4Res2OvfMask)"!]
                     [!VAR "Evt4OotMask"     = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerEvt4Source/CddAdcCheckerOot) = 'true',1,0)),$CheckerId),$Evt4OotMask)"!]
-                    
+
                     [!VAR "EvtIntRes1OvfMask" = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerIntSource/CddAdcCheckerRes1Ovf) = 'true',1,0)),$CheckerId),$EvtIntRes1OvfMask)"!]
                     [!VAR "EvtIntRes2OvfMask" = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerIntSource/CddAdcCheckerRes2Ovf) = 'true',1,0)),$CheckerId),$EvtIntRes2OvfMask)"!]
                     [!VAR "EvtIntOotMask"     = "bit:or(bit:shl(num:i(node:when(node:value(CddAdcCheckerIntSource/CddAdcCheckerOot) = 'true',1,0)),$CheckerId),$EvtIntOotMask)"!]
@@ -474,7 +474,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
                 {
                     .res1ovf = (uint16)([!"num:i($EvtIntRes1OvfMask)"!]U),
                     .res2ovf = (uint16)([!"num:i($EvtIntRes2OvfMask)"!]U),
-                    .ootflg  = (uint16)([!"num:i($EvtIntOotMask)"!]U)  
+                    .ootflg  = (uint16)([!"num:i($EvtIntOotMask)"!]U)
                 },
                 .checkevt =
                 {
@@ -487,7 +487,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
                     }[!IF "$x < '3'"!],[!CR!][!ELSE!][!ENDIF!][!ENDFOR!]
 
                 }
-            }[!IF "not(node:islast())"!],[!CR!][!ELSE!][!ENDIF!][!ENDLOOP!] 
+            }[!IF "not(node:islast())"!],[!CR!][!ELSE!][!ENDIF!][!ENDLOOP!]
 
         }
     [!ENDIF!]

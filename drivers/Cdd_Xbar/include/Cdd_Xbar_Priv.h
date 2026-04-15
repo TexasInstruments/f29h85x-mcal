@@ -136,7 +136,6 @@ typedef enum
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
-#if (0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS)
 /* Design: MCAL-25761 */
 /** \brief Selects input crossbar input
  *
@@ -231,7 +230,6 @@ Cdd_Xbar_EnableIntr(VAR(Cdd_Xbar_ExternalIntNum, AUTOMATIC) ExtIntNum, VAR(boole
  *********************************************************************************************************************/
 FUNC(uint16, CDD_XBAR_CODE)
 Cdd_Xbar_GetIntrCounter(VAR(Cdd_Xbar_ExternalIntNum, AUTOMATIC) ExtIntNum);
-#endif /* 0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS*/
 
 /* Design: MCAL-25769 */
 /** \brief Returns output crossbar lock status.
@@ -264,7 +262,6 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutLockStatus(void);
 FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_OutLock(void);
 
 /* Design: MCAL-25762 */
-#if (0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS)
 /** \brief Selects output crossbar input.
  *
  * Function to select or deselect a chosen input of the output crossbar according to the Selection.
@@ -476,7 +473,6 @@ Cdd_Xbar_OutputStretchGet(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
 FUNC(Cdd_Xbar_OutputlevelType, CDD_XBAR_CODE)
 Cdd_Xbar_OutOutputState(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
                         P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) OutputXbarFlagBaseAddress);
-#endif /* 0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS*/
 
 /* Design: MCAL-25784 */
 /** \brief Returns CLB crossbar lock status.
@@ -506,7 +502,6 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_ClbLockStatus(void);
 FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_ClbLock(void);
 
 /* Design: MCAL-25764 */
-#if (0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS)
 /** \brief Selects CLB crossbar input.
  *
  * Function to select or deselect an input of the CLB crossbar unit according to the Selection.
@@ -555,7 +550,6 @@ Cdd_Xbar_ClbOutputInvert(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
  *********************************************************************************************************************/
 FUNC(boolean, CDD_XBAR_CODE)
 Cdd_Xbar_ClbOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
-#endif /* 0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS*/
 
 /* Design: MCAL-25780 */
 /** \brief Returns EPWM crossbar lock status.
@@ -585,7 +579,6 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_EpwmLockStatus(void);
 FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_EpwmLock(void);
 
 /* Design: MCAL-25763 */
-#if (0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS)
 /** \brief Selects EPWM crossbar input.
  *
  * Function to select or deselect an input of the EPWM crossbar unit according to the Selection.
@@ -635,7 +628,6 @@ Cdd_Xbar_EpwmOutputInvert(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
  *********************************************************************************************************************/
 FUNC(boolean, CDD_XBAR_CODE)
 Cdd_Xbar_EpwmOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
-#endif /* 0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS*/
 
 /* Design: MCAL-25788 */
 /** \brief Returns lock status of MINDB crossbar.
@@ -664,7 +656,6 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_MdlLockStatus(void);
 FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_MdlLock(void);
 
 /* Design: MCAL-25765 */
-#if (0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS)
 /** \brief Selects MINDB Crossbar Input.
  *
  * Function to select or deselect an input line of the MINDB Crossbar.
@@ -712,7 +703,6 @@ Cdd_Xbar_MdlOutputInvert(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
  *********************************************************************************************************************/
 FUNC(boolean, CDD_XBAR_CODE)
 Cdd_Xbar_MdlOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
-#endif /* 0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS*/
 
 /* Design: MCAL-25792 */
 /** \brief Returns lock status of ICL crossbar.
@@ -741,7 +731,6 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_IclLockStatus(void);
  *********************************************************************************************************************/
 FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_IclLock(void);
 
-#if (0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS)
 /* Design: MCAL-25766 */
 /** \brief Selects ICL crossbar input
  *
@@ -791,7 +780,6 @@ Cdd_Xbar_IclOutputInvert(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
  *********************************************************************************************************************/
 FUNC(boolean, CDD_XBAR_CODE)
 Cdd_Xbar_IclOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
-#endif /* 0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS*/
 
 #if (STD_ON == CDD_XBAR_INPUT_FLAG_API)
 /* Design: MCAL-28160 */

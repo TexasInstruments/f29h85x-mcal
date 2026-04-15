@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Cdd_Ipc_MemMap.h
- *  Project:    C29x MCAL
- *  Module:     CDD_IPC
  *  Generator:  None
  *
  *  Description:  Memory Map template file for Cdd_Ipc module.
+ *                This source code is for reference only, it should not be used as-is in a
+ *                typical customer applications
  *
  *********************************************************************************************************************/
 
@@ -217,6 +217,7 @@
 #define MEMMAP_SECTION_OPEN
 #define CDD_IPC_VAR_INIT_BOOLEAN_OPEN
 #pragma clang section data = ".CDD_IPC_VAR_INIT_BOOLEAN"
+#pragma clang section bss = ".CDD_IPC_VAR_NO_INIT_BOOLEAN"
 #undef CDD_IPC_START_SEC_VAR_INIT_BOOLEAN
 #undef MEMMAP_ERROR
 
@@ -232,6 +233,7 @@
 #endif
 #undef CDD_IPC_VAR_INIT_BOOLEAN_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef CDD_IPC_STOP_SEC_VAR_INIT_BOOLEAN
 #undef MEMMAP_ERROR
             
@@ -243,6 +245,7 @@
 #define MEMMAP_SECTION_OPEN
 #define CDD_IPC_VAR_INIT_PTR_OPEN
 #pragma clang section data = ".CDD_IPC_VAR_INIT_PTR"
+#pragma clang section bss = ".CDD_IPC_VAR_NO_INIT_PTR"
 #undef CDD_IPC_START_SEC_VAR_INIT_PTR
 #undef MEMMAP_ERROR
 
@@ -258,6 +261,7 @@
 #endif
 #undef CDD_IPC_VAR_INIT_PTR_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef CDD_IPC_STOP_SEC_VAR_INIT_PTR
 #undef MEMMAP_ERROR
             

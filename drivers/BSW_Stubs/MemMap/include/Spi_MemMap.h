@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Spi_MemMap.h
- *  Project:    C29x MCAL
- *  Module:     SPI
  *  Generator:  None
  *
  *  Description:  Memory Map template file for Spi module.
+ *                This source code is for reference only, it should not be used as-is in a
+ *                typical customer applications
  *
  *********************************************************************************************************************/
 
@@ -191,6 +191,7 @@
 #define MEMMAP_SECTION_OPEN
 #define SPI_VAR_INIT_UNSPECIFIED_OPEN
 #pragma clang section data = ".SPI_VAR_INIT_UNSPECIFIED"
+#pragma clang section bss = ".SPI_VAR_NO_INIT_UNSPECIFIED"
 #undef SPI_START_SEC_VAR_INIT_UNSPECIFIED
 #undef MEMMAP_ERROR
 
@@ -206,6 +207,7 @@
 #endif
 #undef SPI_VAR_INIT_UNSPECIFIED_OPEN
 #pragma clang section data = ""
+#pragma clang section bss = ""
 #undef SPI_STOP_SEC_VAR_INIT_UNSPECIFIED
 #undef MEMMAP_ERROR
             

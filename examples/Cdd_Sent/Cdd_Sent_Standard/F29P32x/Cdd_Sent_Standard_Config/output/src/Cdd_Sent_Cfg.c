@@ -119,7 +119,7 @@
 
 /* List of MTP Config structures per instance */
 
-CONST(Cdd_Sent_MTPConfigType*, CDD_SENT_CONFIG_DATA) CddSentConfig_CddSentController_List[0] =
+CONSTP2CONST(Cdd_Sent_MTPConfigType, CDD_SENT_CONFIG_DATA, CDD_SENT_CONST) CddSentConfig_CddSentController_List[0] =
 {
 
 };
@@ -149,7 +149,7 @@ CONST(Cdd_Sent_ChannelConfigType, CDD_SENT_CONFIG_DATA) CddSentConfig_CddSentCon
 
 /* Cdd_Sent HW unit structure defined here for all config sets */
 
-CONST(Cdd_Sent_ChannelConfigType*, CDD_SENT_CONFIG_DATA) CddSentConfig_CddSentChannelObject_List[2] =
+CONSTP2CONST(Cdd_Sent_ChannelConfigType, CDD_SENT_CONFIG_DATA, CDD_SENT_CONST) CddSentConfig_CddSentChannelObject_List[2] =
 {
     [0] = &CddSentConfig_CddSentController_0_CddSentChannelObject_0,
     [1] = &CddSentConfig_CddSentController_0_CddSentChannelObject_1,
@@ -182,9 +182,9 @@ CONST(Cdd_Sent_HWUnitType, CDD_SENT_CONFIG_DATA) CddSentConfig_CddSentController
     .CddSentGlitchFilter   = (uint8 )5U,
     .CddSentMTP  = (boolean )FALSE,
     .CddSentMTPChannelCount = (uint8 )0,
-    .CddSentMTPConfigList = (Cdd_Sent_MTPConfigType** )CddSentConfig_CddSentController_List,    
+    .CddSentMTPConfigList = CddSentConfig_CddSentController_List,    
     .CddSentChannelCount = (uint8 )2,
-    .CddSentChannelConfigList = (Cdd_Sent_ChannelConfigType** )CddSentConfig_CddSentChannelObject_List,
+    .CddSentChannelConfigList = CddSentConfig_CddSentChannelObject_List,
     .CddSentUserCallbackFunction  = (Cdd_Sent_NotifyType) CddSent_Callback,
     .CddSentUserErrorCallbackFunction   = (Cdd_Sent_ErrorNotifyType) CddSent_Error_Callback
 };

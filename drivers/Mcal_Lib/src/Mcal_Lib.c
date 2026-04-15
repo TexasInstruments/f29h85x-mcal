@@ -112,22 +112,23 @@
 /*********************************************************************************************************************
  *  External Functions Definition
  *********************************************************************************************************************/
-__asm(
-    "    .global McalLib_Delay        \n"
-    "    .section .TI.ramfunc, \"ax\" \n"
-    "McalLib_Delay:                   \n"
-    "    MV A0,D0                     \n"
-    "loop:                            \n"
-    "    DECB A0, #1, loop            \n"
-    "    RET                          \n");
+/* This function is defined outside of MCAL_LIB_START_SEC_CODE/MCAL_LIB_STOP_SEC_CODE because
+    it is intended to be stored in TI.ramfunc section. */
+FUNC(void, MCAL_LIB_CODE) McalLib_Delay(VAR(uint32, MCAL_LIB_DATA) count)
+{
+    __asm volatile(
+        "    MV A0, D0           \n"
+        "    DECB A0, #1, 0x0    \n");
+}
 
 #define MCAL_LIB_START_SEC_CODE
 #include "Mcal_Lib_MemMap.h"
 
 FUNC(void, MCAL_LIB_CODE) McalLib_DelayUsec(McalLib_TickType delayUsec)
 {
-    McalLib_TickType cycles, loopcnt;
-    uint32           sysClkHz;
+    volatile McalLib_TickType cycles, loopcnt;
+    volatile uint32           loopcntHigh, loopcntLow, i;
+    uint32                    sysClkHz;
 
     sysClkHz = Mcu_GetSystemClock();
     if (sysClkHz == 0)
@@ -137,13 +138,38 @@ FUNC(void, MCAL_LIB_CODE) McalLib_DelayUsec(McalLib_TickType delayUsec)
         sysClkHz = MCAL_LIB_DEFAULT_SYSCLK_HZ;
     }
 
+    /* Convert requested delay in microseconds to CPU clock cycles:
+     * cycles = delayUsec * (sysClkHz / 1,000,000) */
     cycles = (delayUsec * sysClkHz) / 1000000UL;
+
+    /* Subtract the 11-cycle overhead of the first McalLib_Delay call before computing loop count */
     if (cycles > 11U)
     {
         cycles -= 11U; /* each API call has 11 cycles of overhead*/
     }
+
+    /* Each McalLib_Delay loop iteration takes 4 cycles; shift right by 2 to get iteration count */
     loopcnt = cycles >> 2U; /* each loop takes 4 cycles */
-    McalLib_Delay(loopcnt);
+
+    /* McalLib_Delay accepts only a uint32 argument (max UINT32_MAX iterations per call).
+     * For 64-bit loopcnt values, split into high and low 32-bit parts and call McalLib_Delay twice. */
+    loopcntHigh = (uint32)(loopcnt / 0xFFFFFFFFU);
+    loopcntLow  = (uint32)(loopcnt % 0xFFFFFFFFU);
+
+    /* Execute the high-order portion: each iteration of this loop calls McalLib_Delay with UINT32_MAX
+     * iterations. 0xFFFFFFFCU (UINT32_MAX - 3) is used instead of UINT32_MAX to compensate for the
+     * 11-cycle call overhead per McalLib_Delay invocation:
+     * 3 loop iterations * 4 cycles/iteration = 12 cycles ~= 11 cycles overhead */
+    for (i = 0U; i < loopcntHigh; i++)
+    {
+        McalLib_Delay(0xFFFFFFFCU);
+    }
+
+    /* Execute the remaining low-order loop count */
+    if (loopcntLow > 0)
+    {
+        McalLib_Delay(loopcntLow);
+    }
 }
 
 FUNC(void, MCAL_LIB_CODE) McalLib_DelayMsec(McalLib_TickType delayMsec)

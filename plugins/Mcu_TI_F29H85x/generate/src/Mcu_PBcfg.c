@@ -1307,6 +1307,22 @@ static CONST(Mcu_PeripheralRegEntryType, MCU_CONFIG_DATA) Mcu_PeripheralConfigSe
     }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
 [!ENDLOOP!][!//
 [!ENDIF!][!//
+[!/* ===== Cdd_Dma (RTDMA) - FRAMESEL only ===== */!][!//
+[!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Cdd_Dma/*/CddDmaHwInstance/*)"!][!//
+[!LOOP "as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Cdd_Dma/*/CddDmaHwInstance/*"!][!//
+[!VAR "instanceName" = "node:value(./InstanceName)"!][!//
+[!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
+[!VAR "regName" = "concat($instanceName, 'CH')"!][!//
+[!VAR "regValue" = "num:i($framesel)"!][!//
+[!IF "$firstEntry = 'false'"!],
+[!ENDIF!]
+    /* [!"$instanceName"!] Configuration - [!"node:value(./Frame)"!] */
+    {
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$regName"!]),
+        .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
+    }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
 };
 
 /*********************************************************************************************************************

@@ -163,8 +163,8 @@ int main(void)
     PduInfo_Type.SduLength  = 1;
     PduInfo_Type.SduDataPtr = data;
     uint32 i                = 0;
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(200000000U);
     AppUtils_Printf("Cdd_Sent Driver Sample Application - Starts!!!\n\r");
     /*  get version Info */

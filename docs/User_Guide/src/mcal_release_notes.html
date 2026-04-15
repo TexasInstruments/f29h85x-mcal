@@ -310,13 +310,30 @@ Example:
 <li><p>AI coding agents can automatically create working F29 MCAL example projects</p></li>
 <li><p>Compatible with CCS v20.05.00</p></li>
 <li><p>CCS provides additional MCP services (build, debug) that help AI agents catch and fix issues automatically</p></li>
+<li><p>For more information, see the <a class="reference external" href="https://software-dl.ti.com/ccs/esd/documents/users_guide/index_ai.html">CCS User Guide - AI Coding Assistants</a></p></li>
 <li><p><strong>Disclaimer:</strong> As with any AI-based tooling, results may vary. The AGENTS.md file will be updated iteratively based on feedback. Always review AI-generated code before use.</p></li>
+</ul>
+</li>
+<li><p><strong>LLM Context Files:</strong></p>
+<ul>
+<li><p>Added <a class="reference external" href="https://software-dl.ti.com/C2000/docs/mcal/F29H85x/26.00.00/llms.txt">llms.txt</a> and <a class="reference external" href="https://software-dl.ti.com/C2000/docs/mcal/F29H85x/26.00.00/llms-full.txt">llms-full.txt</a> files to provide structured project context for AI language models</p></li>
+<li><p>These files follow the <a class="reference external" href="https://llmstxt.org/">llms.txt standard</a> to help AI tools better understand the F29x MCAL project structure and APIs</p></li>
 </ul>
 </li>
 </ol>
 </li>
 <li><p>MCAL / CDD:</p>
 <ul>
+<li><p>New modules added:</p>
+<ol class="arabic simple">
+<li><p><strong>CDD DMA:</strong></p>
+<ul>
+<li><p>Added DMA driver with support for memory-to-memory, memory-to-peripheral, and peripheral-to-memory transfers</p></li>
+<li><p>Includes EB Tresos plugin for configuration</p></li>
+</ul>
+</li>
+</ol>
+</li>
 <li><p>Existing modules with enhancements:</p>
 <ol class="arabic simple">
 <li><p><strong>CDD XBAR:</strong></p>
@@ -324,6 +341,8 @@ Example:
 <li><p>Added support for external interrupt configuration</p></li>
 <li><p>Added APIs to configure external interrupt</p></li>
 <li><p>Updated <code class="docutils literal notranslate"><span class="pre">Cdd_Xbar_Gpio_interrupt</span></code> example to demonstrate external interrupt configuration</p></li>
+<li><p>Added CDD_XBAR_TRIP1 to EPWM Xbar output lines configuration</p></li>
+<li><p>Updated EB Tresos plugin to use superset fallback lists for crossbar input line selections across Output, EPWM, CLB, MinDB, and ICL crossbar types</p></li>
 </ul>
 </li>
 <li><p><strong>WDG:</strong></p>
@@ -356,18 +375,34 @@ Example:
 <li><p>Updated EB Tresos plugin to use superset fallback lists for IPC remote cores and IPC instance selections</p></li>
 </ul>
 </li>
-<li><p><strong>CDD XBAR:</strong></p>
-<ul>
-<li><p>Updated EB Tresos plugin to use superset fallback lists for crossbar input line selections across Output, EPWM, CLB, MinDB, and ICL crossbar types</p></li>
-</ul>
-</li>
 <li><p><strong>CDD PWM:</strong></p>
 <ul>
 <li><p>Restored EPWM6 configuration support as per updated specification for F29P32x devices</p></li>
 </ul>
 </li>
+<li><p><strong>DIO:</strong></p>
+<ul>
+<li><p>Added validation in DIO so that it can only refer to PORT pins that are configured as GPIO and mapped to AUTOSAR core i.e. CPU1</p></li>
+</ul>
+</li>
+<li><p><strong>CAN:</strong></p>
+<ul>
+<li><p>Updated CAN examples to use GPIO 234 and GPIO 235 for CAN TX/RX pins to align with the physically available pinout on the F29H85X-SOM-EVM board</p></li>
+</ul>
+</li>
+<li><p><strong>CDD ADC:</strong></p>
+<ul>
+<li><p>Updated <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_Example_DmaTransfer</span></code> example to use the MCAL Cdd_Dma driver instead of the rtdma library from f29x_sdk</p></li>
+</ul>
+</li>
 </ol>
 </li>
+</ul>
+</li>
+<li><p>Build System:</p>
+<ul>
+<li><p>Updated TI C29 Clang compiler and linker version from 2.0.0.STS to 2.2.0.LTS</p></li>
+<li><p>Updated post-build certificate handling steps across build infrastructure for FLASH image signing</p></li>
 </ul>
 </li>
 </ul>
@@ -395,55 +430,61 @@ Format: XX.YY.ZZ where:
 </thead>
 <tbody>
 <tr class="row-even"><td><p>MCU</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>02.02.00</p></td>
 </tr>
 <tr class="row-odd"><td><p>PORT</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>04.00.00</p></td>
 </tr>
 <tr class="row-even"><td><p>DIO</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>01.01.00</p></td>
 </tr>
 <tr class="row-odd"><td><p>GPT</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>02.00.03</p></td>
 </tr>
 <tr class="row-even"><td><p>CAN</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>04.00.00</p></td>
 </tr>
 <tr class="row-odd"><td><p>WDG</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>02.00.02</p></td>
 </tr>
 <tr class="row-even"><td><p>LIN</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>03.01.01</p></td>
 </tr>
 <tr class="row-odd"><td><p>SPI</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>03.01.01</p></td>
 </tr>
 <tr class="row-even"><td><p>FLS</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>03.02.00</p></td>
 </tr>
 <tr class="row-odd"><td><p>CDD ADC</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>03.00.02</p></td>
 </tr>
 <tr class="row-even"><td><p>CDD XBAR</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>03.01.00</p></td>
 </tr>
 <tr class="row-odd"><td><p>CDD SENT</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>03.01.01</p></td>
 </tr>
 <tr class="row-even"><td><p>CDD PWM</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>03.01.01</p></td>
 </tr>
 <tr class="row-odd"><td><p>CDD ECAP</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>03.01.01</p></td>
 </tr>
 <tr class="row-even"><td><p>CDD IPC</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>02.01.01</p></td>
 </tr>
 <tr class="row-odd"><td><p>CDD UART</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>03.00.02</p></td>
 </tr>
 <tr class="row-even"><td><p>CDD I2C</p></td>
-<td><p>XX.XX.XX</p></td>
+<td><p>01.03.00</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD DMA</p></td>
+<td><p>01.00.00</p></td>
+</tr>
+<tr class="row-even"><td><p>Resource Allocator</p></td>
+<td><p>01.01.00</p></td>
 </tr>
 </tbody>
 </table>
@@ -503,7 +544,16 @@ Example:
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>MCAL-36330</p></td>
+<tr class="row-even"><td><p>MCAL-37005</p></td>
+<td><p>Cdd_Adc, Cdd_Ecap, Cdd_Pwm, Spi</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>MemMap: Variables placed in incorrect memory sections</p></td>
+<td><p>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01</p></td>
+<td><p>Variables were placed in unintended memory regions due to incorrect MemMap section marker placement in driver source files.</p></td>
+<td><p>1. Build MCAL drivers and check generated MAP file. <br>2. Verify generated memory map and observe module specific data memory location. <br>3. Review driver source files and identify incorrect section marker placement.</p></td>
+<td><p>Corrected MemMap section marker placement: moved STOP_SEC_CODE to proper location in Cdd_Adc_Priv.c, removed redundant section markers in Cdd_Ecap_Priv.c, moved SFO calibration variables to file scope with proper sections in Cdd_Pwm_Priv.c, and added missing sections around Spi_DriverObjPtr in Spi_Priv.c.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-36330</p></td>
 <td><p>Can</p></td>
 <td><p>S2-Major</p></td>
 <td><p>CAN: Continuous CanIf_TxConfirmation() when new transmission is not initiated</p></td>
@@ -512,7 +562,7 @@ Example:
 <td><p>1. Send only one CAN message using Can_Write(). <br>2. Schedule Can_MainFunction_Write() continuously. <br>3. Observe that CanIf_TxConfirmation() is called continuously for one message. <br>4. Expectation is CanIf_TxConfirmation() should be called only once after one CAN message transmission. <br>5. Similar issue happens in interrupt context as well.</p></td>
 <td><p>As hardware register status (transmission and cancellation) does not clear until next transmission request is added, maintain the pending status in software to help identify if the message is already processed.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCAL-35980</p></td>
+<tr class="row-even"><td><p>MCAL-35980</p></td>
 <td><p>Can</p></td>
 <td><p>S3-Minor</p></td>
 <td><p>CAN: Configuration validation gap for CanMainFunctionRWPeriod in Polling/Mixed Mode</p></td>
@@ -521,7 +571,7 @@ Example:
 <td><p>1. Open EB Tresos configuration tool. <br>2. Create a new Can module configuration. <br>3. Configure a CanController with: CanRxProcessing = POLLING, CanTxProcessing = POLLING. <br>4. Create 2 or more CanHardwareObjects that reference this CanController. <br>5. Do not configure any CanMainFunctionRWPeriodRef in HOH and do not make any entry in CanMainFunctionRWPeriods. <br>6. Generate the configuration. <br>7. Observe that no error is generated despite the invalid configuration.</p></td>
 <td><p>Added configuration validation check in XDM to detect and report an error when a hardware object set to Polling mode has no CanMainFunctionRWPeriodRef mapped to it.</p></td>
 </tr>
-<tr class="row-even"><td><p>MCAL-35624</p></td>
+<tr class="row-odd"><td><p>MCAL-35624</p></td>
 <td><p>Dio</p></td>
 <td><p>S3-Minor</p></td>
 <td><p>DIO: Dio doesn’t follow AUTOSAR naming guidelines for typedefs and macros</p></td>
@@ -530,7 +580,7 @@ Example:
 <td><p>Review the static and dynamic files of DIO module</p></td>
 <td><p>Updated all macros in DIO module to follow AUTOSAR naming conventions (Dio_ prefix for all public symbols).</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCAL-35862</p></td>
+<tr class="row-even"><td><p>MCAL-35862</p></td>
 <td><p>Fls</p></td>
 <td><p>S2-Major</p></td>
 <td><p>FLS: Fls_F29Compare casts a byte aligned pointer to a 32-bit aligned pointer and dereferences it, which is illegal</p></td>
@@ -539,7 +589,7 @@ Example:
 <td><p>1. Call Fls_f29Compare() with a ramAddr that is not 32-bit aligned (e.g. 8-bit aligned). <br>2. Observe that execution crashes in Fls_priv.c in Fls_F29Compare() at P2VAR(uint32, AUTOMATIC, FLS_APPL_DATA) pu32CheckValueBuffer = (uint32 *)Fls_DrvObj.ramAddr;</p></td>
 <td><p>Removed the illegal conversion and appropriately internally handle the 8-bit pointer.</p></td>
 </tr>
-<tr class="row-even"><td><p>MCAL-35789</p></td>
+<tr class="row-odd"><td><p>MCAL-35789</p></td>
 <td><p>Fls</p></td>
 <td><p>S1-Critical</p></td>
 <td><p>FLS: Flash API initialization fails due to missing semaphore handling in FlashAPIInit</p></td>
@@ -548,7 +598,7 @@ Example:
 <td><p>1. Call FlashAPIInit without claiming flash semaphore. <br>2. Observe FLC_MMR_Access error. <br>3. Release flash semaphore without claiming it first. <br>4. Observe SSU MMR Error for FMSTAT clear register.</p></td>
 <td><p>Added semaphore claim and release calls before and after the Flash initialization function.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCAL-36611</p></td>
+<tr class="row-even"><td><p>MCAL-36611</p></td>
 <td><p>Port</p></td>
 <td><p>S3-Minor</p></td>
 <td><p>PORT: Invalid characters in Peripheral Names and non-compliant Physical Pin ID enum values violate AUTOSAR naming rules</p></td>
@@ -556,6 +606,105 @@ Example:
 <td><p>ARXML generation produces non-compliant AUTOSAR short names, causing AUTOSAR validation tools to reject the generated configuration. Downstream BSW configuration tools expecting valid AUTOSAR identifiers would fail.</p></td>
 <td><p>1. Open EB Tresos with the Port plugin. <br>2. Create a Port configuration and select the ANALOG peripheral. <br>3. Observe peripheral signal names containing <code class="docutils literal notranslate"><span class="pre">/</span></code> characters (e.g., A0/C24/DACA_OUT). <br>4. Select any pin and observe the PortPhysicalPinId dropdown containing numeric-only entries (e.g., 1, 10). <br>5. Run arxml_gen_Port — generated ARXML contains invalid short names. <br>6. Run vsmd_check_Port — validation failures reported.</p></td>
 <td><p>Replaced <code class="docutils literal notranslate"><span class="pre">/</span></code> characters in MuxModeSignalType entries with <code class="docutils literal notranslate"><span class="pre">_</span></code> to comply with AUTOSAR short name rules. Added <code class="docutils literal notranslate"><span class="pre">PORT_PIN_</span></code> prefix to numeric-only PhysicalPinNumber values to ensure all ENUMERATION literals start with an alphabetic character. <br><strong>Note:</strong> Existing Port configurations may require migration. Refer to the <a class="reference external" href="https://software-dl.ti.com/C2000/docs/mcal/F29H85x/26.00.00/src/MigrationGuide_list.html">Migration Guide</a> for detailed steps.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-35838</p></td>
+<td><p>Fls</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>FLS: Incorrect hardcoding of FlsMaxWriteNormalMode to 16 in Fls_Init</p></td>
+<td><p>C29xMCAL_01.04.01</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FlsMaxWriteNormalMode</span></code> is hardcoded to 16 bytes inside <code class="docutils literal notranslate"><span class="pre">Fls_Init</span></code>, overriding the user-configured value. Setting <code class="docutils literal notranslate"><span class="pre">FlsMaxWriteNormalMode</span></code> to 8 is silently ignored, causing write operations to use the wrong chunk size.</p></td>
+<td><p>1. Set <code class="docutils literal notranslate"><span class="pre">FlsMaxWriteNormalMode</span></code> to 8 bytes in the FLS configuration. <br>2. Call <code class="docutils literal notranslate"><span class="pre">Fls_Init</span></code> with this configuration. <br>3. Initiate a Write operation. <br>4. Observe that  <code class="docutils literal notranslate"><span class="pre">FlsMaxWriteNormalMode</span></code> is overridden to 16 bytes internally.</p></td>
+<td><p>Removed the hardcoded assignment of <code class="docutils literal notranslate"><span class="pre">FlsMaxWriteNormalMode</span></code> in <code class="docutils literal notranslate"><span class="pre">Fls_Init</span></code>. The driver now correctly uses the value from the provided configuration.</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL-35849</p></td>
+<td><p>Fls</p></td>
+<td><p>S2-Major</p></td>
+<td><p>FLS: Missing semaphore acquisition checks</p></td>
+<td><p>C29xMCAL_01.04.01</p></td>
+<td><p>The flash semaphore claim function — called before <code class="docutils literal notranslate"><span class="pre">Fls_Init</span></code>, <code class="docutils literal notranslate"><span class="pre">Fls_Erase</span></code>, and <code class="docutils literal notranslate"><span class="pre">Fls_Write</span></code> — does not verify whether the semaphore was actually acquired. If another core already holds the semaphore, the FLS driver proceeds with the flash operation without exclusive access, which can result in data corruption or unpredictable flash operation failures.</p></td>
+<td><p>1. Configure a multi-core system where CPU3 holds the flash semaphore. <br>2. On CPU1, initiate a Flash operation (e.g., <code class="docutils literal notranslate"><span class="pre">Fls_Erase</span></code> or <code class="docutils literal notranslate"><span class="pre">Fls_Write</span></code>). <br>3. Observe that the operation fails.</p></td>
+<td><p>Added a return value check after each semaphore claim call in <code class="docutils literal notranslate"><span class="pre">Fls_Init</span></code>, <code class="docutils literal notranslate"><span class="pre">Fls_Erase</span></code>, and <code class="docutils literal notranslate"><span class="pre">Fls_Write</span></code>. If the semaphore is not successfully acquired, the operation is aborted and an appropriate error is reported.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-35885</p></td>
+<td><p>Fls</p></td>
+<td><p>S2-Major</p></td>
+<td><p>FLS: Bug in Fls_Fapi_issueProgrammingCommand</p></td>
+<td><p>C29xMCAL_01.04.01</p></td>
+<td><p>When <code class="docutils literal notranslate"><span class="pre">FlsMaxWriteNormalMode</span></code> is set to 8 bytes and a write of more than 8 bytes is requested, the second chunk is programmed incorrectly. The start condition offset (<code class="docutils literal notranslate"><span class="pre">u32StartCondition</span></code>) advances correctly, but the source data buffer pointer (<code class="docutils literal notranslate"><span class="pre">pu8DataBuffer</span></code>) is not compensated by the same offset, causing the second chunk to read from the wrong location in the source buffer.</p></td>
+<td><p>1. Set <code class="docutils literal notranslate"><span class="pre">FlsMaxWriteNormalMode</span></code> to 8 bytes. <br>2. Initiate a Write operation for 16 bytes. <br>3. Observe that the first 8-byte chunk is written correctly. <br>4. Observe that the second 8-byte chunk is written with incorrect data due to <code class="docutils literal notranslate"><span class="pre">pu8DataBuffer</span></code> not being compensated by the chunk offset.</p></td>
+<td><p>Corrected the indexing of <code class="docutils literal notranslate"><span class="pre">pu8DataBuffer</span></code> in <code class="docutils literal notranslate"><span class="pre">Fls_Fapi_issueProgrammingCommand</span></code> to be compensated by <code class="docutils literal notranslate"><span class="pre">u32StartCondition</span></code> bytes, ensuring each chunk reads from the correct position in the source data buffer.</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL-35964</p></td>
+<td><p>Fls</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>FLS: Bugs in implementation involving static and globals for Program and Erase</p></td>
+<td><p>C29xMCAL_01.04.01</p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">Fls_U32FlsWrite_PostFapiFsmReady</span></code> and <code class="docutils literal notranslate"><span class="pre">Fls_SectorBankErase_PostFapiFsmReadyDone</span></code> state variables are not initialized at startup and are not reset at job boundaries. If a Write or Erase job is canceled mid-operation, these variables retain stale values that can cause the next job to skip required steps (e.g., pre-write blank check, timeout capture) or behave incorrectly.</p></td>
+<td><p>1. Initiate a Write (Program) operation. <br>2. Cancel the operation using <code class="docutils literal notranslate"><span class="pre">Fls_Cancel()</span></code> before it completes. <br>3. Initiate a new Write or Erase operation. <br>4. Observe that the subsequent operation behaves incorrectly due to stale <code class="docutils literal notranslate"><span class="pre">PostFapiFsmReady</span></code> state carried over from the canceled job.</p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">postFapiFsmReady</span></code> (write PostFSM ready flag) and <code class="docutils literal notranslate"><span class="pre">Fls_SectorBankErase_PostFapiFsmReadyDone</span></code> (erase PostFSM ready flag) state variables are now explicitly reset at driver initialization and at the start of each new job, ensuring no stale state from a previous canceled or failed operation carries over into subsequent jobs.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-36715</p></td>
+<td><p>Fls</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>FLS: Timeout implementation is not cumulative</p></td>
+<td><p>C29xMCAL_01.04.01</p></td>
+<td><p>The timeout check for Program and Erase operations does not measure the total elapsed time across multiple <code class="docutils literal notranslate"><span class="pre">Fls_MainFunction</span></code> calls. The start time is reset on each call instead of being captured once at the beginning of the operation, so the timeout never accumulates and will not trigger even when the configured limit has been exceeded.</p></td>
+<td><p>1. Enable timeout supervision (<code class="docutils literal notranslate"><span class="pre">FLS_TIMEOUT_SUPERVISION_ENABLED</span> <span class="pre">=</span> <span class="pre">STD_ON</span></code>). <br>2. Set the timeout value for Erase or Program to approximately 10% of the expected operation duration. <br>3. Initiate an Erase or Program job and observe that no timeout failure is reported, even though the configured limit is far exceeded.</p></td>
+<td><p>The timeout start time is now captured once per FSM operation — at the point the erase or program command is first issued — and held constant while the FSM remains in the same polling stage across subsequent <code class="docutils literal notranslate"><span class="pre">Fls_MainFunction</span></code> calls. This ensures the elapsed time is measured cumulatively over the full duration of the operation.</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL-36722</p></td>
+<td><p>Fls</p></td>
+<td><p>S2-Major</p></td>
+<td><p>FLS: Failure scenarios in Program and Erase (Sector, Bank) not properly handled</p></td>
+<td><p>C29xMCAL_01.04.01</p></td>
+<td><p>When a failure occurs during a Program or Erase operation, the internal FSM state variables are not reset to their default values. The failed job is reported correctly, but any subsequent job may start from a stale state, leading to unexpected behavior or further failures.</p></td>
+<td><p>1. Artificially introduce a failure in a single Erase (Sector or Bank) or Program operation. <br>2. Observe that the failure is reported correctly via the job error notification. <br>3. Initiate a subsequent Erase or Program operation. <br>4. Observe that the subsequent operation does not behave correctly due to stale FSM state carried over from the failed job.</p></td>
+<td><p>Moved the FSM state variables for Program (write stage, PostFapiFsmReady flag) and Erase (sector erase stage, bank erase stage) into the driver object (<code class="docutils literal notranslate"><span class="pre">Fls_DrvObj</span></code>) so they are explicitly reset on driver initialization and at the start of each new job. Also consolidated the flash semaphore release in the erase job processing path to ensure the semaphore is always released regardless of which optional features (timeout supervision, erase verification) are enabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-36502</p></td>
+<td><p>Can</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>CAN: Transceiver delay offset and delay filter values are not handled according to AUTOSAR requirement</p></td>
+<td><p>C29xMCAL_01.04.01</p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">CanControllerTrcvDelayCompensationOffset</span></code> and <code class="docutils literal notranslate"><span class="pre">TxDelayCompFilter</span></code> configuration values are expected to be in nanoseconds (range 0–400) per the AUTOSAR SWS, but the driver was treating them as mtq units (range 0–127) and writing them directly to the <code class="docutils literal notranslate"><span class="pre">MCAN_TDCR</span></code> register. This results in incorrect transceiver delay compensation behavior when CAN FD Tx delay compensation is enabled.</p></td>
+<td><p>1. Enable Tx Delay compensation in the CAN configuration. <br>2. Configure <code class="docutils literal notranslate"><span class="pre">CanControllerTrcvDelayCompensationOffset</span></code> and <code class="docutils literal notranslate"><span class="pre">TxDelayCompFilter</span></code> with values in the range 0–400 ns in EB Tresos. <br>3. Monitor the <code class="docutils literal notranslate"><span class="pre">MCAN_TDCR_TDCF</span></code> and <code class="docutils literal notranslate"><span class="pre">MCAN_TDCR_TDCO</span></code> registers.</p></td>
+<td><p>Added proper unit conversion from nanoseconds to mtq (minimum time quantum) units before writing <code class="docutils literal notranslate"><span class="pre">CanControllerTrcvDelayCompensationOffset</span></code> and <code class="docutils literal notranslate"><span class="pre">TxDelayCompFilter</span></code> values to the <code class="docutils literal notranslate"><span class="pre">MCAN_TDCR</span></code> register, ensuring the transceiver delay compensation is applied correctly as per the AUTOSAR specification.</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL-35835</p></td>
+<td><p>Can, CDD SENT</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>CAN, CDD SENT: Pointer-list arrays incorrectly declared using <code class="docutils literal notranslate"><span class="pre">CONST(Type*,</span> <span class="pre">memclass)</span></code> instead of <code class="docutils literal notranslate"><span class="pre">CONSTP2CONST</span></code></p></td>
+<td><p>C29xMCAL_01.04.01</p></td>
+<td><p>Config arrays holding pointers to const objects (e.g., baud-rate config lists, mailbox lists, SENT channel/MTP config lists) were declared with <code class="docutils literal notranslate"><span class="pre">CONST(Type*,</span> <span class="pre">memclass)</span></code>, which expands to a non-const pointer to const data. This caused the linker to place these arrays in <code class="docutils literal notranslate"><span class="pre">.bss</span></code>/<code class="docutils literal notranslate"><span class="pre">.data</span></code> sections instead of const/rodata sections, resulting in memmap section check failures for CAN and CDD SENT. No functional behavior is affected at runtime.</p></td>
+<td><p>1. Build any CAN or CDD SENT test or example. <br>2. Read the generated MAP file. <br>3. Observe that the MAP file reports unmapped sections (<code class="docutils literal notranslate"><span class="pre">.bss.CanConfigSet_*_List</span></code>, <code class="docutils literal notranslate"><span class="pre">.data.CddSentConfig_*_List</span></code>).</p></td>
+<td><p>Replaced all <code class="docutils literal notranslate"><span class="pre">CONST(Type*,</span> <span class="pre">memclass)</span></code> declarations for pointer-list arrays with the correct <code class="docutils literal notranslate"><span class="pre">CONSTP2CONST(Type,</span> <span class="pre">memclass,</span> <span class="pre">ptrclass)</span></code> AUTOSAR macro in the EB Tresos generator templates (<code class="docutils literal notranslate"><span class="pre">Can_Cfg.c</span></code>, <code class="docutils literal notranslate"><span class="pre">Can_PBcfg.c</span></code>, <code class="docutils literal notranslate"><span class="pre">Can_Cfg.h</span></code>, <code class="docutils literal notranslate"><span class="pre">Cdd_Sent_Cfg.c</span></code>). Updated the corresponding struct field types in <code class="docutils literal notranslate"><span class="pre">Can.h</span></code> and <code class="docutils literal notranslate"><span class="pre">Cdd_Sent.h</span></code> from <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">Type**</span></code> to <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">Type</span> <span class="pre">*</span> <span class="pre">const</span> <span class="pre">*</span></code> to match, and updated the local variable in <code class="docutils literal notranslate"><span class="pre">Cdd_Sent_Priv.c</span></code> that receives a list element from <code class="docutils literal notranslate"><span class="pre">P2VAR</span></code> to <code class="docutils literal notranslate"><span class="pre">P2CONST</span></code>. All CAN and CDD SENT output files must be regenerated from EB Tresos to pick up the template fixes.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-35808</p></td>
+<td><p>Mcal_Lib</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>Dependency of Mcal_Lib_MemMap.h for MCAL drivers</p></td>
+<td><p>C29xMCAL_01.04.01</p></td>
+<td><p>Potential MemMap generation issues due to missing function documentation</p></td>
+<td><p>Mcal_Lib_MemMap.h is included in sys_pmu.c.</p></td>
+<td><p>Corrected the MCAL_Lib_Bswmd.arxml with Module definition and other required parameters to create the Module and generate MemMap in Davinci</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL-35347</p></td>
+<td><p>CDD I2C</p></td>
+<td><p>S2-Major</p></td>
+<td><p>I2C: Cancel API is not functional</p></td>
+<td><p>C29xMCAL_01.04.00</p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">I2C_Cancel</span></code> API does not successfully cancel an ongoing I2C transfer in either polling or interrupt mode, which may cause the driver to hang and result in unexpected behavior in applications relying on transfer cancellation.</p></td>
+<td><p>1. Start an I2C transfer. <br>2. Immediately cancel the transfer by invoking the <code class="docutils literal notranslate"><span class="pre">I2C_Cancel</span></code> API. <br>3. Observe that the cancellation does not take effect and the driver may hang.</p></td>
+<td><p>Implemented the <code class="docutils literal notranslate"><span class="pre">I2C_Cancel</span></code> API to correctly abort an ongoing I2C transfer in both polling and interrupt modes, ensuring the driver returns to an idle state after cancellation.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-32321</p></td>
+<td><p>All</p></td>
+<td><p>S2-Major</p></td>
+<td><p>All Modules: Link time optimization is not verified for all modules</p></td>
+<td><p>C29xMCAL_01.03.00</p></td>
+<td><p>Link time optimization (LTO) had not been verified across all modules, which could cause unexpected behavior or build issues if enabled.</p></td>
+<td><p>1. Add <code class="docutils literal notranslate"><span class="pre">-flto</span></code> flag to compiler options. <br>2. Build the MCAL project. <br>3. Behavior is not verified there might be unexpecetd issues.</p></td>
+<td><p>Verified link time optimization (LTO) across all MCAL modules. LTO is now supported and validated for all drivers.</p></td>
 </tr>
 </tbody>
 </table>
@@ -600,12 +749,6 @@ Example:
 <li><p><strong>CDD IPC:</strong> IPC is validated between CPU1 and CPU3. Since, CPU2 is configured in lockstep in our framework; IPC between CPU1 and CPU2 or CPU2 and CPU3 is not validated.</p></li>
 <li><p><strong>Fls:</strong> Timeout tests are not performed as FLASH characterization data is not yet available for this device.</p></li>
 <li><p><strong>Spi:</strong> Board to board Spi communication validated upto 40MHz. 50MHz have been only tested in loopback mode.</p></li>
-<li><p><strong>CDD I2C:</strong> Target mode is not supported.</p></li>
-</ul>
-</li>
-<li><p><strong>Compiler:</strong></p>
-<ul>
-<li><p>Link Time optimization is currently not supported.</p></li>
 </ul>
 </li>
 </ul>
@@ -678,23 +821,14 @@ Move issues to "Fixed In This Release" section when resolved.
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>MCAL-35347</p></td>
-<td><p>CDD I2C</p></td>
-<td><p>S2-Major</p></td>
-<td><p>I2C: Cancel API is not functional</p></td>
-<td><p>C29xMCAL_01.04.00</p></td>
-<td><p>The I2C_Cancel API does not successfully cancel an ongoing I2C transfer, which may cause unexpected behavior in applications relying on transfer cancellation.</p></td>
-<td><p>1. Start an I2C transfer.<br>2. Immediately cancel the transfer by invoking the I2C_Cancel API.<br>3. Observe that the cancellation does not take effect.</p></td>
-<td><p>Do not cancel the ongoing transmission using API. Instead handle this situation in application code.</p></td>
-</tr>
-<tr class="row-odd"><td><p>MCAL-32321</p></td>
-<td><p>All</p></td>
-<td><p>S2-Major</p></td>
-<td><p>All Modules: Link time optimization is not verified for all modules</p></td>
-<td><p>C29xMCAL_01.03.00</p></td>
-<td><p>Link time optimization (LTO) has not been verified across all modules, which may cause unexpected behavior or build issues if enabled.</p></td>
-<td><p>1. Add -flto flag to compiler options.<br>2. Build the MCAL project.<br>3. Run the application and you might observe unexpected behavior.</p></td>
-<td><p>By default LTO is disabled, user shall not enable it.</p></td>
+<tr class="row-even"><td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
 </tr>
 </tbody>
 </table>
@@ -956,8 +1090,9 @@ Move issues to "Fixed In This Release" section when resolved.
 <p>This release has dependency on the following tools:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.ti.com/tool/CCSTUDIO">CCS</a> v20.05.00 or above version.</p></li>
-<li><p><a class="reference external" href="https://www.ti.com/tool/C2000-CGT">C29Clang Compiler</a> 2.0.0 STS.</p></li>
+<li><p><a class="reference external" href="https://www.ti.com/tool/C2000-CGT">C29Clang Compiler</a> 2.2.0 LTS.</p></li>
 <li><p><a class="reference external" href="https://www.ti.com/drr/opn/PROCESSOR-SDK-MCAL-EB-TRESOS">EB Tresos</a> (ACG 8.8.12)</p></li>
+<li><p><a class="reference external" href="https://slproweb.com/products/Win32OpenSSL.html">OpenSSL</a> v3.x.x</p></li>
 </ul>
 </section>
 </section>

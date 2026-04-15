@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Fee_Cbk.h
- *  Project:    C29x MCAL
- *  Module:     Fee Callback function
  *  Generator:  None
  *
  *  Description:  This file contains interface header for Fee callback functions.
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *
  *********************************************************************************************************************/
 

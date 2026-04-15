@@ -128,7 +128,7 @@
 
 [!SELECT "as:modconf('Cdd_Xbar/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Xbar/Cdd']/CddXbarConfiguration"!]
 /** \brief CDD Crossbar Configuration */
-VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config = 
+CONST(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config = 
 {
 [!IF "num:i(count(CddXbarInputXbarConfig/CddXbarInputXbarInstanceConfig/*))>0"!]
   /* Design: MCAL-25701 */
@@ -166,9 +166,9 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config =
     {
 [!LOOP "CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*/CddXbarOutputXbarInput"!] 
         {
-            .input_count = (uint32)[!"num:i(count(*/CddXbarOutputXbarInputLine/*))"!]U,
+            .input_count = (uint8)[!"num:i(count(*/CddXbarOutputXbarInputLine/*))"!]U,
 [!VAR "var1" = "0"!][!LOOP "*/CddXbarOutputXbarInputLine/*"!]
-            .inputLine[[!"num:i($var1)"!]] =  [!"node:value(.)"!],
+            .inputLine[[!"num:i($var1)"!]] =  (uint16)[!"node:value(.)"!],
 [!VAR "var1" = "$var1+1"!]
 [!ENDLOOP!] 
             .outputLine = [!"../CddXbarOutputXbarOutputLine"!],   /* Design: MCAL-25722 */
@@ -189,9 +189,9 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config =
     {
 [!LOOP "CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/*/CddXbarEpwmXbarInput"!] 
         {
-            .input_count = (uint32)[!"num:i(count(*/CddXbarEpwmXbarInputLine/*))"!]U,
+            .input_count = (uint8)[!"num:i(count(*/CddXbarEpwmXbarInputLine/*))"!]U,
 [!VAR "var1" = "0"!][!LOOP "*/CddXbarEpwmXbarInputLine/*"!]
-            .inputLine[[!"num:i($var1)"!]] =  [!"node:value(.)"!],
+            .inputLine[[!"num:i($var1)"!]] =  (uint16)[!"node:value(.)"!],
 [!VAR "var1" = "$var1+1"!]
 [!ENDLOOP!]
             .outputLine = [!"../CddXbarEpwmXbarOutputLine"!],   /* Design: MCAL-25722 */
@@ -208,9 +208,9 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config =
     {
 [!LOOP "CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/*/CddXbarClbXbarInput"!] 
         {
-            .input_count = (uint32)[!"num:i(count(*/CddXbarClbXbarInputLine/*))"!]U,
+            .input_count = (uint8)[!"num:i(count(*/CddXbarClbXbarInputLine/*))"!]U,
 [!VAR "var1" = "0"!][!LOOP "*/CddXbarClbXbarInputLine/*"!]
-            .inputLine[[!"num:i($var1)"!]] =  [!"node:value(.)"!],
+            .inputLine[[!"num:i($var1)"!]] =  (uint16)[!"node:value(.)"!],
 [!VAR "var1" = "$var1+1"!]
 [!ENDLOOP!]
             .outputLine = [!"../CddXbarClbXbarOutputLine"!],   /* Design: MCAL-25722 */
@@ -227,9 +227,9 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config =
     {
 [!LOOP "CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/*/CddXbarMindbXbarInput"!] 
         {
-            .input_count = (uint32)[!"num:i(count(*/CddXbarMindbXbarInputLine/*))"!]U,
+            .input_count = (uint8)[!"num:i(count(*/CddXbarMindbXbarInputLine/*))"!]U,
 [!VAR "var1" = "0"!][!LOOP "*/CddXbarMindbXbarInputLine/*"!]
-            .inputLine[[!"num:i($var1)"!]] =  [!"node:value(.)"!],
+            .inputLine[[!"num:i($var1)"!]] =  (uint16)[!"node:value(.)"!],
 [!VAR "var1" = "$var1+1"!]
 [!ENDLOOP!]
             .outputLine = [!"../CddXbarMindbXbarOutputLine"!],   /* Design: MCAL-25722 */
@@ -244,11 +244,11 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config =
   /* Design: MCAL-25702 */
     .Cdd_Xbar_IclCfg =
     {
-[!LOOP "CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/*/CddXbarIclXbarInput"!] 
+[!LOOP "CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/*/CddXbarIclXbarInput"!]
         {
-            .input_count = (uint32)[!"num:i(count(*/CddXbarIclXbarInputLine/*))"!]U,
+            .input_count = (uint8)[!"num:i(count(*/CddXbarIclXbarInputLine/*))"!]U,
 [!VAR "var1" = "0"!][!LOOP "*/CddXbarIclXbarInputLine/*"!]
-            .inputLine[[!"num:i($var1)"!]] =  [!"node:value(.)"!],
+            .inputLine[[!"num:i($var1)"!]] =  (uint16)[!"node:value(.)"!],
 [!VAR "var1" = "$var1+1"!]
 [!ENDLOOP!]
             .outputLine = [!"../CddXbarIclXbarOutputLine"!],   /* Design: MCAL-25722 */
@@ -259,6 +259,8 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config =
 [!ENDIF!]
 [!IF "num:i(count(CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*))>0"!]
     .outputXbarFlagBaseAddress = (uint32)[!"node:ref(as:modconf('Cdd_Xbar/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Xbar/Cdd']/CddXbarGeneral/CddXbarOutputXbarFlag)/BaseAddr"!],
+[!ELSE!][!//
+    .outputXbarFlagBaseAddress = 0U,
 [!ENDIF!]
 [!IF "as:modconf('Cdd_Xbar/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Xbar/Cdd']/CddXbarGeneral/CddXbarInputFlagApi = 'true'"!]
     .inputFlagBaseAddress = (uint32)[!"node:ref(as:modconf('Cdd_Xbar/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Xbar/Cdd']/CddXbarGeneral/CddXbarInputFlag)/BaseAddr"!],

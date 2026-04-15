@@ -131,7 +131,15 @@ Spi_Header_File_Structure
 
 #### Memory Mapping
 
-Will be added in later release
+The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.
+
+Reference memory map files can be found at:
+
+```text
+{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+```
+
+The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.
 
 #### Scheduling
 
@@ -258,23 +266,29 @@ Dio Module is required to handle SPI chip select when GPIO is configured to use 
 
 #### Resource Allocator
 
-The SPI module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+The SPI module uses the Resource Allocator to allocate SPI peripheral instances to CPU cores and configure their memory-mapped base addresses. Each allocation is placed inside a **Context** that maps to a CPU core (e.g. `CPU1`). The **CurrentContext** parameter in the Resource Allocator selects which Context is active for MCAL execution. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+The **Frame** parameter (`FRAME0`–`FRAME3`) selects the memory-mapped frame for the instance, enabling simultaneous access from different initiators without arbitration stalls. The **BaseAddr** is auto-calculated based on the selected instance and frame. The **DebugHaltEnabled** and **StandbyModeEnabled** parameters control peripheral behaviour during CPU debug halt and standby low-power modes respectively.
 
 ##### Resource Allocator Usage Example
 
 To allocate SPIA to CPU1 using FRAME0:
 
-1. In the Resource Allocator configuration, create a new Spi instance allocation
+1. In the Resource Allocator configuration, create a new Spi instance allocation under the CPU1 Context
 2. Set **InstanceName** to `SPIA`
 3. Set **Frame** to `FRAME0`
-4. The **BaseAddr** will be automatically calculated as `SPIA_DRIVER_BASE_FRAME(0U)`
+4. The **BaseAddr** will be automatically calculated as `SPIA_BASE_FRAME(0U)`
+5. Optionally configure **DebugHaltEnabled** and **StandbyModeEnabled**
 
 ```text
 Resource Allocator Configuration:
-├── SpiInstanceAllocation
-│   ├── InstanceName: SPIA
-│   ├── Frame: FRAME0
-│   └── BaseAddr: SPIA_DRIVER_BASE_FRAME(0U)
+├── Context (Core: CPU1)
+│   └── SpiInstanceAllocation
+│       ├── InstanceName: SPIA
+│       ├── Frame: FRAME0
+│       ├── BaseAddr: SPIA_BASE_FRAME(0U)  [auto-calculated]
+│       ├── DebugHaltEnabled: true
+│       └── StandbyModeEnabled: true
 ```
 
 ### Configuration
@@ -289,12 +303,12 @@ The generated configuration files should not be modified manually. The config to
 
 
 
-#### SpiDemEventParameterRefs
+##### SpiDemEventParameterRefs
 
 | Item ||
 |--------|---------------|
 | **Name** | SpiDemEventParameterRefs |
-| **Description** | Reference to configured DEM event to report "Hardware failure". If the reference is not configured the error shall not be reported. |
+| **Description** | Container for the references to DemEventParameter elements which shall be invoked using the API Dem_SetEventStatus in case the corresponding error occurs. The EventId is taken from the referenced DemEventParameter's DemEventId symbolic value. The standardized errors are provided in this container and can be extended by vendor-specific error references. |
 | **Multiplicity-Configuration-Class** | -- |
 | Link Time | VARIANT-LINK-TIME |
 | Post-Build Time | VARIANT-POST-BUILD |
@@ -307,10 +321,10 @@ The generated configuration files should not be modified manually. The config to
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-#### SpiDriver
+##### SpiDriver
 This container contains the configuration parameters and sub containers of the AUTOSAR Spi module.
 
-##### SpiMaxChannel
+###### SpiMaxChannel
 
 | Item ||
 |--------|---------------|
@@ -326,7 +340,7 @@ This container contains the configuration parameters and sub containers of the A
 | **Max-value** | 1 |
 | **Min-value** | 1 |
 
-##### SpiMaxJob
+###### SpiMaxJob
 
 | Item ||
 |--------|---------------|
@@ -342,7 +356,7 @@ This container contains the configuration parameters and sub containers of the A
 | **Max-value** | 65535 |
 | **Min-value** | 1 |
 
-##### SpiMaxSequence
+###### SpiMaxSequence
 
 | Item ||
 |--------|---------------|
@@ -358,7 +372,7 @@ This container contains the configuration parameters and sub containers of the A
 | **Max-value** | 255 |
 | **Min-value** | 0 |
 
-##### SpiSequenceTimeOut
+###### SpiSequenceTimeOut
 
 | Item ||
 |--------|---------------|
@@ -374,7 +388,7 @@ This container contains the configuration parameters and sub containers of the A
 | **Max-value** | 10.0 |
 | **Min-value** | 1.0E-6 |
 
-##### SpiCounterClockRef
+###### SpiCounterClockRef
 
 | Item ||
 |--------|---------------|
@@ -387,7 +401,7 @@ This container contains the configuration parameters and sub containers of the A
 | Link-Time | VARIANT-LINK-TIME |
 | Post-Build-Time | VARIANT-POST-BUILD |
 
-##### SpiChannel
+###### SpiChannel
 All data needed to configure one SPI-channel
 
 ###### SpiChannelId
@@ -505,7 +519,7 @@ All data needed to configure one SPI-channel
 | **Default-value** | MSB |
 | **Range** | LSB<br>MSB |
 
-##### SpiJob
+###### SpiJob
 All data needed to configure one SPI-Job, amongst others the connection between the internal SPI unit and the special settings for an external device is done.
 
 ###### SpiHwUnitSynchronous
@@ -513,7 +527,7 @@ All data needed to configure one SPI-Job, amongst others the connection between 
 | Item ||
 |--------|---------------|
 | **Name** | SpiHwUnitSynchronous |
-| **Description** | Tags: atp.Status=obsolete |
+| **Description** | If SpiHwUnitSynchronous is set to "SYNCHRONOUS", the SpiJob uses its containing SpiDriver in a synchronous manner. If it is set to "ASYNCHRONOUS", it uses the driver in an asynchronous way. If the parameter is not set, the SpiChannel uses the driver also in an asynchronous way. |
 | **Multiplicity-Configuration-Class** | -- |
 | Link Time | VARIANT-LINK-TIME |
 | Post-Build Time | VARIANT-POST-BUILD |
@@ -592,7 +606,7 @@ All data needed to configure one SPI-Job, amongst others the connection between 
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### SpiChannelList
+###### SpiChannelList
 References to SPI channels and their order within the Job.
 
 ###### SpiChannelIndex
@@ -624,7 +638,7 @@ References to SPI channels and their order within the Job.
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### SpiSequence
+###### SpiSequence
 All data needed to configure one SPI-sequence
 
 ###### SpiInterruptibleSequence
@@ -694,7 +708,7 @@ All data needed to configure one SPI-sequence
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### SpiExternalDevice
+###### SpiExternalDevice
 The communication settings of an external device. Closely linked to SpiJob.
 
 ###### SpiExternalDeviceId
@@ -900,7 +914,7 @@ The communication settings of an external device. Closely linked to SpiJob.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | Post-Build-Time | VARIANT-POST-BUILD |
 
-##### SpiHwUnitConfig
+###### SpiHwUnitConfig
 HW Unit configurations
 
 ###### SpiHighSpeedMode
@@ -973,10 +987,10 @@ HW Unit configurations
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-#### SpiGeneral
+##### SpiGeneral
 General configuration settings for SPI-Handler
 
-##### SpiCancelApi
+###### SpiCancelApi
 
 | Item ||
 |--------|---------------|
@@ -990,7 +1004,7 @@ General configuration settings for SPI-Handler
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### SpiChannelBuffersAllowed
+###### SpiChannelBuffersAllowed
 
 | Item ||
 |--------|---------------|
@@ -1006,7 +1020,7 @@ General configuration settings for SPI-Handler
 | **Max-value** | 2 |
 | **Min-value** | 0 |
 
-##### SpiChannelInternalBufferMaxLength
+###### SpiChannelInternalBufferMaxLength
 
 | Item ||
 |--------|---------------|
@@ -1022,7 +1036,7 @@ General configuration settings for SPI-Handler
 | **Max-value** | 131070 |
 | **Min-value** | 1 |
 
-##### SpiDevErrorDetect
+###### SpiDevErrorDetect
 
 | Item ||
 |--------|---------------|
@@ -1036,7 +1050,7 @@ General configuration settings for SPI-Handler
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### SpiHwStatusApi
+###### SpiHwStatusApi
 
 | Item ||
 |--------|---------------|
@@ -1050,7 +1064,7 @@ General configuration settings for SPI-Handler
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### SpiInterruptibleSeqAllowed
+###### SpiInterruptibleSeqAllowed
 
 | Item ||
 |--------|---------------|
@@ -1064,7 +1078,7 @@ General configuration settings for SPI-Handler
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### SpiLevelDelivered
+###### SpiLevelDelivered
 
 | Item ||
 |--------|---------------|
@@ -1080,7 +1094,7 @@ General configuration settings for SPI-Handler
 | **Max-value** | 2 |
 | **Min-value** | 0 |
 
-##### SpiMainFunctionPeriod
+###### SpiMainFunctionPeriod
 
 | Item ||
 |--------|---------------|
@@ -1101,7 +1115,7 @@ General configuration settings for SPI-Handler
 | **Max-value** | INF |
 | **Min-value** | 0.0 |
 
-##### SpiSupportConcurrentSyncTransmit
+###### SpiSupportConcurrentSyncTransmit
 
 | Item ||
 |--------|---------------|
@@ -1115,7 +1129,7 @@ General configuration settings for SPI-Handler
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### SpiUserCallbackHeaderFile
+###### SpiUserCallbackHeaderFile
 
 | Item ||
 |--------|---------------|
@@ -1134,7 +1148,7 @@ General configuration settings for SPI-Handler
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | HeaderFileName |
 
-##### SpiVersionInfoApi
+###### SpiVersionInfoApi
 
 | Item ||
 |--------|---------------|
@@ -1179,8 +1193,6 @@ The example application demonstrates use of Spi module, the list below identifie
 
 ##### Setup required to run Spi_Example_Sync_AsyncTransfer
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 
@@ -1211,8 +1223,6 @@ The example application demonstrates use of Spi module, the list below identifie
 
 ##### Setup required to run Spi_Example_AsyncTransfer_Interrupt
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 
@@ -1243,8 +1253,6 @@ The example application demonstrates use of Spi module, the list below identifie
 
 ##### Setup required to run Spi_Example_SyncTransfer
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 
@@ -1275,8 +1283,6 @@ The example application demonstrates use of Spi module, the list below identifie
 
 ##### Setup required to run Spi_Example_External_Loopback
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Makes sure to disable the S2 POCI switch on the XDS110 to OFF (Only when used with SOM EVM) as shown below:
 

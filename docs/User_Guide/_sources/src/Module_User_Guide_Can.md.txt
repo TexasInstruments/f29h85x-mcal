@@ -131,7 +131,15 @@ Can Header File Structure
 
 #### Memory Mapping
 
-Will be added in later release
+The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.
+
+Reference memory map files can be found at:
+
+```text
+{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+```
+
+The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.
 
 #### Scheduling
 
@@ -181,6 +189,14 @@ Development errors are reported to the DET using the service Det_ReportError(),w
 ```{NOTE}
 More details of Safety Mechanisms can be found in Safety Manual.
 ```
+
+### Silicon errata workarounds and recommendation
+
+For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata](https://www.ti.com/lit/er/sprz569c/sprz569c.pdf).
+
+| Advisory | Workaround in MCAL driver | Recommended actions for user |
+|----------|--------------------------|-------------------------------|
+| Message Order Inversion When Transmitting From Dedicated Tx Buffers Configured With Same Message ID | No workaround is implemented in the CAN driver. The message ID configuration and transmission request scheduling are runtime-dynamic and cannot be controlled at the driver level to enforce ordering. | Use Tx FIFO mode instead of dedicated Tx Buffers when transmitting multiple messages with the same Message ID. The Tx FIFO ensures messages are transmitted in the order they are requested, preventing message order inversion. To configure Tx FIFO, set the `CanHandleType` parameter to `BASIC` for the hardware transmit object and specify the desired FIFO depth via the `CanHwObjectCount` parameter in EB Tresos configuration. |
 
 ### Used resources
 
@@ -256,23 +272,29 @@ PORT Module is required to initialize Pin configurations and MUX mode for CAN In
 
 #### Resource Allocator
 
-The CAN module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+The CAN module uses the Resource Allocator to allocate CAN peripheral instances to CPU cores and configure their memory-mapped base addresses. Each allocation is placed inside a **Context** that maps to a CPU core (e.g. `CPU1`). The **CurrentContext** parameter in the Resource Allocator selects which Context is active for MCAL execution. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+The **Frame** parameter (`FRAME0`–`FRAME3`) selects the memory-mapped frame for the instance, enabling simultaneous access from different initiators without arbitration stalls. The **BaseAddr** is auto-calculated based on the selected instance and frame. The **DebugHaltEnabled** and **StandbyModeEnabled** parameters control peripheral behaviour during CPU debug halt and standby low-power modes respectively.
 
 ##### Resource Allocator Usage Example
 
 To allocate MCANA to CPU1 using FRAME0:
 
-1. In the Resource Allocator configuration, create a new Can instance allocation
+1. In the Resource Allocator configuration, create a new Can instance allocation under the CPU1 Context
 2. Set **InstanceName** to `MCANA`
 3. Set **Frame** to `FRAME0`
 4. The **BaseAddr** will be automatically calculated as `MCANA_DRIVER_BASE_FRAME(0U)`
+5. Optionally configure **DebugHaltEnabled** and **StandbyModeEnabled**
 
 ```text
 Resource Allocator Configuration:
-├── CanInstanceAllocation
-│   ├── InstanceName: MCANA
-│   ├── Frame: FRAME0
-│   └── BaseAddr: MCANA_DRIVER_BASE_FRAME(0U)
+├── Context (Core: CPU1)
+│   └── CanInstanceAllocation
+│       ├── InstanceName: MCANA
+│       ├── Frame: FRAME0
+│       ├── BaseAddr: MCANA_DRIVER_BASE_FRAME(0U)  [auto-calculated]
+│       ├── DebugHaltEnabled: true
+│       └── StandbyModeEnabled: true
 ```
 
 #### General Guidelines
@@ -294,10 +316,10 @@ The generated configuration files should not be modified manually. The config to
 
 
 
-#### CanConfigSet
+##### CanConfigSet
 This container contains the configuration parameters and sub containers of the AUTOSAR Can module.
 
-##### CanController
+###### CanController
 This container contains the configuration parameters of the CAN controller(s).
 
 ###### CanBusoffProcessing
@@ -489,7 +511,7 @@ This container contains the configuration parameters of the CAN controller(s).
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CanControllerConfig
+###### CanControllerConfig
 This container contains CAN Controller specific configuration parameters.
 
 ###### CanFDMode
@@ -563,7 +585,7 @@ This container contains CAN Controller specific configuration parameters.
 | **Max-value** | 536870911 |
 | **Min-value** | 0 |
 
-##### CanControllerBaudrateConfig
+###### CanControllerBaudrateConfig
 This container contains bit timing related configuration parameters of the CAN controller(s).
 
 ###### CanControllerBaudRate
@@ -656,7 +678,7 @@ This container contains bit timing related configuration parameters of the CAN c
 | **Max-value** | 128 |
 | **Min-value** | 1 |
 
-##### CanControllerFdBaudrateConfig
+###### CanControllerFdBaudrateConfig
 This optional container contains bit timing related configuration parameters of the CAN controller(s) for payload and CRC of a CAN FD frame. If this container exists the controller supports CAN FD frames.
 
 ###### CanControllerFdBaudRate
@@ -781,7 +803,7 @@ This optional container contains bit timing related configuration parameters of 
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### CanTTController
+###### CanTTController
 CanTTController is specified in the SWS TTCAN and contains the configuration parameters of the TTCAN controller(s) (which are needed in addition to the configuration parameters of the CAN controller(s)).
 
 ###### CanTTControllerApplWatchdogLimit
@@ -1042,7 +1064,7 @@ CanTTController is specified in the SWS TTCAN and contains the configuration par
 | **Default-value** | POLLING |
 | **Range** | INTERRUPT<br>POLLING |
 
-##### CanHardwareObject
+###### CanHardwareObject
 This container contains the configuration (parameters) of CAN Hardware Objects.
 
 ###### CanFdPaddingValue
@@ -1194,7 +1216,7 @@ This container contains the configuration (parameters) of CAN Hardware Objects.
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CanHwFilter
+###### CanHwFilter
 This container is only valid for HRHs and contains the configuration (parameters) of one hardware filter.
 
 ###### CanHwFilterCode
@@ -1255,7 +1277,7 @@ This container is only valid for HRHs and contains the configuration (parameters
 | **Default-value** | CAN_EVENT_PIN_NONE |
 | **Range** | CAN_EVENT_PIN_0<br>CAN_EVENT_PIN_1<br>CAN_EVENT_PIN_NONE |
 
-##### CanTTHardwareObjectTrigger
+###### CanTTHardwareObjectTrigger
 CanTTHardwareObjectTrigger is specified in the SWS TTCAN and contains the configuration (parameters) of TTCAN triggers for Hardware Objects, which are additional to the configuration (parameters) of CAN Hardware Objects.
 
 ###### CanTTHardwareObjectBaseCycle
@@ -1332,10 +1354,10 @@ CanTTHardwareObjectTrigger is specified in the SWS TTCAN and contains the config
 | **Default-value** | CAN_TT_RX_TRIGGER |
 | **Range** | CAN_TT_RX_TRIGGER<br>CAN_TT_TX_REF_TRIGGER<br>CAN_TT_TX_REF_TRIGGER_GAP<br>CAN_TT_TX_TRIGGER_EXCLUSIVE<br>CAN_TT_TX_TRIGGER_MERGED<br>CAN_TT_TX_TRIGGER_SINGLE |
 
-##### CanIcom
+###### CanIcom
 This container contains the parameters for configuring pretended networking
 
-##### CanIcomConfig
+###### CanIcomConfig
 This container contains the configuration parameters of the ICOM Configuration.
 
 ###### CanIcomConfigId
@@ -1366,10 +1388,10 @@ This container contains the configuration parameters of the ICOM Configuration.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### CanIcomWakeupCauses
+###### CanIcomWakeupCauses
 This container contains the configuration parameters of the wakeup causes to leave the power saving mode.
 
-##### CanIcomRxMessage
+###### CanIcomRxMessage
 This container contains the configuration parameters for the wakeup causes for matching received messages. It has to be configured as often as received messages are defined as wakeup cause.
 
 ###### CanIcomCounterValue
@@ -1457,7 +1479,7 @@ This container contains the configuration parameters for the wakeup causes for m
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CanIcomRxMessageSignalConfig
+###### CanIcomRxMessageSignalConfig
 This container contains the configuration parameters for the wakeup causes for matching signals.
 
 ###### CanIcomSignalMask
@@ -1520,10 +1542,10 @@ This container contains the configuration parameters for the wakeup causes for m
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-#### CanGeneral
+##### CanGeneral
 This container contains the parameters related each CAN Driver Unit.
 
-##### CanDevErrorDetect
+###### CanDevErrorDetect
 
 | Item ||
 |--------|---------------|
@@ -1536,7 +1558,7 @@ This container contains the parameters related each CAN Driver Unit.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CanIndex
+###### CanIndex
 
 | Item ||
 |--------|---------------|
@@ -1551,7 +1573,7 @@ This container contains the parameters related each CAN Driver Unit.
 | **Max-value** | 255 |
 | **Min-value** | 0 |
 
-##### CanLPduReceiveCalloutFunction
+###### CanLPduReceiveCalloutFunction
 
 | Item ||
 |--------|---------------|
@@ -1568,7 +1590,7 @@ This container contains the parameters related each CAN Driver Unit.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | NULL_PTR |
 
-##### CanMainFunctionBusoffPeriod
+###### CanMainFunctionBusoffPeriod
 
 | Item ||
 |--------|---------------|
@@ -1587,7 +1609,7 @@ This container contains the parameters related each CAN Driver Unit.
 | **Max-value** | INF |
 | **Min-value** | 0.0 |
 
-##### CanMainFunctionModePeriod
+###### CanMainFunctionModePeriod
 
 | Item ||
 |--------|---------------|
@@ -1602,7 +1624,7 @@ This container contains the parameters related each CAN Driver Unit.
 | **Max-value** | INF |
 | **Min-value** | 0.0 |
 
-##### CanMainFunctionWakeupPeriod
+###### CanMainFunctionWakeupPeriod
 
 | Item ||
 |--------|---------------|
@@ -1621,7 +1643,7 @@ This container contains the parameters related each CAN Driver Unit.
 | **Max-value** | INF |
 | **Min-value** | 0.0 |
 
-##### CanMultiplexedTransmission
+###### CanMultiplexedTransmission
 
 | Item ||
 |--------|---------------|
@@ -1634,7 +1656,7 @@ This container contains the parameters related each CAN Driver Unit.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CanPublicIcomSupport
+###### CanPublicIcomSupport
 
 | Item ||
 |--------|---------------|
@@ -1647,7 +1669,7 @@ This container contains the parameters related each CAN Driver Unit.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CanECCSupport
+###### CanECCSupport
 
 | Item ||
 |--------|---------------|
@@ -1660,7 +1682,7 @@ This container contains the parameters related each CAN Driver Unit.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CanSetBaudrateApi
+###### CanSetBaudrateApi
 
 | Item ||
 |--------|---------------|
@@ -1677,7 +1699,7 @@ This container contains the parameters related each CAN Driver Unit.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CanTimeoutDuration
+###### CanTimeoutDuration
 
 | Item ||
 |--------|---------------|
@@ -1692,7 +1714,7 @@ This container contains the parameters related each CAN Driver Unit.
 | **Max-value** | 65.535 |
 | **Min-value** | 1.0E-6 |
 
-##### CanVersionInfoApi
+###### CanVersionInfoApi
 
 | Item ||
 |--------|---------------|
@@ -1705,7 +1727,7 @@ This container contains the parameters related each CAN Driver Unit.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CanOsCounterRef
+###### CanOsCounterRef
 
 | Item ||
 |--------|---------------|
@@ -1721,7 +1743,7 @@ This container contains the parameters related each CAN Driver Unit.
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CanSysClockRef
+###### CanSysClockRef
 
 | Item ||
 |--------|---------------|
@@ -1733,7 +1755,7 @@ This container contains the parameters related each CAN Driver Unit.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | Post-Build-Time | VARIANT-POST-BUILD |
 
-##### CanSupportTTCANRef
+###### CanSupportTTCANRef
 
 | Item ||
 |--------|---------------|
@@ -1745,7 +1767,7 @@ This container contains the parameters related each CAN Driver Unit.
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CanIcomGeneral
+###### CanIcomGeneral
 This container contains the general configuration parameters of the ICOM Configuration.
 
 ###### CanIcomLevel
@@ -1780,7 +1802,7 @@ This container contains the general configuration parameters of the ICOM Configu
 | **Default-value** | CAN_ICOM_VARIANT_SW |
 | **Range** | CAN_ICOM_VARIANT_HW<br>CAN_ICOM_VARIANT_NONE<br>CAN_ICOM_VARIANT_SW |
 
-##### CanMainFunctionRWPeriods
+###### CanMainFunctionRWPeriods
 This container contains the parameter for configuring the period for cyclic call to Can_MainFunction_Read or Can_MainFunction_Write depending on the referring item.
 
 ###### CanMainFunctionPeriod
@@ -1797,6 +1819,22 @@ This container contains the parameter for configuring the period for cyclic call
 | **Default-value** | 0.01 |
 | **Max-value** | INF |
 | **Min-value** | 0.0 |
+
+###### CanDemEventParameterRefs
+
+| Item ||
+|--------|---------------|
+| **Name** | CanDemEventParameterRefs |
+| **Description** | Container for the references to DemEventParameter elements which shall be invoked using the API Dem_SetEventStatus in case the corresponding error occurs. The EventId is taken from the referenced DemEventParameter's DemEventId symbolic value. The standardized errors are provided in this container and can be extended by vendor-specific error references. |
+| **Multiplicity-Configuration-Class** | -- |
+| Post-Build Time | VARIANT-POST-BUILD |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Post-build-variant-multiplicity** | false |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 Refer [AUTOSAR_SWS_CANDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_CANDriver.pdf) for configuration parameters details
 
 #### Steps To Configure Can Module
@@ -1827,8 +1865,6 @@ The example application demonstrates use of Can module, the list below identifie
 
 ##### Setup required to run Can_Example_loopback
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 
@@ -1860,8 +1896,6 @@ The example application demonstrates use of Can module, the list below identifie
 
 ##### Setup required to run Can_Example_Classic_FD
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Connect CANA Tx and Rx pins to CAN transceiver
 * Connect PCAN CANH, CANL to CAN transceiver
@@ -1897,8 +1931,6 @@ The example application demonstrates use of Can module, the list below identifie
 
 ##### Setup required to run Can_Example_Icom
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Connect CANA Tx and Rx pins to CAN transceiver
 * Connect PCAN CANH, CANL to CAN transceiver
@@ -1943,8 +1975,6 @@ The example application demonstrates use of Can module, the list below identifie
 
 ##### Setup required to run Can_Example_Wakeup
 
-* Install Code Composer Studio (CCS) latest version
-* Install latest C29 compiler
 * Connect the hardware and power up
 * Connect PCAN tool to the CAN bus
 * Connect the UART setup to check the log on serial console

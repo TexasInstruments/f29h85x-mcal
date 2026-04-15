@@ -98,30 +98,13 @@
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/
-#define FLS_START_SEC_VAR_NO_INIT_UNSPECIFIED
+#define FLS_START_SEC_VAR_NO_INIT_32
 #include "Fls_MemMap.h"
 
-VAR(uint32, AUTOMATIC) Fls_U32FlsWrite_PostFapiFsmReady         = (uint32)0U; /* FSM ready flag*/
-VAR(uint32, AUTOMATIC) Fls_SectorBankErase_PostFapiFsmReadyDone = (uint32)0U; /* erase done flag*/
+VAR(uint32, FLS_VAR_NO_INIT_32) Fls_CMD_WE_Protection_A_Mask; /* protect reg A */
+VAR(uint32, FLS_VAR_NO_INIT_32) Fls_CMD_WE_Protection_B_Mask; /* Register B */
 
-#define FLS_STOP_SEC_VAR_NO_INIT_UNSPECIFIED
-#include "Fls_MemMap.h"
-
-#define FLS_START_SEC_VAR_INIT_UNSPECIFIED
-#include "Fls_MemMap.h"
-
-VAR(uint32, FLS_VAR_INIT_32) Fls_CMD_WE_Protection_A_Mask = 0x00000000; /* protect reg A */
-VAR(uint32, FLS_VAR_INIT_32) Fls_CMD_WE_Protection_B_Mask = 0x00000000; /* Register B */
-
-#if (FLS_TIMEOUT_SUPERVISION_ENABLED == STD_ON)
-VAR(StatusType, AUTOMATIC) counterStatus = E_NOT_OK;
-#endif
-
-volatile VAR(uint8, FLS_VAR_INIT_32) Fls_U8SectorEraseStage = FLS_S_EDEFAULT; /* sector Erase stage*/
-volatile VAR(uint8, FLS_VAR_INIT_32) Fls_U8BankEraseStage   = FLS_S_EDEFAULT; /* bank erase stage*/
-volatile VAR(uint8, FLS_VAR_INIT_32) Fls_U8FlashWriteStage  = FLS_S_WDEFAULT; /* flash program stage*/
-
-#define FLS_STOP_SEC_VAR_INIT_UNSPECIFIED
+#define FLS_STOP_SEC_VAR_NO_INIT_32
 #include "Fls_MemMap.h"
 
 /*********************************************************************************************************************
@@ -130,16 +113,13 @@ volatile VAR(uint8, FLS_VAR_INIT_32) Fls_U8FlashWriteStage  = FLS_S_WDEFAULT; /*
 static FUNC(void, FLS_CODE) Fls_PostProcessAndReportError(uint8 ApiId, uint8 processFailureType);
 static FUNC(void, FLS_CODE) Fls_PostProcessAndInitiateNextJob(Fls_JobType processJobCheck, uint32 processChunkSize);
 
-static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite_sub(uint32 actualSize);
-static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite(uint32 actualChunkSize);
+static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite(void);
 
 static FUNC(Std_ReturnType, FLS_CODE) Fls_Callf29Erase(uint32 chunkSize);
 
-static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase(uint32 actualChunkSize);
-static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase_sub(uint32 actualSize);
+static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase(void);
 
-static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase(uint32 actualChunkSize);
-static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase_sub(uint32 actualSize);
+static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase(void);
 
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29Read(uint32 actualChunkSize);
 static FUNC(Std_ReturnType, FLS_CODE) Fls_F29Compare(uint32 actualChunkSize);
@@ -389,65 +369,85 @@ static FUNC(void, FLS_CODE) Fls_Process_JobErase(uint32 chunkSize)
     VAR(uint8, AUTOMATIC) failureType     = (uint8)0U;
 
     /* To claim the flash semaphore */
-    Fls_SSU_claimFlashSemaphore();
-
-#if (FLS_TIMEOUT_SUPERVISION_ENABLED == STD_ON)
-    VAR(McalLib_TickType, AUTOMATIC) CurrentCount = 0U;
-    (void)McalLib_GetCounterValue(&CurrentCount);
-#endif
-
-    SchM_Enter_Fls_FLS_EXCLUSIVE_AREA_0();
-    retVal = Fls_Callf29Erase(chunkSize);
-    SchM_Exit_Fls_FLS_EXCLUSIVE_AREA_0();
-
-    if (retVal == E_NOT_OK)
+    retVal = Fls_SSU_claimFlashSemaphore();
+    if (retVal != E_OK)
     {
-        /* To release the Flash semaphore if erase operation failed*/
-        Fls_SSU_releaseFlashSemaphore();
-        failureType = FLS_E_ERASE_FAILED; /* FLS_E_ERASE_FAILED=0x1*/
-    }
-#if (FLS_TIMEOUT_SUPERVISION_ENABLED == STD_ON)
-    else
-    {
-        /*  Below API can change start time, so use temp variable */
-        if (Fls_TimeoutVerification(CurrentCount) == E_NOT_OK)
-        {
-            retVal      = E_NOT_OK;
-            failureType = FLS_E_TIMEOUT; /* FLS_E_TIMEOUT = 0x9*/
-        }
-    }
-#endif
-
-    /* After execution of an erase job, the flash driver shall verify that the addressed
-        block has been erased completely.
-        This feature shall be statically configurable (on/off).
-    */
-#if (STD_ON == FLS_ERASE_VERIFICATION_ENABLED)
-    if (retVal == E_OK)
-    {
-        /* Erase chunk size would be one sector (2048 bytes) but blank check chunk size
-         *  would be 8 bytes, so running blank check command for (2048/8) times
-         */
-        if (Fls_SectorBankErase_PostFapiFsmReadyDone == 0x1U)
-        {
-            /* To release the Flash semaphore after the sector/bank is erased correctly*/
-            Fls_SSU_releaseFlashSemaphore();
-            retVal = Fls_F29BlankCheck(chunkSize);
-            if (retVal != E_OK)
-            {
-                failureType = FLS_E_VERIFY_ERASE_FAILED; /** FLS_E_VERIFY_ERASE_FAILED=0x7*/
-            }
-        }
-    }
-#endif
-    if (retVal == E_OK)
-    {
-        Fls_PostProcessAndInitiateNextJob(FLS_JOB_ERASE, chunkSize);
-    }
-    else
-    {
+        failureType = FLS_E_ERASE_FAILED;
         Fls_PostProcessAndReportError((uint8)FLS_SID_MAIN_FUNCTION, failureType);
     }
+    else
+    {
+#if (FLS_TIMEOUT_SUPERVISION_ENABLED == STD_ON)
+        /* Capture the start time once per erase FSM operation. While polling POSTCHECK across multiple
+         * Fls_MainFunction calls, both stage variables remain at FLS_S_ERASE_POSTCHECK so the start
+         * time is preserved, giving a cumulative elapsed time for that single sector/bank erase cycle.
+         */
+        if ((Fls_DrvObj.sectorEraseStage != FLS_S_ERASE_POSTCHECK) &&
+            (Fls_DrvObj.bankEraseStage != FLS_S_ERASE_POSTCHECK))
+        {
+            (void)McalLib_GetCounterValue(&Fls_DrvObj.jobStartCount);
+        }
+#endif
+
+        SchM_Enter_Fls_FLS_EXCLUSIVE_AREA_0();
+        retVal = Fls_Callf29Erase(chunkSize);
+        SchM_Exit_Fls_FLS_EXCLUSIVE_AREA_0();
+
+        if (retVal == E_NOT_OK)
+        {
+            /* To release the Flash semaphore if erase operation failed*/
+            Fls_SSU_releaseFlashSemaphore();
+            failureType = FLS_E_ERASE_FAILED; /* FLS_E_ERASE_FAILED=0x1*/
+        }
+#if (FLS_TIMEOUT_SUPERVISION_ENABLED == STD_ON)
+        else
+        {
+            if (Fls_TimeoutVerification(Fls_DrvObj.jobStartCount) == E_NOT_OK)
+            {
+                /* Callf29Erase returned E_OK so the early E_NOT_OK release block above was skipped.
+                 * The verification block below is also skipped when retVal is E_NOT_OK, so the
+                 * semaphore must be released here before propagating the timeout failure.
+                 */
+                Fls_SSU_releaseFlashSemaphore();
+                retVal      = E_NOT_OK;
+                failureType = FLS_E_TIMEOUT; /* FLS_E_TIMEOUT = 0x9*/
+            }
+        }
+#endif
+
+        if (retVal == E_OK)
+        {
+            /* Erase chunk size would be one sector (2048 bytes) but blank check chunk size
+             *  would be 8 bytes, so running blank check command for (2048/8) times
+             */
+            if (Fls_DrvObj.erasePostFapiFsmDone == 0x1U)
+            {
+                /* To release the Flash semaphore after the sector/bank is erased correctly*/
+                Fls_SSU_releaseFlashSemaphore();
+                /* After execution of an erase job, the flash driver shall verify that the addressed
+                 *  block has been erased completely.
+                 *  This feature shall be statically configurable (on/off).
+                 */
+#if (STD_ON == FLS_ERASE_VERIFICATION_ENABLED)
+
+                retVal = Fls_F29BlankCheck(chunkSize);
+                if (retVal != E_OK)
+                {
+                    failureType = FLS_E_VERIFY_ERASE_FAILED; /** FLS_E_VERIFY_ERASE_FAILED=0x7*/
+                }
+#endif
+            }
+        }
+
+        if (retVal == E_OK)
+        {
+            Fls_PostProcessAndInitiateNextJob(FLS_JOB_ERASE, chunkSize);
+        }
+        else
+        {
+            Fls_PostProcessAndReportError((uint8)FLS_SID_MAIN_FUNCTION, failureType);
+        }
+    } /* end else (semaphore claimed) */
 }
 
 /*
@@ -459,93 +459,107 @@ static FUNC(void, FLS_CODE) Fls_Process_JobWrite(uint32 chunkSize)
     VAR(uint8, AUTOMATIC) failureType     = (uint8)0U;
 
     /* To claim the flash semaphore */
-    Fls_SSU_claimFlashSemaphore();
-
-#if (FLS_TIMEOUT_SUPERVISION_ENABLED == STD_ON)
-    VAR(McalLib_TickType, AUTOMATIC) CurrentCount = 0U;
-#endif
-
-    /* Before writing data to flash memory, the flash driver shall verify if the addressed
-     *  memory area has been erased.
-     *  If the memory is not erased, the processing of the write function shall be
-     *  aborted with an error notification.
-     *  This feature shall be statically configurable (on/off)
-     *
-     *  SRS_Fls_12158
-     */
-#if (STD_ON == FLS_ERASE_VERIFICATION_ENABLED)
-    /* When postFapiFsmReady=1, the data has been programmed to flash, but FSM is still busy*/
-    if (Fls_U32FlsWrite_PostFapiFsmReady != 0x1U)
+    retVal = Fls_SSU_claimFlashSemaphore();
+    if (retVal != E_OK)
     {
-        retVal = Fls_F29BlankCheck(chunkSize);
-        if (retVal != E_OK)
-        {
-            failureType = FLS_E_VERIFY_ERASE_FAILED; /* FLS_E_VERIFY_ERASE_FAILED=0x7*/
-        }
-    }
-#endif
-
-    /* Get the current counter value and store it into global variable */
-#if (FLS_TIMEOUT_SUPERVISION_ENABLED == STD_ON)
-    (void)McalLib_GetCounterValue(&CurrentCount);
-#endif
-
-    if (retVal == E_OK)
-    {
-        SchM_Enter_Fls_FLS_EXCLUSIVE_AREA_0();
-        retVal = Fls_F29AsyncWrite(chunkSize);
-        SchM_Exit_Fls_FLS_EXCLUSIVE_AREA_0();
-    }
-    if (retVal == E_NOT_OK)
-    {
-        failureType = FLS_E_WRITE_FAILED; /* FLS_E_WRITE_FAILED=0x2*/
-    }
-    else
-    {
-#if (FLS_TIMEOUT_SUPERVISION_ENABLED == STD_ON)
-        if (Fls_TimeoutVerification(CurrentCount) == E_NOT_OK)
-        {
-            retVal      = E_NOT_OK;
-            failureType = FLS_E_TIMEOUT; /* FLS_E_TIMEOUT = 0x9*/
-        }
-#endif
-    }
-    /* The flash driver shall verify written data by reading back from flash and
-     *  comparing with the source data after each write access.
-     *  Differences shall be notified as error.
-     *  The checking shall be done within the processing of the write function.
-     *
-     *  This feature shall be statically configurable (on/off).
-     *
-     *  SRS_Fls_12141
-     */
-#if (STD_ON == FLS_WRITE_VERIFICATION_ENABLED)
-    if (retVal == E_OK)
-    {
-        retVal = Fls_F29Compare(chunkSize);
-    }
-    if (retVal == E_COMPARE_MISMATCH)
-    {
-        failureType = FLS_E_VERIFY_WRITE_FAILED; /* FLS_E_VERIFY_WRITE_FAILED =0x8*/
-    }
-#endif
-
-    if ((retVal == E_OK) && (Fls_DrvObj.length <= chunkSize))
-    {
-        /* To release the Flash semaphore*/
-        Fls_SSU_releaseFlashSemaphore();
-    }
-
-    if (retVal == E_OK)
-    {
-        Fls_PostProcessAndInitiateNextJob(FLS_JOB_WRITE, chunkSize);
-    }
-    else
-    {
-        /* To release the Flash semaphore if erase operation failed*/
-        Fls_SSU_releaseFlashSemaphore();
+        failureType = FLS_E_WRITE_FAILED;
         Fls_PostProcessAndReportError((uint8)FLS_SID_MAIN_FUNCTION, failureType);
     }
+    else
+    {
+        /* Before writing data to flash memory, the flash driver shall verify if the addressed
+         *  memory area has been erased.
+         *  If the memory is not erased, the processing of the write function shall be
+         *  aborted with an error notification.
+         *  This feature shall be statically configurable (on/off)
+         *
+         *  SRS_Fls_12158
+         */
+#if (FLS_TIMEOUT_SUPERVISION_ENABLED == STD_ON)
+        /* Capture the start time once per programming FSM operation. PostFapiFsmReady is 0 when
+         * starting a new chunk and 1 while polling POSTCHECK, so the start time is preserved across
+         * the polling calls, giving cumulative elapsed time for that single programming cycle.
+         */
+        if (Fls_DrvObj.writePostFapiFsmBusy != 0x1U)
+        {
+            (void)McalLib_GetCounterValue(&Fls_DrvObj.jobStartCount);
+        }
+#endif
+
+#if (STD_ON == FLS_ERASE_VERIFICATION_ENABLED)
+        /* When writePostFapiFsmBusy=1, the data has been programmed to flash, but FSM is still busy*/
+        if (Fls_DrvObj.writePostFapiFsmBusy != 0x1U)
+        {
+            retVal = Fls_F29BlankCheck(chunkSize);
+            if (retVal != E_OK)
+            {
+                failureType = FLS_E_VERIFY_ERASE_FAILED; /* FLS_E_VERIFY_ERASE_FAILED=0x7*/
+            }
+        }
+#endif
+
+        if (retVal == E_OK)
+        {
+            SchM_Enter_Fls_FLS_EXCLUSIVE_AREA_0();
+            retVal = Fls_F29AsyncWrite();
+            SchM_Exit_Fls_FLS_EXCLUSIVE_AREA_0();
+        }
+        if (retVal == E_NOT_OK)
+        {
+            failureType = FLS_E_WRITE_FAILED; /* FLS_E_WRITE_FAILED=0x2*/
+        }
+        else
+        {
+#if (FLS_TIMEOUT_SUPERVISION_ENABLED == STD_ON)
+            if (Fls_TimeoutVerification(Fls_DrvObj.jobStartCount) == E_NOT_OK)
+            {
+                retVal      = E_NOT_OK;
+                failureType = FLS_E_TIMEOUT; /* FLS_E_TIMEOUT = 0x9*/
+            }
+#endif
+        }
+        /* The flash driver shall verify written data by reading back from flash and
+         *  comparing with the source data after each write access.
+         *  Differences shall be notified as error.
+         *  The checking shall be done within the processing of the write function.
+         *
+         *  This feature shall be statically configurable (on/off).
+         *
+         *  SRS_Fls_12141
+         */
+#if (STD_ON == FLS_WRITE_VERIFICATION_ENABLED)
+        /* writeChunkComplete is set to 1 only when POSTCHECK STATUS_CHECK confirms the programming
+         * command completed for the current chunk. Gating on this flag ensures the compare never
+         * fires while the FSM is still busy (PRECHECK or POSTCHECK READY_CHECK polling), preventing
+         * spurious FLS_E_VERIFY_WRITE_FAILED from reading mid-write or not-yet-written flash.
+         */
+        if ((retVal == E_OK) && (Fls_DrvObj.writeChunkComplete == 1U))
+        {
+            retVal = Fls_F29Compare(chunkSize);
+        }
+        if (retVal == E_COMPARE_MISMATCH)
+        {
+            failureType = FLS_E_VERIFY_WRITE_FAILED; /* FLS_E_VERIFY_WRITE_FAILED =0x8*/
+        }
+#endif
+
+        if ((retVal == E_OK) && (Fls_DrvObj.length <= chunkSize))
+        {
+            /* To release the Flash semaphore*/
+            Fls_SSU_releaseFlashSemaphore();
+        }
+
+        if (retVal == E_OK)
+        {
+            Fls_PostProcessAndInitiateNextJob(FLS_JOB_WRITE, chunkSize);
+        }
+        else
+        {
+            /* To release the Flash semaphore if write operation failed*/
+            Fls_SSU_releaseFlashSemaphore();
+            Fls_PostProcessAndReportError((uint8)FLS_SID_MAIN_FUNCTION, failureType);
+        }
+    } /* end else (semaphore claimed) */
 }
 /*
  *  Function Name: Fls_F29Compare
@@ -676,28 +690,9 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29Read(uint32 actualChunkSize)
 /*
  *   Function Name: Fls_F29AsyncWrite
  *   Function to perform write to flash
- *   RS_Fls_12135
+ *   SRS_Fls_12135
  */
-static Std_ReturnType Fls_F29AsyncWrite(uint32 actualChunkSize)
-{
-    VAR(Std_ReturnType, AUTOMATIC) retVal = E_OK;
-
-    /* Check if the address is in the range of sectorList defined in Fls_Cfg.c
-     * Fls_FindSectorConfig() always returns E_OK since checking sectorList is not
-     * required
-     */
-
-    if (Fls_U8FlashWriteStage == FLS_S_WDEFAULT)
-    {
-        Fls_U8FlashWriteStage = FLS_S_WRITE_PRECHECK; /*  FLS_S_WRITE_PRECHECK=0x1 */
-    }
-
-    retVal = Fls_F29AsyncWrite_sub(actualChunkSize);
-
-    return retVal;
-}
-
-static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite_sub(uint32 actualSize)
+static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite(void)
 {
     VAR(Std_ReturnType, AUTOMATIC) retVal            = E_OK;
     VAR(Fls_FapiFlashStatus, AUTOMATIC) oFlashStatus = 0U;
@@ -708,19 +703,28 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite_sub(uint32 actualSize)
     P2VAR(uint8, AUTOMATIC, FLS_APPL_DATA) buf = Fls_DrvObj.ramAddr;
 
     /* Fls_DrvObj.FlsMaxWriteNormalMode should be 8 or 16*/
-    VAR(uint8, AUTOMATIC) DataBufSizeInBytes = Fls_DrvObj.FlsMaxWriteNormalMode;
+    VAR(uint32, AUTOMATIC) DataBufSizeInBytes = Fls_DrvObj.FlsMaxWriteNormalMode;
 
-    static uint16 pre_write_check    = FLS_WRITE_FSM_READY_CHECK;
-    static uint16 post_write_check   = FLS_WRITE_FSM_READY_CHECK;
-    Fls_U32FlsWrite_PostFapiFsmReady = 0U;
+    Fls_DrvObj.writePostFapiFsmBusy = 0U;
+    Fls_DrvObj.writeChunkComplete   = 0U;
 
-    if (Fls_U8FlashWriteStage == FLS_S_WRITE_PRECHECK)
+    /* Fls_Write() resets Fls_DrvObj.flashWriteStage to FLS_S_WDEFAULT when a new job is accepted
+     * and directly resets writePreCheck and writePostCheck (Fls_DrvObj fields) to
+     * FLS_WRITE_FSM_READY_CHECK. Detecting WDEFAULT here advances the stage to PRECHECK for
+     * the new job.
+     */
+    if (Fls_DrvObj.flashWriteStage == FLS_S_WDEFAULT)
     {
-        if (pre_write_check == FLS_WRITE_FSM_READY_CHECK)
+        Fls_DrvObj.flashWriteStage = FLS_S_WRITE_PRECHECK;
+    }
+
+    if (Fls_DrvObj.flashWriteStage == FLS_S_WRITE_PRECHECK)
+    {
+        if (Fls_DrvObj.writePreCheck == FLS_WRITE_FSM_READY_CHECK)
         {
             if (Fls_Fapi_checkFsmForReady() == E_OK)
             {
-                pre_write_check = FLS_WRITE_FSM_ISSUE_CMD;
+                Fls_DrvObj.writePreCheck = FLS_WRITE_FSM_ISSUE_CMD;
             }
             else
             {
@@ -728,18 +732,18 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite_sub(uint32 actualSize)
                                                     operations*/
             }
         }
-        if (pre_write_check == FLS_WRITE_FSM_ISSUE_CMD)
+        if (Fls_DrvObj.writePreCheck == FLS_WRITE_FSM_ISSUE_CMD)
         {
-            pre_write_check = FLS_WRITE_FSM_STATUS_CHECK;
+            Fls_DrvObj.writePreCheck = FLS_WRITE_FSM_STATUS_CHECK;
             Fls_Fapi_issueAsyncCommand();
         }
-        if (pre_write_check == FLS_WRITE_FSM_STATUS_CHECK)
+        if (Fls_DrvObj.writePreCheck == FLS_WRITE_FSM_STATUS_CHECK)
         {
             oFlashStatus = Fls_Fapi_getFsmStatus();
             if (oFlashStatus == 0x0U) /* FLS_FAPI_STATUS_SUCCESS*/
             {
-                Fls_U8FlashWriteStage = FLS_DO_SECTOR_UNLOCK;
-                pre_write_check       = FLS_WRITE_FSM_READY_CHECK;
+                Fls_DrvObj.flashWriteStage = FLS_DO_SECTOR_UNLOCK;
+                Fls_DrvObj.writePreCheck   = FLS_WRITE_FSM_READY_CHECK;
             }
             else
             {
@@ -747,38 +751,38 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite_sub(uint32 actualSize)
             }
         }
     }
-    if (Fls_U8FlashWriteStage == FLS_DO_SECTOR_UNLOCK)
+    if (Fls_DrvObj.flashWriteStage == FLS_DO_SECTOR_UNLOCK)
     {
         Fls_Fapi_setupBankSectorEnable(FLS_FLASH_NW_O_CMDWEPROTA, Fls_CMD_WE_Protection_A_Mask);
         Fls_Fapi_setupBankSectorEnable(FLS_FLASH_NW_O_CMDWEPROTB, Fls_CMD_WE_Protection_B_Mask);
-        Fls_U8FlashWriteStage = FLS_DO_WRITE_JOB;
+        Fls_DrvObj.flashWriteStage = FLS_DO_WRITE_JOB;
     }
-    if (Fls_U8FlashWriteStage == FLS_DO_WRITE_JOB)
+    if (Fls_DrvObj.flashWriteStage == FLS_DO_WRITE_JOB)
     {
         /* DataBufSizeInBytes can be 8 or 16. ALl other values are not allowed */
-        Fls_Fapi_issueProgrammingCommand((uint32 *)u32StartAddress, (uint8 *)buf, (uint8)DataBufSizeInBytes);
+        Fls_Fapi_issueProgrammingCommand((const uint32 *)u32StartAddress, (const uint8 *)buf, DataBufSizeInBytes);
 
-        Fls_U8FlashWriteStage = FLS_S_WRITE_POSTCHECK;
-        post_write_check      = FLS_WRITE_FSM_READY_CHECK;
+        Fls_DrvObj.flashWriteStage = FLS_S_WRITE_POSTCHECK;
+        Fls_DrvObj.writePostCheck  = FLS_WRITE_FSM_READY_CHECK;
     }
-    if (Fls_U8FlashWriteStage == FLS_S_WRITE_POSTCHECK)
+    if (Fls_DrvObj.flashWriteStage == FLS_S_WRITE_POSTCHECK)
     {
-        if (post_write_check == FLS_WRITE_FSM_READY_CHECK)
+        if (Fls_DrvObj.writePostCheck == FLS_WRITE_FSM_READY_CHECK)
         {
             retVal = Fls_Fapi_checkFsmForReady();
             if (retVal != E_NOT_OK)
             {
-                post_write_check = FLS_WRITE_FSM_STATUS_CHECK;
+                Fls_DrvObj.writePostCheck = FLS_WRITE_FSM_STATUS_CHECK;
             }
             else
             {
-                /* Do noting or wait for a while*/
-                fsmStatus                        = MEMIF_BUSY_INTERNAL;
-                Fls_U32FlsWrite_PostFapiFsmReady = 0x1U;
-                retVal                           = E_OK;
+                /* Do nothing or wait for a while*/
+                fsmStatus                       = MEMIF_BUSY_INTERNAL;
+                Fls_DrvObj.writePostFapiFsmBusy = 0x1U;
+                retVal                          = E_OK;
             }
         }
-        if (post_write_check == FLS_WRITE_FSM_STATUS_CHECK)
+        if (Fls_DrvObj.writePostCheck == FLS_WRITE_FSM_STATUS_CHECK)
         {
             /*  fsm status polling */
             Fls_FapiFlashStatus retFsmStatus = Fls_Fapi_getFsmStatus();
@@ -788,8 +792,9 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncWrite_sub(uint32 actualSize)
             }
             else
             {
-                retVal                = E_OK;
-                Fls_U8FlashWriteStage = FLS_S_WRITE_PRECHECK;
+                retVal                        = E_OK;
+                Fls_DrvObj.flashWriteStage    = FLS_S_WRITE_PRECHECK;
+                Fls_DrvObj.writeChunkComplete = 1U;
             }
         }
     }
@@ -809,95 +814,55 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_Callf29Erase(uint32 chunkSize)
 {
     VAR(Std_ReturnType, AUTOMATIC) retVal = E_NOT_OK;
 
-    if (Fls_U8SectorEraseStage == FLS_S_EDEFAULT)
-    {
-        Fls_U8SectorEraseStage = FLS_S_ERASE_PRECHECK;
-    }
-    else
-    {
-        Fls_U8SectorEraseStage = Fls_U8SectorEraseStage;
-    }
-    if (Fls_U8BankEraseStage == FLS_S_EDEFAULT)
-    {
-        Fls_U8BankEraseStage = FLS_S_ERASE_PRECHECK;
-    }
-    else
-    {
-        Fls_U8BankEraseStage = Fls_U8BankEraseStage;
-    }
-
-    if (Fls_DrvObj.typeoferase == FLS_SECTOR_ERASE)
-    {
-        retVal = Fls_F29AsyncSectorErase(chunkSize);
-    }
-    else
-    {
-        retVal = Fls_F29AsyncBankErase(chunkSize);
-    }
-
-    return retVal;
-}
-
-/*
- *   Function Name: Fls_F29AsyncSectorErase
- *   Function to perform sector erase in the flash
- */
-static Std_ReturnType Fls_F29AsyncSectorErase(uint32 actualChunkSize)
-{
-    VAR(Std_ReturnType, AUTOMATIC) retVal = E_OK;
-
-    if (actualChunkSize == 0U)
+    if (chunkSize == 0U)
     {
         retVal = E_NOT_OK;
     }
-    else
+    else if (Fls_DrvObj.typeoferase == FLS_SECTOR_ERASE)
     {
-        retVal = Fls_F29AsyncSectorErase_sub(actualChunkSize);
+        retVal = Fls_F29AsyncSectorErase();
     }
-    return retVal;
-}
-
-/*
- *   Function Name: Fls_F29AsyncBankErase
- *   Function to perform bank erase in the flash
- */
-static Std_ReturnType Fls_F29AsyncBankErase(uint32 actualChunkSize)
-{
-    VAR(Std_ReturnType, AUTOMATIC) retVal = E_OK;
-
-    if (actualChunkSize == 0U)
+    else if (Fls_DrvObj.typeoferase == FLS_BANK_ERASE)
+    {
+        retVal = Fls_F29AsyncBankErase();
+    }
+    else
     {
         retVal = E_NOT_OK;
     }
-    else
-    {
-        retVal = Fls_F29AsyncBankErase_sub(actualChunkSize);
-    }
+
     return retVal;
 }
 
-static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase_sub(uint32 actualSize)
+static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase(void)
 {
     VAR(Std_ReturnType, AUTOMATIC) retVal            = E_OK;
     VAR(MemIf_StatusType, AUTOMATIC) fsmStatus       = MEMIF_BUSY;
     VAR(Fls_FapiFlashStatus, AUTOMATIC) oFlashStatus = 0U;
 
-    VAR(uint32, AUTOMATIC) u32StartAddress   = Fls_DrvObj.flashAddr;
-    Fls_SectorBankErase_PostFapiFsmReadyDone = 0U;
+    VAR(uint32, AUTOMATIC) u32StartAddress = Fls_DrvObj.flashAddr;
+    Fls_DrvObj.erasePostFapiFsmDone        = 0U;
 
-    static uint16 pre_check_sub_function  = FLS_ERASE_FSM_READY_CHECK;
-    static uint16 post_check_sub_function = FLS_ERASE_FSM_READY_CHECK;
-
-    if (Fls_U8SectorEraseStage == FLS_S_ERASE_PRECHECK) /* FLS_S_ERASE_PRECHECK=1*/
+    /* Fls_Erase() resets Fls_DrvObj.sectorEraseStage to FLS_S_EDEFAULT when a new job is accepted
+     * and directly resets sectorErasePreCheck and sectorErasePostCheck (Fls_DrvObj fields) to
+     * FLS_ERASE_FSM_READY_CHECK. Detecting EDEFAULT here advances the stage to PRECHECK for
+     * the new job.
+     */
+    if (Fls_DrvObj.sectorEraseStage == FLS_S_EDEFAULT)
     {
-        if (pre_check_sub_function == FLS_ERASE_FSM_READY_CHECK)
+        Fls_DrvObj.sectorEraseStage = FLS_S_ERASE_PRECHECK;
+    }
+
+    if (Fls_DrvObj.sectorEraseStage == FLS_S_ERASE_PRECHECK) /* FLS_S_ERASE_PRECHECK=1*/
+    {
+        if (Fls_DrvObj.sectorErasePreCheck == FLS_ERASE_FSM_READY_CHECK)
         {
             /* FSM is ready to accept new command*/
             retVal = Fls_Fapi_checkFsmForReady();
 
             if (retVal == E_OK)
             {
-                pre_check_sub_function = FLS_ERASE_FSM_ISSUE_CMD;
+                Fls_DrvObj.sectorErasePreCheck = FLS_ERASE_FSM_ISSUE_CMD;
             }
             else
             {
@@ -905,18 +870,18 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase_sub(uint32 actualS
                 retVal    = E_OK;
             }
         }
-        if (pre_check_sub_function == FLS_ERASE_FSM_ISSUE_CMD)
+        if (Fls_DrvObj.sectorErasePreCheck == FLS_ERASE_FSM_ISSUE_CMD)
         {
             Fls_Fapi_issueAsyncCommand();
-            pre_check_sub_function = FLS_ERASE_FSM_STATUS_CHECK; /**  next is FSM status checking*/
+            Fls_DrvObj.sectorErasePreCheck = FLS_ERASE_FSM_STATUS_CHECK; /**  next is FSM status checking*/
         }
-        if (pre_check_sub_function == FLS_ERASE_FSM_STATUS_CHECK)
+        if (Fls_DrvObj.sectorErasePreCheck == FLS_ERASE_FSM_STATUS_CHECK)
         {
             oFlashStatus = Fls_Fapi_getFsmStatus();
             if (oFlashStatus == 0x0U)
             {
-                Fls_U8SectorEraseStage = FLS_DO_SECTOR_UNLOCK;
-                pre_check_sub_function = FLS_ERASE_FSM_READY_CHECK;
+                Fls_DrvObj.sectorEraseStage    = FLS_DO_SECTOR_UNLOCK;
+                Fls_DrvObj.sectorErasePreCheck = FLS_ERASE_FSM_READY_CHECK;
             }
             else
             {
@@ -924,36 +889,36 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase_sub(uint32 actualS
             }
         }
     }
-    if (Fls_U8SectorEraseStage == FLS_DO_SECTOR_UNLOCK)
+    if (Fls_DrvObj.sectorEraseStage == FLS_DO_SECTOR_UNLOCK)
     {
         Fls_Fapi_setupBankSectorEnable(FLS_FLASH_NW_O_CMDWEPROTA, Fls_CMD_WE_Protection_A_Mask);
         Fls_Fapi_setupBankSectorEnable(FLS_FLASH_NW_O_CMDWEPROTB, Fls_CMD_WE_Protection_B_Mask);
 
-        Fls_U8SectorEraseStage = FLS_DO_ERASE_JOB;
+        Fls_DrvObj.sectorEraseStage = FLS_DO_ERASE_JOB;
     }
-    if (Fls_U8SectorEraseStage == FLS_DO_ERASE_JOB)
+    if (Fls_DrvObj.sectorEraseStage == FLS_DO_ERASE_JOB)
     {
-        Fls_Fapi_issueAsyncCommandWithAddress((uint32 *)u32StartAddress);
-        Fls_U8SectorEraseStage  = FLS_S_ERASE_POSTCHECK;
-        post_check_sub_function = FLS_ERASE_FSM_READY_CHECK;
+        Fls_Fapi_issueAsyncCommandWithAddress((const uint32 *)u32StartAddress);
+        Fls_DrvObj.sectorEraseStage     = FLS_S_ERASE_POSTCHECK;
+        Fls_DrvObj.sectorErasePostCheck = FLS_ERASE_FSM_READY_CHECK;
     }
-    if (Fls_U8SectorEraseStage == FLS_S_ERASE_POSTCHECK)
+    if (Fls_DrvObj.sectorEraseStage == FLS_S_ERASE_POSTCHECK)
     {
-        if (post_check_sub_function == FLS_ERASE_FSM_READY_CHECK)
+        if (Fls_DrvObj.sectorErasePostCheck == FLS_ERASE_FSM_READY_CHECK)
         {
             retVal = Fls_Fapi_checkFsmForReady();
             if (retVal == E_OK)
             {
-                post_check_sub_function = FLS_ERASE_FSM_STATUS_CHECK;
+                Fls_DrvObj.sectorErasePostCheck = FLS_ERASE_FSM_STATUS_CHECK;
             }
             else
             {
-                /* Do noting or wait for a while*/
+                /* Do nothing or wait for a while*/
                 fsmStatus = MEMIF_BUSY_INTERNAL;
                 retVal    = E_OK;
             }
         }
-        if (post_check_sub_function == FLS_ERASE_FSM_STATUS_CHECK)
+        if (Fls_DrvObj.sectorErasePostCheck == FLS_ERASE_FSM_STATUS_CHECK)
         {
             /*  fsm status polling */
             Fls_FapiFlashStatus retFsmStatus = Fls_Fapi_getFsmStatus();
@@ -963,9 +928,9 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase_sub(uint32 actualS
             }
             else
             {
-                retVal                                   = E_OK;
-                Fls_U8SectorEraseStage                   = FLS_S_ERASE_PRECHECK;
-                Fls_SectorBankErase_PostFapiFsmReadyDone = 0x1U;
+                retVal                          = E_OK;
+                Fls_DrvObj.sectorEraseStage     = FLS_S_ERASE_PRECHECK;
+                Fls_DrvObj.erasePostFapiFsmDone = 0x1U;
             }
         }
     }
@@ -977,28 +942,35 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase_sub(uint32 actualS
 }
 
 /* Function for Flash Bank Erase*/
-static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase_sub(uint32 actualSize)
+static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase(void)
 {
     VAR(Std_ReturnType, AUTOMATIC) retVal            = E_OK;
     VAR(MemIf_StatusType, AUTOMATIC) fsmStatus       = MEMIF_BUSY;
     VAR(Fls_FapiFlashStatus, AUTOMATIC) oFlashStatus = 0U;
-    Fls_SectorBankErase_PostFapiFsmReadyDone         = 0U;
+    Fls_DrvObj.erasePostFapiFsmDone                  = 0U;
 
     VAR(uint32, AUTOMATIC) u32StartAddress = Fls_DrvObj.flashAddr;
 
-    static uint16 pre_bank_erase_check  = FLS_ERASE_FSM_READY_CHECK;
-    static uint16 post_bank_erase_check = FLS_ERASE_FSM_READY_CHECK;
-
-    if (Fls_U8BankEraseStage == FLS_S_ERASE_PRECHECK) /* FLS_S_ERASE_PRECHECK=1*/
+    /* Fls_Erase() resets Fls_DrvObj.bankEraseStage to FLS_S_EDEFAULT when a new job is accepted
+     * and directly resets bankErasePreCheck and bankErasePostCheck (Fls_DrvObj fields) to
+     * FLS_ERASE_FSM_READY_CHECK. Detecting EDEFAULT here advances the stage to PRECHECK for
+     * the new job.
+     */
+    if (Fls_DrvObj.bankEraseStage == FLS_S_EDEFAULT)
     {
-        if (pre_bank_erase_check == FLS_ERASE_FSM_READY_CHECK)
+        Fls_DrvObj.bankEraseStage = FLS_S_ERASE_PRECHECK;
+    }
+
+    if (Fls_DrvObj.bankEraseStage == FLS_S_ERASE_PRECHECK) /* FLS_S_ERASE_PRECHECK=1*/
+    {
+        if (Fls_DrvObj.bankErasePreCheck == FLS_ERASE_FSM_READY_CHECK)
         {
             /* FSM is ready to accept new command*/
             retVal = Fls_Fapi_checkFsmForReady(); /* return FapiFlashStatus */
 
             if (retVal == E_OK)
             {
-                pre_bank_erase_check = FLS_ERASE_FSM_ISSUE_CMD;
+                Fls_DrvObj.bankErasePreCheck = FLS_ERASE_FSM_ISSUE_CMD;
             }
             else
             {
@@ -1006,18 +978,18 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase_sub(uint32 actualSiz
                 retVal    = E_OK;
             }
         }
-        if (pre_bank_erase_check == FLS_ERASE_FSM_ISSUE_CMD)
+        if (Fls_DrvObj.bankErasePreCheck == FLS_ERASE_FSM_ISSUE_CMD)
         {
             Fls_Fapi_issueAsyncCommand();
-            pre_bank_erase_check = FLS_ERASE_FSM_STATUS_CHECK; /* next is FSM status checking*/
+            Fls_DrvObj.bankErasePreCheck = FLS_ERASE_FSM_STATUS_CHECK; /* next is FSM status checking*/
         }
-        if (pre_bank_erase_check == FLS_ERASE_FSM_STATUS_CHECK)
+        if (Fls_DrvObj.bankErasePreCheck == FLS_ERASE_FSM_STATUS_CHECK)
         {
             oFlashStatus = Fls_Fapi_getFsmStatus();
             if (oFlashStatus == 0x0U)
             {
-                Fls_U8BankEraseStage = FLS_DO_SECTOR_UNLOCK;
-                pre_bank_erase_check = FLS_ERASE_FSM_READY_CHECK;
+                Fls_DrvObj.bankEraseStage    = FLS_DO_SECTOR_UNLOCK;
+                Fls_DrvObj.bankErasePreCheck = FLS_ERASE_FSM_READY_CHECK;
             }
             else
             {
@@ -1025,38 +997,38 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase_sub(uint32 actualSiz
             }
         }
     }
-    if (Fls_U8BankEraseStage == FLS_DO_SECTOR_UNLOCK)
+    if (Fls_DrvObj.bankEraseStage == FLS_DO_SECTOR_UNLOCK)
     {
         Fls_Fapi_setupBankSectorEnable(FLS_FLASH_NW_O_CMDWEPROTA, Fls_CMD_WE_Protection_A_Mask);
         Fls_Fapi_setupBankSectorEnable(FLS_FLASH_NW_O_CMDWEPROTB, Fls_CMD_WE_Protection_B_Mask);
 
-        Fls_U8BankEraseStage = FLS_DO_ERASE_JOB;
+        Fls_DrvObj.bankEraseStage = FLS_DO_ERASE_JOB;
     }
 
-    if (Fls_U8BankEraseStage == FLS_DO_ERASE_JOB)
+    if (Fls_DrvObj.bankEraseStage == FLS_DO_ERASE_JOB)
     {
         Fls_Fapi_issueBankEraseCommand((uint32 *)(u32StartAddress));
-        Fls_U8BankEraseStage  = FLS_S_ERASE_POSTCHECK;
-        post_bank_erase_check = FLS_ERASE_FSM_READY_CHECK;
+        Fls_DrvObj.bankEraseStage     = FLS_S_ERASE_POSTCHECK;
+        Fls_DrvObj.bankErasePostCheck = FLS_ERASE_FSM_READY_CHECK;
     }
-    if (Fls_U8BankEraseStage == FLS_S_ERASE_POSTCHECK)
+    if (Fls_DrvObj.bankEraseStage == FLS_S_ERASE_POSTCHECK)
     {
-        if (post_bank_erase_check == FLS_ERASE_FSM_READY_CHECK)
+        if (Fls_DrvObj.bankErasePostCheck == FLS_ERASE_FSM_READY_CHECK)
         {
             retVal = Fls_Fapi_checkFsmForReady();
 
             if (retVal == E_OK)
             {
-                post_bank_erase_check = FLS_ERASE_FSM_STATUS_CHECK;
+                Fls_DrvObj.bankErasePostCheck = FLS_ERASE_FSM_STATUS_CHECK;
             }
             else
             {
-                /* Do noting or wait for a while*/
+                /* Do nothing or wait for a while*/
                 fsmStatus = MEMIF_BUSY_INTERNAL;
                 retVal    = E_OK;
             }
         }
-        if (post_bank_erase_check == FLS_ERASE_FSM_STATUS_CHECK)
+        if (Fls_DrvObj.bankErasePostCheck == FLS_ERASE_FSM_STATUS_CHECK)
         {
             /*  fsm status polling */
             Fls_FapiFlashStatus retFsmStatus = Fls_Fapi_getFsmStatus();
@@ -1066,9 +1038,9 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase_sub(uint32 actualSiz
             }
             else
             {
-                retVal                                   = E_OK;
-                Fls_SectorBankErase_PostFapiFsmReadyDone = 0x1U;
-                Fls_U8BankEraseStage                     = FLS_S_ERASE_PRECHECK;
+                retVal                          = E_OK;
+                Fls_DrvObj.erasePostFapiFsmDone = 0x1U;
+                Fls_DrvObj.bankEraseStage       = FLS_S_ERASE_PRECHECK;
             }
         }
     }
@@ -1118,6 +1090,18 @@ FUNC(void, FLS_CODE) Fls_resetDrvObj(Fls_DriverObjType *drvObj)
     drvObj->jobChunkSize             = 0x0;
     drvObj->transferred              = 0x0;
     drvObj->typeoferase              = (Fls_EraseType)FLS_SECTOR_ERASE;
+    drvObj->writePostFapiFsmBusy     = 0U;
+    drvObj->writeChunkComplete       = 0U;
+    drvObj->erasePostFapiFsmDone     = 0U;
+    drvObj->sectorEraseStage         = (uint8)FLS_S_EDEFAULT;
+    drvObj->sectorErasePreCheck      = FLS_ERASE_FSM_READY_CHECK;
+    drvObj->sectorErasePostCheck     = FLS_ERASE_FSM_READY_CHECK;
+    drvObj->bankEraseStage           = (uint8)FLS_S_EDEFAULT;
+    drvObj->bankErasePreCheck        = FLS_ERASE_FSM_READY_CHECK;
+    drvObj->bankErasePostCheck       = FLS_ERASE_FSM_READY_CHECK;
+    drvObj->flashWriteStage          = (uint8)FLS_S_WDEFAULT;
+    drvObj->writePreCheck            = FLS_WRITE_FSM_READY_CHECK;
+    drvObj->writePostCheck           = FLS_WRITE_FSM_READY_CHECK;
 }
 
 /*********************************************************************************************************************

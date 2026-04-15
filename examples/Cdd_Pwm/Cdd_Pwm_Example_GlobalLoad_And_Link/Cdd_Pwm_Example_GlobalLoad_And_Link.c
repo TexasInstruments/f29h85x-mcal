@@ -261,9 +261,9 @@ void Cdd_Pwm_ConfigureHw(void)
 
 int main()
 {
-    DeviceSupport_Init();
     /* Initilaize all modules */
     EcuM_Init();
+    DeviceSupport_Init();
 
     AppUtils_Init(200000000U);  // Initialize AppUtils to enable prints
     AppUtils_Printf("Executing Cdd_Pwm_Example_GlobalLoad_And_Link example\r\n");

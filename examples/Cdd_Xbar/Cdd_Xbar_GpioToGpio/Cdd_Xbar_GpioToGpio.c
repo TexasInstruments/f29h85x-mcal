@@ -152,9 +152,9 @@ Dio_LevelType Dio_ChannelLevel;
 /* Example Application */
 int main(void)
 {
-    DeviceSupport_Init();
     /* Configure the crossbar and init MCU */
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(200000000U);  // Init App utils to enable prints
     AppUtils_Printf("Sample Application - STARTS !!!\n");
     /*  Get version Info */

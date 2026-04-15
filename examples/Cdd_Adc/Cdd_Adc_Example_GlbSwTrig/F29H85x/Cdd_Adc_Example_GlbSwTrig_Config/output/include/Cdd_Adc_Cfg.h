@@ -94,7 +94,7 @@ extern "C" {
 
 #define CDD_ADC_CFG_MAJOR_VERSION           (3U)
 #define CDD_ADC_CFG_MINOR_VERSION           (0U)
-#define CDD_ADC_CFG_PATCH_VERSION           (1U)
+#define CDD_ADC_CFG_PATCH_VERSION           (2U)
 
 /* CDD ADC Build Variant. Pre-compile build Variants */
 

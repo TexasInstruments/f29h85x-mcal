@@ -66,7 +66,9 @@
  *  Generator:  None
  *
  *  Description:  This file contain all types and constants that are shared among the
- *                AUTOSAR COM stack modules.                                                           
+ *                AUTOSAR COM stack modules.
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *********************************************************************************************************************/
 #ifndef COMSTACK_TYPES_H
 #define COMSTACK_TYPES_H

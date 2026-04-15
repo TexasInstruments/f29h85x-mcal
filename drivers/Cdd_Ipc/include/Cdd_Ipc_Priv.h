@@ -91,28 +91,6 @@ extern "C" {
  *********************************************************************************************************************/
 /** \brief Send to receive registers step */
 #define CDD_IPC_SEND_TO_RCV_STEP (CPU1IPCRCV_BASE - CPU1IPCSEND_BASE)
-/** \brief Set register address */
-#define CDD_IPC_REG_SET(x) ((uint32)(x))
-/** \brief Clear register address */
-#define CDD_IPC_REG_CLR(x) (((uint32)(x)) + 0x4U)
-/** \brief Flag register address */
-#define CDD_IPC_REG_FLG(x) (((uint32)(x)) + 0x8U)
-/** \brief Send command register address */
-#define CDD_IPC_REG_SENDCOM(x) (((uint32)(x)) + 0x10U)
-/** \brief Send address register address */
-#define CDD_IPC_REG_SENDADDR(x) (((uint32)(x)) + 0x14U)
-/** \brief Send data register address */
-#define CDD_IPC_REG_SENDDATA(x) (((uint32)(x)) + 0x18U)
-/** \brief Status register address */
-#define CDD_IPC_REG_STS(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0U)
-/** \brief Acknowledgement register address */
-#define CDD_IPC_REG_ACK(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0x4U)
-/** \brief Receive command register address */
-#define CDD_IPC_REG_RECVCOM(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0x10U)
-/** \brief Receive address register address */
-#define CDD_IPC_REG_RECVADDR(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0x14U)
-/** \brief Receive data register address */
-#define CDD_IPC_REG_RECVDATA(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0x18U)
 
 #define CDD_IPC_FLAG0 0x00000001U /*!< \brief   IPC FLAG 0 - Triggers interrupt */
 #define CDD_IPC_FLAG1 0x00000002U /*!< \brief   IPC FLAG 1 - Indicates polling mode */
@@ -243,7 +221,7 @@ Cdd_Ipc_GetChannelPollingStatus(VAR(uint8, AUTOMATIC) Instance_Index,
  *********************************************************************************************************************/
 FUNC(void, CDD_IPC_CODE)
 Cdd_Ipc_ReadChannelPriv(VAR(uint8, AUTOMATIC) Instance_Index,
-                        P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr);
+                        P2VAR(PduInfoType, AUTOMATIC, CDD_IPC_APPL_DATA) PduInfoPtr);
 
 /* Design: MCAL-30583 */
 /** \brief Copies the data to be transmitted from PduInfoPtr to command registers
@@ -379,6 +357,29 @@ FUNC(uint64, CDD_IPC_CODE) Cdd_Ipc_ReadCounter(void);
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
+
+/** \brief Set register address */
+#define CDD_IPC_REG_SET(x) ((uint32)(x))
+/** \brief Clear register address */
+#define CDD_IPC_REG_CLR(x) (((uint32)(x)) + 0x4U)
+/** \brief Flag register address */
+#define CDD_IPC_REG_FLG(x) (((uint32)(x)) + 0x8U)
+/** \brief Send command register address */
+#define CDD_IPC_REG_SENDCOM(x) (((uint32)(x)) + 0x10U)
+/** \brief Send address register address */
+#define CDD_IPC_REG_SENDADDR(x) (((uint32)(x)) + 0x14U)
+/** \brief Send data register address */
+#define CDD_IPC_REG_SENDDATA(x) (((uint32)(x)) + 0x18U)
+/** \brief Status register address */
+#define CDD_IPC_REG_STS(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0U)
+/** \brief Acknowledgement register address */
+#define CDD_IPC_REG_ACK(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0x4U)
+/** \brief Receive command register address */
+#define CDD_IPC_REG_RECVCOM(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0x10U)
+/** \brief Receive address register address */
+#define CDD_IPC_REG_RECVADDR(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0x14U)
+/** \brief Receive data register address */
+#define CDD_IPC_REG_RECVDATA(x) (((uint32)(x)) + CDD_IPC_SEND_TO_RCV_STEP + 0x18U)
 
 #ifdef __cplusplus
 }

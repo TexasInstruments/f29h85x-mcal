@@ -131,8 +131,6 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoTransferRxIntr(Cdd_I2c_ChObjTy
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForAccessReady(Cdd_I2c_ChObjType *chObj);
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForStop(Cdd_I2c_ChObjType *chObj);
 
-static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForBusFree(uint32 baseAddr);
-static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForBusBusy(uint32 baseAddr);
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForTxReady(uint32 baseAddr);
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForRxReady(uint32 baseAddr);
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForAccessReady(uint32 baseAddr);
@@ -591,14 +589,17 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForBusFree(Cdd_I2c_ChObjTy
 {
     Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
     uint32                    baseAddr  = hwUnitObj->baseAddr;
-    Cdd_I2c_ChannelResultType chResult;
+    Cdd_I2c_ChannelResultType chResult  = CDD_I2C_CH_RESULT_PENDING;
+    uint16                    intrStatus;
 
-    chResult = Cdd_I2c_HwCheckForBusFree(baseAddr);
-    if (CDD_I2C_CH_RESULT_OK == chResult)
+    intrStatus = Cdd_I2c_HwGetIntrStatus(baseAddr);
+    /* TI_COVERAGE_GAP_START Bus busy cannot be recreated in test environment as we don't have multi-master setup */
+    if ((intrStatus & I2C_STR_BB) != I2C_STR_BB)
     {
-        chResult     = CDD_I2C_CH_RESULT_PENDING;
+        /* Bus is free - Move to next state */
         chObj->state = CDD_I2C_STATE_SETUP;
     }
+    /* TI_COVERAGE_GAP_STOP */
 
     return chResult;
 }
@@ -607,12 +608,13 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForBusBusy(Cdd_I2c_ChObjTy
 {
     Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
     uint32                    baseAddr  = hwUnitObj->baseAddr;
-    Cdd_I2c_ChannelResultType chResult;
+    Cdd_I2c_ChannelResultType chResult  = CDD_I2C_CH_RESULT_PENDING;
+    uint16                    intrStatus;
 
-    chResult = Cdd_I2c_HwCheckForBusBusy(baseAddr);
-    if (CDD_I2C_CH_RESULT_OK == chResult)
+    intrStatus = Cdd_I2c_HwGetIntrStatus(baseAddr);
+    if ((intrStatus & I2C_STR_BB) == I2C_STR_BB)
     {
-        chResult     = CDD_I2C_CH_RESULT_PENDING;
+        /* Bus became busy - Move to next state */
         chObj->state = CDD_I2C_STATE_DATA_TRANSFER;
     }
 
@@ -842,34 +844,6 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForStop(Cdd_I2c_ChObjType 
     return chResult;
 }
 
-static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForBusFree(uint32 baseAddr)
-{
-    Cdd_I2c_ChannelResultType chResult = CDD_I2C_CH_RESULT_PENDING;
-    uint16                    intrStatus;
-
-    intrStatus = Cdd_I2c_HwGetIntrStatus(baseAddr);
-    if ((intrStatus & I2C_STR_BB) != I2C_STR_BB)
-    {
-        chResult = CDD_I2C_CH_RESULT_OK;
-    }
-
-    return chResult;
-}
-
-static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForBusBusy(uint32 baseAddr)
-{
-    Cdd_I2c_ChannelResultType chResult = CDD_I2C_CH_RESULT_PENDING;
-    uint16                    intrStatus;
-
-    intrStatus = Cdd_I2c_HwGetIntrStatus(baseAddr);
-    if ((intrStatus & I2C_STR_BB) == I2C_STR_BB)
-    {
-        chResult = CDD_I2C_CH_RESULT_OK;
-    }
-
-    return chResult;
-}
-
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForTxReady(uint32 baseAddr)
 {
     Cdd_I2c_ChannelResultType chResult = CDD_I2C_CH_RESULT_PENDING;
@@ -928,10 +902,22 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForStop(uint32 baseAddr)
 {
     Cdd_I2c_ChannelResultType chResult = CDD_I2C_CH_RESULT_PENDING;
     uint16                    intrStatus;
+    uint32                    matchCount = 0U;
 
     intrStatus = Cdd_I2c_HwGetIntrStatus(baseAddr);
-    /* Wait for both stop to complete and bus to become free */
-    if (((intrStatus & I2C_STR_SCD) == I2C_STR_SCD) && ((intrStatus & I2C_STR_BB) != I2C_STR_BB))
+    /* Check intr status - Stop set */
+    if ((intrStatus & I2C_STR_SCD) == I2C_STR_SCD)
+    {
+        matchCount++;
+    }
+    /* Check intr status - Bus should be free */
+    if ((intrStatus & I2C_STR_BB) != I2C_STR_BB)
+    {
+        matchCount++;
+    }
+
+    /* Wait for all conditions to be true */
+    if (matchCount == 2U)
     {
         chResult = CDD_I2C_CH_RESULT_OK;
     }

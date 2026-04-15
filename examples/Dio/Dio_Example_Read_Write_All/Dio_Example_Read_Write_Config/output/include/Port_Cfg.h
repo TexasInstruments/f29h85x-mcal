@@ -102,11 +102,11 @@ extern "C" {
  *
  *****************************************************************************/
 /** \brief Port configuration Major Version. */
-#define PORT_CFG_MAJOR_VERSION           (3U)
+#define PORT_CFG_MAJOR_VERSION           (4U)
 /** \brief Port configuration Minor Version. */
 #define PORT_CFG_MINOR_VERSION           (0U)
 /** \brief Port configuration Patch Version. */
-#define PORT_CFG_PATCH_VERSION           (1U)
+#define PORT_CFG_PATCH_VERSION           (0U)
 
 
 /*****************************************************************************

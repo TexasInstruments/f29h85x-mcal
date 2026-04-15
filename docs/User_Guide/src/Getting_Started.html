@@ -390,6 +390,9 @@
 <tr class="row-odd"><td><p>–diag_suppress=10063</p></td>
 <td><p>Suppress linker warning for entry-point symbol</p></td>
 </tr>
+<tr class="row-even"><td><p>-flto</p></td>
+<td><p>Enables link-time optimization in the c29clang toolchain. The linker combines all input object files into a merged representation of the application and presents that representation back to the compiler, where inter-module optimizations are performed.</p></td>
+</tr>
 </tbody>
 </table>
 <p><a class="reference external" href="https://software-dl.ti.com/codegen/docs/c29clang/rel1_0_0_LTS/indexC29.html">Refer this link to get more information on C29 Compiler options</a></p>
@@ -1230,36 +1233,59 @@ then an exception will occur.</p>
 </section>
 <section id="loading-example-configs-to-eb-tresos">
 <h2><span class="section-number">4.14. </span>Loading example configs to EB tresos<a class="headerlink" href="#loading-example-configs-to-eb-tresos" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>Create and load the plugins required for the example by following the steps in <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#create-an-eb-project"><span class="std std-ref">Create an EB project</span></a> and <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#load-plugins"><span class="std std-ref">Load plugins</span></a> and close the EB tresos.</p></li>
-</ul>
+<ol class="arabic">
+<li><p>Launch the EB Tresos tool. On the Welcome Screen, click on the Start Icon. Refer <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#create-an-eb-project"><span class="std std-ref">Getting Started with EB Tresos - Create an EB project</span></a> for details.</p></li>
+<li><p>Click on <strong>File -&gt; Import</strong> to import an existing project into the workspace.</p>
 <figure class="align-center" id="id21">
-<img alt="EB Tresos Example Project Created" src="../_images/EB_Tresos_Example_Step1.PNG" />
+<img alt="EB Tresos Import Project" src="../_images/EB_Tresos_Import_Project.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.21 </span><span class="caption-text">EB Tresos Example Project Created</span><a class="headerlink" href="#id21" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.21 </span><span class="caption-text">EB Tresos File -&gt; Import</span><a class="headerlink" href="#id21" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<ul class="simple">
-<li><p>Copy the ECU Parameter definition files(.xdm) of the specific example.</p></li>
-</ul>
+</li>
+<li><p>Select <strong>Existing Projects into Workspace</strong> and then click on <strong>Next</strong>.</p>
 <figure class="align-center" id="id22">
-<img alt="MCAL Example ECU Parameter definition files" src="../_images/EB_Tresos_Example_Step2.PNG" />
+<img alt="EB Tresos Existing Projects into Workspace" src="../_images/EB_Tresos_Existing_Project.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.22 </span><span class="caption-text">MCAL Example ECU Parameter definition files</span><a class="headerlink" href="#id22" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.22 </span><span class="caption-text">EB Tresos - Select Existing Projects into Workspace</span><a class="headerlink" href="#id22" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<ul class="simple">
-<li><p>Go to the EB tresos project workspace and replace the generated ECU Parameter definition files (.xdm) with the ECU Parameter definition files of your specific example.</p></li>
-</ul>
+</li>
+<li><p>Browse to <code class="docutils literal notranslate"><span class="pre">{MCAL_INSTALL_PATH}\examples</span></code>, select the example to load, and click on <strong>Finish</strong>.</p>
 <figure class="align-center" id="id23">
-<img alt="EB Tresos ECU Parameter definition files" src="../_images/EB_Tresos_Example_Step3.PNG" />
+<img alt="EB Tresos Example Selection" src="../_images/EB_Tresos_Example_Selection.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.23 </span><span class="caption-text">EB Tresos ECU Parameter definition files</span><a class="headerlink" href="#id23" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.23 </span><span class="caption-text">EB Tresos - Browse and Select Example</span><a class="headerlink" href="#id23" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<ul class="simple">
-<li><p>Launch the EB Tresos tool again to see the example configurations.</p></li>
-</ul>
+</li>
+<li><p>The selected examples will be loaded in the workspace as shown below.</p>
+<figure class="align-center" id="id24">
+<img alt="EB Tresos Project Import Complete" src="../_images/EB_Tresos_Project_Import_Complete.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.24 </span><span class="caption-text">EB Tresos - Examples Loaded in Workspace</span><a class="headerlink" href="#id24" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>The examples come with a MultiTask wizard setup that performs AutoCalc, Generate, and Generate BSWMD steps. Click on <strong>Run</strong> to execute all steps with a single click.</p>
+<figure class="align-center" id="id25">
+<img alt="EB Tresos Multi Task Wizard" src="../_images/EB_Tresos_Multi_Task_Wizard.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.25 </span><span class="caption-text">EB Tresos - MultiTask Wizard</span><a class="headerlink" href="#id25" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The MultiTask wizard can also be executed by clicking the shortcut button shown below.</p>
+</div>
+<figure class="align-center" id="id26">
+<img alt="EB Tresos MultiTask Shortcut Button" src="../_images/EB_Tresos_MultiTask_Shortcut.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.26 </span><span class="caption-text">EB Tresos - MultiTask Wizard Shortcut Button</span><a class="headerlink" href="#id26" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+</ol>
 </section>
 </section>
 

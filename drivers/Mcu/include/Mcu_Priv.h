@@ -93,10 +93,12 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
-/*
- * Design: MCAL-21904, MCAL-21905, MCAL-21906, MCAL-21907, MCAL-21910, MCAL-21911, MCAL-21912,
- * MCAL-21913, Design: MCAL-21914, MCAL-21915, MCAL-21916, MCAL-21917, MCAL-21918
+// clang-format off
+ /*
+ * Design: MCAL-21904, MCAL-21905, MCAL-21906, MCAL-21907, MCAL-21910, MCAL-21911, MCAL-21912, MCAL-21913,
+ * Design: MCAL-21914, MCAL-21915, MCAL-21916, MCAL-21917, MCAL-21918
  */
+// clang-format on
 
 /** \brief Keys for the System control registers write protection */
 #define MCU_REG_KEY (0xA5A50000U)
@@ -165,6 +167,9 @@ extern "C" {
 
 /** \brief Timeout cycles */
 #define SYSCTL_SYNCBUSY_TIMEOUT_CYCLES ((uint32)10000U)
+
+/** \brief Clear Boot Info Reg7 */
+#define MCU_SOC_SECURE_BOOT_INFO_CLEAR_VALUE ((uint32)0x00000000U)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -250,6 +255,7 @@ FUNC(void, MCU_CODE) Mcu_EnablePll(void);
  *********************************************************************************************************************/
 FUNC(uint16, MCU_CODE) Mcu_IsPllLocked(void);
 
+#if (STD_ON == MCU_CFG_INIT_CLOCK_API)
 /** \brief Calculates the output frequency
  *
  * \param[in] ClockConfigPtr Points to clock configuration settings
@@ -261,6 +267,7 @@ FUNC(uint16, MCU_CODE) Mcu_IsPllLocked(void);
  *
  *********************************************************************************************************************/
 FUNC(void, MCU_CODE) Mcu_CalculateClocks(Mcu_ClockConfigPtrType ClockConfigPtr, Mcu_CalClkValueType *CalClockValue);
+#endif
 
 /** \brief Gets the reason for a reset.
  *

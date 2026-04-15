@@ -65,7 +65,9 @@
  *  File:       Det_MemMap.h
  *  Generator:  None
  *
- *  Description:  Memory Map template file for Det module.                                                           
+ *  Description:  Memory Map template file for Det module.
+ *                This source code is for reference only, it should not be used as-is in a
+ *                typical customer applications                                                      
  *********************************************************************************************************************/
 #ifdef __cplusplus
 extern "C" {

@@ -66,6 +66,8 @@
  *  Generator:  None
  *
  *  Description:  Template file to define Platform Types used in AUTOSAR.                                                           
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *********************************************************************************************************************/
 #ifndef PLATFORM_TYPES_H
 #define PLATFORM_TYPES_H

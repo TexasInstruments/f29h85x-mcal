@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>7.12. CDD_I2C &mdash; Documentation for F29H85x</title>
+  <title>7.13. CDD_I2C &mdash; Documentation for F29H85x</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="7.13. CDD_IPC" href="group__CDD__IPC.html" />
-    <link rel="prev" title="7.11. CDD_ECAP" href="group__CDD__ECAP.html" /> 
+    <link rel="next" title="7.14. CDD_IPC" href="group__CDD__IPC.html" />
+    <link rel="prev" title="7.12. CDD_ECAP" href="group__CDD__ECAP.html" /> 
 </head>
 
 <body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
@@ -78,60 +78,65 @@
 <li class="toctree-l2"><a class="reference internal" href="group__SPI.html">7.8. SPI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="group__WDG.html">7.9. WDG</a></li>
 <li class="toctree-l2"><a class="reference internal" href="group__CDD__ADC.html">7.10. CDD_ADC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group__CDD__ECAP.html">7.11. CDD_ECAP</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">7.12. CDD_I2C</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#types">7.12.1. Types</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-i2c-hwunitstatustype">7.12.1.1. enum Cdd_I2c_HwUnitStatusType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-i2c-componentstatustype">7.12.1.2. enum Cdd_I2c_ComponentStatusType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-i2c-handlingtype">7.12.1.3. enum Cdd_I2c_HandlingType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-i2c-channelresulttype">7.12.1.4. enum Cdd_I2c_ChannelResultType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-i2c-sequenceresulttype">7.12.1.5. enum Cdd_I2c_SequenceResultType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-i2c-restartmodetype">7.12.1.6. enum Cdd_I2c_RestartModeType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-addresstype">7.12.1.7. typedef Cdd_I2c_AddressType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-directiontype">7.12.1.8. typedef Cdd_I2c_DirectionType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-datatype">7.12.1.9. typedef Cdd_I2c_DataType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-dataptrtype">7.12.1.10. typedef Cdd_I2c_DataPtrType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-dataconstptrtype">7.12.1.11. typedef Cdd_I2c_DataConstPtrType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-hwunittype">7.12.1.12. typedef Cdd_I2c_HwUnitType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-sequencetype">7.12.1.13. typedef Cdd_I2c_SequenceType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-channeltype">7.12.1.14. typedef Cdd_I2c_ChannelType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-datalengthtype">7.12.1.15. typedef Cdd_I2c_DataLengthType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-sequenceendnotification">7.12.1.16. typedef Cdd_I2c_SequenceEndNotification</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-sequenceerrornotification">7.12.1.17. typedef Cdd_I2c_SequenceErrorNotification</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-targetrxstartnotificationtype">7.12.1.18. typedef Cdd_I2c_TargetRxStartNotificationType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-targettxstartnotificationtype">7.12.1.19. typedef Cdd_I2c_TargetTxStartNotificationType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-targetrxcompletenotificationtype">7.12.1.20. typedef Cdd_I2c_TargetRxCompleteNotificationType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-targettxcompletenotificationtype">7.12.1.21. typedef Cdd_I2c_TargetTxCompleteNotificationType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-targeterrornotificationtype">7.12.1.22. typedef Cdd_I2c_TargetErrorNotificationType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__DMA.html">7.11. CDD_DMA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__ECAP.html">7.12. CDD_ECAP</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.13. CDD_I2C</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#types">7.13.1. Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-i2c-hwunitstatustype">7.13.1.1. enum Cdd_I2c_HwUnitStatusType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-i2c-componentstatustype">7.13.1.2. enum Cdd_I2c_ComponentStatusType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-i2c-handlingtype">7.13.1.3. enum Cdd_I2c_HandlingType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-i2c-channelresulttype">7.13.1.4. enum Cdd_I2c_ChannelResultType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-i2c-sequenceresulttype">7.13.1.5. enum Cdd_I2c_SequenceResultType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-i2c-restartmodetype">7.13.1.6. enum Cdd_I2c_RestartModeType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-addresstype">7.13.1.7. typedef Cdd_I2c_AddressType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-directiontype">7.13.1.8. typedef Cdd_I2c_DirectionType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-datatype">7.13.1.9. typedef Cdd_I2c_DataType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-dataptrtype">7.13.1.10. typedef Cdd_I2c_DataPtrType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-dataconstptrtype">7.13.1.11. typedef Cdd_I2c_DataConstPtrType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-hwunittype">7.13.1.12. typedef Cdd_I2c_HwUnitType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-sequencetype">7.13.1.13. typedef Cdd_I2c_SequenceType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-channeltype">7.13.1.14. typedef Cdd_I2c_ChannelType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-datalengthtype">7.13.1.15. typedef Cdd_I2c_DataLengthType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-sequenceendnotification">7.13.1.16. typedef Cdd_I2c_SequenceEndNotification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-sequenceerrornotification">7.13.1.17. typedef Cdd_I2c_SequenceErrorNotification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-targetrxstartnotificationtype">7.13.1.18. typedef Cdd_I2c_TargetRxStartNotificationType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-targettxstartnotificationtype">7.13.1.19. typedef Cdd_I2c_TargetTxStartNotificationType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-targetrxcompletenotificationtype">7.13.1.20. typedef Cdd_I2c_TargetRxCompleteNotificationType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-targettxcompletenotificationtype">7.13.1.21. typedef Cdd_I2c_TargetTxCompleteNotificationType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-i2c-targeterrornotificationtype">7.13.1.22. typedef Cdd_I2c_TargetErrorNotificationType</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#structures">7.12.2. Structures</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#defines">7.12.3. Defines</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#functions">7.12.4. Functions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-init">7.12.4.1. function Cdd_I2c_Init</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-deinit">7.12.4.2. function Cdd_I2c_DeInit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-getversioninfo">7.12.4.3. function Cdd_I2c_GetVersionInfo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-setupeb">7.12.4.4. function Cdd_I2c_SetupEB</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-setupebdynamic">7.12.4.5. function Cdd_I2c_SetupEBDynamic</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-asynctransmit">7.12.4.6. function Cdd_I2c_AsyncTransmit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-cancel">7.12.4.7. function Cdd_I2c_Cancel</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-mainfunction">7.12.4.8. function Cdd_I2c_MainFunction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-getsequenceresult">7.12.4.9. function Cdd_I2c_GetSequenceResult</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-getresult">7.12.4.10. function Cdd_I2c_GetResult</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-resethwunit">7.12.4.11. function Cdd_I2c_ResetHwUnit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-getstatus">7.12.4.12. function Cdd_I2c_GetStatus</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-i2c-appseqcomplete">7.12.4.13. function I2c_appSeqComplete</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-i2c-appseqfail">7.12.4.14. function I2c_appSeqFail</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#structures">7.13.2. Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defines">7.13.3. Defines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">7.13.4. Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-init">7.13.4.1. function Cdd_I2c_Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-deinit">7.13.4.2. function Cdd_I2c_DeInit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-getversioninfo">7.13.4.3. function Cdd_I2c_GetVersionInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-setupeb">7.13.4.4. function Cdd_I2c_SetupEB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-setupebdynamic">7.13.4.5. function Cdd_I2c_SetupEBDynamic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-asynctransmit">7.13.4.6. function Cdd_I2c_AsyncTransmit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-cancel">7.13.4.7. function Cdd_I2c_Cancel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-mainfunction">7.13.4.8. function Cdd_I2c_MainFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-getsequenceresult">7.13.4.9. function Cdd_I2c_GetSequenceResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-getresult">7.13.4.10. function Cdd_I2c_GetResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-resethwunit">7.13.4.11. function Cdd_I2c_ResetHwUnit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-getstatus">7.13.4.12. function Cdd_I2c_GetStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-targetstart">7.13.4.13. function Cdd_I2c_TargetStart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-targetstop">7.13.4.14. function Cdd_I2c_TargetStop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-targetsubmittxbuffer">7.13.4.15. function Cdd_I2c_TargetSubmitTxBuffer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-i2c-targetsubmitrxbuffer">7.13.4.16. function Cdd_I2c_TargetSubmitRxBuffer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-i2c-appseqcomplete">7.13.4.17. function I2c_appSeqComplete</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-i2c-appseqfail">7.13.4.18. function I2c_appSeqFail</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#detailed-description">7.12.5. Detailed Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#detailed-description">7.13.5. Detailed Description</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="group__CDD__IPC.html">7.13. CDD_IPC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group__CDD__PWM.html">7.14. CDD_PWM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group__CDD__UART.html">7.15. CDD_UART</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group__CDD__SENT.html">7.16. CDD_SENT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group__CDD__XBAR.html">7.17. CDD_XBAR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__IPC.html">7.14. CDD_IPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__PWM.html">7.15. CDD_PWM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__UART.html">7.16. CDD_UART</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__SENT.html">7.17. CDD_SENT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__XBAR.html">7.18. CDD_XBAR</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Key_Performance_and_Memory_Consumption_Data.html">8. Key Performance and Memory Consumption Data</a></li>
@@ -153,7 +158,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../api_guide.html"><span class="section-number">7. </span>API guide</a> &raquo;</li>
-      <li><span class="section-number">7.12. </span>CDD_I2C</li>
+      <li><span class="section-number">7.13. </span>CDD_I2C</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -163,10 +168,10 @@
            <div itemprop="articleBody">
              
   <section id="cdd-i2c">
-<h1><span class="section-number">7.12. </span>CDD_I2C<a class="headerlink" href="#cdd-i2c" title="Link to this heading"></a></h1>
+<h1><span class="section-number">7.13. </span>CDD_I2C<a class="headerlink" href="#cdd-i2c" title="Link to this heading"></a></h1>
 <p><a class="reference internal" href="#detailed-description">More…</a></p>
 <section id="types">
-<h2><span class="section-number">7.12.1. </span>Types<a class="headerlink" href="#types" title="Link to this heading"></a></h2>
+<h2><span class="section-number">7.13.1. </span>Types<a class="headerlink" href="#types" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Base type</p></th>
@@ -266,7 +271,7 @@
 </tbody>
 </table>
 <section id="enum-cdd-i2c-hwunitstatustype">
-<h3><span class="section-number">7.12.1.1. </span>enum Cdd_I2c_HwUnitStatusType<a class="headerlink" href="#enum-cdd-i2c-hwunitstatustype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.1. </span>enum Cdd_I2c_HwUnitStatusType<a class="headerlink" href="#enum-cdd-i2c-hwunitstatustype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -289,7 +294,7 @@
 This is an enum containing the possible HW unit states states. The default HW unit state is CDD_I2C_HW_UNIT_FREE.</p>
 </section>
 <section id="enum-cdd-i2c-componentstatustype">
-<h3><span class="section-number">7.12.1.2. </span>enum Cdd_I2c_ComponentStatusType<a class="headerlink" href="#enum-cdd-i2c-componentstatustype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.2. </span>enum Cdd_I2c_ComponentStatusType<a class="headerlink" href="#enum-cdd-i2c-componentstatustype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -316,7 +321,7 @@ This is an enum containing the possible HW unit states states. The default HW un
 This is an enum containing the possible driver states. The default driver state is CDD_I2C_UNINIT.</p>
 </section>
 <section id="enum-cdd-i2c-handlingtype">
-<h3><span class="section-number">7.12.1.3. </span>enum Cdd_I2c_HandlingType<a class="headerlink" href="#enum-cdd-i2c-handlingtype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.3. </span>enum Cdd_I2c_HandlingType<a class="headerlink" href="#enum-cdd-i2c-handlingtype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -339,7 +344,7 @@ This is an enum containing the possible driver states. The default driver state 
 This is an enum containing the possible variants of arbitration loss timeout handling.</p>
 </section>
 <section id="enum-cdd-i2c-channelresulttype">
-<h3><span class="section-number">7.12.1.4. </span>enum Cdd_I2c_ChannelResultType<a class="headerlink" href="#enum-cdd-i2c-channelresulttype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.4. </span>enum Cdd_I2c_ChannelResultType<a class="headerlink" href="#enum-cdd-i2c-channelresulttype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -382,7 +387,7 @@ This is an enum containing the possible variants of arbitration loss timeout han
 This is an enum containing all the possible channel results The default channel state is CDD_I2C_CH_RESULT_OK.</p>
 </section>
 <section id="enum-cdd-i2c-sequenceresulttype">
-<h3><span class="section-number">7.12.1.5. </span>enum Cdd_I2c_SequenceResultType<a class="headerlink" href="#enum-cdd-i2c-sequenceresulttype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.5. </span>enum Cdd_I2c_SequenceResultType<a class="headerlink" href="#enum-cdd-i2c-sequenceresulttype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -433,7 +438,7 @@ This is an enum containing all the possible channel results The default channel 
 This type defines a range of specific sequences status for the I2C Driver.</p>
 </section>
 <section id="enum-cdd-i2c-restartmodetype">
-<h3><span class="section-number">7.12.1.6. </span>enum Cdd_I2c_RestartModeType<a class="headerlink" href="#enum-cdd-i2c-restartmodetype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.6. </span>enum Cdd_I2c_RestartModeType<a class="headerlink" href="#enum-cdd-i2c-restartmodetype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -456,7 +461,7 @@ This type defines a range of specific sequences status for the I2C Driver.</p>
 This is an enum containing the possible restart modes. The default mode is CDD_I2C_RESTART_MODE_NOSTOP.</p>
 </section>
 <section id="typedef-cdd-i2c-addresstype">
-<h3><span class="section-number">7.12.1.7. </span>typedef Cdd_I2c_AddressType<a class="headerlink" href="#typedef-cdd-i2c-addresstype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.7. </span>typedef Cdd_I2c_AddressType<a class="headerlink" href="#typedef-cdd-i2c-addresstype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint16</span><span class="w"> </span><span class="n">Cdd_I2c_AddressType</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -464,7 +469,7 @@ This is an enum containing the possible restart modes. The default mode is CDD_I
 This type defines the addresss size.</p>
 </section>
 <section id="typedef-cdd-i2c-directiontype">
-<h3><span class="section-number">7.12.1.8. </span>typedef Cdd_I2c_DirectionType<a class="headerlink" href="#typedef-cdd-i2c-directiontype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.8. </span>typedef Cdd_I2c_DirectionType<a class="headerlink" href="#typedef-cdd-i2c-directiontype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Cdd_I2c_DirectionType</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -472,7 +477,7 @@ This type defines the addresss size.</p>
 This type defines the direction of operation - write or read.</p>
 </section>
 <section id="typedef-cdd-i2c-datatype">
-<h3><span class="section-number">7.12.1.9. </span>typedef Cdd_I2c_DataType<a class="headerlink" href="#typedef-cdd-i2c-datatype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.9. </span>typedef Cdd_I2c_DataType<a class="headerlink" href="#typedef-cdd-i2c-datatype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Cdd_I2c_DataType</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -480,7 +485,7 @@ This type defines the direction of operation - write or read.</p>
 This type defines the data to be transmitted using the CDD_I2C Driver.</p>
 </section>
 <section id="typedef-cdd-i2c-dataptrtype">
-<h3><span class="section-number">7.12.1.10. </span>typedef Cdd_I2c_DataPtrType<a class="headerlink" href="#typedef-cdd-i2c-dataptrtype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.10. </span>typedef Cdd_I2c_DataPtrType<a class="headerlink" href="#typedef-cdd-i2c-dataptrtype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_I2c_DataPtrType</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -488,7 +493,7 @@ This type defines the data to be transmitted using the CDD_I2C Driver.</p>
 Definition for the pointer type for general buffer handling.</p>
 </section>
 <section id="typedef-cdd-i2c-dataconstptrtype">
-<h3><span class="section-number">7.12.1.11. </span>typedef Cdd_I2c_DataConstPtrType<a class="headerlink" href="#typedef-cdd-i2c-dataconstptrtype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.11. </span>typedef Cdd_I2c_DataConstPtrType<a class="headerlink" href="#typedef-cdd-i2c-dataconstptrtype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">uint8</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_I2c_DataConstPtrType</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -496,7 +501,7 @@ Definition for the pointer type for general buffer handling.</p>
 Definition for the pointer type for TX buffer handling.</p>
 </section>
 <section id="typedef-cdd-i2c-hwunittype">
-<h3><span class="section-number">7.12.1.12. </span>typedef Cdd_I2c_HwUnitType<a class="headerlink" href="#typedef-cdd-i2c-hwunittype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.12. </span>typedef Cdd_I2c_HwUnitType<a class="headerlink" href="#typedef-cdd-i2c-hwunittype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Cdd_I2c_HwUnitType</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -504,7 +509,7 @@ Definition for the pointer type for TX buffer handling.</p>
 Specifies the identification (ID) for a CDD_I2C Hardware unit.</p>
 </section>
 <section id="typedef-cdd-i2c-sequencetype">
-<h3><span class="section-number">7.12.1.13. </span>typedef Cdd_I2c_SequenceType<a class="headerlink" href="#typedef-cdd-i2c-sequencetype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.13. </span>typedef Cdd_I2c_SequenceType<a class="headerlink" href="#typedef-cdd-i2c-sequencetype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Cdd_I2c_SequenceType</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -512,7 +517,7 @@ Specifies the identification (ID) for a CDD_I2C Hardware unit.</p>
 This is the type for a sequence identifier.</p>
 </section>
 <section id="typedef-cdd-i2c-channeltype">
-<h3><span class="section-number">7.12.1.14. </span>typedef Cdd_I2c_ChannelType<a class="headerlink" href="#typedef-cdd-i2c-channeltype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.14. </span>typedef Cdd_I2c_ChannelType<a class="headerlink" href="#typedef-cdd-i2c-channeltype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Cdd_I2c_ChannelType</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -520,7 +525,7 @@ This is the type for a sequence identifier.</p>
 This is the type for a Ch identifier.</p>
 </section>
 <section id="typedef-cdd-i2c-datalengthtype">
-<h3><span class="section-number">7.12.1.15. </span>typedef Cdd_I2c_DataLengthType<a class="headerlink" href="#typedef-cdd-i2c-datalengthtype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.15. </span>typedef Cdd_I2c_DataLengthType<a class="headerlink" href="#typedef-cdd-i2c-datalengthtype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint16</span><span class="w"> </span><span class="n">Cdd_I2c_DataLengthType</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -528,7 +533,7 @@ This is the type for a Ch identifier.</p>
 Type to define the number of data elements to be sent and/or received during a transmission.</p>
 </section>
 <section id="typedef-cdd-i2c-sequenceendnotification">
-<h3><span class="section-number">7.12.1.16. </span>typedef Cdd_I2c_SequenceEndNotification<a class="headerlink" href="#typedef-cdd-i2c-sequenceendnotification" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.16. </span>typedef Cdd_I2c_SequenceEndNotification<a class="headerlink" href="#typedef-cdd-i2c-sequenceendnotification" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_I2c_SequenceEndNotification</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -536,7 +541,7 @@ Type to define the number of data elements to be sent and/or received during a t
 Callback routine provided by the user for each Sequence to notify the caller that a Sequence has been finished.</p>
 </section>
 <section id="typedef-cdd-i2c-sequenceerrornotification">
-<h3><span class="section-number">7.12.1.17. </span>typedef Cdd_I2c_SequenceErrorNotification<a class="headerlink" href="#typedef-cdd-i2c-sequenceerrornotification" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.17. </span>typedef Cdd_I2c_SequenceErrorNotification<a class="headerlink" href="#typedef-cdd-i2c-sequenceerrornotification" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_I2c_SequenceErrorNotification</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">uint8</span><span class="w"> </span><span class="n">errorCode</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -548,7 +553,7 @@ Callback routine provided by the user for each Sequence to notify the caller tha
 </ul>
 </section>
 <section id="typedef-cdd-i2c-targetrxstartnotificationtype">
-<h3><span class="section-number">7.12.1.18. </span>typedef Cdd_I2c_TargetRxStartNotificationType<a class="headerlink" href="#typedef-cdd-i2c-targetrxstartnotificationtype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.18. </span>typedef Cdd_I2c_TargetRxStartNotificationType<a class="headerlink" href="#typedef-cdd-i2c-targetrxstartnotificationtype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_I2c_TargetRxStartNotificationType</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -560,7 +565,7 @@ Target RX start notification callback - called on start condition.</p>
 </ul>
 </section>
 <section id="typedef-cdd-i2c-targettxstartnotificationtype">
-<h3><span class="section-number">7.12.1.19. </span>typedef Cdd_I2c_TargetTxStartNotificationType<a class="headerlink" href="#typedef-cdd-i2c-targettxstartnotificationtype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.19. </span>typedef Cdd_I2c_TargetTxStartNotificationType<a class="headerlink" href="#typedef-cdd-i2c-targettxstartnotificationtype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_I2c_TargetTxStartNotificationType</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -572,7 +577,7 @@ Target TX start notification callback - called on start condition.</p>
 </ul>
 </section>
 <section id="typedef-cdd-i2c-targetrxcompletenotificationtype">
-<h3><span class="section-number">7.12.1.20. </span>typedef Cdd_I2c_TargetRxCompleteNotificationType<a class="headerlink" href="#typedef-cdd-i2c-targetrxcompletenotificationtype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.20. </span>typedef Cdd_I2c_TargetRxCompleteNotificationType<a class="headerlink" href="#typedef-cdd-i2c-targetrxcompletenotificationtype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_I2c_TargetRxCompleteNotificationType</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span><span class="p">,</span><span class="w"> </span><span class="n">Cdd_I2c_DataPtrType</span><span class="w"> </span><span class="n">pRxBuffer</span><span class="p">,</span><span class="w"> </span><span class="n">Cdd_I2c_DataLengthType</span><span class="w"> </span><span class="n">rxCount</span><span class="p">,</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">event</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -587,7 +592,7 @@ Target RX complete notification callback - called on stop condition or the buffe
 </ul>
 </section>
 <section id="typedef-cdd-i2c-targettxcompletenotificationtype">
-<h3><span class="section-number">7.12.1.21. </span>typedef Cdd_I2c_TargetTxCompleteNotificationType<a class="headerlink" href="#typedef-cdd-i2c-targettxcompletenotificationtype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.21. </span>typedef Cdd_I2c_TargetTxCompleteNotificationType<a class="headerlink" href="#typedef-cdd-i2c-targettxcompletenotificationtype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_I2c_TargetTxCompleteNotificationType</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span><span class="p">,</span><span class="w"> </span><span class="n">Cdd_I2c_DataConstPtrType</span><span class="w"> </span><span class="n">pTxBuffer</span><span class="p">,</span><span class="w"> </span><span class="n">Cdd_I2c_DataLengthType</span><span class="w"> </span><span class="n">txCount</span><span class="p">,</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">event</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -602,7 +607,7 @@ Target TX complete notification callback - called on stop condition or the buffe
 </ul>
 </section>
 <section id="typedef-cdd-i2c-targeterrornotificationtype">
-<h3><span class="section-number">7.12.1.22. </span>typedef Cdd_I2c_TargetErrorNotificationType<a class="headerlink" href="#typedef-cdd-i2c-targeterrornotificationtype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.1.22. </span>typedef Cdd_I2c_TargetErrorNotificationType<a class="headerlink" href="#typedef-cdd-i2c-targeterrornotificationtype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_I2c_TargetErrorNotificationType</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span><span class="p">,</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">errorEvent</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -616,7 +621,7 @@ Target error notification callback - called on bus error conditions.</p>
 </section>
 </section>
 <section id="structures">
-<h2><span class="section-number">7.12.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
+<h2><span class="section-number">7.13.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Name</p></th>
@@ -640,7 +645,7 @@ Target error notification callback - called on bus error conditions.</p>
 </table>
 </section>
 <section id="defines">
-<h2><span class="section-number">7.12.3. </span>Defines<a class="headerlink" href="#defines" title="Link to this heading"></a></h2>
+<h2><span class="section-number">7.13.3. </span>Defines<a class="headerlink" href="#defines" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Name</p></th>
@@ -967,7 +972,7 @@ Target error notification callback - called on bus error conditions.</p>
 </table>
 </section>
 <section id="functions">
-<h2><span class="section-number">7.12.4. </span>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<h2><span class="section-number">7.13.4. </span>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Return type</p></th>
@@ -1024,6 +1029,22 @@ Target error notification callback - called on bus error conditions.</p>
 <td><p><strong><a class="reference internal" href="#function-cdd-i2c-getstatus"><span class="std std-ref">Cdd_I2c_GetStatus</span></a></strong>(void )</p></td>
 <td><p>This service returns the module’s status.</p></td>
 </tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-i2c-targetstart"><span class="std std-ref">Cdd_I2c_TargetStart</span></a></strong>(<a class="reference internal" href="#typedef-cdd-i2c-hwunittype"><span class="std std-ref">Cdd_I2c_HwUnitType</span></a> hwUnitId)</p></td>
+<td><p>This service starts the target-mode for the provided HW unit ID This enables interrupts and targets will start responding to I2C events after this.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-i2c-targetstop"><span class="std std-ref">Cdd_I2c_TargetStop</span></a></strong>(<a class="reference internal" href="#typedef-cdd-i2c-hwunittype"><span class="std std-ref">Cdd_I2c_HwUnitType</span></a> hwUnitId)</p></td>
+<td><p>This service stops the target-mode for the provided HW unit ID. This disables interrupts and targets will not respond to I2C events after this.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-i2c-targetsubmittxbuffer"><span class="std std-ref">Cdd_I2c_TargetSubmitTxBuffer</span></a></strong>(<a class="reference internal" href="#typedef-cdd-i2c-hwunittype"><span class="std std-ref">Cdd_I2c_HwUnitType</span></a> hwUnitId, <a class="reference internal" href="#typedef-cdd-i2c-dataconstptrtype"><span class="std std-ref">Cdd_I2c_DataConstPtrType</span></a> pTxBuffer, <a class="reference internal" href="#typedef-cdd-i2c-datalengthtype"><span class="std std-ref">Cdd_I2c_DataLengthType</span></a> txBufferSize)</p></td>
+<td><p>Submit TX buffer - call before Start or in TX Notification callback to provide a new buffer to work with.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-i2c-targetsubmitrxbuffer"><span class="std std-ref">Cdd_I2c_TargetSubmitRxBuffer</span></a></strong>(<a class="reference internal" href="#typedef-cdd-i2c-hwunittype"><span class="std std-ref">Cdd_I2c_HwUnitType</span></a> hwUnitId, <a class="reference internal" href="#typedef-cdd-i2c-dataptrtype"><span class="std std-ref">Cdd_I2c_DataPtrType</span></a> pRxBuffer, <a class="reference internal" href="#typedef-cdd-i2c-datalengthtype"><span class="std std-ref">Cdd_I2c_DataLengthType</span></a> rxBufferSize)</p></td>
+<td><p>Submit RX buffer - call before Start or in RX Notification callback to provide a new buffer to work with.</p></td>
+</tr>
 <tr class="row-even"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-i2c-appseqcomplete"><span class="std std-ref">I2c_appSeqComplete</span></a></strong>(void )</p></td>
 <td><p></p></td>
@@ -1035,7 +1056,7 @@ Target error notification callback - called on bus error conditions.</p>
 </tbody>
 </table>
 <section id="function-cdd-i2c-init">
-<h3><span class="section-number">7.12.4.1. </span>function Cdd_I2c_Init<a class="headerlink" href="#function-cdd-i2c-init" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.4.1. </span>function Cdd_I2c_Init<a class="headerlink" href="#function-cdd-i2c-init" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_I2c_Init</span><span class="p">(</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Cdd_I2c_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">configPtr</span>
 <span class="p">)</span>
@@ -1055,7 +1076,7 @@ Service for CDD_I2C initialization.</p>
 <p><strong>Postcondition</strong>: Postconditions - Driver in initialized state</p>
 </section>
 <section id="function-cdd-i2c-deinit">
-<h3><span class="section-number">7.12.4.2. </span>function Cdd_I2c_DeInit<a class="headerlink" href="#function-cdd-i2c-deinit" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.4.2. </span>function Cdd_I2c_DeInit<a class="headerlink" href="#function-cdd-i2c-deinit" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_DeInit</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1078,7 +1099,7 @@ Service for CDD_I2C driver de-initialization.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-i2c-getversioninfo">
-<h3><span class="section-number">7.12.4.3. </span>function Cdd_I2c_GetVersionInfo<a class="headerlink" href="#function-cdd-i2c-getversioninfo" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.4.3. </span>function Cdd_I2c_GetVersionInfo<a class="headerlink" href="#function-cdd-i2c-getversioninfo" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_I2c_GetVersionInfo</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Std_VersionInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">versionInfo</span>
 <span class="p">)</span>
@@ -1097,7 +1118,7 @@ Service that returns the version information of the module.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-i2c-setupeb">
-<h3><span class="section-number">7.12.4.4. </span>function Cdd_I2c_SetupEB<a class="headerlink" href="#function-cdd-i2c-setupeb" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.4.4. </span>function Cdd_I2c_SetupEB<a class="headerlink" href="#function-cdd-i2c-setupeb" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_SetupEB</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Cdd_I2c_ChannelType</span><span class="w"> </span><span class="n">chId</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Cdd_I2c_DataConstPtrType</span><span class="w"> </span><span class="n">txDataBufferPtr</span><span class="p">,</span>
@@ -1129,7 +1150,7 @@ Service to setup the buffers and the length of data for the Ch specified.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-i2c-setupebdynamic">
-<h3><span class="section-number">7.12.4.5. </span>function Cdd_I2c_SetupEBDynamic<a class="headerlink" href="#function-cdd-i2c-setupebdynamic" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.4.5. </span>function Cdd_I2c_SetupEBDynamic<a class="headerlink" href="#function-cdd-i2c-setupebdynamic" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_SetupEBDynamic</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Cdd_I2c_ChannelType</span><span class="w"> </span><span class="n">chId</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Cdd_I2c_AddressType</span><span class="w"> </span><span class="n">deviceAddress</span><span class="p">,</span>
@@ -1163,7 +1184,7 @@ Service to setup the buffers and the length of data for the Ch specified.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-i2c-asynctransmit">
-<h3><span class="section-number">7.12.4.6. </span>function Cdd_I2c_AsyncTransmit<a class="headerlink" href="#function-cdd-i2c-asynctransmit" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.4.6. </span>function Cdd_I2c_AsyncTransmit<a class="headerlink" href="#function-cdd-i2c-asynctransmit" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_AsyncTransmit</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Cdd_I2c_SequenceType</span><span class="w"> </span><span class="n">sequenceId</span>
 <span class="p">)</span>
@@ -1189,7 +1210,7 @@ The service conducts an asynchronous data transmission according to the paramete
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-i2c-cancel">
-<h3><span class="section-number">7.12.4.7. </span>function Cdd_I2c_Cancel<a class="headerlink" href="#function-cdd-i2c-cancel" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.4.7. </span>function Cdd_I2c_Cancel<a class="headerlink" href="#function-cdd-i2c-cancel" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_Cancel</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Cdd_I2c_SequenceType</span><span class="w"> </span><span class="n">sequenceId</span>
 <span class="p">)</span>
@@ -1216,7 +1237,7 @@ Cancel a transmission.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-i2c-mainfunction">
-<h3><span class="section-number">7.12.4.8. </span>function Cdd_I2c_MainFunction<a class="headerlink" href="#function-cdd-i2c-mainfunction" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.4.8. </span>function Cdd_I2c_MainFunction<a class="headerlink" href="#function-cdd-i2c-mainfunction" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_I2c_MainFunction</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1231,7 +1252,7 @@ Makes a target channel available for processing requests (addressing). When call
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-i2c-getsequenceresult">
-<h3><span class="section-number">7.12.4.9. </span>function Cdd_I2c_GetSequenceResult<a class="headerlink" href="#function-cdd-i2c-getsequenceresult" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.4.9. </span>function Cdd_I2c_GetSequenceResult<a class="headerlink" href="#function-cdd-i2c-getsequenceresult" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Cdd_I2c_SequenceResultType</span><span class="w"> </span><span class="n">Cdd_I2c_GetSequenceResult</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Cdd_I2c_SequenceType</span><span class="w"> </span><span class="n">sequenceId</span>
 <span class="p">)</span>
@@ -1250,7 +1271,7 @@ This service returns the current status of the given SequenceId.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-i2c-getresult">
-<h3><span class="section-number">7.12.4.10. </span>function Cdd_I2c_GetResult<a class="headerlink" href="#function-cdd-i2c-getresult" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.4.10. </span>function Cdd_I2c_GetResult<a class="headerlink" href="#function-cdd-i2c-getresult" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Cdd_I2c_ChannelResultType</span><span class="w"> </span><span class="n">Cdd_I2c_GetResult</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Cdd_I2c_ChannelType</span><span class="w"> </span><span class="n">chId</span>
 <span class="p">)</span>
@@ -1269,7 +1290,7 @@ This service returns the current status of the given channel.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-i2c-resethwunit">
-<h3><span class="section-number">7.12.4.11. </span>function Cdd_I2c_ResetHwUnit<a class="headerlink" href="#function-cdd-i2c-resethwunit" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.4.11. </span>function Cdd_I2c_ResetHwUnit<a class="headerlink" href="#function-cdd-i2c-resethwunit" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_ResetHwUnit</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span>
 <span class="p">)</span>
@@ -1304,7 +1325,7 @@ Service to reset and recover a single I2C HW unit from a bus-off condition.</p>
 <p><strong>Postcondition</strong>: HW unit is reset and ready for new transfers</p>
 </section>
 <section id="function-cdd-i2c-getstatus">
-<h3><span class="section-number">7.12.4.12. </span>function Cdd_I2c_GetStatus<a class="headerlink" href="#function-cdd-i2c-getstatus" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.4.12. </span>function Cdd_I2c_GetStatus<a class="headerlink" href="#function-cdd-i2c-getstatus" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Cdd_I2c_ComponentStatusType</span><span class="w"> </span><span class="n">Cdd_I2c_GetStatus</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1317,8 +1338,102 @@ This service returns the module’s status.</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
+<section id="function-cdd-i2c-targetstart">
+<h3><span class="section-number">7.13.4.13. </span>function Cdd_I2c_TargetStart<a class="headerlink" href="#function-cdd-i2c-targetstart" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_TargetStart</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This service starts the target-mode for the provided HW unit ID This enables interrupts and targets will start responding to I2C events after this.</p>
+<p>Note: This API is applicable only for target mode.</p>
+<p>Service ID[hex] - CDD_I2C_SID_TARGET_START Sync/Async - Synchronous Reentrancy - Reentrant</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>hwUnitId</strong> I2C HW unit ID</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Success
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Request rejected
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Std_ReturnType</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-i2c-targetstop">
+<h3><span class="section-number">7.13.4.14. </span>function Cdd_I2c_TargetStop<a class="headerlink" href="#function-cdd-i2c-targetstop" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_TargetStop</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This service stops the target-mode for the provided HW unit ID. This disables interrupts and targets will not respond to I2C events after this.</p>
+<p>Note: This API is applicable only for target mode.</p>
+<p>Service ID[hex] - CDD_I2C_SID_TARGET_STOP Sync/Async - Synchronous Reentrancy - Reentrant</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>hwUnitId</strong> I2C HW unit ID</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Success
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Request rejected
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Std_ReturnType</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-i2c-targetsubmittxbuffer">
+<h3><span class="section-number">7.13.4.15. </span>function Cdd_I2c_TargetSubmitTxBuffer<a class="headerlink" href="#function-cdd-i2c-targetsubmittxbuffer" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_TargetSubmitTxBuffer</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_I2c_DataConstPtrType</span><span class="w"> </span><span class="n">pTxBuffer</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_I2c_DataLengthType</span><span class="w"> </span><span class="n">txBufferSize</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Submit TX buffer - call before Start or in TX Notification callback to provide a new buffer to work with.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>hwUnitId</strong> I2C HW unit ID</p></li>
+<li><p><strong>pTxBuffer</strong> Pointer to TX data buffer</p></li>
+<li><p><strong>txBufferSize</strong> Size of TX data buffer in bytes</p></li>
+</ul>
+<p><strong>Return</strong>: E_OK on success, E_NOT_OK on failure</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-i2c-targetsubmitrxbuffer">
+<h3><span class="section-number">7.13.4.16. </span>function Cdd_I2c_TargetSubmitRxBuffer<a class="headerlink" href="#function-cdd-i2c-targetsubmitrxbuffer" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_I2c_TargetSubmitRxBuffer</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Cdd_I2c_HwUnitType</span><span class="w"> </span><span class="n">hwUnitId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_I2c_DataPtrType</span><span class="w"> </span><span class="n">pRxBuffer</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_I2c_DataLengthType</span><span class="w"> </span><span class="n">rxBufferSize</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Submit RX buffer - call before Start or in RX Notification callback to provide a new buffer to work with.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>hwUnitId</strong> I2C HW unit ID</p></li>
+<li><p><strong>pRxBuffer</strong> Pointer to RX data buffer</p></li>
+<li><p><strong>rxBufferSize</strong> Size of RX data buffer in bytes</p></li>
+</ul>
+<p><strong>Return</strong>: E_OK on success, E_NOT_OK on failure</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
 <section id="function-i2c-appseqcomplete">
-<h3><span class="section-number">7.12.4.13. </span>function I2c_appSeqComplete<a class="headerlink" href="#function-i2c-appseqcomplete" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.4.17. </span>function I2c_appSeqComplete<a class="headerlink" href="#function-i2c-appseqcomplete" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">I2c_appSeqComplete</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1326,7 +1441,7 @@ This service returns the module’s status.</p>
 </div>
 </section>
 <section id="function-i2c-appseqfail">
-<h3><span class="section-number">7.12.4.14. </span>function I2c_appSeqFail<a class="headerlink" href="#function-i2c-appseqfail" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.13.4.18. </span>function I2c_appSeqFail<a class="headerlink" href="#function-i2c-appseqfail" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">I2c_appSeqFail</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">errorCode</span>
 <span class="p">)</span>
@@ -1335,7 +1450,7 @@ This service returns the module’s status.</p>
 </section>
 </section>
 <section id="detailed-description">
-<h2><span class="section-number">7.12.5. </span>Detailed Description<a class="headerlink" href="#detailed-description" title="Link to this heading"></a></h2>
+<h2><span class="section-number">7.13.5. </span>Detailed Description<a class="headerlink" href="#detailed-description" title="Link to this heading"></a></h2>
 <p>This files defines I2C configuration structures</p>
 </section>
 </section>
@@ -1344,8 +1459,8 @@ This service returns the module’s status.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="group__CDD__ECAP.html" class="btn btn-neutral float-left" title="7.11. CDD_ECAP" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="group__CDD__IPC.html" class="btn btn-neutral float-right" title="7.13. CDD_IPC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="group__CDD__ECAP.html" class="btn btn-neutral float-left" title="7.12. CDD_ECAP" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="group__CDD__IPC.html" class="btn btn-neutral float-right" title="7.14. CDD_IPC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -80,12 +80,12 @@
  * Version Check (if required)
  *********************************************************************************************************************/
 /** \brief Version checking - cfg.c and .h */
-#if ((CDD_I2C_SW_MAJOR_VERSION != (1U)) || (CDD_I2C_SW_MINOR_VERSION != (2U)))
+#if ((CDD_I2C_SW_MAJOR_VERSION != (1U)) || (CDD_I2C_SW_MINOR_VERSION != (3U)))
   #error "Version numbers of Cdd_I2c_Cfg.c and Cdd_I2c.h are inconsistent!"
 #endif
 
 /** \brief Version checking - cfg.c and cfg.h */
-#if ((CDD_I2C_CFG_MAJOR_VERSION != (1U)) || (CDD_I2C_CFG_MINOR_VERSION != (2U)))
+#if ((CDD_I2C_CFG_MAJOR_VERSION != (1U)) || (CDD_I2C_CFG_MINOR_VERSION != (3U)))
     #error "Version numbers of Cdd_I2c_Cfg.c and Cdd_I2c_Cfg.h are inconsistent!"
 #endif
 
@@ -333,16 +333,12 @@ CONST(struct Cdd_I2c_ConfigTag, CDD_I2C_CONFIG_DATA) Cdd_I2c_Config =
     },
 #endif /* CDD_I2C_CONTROLLER_ACTIVE */
 };
-#define CDD_I2C_STOP_SEC_CONFIG_DATA
-#include "Cdd_I2c_MemMap.h"
 
-#define CDD_I2C_START_SEC_CONFIG_CONST_32
-#include "Cdd_I2c_MemMap.h"
 CONST(uint32, CDD_I2C_CONST) Cdd_I2c_HwUnitBaseAddr[CDD_I2C_HW_UNIT_MAX] = {
     I2CA_BASE_FRAME(0U), /* I2CA_BASE_ADDR */
     I2CB_BASE_FRAME(0U), /* I2CB_BASE_ADDR */
 };
-#define CDD_I2C_STOP_SEC_CONFIG_CONST_32
+#define CDD_I2C_STOP_SEC_CONFIG_DATA
 #include "Cdd_I2c_MemMap.h"
 
 /*********************************************************************************************************************

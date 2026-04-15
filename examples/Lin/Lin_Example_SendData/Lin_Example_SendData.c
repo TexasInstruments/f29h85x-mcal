@@ -174,10 +174,10 @@ uint8          loop;
 int main(void)
 {
     /* INITIALIZATIONS*/
-    DeviceSupport_Init();
     /* EcuM_Init() will Initialize Port with the provided configuration. Below API will call
     Port_Init(&Port_Config) and will Initialize the Port and Mcu Driver */
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(200000000U);
     AppUtils_Printf("LIN Driver Sample Application: Lin Send Data - Starts!!!\n\n\r");
     AppUtils_Printf("---------------------------------------------------------------\n\n\r");

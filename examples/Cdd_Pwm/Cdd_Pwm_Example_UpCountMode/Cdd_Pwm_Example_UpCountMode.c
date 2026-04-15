@@ -187,9 +187,9 @@ int main()
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1] = 0U;
     Os_TickType start_time, elapsed_time;
 
-    DeviceSupport_Init();
     /* Initilaize all modules */
     EcuM_Init();
+    DeviceSupport_Init();
 
     AppUtils_Init(200000000U);  // Initialize AppUtils to enable prints
     AppUtils_Printf("Executing Cdd_Pwm_Example_UpCountMode example\r\n");

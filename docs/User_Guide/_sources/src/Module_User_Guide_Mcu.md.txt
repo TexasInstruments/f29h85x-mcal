@@ -173,6 +173,59 @@ The RAM Memory sections can be filled from any base address up to the section si
  Refer Device Data sheet for memory sections
  ```
 
+##### CPU1 Lockstep Mode
+
+The F29H85x device supports CPU lockstep mode, where CPU1 and CPU2 can operate in a redundant comparison mode for safety-critical applications. When lockstep mode is enabled, both CPUs execute identical instructions simultaneously, and their outputs are continuously compared.
+
+###### Lockstep Mode Overview
+
+**Lockstep Configuration:**
+
+* Configured via the **CPU1_Lockstep** parameter in ResourceAllocator module
+* Initialized during `Mcu_Init()`
+
+**When Lockstep is Enabled:**
+
+* CPU1 and CPU2 execute the same instructions in parallel
+* Outputs from both CPUs are compared cycle-by-cycle
+* Any mismatch between CPU1 and CPU2 outputs triggers a safety response
+* Provides hardware-level redundancy for functional safety applications
+
+**When Lockstep is Disabled:**
+
+* CPU1 and CPU2 operate independently (if CPU2 is available)
+* Each CPU can execute different code
+* Suitable for non-safety-critical or multi-core applications
+
+###### Lockstep Configuration
+
+The lockstep mode is configured in the ResourceAllocator module and applied during MCU initialization.
+
+**Configuration Path:** ResourceAllocator → ResourceAllocatorGeneral → CPU1_Lockstep
+
+**Available Options:**
+
+* **true**: Enable lockstep mode
+* **false**: Disable lockstep mode (default)
+
+```{warning}
+Lockstep mode can only be enabled when CPU2 is available for the selected device variant. Attempting to enable lockstep without CPU2 will result in a configuration error.
+```
+
+###### Peripheral Clock Gating with CPUSEL
+
+In addition to lockstep configuration, the MCU module configures peripheral clock gating based on CPU selection (CPUSEL). Each peripheral can be assigned to a specific CPU core, controlling which CPU has access to that peripheral.
+
+**CPUSEL Configuration:**
+
+* Configured in ResourceAllocator via the Context and Core parameters
+* Automatically assigned based on the context under which the peripheral is defined
+* Written to peripheral configuration registers during `Mcu_Init()`
+
+```{seealso}
+For CPUSEL and FRAMESEL configuration details, refer to the [ResourceAllocator User Guide](Module_User_Guide_ResourceAllocator.md#frame-selection-framesel).
+```
+
 #### Not supported Features
 
 None
@@ -225,7 +278,15 @@ Mcu Header File Structure
 
 #### Memory Mapping
 
-Will be added in later release
+The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.
+
+Reference memory map files can be found at:
+
+```text
+{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+```
+
+The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.
 
 #### Scheduling
 
@@ -268,6 +329,15 @@ when enabled. The driver interface contains the MACRO declaration of the error c
 ```{NOTE}
 More details of Safety Mechanisms can be found in Safety Manual.
 ```
+
+### Silicon errata workarounds and recommendation
+
+For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata](https://www.ti.com/lit/er/sprz569c/sprz569c.pdf).
+
+| Advisory | Workaround in MCAL driver | Recommended actions for user |
+|----------|--------------------------|-------------------------------|
+| System: Issuing device reset (XRSn) can cause unexpected fault if SYSCLKDIVSEL.PLLSYSCLKDIV = 0 | No workaround is implemented in the Mcu driver. The configurator tool provides a warning whenever the user configures SYSCLKDIVSEL.PLLSYSCLKDIV = 0 (divide by 1) | Avoid configuring SYSCLKDIVSEL.PLLSYSCLKDIV = 0 (divide by 1); use 1 (divide by 2) or a higher divider value instead. |
+| MCD: Missing Clock Detect should be disabled when the PLL is enabled (PLLCLKEN = 1) | The Mcu driver implements the workaround by disabling MCD (MCDCR.MCLKOFF = 1) before enabling the PLL. | No additional user action is required when PLL is enabled through the Mcu driver |
 
 ### Used resources
 
@@ -320,7 +390,7 @@ For MCU Module, data consistency and exclusive access to critical sections are r
 
 #### Multi-core and Resource allocator
 
-Not Supported
+The MCU module is not managed by the Resource Allocator. The MCU driver handles system-level resources such as Clock configuration and Low Power Mode, which can only be performed from CPU1. These system-level resources are not represented in the Resource Allocator configuration. No Resource Allocator instance allocation is needed for the MCU module.
 
 ### Configuration
 
@@ -335,10 +405,10 @@ The generated configuration files should not be modified manually. The config to
 
 
 
-#### McuGeneralConfiguration
+##### McuGeneralConfiguration
 This container contains the configuration (parameters) of the MCU driver.
 
-##### McuDevErrorDetect
+###### McuDevErrorDetect
 
 | Item ||
 |--------|---------------|
@@ -351,7 +421,7 @@ This container contains the configuration (parameters) of the MCU driver.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### McuClockConfigLockCriticalRegisters
+###### McuClockConfigLockCriticalRegisters
 
 | Item ||
 |--------|---------------|
@@ -364,7 +434,7 @@ This container contains the configuration (parameters) of the MCU driver.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### McuCpuPeripheralConfigLockCriticalRegisters
+###### McuCpuPeripheralConfigLockCriticalRegisters
 
 | Item ||
 |--------|---------------|
@@ -377,7 +447,7 @@ This container contains the configuration (parameters) of the MCU driver.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### McuCpuSystemLockCriticalRegisters
+###### McuCpuSystemLockCriticalRegisters
 
 | Item ||
 |--------|---------------|
@@ -390,7 +460,7 @@ This container contains the configuration (parameters) of the MCU driver.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### McuGetRamStateApi
+###### McuGetRamStateApi
 
 | Item ||
 |--------|---------------|
@@ -403,7 +473,7 @@ This container contains the configuration (parameters) of the MCU driver.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuInitClock
+###### McuInitClock
 
 | Item ||
 |--------|---------------|
@@ -416,7 +486,7 @@ This container contains the configuration (parameters) of the MCU driver.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuNoPll
+###### McuNoPll
 
 | Item ||
 |--------|---------------|
@@ -429,7 +499,7 @@ This container contains the configuration (parameters) of the MCU driver.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPerformResetApi
+###### McuPerformResetApi
 
 | Item ||
 |--------|---------------|
@@ -442,7 +512,7 @@ This container contains the configuration (parameters) of the MCU driver.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuVersionInfoApi
+###### McuVersionInfoApi
 
 | Item ||
 |--------|---------------|
@@ -455,10 +525,10 @@ This container contains the configuration (parameters) of the MCU driver.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-#### McuModuleConfiguration
+##### McuModuleConfiguration
 This container contains the configuration (parameters) of the MCU driver
 
-##### McuClockSrcFailureNotification
+###### McuClockSrcFailureNotification
 
 | Item ||
 |--------|---------------|
@@ -472,7 +542,7 @@ This container contains the configuration (parameters) of the MCU driver
 | **Default-value** | DISABLED |
 | **Range** | DISABLED<br>ENABLED |
 
-##### McuNumberOfMcuModes
+###### McuNumberOfMcuModes
 
 | Item ||
 |--------|---------------|
@@ -487,7 +557,7 @@ This container contains the configuration (parameters) of the MCU driver
 | **Max-value** | 255 |
 | **Min-value** | 1 |
 
-##### McuRamSectors
+###### McuRamSectors
 
 | Item ||
 |--------|---------------|
@@ -502,7 +572,7 @@ This container contains the configuration (parameters) of the MCU driver
 | **Max-value** | 4294967295 |
 | **Min-value** | 0 |
 
-##### McuResetSetting
+###### McuResetSetting
 
 | Item ||
 |--------|---------------|
@@ -521,7 +591,7 @@ This container contains the configuration (parameters) of the MCU driver
 | **Max-value** | 255 |
 | **Min-value** | 1 |
 
-##### McuClockSettingConfig
+###### McuClockSettingConfig
 This container contains the configuration (parameters) for the Clock settings of the MCU.  Please see MCU031 for more information on the MCU clock settings.
 
 ###### McuClockSettingId
@@ -539,7 +609,7 @@ This container contains the configuration (parameters) for the Clock settings of
 | **Max-value** | 255 |
 | **Min-value** | 0 |
 
-##### McuClockReferencePoint
+###### McuClockReferencePoint
 This container defines a reference point in the Mcu Clock tree. It defines the frequency which then can be used by other modules as an input value. Lower multiplicity is 1, as even in the simplest case (only one frequency is used), there is one frequency to be defined.
 
 ###### McuClockReferencePointFrequency
@@ -557,7 +627,7 @@ This container defines a reference point in the Mcu Clock tree. It defines the f
 | **Max-value** | INF |
 | **Min-value** | 0.0 |
 
-##### McuClkConfig
+###### McuClkConfig
 Device specific clock settings
 
 ###### McuClockSource
@@ -600,7 +670,7 @@ Device specific clock settings
 | **Value-Configuration-Class** | -- |
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | 1 |
+| **Default-value** | 2 |
 | **Max-value** | 64 |
 | **Min-value** | 1 |
 
@@ -646,7 +716,7 @@ Device specific clock settings
 | **Default-value** | MCU_EMIFCLK_DIV_2 |
 | **Range** | MCU_EMIFCLK_DIV_1<br>MCU_EMIFCLK_DIV_2<br>MCU_EMIFCLK_DIV_4 |
 
-##### McuLinClkConfig
+###### McuLinClkConfig
 Device specific Lin clock settings
 
 ###### McuLinInstance
@@ -677,7 +747,7 @@ Device specific Lin clock settings
 | **Default-value** | MCU_LINCLK_DIV_2 |
 | **Range** | MCU_LINCLK_DIV_1<br>MCU_LINCLK_DIV_2<br>MCU_LINCLK_DIV_4 |
 
-##### McuMCanClkConfig
+###### McuMCanClkConfig
 Device specific MCan clock settings
 
 ###### McuMCanInstance
@@ -722,7 +792,7 @@ Device specific MCan clock settings
 | **Default-value** | MCU_MCANCLK_DIV_20 |
 | **Range** | MCU_MCANCLK_DIV_1<br>MCU_MCANCLK_DIV_2<br>MCU_MCANCLK_DIV_3<br>MCU_MCANCLK_DIV_4<br>MCU_MCANCLK_DIV_5<br>MCU_MCANCLK_DIV_6<br>MCU_MCANCLK_DIV_7<br>MCU_MCANCLK_DIV_8<br>MCU_MCANCLK_DIV_9<br>MCU_MCANCLK_DIV_10<br>MCU_MCANCLK_DIV_11<br>MCU_MCANCLK_DIV_12<br>MCU_MCANCLK_DIV_13<br>MCU_MCANCLK_DIV_14<br>MCU_MCANCLK_DIV_15<br>MCU_MCANCLK_DIV_16<br>MCU_MCANCLK_DIV_17<br>MCU_MCANCLK_DIV_18<br>MCU_MCANCLK_DIV_19<br>MCU_MCANCLK_DIV_20 |
 
-##### McuCpuTimerClkConfig
+###### McuCpuTimerClkConfig
 Device specific CPU Timer clock settings
 
 ###### McuCpuTimer2ClockSource
@@ -754,7 +824,7 @@ Device specific CPU Timer clock settings
 | **Max-value** | 5 |
 | **Min-value** | 1 |
 
-##### McuExternalClkOutConfig
+###### McuExternalClkOutConfig
 Device specific External clock output settings
 
 ###### McuExternalClockOut
@@ -800,7 +870,7 @@ Device specific External clock output settings
 | **Default-value** | MCU_XCLKOUT_DIV_8 |
 | **Range** | MCU_XCLKOUT_DIV_1<br>MCU_XCLKOUT_DIV_2<br>MCU_XCLKOUT_DIV_4<br>MCU_XCLKOUT_DIV_8 |
 
-##### McuEthercatClkConfig
+###### McuEthercatClkConfig
 Device specific Ethercat clock settings
 
 ###### McuEthercatPhyClkEnable
@@ -831,7 +901,7 @@ Device specific Ethercat clock settings
 | **Default-value** | MCU_ECATCLKOUT_DIV_8 |
 | **Range** | MCU_ECATCLKOUT_DIV_1<br>MCU_ECATCLKOUT_DIV_2<br>MCU_ECATCLKOUT_DIV_3<br>MCU_ECATCLKOUT_DIV_4<br>MCU_ECATCLKOUT_DIV_5<br>MCU_ECATCLKOUT_DIV_6<br>MCU_ECATCLKOUT_DIV_7<br>MCU_ECATCLKOUT_DIV_8 |
 
-##### McuPllConfig
+###### McuPllConfig
 Device specific PLL settings
 
 ###### McuPLLRefDiv
@@ -879,12 +949,12 @@ Device specific PLL settings
 | **Max-value** | 32 |
 | **Min-value** | 1 |
 
-##### McuPeripheralClock0
+###### McuPeripheralClock0
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock0 |
-| **Description** | DLT Clock Enable Bit. |
+| **Description** | Device specific Peripheral Clock settings |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -892,12 +962,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock1
+###### McuPeripheralClock1
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock1 |
-| **Description** | EMIF1 Clock Enable bit. |
+| **Description** | Peripheral Clock Gating - EMIF |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -905,12 +975,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock2
+###### McuPeripheralClock2
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock2 |
-| **Description** | EPWM18 Clock Enable bit. |
+| **Description** | Device specific Peripheral Clock settings - EPWM |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -918,12 +988,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock3
+###### McuPeripheralClock3
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock3 |
-| **Description** | ECAP6 Clock Enable bit. |
+| **Description** | Device specific Peripheral Clock settings - ECAP |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -931,12 +1001,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock4
+###### McuPeripheralClock4
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock4 |
-| **Description** | EQEP6 Clock Enable bit. |
+| **Description** | Device specific Peripheral Clock settings - EQEP |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -944,12 +1014,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock6
+###### McuPeripheralClock6
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock6 |
-| **Description** | SD4 Clock Enable bit. |
+| **Description** | Device specific Peripheral Clock settings - SDFM |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -957,12 +1027,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock7
+###### McuPeripheralClock7
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock7 |
-| **Description** | UART F Module Clock Enable bit. |
+| **Description** | Device specific Peripheral Clock settings - SCI, UART |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -970,12 +1040,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock8
+###### McuPeripheralClock8
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock8 |
-| **Description** | SPI_E Clock Enable bit. |
+| **Description** | Device specific Peripheral Clock settings - SPI |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -983,12 +1053,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock9
+###### McuPeripheralClock9
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock9 |
-| **Description** | I2C_B Clock Enable bit:. |
+| **Description** | Device specific Peripheral Clock settings - I2C |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -996,12 +1066,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock10
+###### McuPeripheralClock10
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock10 |
-| **Description** | MCAN_F Clock Enable bit. |
+| **Description** | Device specific Peripheral Clock settings - CAN |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1009,12 +1079,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock13
+###### McuPeripheralClock13
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock13 |
-| **Description** | ADC_E Clock Enable bit. |
+| **Description** | Device specific Peripheral Clock settings - ADC |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1022,12 +1092,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock14
+###### McuPeripheralClock14
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock14 |
-| **Description** | CMPSS12 Clock Enable bit. |
+| **Description** | Device specific Peripheral Clock settings - CMPSS |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1035,12 +1105,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock16
+###### McuPeripheralClock16
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock16 |
-| **Description** | Buffered_DAC_B Clock Enable Bit. |
+| **Description** | Device specific Peripheral Clock settings- Buf DAC |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1048,12 +1118,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock17
+###### McuPeripheralClock17
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock17 |
-| **Description** | CLB6 Clock Enable bit. |
+| **Description** | Device specific Peripheral Clock settings - CLB |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1061,12 +1131,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock18
+###### McuPeripheralClock18
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock18 |
-| **Description** | FSIRX_D Clock Enable bit. |
+| **Description** | Device specific Peripheral Clock settings - FSI |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1074,12 +1144,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock19
+###### McuPeripheralClock19
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock19 |
-| **Description** | LIN_B Clock Enable bit. |
+| **Description** | Device specific Peripheral Clock settings - LIN |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1087,12 +1157,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock20
+###### McuPeripheralClock20
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock20 |
-| **Description** | PMBUS_A Clock Enable bit. |
+| **Description** | Device specific Peripheral Clock settings - PMBUS |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1100,12 +1170,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock21
+###### McuPeripheralClock21
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock21 |
-| **Description** | DCC3 Clock Enable Bit. |
+| **Description** | Device specific Peripheral Clock settings - DCC |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1113,12 +1183,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock23
+###### McuPeripheralClock23
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock23 |
-| **Description** | ETHERCAT Clock Enable Bit. |
+| **Description** | Device specific Peripheral Clock settings - EtherCAT |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1126,12 +1196,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock25
+###### McuPeripheralClock25
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock25 |
-| **Description** | HRCAL2 Clock Enable Bit. |
+| **Description** | Device specific Peripheral Clock settings - HRCAL0,1,2 |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1139,12 +1209,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock27
+###### McuPeripheralClock27
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock27 |
-| **Description** | EPG1 Clock Enable Bit. |
+| **Description** | Device specific Peripheral Clock settings - EPG |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1152,12 +1222,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock28
+###### McuPeripheralClock28
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock28 |
-| **Description** | Clock Enable Bit. |
+| **Description** | Device specific Peripheral Clock settings - ADCCHECKER |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1165,12 +1235,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock30
+###### McuPeripheralClock30
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock30 |
-| **Description** | SENT6 Clock Enable Bit. |
+| **Description** | Device specific Peripheral Clock settings - SENT |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1178,12 +1248,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuPeripheralClock32
+###### McuPeripheralClock32
 
 | Item ||
 |--------|---------------|
 | **Name** | McuPeripheralClock32 |
-| **Description** | WADI2 Clock Enable Bit. |
+| **Description** | Device specific Peripheral Clock settings - WADI |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1191,12 +1261,12 @@ Device specific PLL settings
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### McuDemEventParameterRefs
+###### McuDemEventParameterRefs
 
 | Item ||
 |--------|---------------|
 | **Name** | McuDemEventParameterRefs |
-| **Description** | Reference to configured DEM event to report "Clock source failure". |
+| **Description** | Container for the references to DemEventParameter elements which shall be invoked using the API Dem_SetEventStatus in case the corresponding error occurs. The EventId is taken from the referenced DemEventParameter's DemEventId symbolic value. The standardized errors are provided in this container and can be extended by vendor-specific error references. |
 | **Post-build-variant-multiplicity** | false |
 | **Multiplicity-Configuration-Class** | -- |
 | Post-Build Time | VARIANT-POST-BUILD |
@@ -1207,7 +1277,7 @@ Device specific PLL settings
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### McuModeSettingConf
+###### McuModeSettingConf
 This container contains the configuration (parameters) for the Mode setting of the MCU.  Please see MCU035 for more information on the MCU mode settings.
 
 ###### McuMode
@@ -1255,7 +1325,7 @@ This container contains the configuration (parameters) for the Mode setting of t
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### McuRamSectorSettingConf
+###### McuRamSectorSettingConf
 This container contains the configuration (parameters) for the RAM Sector setting. Please see MCU030 for more information on RAM sec-tor settings.
 
 ###### McuRamDefaultValue
@@ -1353,8 +1423,6 @@ Mcu XCLK Output
 
 ##### Setup required to run MCU_Example_Clock
 
-* Install Code Composer Studio latest version
-* Install latest C29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 * Connect GPIO73 Pin to Oscilloscope or logic analyzer to trace the XCLKOUT frequency
@@ -1382,8 +1450,6 @@ Mcu XCLK Output
 
 ##### Setup required to run Mcu_Example_PowerMode
 
-* Install Code Composer Studio latest version
-* Install latest C29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 
@@ -1410,8 +1476,6 @@ Mcu XCLK Output
 
 ##### Setup required to run Mcu_Example_Ram
 
-* Install Code Composer Studio latest version
-* Install latest C29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 
@@ -1438,8 +1502,6 @@ Mcu XCLK Output
 
 ##### Setup required to run Mcu_Example_Reset
 
-* Install Code Composer Studio latest version
-* Install latest C29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 

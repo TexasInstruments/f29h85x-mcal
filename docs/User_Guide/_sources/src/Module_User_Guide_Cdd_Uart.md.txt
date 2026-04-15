@@ -140,7 +140,15 @@ Cdd_Uart Header File Structure
 
 #### Memory Mapping
 
-Will be added in later release
+The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.
+
+Reference memory map files can be found at:
+
+```text
+{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+```
+
+The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.
 
 #### Scheduling
 
@@ -167,6 +175,18 @@ Development errors are reported to the DET using the service Det_ReportError(), 
 ##### Runtime Errors
 
 None
+
+### Safety Mechanism
+
+None
+
+### Silicon errata workarounds and recommendation
+
+For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata](https://www.ti.com/lit/er/sprz569c/sprz569c.pdf).
+
+| Advisory | Workaround in MCAL driver | Recommended actions for user |
+|----------|--------------------------|-------------------------------|
+| UART FIFO Gets Cleared on Continuous Debugger Reads | No workaround is implemented in the UART driver. The FIFO drain is triggered by debugger memory access and cannot be intercepted or prevented at the driver level. | Do not keep the memory browser open during UART data transfers, as continuous debugger reads of UART registers will drain the receive FIFO and cause data loss. |
 
 ### Used resources
 
@@ -239,23 +259,29 @@ The Cdd_Uart driver uses interrupts and therefore depends on OS, which configure
 
 #### Resource Allocator
 
-The UART module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+The UART module uses the Resource Allocator to allocate UART peripheral instances to CPU cores and configure their memory-mapped base addresses. Each allocation is placed inside a **Context** that maps to a CPU core (e.g. `CPU1`). The **CurrentContext** parameter in the Resource Allocator selects which Context is active for MCAL execution. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+The **Frame** parameter (`FRAME0`–`FRAME3`) selects the memory-mapped frame for the instance, enabling simultaneous access from different initiators without arbitration stalls. The **BaseAddr** is auto-calculated based on the selected instance and frame. The **DebugHaltEnabled** and **StandbyModeEnabled** parameters control peripheral behaviour during CPU debug halt and standby low-power modes respectively.
 
 ##### Resource Allocator Usage Example
 
 To allocate UARTA to CPU1 using FRAME0:
 
-1. In the Resource Allocator configuration, create a new Uart instance allocation
+1. In the Resource Allocator configuration, create a new Uart instance allocation under the CPU1 Context
 2. Set **InstanceName** to `UARTA`
 3. Set **Frame** to `FRAME0`
-4. The **BaseAddr** will be automatically calculated as `UARTA_DRIVER_BASE_FRAME(0U)`
+4. The **BaseAddr** will be automatically calculated as `UARTA_BASE_FRAME(0U)`
+5. Optionally configure **DebugHaltEnabled** and **StandbyModeEnabled**
 
 ```text
 Resource Allocator Configuration:
-├── UartInstanceAllocation
-│   ├── InstanceName: UARTA
-│   ├── Frame: FRAME0
-│   └── BaseAddr: UARTA_DRIVER_BASE_FRAME(0U)
+├── Context (Core: CPU1)
+│   └── Cdd_UartAllocatedInstance
+│       ├── InstanceName: UARTA
+│       ├── Frame: FRAME0
+│       ├── BaseAddr: UARTA_BASE_FRAME(0U)  [auto-calculated]
+│       ├── DebugHaltEnabled: true
+│       └── StandbyModeEnabled: true
 ```
 
 ### Configuration
@@ -274,10 +300,10 @@ Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Treso
 
 
 
-#### CddUartConfigSet
+##### CddUartConfigSet
 This container contains the configuration parameters and sub containers of the CddUart module.
 
-##### CddUartConfig
+###### CddUartConfig
 This container contains the configuration parameters of the CddUart HW units.
 
 ###### CddUartBaseAddress
@@ -316,9 +342,9 @@ This container contains the configuration parameters of the CddUart HW units.
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | 0 |
+| **Default-value** | 115200 |
 | **Max-value** | 25000000 |
-| **Min-value** | 0 |
+| **Min-value** | 300 |
 
 ###### CddUartProcessingMode
 
@@ -473,7 +499,7 @@ This container contains the configuration parameters of the CddUart HW units.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddUartWriteConfig
+###### CddUartWriteConfig
 This container contains the configuration parameters of the CddUart Write
 
 ###### CddUartWriteNotificationHandler
@@ -507,7 +533,7 @@ This container contains the configuration parameters of the CddUart Write
 | **Default-value** | CDD_UART_FIFO_LEVEL_1_2 |
 | **Range** | CDD_UART_FIFO_LEVEL_1_8<br>CDD_UART_FIFO_LEVEL_1_4<br>CDD_UART_FIFO_LEVEL_1_2<br>CDD_UART_FIFO_LEVEL_3_4<br>CDD_UART_FIFO_LEVEL_7_8 |
 
-##### CddUartReadConfig
+###### CddUartReadConfig
 This container contains the configuration parameters of the CddUart Read
 
 ###### CddUartReadNotificationHandler
@@ -556,10 +582,10 @@ This container contains the configuration parameters of the CddUart Read
 | **Default-value** | CDD_UART_FIFO_LEVEL_1_2 |
 | **Range** | CDD_UART_FIFO_LEVEL_1_8<br>CDD_UART_FIFO_LEVEL_1_4<br>CDD_UART_FIFO_LEVEL_1_2<br>CDD_UART_FIFO_LEVEL_3_4<br>CDD_UART_FIFO_LEVEL_7_8 |
 
-#### CddUartGeneral
+##### CddUartGeneral
 General CddUart` module configuration parameters.
 
-##### CddUartMainFunctionWritePeriod
+###### CddUartMainFunctionWritePeriod
 
 | Item ||
 |--------|---------------|
@@ -573,12 +599,24 @@ General CddUart` module configuration parameters.
 | **Max-value** | INF |
 | **Min-value** | 1.0E-6 |
 
-##### CddUartDevErrorDetect
+###### CddUartDevErrorDetect
 
 | Item ||
 |--------|---------------|
 | **Name** | CddUartDevErrorDetect |
 | **Description** | Switches the development error detection and notification on or off. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+###### CddUartVersionInfoApi
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartVersionInfoApi |
+| **Description** | Adds / removes the service CddUart_ GetVersionInfo() from the code. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -611,8 +649,6 @@ The example applications demonstrates usecases of the Cdd_Uart driver APIs. The 
 
 ##### Setup required to run Cdd_Uart_Example_Loopback
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 
@@ -652,8 +688,6 @@ Cdd_Uart_Example_Loopback: Sample Application - Completes successfully !!!
 
 ##### Setup required to run Cdd_Uart_Example_Read_Interrupt
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 * Connect GPIO86 (Tx pin) to the target's Rx pin, and connect GPIO77 (Rx pin) to the target's Tx pin
@@ -704,8 +738,6 @@ Cdd_Uart_Example_Read_Interrupt: Sample Application - Completes successfully !!!
 
 ##### Setup required to run Cdd_Uart_Example_Write_Interrupt
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 * Connect GPIO86 (Tx pin) to the target's Rx pin, and connect GPIO77 (Rx pin) to the target's Tx pin
@@ -737,8 +769,6 @@ Cdd_Uart_Example_Read_Interrupt: Sample Application - Completes successfully !!!
 
 ##### Setup required to run Cdd_Uart_Example_Write_Polling
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
 * Connect GPIO86 (Tx pin) to the target's Rx pin, and connect GPIO77 (Rx pin) to the target's Tx pin

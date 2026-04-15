@@ -1,0 +1,2758 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.11. CDD_DMA &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sphinx-design.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7.12. CDD_ECAP" href="group__CDD__ECAP.html" />
+    <link rel="prev" title="7.10. CDD_ADC" href="group__CDD__ADC.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                26.00.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.00 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Overview_of_MCAL.html">2. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../MCAL_Configuration_and_EB_Tresos.html">3. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ModuleUserGuide_list.html">5. Module User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../MigrationGuide_list.html">6. Migration Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_guide.html">7. API guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="group__CAN.html">7.1. CAN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__DIO.html">7.2. DIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__FLS.html">7.3. FLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__GPT.html">7.4. GPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__LIN.html">7.5. LIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__MCU.html">7.6. MCU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__PORT.html">7.7. PORT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__SPI.html">7.8. SPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__WDG.html">7.9. WDG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__ADC.html">7.10. CDD_ADC</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.11. CDD_DMA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#types">7.11.1. Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-emulationmodetype">7.11.1.1. enum Cdd_Dma_EmulationModeType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-prioritytype">7.11.1.2. enum Cdd_Dma_PriorityType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-instancetype">7.11.1.3. enum Cdd_Dma_InstanceType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-channeltype">7.11.1.4. enum Cdd_Dma_ChannelType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-mpuregiontype">7.11.1.5. enum Cdd_Dma_MpuRegionType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-channelwrdatasizetype">7.11.1.6. enum Cdd_Dma_ChannelWrDataSizeType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-channeldatasizetype">7.11.1.7. enum Cdd_Dma_ChannelDataSizeType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-continuousmodeenabletype">7.11.1.8. enum Cdd_Dma_ContinuousModeEnableType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-oneshotmodeenabletype">7.11.1.9. enum Cdd_Dma_OneshotModeEnableType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-chintenabletype">7.11.1.10. enum Cdd_Dma_ChIntEnableType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-chintmodetype">7.11.1.11. enum Cdd_Dma_ChIntModeType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-ovrflowintenabletype">7.11.1.12. enum Cdd_Dma_OvrflowIntEnableType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-perievttrigenabletype">7.11.1.13. enum Cdd_Dma_PeriEvtTrigEnableType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-overflowstatustype">7.11.1.14. enum Cdd_Dma_OverflowStatusType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-runstatustype">7.11.1.15. enum Cdd_Dma_RunStatusType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-burststatustype">7.11.1.16. enum Cdd_Dma_BurstStatusType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-transferstatustype">7.11.1.17. enum Cdd_Dma_TransferStatusType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-perievttrigstatustype">7.11.1.18. enum Cdd_Dma_PeriEvtTrigStatusType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-mpuregionaccesstype">7.11.1.19. enum Cdd_Dma_MpuRegionAccessType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-channelpriority">7.11.1.20. enum Cdd_Dma_ChannelPriority</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-dma-perievttriggersrctype">7.11.1.21. enum Cdd_Dma_PeriEvtTriggerSrcType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-dma-notifytype">7.11.1.22. typedef Cdd_Dma_NotifyType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-dma-mpuchmasktype">7.11.1.23. typedef Cdd_Dma_MpuChmaskType</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#structures">7.11.2. Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defines">7.11.3. Defines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">7.11.4. Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-getversioninfo">7.11.4.1. function Cdd_Dma_GetVersionInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-init">7.11.4.2. function Cdd_Dma_Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-deinit">7.11.4.3. function Cdd_Dma_DeInit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setchannelproperties">7.11.4.4. function Cdd_Dma_SetChannelProperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-settransferproperties">7.11.4.5. function Cdd_Dma_SetTransferProperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-settransfersize">7.11.4.6. function Cdd_Dma_SetTransferSize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-settransfersrcproperties">7.11.4.7. function Cdd_Dma_SetTransferSrcProperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-settransferdestproperties">7.11.4.8. function Cdd_Dma_SetTransferDestProperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-settransfersrcaddress">7.11.4.9. function Cdd_Dma_SetTransferSrcAddress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-settransferdestaddress">7.11.4.10. function Cdd_Dma_SetTransferDestAddress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-settransferwrapsrcproperties">7.11.4.11. function Cdd_Dma_SetTransferWrapSrcProperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-settransferwrapdestproperties">7.11.4.12. function Cdd_Dma_SetTransferWrapDestProperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-enableperipheraleventtrigger">7.11.4.13. function Cdd_Dma_EnablePeripheralEventTrigger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-disableperipheraleventtrigger">7.11.4.14. function Cdd_Dma_DisablePeripheralEventTrigger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setperipheraleventtriggersource">7.11.4.15. function Cdd_Dma_SetPeripheralEventTriggerSource</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-startchanneltransfer">7.11.4.16. function Cdd_Dma_StartChannelTransfer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-stopchanneltransfer">7.11.4.17. function Cdd_Dma_StopChannelTransfer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-forceperipheraleventtrigger">7.11.4.18. function Cdd_Dma_ForcePeripheralEventTrigger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-clearperipheraleventtrigger">7.11.4.19. function Cdd_Dma_ClearPeripheralEventTrigger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-triggersoftreset">7.11.4.20. function Cdd_Dma_TriggerSoftReset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setchannelpriority">7.11.4.21. function Cdd_Dma_SetChannelPriority</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-getchannelstatus">7.11.4.22. function Cdd_Dma_GetChannelStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-clearerrorflag">7.11.4.23. function Cdd_Dma_ClearErrorFlag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setdmacfgcommit">7.11.4.24. function Cdd_Dma_SetDmaCfgCommit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setchannelcommit">7.11.4.25. function Cdd_Dma_SetChannelCommit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setmpucfgcommit">7.11.4.26. function Cdd_Dma_SetMpuCfgCommit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setmpuregioncommit">7.11.4.27. function Cdd_Dma_SetMpuRegionCommit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__ECAP.html">7.12. CDD_ECAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__I2C.html">7.13. CDD_I2C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__IPC.html">7.14. CDD_IPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__PWM.html">7.15. CDD_PWM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__UART.html">7.16. CDD_UART</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__SENT.html">7.17. CDD_SENT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__XBAR.html">7.18. CDD_XBAR</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Key_Performance_and_Memory_Consumption_Data.html">8. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AUTOSAR_Integration.html">9. AUTOSAR Integration Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../api_guide.html"><span class="section-number">7. </span>API guide</a> &raquo;</li>
+      <li><span class="section-number">7.11. </span>CDD_DMA</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cdd-dma">
+<h1><span class="section-number">7.11. </span>CDD_DMA<a class="headerlink" href="#cdd-dma" title="Link to this heading"></a></h1>
+<section id="types">
+<h2><span class="section-number">7.11.1. </span>Types<a class="headerlink" href="#types" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Base type</p></th>
+<th class="head"><p>Type Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-emulationmodetype"><span class="std std-ref">Cdd_Dma_EmulationModeType</span></a></strong></p></td>
+<td><p>Emulation control type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-prioritytype"><span class="std std-ref">Cdd_Dma_PriorityType</span></a></strong></p></td>
+<td><p>Channel priority selection type.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-instancetype"><span class="std std-ref">Cdd_Dma_InstanceType</span></a></strong></p></td>
+<td><p>DMA instance type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-channeltype"><span class="std std-ref">Cdd_Dma_ChannelType</span></a></strong></p></td>
+<td><p>DMA Channel type.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-mpuregiontype"><span class="std std-ref">Cdd_Dma_MpuRegionType</span></a></strong></p></td>
+<td><p>DMA MPU Region type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-channelwrdatasizetype"><span class="std std-ref">Cdd_Dma_ChannelWrDataSizeType</span></a></strong></p></td>
+<td><p>Write data size mode bit type.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-channeldatasizetype"><span class="std std-ref">Cdd_Dma_ChannelDataSizeType</span></a></strong></p></td>
+<td><p>Data size mode bit type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-continuousmodeenabletype"><span class="std std-ref">Cdd_Dma_ContinuousModeEnableType</span></a></strong></p></td>
+<td><p>Continuous mode type.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-oneshotmodeenabletype"><span class="std std-ref">Cdd_Dma_OneshotModeEnableType</span></a></strong></p></td>
+<td><p>Oneshot mode type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-chintenabletype"><span class="std std-ref">Cdd_Dma_ChIntEnableType</span></a></strong></p></td>
+<td><p>Channel interrupt generation enable type.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-chintmodetype"><span class="std std-ref">Cdd_Dma_ChIntModeType</span></a></strong></p></td>
+<td><p>Channel interrupt generation mode type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-ovrflowintenabletype"><span class="std std-ref">Cdd_Dma_OvrflowIntEnableType</span></a></strong></p></td>
+<td><p>Overflow interrupt type.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-perievttrigenabletype"><span class="std std-ref">Cdd_Dma_PeriEvtTrigEnableType</span></a></strong></p></td>
+<td><p>Peripheral event trigger enable type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-overflowstatustype"><span class="std std-ref">Cdd_Dma_OverflowStatusType</span></a></strong></p></td>
+<td><p>Overflow status type.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-runstatustype"><span class="std std-ref">Cdd_Dma_RunStatusType</span></a></strong></p></td>
+<td><p>Run status type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-burststatustype"><span class="std std-ref">Cdd_Dma_BurstStatusType</span></a></strong></p></td>
+<td><p>Burst status type.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-transferstatustype"><span class="std std-ref">Cdd_Dma_TransferStatusType</span></a></strong></p></td>
+<td><p>Transfer status type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-perievttrigstatustype"><span class="std std-ref">Cdd_Dma_PeriEvtTrigStatusType</span></a></strong></p></td>
+<td><p>Peripheral event trigger status type.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-mpuregionaccesstype"><span class="std std-ref">Cdd_Dma_MpuRegionAccessType</span></a></strong></p></td>
+<td><p>MPU region access type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-channelpriority"><span class="std std-ref">Cdd_Dma_ChannelPriority</span></a></strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-dma-perievttriggersrctype"><span class="std std-ref">Cdd_Dma_PeriEvtTriggerSrcType</span></a></strong></p></td>
+<td><p>Peripheral event trigger source select type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>typedef void(*)(uint8 Channel_Index)</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-cdd-dma-notifytype"><span class="std std-ref">Cdd_Dma_NotifyType</span></a></strong></p></td>
+<td><p>Channel notification callback function pointer.</p></td>
+</tr>
+<tr class="row-even"><td><p>typedef uint16</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-cdd-dma-mpuchmasktype"><span class="std std-ref">Cdd_Dma_MpuChmaskType</span></a></strong></p></td>
+<td><p>MPU Region channel mask parameter.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="enum-cdd-dma-emulationmodetype">
+<h3><span class="section-number">7.11.1.1. </span>enum Cdd_Dma_EmulationModeType<a class="headerlink" href="#enum-cdd-dma-emulationmodetype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_EMULATION_STOP</p></td>
+<td><p></p></td>
+<td><p>The DMA completes the current read-write operation, then halts.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_EMULATION_FREE_RUN</p></td>
+<td><p></p></td>
+<td><p>The DMA continues running during an emulation halt.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Emulation control type.</p>
+</section>
+<section id="enum-cdd-dma-prioritytype">
+<h3><span class="section-number">7.11.1.2. </span>enum Cdd_Dma_PriorityType<a class="headerlink" href="#enum-cdd-dma-prioritytype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_PRIORITY_ROUND_ROBIN</p></td>
+<td><p></p></td>
+<td><p>The round-robin priority scheme.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_PRIORITY_SOFTWARE_CONFIG</p></td>
+<td><p></p></td>
+<td><p>Software configurable priority for channels.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Channel priority selection type.</p>
+</section>
+<section id="enum-cdd-dma-instancetype">
+<h3><span class="section-number">7.11.1.3. </span>enum Cdd_Dma_InstanceType<a class="headerlink" href="#enum-cdd-dma-instancetype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA1</p></td>
+<td><p>0</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA2</p></td>
+<td><p>1</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+DMA instance type.</p>
+</section>
+<section id="enum-cdd-dma-channeltype">
+<h3><span class="section-number">7.11.1.4. </span>enum Cdd_Dma_ChannelType<a class="headerlink" href="#enum-cdd-dma-channeltype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_CH1</p></td>
+<td><p>0</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_CH2</p></td>
+<td><p>1</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_CH3</p></td>
+<td><p>2</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_CH4</p></td>
+<td><p>3</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_CH5</p></td>
+<td><p>4</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_CH6</p></td>
+<td><p>5</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_CH7</p></td>
+<td><p>6</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_CH8</p></td>
+<td><p>7</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_CH9</p></td>
+<td><p>8</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_CH10</p></td>
+<td><p>9</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+DMA Channel type.</p>
+</section>
+<section id="enum-cdd-dma-mpuregiontype">
+<h3><span class="section-number">7.11.1.5. </span>enum Cdd_Dma_MpuRegionType<a class="headerlink" href="#enum-cdd-dma-mpuregiontype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_MPUR1</p></td>
+<td><p>0</p></td>
+<td><p>RTDMA MPU Region 1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_MPUR2</p></td>
+<td><p>1</p></td>
+<td><p>RTDMA MPU Region 2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_MPUR3</p></td>
+<td><p>2</p></td>
+<td><p>RTDMA MPU Region 3.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_MPUR4</p></td>
+<td><p>3</p></td>
+<td><p>RTDMA MPU Region 4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_MPUR5</p></td>
+<td><p>4</p></td>
+<td><p>RTDMA MPU Region 5.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_MPUR6</p></td>
+<td><p>5</p></td>
+<td><p>RTDMA MPU Region 6.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_MPUR7</p></td>
+<td><p>6</p></td>
+<td><p>RTDMA MPU Region 7.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_MPUR8</p></td>
+<td><p>7</p></td>
+<td><p>RTDMA MPU Region 8.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_MPUR9</p></td>
+<td><p>8</p></td>
+<td><p>RTDMA MPU Region 9.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_MPUR10</p></td>
+<td><p>9</p></td>
+<td><p>RTDMA MPU Region 10.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_MPUR11</p></td>
+<td><p>10</p></td>
+<td><p>RTDMA MPU Region 11.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_MPUR12</p></td>
+<td><p>11</p></td>
+<td><p>RTDMA MPU Region 12.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_MPUR13</p></td>
+<td><p>12</p></td>
+<td><p>RTDMA MPU Region 13.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_MPUR14</p></td>
+<td><p>13</p></td>
+<td><p>RTDMA MPU Region 14.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_MPUR15</p></td>
+<td><p>14</p></td>
+<td><p>RTDMA MPU Region 15.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_MPUR16</p></td>
+<td><p>15</p></td>
+<td><p>RTDMA MPU Region 16.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+DMA MPU Region type.</p>
+</section>
+<section id="enum-cdd-dma-channelwrdatasizetype">
+<h3><span class="section-number">7.11.1.6. </span>enum Cdd_Dma_ChannelWrDataSizeType<a class="headerlink" href="#enum-cdd-dma-channelwrdatasizetype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_CHANNEL_WR_DATASIZE_MODE_8</p></td>
+<td><p>=</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>    0x0U| DMA channel transfers 8 bits of data on write port per read/write operation.   |
+</pre></div>
+</div>
+<p>| CDD_DMA_CHANNEL_WR_DATASIZE_MODE_16 | =
+0x100000U| DMA channel transfers 16 bits of data on write port per read/write operation.   |
+| CDD_DMA_CHANNEL_WR_DATASIZE_MODE_32 | =
+0x200000U| DMA channel transfers 32 bits of data on write port per read/write operation.   |
+| CDD_DMA_CHANNEL_WR_DATASIZE_MODE_64 | =
+0x300000U| DMA channel transfers 64 bits of data on write port per read/write operation.   |</p>
+<p><strong>Brief</strong>:
+Write data size mode bit type.</p>
+</section>
+<section id="enum-cdd-dma-channeldatasizetype">
+<h3><span class="section-number">7.11.1.7. </span>enum Cdd_Dma_ChannelDataSizeType<a class="headerlink" href="#enum-cdd-dma-channeldatasizetype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_CHANNEL_DATASIZE_MODE_8</p></td>
+<td><p>=</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>    0x0U| DMA channel transfers 8 bits of data per read/write operation.   |
+</pre></div>
+</div>
+<p>| CDD_DMA_CHANNEL_DATASIZE_MODE_16 | =
+0x20000U| DMA channel transfers 16 bits of data per read/write operation.   |
+| CDD_DMA_CHANNEL_DATASIZE_MODE_32 | =
+0x40000U| DMA channel transfers 32 bits of data per read/write operation.   |
+| CDD_DMA_CHANNEL_DATASIZE_MODE_64 | =
+0x60000U| DMA channel transfers 64 bits of data per read/write operation.   |</p>
+<p><strong>Brief</strong>:
+Data size mode bit type.</p>
+</section>
+<section id="enum-cdd-dma-continuousmodeenabletype">
+<h3><span class="section-number">7.11.1.8. </span>enum Cdd_Dma_ContinuousModeEnableType<a class="headerlink" href="#enum-cdd-dma-continuousmodeenabletype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_CONTINUOUS_MODE_DISABLED</p></td>
+<td><p></p></td>
+<td><p>Continuous mode disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_CONTINUOUS_MODE_ENABLED</p></td>
+<td><p></p></td>
+<td><p>Continuous mode enabled.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Continuous mode type.</p>
+</section>
+<section id="enum-cdd-dma-oneshotmodeenabletype">
+<h3><span class="section-number">7.11.1.9. </span>enum Cdd_Dma_OneshotModeEnableType<a class="headerlink" href="#enum-cdd-dma-oneshotmodeenabletype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_ONESHOT_MODE_DISABLED</p></td>
+<td><p></p></td>
+<td><p>Oneshot mode disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_ONESHOT_MODE_ENABLED</p></td>
+<td><p></p></td>
+<td><p>Oneshot mode enabled.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Oneshot mode type.</p>
+</section>
+<section id="enum-cdd-dma-chintenabletype">
+<h3><span class="section-number">7.11.1.10. </span>enum Cdd_Dma_ChIntEnableType<a class="headerlink" href="#enum-cdd-dma-chintenabletype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_CHANNEL_INTERRUPT_DISABLED</p></td>
+<td><p></p></td>
+<td><p>Channel interrupt generation mode disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_CHANNEL_INTERRUPT_ENABLED</p></td>
+<td><p></p></td>
+<td><p>Channel interrupt generation mode enabled.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Channel interrupt generation enable type.</p>
+</section>
+<section id="enum-cdd-dma-chintmodetype">
+<h3><span class="section-number">7.11.1.11. </span>enum Cdd_Dma_ChIntModeType<a class="headerlink" href="#enum-cdd-dma-chintmodetype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_INT_BEG_OF_TRANSFER</p></td>
+<td><p></p></td>
+<td><p>Generate interrupt at beginning of new transfer.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_INT_END_OF_TRANSFER</p></td>
+<td><p></p></td>
+<td><p>Generate interrupt at end of transfer.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Channel interrupt generation mode type.</p>
+</section>
+<section id="enum-cdd-dma-ovrflowintenabletype">
+<h3><span class="section-number">7.11.1.12. </span>enum Cdd_Dma_OvrflowIntEnableType<a class="headerlink" href="#enum-cdd-dma-ovrflowintenabletype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_OVERFLOW_INTERRUPT_DISABLED</p></td>
+<td><p></p></td>
+<td><p>Overflow interrupt disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_OVERFLOW_INTERRUPT_ENABLED</p></td>
+<td><p></p></td>
+<td><p>Overflow interrupt enabled.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Overflow interrupt type.</p>
+</section>
+<section id="enum-cdd-dma-perievttrigenabletype">
+<h3><span class="section-number">7.11.1.13. </span>enum Cdd_Dma_PeriEvtTrigEnableType<a class="headerlink" href="#enum-cdd-dma-perievttrigenabletype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_PERI_EVT_TRIG_DISABLED</p></td>
+<td><p></p></td>
+<td><p>Peripheral event trigger disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_PERI_EVT_TRIG_ENABLED</p></td>
+<td><p></p></td>
+<td><p>Peripheral event trigger enabled.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Peripheral event trigger enable type.</p>
+</section>
+<section id="enum-cdd-dma-overflowstatustype">
+<h3><span class="section-number">7.11.1.14. </span>enum Cdd_Dma_OverflowStatusType<a class="headerlink" href="#enum-cdd-dma-overflowstatustype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_OVERFLOW_NOT_DETECTED</p></td>
+<td><p></p></td>
+<td><p>No overflow detected.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_OVERFLOW_DETECTED</p></td>
+<td><p></p></td>
+<td><p>Overflow detected i.e. peripheral event trigger was received while PERINTFLG was already set.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Overflow status type.</p>
+</section>
+<section id="enum-cdd-dma-runstatustype">
+<h3><span class="section-number">7.11.1.15. </span>enum Cdd_Dma_RunStatusType<a class="headerlink" href="#enum-cdd-dma-runstatustype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_CHANNEL_NOT_RUNNING</p></td>
+<td><p></p></td>
+<td><p>DMA channel is ready to respond to peripheral event triggers - no ongoing transfer.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_CHANNEL_RUNNING</p></td>
+<td><p></p></td>
+<td><p>DMA channel is busy.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Run status type.</p>
+</section>
+<section id="enum-cdd-dma-burststatustype">
+<h3><span class="section-number">7.11.1.16. </span>enum Cdd_Dma_BurstStatusType<a class="headerlink" href="#enum-cdd-dma-burststatustype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_NO_BURST_ACTIVITY_ONGOING</p></td>
+<td><p></p></td>
+<td><p>Burst is completed i.e. BURST_COUNT has reached zero.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_BURST_ACTIVITY_ONGOING</p></td>
+<td><p></p></td>
+<td><p>Burst is in progress.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Burst status type.</p>
+</section>
+<section id="enum-cdd-dma-transferstatustype">
+<h3><span class="section-number">7.11.1.17. </span>enum Cdd_Dma_TransferStatusType<a class="headerlink" href="#enum-cdd-dma-transferstatustype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_NO_TRANSFER_ACTIVITY_ONGOING</p></td>
+<td><p></p></td>
+<td><p>Transfer is completed i.e. TRANSFER_COUNT has reached zero.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRANSFER_ACTIVITY_ONGOING</p></td>
+<td><p></p></td>
+<td><p>Transfer is in progress.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Transfer status type.</p>
+</section>
+<section id="enum-cdd-dma-perievttrigstatustype">
+<h3><span class="section-number">7.11.1.18. </span>enum Cdd_Dma_PeriEvtTrigStatusType<a class="headerlink" href="#enum-cdd-dma-perievttrigstatustype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_WAITING_FOR_EVT_TRIG</p></td>
+<td><p></p></td>
+<td><p>Wating for peripheral event trigger.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_PENDING_EVT_TRIG</p></td>
+<td><p></p></td>
+<td><p>Peripheral event trigger has arrived.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Peripheral event trigger status type.</p>
+</section>
+<section id="enum-cdd-dma-mpuregionaccesstype">
+<h3><span class="section-number">7.11.1.19. </span>enum Cdd_Dma_MpuRegionAccessType<a class="headerlink" href="#enum-cdd-dma-mpuregionaccesstype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_NO_ACCESS</p></td>
+<td><p></p></td>
+<td><p>No access to the region.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_READ_ACCESS</p></td>
+<td><p></p></td>
+<td><p>Only read access.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_READ_WRITE_ACCESS</p></td>
+<td><p></p></td>
+<td><p>Both read and write access.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+MPU region access type.</p>
+</section>
+<section id="enum-cdd-dma-channelpriority">
+<h3><span class="section-number">7.11.1.20. </span>enum Cdd_Dma_ChannelPriority<a class="headerlink" href="#enum-cdd-dma-channelpriority" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_CHPRIORITY0</p></td>
+<td><p></p></td>
+<td><p>Priority 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_CHPRIORITY1</p></td>
+<td><p></p></td>
+<td><p>Priority 1.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_CHPRIORITY2</p></td>
+<td><p></p></td>
+<td><p>Priority 2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_CHPRIORITY3</p></td>
+<td><p></p></td>
+<td><p>Priority 3.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="enum-cdd-dma-perievttriggersrctype">
+<h3><span class="section-number">7.11.1.21. </span>enum Cdd_Dma_PeriEvtTriggerSrcType<a class="headerlink" href="#enum-cdd-dma-perievttriggersrctype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SOFTWARE</p></td>
+<td><p>0</p></td>
+<td><p>TRIGGER SOFTWARE.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ADCA1</p></td>
+<td><p>1</p></td>
+<td><p>TRIGGER ADCA1.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ADCA2</p></td>
+<td><p>2</p></td>
+<td><p>TRIGGER ADCA2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ADCA3</p></td>
+<td><p>3</p></td>
+<td><p>TRIGGER ADCA3.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ADCA4</p></td>
+<td><p>4</p></td>
+<td><p>TRIGGER ADCA4.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ADCAEVT</p></td>
+<td><p>5</p></td>
+<td><p>TRIGGER ADCAEVT.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ADCB1</p></td>
+<td><p>6</p></td>
+<td><p>TRIGGER ADCB1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ADCB2</p></td>
+<td><p>7</p></td>
+<td><p>TRIGGER ADCB2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ADCB3</p></td>
+<td><p>8</p></td>
+<td><p>TRIGGER ADCB3.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ADCB4</p></td>
+<td><p>9</p></td>
+<td><p>TRIGGER ADCB4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ADCBEVT</p></td>
+<td><p>10</p></td>
+<td><p>TRIGGER ADCBEVT.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ADCC1</p></td>
+<td><p>11</p></td>
+<td><p>TRIGGER ADCC1.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ADCC2</p></td>
+<td><p>12</p></td>
+<td><p>TRIGGER ADCC2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ADCC3</p></td>
+<td><p>13</p></td>
+<td><p>TRIGGER ADCC3.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ADCC4</p></td>
+<td><p>14</p></td>
+<td><p>TRIGGER ADCC4.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ADCCEVT</p></td>
+<td><p>15</p></td>
+<td><p>TRIGGER ADCCEVT.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ADCD1</p></td>
+<td><p>16</p></td>
+<td><p>TRIGGER ADCD1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ADCD2</p></td>
+<td><p>17</p></td>
+<td><p>TRIGGER ADCD2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ADCD3</p></td>
+<td><p>18</p></td>
+<td><p>TRIGGER ADCD3.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ADCD4</p></td>
+<td><p>19</p></td>
+<td><p>TRIGGER ADCD4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ADCDEVT</p></td>
+<td><p>20</p></td>
+<td><p>TRIGGER ADCDEVT.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ADCE1</p></td>
+<td><p>21</p></td>
+<td><p>TRIGGER ADCE1.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ADCE2</p></td>
+<td><p>22</p></td>
+<td><p>TRIGGER ADCE2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ADCE3</p></td>
+<td><p>23</p></td>
+<td><p>TRIGGER ADCE3.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ADCE4</p></td>
+<td><p>24</p></td>
+<td><p>TRIGGER ADCE4.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ADCEEVT</p></td>
+<td><p>25</p></td>
+<td><p>TRIGGER ADCEEVT.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CPU1_XINT1</p></td>
+<td><p>31</p></td>
+<td><p>TRIGGER CPU1 XINT1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CPU1_XINT2</p></td>
+<td><p>32</p></td>
+<td><p>TRIGGER CPU1 XINT2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CPU1_XINT3</p></td>
+<td><p>33</p></td>
+<td><p>TRIGGER CPU1 XINT3.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CPU1_XINT4</p></td>
+<td><p>34</p></td>
+<td><p>TRIGGER CPU1 XINT4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CPU1_XINT5</p></td>
+<td><p>35</p></td>
+<td><p>TRIGGER CPU1 XINT5.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CPU2_XINT1</p></td>
+<td><p>36</p></td>
+<td><p>TRIGGER CPU2 XINT1.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CPU2_XINT2</p></td>
+<td><p>37</p></td>
+<td><p>TRIGGER CPU2 XINT2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CPU2_XINT3</p></td>
+<td><p>38</p></td>
+<td><p>TRIGGER CPU2 XINT3.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CPU2_XINT4</p></td>
+<td><p>39</p></td>
+<td><p>TRIGGER CPU2 XINT4.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CPU2_XINT5</p></td>
+<td><p>40</p></td>
+<td><p>TRIGGER CPU2 XINT5.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CPU3_XINT1</p></td>
+<td><p>41</p></td>
+<td><p>TRIGGER CPU3 XINT1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CPU3_XINT2</p></td>
+<td><p>42</p></td>
+<td><p>TRIGGER CPU3 XINT2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CPU3_XINT3</p></td>
+<td><p>43</p></td>
+<td><p>TRIGGER CPU3 XINT3.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CPU3_XINT4</p></td>
+<td><p>44</p></td>
+<td><p>TRIGGER CPU3 XINT4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CPU3_XINT5</p></td>
+<td><p>45</p></td>
+<td><p>TRIGGER CPU3 XINT5.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM1SOCA</p></td>
+<td><p>46</p></td>
+<td><p>TRIGGER EPWM1SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM1SOCB</p></td>
+<td><p>47</p></td>
+<td><p>TRIGGER EPWM1SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM2SOCA</p></td>
+<td><p>48</p></td>
+<td><p>TRIGGER EPWM2SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM2SOCB</p></td>
+<td><p>49</p></td>
+<td><p>TRIGGER EPWM2SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM3SOCA</p></td>
+<td><p>50</p></td>
+<td><p>TRIGGER EPWM3SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM3SOCB</p></td>
+<td><p>51</p></td>
+<td><p>TRIGGER EPWM3SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM4SOCA</p></td>
+<td><p>52</p></td>
+<td><p>TRIGGER EPWM4SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM4SOCB</p></td>
+<td><p>53</p></td>
+<td><p>TRIGGER EPWM4SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM5SOCA</p></td>
+<td><p>54</p></td>
+<td><p>TRIGGER EPWM5SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM5SOCB</p></td>
+<td><p>55</p></td>
+<td><p>TRIGGER EPWM5SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM6SOCA</p></td>
+<td><p>56</p></td>
+<td><p>TRIGGER EPWM6SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM6SOCB</p></td>
+<td><p>57</p></td>
+<td><p>TRIGGER EPWM6SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM7SOCA</p></td>
+<td><p>58</p></td>
+<td><p>TRIGGER EPWM7SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM7SOCB</p></td>
+<td><p>59</p></td>
+<td><p>TRIGGER EPWM7SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM8SOCA</p></td>
+<td><p>60</p></td>
+<td><p>TRIGGER EPWM8SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM8SOCB</p></td>
+<td><p>61</p></td>
+<td><p>TRIGGER EPWM8SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM9SOCA</p></td>
+<td><p>62</p></td>
+<td><p>TRIGGER EPWM9SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM9SOCB</p></td>
+<td><p>63</p></td>
+<td><p>TRIGGER EPWM9SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM10SOCA</p></td>
+<td><p>64</p></td>
+<td><p>TRIGGER EPWM10SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM10SOCB</p></td>
+<td><p>65</p></td>
+<td><p>TRIGGER EPWM10SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM11SOCA</p></td>
+<td><p>66</p></td>
+<td><p>TRIGGER EPWM11SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM11SOCB</p></td>
+<td><p>67</p></td>
+<td><p>TRIGGER EPWM11SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM12SOCA</p></td>
+<td><p>68</p></td>
+<td><p>TRIGGER EPWM12SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM12SOCB</p></td>
+<td><p>69</p></td>
+<td><p>TRIGGER EPWM12SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM13SOCA</p></td>
+<td><p>70</p></td>
+<td><p>TRIGGER EPWM13SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM13SOCB</p></td>
+<td><p>71</p></td>
+<td><p>TRIGGER EPWM13SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM14SOCA</p></td>
+<td><p>72</p></td>
+<td><p>TRIGGER EPWM14SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM14SOCB</p></td>
+<td><p>73</p></td>
+<td><p>TRIGGER EPWM14SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM15SOCA</p></td>
+<td><p>74</p></td>
+<td><p>TRIGGER EPWM15SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM15SOCB</p></td>
+<td><p>75</p></td>
+<td><p>TRIGGER EPWM15SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM16SOCA</p></td>
+<td><p>76</p></td>
+<td><p>TRIGGER EPWM16SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM16SOCB</p></td>
+<td><p>77</p></td>
+<td><p>TRIGGER EPWM16SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM17SOCA</p></td>
+<td><p>78</p></td>
+<td><p>TRIGGER EPWM17SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM17SOCB</p></td>
+<td><p>79</p></td>
+<td><p>TRIGGER EPWM17SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPWM18SOCA</p></td>
+<td><p>80</p></td>
+<td><p>TRIGGER EPWM18SOCA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_EPWM18SOCB</p></td>
+<td><p>81</p></td>
+<td><p>TRIGGER EPWM18SOCB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_TINT0</p></td>
+<td><p>94</p></td>
+<td><p>TRIGGER CPU1 TINT0.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_TINT1</p></td>
+<td><p>95</p></td>
+<td><p>TRIGGER CPU1 TINT1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_TINT2</p></td>
+<td><p>96</p></td>
+<td><p>TRIGGER CPU1 TINT2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CPU2_TINT0</p></td>
+<td><p>97</p></td>
+<td><p>TRIGGER CPU2 TINT0.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CPU2_TINT1</p></td>
+<td><p>98</p></td>
+<td><p>TRIGGER CPU2 TINT1.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CPU2_TINT2</p></td>
+<td><p>99</p></td>
+<td><p>TRIGGER CPU2 TINT2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CPU3_TINT0</p></td>
+<td><p>100</p></td>
+<td><p>TRIGGER CPU3 TINT0.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CPU3_TINT1</p></td>
+<td><p>101</p></td>
+<td><p>TRIGGER CPU3 TINT1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CPU3_TINT2</p></td>
+<td><p>102</p></td>
+<td><p>TRIGGER CPU3 TINT2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ECAP1</p></td>
+<td><p>112</p></td>
+<td><p>TRIGGER ECAP1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ECAP2</p></td>
+<td><p>113</p></td>
+<td><p>TRIGGER ECAP2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ECAP3</p></td>
+<td><p>114</p></td>
+<td><p>TRIGGER ECAP3.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ECAP4</p></td>
+<td><p>115</p></td>
+<td><p>TRIGGER ECAP4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_ECAP5</p></td>
+<td><p>116</p></td>
+<td><p>TRIGGER ECAP5.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_ECAP6</p></td>
+<td><p>117</p></td>
+<td><p>TRIGGER ECAP6.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_LINATX</p></td>
+<td><p>120</p></td>
+<td><p>TRIGGER LINATX.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_LINARX</p></td>
+<td><p>121</p></td>
+<td><p>TRIGGER LINARX.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_LINBTX</p></td>
+<td><p>122</p></td>
+<td><p>TRIGGER LINBTX.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_LINBRX</p></td>
+<td><p>123</p></td>
+<td><p>TRIGGER LINBRX.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SYNC</p></td>
+<td><p>124</p></td>
+<td><p>TRIGGER SYNC.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SPIATX</p></td>
+<td><p>125</p></td>
+<td><p>TRIGGER SPIATX.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SPIARX</p></td>
+<td><p>126</p></td>
+<td><p>TRIGGER SPIARX.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SPIBTX</p></td>
+<td><p>127</p></td>
+<td><p>TRIGGER SPIBTX.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SPIBRX</p></td>
+<td><p>128</p></td>
+<td><p>TRIGGER SPIBRX.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SPICTX</p></td>
+<td><p>129</p></td>
+<td><p>TRIGGER SPICTX.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SPICRX</p></td>
+<td><p>130</p></td>
+<td><p>TRIGGER SPICRX.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SPIDTX</p></td>
+<td><p>131</p></td>
+<td><p>TRIGGER SPIDTX.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SPIDRX</p></td>
+<td><p>132</p></td>
+<td><p>TRIGGER SPIDRX.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SPIETX</p></td>
+<td><p>133</p></td>
+<td><p>TRIGGER SPIETX.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SPIERX</p></td>
+<td><p>134</p></td>
+<td><p>TRIGGER SPIERX.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CLB1INT</p></td>
+<td><p>135</p></td>
+<td><p>TRIGGER CLB1INT.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CLB2INT</p></td>
+<td><p>136</p></td>
+<td><p>TRIGGER CLB2INT.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CLB3INT</p></td>
+<td><p>137</p></td>
+<td><p>TRIGGER CLB3INT.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CLB4INT</p></td>
+<td><p>138</p></td>
+<td><p>TRIGGER CLB4INT.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CLB5INT</p></td>
+<td><p>139</p></td>
+<td><p>TRIGGER CLB5INT.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CLB6INT</p></td>
+<td><p>140</p></td>
+<td><p>TRIGGER CLB6INT.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_FSITXA</p></td>
+<td><p>143</p></td>
+<td><p>TRIGGER FSITXA.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_FSIRXA</p></td>
+<td><p>144</p></td>
+<td><p>TRIGGER FSIRXA.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_FSIA_DATA_TAG_MATCH</p></td>
+<td><p>145</p></td>
+<td><p>TRIGGER FSIA DATA TAG MATCH.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_FSIA_PING_TAG_MATCH</p></td>
+<td><p>146</p></td>
+<td><p>TRIGGER FSIA PING TAG MATCH.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_FSIRXB</p></td>
+<td><p>148</p></td>
+<td><p>TRIGGER FSIRXB.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_FSITXB</p></td>
+<td><p>147</p></td>
+<td><p>TRIGGER FSITXB.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_FSIB_DATA_TAG_MATCH</p></td>
+<td><p>149</p></td>
+<td><p>TRIGGER FSIB DATA TAG MATCH.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_FSIB_PING_TAG_MATCH</p></td>
+<td><p>150</p></td>
+<td><p>TRIGGER FSIB PING TAG MATCH.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_FSIRXC</p></td>
+<td><p>152</p></td>
+<td><p>TRIGGER FSIRXC.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_FSITXC</p></td>
+<td><p>151</p></td>
+<td><p>TRIGGER FSITXC.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_FSIC_DATA_TAG_MATCH</p></td>
+<td><p>153</p></td>
+<td><p>TRIGGER FSIC DATA TAG MATCH.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_FSIC_PING_TAG_MATCH</p></td>
+<td><p>154</p></td>
+<td><p>TRIGGER FSIC PING TAG MATCH.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_FSITXD</p></td>
+<td><p>155</p></td>
+<td><p>TRIGGER FSITXD.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_FSIRXD</p></td>
+<td><p>156</p></td>
+<td><p>TRIGGER FSIRXD.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_FSID_DATA_TAG_MATCH</p></td>
+<td><p>157</p></td>
+<td><p>TRIGGER FSID DATA TAG MATCH.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_FSID_PING_TAG_MATCH</p></td>
+<td><p>158</p></td>
+<td><p>TRIGGER FSID PING TAG MATCH.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CPU1_DLT</p></td>
+<td><p>161</p></td>
+<td><p>TRIGGER CPU1 DLT.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_CPU3_DLT</p></td>
+<td><p>163</p></td>
+<td><p>TRIGGER CPU3 DLT.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_CPU2_DLT</p></td>
+<td><p>162</p></td>
+<td><p>TRIGGER CPU2 DLT.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_UARTARX</p></td>
+<td><p>167</p></td>
+<td><p>TRIGGER UARTARX.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_UARTATX</p></td>
+<td><p>168</p></td>
+<td><p>TRIGGER UARTATX.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_UARTBTX</p></td>
+<td><p>169</p></td>
+<td><p>TRIGGER UARTBTX.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_UARTBRX</p></td>
+<td><p>170</p></td>
+<td><p>TRIGGER UARTBRX.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_UARTCTX</p></td>
+<td><p>171</p></td>
+<td><p>TRIGGER UARTCTX.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_UARTCRX</p></td>
+<td><p>172</p></td>
+<td><p>TRIGGER UARTCRX.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_UARTDTX</p></td>
+<td><p>173</p></td>
+<td><p>TRIGGER UARTDTX.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_UARTDRX</p></td>
+<td><p>174</p></td>
+<td><p>TRIGGER UARTDRX.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_UARTETX</p></td>
+<td><p>175</p></td>
+<td><p>TRIGGER UARTETX.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_UARTERX</p></td>
+<td><p>176</p></td>
+<td><p>TRIGGER UARTERX.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_UARTFTX</p></td>
+<td><p>177</p></td>
+<td><p>TRIGGER UARTFTX.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_UARTFRX</p></td>
+<td><p>178</p></td>
+<td><p>TRIGGER UARTFRX.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_DTHE_SHA_DMA_S_CTXIN_REQ</p></td>
+<td><p>179</p></td>
+<td><p>TRIGGER DTHE SHA DMA S CTXIN REQ.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_DTHE_SHA_DMA_S_DATAIN_REQ</p></td>
+<td><p>180</p></td>
+<td><p>TRIGGER DTHE SHA DMA S DATAIN REQ.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_DTHE_SHA_DMA_S_CTXOUT_REQ</p></td>
+<td><p>181</p></td>
+<td><p>TRIGGER DTHE SHA DMA S CTXOUT REQ.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_DTHE_SHA_DMA_P_CTXIN_REQ</p></td>
+<td><p>182</p></td>
+<td><p>TRIGGER DTHE SHA DMA P CTXIN REQ.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_DTHE_SHA_DMA_P_DATAIN_REQ</p></td>
+<td><p>183</p></td>
+<td><p>TRIGGER DTHE SHA DMA P DATAIN REQ.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_DTHE_SHA_DMA_P_CTXOUT_REQ</p></td>
+<td><p>184</p></td>
+<td><p>TRIGGER DTHE SHA DMA P CTXOUT REQ.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_DTHE_AES_DMA_S_CTXIN_REQ</p></td>
+<td><p>185</p></td>
+<td><p>TRIGGER DTHE AES DMA S CTXIN REQ.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_DTHE_AES_DMA_S_DATAIN_REQ</p></td>
+<td><p>186</p></td>
+<td><p>TRIGGER DTHE AES DMA S DATAIN REQ.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_DTHE_AES_DMA_S_DATAOUT_REQ</p></td>
+<td><p>187</p></td>
+<td><p>TRIGGER DTHE AES DMA S DATAOUT REQ.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_DTHE_AES_DMA_S_CTXOUT_REQ</p></td>
+<td><p>188</p></td>
+<td><p>TRIGGER DTHE AES DMA S CTXOUT REQ.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_DTHE_AES_DMA_P_CTXIN_REQ</p></td>
+<td><p>189</p></td>
+<td><p>TRIGGER DTHE AES DMA P CTXIN REQ.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_DTHE_AES_DMA_P_DATAIN_REQ</p></td>
+<td><p>190</p></td>
+<td><p>TRIGGER DTHE AES DMA P DATAIN REQ.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_DTHE_AES_DMA_P_DATAOUT_REQ</p></td>
+<td><p>191</p></td>
+<td><p>TRIGGER DTHE AES DMA P DATAOUT REQ.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_DTHE_AES_DMA_P_CTXOUT_REQ</p></td>
+<td><p>192</p></td>
+<td><p>TRIGGER DTHE AES DMA P CTXOUT REQ.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_DTHE_SM3_CTXIN_REQ</p></td>
+<td><p>193</p></td>
+<td><p>TRIGGER DTHE SM3 CTXIN REQ.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_DTHE_SM3_DATAIN_REQ</p></td>
+<td><p>194</p></td>
+<td><p>TRIGGER DTHE SM3 DATAIN REQ.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_DTHE_SM3_CTXOUT_REQ</p></td>
+<td><p>195</p></td>
+<td><p>TRIGGER DTHE SM3 CTXOUT REQ.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_DTHE_SM4_CTXIN_REQ</p></td>
+<td><p>196</p></td>
+<td><p>TRIGGER DTHE SM4 CTXIN REQ.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_DTHE_SM4_DATAIN_REQ</p></td>
+<td><p>197</p></td>
+<td><p>TRIGGER DTHE SM4 DATAIN REQ.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_DTHE_SM4_DATAOUT_REQ</p></td>
+<td><p>198</p></td>
+<td><p>TRIGGER DTHE SM4 DATAOUT REQ.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_DTHE_SM4_CTXOUT_REQ</p></td>
+<td><p>199</p></td>
+<td><p>TRIGGER DTHE SM4 CTXOUT REQ.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_EPG</p></td>
+<td><p>200</p></td>
+<td><p>TRIGGER EPG.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SDFM1FLT1</p></td>
+<td><p>201</p></td>
+<td><p>TRIGGER SDFM1FLT1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SDFM1FLT2</p></td>
+<td><p>202</p></td>
+<td><p>TRIGGER SDFM1FLT2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SDFM1FLT3</p></td>
+<td><p>203</p></td>
+<td><p>TRIGGER SDFM1FLT3.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SDFM1FLT4</p></td>
+<td><p>204</p></td>
+<td><p>TRIGGER SDFM1FLT4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SDFM2FLT1</p></td>
+<td><p>205</p></td>
+<td><p>TRIGGER SDFM2FLT1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SDFM2FLT2</p></td>
+<td><p>206</p></td>
+<td><p>TRIGGER SDFM2FLT2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SDFM2FLT3</p></td>
+<td><p>207</p></td>
+<td><p>TRIGGER SDFM2FLT3.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SDFM2FLT4</p></td>
+<td><p>208</p></td>
+<td><p>TRIGGER SDFM2FLT4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SDFM3FLT1</p></td>
+<td><p>209</p></td>
+<td><p>TRIGGER SDFM3FLT1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SDFM3FLT2</p></td>
+<td><p>210</p></td>
+<td><p>TRIGGER SDFM3FLT2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SDFM3FLT3</p></td>
+<td><p>211</p></td>
+<td><p>TRIGGER SDFM3FLT3.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SDFM3FLT4</p></td>
+<td><p>212</p></td>
+<td><p>TRIGGER SDFM3FLT4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SDFM4FLT1</p></td>
+<td><p>213</p></td>
+<td><p>TRIGGER SDFM4FLT1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SDFM4FLT2</p></td>
+<td><p>214</p></td>
+<td><p>TRIGGER SDFM4FLT2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SDFM4FLT3</p></td>
+<td><p>215</p></td>
+<td><p>TRIGGER SDFM4FLT3.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SDFM4FLT4</p></td>
+<td><p>216</p></td>
+<td><p>TRIGGER SDFM4FLT4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SENT1</p></td>
+<td><p>217</p></td>
+<td><p>TRIGGER SENT1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SENT2</p></td>
+<td><p>218</p></td>
+<td><p>TRIGGER SENT2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SENT3</p></td>
+<td><p>219</p></td>
+<td><p>TRIGGER SENT3.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SENT4</p></td>
+<td><p>220</p></td>
+<td><p>TRIGGER SENT4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_SENT5</p></td>
+<td><p>221</p></td>
+<td><p>TRIGGER SENT5.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_SENT6</p></td>
+<td><p>222</p></td>
+<td><p>TRIGGER SENT6.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_WADI1</p></td>
+<td><p>223</p></td>
+<td><p>TRIGGER WADI1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_WADI2</p></td>
+<td><p>224</p></td>
+<td><p>TRIGGER WADI2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_RTDMA_CH1INT</p></td>
+<td><p>240</p></td>
+<td><p>TRIGGER RTDMA CH1INT.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_RTDMA_CH2INT</p></td>
+<td><p>241</p></td>
+<td><p>TRIGGER RTDMA CH2INT.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_RTDMA_CH3INT</p></td>
+<td><p>242</p></td>
+<td><p>TRIGGER RTDMA CH3INT.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_RTDMA_CH4INT</p></td>
+<td><p>243</p></td>
+<td><p>TRIGGER RTDMA CH4INT.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_RTDMA_CH5INT</p></td>
+<td><p>244</p></td>
+<td><p>TRIGGER RTDMA CH5INT.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_RTDMA_CH6INT</p></td>
+<td><p>245</p></td>
+<td><p>TRIGGER RTDMA CH6INT.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_RTDMA_CH7INT</p></td>
+<td><p>246</p></td>
+<td><p>TRIGGER RTDMA CH7INT.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_RTDMA_CH8INT</p></td>
+<td><p>247</p></td>
+<td><p>TRIGGER RTDMA CH8INT.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_TRIGGER_RTDMA_CH9INT</p></td>
+<td><p>248</p></td>
+<td><p>TRIGGER RTDMA CH9INT.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_TRIGGER_RTDMA_CH10INT</p></td>
+<td><p>249</p></td>
+<td><p>TRIGGER RTDMA CH10INT.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Peripheral event trigger source select type.</p>
+</section>
+<section id="typedef-cdd-dma-notifytype">
+<h3><span class="section-number">7.11.1.22. </span>typedef Cdd_Dma_NotifyType<a class="headerlink" href="#typedef-cdd-dma-notifytype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_Dma_NotifyType</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">uint8</span><span class="w"> </span><span class="n">Channel_Index</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Channel notification callback function pointer.</p>
+</section>
+<section id="typedef-cdd-dma-mpuchmasktype">
+<h3><span class="section-number">7.11.1.23. </span>typedef Cdd_Dma_MpuChmaskType<a class="headerlink" href="#typedef-cdd-dma-mpuchmasktype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint16</span><span class="w"> </span><span class="n">Cdd_Dma_MpuChmaskType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+MPU Region channel mask parameter.</p>
+</section>
+</section>
+<section id="structures">
+<h2><span class="section-number">7.11.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__ChannelStatus.html"><span class="std std-doc">Cdd_Dma_ChannelStatus</span></a></strong></p></td>
+<td><p>DMA Channel status structure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__ChannelParamsType.html"><span class="std std-doc">Cdd_Dma_ChannelParamsType</span></a></strong></p></td>
+<td><p>DMA Channel properties.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__TransferSizeType.html"><span class="std std-doc">Cdd_Dma_TransferSizeType</span></a></strong></p></td>
+<td><p>Burst and Transfer size parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__TransferSrcStepType.html"><span class="std std-doc">Cdd_Dma_TransferSrcStepType</span></a></strong></p></td>
+<td><p>Source burst step and transfer step parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__TransferDestStepType.html"><span class="std std-doc">Cdd_Dma_TransferDestStepType</span></a></strong></p></td>
+<td><p>Destination burst step and transfer step parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__TransferSrcWrapType.html"><span class="std std-doc">Cdd_Dma_TransferSrcWrapType</span></a></strong></p></td>
+<td><p>Source wrap size, wrap step and beginning address parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__TransferDestWrapType.html"><span class="std std-doc">Cdd_Dma_TransferDestWrapType</span></a></strong></p></td>
+<td><p>Destination wrap size, wrap step and beginning address parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__TransferParamsType.html"><span class="std std-doc">Cdd_Dma_TransferParamsType</span></a></strong></p></td>
+<td><p>DMA transfer properties.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__MpuRegionCfgType.html"><span class="std std-doc">Cdd_Dma_MpuRegionCfgType</span></a></strong></p></td>
+<td><p>DMA Channel configuration structure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__HwInstanceCfgType.html"><span class="std std-doc">Cdd_Dma_HwInstanceCfgType</span></a></strong></p></td>
+<td><p>CDD DMA config type.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__ChannelCfgType.html"><span class="std std-doc">Cdd_Dma_ChannelCfgType</span></a></strong></p></td>
+<td><p>CDD DMA channel config type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__ConfigType.html"><span class="std std-doc">Cdd_Dma_ConfigType</span></a></strong></p></td>
+<td><p>CDD DMA config type.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="defines">
+<h2><span class="section-number">7.11.3. </span>Defines<a class="headerlink" href="#defines" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA_SW_MAJOR_VERSION</p></td>
+<td><p>Driver Implementation Major Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SW_MINOR_VERSION</p></td>
+<td><p>Driver Implementation Minor Version.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_SW_PATCH_VERSION</p></td>
+<td><p>Driver Implementation Patch Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_AR_RELEASE_MAJOR_VERSION</p></td>
+<td><p>AUTOSAR Major version specification implemented by CDD_DMA Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_AR_RELEASE_MINOR_VERSION</p></td>
+<td><p>AUTOSAR Minor version specification implemented by CDD_DMA Driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_AR_RELEASE_REVISION_VERSION</p></td>
+<td><p>AUTOSAR Patch version specification implemented by CDD_DMA Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_VENDOR_ID</p></td>
+<td><p>Texas Instruments Vendor ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_MODULE_ID</p></td>
+<td><p>CDD DMA Driver Module ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_INSTANCE_ID</p></td>
+<td><p>CDD DMA Instance ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_E_UNINIT</p></td>
+<td><p>API service used without module initialization.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_E_ALREADY_INITIALIZED</p></td>
+<td><p>API called for reinitialization of already initialized DMA driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_E_INIT_FAILED</p></td>
+<td><p>Initialization API failed.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_E_PARAM_POINTER</p></td>
+<td><p>API service called with invalid parameter pointer.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_E_PARAM_VALUE</p></td>
+<td><p>API service called with invalid parameter pointer.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_E_BUSY</p></td>
+<td><p>API service called during ongoing process.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_E_PERIPHERAL_EVENT_TRIGGER_DISABLED</p></td>
+<td><p>API service called to force or clear peripheral event trigger when peripheral event trigger is disabled.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_E_PERIPHERAL_EVENT_TRIGGER_ENABLED</p></td>
+<td><p>API service called to enable peripheral event trigger when peripheral event trigger is already enabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_E_ALREADY_RUNNING</p></td>
+<td><p>API service called to start a channel when the channel is already running.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_E_ALREADY_HALTED</p></td>
+<td><p>API service called to halt a channel when the channel already halted.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_E_DMACFG_COMMITTED</p></td>
+<td><p>API service called to modify DMA configurable properties when DMA configurable properties are committed.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_E_CHCFG_COMMITTED</p></td>
+<td><p>API service called to modify DMA channel properties when DMA channel properties are committed.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_E_MPUR_COMMITTED</p></td>
+<td><p>API service called to modify DMA MPU region properties when DMA MPU region properties are committed.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_E_MPUCFG_COMMITTED</p></td>
+<td><p>API service called to enable or disable MPU when DMA MPU configuration are committed.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_E_NO_OVERFLOW</p></td>
+<td><p>API service called to clear error flag when no overflow is detected.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_E_NO_TRIGGER</p></td>
+<td><p>API service called to clear peripheral event trigger when no event trigger exists.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_GET_VERSION_INFO</p></td>
+<td><p>Cdd_Dma_GetVersionInfo() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_SID_INIT</p></td>
+<td><p>Cdd_Dma_Init() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_DEINIT</p></td>
+<td><p>Cdd_Dma_DeInit() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_SID_SET_CHANNEL_PROPERTIES</p></td>
+<td><p>Cdd_Dma_SetChannelProperties() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_SET_TRANSFER_PROPERTIES</p></td>
+<td><p>Cdd_Dma_SetTransferProperties() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_SID_SET_TRANSFER_SIZE</p></td>
+<td><p>Cdd_Dma_SetTransferSize() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_SET_TRANSFER_SRC_PROPERTIES</p></td>
+<td><p>Cdd_Dma_SetTransferSrcProperties() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_SID_SET_TRANSFER_DEST_PROPERTIES</p></td>
+<td><p>Cdd_Dma_SetTransferDestProperties() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_SET_TRANSFER_SRC_ADDRESS</p></td>
+<td><p>Cdd_Dma_SetTransferSrcAddress() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_SID_SET_TRANSFER_DEST_ADDRESS</p></td>
+<td><p>Cdd_Dma_SetTransferDestAddress() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_SET_TRANSFER_WRAP_SRC_PROPERTIES</p></td>
+<td><p>Cdd_Dma_SetTransferWrapSrcProperties() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_SID_SET_TRANSFER_WRAP_DEST_PROPERTIES</p></td>
+<td><p>Cdd_Dma_SetTransferWrapDestProperties() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_ENABLE_PERIPHERAL_EVENT_TRIGGER</p></td>
+<td><p>Cdd_Dma_EnablePeripheralEventTrigger() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_SID_DISABLE_PERIPHERAL_EVENT_TRIGGER</p></td>
+<td><p>Cdd_Dma_DisablePeripheralEventTrigger() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_SET_PERIPHERAL_EVENT_TRIGGER_SOURCE</p></td>
+<td><p>Cdd_Dma_SetPeripheralEventTriggerSource() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_SID_START_CHANNEL_TRANSFER</p></td>
+<td><p>Cdd_Dma_StartChannelTransfer() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_STOP_CHANNEL_TRANSFER</p></td>
+<td><p>Cdd_Dma_StopChannelTransfer() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_SID_FORCE_PERIPHERAL_EVENT_TRIGGER</p></td>
+<td><p>Cdd_Dma_ForcePeripheralEventTrigger() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_CLEAR_PERIPHERAL_EVENT_TRIGGER</p></td>
+<td><p>Cdd_Dma_ClearPeripheralEventTrigger() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_SID_TRIGGER_SOFT_RESET</p></td>
+<td><p>Cdd_Dma_TriggerSoftReset() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_SET_CHANNEL_PRIORITY</p></td>
+<td><p>Cdd_Dma_SetChannelPriority() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_SID_GET_CHANNEL_STATUS</p></td>
+<td><p>Cdd_Dma_GetChannelStatus() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_CLEAR_ERROR_FLAG</p></td>
+<td><p>Cdd_Dma_ClearErrorFlag() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_SID_SET_CHANNEL_COMMIT</p></td>
+<td><p>Cdd_Dma_SetChannelCommit() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_SET_DMACFG_COMMIT</p></td>
+<td><p>Cdd_Dma_SetDmaCfgCommit() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA_SID_SET_MPUR_COMMIT</p></td>
+<td><p>Cdd_Dma_SetMpuRegionCommit() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_SET_MPUCFG_COMMIT</p></td>
+<td><p>Cdd_Dma_SetMpuCfgCommit() API Service ID.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2><span class="section-number">7.11.4. </span>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Return type</p></th>
+<th class="head"><p>Function Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-getversioninfo"><span class="std std-ref">Cdd_Dma_GetVersionInfo</span></a></strong>(Std_VersionInfoType * VersionInfoPtr)</p></td>
+<td><p>Service to provide the version information of Cdd Dma module.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-init"><span class="std std-ref">Cdd_Dma_Init</span></a></strong>(const <a class="reference internal" href="../Classes/structCdd__Dma__ConfigType.html"><span class="std std-doc">Cdd_Dma_ConfigType</span></a> * ConfigPtr)</p></td>
+<td><p>Service to initialize CDD DMA driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-deinit"><span class="std std-ref">Cdd_Dma_DeInit</span></a></strong>(void )</p></td>
+<td><p>Service to deinitialize CDD DMA driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-setchannelproperties"><span class="std std-ref">Cdd_Dma_SetChannelProperties</span></a></strong>(uint8 ChannelId, <a class="reference internal" href="../Classes/structCdd__Dma__ChannelParamsType.html"><span class="std std-doc">Cdd_Dma_ChannelParamsType</span></a> ChannelProperties)</p></td>
+<td><p>Service to set the channel properties of a DMA channel.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-settransferproperties"><span class="std std-ref">Cdd_Dma_SetTransferProperties</span></a></strong>(uint8 ChannelId, <a class="reference internal" href="../Classes/structCdd__Dma__TransferParamsType.html"><span class="std std-doc">Cdd_Dma_TransferParamsType</span></a> TransferProperties)</p></td>
+<td><p>Service to set the transfer properties of a DMA channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-settransfersize"><span class="std std-ref">Cdd_Dma_SetTransferSize</span></a></strong>(uint8 ChannelId, uint8 BurstSize, uint16 TransferSize)</p></td>
+<td><p>Service to set the burst size and transfer size of a DMA channel.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-settransfersrcproperties"><span class="std std-ref">Cdd_Dma_SetTransferSrcProperties</span></a></strong>(uint8 ChannelId, sint16 SrcBurstStep, sint16 SrcTransferStep)</p></td>
+<td><p>Service to set the transfer source properties : source burst step, source transfer step of a DMA channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-settransferdestproperties"><span class="std std-ref">Cdd_Dma_SetTransferDestProperties</span></a></strong>(uint8 ChannelId, sint16 DestBurstStep, sint16 DestTransferStep)</p></td>
+<td><p>Service to set the transfer destination properties : destination burst step, destination transfer step of a DMA channel.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-settransfersrcaddress"><span class="std std-ref">Cdd_Dma_SetTransferSrcAddress</span></a></strong>(uint8 ChannelId, uint32 SrcAddress)</p></td>
+<td><p>Service to set the transfer source address of a DMA channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-settransferdestaddress"><span class="std std-ref">Cdd_Dma_SetTransferDestAddress</span></a></strong>(uint8 ChannelId, uint32 DestAddress)</p></td>
+<td><p>Service to set the transfer destination address of a DMA channel.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-settransferwrapsrcproperties"><span class="std std-ref">Cdd_Dma_SetTransferWrapSrcProperties</span></a></strong>(uint8 ChannelId, uint16 SrcWrapSize, sint16 SrcWrapStep, uint32 SrcBegAddress)</p></td>
+<td><p>Service to set the transfer source wrap properties of a DMA channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-settransferwrapdestproperties"><span class="std std-ref">Cdd_Dma_SetTransferWrapDestProperties</span></a></strong>(uint8 ChannelId, uint16 DestWrapSize, sint16 DestWrapStep, uint32 DestBegAddress)</p></td>
+<td><p>Service to set the transfer destination wrap properties of a DMA channel.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-enableperipheraleventtrigger"><span class="std std-ref">Cdd_Dma_EnablePeripheralEventTrigger</span></a></strong>(uint8 ChannelId)</p></td>
+<td><p>Service to enable peripheral event triggers of a DMA channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-disableperipheraleventtrigger"><span class="std std-ref">Cdd_Dma_DisablePeripheralEventTrigger</span></a></strong>(uint8 ChannelId)</p></td>
+<td><p>Service to disable peripheral event triggers of a DMA channel.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-setperipheraleventtriggersource"><span class="std std-ref">Cdd_Dma_SetPeripheralEventTriggerSource</span></a></strong>(uint8 ChannelId, <a class="reference internal" href="#enum-cdd-dma-perievttriggersrctype"><span class="std std-ref">Cdd_Dma_PeriEvtTriggerSrcType</span></a> PeripheralEventTrigSrc)</p></td>
+<td><p>Service to set the peripheral event trigger source for a DMA channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-startchanneltransfer"><span class="std std-ref">Cdd_Dma_StartChannelTransfer</span></a></strong>(uint8 ChannelId)</p></td>
+<td><p>Service to start or enable a DMA channel.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-stopchanneltransfer"><span class="std std-ref">Cdd_Dma_StopChannelTransfer</span></a></strong>(uint8 ChannelId)</p></td>
+<td><p>Service to stop or disable a DMA channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-forceperipheraleventtrigger"><span class="std std-ref">Cdd_Dma_ForcePeripheralEventTrigger</span></a></strong>(uint8 ChannelId)</p></td>
+<td><p>Service to force the peripheral event trigger for the channel.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-clearperipheraleventtrigger"><span class="std std-ref">Cdd_Dma_ClearPeripheralEventTrigger</span></a></strong>(uint8 ChannelId)</p></td>
+<td><p>Service to clear the peripheral event trigger for the channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-triggersoftreset"><span class="std std-ref">Cdd_Dma_TriggerSoftReset</span></a></strong>(uint8 ChannelId)</p></td>
+<td><p>Service to trigger a soft reset for the channel.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-setchannelpriority"><span class="std std-ref">Cdd_Dma_SetChannelPriority</span></a></strong>(uint8 ChannelId, <a class="reference internal" href="#enum-cdd-dma-channelpriority"><span class="std std-ref">Cdd_Dma_ChannelPriority</span></a> Priority)</p></td>
+<td><p>Service to set channel priority.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-getchannelstatus"><span class="std std-ref">Cdd_Dma_GetChannelStatus</span></a></strong>(uint8 ChannelId, <a class="reference internal" href="../Classes/structCdd__Dma__ChannelStatus.html"><span class="std std-doc">Cdd_Dma_ChannelStatus</span></a> * ChannelStatus)</p></td>
+<td><p>Service to get the channel status : peripheral event trigger status, transfer status, burst status, run status and overflow status.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-clearerrorflag"><span class="std std-ref">Cdd_Dma_ClearErrorFlag</span></a></strong>(uint8 ChannelId)</p></td>
+<td><p>Service to clear the overflow error flag for a DMA channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-setdmacfgcommit"><span class="std std-ref">Cdd_Dma_SetDmaCfgCommit</span></a></strong>(uint8 HwInstanceId)</p></td>
+<td><p>Service to commit DMA configurable properties such as priority scheme, channel priority and emulation mode for a specific instance.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-setchannelcommit"><span class="std std-ref">Cdd_Dma_SetChannelCommit</span></a></strong>(uint8 ChannelId)</p></td>
+<td><p>Service to commit DMA channel configurations for a specific channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-setmpucfgcommit"><span class="std std-ref">Cdd_Dma_SetMpuCfgCommit</span></a></strong>(uint8 HwInstanceId)</p></td>
+<td><p>Service to commit Mpu configuration: MPUEN for a specific instance.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-setmpuregioncommit"><span class="std std-ref">Cdd_Dma_SetMpuRegionCommit</span></a></strong>(uint16 MpuRegionId)</p></td>
+<td><p>Service to commit Mpu Region configurations for a specific MPU region.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="function-cdd-dma-getversioninfo">
+<h3><span class="section-number">7.11.4.1. </span>function Cdd_Dma_GetVersionInfo<a class="headerlink" href="#function-cdd-dma-getversioninfo" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Dma_GetVersionInfo</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Std_VersionInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">VersionInfoPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to provide the version information of Cdd Dma module.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>VersionInfoPtr</strong> is the pointer to CDD DMA driver version information.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: This API is available only if CDD_DMA_GET_VERSION_INFO_API is STD_ON</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-init">
+<h3><span class="section-number">7.11.4.2. </span>function Cdd_Dma_Init<a class="headerlink" href="#function-cdd-dma-init" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Dma_Init</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Cdd_Dma_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ConfigPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to initialize CDD DMA driver.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ConfigPtr</strong> is the NULL pointer for pre compile variant from plugin</p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: Preconditions - Driver not already initialized</p>
+<p><strong>Postcondition</strong>: Postconditions - Driver in initialized state</p>
+</section>
+<section id="function-cdd-dma-deinit">
+<h3><span class="section-number">7.11.4.3. </span>function Cdd_Dma_DeInit<a class="headerlink" href="#function-cdd-dma-deinit" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Dma_DeInit</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to deinitialize CDD DMA driver.</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-setchannelproperties">
+<h3><span class="section-number">7.11.4.4. </span>function Cdd_Dma_SetChannelProperties<a class="headerlink" href="#function-cdd-dma-setchannelproperties" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetChannelProperties</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_Dma_ChannelParamsType</span><span class="w"> </span><span class="n">ChannelProperties</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to set the channel properties of a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which the channel properties are configured</p></li>
+<li><p><strong>ChannelProperties</strong> Structure of type Cdd_Dma_ChannelParamsType which contains the channel properties to be set.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully set channel properties
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to set channel properties
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of setting channel properties</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-settransferproperties">
+<h3><span class="section-number">7.11.4.5. </span>function Cdd_Dma_SetTransferProperties<a class="headerlink" href="#function-cdd-dma-settransferproperties" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetTransferProperties</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_Dma_TransferParamsType</span><span class="w"> </span><span class="n">TransferProperties</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to set the transfer properties of a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which the transfer properties are configured</p></li>
+<li><p><strong>TransferProperties</strong> Structure of type Cdd_Dma_TransferParamsType which contains the transfer properties to be set</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully set transfer properties
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to set transfer properties
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of setting transfer properties</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-settransfersize">
+<h3><span class="section-number">7.11.4.6. </span>function Cdd_Dma_SetTransferSize<a class="headerlink" href="#function-cdd-dma-settransfersize" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetTransferSize</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">BurstSize</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">TransferSize</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to set the burst size and transfer size of a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which the transfer size properties are configured</p></li>
+<li><p><strong>BurstSize</strong> Number of words transferred per burst</p></li>
+<li><p><strong>TransferSize</strong> Total number of bursts in the transfer</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully set burst size and transfer size
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to set burst size and transfer size
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of setting burst size and transfer size</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-settransfersrcproperties">
+<h3><span class="section-number">7.11.4.7. </span>function Cdd_Dma_SetTransferSrcProperties<a class="headerlink" href="#function-cdd-dma-settransfersrcproperties" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetTransferSrcProperties</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">sint16</span><span class="w"> </span><span class="n">SrcBurstStep</span><span class="p">,</span>
+<span class="w">    </span><span class="n">sint16</span><span class="w"> </span><span class="n">SrcTransferStep</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to set the transfer source properties : source burst step, source transfer step of a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which the source burst step and source transfer step properties are configured</p></li>
+<li><p><strong>SrcBurstStep</strong> Source burst step</p></li>
+<li><p><strong>SrcTransferStep</strong> Source transfer step</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully set transfer source properties
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to set transfer source properties
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of setting transfer source properties : source burst step, source transfer step</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-settransferdestproperties">
+<h3><span class="section-number">7.11.4.8. </span>function Cdd_Dma_SetTransferDestProperties<a class="headerlink" href="#function-cdd-dma-settransferdestproperties" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetTransferDestProperties</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">sint16</span><span class="w"> </span><span class="n">DestBurstStep</span><span class="p">,</span>
+<span class="w">    </span><span class="n">sint16</span><span class="w"> </span><span class="n">DestTransferStep</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to set the transfer destination properties : destination burst step, destination transfer step of a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which the destination burst step and destination transfer step properties are configured</p></li>
+<li><p><strong>DestBurstStep</strong> Destination burst step</p></li>
+<li><p><strong>DestTransferStep</strong> Destination transfer step</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully set transfer destination properties
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to set transfer destination properties
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of setting transfer destination properties : destination burst step, destination transfer step</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-settransfersrcaddress">
+<h3><span class="section-number">7.11.4.9. </span>function Cdd_Dma_SetTransferSrcAddress<a class="headerlink" href="#function-cdd-dma-settransfersrcaddress" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetTransferSrcAddress</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">SrcAddress</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to set the transfer source address of a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which the source address is configured</p></li>
+<li><p><strong>SrcAddress</strong> Transfer source address</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully set transfer source address.
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to set source address.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of setting transfer source address</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-settransferdestaddress">
+<h3><span class="section-number">7.11.4.10. </span>function Cdd_Dma_SetTransferDestAddress<a class="headerlink" href="#function-cdd-dma-settransferdestaddress" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetTransferDestAddress</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">DestAddress</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to set the transfer destination address of a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which the destination address is configured</p></li>
+<li><p><strong>DestAddress</strong> Transfer destination address</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully set transfer destination address
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to set destination address
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of setting transfer destination address</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-settransferwrapsrcproperties">
+<h3><span class="section-number">7.11.4.11. </span>function Cdd_Dma_SetTransferWrapSrcProperties<a class="headerlink" href="#function-cdd-dma-settransferwrapsrcproperties" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetTransferWrapSrcProperties</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">SrcWrapSize</span><span class="p">,</span>
+<span class="w">    </span><span class="n">sint16</span><span class="w"> </span><span class="n">SrcWrapStep</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">SrcBegAddress</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to set the transfer source wrap properties of a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which the source wrap properties are configured</p></li>
+<li><p><strong>SrcWrapSize</strong> Source wrap size</p></li>
+<li><p><strong>SrcWrapStep</strong> Source wrap step</p></li>
+<li><p><strong>SrcBegAddress</strong> Source beginning address</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully set source wrap properties
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to set source wrap properties
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of setting source wrap properties</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-settransferwrapdestproperties">
+<h3><span class="section-number">7.11.4.12. </span>function Cdd_Dma_SetTransferWrapDestProperties<a class="headerlink" href="#function-cdd-dma-settransferwrapdestproperties" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetTransferWrapDestProperties</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">DestWrapSize</span><span class="p">,</span>
+<span class="w">    </span><span class="n">sint16</span><span class="w"> </span><span class="n">DestWrapStep</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">DestBegAddress</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to set the transfer destination wrap properties of a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which the destination wrap properties are configured</p></li>
+<li><p><strong>DestWrapSize</strong> Destination wrap size</p></li>
+<li><p><strong>DestWrapStep</strong> Destination wrap step</p></li>
+<li><p><strong>DestBegAddress</strong> Destination beginning address</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully set destination wrap properties
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to set destination wrap properties
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of setting destination wrap properties</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-enableperipheraleventtrigger">
+<h3><span class="section-number">7.11.4.13. </span>function Cdd_Dma_EnablePeripheralEventTrigger<a class="headerlink" href="#function-cdd-dma-enableperipheraleventtrigger" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_EnablePeripheralEventTrigger</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to enable peripheral event triggers of a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which trigger shall be enabled</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully enabled peripheral event trigger
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to enable peripheral event trigger
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of peripheral event trigger enabling</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-disableperipheraleventtrigger">
+<h3><span class="section-number">7.11.4.14. </span>function Cdd_Dma_DisablePeripheralEventTrigger<a class="headerlink" href="#function-cdd-dma-disableperipheraleventtrigger" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_DisablePeripheralEventTrigger</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to disable peripheral event triggers of a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which trigger shall be disabled</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully disabled peripheral event trigger
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to disabled peripheral event trigger
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of peripheral event trigger disabling</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-setperipheraleventtriggersource">
+<h3><span class="section-number">7.11.4.15. </span>function Cdd_Dma_SetPeripheralEventTriggerSource<a class="headerlink" href="#function-cdd-dma-setperipheraleventtriggersource" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetPeripheralEventTriggerSource</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_Dma_PeriEvtTriggerSrcType</span><span class="w"> </span><span class="n">PeripheralEventTrigSrc</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to set the peripheral event trigger source for a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which trigger source shall be set</p></li>
+<li><p><strong>PeripheralEventTrigSrc</strong> : Peripheral event trigger source value</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully set peripheral event trigger source
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to set peripheral event trigger source
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of setting peripheral event trigger source</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-startchanneltransfer">
+<h3><span class="section-number">7.11.4.16. </span>function Cdd_Dma_StartChannelTransfer<a class="headerlink" href="#function-cdd-dma-startchanneltransfer" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_StartChannelTransfer</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to start or enable a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel which shall be enabled</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully enabled the DMA channel
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to enable the DMA channel
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of enabling the DMA channel</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-stopchanneltransfer">
+<h3><span class="section-number">7.11.4.17. </span>function Cdd_Dma_StopChannelTransfer<a class="headerlink" href="#function-cdd-dma-stopchanneltransfer" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_StopChannelTransfer</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to stop or disable a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which transfer shall be stopped</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully disabled the DMA channel
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to disable the DMA channel
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of stoping the DMA channel</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-forceperipheraleventtrigger">
+<h3><span class="section-number">7.11.4.18. </span>function Cdd_Dma_ForcePeripheralEventTrigger<a class="headerlink" href="#function-cdd-dma-forceperipheraleventtrigger" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_ForcePeripheralEventTrigger</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to force the peripheral event trigger for the channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the DMA channel for which trigger shall be forced</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully forced trigger for the DMA channel
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to force trigger for the DMA channel
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of forcing DMA channel trigger</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-clearperipheraleventtrigger">
+<h3><span class="section-number">7.11.4.19. </span>function Cdd_Dma_ClearPeripheralEventTrigger<a class="headerlink" href="#function-cdd-dma-clearperipheraleventtrigger" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_ClearPeripheralEventTrigger</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to clear the peripheral event trigger for the channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which trigger shall be cleared</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully cleared trigger for the DMA channel
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to clear trigger for the DMA channel
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of clearing DMA channel trigger</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-triggersoftreset">
+<h3><span class="section-number">7.11.4.20. </span>function Cdd_Dma_TriggerSoftReset<a class="headerlink" href="#function-cdd-dma-triggersoftreset" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_TriggerSoftReset</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to trigger a soft reset for the channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which for which soft trigger shall be triggered</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully triggered soft reset for the DMA channel
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to trigger soft reset for the DMA channel
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of trigerring soft reset</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-setchannelpriority">
+<h3><span class="section-number">7.11.4.21. </span>function Cdd_Dma_SetChannelPriority<a class="headerlink" href="#function-cdd-dma-setchannelpriority" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetChannelPriority</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_Dma_ChannelPriority</span><span class="w"> </span><span class="n">Priority</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to set channel priority.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which priority shall be set</p></li>
+<li><p><strong>Priority</strong> : Channel priority to be assigned</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully set channel priority for the DMA channel
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to set channel priority for the DMA channel
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of setting channel priority</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-getchannelstatus">
+<h3><span class="section-number">7.11.4.22. </span>function Cdd_Dma_GetChannelStatus<a class="headerlink" href="#function-cdd-dma-getchannelstatus" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Dma_GetChannelStatus</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_Dma_ChannelStatus</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ChannelStatus</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to get the channel status : peripheral event trigger status, transfer status, burst status, run status and overflow status.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which the status shall be read</p></li>
+<li><p><strong>ChannelStatus</strong> : Pointer to the structure of type Cdd_Dma_ChannelStatus where the channel status will be copied</p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-clearerrorflag">
+<h3><span class="section-number">7.11.4.23. </span>function Cdd_Dma_ClearErrorFlag<a class="headerlink" href="#function-cdd-dma-clearerrorflag" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_ClearErrorFlag</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to clear the overflow error flag for a DMA channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which the overflow error needs to be cleared</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully cleared overflow error flag
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to clear overflow error flag
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of clearing the overflow error flag</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-setdmacfgcommit">
+<h3><span class="section-number">7.11.4.24. </span>function Cdd_Dma_SetDmaCfgCommit<a class="headerlink" href="#function-cdd-dma-setdmacfgcommit" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetDmaCfgCommit</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">HwInstanceId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to commit DMA configurable properties such as priority scheme, channel priority and emulation mode for a specific instance.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>HwInstanceId</strong> Symbolic name of the DMA hardware instance</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully commited DMA configurations
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to commit DMA configurations
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of commiting DMA configurations</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-setchannelcommit">
+<h3><span class="section-number">7.11.4.25. </span>function Cdd_Dma_SetChannelCommit<a class="headerlink" href="#function-cdd-dma-setchannelcommit" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetChannelCommit</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to commit DMA channel configurations for a specific channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> Symbolic name of the DMA channel</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully commited DMA channel configurations
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to commit DMA channel configurations
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of commiting DMA channel configurations</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-setmpucfgcommit">
+<h3><span class="section-number">7.11.4.26. </span>function Cdd_Dma_SetMpuCfgCommit<a class="headerlink" href="#function-cdd-dma-setmpucfgcommit" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetMpuCfgCommit</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">HwInstanceId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to commit Mpu configuration: MPUEN for a specific instance.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>HwInstanceId</strong> Symbolic name of the DMA hardware instance</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully commited Mpu configuration
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to commit Mpu configuration
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of commiting Mpu configuration</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-setmpuregioncommit">
+<h3><span class="section-number">7.11.4.27. </span>function Cdd_Dma_SetMpuRegionCommit<a class="headerlink" href="#function-cdd-dma-setmpuregioncommit" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetMpuRegionCommit</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">MpuRegionId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to commit Mpu Region configurations for a specific MPU region.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>MpuRegionId</strong> Symbolic name of the DMA MPU region</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully commited Mpu Region configuration
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to commit Mpu Region configuration
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of commiting Mpu Region configuration</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="group__CDD__ADC.html" class="btn btn-neutral float-left" title="7.10. CDD_ADC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="group__CDD__ECAP.html" class="btn btn-neutral float-right" title="7.12. CDD_ECAP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2026, Texas Instruments Incorporated.
+        <br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 26.00.00
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

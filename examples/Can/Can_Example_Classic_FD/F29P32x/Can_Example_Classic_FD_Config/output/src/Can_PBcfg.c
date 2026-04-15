@@ -85,11 +85,11 @@
  * AUTOSAR version information check.
  *
  ****************************************************************************/
-#if ((CAN_SW_MAJOR_VERSION != (3U)) || (CAN_SW_MINOR_VERSION != (1U)))
+#if ((CAN_SW_MAJOR_VERSION != (4U)) || (CAN_SW_MINOR_VERSION != (0U)))
     #error "Version numbers of Can_PBcfg.c and Can.h are inconsistent!"
 #endif
 
-#if ((CAN_CFG_MAJOR_VERSION != (3U)) || (CAN_CFG_MINOR_VERSION != (1U)))
+#if ((CAN_CFG_MAJOR_VERSION != (4U)) || (CAN_CFG_MINOR_VERSION != (0U)))
     #error "Version numbers of Can_PBcfg.c and Can_Cfg.h are inconsistent!"
 #endif
 
@@ -122,36 +122,38 @@ CONST(Can_BaudConfigType, CAN_CONFIG_DATA) CanConfigSet_CanController_0_CanContr
 {
     .CanControllerBaudRateConfigID = (uint8 )0U,
     .CanControllerBaudRate = (uint16 )1000U,   /* In kbps */
-    .CanControllerPropSeg = (uint8 )2U,
-    .CanControllerSeg1 = (uint8 )3U,
-    .CanControllerSeg2 = (uint8 )4U,
-    .CanControllerSyncJumpWidth = (uint8 )4U,
-    .BrpValue = (uint16 )20U,
+    .CanControllerPropSeg = (uint8 )1U,
+    .CanControllerSeg1 = (uint8 )9U,
+    .CanControllerSeg2 = (uint8 )9U,
+    .CanControllerSyncJumpWidth = (uint8 )9U,
+    .BrpValue = (uint16 )10U,
     /* Data Phase Baud Rate */
     .BaudFdEnable = TRUE,
     .BaudFdRateConfig = {
         .CanControllerFdBaudRate = (uint16 )5000U, /* In kbps */
-        .CanControllerPropSeg = (uint8 )3U,
-        .CanControllerSeg1 = (uint8 )5U,
+        .CanControllerPropSeg = (uint8 )1U,
+        .CanControllerSeg1 = (uint8 )9U,
 
-        .CanControllerSeg2 = (uint8 )7U,
-        .CanControllerSyncJumpWidth = (uint8 )7U,
-        .BrpValue = (uint16 )3U,
-        .CanControllerTxBitRateSwitch = (boolean )FALSE,
-        .TxDelayCompEnable = (boolean )FALSE,
+        .CanControllerSeg2 = (uint8 )9U,
+        .CanControllerSyncJumpWidth = (uint8 )9U,
+        .BrpValue = (uint16 )2U,
+        .CanControllerTxBitRateSwitch = (boolean )TRUE,
+        .TxDelayCompEnable = (boolean )TRUE,
+        .TxDelayCompFilter = (uint8 )24U,   /* Converted from 120 ns to mtq */
+        .CanControllerTrcvDelayCompensationOffset = (uint8 )30U,   /* Converted from 150 ns to mtq */
     }
 };
 
 /*List of the Baudrate structures */
 
-CONST(Can_BaudConfigType*, CAN_CONFIG_DATA) CanConfigSet_CanController_0_BaudRateConfigList[1]=
+CONSTP2CONST(Can_BaudConfigType, CAN_CONFIG_DATA, CAN_APPL_CONST) CanConfigSet_CanController_0_BaudRateConfigList[1]=
 {
    &CanConfigSet_CanController_0_CanControllerBaudrateConfig_0};
 
 
 /*List of the Controller structures */
 
-CONST(Can_ControllerType*, CAN_CONFIG_DATA) CanConfigSet_CanController_List[]=
+CONSTP2CONST(Can_ControllerType, CAN_CONFIG_DATA, CAN_APPL_CONST) CanConfigSet_CanController_List[]=
 {
     &CanConfigSet_CanController_0};
 
@@ -166,7 +168,7 @@ CONST(Can_HwFilterType, CAN_CONFIG_DATA) CanHardwareObject_1_CanHwFilter_0 =
 
 
 /* List of all standard and extended filter elements per hardware objects */
-CONST(Can_HwFilterType*, CAN_CONFIG_DATA) CanHardwareObject_1_CanHwFilter_List[] =
+CONSTP2CONST(Can_HwFilterType, CAN_CONFIG_DATA, CAN_APPL_CONST) CanHardwareObject_1_CanHwFilter_List[] =
 {
      &CanHardwareObject_1_CanHwFilter_0,
 };
@@ -215,7 +217,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) CanConfigSet_CanHardwareObject_1 =
 
 /* List of the Mailboxes */
 
-CONST(Can_MailboxType*, CAN_CONFIG_DATA) CanConfigSet_CanHardwareObject_List[] =
+CONSTP2CONST(Can_MailboxType, CAN_CONFIG_DATA, CAN_APPL_CONST) CanConfigSet_CanHardwareObject_List[] =
 {
    &CanConfigSet_CanHardwareObject_0,
    &CanConfigSet_CanHardwareObject_1};

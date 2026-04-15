@@ -109,7 +109,7 @@ extern "C" {
 /** \brief Driver Implementation Minor Version. */
 #define CDD_SENT_SW_MINOR_VERSION (1U)
 /** \brief Driver Implementation Patch Version. */
-#define CDD_SENT_SW_PATCH_VERSION (0U)
+#define CDD_SENT_SW_PATCH_VERSION (1U)
 
 /** \brief AUTOSAR major version specification implemented by Cdd_Sent Driver. */
 #define CDD_SENT_AR_RELEASE_MAJOR_VERSION (4U)
@@ -543,49 +543,49 @@ typedef struct Cdd_Sent_ChannelConfigType_s
 typedef struct Cdd_Sent_HWUnitType_s
 {
     /** \brief Cdd_Sent HW unit ID */
-    uint8                        CddSentHWUnitId;
+    uint8                                    CddSentHWUnitId;
     /** \brief Cdd_Sent HW unit Instance */
-    Cdd_SentInstance             CddSentInstance;
+    Cdd_SentInstance                         CddSentInstance;
     /** \brief Cdd_Sent HW unit Base Address */
-    uint32                       CddSentBaseAddress;
+    uint32                                   CddSentBaseAddress;
     /** \brief Clock tick time for the Cdd_Sent data range 3usec -10 usec*/
-    uint32                       CddSentClockTick;
+    uint32                                   CddSentClockTick;
     /** \brief Cdd_Sent CRC type */
-    Cdd_SentCRCType              CddSentCRCType;
+    Cdd_SentCRCType                          CddSentCRCType;
     /** \brief Cdd_Sent CRC Width */
-    Cdd_SentCRCWidth             CddSentCRCWidth;
+    Cdd_SentCRCWidth                         CddSentCRCWidth;
     /** \brief Cdd_Sent CRC status */
-    Cdd_SentCRCWithStatus        CddSentCRCWithStatus;
+    Cdd_SentCRCWithStatus                    CddSentCRCWithStatus;
     /** \brief Cdd_Sent Data Nibbles Count */
-    Cdd_SentDataNibblesCount     CddSentDataNibblesCount;
+    Cdd_SentDataNibblesCount                 CddSentDataNibblesCount;
     /** \brief Cdd_Sent FIFO trigger level */
-    Cdd_SentTriggerLevel         CddSentFIFOTriggerLevel;
+    Cdd_SentTriggerLevel                     CddSentFIFOTriggerLevel;
     /** \brief Cdd_Sent Sync Timeout */
-    uint32                       CddSentSyncTimeout;
+    uint32                                   CddSentSyncTimeout;
     /** \brief Accept Error Data */
-    boolean                      CddSentAcceptErrorData;
+    boolean                                  CddSentAcceptErrorData;
     /** \brief Cdd_Sent Enable Timestamp */
-    boolean                      CddSentEnableTimeStamp;
+    boolean                                  CddSentEnableTimeStamp;
     /** \brief Glitch filter */
-    uint8                        CddSentGlitchFilter;
+    uint8                                    CddSentGlitchFilter;
     /** \brief Cdd_Sent Channel Count */
-    uint8                        CddSentChannelCount;
+    uint8                                    CddSentChannelCount;
     /** \brief Cdd_Sent CONFIG List */
-    Cdd_Sent_ChannelConfigType **CddSentChannelConfigList;
+    const Cdd_Sent_ChannelConfigType *const *CddSentChannelConfigList;
     /** \brief Cdd_Sent MTP */
-    boolean                      CddSentMTP;
+    boolean                                  CddSentMTP;
     /** \brief Cdd_Sent MTP Channel Count */
-    uint8                        CddSentMTPChannelCount;
+    uint8                                    CddSentMTPChannelCount;
     /** \brief Cdd_Sent MTP CONFIG List */
-    Cdd_Sent_MTPConfigType     **CddSentMTPConfigList;
+    const Cdd_Sent_MTPConfigType *const     *CddSentMTPConfigList;
     /** \brief Global wait time */
-    uint16                       CddSentGlobalWaitTime;
+    uint16                                   CddSentGlobalWaitTime;
     /** \brief User call back function */
-    Cdd_Sent_NotifyType          CddSentUserCallbackFunction;
+    Cdd_Sent_NotifyType                      CddSentUserCallbackFunction;
     /** \brief User call back function for Errors */
-    Cdd_Sent_ErrorNotifyType     CddSentUserErrorCallbackFunction;
+    Cdd_Sent_ErrorNotifyType                 CddSentUserErrorCallbackFunction;
     /** \brief Cdd_Sent Data buffer */
-    Cdd_Sent_Data_Buffer         CddSent_Buffer_Data;
+    Cdd_Sent_Data_Buffer                     CddSent_Buffer_Data;
 } Cdd_Sent_HWUnitType;
 
 /** \brief  Configuration per HW unit */

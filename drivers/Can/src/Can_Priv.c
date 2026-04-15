@@ -1555,7 +1555,13 @@ Can_HwUnitSleepPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) contr
     } while (CAN_CLOCK_STOP_ACK != Can_GetClkStopAckPriv(canInstance));
     /* TI_COVERAGE_GAP_STOP */
 
+    /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] The False branch of (FALSE == timeout) is
+     * logically unreachable in tests. The timeout variable is only set to TRUE inside the
+     * TI_COVERAGE_GAP_START block above (CAN_CFG_TIMEOUT_DURATION <= elapsedCount), which
+     * cannot be simulated as it requires a hardware IP error. Therefore the False branch of
+     * this condition (timeout == TRUE path) is a false positive reported by the coverage tool. */
     if (FALSE == timeout)
+    /* TI_COVERAGE_GAP_STOP */
     {
         /* Can is in sleep, report to CanIf */
         controllerObj->canState = CAN_CS_SLEEP;
@@ -1617,7 +1623,13 @@ Can_HwUnitWakeupPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) cont
     } while (CAN_CLOCK_STOP_NO_ACK != Can_GetClkStopAckPriv(canInstance));
     /* TI_COVERAGE_GAP_STOP */
 
+    /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] The False branch of (FALSE == timeout) is
+     * logically unreachable in tests. The timeout variable is only set to TRUE inside the
+     * TI_COVERAGE_GAP_START block above (CAN_CFG_TIMEOUT_DURATION <= elapsedCount), which
+     * cannot be simulated as it requires a hardware IP error. Therefore the False branch of
+     * this condition (timeout == TRUE path) is a false positive reported by the coverage tool. */
     if (FALSE == timeout)
+    /* TI_COVERAGE_GAP_STOP */
     {
         /* Can is stopped, report to CanIf */
         controllerObj->canState = CAN_CS_STOPPED;
@@ -2356,9 +2368,14 @@ Can_ReadMsgRamPriv(uint32 baseAddr, Can_MemType memType, uint8 bufNum,
     elemAddr += ((uint32)4U);
     loopCnt   = ((uint32)0U);
     /* Reading words from message RAM and forming payload bytes out of it */
+    /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] False branch of second while condition unreachable:
+     * first condition (4U <= dataSize-loopCnt) already implies (0U != dataSize-loopCnt) */
     while ((4U <= (((uint32)Can_DataSize[elem->dataLength]) - loopCnt)) &&
            (0U != (((uint32)Can_DataSize[elem->dataLength]) - loopCnt)))
+    /* TI_COVERAGE_GAP_STOP */
     {
+        /* TI_COVERAGE_GAP_START [Branch Coverage] False branch unreachable: loopCnt is always in
+         * {0,4,...,60} inside the loop body (max dataSize=64), so loopCnt+3 <= 63 < 64 always */
         if ((loopCnt + (uint8)3U) < (uint8)64U)
         {
             regVal                                = MCAL_LIB_REG_READ32(baseAddr + elemAddr);
@@ -2369,6 +2386,7 @@ Can_ReadMsgRamPriv(uint32 baseAddr, Can_MemType memType, uint8 bufNum,
             elemAddr                             += ((uint32)4U);
             loopCnt                              += ((uint32)4U);
         }
+        /* TI_COVERAGE_GAP_STOP */
     }
 
     /* Reading remaining bytes from message RAM */
@@ -3407,12 +3425,14 @@ static FUNC(void, CAN_CODE)
                 /* Store the message in Rx FIFO 0 */
                 msgRamConfig->stdMsgIDFilterList[idx].sfec = MCAN_MSGRAM_RX_FIFO_0;
                 msgRamConfig->configParams.rxFIFO0size     = mailboxCfg->CanHwObjectCount;
+                msgRamConfig->canRxFifoToHohMapping[0U]    = mailboxCfg->CanObjectId;
             }
             else
             {
                 /* Store the message in Rx FIFO 1 */
                 msgRamConfig->stdMsgIDFilterList[idx].sfec = MCAN_MSGRAM_RX_FIFO_1;
                 msgRamConfig->configParams.rxFIFO1size     = mailboxCfg->CanHwObjectCount;
+                msgRamConfig->canRxFifoToHohMapping[1U]    = mailboxCfg->CanObjectId;
             }
             /* Filter type configuration */
             msgRamConfig->stdMsgIDFilterList[idx].sft =
@@ -3438,12 +3458,14 @@ static FUNC(void, CAN_CODE)
                 /* Store the message in Rx FIFO 0 */
                 msgRamConfig->extMsgIDFilterList[idx].efec = MCAN_MSGRAM_RX_FIFO_0;
                 msgRamConfig->configParams.rxFIFO0size     = mailboxCfg->CanHwObjectCount;
+                msgRamConfig->canRxFifoToHohMapping[0U]    = mailboxCfg->CanObjectId;
             }
             else
             {
                 /* Store the message in Rx FIFO 1 */
                 msgRamConfig->extMsgIDFilterList[idx].efec = MCAN_MSGRAM_RX_FIFO_1;
                 msgRamConfig->configParams.rxFIFO1size     = mailboxCfg->CanHwObjectCount;
+                msgRamConfig->canRxFifoToHohMapping[1U]    = mailboxCfg->CanObjectId;
             }
 
             /* Filter type configuration */
@@ -3454,7 +3476,6 @@ static FUNC(void, CAN_CODE)
         }
     }
     msgRamConfig->rxFIFONum++;
-    msgRamConfig->canRxFifoToHohMapping[mailboxCfg->HwHandle] = mailboxCfg->CanObjectId;
 }
 
 static FUNC(void, CAN_CODE)

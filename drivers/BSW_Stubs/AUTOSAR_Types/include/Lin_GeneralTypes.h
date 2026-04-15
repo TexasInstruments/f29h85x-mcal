@@ -66,6 +66,8 @@
  *  Generator:    None
  *
  *  Description:  This file contains the LIN MCAL driver private API's definitions specific to device
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *********************************************************************************************************************/
 /*********************************************************************************************************************
  * Header Files

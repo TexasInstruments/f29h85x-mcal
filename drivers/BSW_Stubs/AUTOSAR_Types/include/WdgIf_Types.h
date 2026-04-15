@@ -66,6 +66,8 @@
  *  Generator:  None
  *
  *  Description:  Template file to the types referenced by Wdg MCAL driver
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *********************************************************************************************************************/
 #ifndef WDGIF_TYPES_H
 #define WDGIF_TYPES_H

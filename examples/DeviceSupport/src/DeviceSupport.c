@@ -97,6 +97,19 @@
  *********************************************************************************************************************/
 //**************************************************************************************************
 //
+//! Flash FRI IDs - local rename to avoid conflict with SDK flash.h Flash_FRI
+//
+//**************************************************************************************************
+typedef enum
+{
+    FLS_FLASH_FRI1 = 0,
+    FLS_FLASH_FRI2 = 1,
+    FLS_FLASH_FRI3 = 2,
+    FLS_FLASH_FRI4 = 3
+} Fls_Flash_FRI;
+
+//**************************************************************************************************
+//
 //! Values that can be passed as parameter \e cpu in all the functions
 //
 //**************************************************************************************************
@@ -223,7 +236,8 @@ static inline boolean DeviceSupport_IsCPU3Reset();
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((section(".TI.ramfunc.link2"))) static inline void Flash_ConfigFRI(Flash_FRI friID, uint32 configFlags)
+__attribute__((section(".TI.ramfunc.link2"))) static inline void Flash_ConfigFRI(Fls_Flash_FRI friID,
+                                                                                 uint32        configFlags)
 {
     //
     // Set the FRI options.
@@ -326,14 +340,14 @@ __attribute__((section(".TI.ramfunc.link2"))) static void Flash_InitModule(uint1
         //
         // Disable data cache, code cache, prefetch, and data preread before changing wait states
         //
-        Flash_ConfigFRI(FLASH_FRI1, FLASH_DATAPREREAD_DISABLE | FLASH_CODECACHE_DISABLE | FLASH_DATACACHE_DISABLE |
-                                        FLASH_PREFETCH_DISABLE);
-        Flash_ConfigFRI(FLASH_FRI2, FLASH_DATAPREREAD_DISABLE | FLASH_CODECACHE_DISABLE | FLASH_DATACACHE_DISABLE |
-                                        FLASH_PREFETCH_DISABLE);
-        Flash_ConfigFRI(FLASH_FRI3, FLASH_DATAPREREAD_DISABLE | FLASH_CODECACHE_DISABLE | FLASH_DATACACHE_DISABLE |
-                                        FLASH_PREFETCH_DISABLE);
-        Flash_ConfigFRI(FLASH_FRI4, FLASH_DATAPREREAD_DISABLE | FLASH_CODECACHE_DISABLE | FLASH_DATACACHE_DISABLE |
-                                        FLASH_PREFETCH_DISABLE);
+        Flash_ConfigFRI(FLS_FLASH_FRI1, FLASH_DATAPREREAD_DISABLE | FLASH_CODECACHE_DISABLE | FLASH_DATACACHE_DISABLE |
+                                            FLASH_PREFETCH_DISABLE);
+        Flash_ConfigFRI(FLS_FLASH_FRI2, FLASH_DATAPREREAD_DISABLE | FLASH_CODECACHE_DISABLE | FLASH_DATACACHE_DISABLE |
+                                            FLASH_PREFETCH_DISABLE);
+        Flash_ConfigFRI(FLS_FLASH_FRI3, FLASH_DATAPREREAD_DISABLE | FLASH_CODECACHE_DISABLE | FLASH_DATACACHE_DISABLE |
+                                            FLASH_PREFETCH_DISABLE);
+        Flash_ConfigFRI(FLS_FLASH_FRI4, FLASH_DATAPREREAD_DISABLE | FLASH_CODECACHE_DISABLE | FLASH_DATACACHE_DISABLE |
+                                            FLASH_PREFETCH_DISABLE);
 
         //
         // Set waitstates according to frequency.
@@ -362,14 +376,14 @@ __attribute__((section(".TI.ramfunc.link2"))) static void Flash_InitModule(uint1
         // Enable data cache, code cache, prefetch, and data preread to improve performance of code
         // executed from flash.
         //
-        Flash_ConfigFRI(FLASH_FRI1, FLASH_DATAPREREAD_ENABLE | FLASH_CODECACHE_ENABLE | FLASH_DATACACHE_ENABLE |
-                                        FLASH_PREFETCH_ENABLE);
-        Flash_ConfigFRI(FLASH_FRI2, FLASH_DATAPREREAD_ENABLE | FLASH_CODECACHE_ENABLE | FLASH_DATACACHE_ENABLE |
-                                        FLASH_PREFETCH_ENABLE);
-        Flash_ConfigFRI(FLASH_FRI3, FLASH_DATAPREREAD_ENABLE | FLASH_CODECACHE_ENABLE | FLASH_DATACACHE_ENABLE |
-                                        FLASH_PREFETCH_ENABLE);
-        Flash_ConfigFRI(FLASH_FRI4, FLASH_DATAPREREAD_ENABLE | FLASH_CODECACHE_ENABLE | FLASH_DATACACHE_ENABLE |
-                                        FLASH_PREFETCH_ENABLE);
+        Flash_ConfigFRI(FLS_FLASH_FRI1, FLASH_DATAPREREAD_ENABLE | FLASH_CODECACHE_ENABLE | FLASH_DATACACHE_ENABLE |
+                                            FLASH_PREFETCH_ENABLE);
+        Flash_ConfigFRI(FLS_FLASH_FRI2, FLASH_DATAPREREAD_ENABLE | FLASH_CODECACHE_ENABLE | FLASH_DATACACHE_ENABLE |
+                                            FLASH_PREFETCH_ENABLE);
+        Flash_ConfigFRI(FLS_FLASH_FRI3, FLASH_DATAPREREAD_ENABLE | FLASH_CODECACHE_ENABLE | FLASH_DATACACHE_ENABLE |
+                                            FLASH_PREFETCH_ENABLE);
+        Flash_ConfigFRI(FLS_FLASH_FRI4, FLASH_DATAPREREAD_ENABLE | FLASH_CODECACHE_ENABLE | FLASH_DATACACHE_ENABLE |
+                                            FLASH_PREFETCH_ENABLE);
 
         //
         // Force a pipeline flush to ensure that the write to the last register

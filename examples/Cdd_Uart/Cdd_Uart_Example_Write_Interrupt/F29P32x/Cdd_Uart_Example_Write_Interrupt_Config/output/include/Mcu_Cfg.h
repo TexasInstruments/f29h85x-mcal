@@ -96,8 +96,8 @@ extern "C" {
  * \brief Mcu Driver Configuration SW Version Info.
  *********************************************************************************************************************/
 #define MCU_CFG_MAJOR_VERSION               (2U)
-#define MCU_CFG_MINOR_VERSION               (1U)
-#define MCU_CFG_PATCH_VERSION               (1U)
+#define MCU_CFG_MINOR_VERSION               (2U)
+#define MCU_CFG_PATCH_VERSION               (0U)
 
 
 /*********************************************************************************************************************

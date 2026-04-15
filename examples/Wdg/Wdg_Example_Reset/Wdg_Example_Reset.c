@@ -209,8 +209,8 @@ int main(void)
     /* Store reset reason.*/
     Mcu_ResetType  mcu_reset_reason = MCU_RESET_UNDEFINED;
 
-    DeviceSupport_Init();
-    EcuM_Init();               /* PORT & MCU Initialization to get configuration settings */
+    EcuM_Init();
+    DeviceSupport_Init();      /* PORT & MCU Initialization to get configuration settings */
     AppUtils_Init(200000000U); /* 200 MHZ system clock*/
 
     if (Wdg_Config.Wdg_DefaultMode == WDGIF_SLOW_MODE)

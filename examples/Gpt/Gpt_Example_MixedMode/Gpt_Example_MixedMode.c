@@ -123,8 +123,8 @@ uint32 Gpt_InterruptCnt[GPT_CFG_MAX_CHANNELS] = {0U};
 int main(void)
 {
     Std_ReturnType return_value = E_NOT_OK;
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(20000000U);
 
     /* GPT driver Init, Deinit and Init sequence */

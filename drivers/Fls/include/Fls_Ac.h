@@ -400,7 +400,7 @@ extern FUNC(void, FLS_CODE) Fls_Fapi_setupBankSectorEnable(uint32 reg_address, u
  * \retval Fapi_Error_InvalidAddress:  User provided an invalid address
  *
  *********************************************************************************************************************/
-extern FUNC(void, FLS_CODE) Fls_Fapi_issueAsyncCommandWithAddress(uint32 *pu32StartAddress);
+extern FUNC(void, FLS_CODE) Fls_Fapi_issueAsyncCommandWithAddress(const uint32 *pu32StartAddress);
 
 /** \brief Issues a command (Clear Status) to FSM
  * \pre None
@@ -499,11 +499,9 @@ extern FUNC(Std_ReturnType, FLS_CODE)
                             Fls_FlashStatusWordType *poFlashStatusWord);
 
 /** \brief Sets up data and issues program command to valid flash memory addresses
- * \param[in] pu32StartAddress Start address in Flash for the data to be programmed. The start
- *address should always be even.
- * \param[in] pu8DataBuffer Pointer to the Data buffer address. Data buffer should be 64-bit
- *aligned.
- * \param[in] u8DataBufferSizeInBytes Number of bytes in the Data buffer
+ * \param[in] pu32StartAddress Const pointer to start address in Flash for the data to be programmed.
+ * \param[in] pu8DataBuffer Const pointer to the Data buffer address.
+ * \param[in] u32DataBufferSizeInBytes Number of bytes in the Data buffer
  * \pre None
  * \post None
  * \return returns success or failure status
@@ -514,8 +512,8 @@ extern FUNC(Std_ReturnType, FLS_CODE)
  * \retval Fapi_Error_InvalidAddress:  User provided an invalid address
  *
  *********************************************************************************************************************/
-extern FUNC(void, FLS_CODE)
-    Fls_Fapi_issueProgrammingCommand(uint32 *pu32StartAddress, uint8 *pu8DataBuffer, uint8 u8DataBufferSizeInBytes);
+extern FUNC(void, FLS_CODE) Fls_Fapi_issueProgrammingCommand(const uint32 *pu32StartAddress, const uint8 *pu8DataBuffer,
+                                                             uint32 u32DataBufferSizeInBytes);
 
 /** \brief configures read wait states and enable data cache, code cache, prefetch, and data preread
  *to improve performance of code executed from flash
@@ -533,7 +531,7 @@ extern FUNC(void, FLS_CODE) Fls_Update_WaitStates(uint16 waitstates);
  * \return None
  *
  *********************************************************************************************************************/
-extern FUNC(void, FLS_CODE) Fls_SSU_claimFlashSemaphore(void);
+extern FUNC(Std_ReturnType, FLS_CODE) Fls_SSU_claimFlashSemaphore(void);
 
 /** \brief Release flash semaphore
  * \pre None

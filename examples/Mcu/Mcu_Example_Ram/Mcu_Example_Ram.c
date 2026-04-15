@@ -201,8 +201,8 @@ int main(void)
     boolean        status;
     uint32         loop_cnt;
 
-    DeviceSupport_Init();
-    EcuM_Init(); /* MCU Initilization to get configuration settings */
+    EcuM_Init();
+    DeviceSupport_Init(); /* MCU Initilization to get configuration settings */
     AppUtils_Init(200000000U);
     AppUtils_Printf("Sample Application - STARTS !!!\r\n");
 

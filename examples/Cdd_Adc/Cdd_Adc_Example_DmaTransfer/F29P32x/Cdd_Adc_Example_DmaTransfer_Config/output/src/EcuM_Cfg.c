@@ -78,6 +78,7 @@
 #include "Port.h"
 #include "Cdd_Adc.h"
 #include "Cdd_Pwm.h"
+#include "Cdd_Dma.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -153,6 +154,8 @@ FUNC(void, ECUM_CODE) EcuM_InitList(void)
     Cdd_Adc_Init(NULL_PTR);
 
     Cdd_Pwm_Init(NULL_PTR);
+
+    Cdd_Dma_Init(NULL_PTR);
 
 }
 

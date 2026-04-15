@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.12. CDD DMA Module &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx-design.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.13. CDD ECAP Module" href="Module_User_Guide_Cdd_Ecap.html" />
+    <link rel="prev" title="5.11. CDD ADC Module" href="Module_User_Guide_Cdd_Adc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                26.00.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.00 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">2. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">3. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ModuleUserGuide_list.html">5. Module User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_ResourceAllocator.html">5.1. Resource Allocator Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Can.html">5.2. CAN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">5.3. DIO Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Fls.html">5.4. FLS Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">5.5. GPT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">5.6. LIN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">5.7. MCU Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Port.html">5.8. PORT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">5.9. SPI Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">5.10. WDG Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">5.11. CDD ADC Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.12. CDD DMA Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">5.12.1. Acronyms and Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">5.12.2. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-overview">5.12.3. Functional Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#burst-and-transfer-loops">5.12.3.1. Burst and Transfer Loops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operating-modes">5.12.3.2. Operating Modes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#channel-priority">5.12.3.3. Channel Priority</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#overrun-detection">5.12.3.4. Overrun Detection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memory-protection-unit-mpu">5.12.3.5. Memory Protection Unit (MPU)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-features">5.12.4. Hardware Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">5.12.4.1. Hardware Features Supported</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">5.12.4.2. Not supported Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-compliance">5.12.4.3. Non compliance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#source-files">5.12.5. Source files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-requirements">5.12.6. Module requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">5.12.6.1. Memory Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling">5.12.6.2. Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">5.12.6.3. Error handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-codes">5.12.6.4. Error codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#used-resources">5.12.7. Used resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">5.12.7.1. Interrupt Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instance-support">5.12.7.2. Instance support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">5.12.7.3. Hardware-Software Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-description">5.12.8. Integration description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">5.12.8.1. Dependent modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resource-allocator">5.12.8.2. Resource Allocator</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">5.12.9. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">5.12.9.1. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-dma-module">5.12.9.2. Steps To Configure Cdd DMA Module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">5.12.10. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-dma-example-mem-transfer">5.12.10.1. Cdd_Dma_Example_Mem_Transfer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-dma-example-mem-transfer-mpu">5.12.10.2. Cdd_Dma_Example_Mem_Transfer_Mpu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup-required-to-run-examples">5.12.10.3. Setup Required to Run Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-run-examples">5.12.10.4. How to Run Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">5.12.10.5. File Structure</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">5.13. CDD ECAP Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">5.14. CDD I2C Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">5.15. CDD IPC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">5.16. CDD PWM Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">5.17. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">5.18. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">5.19. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">5.20. RTDMA Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide_list.html">6. Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">7. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">8. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">9. AUTOSAR Integration Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="ModuleUserGuide_list.html"><span class="section-number">5. </span>Module User Guide</a> &raquo;</li>
+      <li><span class="section-number">5.12. </span>CDD DMA Module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cdd-dma-module">
+<h1><span class="section-number">5.12. </span>CDD DMA Module<a class="headerlink" href="#cdd-dma-module" title="Link to this heading"></a></h1>
+<section id="acronyms-and-definitions">
+<h2><span class="section-number">5.12.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Abbreviation/Term</p></th>
+<th class="head"><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AUTOSAR</p></td>
+<td><p>Automotive Open System Architecture</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD</p></td>
+<td><p>Complex Device Driver</p></td>
+</tr>
+<tr class="row-even"><td><p>DMA</p></td>
+<td><p>Direct Memory Access</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTDMA</p></td>
+<td><p>Real-Time Direct Memory Access</p></td>
+</tr>
+<tr class="row-even"><td><p>API</p></td>
+<td><p>Application Programming Interface</p></td>
+</tr>
+<tr class="row-odd"><td><p>DET</p></td>
+<td><p>Default Error Tracer</p></td>
+</tr>
+<tr class="row-even"><td><p>MPU</p></td>
+<td><p>Memory Protection Unit</p></td>
+</tr>
+<tr class="row-odd"><td><p>ESM</p></td>
+<td><p>Error Signaling Module</p></td>
+</tr>
+<tr class="row-even"><td><p>SSU</p></td>
+<td><p>Safety and Security Unit</p></td>
+</tr>
+<tr class="row-odd"><td><p>HW</p></td>
+<td><p>Hardware</p></td>
+</tr>
+<tr class="row-even"><td><p>SW</p></td>
+<td><p>Software</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="introduction">
+<h2><span class="section-number">5.12.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The CDD DMA driver is a Complex Device Driver that provides a hardware method of transferring data between peripherals and/or memory without intervention from the CPU.</p>
+<figure class="align-center" id="id2">
+<img alt="CDD DMA MCAL AUTOSAR" src="../_images/Cdd_Dma_AUTOSAR_MCAL.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 5.43 </span><span class="caption-text">Cdd Dma MCAL AUTOSAR</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>This document details AUTOSAR Cdd DMA module implementation</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Supported AUTOSAR Release</p></th>
+<th class="head"><p><strong>4.3.1</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Supported Configuration Variants</strong></p></td>
+<td><p><strong>Pre-Compile</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Vendor ID</strong></p></td>
+<td><p><strong>CDD_DMA_VENDOR_ID (44)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Module ID</strong></p></td>
+<td><p><strong>CDD_DMA_MODULE_ID (255)</strong></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functional-overview">
+<h2><span class="section-number">5.12.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
+<p>The CDD DMA driver is part of the Complex Device Driver layer (CDD). The RTDMA provides a hardware method of transferring data between peripherals and/or memory without CPU intervention.</p>
+<p>The RTDMA operates as a state machine with two nested loops that control data transfers:</p>
+<section id="burst-and-transfer-loops">
+<h3><span class="section-number">5.12.3.1. </span>Burst and Transfer Loops<a class="headerlink" href="#burst-and-transfer-loops" title="Link to this heading"></a></h3>
+<p>The RTDMA uses a two-level nested loop structure to manage data transfers:</p>
+<ol class="arabic simple">
+<li><p><strong>Burst Loop (Inner Loop)</strong>: The inner loop transfers a configured number of words (bytes) called a “burst”. The burst size is specified by the BURST_SIZE and represents the smallest amount of data transferred at one time.</p></li>
+<li><p><strong>Transfer Loop (Outer Loop)</strong>: The outer loop repeats the burst operation for a configured number of times called “transfers”. The transfer size is specified by the TRANSFER_SIZE.</p></li>
+</ol>
+<p><strong>Transfer Process</strong>:</p>
+<ul class="simple">
+<li><p>A DMA transfer is initiated by a peripheral or software trigger</p></li>
+<li><p>The inner burst loop executes, transferring the configured burst size</p></li>
+<li><p>After completing one burst, the next burst begins (if more transfers are pending)</p></li>
+<li><p>This continues until all configured transfers are complete</p></li>
+<li><p>Upon completion, a user-configurable notification callback can be invoked. The notification timing can be configured to trigger either at the beginning of a new transfer or at the end of the complete transfer.</p></li>
+</ul>
+</section>
+<section id="operating-modes">
+<h3><span class="section-number">5.12.3.2. </span>Operating Modes<a class="headerlink" href="#operating-modes" title="Link to this heading"></a></h3>
+<p><strong>One-Shot Mode</strong>:</p>
+<ul class="simple">
+<li><p>When enabled: After the first trigger event, the DMA continuously transfers data in bursts until all configured transfers are complete</p></li>
+<li><p>When disabled: A separate trigger event is required for each burst transfer, continuing until all configured transfers are complete</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>One-shot mode must not be used with Priority 0 channels.</strong> When one-shot mode is enabled, a single trigger can consume the majority of RTDMA bandwidth, potentially causing long CPU stalls as the DMA continuously processes bursts without allowing other channels to execute. This is especially problematic with Priority 0 channels, which can interrupt other ongoing transfers.</p>
+<p><strong>Recommendation</strong>: Configure a CPU timer (or similar periodic trigger) and disable one-shot mode to ensure controlled, time-sliced DMA operation that prevents bandwidth monopolization and CPU stalls.</p>
+</div>
+<p><strong>Continuous Mode</strong>:</p>
+<ul class="simple">
+<li><p>When enabled: The RTDMA keeps the channel active even after all bursts in the transfer loop are complete. The channel remains ready to process the next transfer automatically</p></li>
+<li><p>When disabled: The RTDMA disables the channel after all bursts in the transfer loop are complete. The channel stops and must be re-enabled before another transfer can be started</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>One-shot mode and continuous mode are <strong>independent settings</strong> and can be enabled or disabled separately. Each mode controls a different aspect of the transfer behavior:</p>
+<ul class="simple">
+<li><p><strong>One-shot mode</strong> controls whether multiple bursts execute from a single trigger</p></li>
+<li><p><strong>Continuous mode</strong> controls whether the channel remains active after completing all transfers</p></li>
+</ul>
+</div>
+</section>
+<section id="channel-priority">
+<h3><span class="section-number">5.12.3.3. </span>Channel Priority<a class="headerlink" href="#channel-priority" title="Link to this heading"></a></h3>
+<p>The RTDMA supports software-configurable priority levels for efficient channel arbitration:</p>
+<p><strong>Round Robin Mode</strong>:</p>
+<ul class="simple">
+<li><p>All channels have equal priority</p></li>
+<li><p>Each enabled channel is serviced in round-robin fashion: CH1 → CH2 → CH3 → … → CH10 → CH1</p></li>
+<li><p>After each channel transfers a burst, the next channel is serviced</p></li>
+</ul>
+<p><strong>Software-Configurable Priority (0-3)</strong>:</p>
+<ul class="simple">
+<li><p>Each channel can be assigned a priority level from 0 to 3</p></li>
+<li><p>Default priority for all channels is 1</p></li>
+<li><p>Lower priority number = higher priority during arbitration</p></li>
+<li><p>When multiple channels have the same priority, the lowest channel number wins arbitration</p></li>
+</ul>
+<p><strong>Priority 0 (Highest Priority)</strong>:</p>
+<ul class="simple">
+<li><p>Channels configured with priority 0 are considered a special case and can interrupt the RTDMA state machine</p></li>
+<li><p>When a Priority 0 event occurs, the current word transfer on any other channel completes, then execution halts</p></li>
+<li><p>The Priority 0 channel is then serviced for its complete burst</p></li>
+<li><p>After the Priority 0 channel burst is complete, execution returns to the channel that was active when the Priority 0 event occurred</p></li>
+<li><p>Typically used for time-critical peripherals</p></li>
+</ul>
+</section>
+<section id="overrun-detection">
+<h3><span class="section-number">5.12.3.4. </span>Overrun Detection<a class="headerlink" href="#overrun-detection" title="Link to this heading"></a></h3>
+<p>The RTDMA includes overrun detection logic to identify when trigger events are lost:</p>
+<ul class="simple">
+<li><p>When a burst for a channel starts, the peripheral interrupt flag is cleared</p></li>
+<li><p>If an additional event trigger arrives between the time the flag is set and cleared by the burst start, the second trigger is lost</p></li>
+<li><p>This overrun condition is detected and flagged by the RTDMA</p></li>
+<li><p>Users can configure overrun notification to receive a callback when an overrun condition occurs.</p></li>
+</ul>
+</section>
+<section id="memory-protection-unit-mpu">
+<h3><span class="section-number">5.12.3.5. </span>Memory Protection Unit (MPU)<a class="headerlink" href="#memory-protection-unit-mpu" title="Link to this heading"></a></h3>
+<p>The RTDMA includes an integrated MPU for access protection and security:</p>
+<p><strong>MPU Features</strong>:</p>
+<ul class="simple">
+<li><p>Monitors DMA read/write interface buses continuously</p></li>
+<li><p>Detect errors, block access, and trigger an interrupt on any violations</p></li>
+<li><p>Supports up to 16 configurable memory regions</p></li>
+<li><p>Each region defines start and end addresses for read/write access permissions</p></li>
+<li><p>Channel-to-MPU mapping is orthogonal - each channel can be enabled in multiple MPU regions and vice versa</p></li>
+</ul>
+<p><strong>MPU Operation</strong>:</p>
+<ul class="simple">
+<li><p>When MPU is enabled, faults are communicated to the Error Signaling Module (ESM)</p></li>
+<li><p>MPU checks if an address belongs to any defined region</p></li>
+<li><p>MPU verifies that accesses have necessary permissions for the region</p></li>
+<li><p>Access violations result in blocked transactions and error reporting to Error Signaling Module (ESM)</p></li>
+</ul>
+</section>
+</section>
+<section id="hardware-features">
+<h2><span class="section-number">5.12.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
+<section id="hardware-features-supported">
+<h3><span class="section-number">5.12.4.1. </span>Hardware Features Supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
+<p>Features supported at a high level are:</p>
+<ul class="simple">
+<li><p>10 RTDMA channels with software configurable priority levels and independent Interrupt Controller interrupts</p></li>
+<li><p>Up to 256 hardware trigger sources to initiate RTDMA transfers</p></li>
+<li><p>Internal trigger generation for data transfers and trigger sources for channels</p></li>
+<li><p>Independent Read and Write buses</p></li>
+<li><p>Word Size: 8-bit, 16-bit, 32-bit, and 64-bit transfers</p></li>
+<li><p>Throughput: 1 cycle/word after the initial read-write access with 0 cycle read/write stall</p></li>
+<li><p>FIFO implemented within hardware to optimize data transfers</p></li>
+<li><p>Linear and circular addressing modes</p></li>
+<li><p>Support for multiple data transformation functions as data is transferred from source to destination</p>
+<ul>
+<li><p>Ability to reverse words, half words, and so on</p></li>
+</ul>
+</li>
+<li><p>Access protection through the Memory Protection Unit (MPU)</p></li>
+</ul>
+</section>
+<section id="not-supported-features">
+<h3><span class="section-number">5.12.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Burst Mode Support for transfers with EMIF, since EMIF is not available on automotive devices</p></li>
+</ul>
+</section>
+<section id="non-compliance">
+<h3><span class="section-number">5.12.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
+<p>None</p>
+</section>
+</section>
+<section id="source-files">
+<h2><span class="section-number">5.12.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
+<p>📦f29h85x_mcal<br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┃ ┣ 📂BSW_Stubs<br />
+┃ ┣ 📂Adc<br />
+┃ ┣ 📂Can<br />
+┃ ┗ 📂<strong>Cdd_Dma</strong><br />
+┃ ┃ ┣ 📂<strong>include</strong><br />
+┃ ┃ ┃ ┣ 📜<strong>Cdd_Dma.h</strong> : <em>Contains the API declarations of the Cdd DMA driver to be used by upper layers.</em><br />
+┃ ┃ ┃ ┗ 📜<strong>Cdd_Dma_Priv.h</strong> : <em>Contains data structures and Internal function declarations.</em><br />
+┃ ┃ ┣ 📂<strong>src</strong><br />
+┃ ┃ ┃ ┣ 📜<strong>Cdd_Dma.c</strong> : <em>Contains the implementation of the API for Cdd DMA driver.</em><br />
+┃ ┃ ┃ ┣ 📜<strong>Cdd_Dma_Irq.c</strong> : <em>Contains the ISR implementation.</em><br />
+┃ ┃ ┃ ┗ 📜<strong>Cdd_Dma_Priv.c</strong> : <em>Contains Functions that support the API for Cdd DMA driver</em><br />
+┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂hw_include<br />
+┃ ┣ 📂Mcal_Lib<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┃ ┣ 📂Spi<br />
+┃ ┗ 📂Wdg<br />
+┣ 📂examples<br />
+┣ 📂plugins<br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+<figure class="align-center" id="id3">
+<img alt="Cdd DMA Header File Structure" src="../_images/Cdd_Dma_Header_File_Structure.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 5.44 </span><span class="caption-text">Cdd DMA Header File Structure</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="module-requirements">
+<h2><span class="section-number">5.12.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
+<section id="memory-mapping">
+<h3><span class="section-number">5.12.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
+<p>The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.</p>
+<p>Reference memory map files can be found at:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+</pre></div>
+</div>
+<p>The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.</p>
+</section>
+<section id="scheduling">
+<h3><span class="section-number">5.12.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
+<p>None</p>
+</section>
+<section id="error-handling">
+<h3><span class="section-number">5.12.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<section id="development-error-reporting">
+<h4><span class="section-number">5.12.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
+<p>Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.</p>
+</section>
+</section>
+<section id="error-codes">
+<h3><span class="section-number">5.12.6.4. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type of Error</p></th>
+<th class="head"><p>Related Error code</p></th>
+<th class="head"><p>Value (Hex)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>API service used without module initialization</p></td>
+<td><p>CDD_DMA_E_UNINIT</p></td>
+<td><p>0x0A</p></td>
+</tr>
+<tr class="row-odd"><td><p>API called for reinitialization of already initialized DMA driver</p></td>
+<td><p>CDD_DMA_E_ALREADY_INITIALIZED</p></td>
+<td><p>0x0B</p></td>
+</tr>
+<tr class="row-even"><td><p>Initialization API failed</p></td>
+<td><p>CDD_DMA_E_INIT_FAILED</p></td>
+<td><p>0x0C</p></td>
+</tr>
+<tr class="row-odd"><td><p>API service called with invalid parameter pointer</p></td>
+<td><p>CDD_DMA_E_PARAM_POINTER</p></td>
+<td><p>0x0D</p></td>
+</tr>
+<tr class="row-even"><td><p>API service called with invalid parameter value</p></td>
+<td><p>CDD_DMA_E_PARAM_VALUE</p></td>
+<td><p>0x0E</p></td>
+</tr>
+<tr class="row-odd"><td><p>API service called during ongoing process</p></td>
+<td><p>CDD_DMA_E_BUSY</p></td>
+<td><p>0x0F</p></td>
+</tr>
+<tr class="row-even"><td><p>API service called to force or clear peripheral event trigger when peripheral event trigger is disabled</p></td>
+<td><p>CDD_DMA_E_PERIPHERAL_EVENT_TRIGGER_DISABLED</p></td>
+<td><p>0x10</p></td>
+</tr>
+<tr class="row-odd"><td><p>API service called to enable peripheral event trigger when peripheral event trigger is already enabled</p></td>
+<td><p>CDD_DMA_E_PERIPHERAL_EVENT_TRIGGER_ENABLED</p></td>
+<td><p>0x11</p></td>
+</tr>
+<tr class="row-even"><td><p>API service called to start a channel when the channel is already running</p></td>
+<td><p>CDD_DMA_E_ALREADY_RUNNING</p></td>
+<td><p>0x12</p></td>
+</tr>
+<tr class="row-odd"><td><p>API service called to halt a channel when the channel already halted</p></td>
+<td><p>CDD_DMA_E_ALREADY_HALTED</p></td>
+<td><p>0x13</p></td>
+</tr>
+<tr class="row-even"><td><p>API service called to modify DMA configurable properties when DMA configurable properties are committed</p></td>
+<td><p>CDD_DMA_E_DMACFG_COMMITTED</p></td>
+<td><p>0x14</p></td>
+</tr>
+<tr class="row-odd"><td><p>API service called to modify DMA channel properties when DMA channel properties are committed</p></td>
+<td><p>CDD_DMA_E_CHCFG_COMMITTED</p></td>
+<td><p>0x15</p></td>
+</tr>
+<tr class="row-even"><td><p>API service called to modify DMA MPU region properties when DMA MPU region properties are committed</p></td>
+<td><p>CDD_DMA_E_MPUR_COMMITTED</p></td>
+<td><p>0x16</p></td>
+</tr>
+<tr class="row-odd"><td><p>API service called to enable or disable MPU when DMA MPU configuration are committed</p></td>
+<td><p>CDD_DMA_E_MPUCFG_COMMITTED</p></td>
+<td><p>0x17</p></td>
+</tr>
+<tr class="row-even"><td><p>API service called to clear error flag when no overflow is detected</p></td>
+<td><p>CDD_DMA_E_NO_OVERFLOW</p></td>
+<td><p>0x18</p></td>
+</tr>
+<tr class="row-odd"><td><p>API service called to clear peripheral event trigger when no event trigger exists</p></td>
+<td><p>CDD_DMA_E_NO_TRIGGER</p></td>
+<td><p>0x19</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="used-resources">
+<h2><span class="section-number">5.12.7. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
+<section id="interrupt-handling">
+<h3><span class="section-number">5.12.7.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
+<p>Each RTDMA channel has its own independent Interrupt Controller interrupt for CPU servicing. The DMA can generate interrupts at the completion of a transfer, at the beginning of the transfer process and during overrun detection. These interrupts allow the CPU to be notified of transfer completion or errors without polling.</p>
+<p>The Driver doesn’t register any interrupts handler (ISR), it’s expected that consumer of this driver registers the required interrupt handler.</p>
+<p>For every RTDMA channel, an ISR requires to be registered if Channel notification is enabled. The Interrupt number associated with RTDMA channel is detailed in TRM (also, please refer the Example application).
+Interrupt category should be selected in the Cdd_Dma plugin.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cdd Dma Instance</p></th>
+<th class="head"><p>Cdd Dma Channel</p></th>
+<th class="head"><p>Interrupt handler</p></th>
+<th class="head"><p>INT Signal Name</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_DMA1</p></td>
+<td><p>CDD_DMA_CH1</p></td>
+<td><p>Cdd_Dma_RTDMA1_CH1_Isr</p></td>
+<td><p>RTDMA1_CH1INT</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA1</p></td>
+<td><p>CDD_DMA_CH2</p></td>
+<td><p>Cdd_Dma_RTDMA1_CH2_Isr</p></td>
+<td><p>RTDMA1_CH2INT</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA1</p></td>
+<td><p>CDD_DMA_CH3</p></td>
+<td><p>Cdd_Dma_RTDMA1_CH3_Isr</p></td>
+<td><p>RTDMA1_CH3INT</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA1</p></td>
+<td><p>CDD_DMA_CH4</p></td>
+<td><p>Cdd_Dma_RTDMA1_CH4_Isr</p></td>
+<td><p>RTDMA1_CH4INT</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA1</p></td>
+<td><p>CDD_DMA_CH5</p></td>
+<td><p>Cdd_Dma_RTDMA1_CH5_Isr</p></td>
+<td><p>RTDMA1_CH5INT</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA1</p></td>
+<td><p>CDD_DMA_CH6</p></td>
+<td><p>Cdd_Dma_RTDMA1_CH6_Isr</p></td>
+<td><p>RTDMA1_CH6INT</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA1</p></td>
+<td><p>CDD_DMA_CH7</p></td>
+<td><p>Cdd_Dma_RTDMA1_CH7_Isr</p></td>
+<td><p>RTDMA1_CH7INT</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA1</p></td>
+<td><p>CDD_DMA_CH8</p></td>
+<td><p>Cdd_Dma_RTDMA1_CH8_Isr</p></td>
+<td><p>RTDMA1_CH8INT</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA1</p></td>
+<td><p>CDD_DMA_CH9</p></td>
+<td><p>Cdd_Dma_RTDMA1_CH9_Isr</p></td>
+<td><p>RTDMA1_CH9INT</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA1</p></td>
+<td><p>CDD_DMA_CH10</p></td>
+<td><p>Cdd_Dma_RTDMA1_CH10_Isr</p></td>
+<td><p>RTDMA1_CH10INT</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA2</p></td>
+<td><p>CDD_DMA_CH1</p></td>
+<td><p>Cdd_Dma_RTDMA2_CH1_Isr</p></td>
+<td><p>RTDMA2_CH1INT</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA2</p></td>
+<td><p>CDD_DMA_CH2</p></td>
+<td><p>Cdd_Dma_RTDMA2_CH2_Isr</p></td>
+<td><p>RTDMA2_CH2INT</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA2</p></td>
+<td><p>CDD_DMA_CH3</p></td>
+<td><p>Cdd_Dma_RTDMA2_CH3_Isr</p></td>
+<td><p>RTDMA2_CH3INT</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA2</p></td>
+<td><p>CDD_DMA_CH4</p></td>
+<td><p>Cdd_Dma_RTDMA2_CH4_Isr</p></td>
+<td><p>RTDMA2_CH4INT</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA2</p></td>
+<td><p>CDD_DMA_CH5</p></td>
+<td><p>Cdd_Dma_RTDMA2_CH5_Isr</p></td>
+<td><p>RTDMA2_CH5INT</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA2</p></td>
+<td><p>CDD_DMA_CH6</p></td>
+<td><p>Cdd_Dma_RTDMA2_CH6_Isr</p></td>
+<td><p>RTDMA2_CH6INT</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA2</p></td>
+<td><p>CDD_DMA_CH7</p></td>
+<td><p>Cdd_Dma_RTDMA2_CH7_Isr</p></td>
+<td><p>RTDMA2_CH7INT</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA2</p></td>
+<td><p>CDD_DMA_CH8</p></td>
+<td><p>Cdd_Dma_RTDMA2_CH8_Isr</p></td>
+<td><p>RTDMA2_CH8INT</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_DMA2</p></td>
+<td><p>CDD_DMA_CH9</p></td>
+<td><p>Cdd_Dma_RTDMA2_CH9_Isr</p></td>
+<td><p>RTDMA2_CH9INT</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA2</p></td>
+<td><p>CDD_DMA_CH10</p></td>
+<td><p>Cdd_Dma_RTDMA2_CH10_Isr</p></td>
+<td><p>RTDMA2_CH10INT</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="instance-support">
+<h3><span class="section-number">5.12.7.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>CPU instances</p></th>
+<th class="head"><p>supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CPU 1</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>CPU 2</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-even"><td><p>CPU 3</p></td>
+<td><p>NO</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hardware-software-mapping">
+<h3><span class="section-number">5.12.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
+<p>Below image shows Cdd DMA driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.</p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/Cdd_Dma_Hw_Sw_Mapping.png"><img alt="Cdd DMA HW/SW Mapping" src="../_images/Cdd_Dma_Hw_Sw_Mapping.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.45 </span><span class="caption-text">Cdd DMA HW/SW Mapping</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="integration-description">
+<h2><span class="section-number">5.12.8. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
+<section id="dependent-modules">
+<h3><span class="section-number">5.12.8.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
+<section id="det">
+<h4><span class="section-number">5.12.8.1.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
+<p>This implementation depends on the DET in order to report development errors. The detection of development errors is configurable (ON / OFF). The switch CDD_DMA_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.</p>
+</section>
+<section id="mcu">
+<h4><span class="section-number">5.12.8.1.2. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
+<p>MCU Module is required to initialize all the clocks to be used by different peripherals including the RTDMA module.</p>
+</section>
+</section>
+<section id="resource-allocator">
+<h3><span class="section-number">5.12.8.2. </span>Resource Allocator<a class="headerlink" href="#resource-allocator" title="Link to this heading"></a></h3>
+<p>The CDD DMA module uses the Resource Allocator to allocate RTDMA peripheral instances and channels to CPU cores and configure their memory-mapped base addresses and global properties. Each allocation is placed inside a <strong>Context</strong> that maps to a CPU core (e.g. <code class="docutils literal notranslate"><span class="pre">CPU1</span></code>). The <strong>CurrentContext</strong> parameter in the Resource Allocator selects which Context is active for MCAL execution. See the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a> for details on configuring device-specific settings.</p>
+<p>The <strong>Frame</strong> parameter (<code class="docutils literal notranslate"><span class="pre">FRAME0</span></code>–<code class="docutils literal notranslate"><span class="pre">FRAME3</span></code>) selects the memory-mapped frame for the instance, enabling simultaneous access from different initiators without arbitration stalls. The <strong>BaseAddr</strong> is auto-calculated based on the selected instance, channel, and frame. Additional global RTDMA properties including priority schemes, emulation mode, channel priorities, and MPU configuration are also configured through the Resource Allocator.</p>
+<section id="why-global-level-configuration-is-necessary">
+<h4><span class="section-number">5.12.8.2.1. </span>Why Global-Level Configuration is Necessary<a class="headerlink" href="#why-global-level-configuration-is-necessary" title="Link to this heading"></a></h4>
+<p>The F29 device architecture requires certain RTDMA configuration registers to be <strong>writable only by CPU1</strong>. These include:</p>
+<ul class="simple">
+<li><p><strong>Priority Scheme</strong> (Round-robin vs. Software-configured)</p></li>
+<li><p><strong>Emulation Mode</strong> (Stop vs. Free-run during debug halt)</p></li>
+<li><p><strong>Channel Priorities</strong> (Priority levels 0-3 for each channel)</p></li>
+<li><p><strong>MPU Configuration</strong> (Memory Protection Unit regions and permissions)</p></li>
+</ul>
+<p>When SDK RTDMA is used on CPU2 or CPU3, these cores cannot directly configure the above global properties due to hardware write restrictions. Therefore, the Resource Allocator provides a centralized global configuration mechanism where:</p>
+<ol class="arabic simple">
+<li><p><strong>CPU1 configures all global DMA properties</strong> in the Resource Allocator</p></li>
+<li><p><strong>Individual channels are then allocated</strong> to different CPU contexts (CPU1, CPU2, CPU3)</p></li>
+<li><p><strong>Each CPU context can configure</strong> channel-specific properties (source/destination addresses, transfer sizes, triggers, etc.)</p></li>
+</ol>
+<p>This separation ensures that global hardware settings are properly initialized by CPU1 through the Resource Allocator, while each CPU can independently manage its allocated channels for data transfers using the appropriate driver interface.</p>
+</section>
+<section id="configuration-architecture">
+<h4><span class="section-number">5.12.8.2.2. </span>Configuration Architecture<a class="headerlink" href="#configuration-architecture" title="Link to this heading"></a></h4>
+<p>The DMA channel allocation follows a two-level hierarchical structure:</p>
+<ol class="arabic simple">
+<li><p><strong>Global Cdd_Dma Configuration Level</strong> (<code class="docutils literal notranslate"><span class="pre">ResourceAllocatorGeneral/Cdd_Dma</span></code>): Defines available hardware instances, their global properties, and channels</p></li>
+<li><p><strong>CPU Context Configuration Level</strong> (<code class="docutils literal notranslate"><span class="pre">ResourceAllocatorGeneral/Context/Cdd_Dma</span></code>): Allocates specific channels from the global pool to individual CPU contexts</p></li>
+</ol>
+</section>
+<section id="resource-allocator-usage-example">
+<h4><span class="section-number">5.12.8.2.3. </span>Resource Allocator Usage Example<a class="headerlink" href="#resource-allocator-usage-example" title="Link to this heading"></a></h4>
+<p>To allocate RTDMA1 Channel 1 to CPU1 using FRAME0:</p>
+<section id="step-1-global-cdd-dma-configuration-cpu1-only-writable-settings">
+<h5><span class="section-number">5.12.8.2.3.1. </span>Step 1: Global Cdd_Dma Configuration (CPU1-Only Writable Settings)<a class="headerlink" href="#step-1-global-cdd-dma-configuration-cpu1-only-writable-settings" title="Link to this heading"></a></h5>
+<p>At the global level (<code class="docutils literal notranslate"><span class="pre">ResourceAllocatorGeneral/Cdd_Dma</span></code>), configure the RTDMA hardware instance and its global properties. <strong>These settings must be configured here because they are only writable by CPU1</strong>:</p>
+<ol class="arabic simple">
+<li><p>Create a new <code class="docutils literal notranslate"><span class="pre">CddDmaHwInstance</span></code> (e.g., RTDMA1)</p></li>
+<li><p>Set <strong>InstanceName</strong> to <code class="docutils literal notranslate"><span class="pre">RTDMA1</span></code> or <code class="docutils literal notranslate"><span class="pre">RTDMA2</span></code></p></li>
+<li><p>Set <strong>Frame</strong> to <code class="docutils literal notranslate"><span class="pre">FRAME0</span></code>, <code class="docutils literal notranslate"><span class="pre">FRAME1</span></code>, <code class="docutils literal notranslate"><span class="pre">FRAME2</span></code>, or <code class="docutils literal notranslate"><span class="pre">FRAME3</span></code> (applies to all channels in this instance)</p></li>
+<li><p>Configure <strong>CddDmaPriorityScheme</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CDD_DMA_PRIORITY_ROUND_ROBIN</span></code>: All channels have equal priority, serviced sequentially</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CDD_DMA_PRIORITY_SOFTWARE_CONFIG</span></code>: Channels use priority levels (0-3) configured per channel</p></li>
+</ul>
+</li>
+<li><p>Configure <strong>CddDmaEmulationMode</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CDD_DMA_EMULATION_STOP</span></code>: DMA halts during debugger breakpoints</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CDD_DMA_EMULATION_FREE_RUN</span></code>: DMA continues running during debugger breakpoints</p></li>
+</ul>
+</li>
+<li><p>Configure <strong>CddDmaMpuEnable</strong> (true/false) to enable Memory Protection Unit</p></li>
+<li><p>If MPU is enabled, configure <strong>CddDmaMpuRegion</strong> containers:</p>
+<ul class="simple">
+<li><p>Set <strong>CddDmaMpuRegionId</strong> (MPU1-MPU16)</p></li>
+<li><p>Set <strong>CddDmaMpuStartAddress</strong> and <strong>CddDmaMpuEndAddress</strong> (4KB aligned)</p></li>
+<li><p>Set <strong>CddDmaMpuAccessPermission</strong> (NO_ACCESS, READ_ACCESS, or READ_WRITE_ACCESS)</p></li>
+<li><p>Add <strong>CddDmaMpuChannelEnable</strong> references to channels that can access this region</p></li>
+</ul>
+</li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">CddDmaChannel</span></code> containers for each channel you want to make available (CH1, CH2, …, CH10)</p></li>
+<li><p>For each channel:</p>
+<ul class="simple">
+<li><p>Set <strong>ChannelName</strong> (CH1, CH2, …, CH10)</p></li>
+<li><p>Set <strong>CddDmaChannelPriority</strong> (0-3, only used if priority scheme is SOFTWARE_CONFIG)</p></li>
+<li><p>The <strong>BaseAddr</strong> will be automatically calculated (e.g., <code class="docutils literal notranslate"><span class="pre">RTDMA1CH1_BASE_FRAME(0U)</span></code>)</p></li>
+</ul>
+</li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ResourceAllocatorGeneral
+└── Cdd_Dma
+    └── CddDmaHwInstance_RTDMA1
+        ├── InstanceName: RTDMA1
+        ├── Frame: FRAME0
+        ├── CddDmaPriorityScheme: Software-configured
+        ├── CddDmaEmulationMode: Free-run
+        └── CddDmaChannel_CH1
+            ├── ChannelName: CH1
+            ├── BaseAddr: RTDMA1CH1_BASE_FRAME(0U)  [auto-calculated]
+            └── CddDmaChannelPriority: 1
+</pre></div>
+</div>
+<p><strong>Important Constraints</strong>:</p>
+<ul class="simple">
+<li><p>All channels within a single RTDMA hardware instance <strong>must share the same frame selection</strong>. The frame is configured at the <code class="docutils literal notranslate"><span class="pre">CddDmaHwInstance</span></code> level, not at the individual channel level.</p></li>
+<li><p>Global properties (priority scheme, emulation mode, channel priorities, MPU settings) are <strong>hardware instance-level settings</strong> and apply to all channels in that instance regardless of which CPU context they are allocated to.</p></li>
+</ul>
+</section>
+<section id="step-2-context-specific-channel-allocation">
+<h5><span class="section-number">5.12.8.2.3.2. </span>Step 2: Context-Specific Channel Allocation<a class="headerlink" href="#step-2-context-specific-channel-allocation" title="Link to this heading"></a></h5>
+<p>After defining channels in the global configuration, allocate them to specific CPU contexts:</p>
+<ol class="arabic simple">
+<li><p>In the Resource Allocator configuration, navigate to the desired Context (e.g., CPU1_Context)</p></li>
+<li><p>Under <code class="docutils literal notranslate"><span class="pre">Context/Cdd_Dma</span></code>, create a new <code class="docutils literal notranslate"><span class="pre">CddDmaAllocatedChannel</span></code></p></li>
+<li><p>Set <strong>ChannelRef</strong> to reference the global channel (e.g., <code class="docutils literal notranslate"><span class="pre">/ResourceAllocatorGeneral/Cdd_Dma/CddDmaHwInstance_RTDMA1/CddDmaChannel_CH1</span></code>)</p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ResourceAllocatorGeneral
+└── Context (Core: CPU1)
+    └── Cdd_Dma
+        └── CddDmaAllocatedChannel
+            └── ChannelRef: /ResourceAllocatorGeneral/Cdd_Dma/
+                            CddDmaHwInstance_RTDMA1/CddDmaChannel_CH1
+</pre></div>
+</div>
+<p><strong>Key Points:</strong></p>
+<ul class="simple">
+<li><p>Each <code class="docutils literal notranslate"><span class="pre">CddDmaHwInstance</span></code> represents a physical RTDMA peripheral (RTDMA1 or RTDMA2)</p></li>
+<li><p>A channel can only be allocated to <strong>one CPU context</strong> (enforced by uniqueness validation)</p></li>
+<li><p>Only channels allocated to a context can be used by that context’s software</p></li>
+<li><p>Once channels are allocated to a CPU context in the Resource Allocator, they are referenced in the Cdd_Dma module configuration</p></li>
+</ul>
+</section>
+</section>
+<section id="multi-core-usage-scenarios">
+<h4><span class="section-number">5.12.8.2.4. </span>Multi-Core Usage Scenarios<a class="headerlink" href="#multi-core-usage-scenarios" title="Link to this heading"></a></h4>
+<section id="scenario-1-cpu1-using-cdd-dma-autosar-mcal">
+<h5><span class="section-number">5.12.8.2.4.1. </span>Scenario 1: CPU1 using Cdd_Dma (AUTOSAR MCAL)<a class="headerlink" href="#scenario-1-cpu1-using-cdd-dma-autosar-mcal" title="Link to this heading"></a></h5>
+<ul class="simple">
+<li><p>CPU1 configures global DMA properties in Resource Allocator (priority scheme, emulation mode, channel priorities, MPU)</p></li>
+<li><p>Resource Allocator allocates channels to CPU1_Context</p></li>
+<li><p>CPU1 calls <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_Init()</span></code> to configure global DMA properties and initialize the driver</p></li>
+<li><p>CPU1 uses Cdd_Dma APIs to configure channel-specific properties and perform transfers</p></li>
+</ul>
+</section>
+<section id="scenario-2-mixed-usage-cpu1-with-cdd-dma-cpu2-cpu3-with-sdk-rtdma">
+<h5><span class="section-number">5.12.8.2.4.2. </span>Scenario 2: Mixed Usage (CPU1 with Cdd_Dma, CPU2/CPU3 with SDK RTDMA)<a class="headerlink" href="#scenario-2-mixed-usage-cpu1-with-cdd-dma-cpu2-cpu3-with-sdk-rtdma" title="Link to this heading"></a></h5>
+<ul class="simple">
+<li><p>CPU1 configures global DMA properties for both RTDMA1 and RTDMA2 in Resource Allocator</p></li>
+<li><p>Resource Allocator allocates RTDMA channels to CPU1_Context</p></li>
+<li><p>Resource Allocator allocates RTDMA channels to CPU2_Context or CPU3_Context</p></li>
+<li><p>CPU1 calls <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_Init()</span></code> to configure global DMA properties and initialize the driver</p></li>
+<li><p>CPU1 uses Cdd_Dma APIs for it’s channels</p></li>
+<li><p>CPU2/CPU3 uses SDK RTDMA APIs for it’s channels</p></li>
+<li><p>All CPUs operate independently on their allocated channels, but share the same global configuration set by CPU1</p></li>
+</ul>
+</section>
+<section id="scenario-3-cpu2-cpu3-using-only-sdk-rtdma">
+<h5><span class="section-number">5.12.8.2.4.3. </span>Scenario 3: CPU2/CPU3 using only SDK RTDMA<a class="headerlink" href="#scenario-3-cpu2-cpu3-using-only-sdk-rtdma" title="Link to this heading"></a></h5>
+<ul class="simple">
+<li><p>CPU1 configures global DMA properties for RTDMA instances in Resource Allocator (priority scheme, emulation mode, channel priorities, MPU)</p></li>
+<li><p>Resource Allocator allocates RTDMA channels to CPU2_Context or CPU3_Context</p></li>
+<li><p>CPU1 calls <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_Init()</span></code> to configure global settings (even though CPU1 doesn’t use any DMA channels)</p></li>
+<li><p>CPU2/CPU3 uses SDK RTDMA APIs for their allocated channels</p></li>
+<li><p>This scenario requires <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_Init()</span></code> on CPU1 to properly configure the global hardware settings that are only writable by CPU1</p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+<section id="configuration">
+<h2><span class="section-number">5.12.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>The Cdd DMA Driver implementation supports single configuration variants, namely Pre-Compile config. The driver expects generated <strong>Cdd_Dma_Cfg.h</strong> to be present as input file.
+The associated Cdd DMA driver configuration generated source file is <strong>Cdd_Dma_Cfg.c</strong>.</p>
+<p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Refer section <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#getting-started-with-eb-tresos"><span class="std std-ref">Getting Started with EB Tresos</span></a> of Chapter <strong>MCAL Configuration and EB Tresos</strong> for more information on how to load plugin and generate the configuration files.</p>
+</div>
+<section id="configuration-parameters">
+<h3><span class="section-number">5.12.9.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<section id="cdddmageneral">
+<h4><span class="section-number">5.12.9.1.1. </span>CddDmaGeneral<a class="headerlink" href="#cdddmageneral" title="Link to this heading"></a></h4>
+<p>Contains the general configuration parameters of the CDD DMA module.</p>
+<section id="cdddmalockconfigurations">
+<h5><span class="section-number">5.12.9.1.1.1. </span>CddDmaLockConfigurations<a class="headerlink" href="#cdddmalockconfigurations" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddDmaLockConfigurations</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Enables locking of DMA configuration registers to prevent accidental modification during runtime. When enabled (true), the DMA configuration registers are write-protected after initialization.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cdddmadeverrordetect">
+<h5><span class="section-number">5.12.9.1.1.2. </span>CddDmaDevErrorDetect<a class="headerlink" href="#cdddmadeverrordetect" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddDmaDevErrorDetect</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the development error detection and notification on or off.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cdddmaversioninfoapi">
+<h5><span class="section-number">5.12.9.1.1.3. </span>CddDmaVersionInfoApi<a class="headerlink" href="#cdddmaversioninfoapi" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddDmaVersionInfoApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Enables or disables the Cdd_Dma_GetVersionInfo() API.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cdddmaconfig">
+<h4><span class="section-number">5.12.9.1.2. </span>CddDmaConfig<a class="headerlink" href="#cdddmaconfig" title="Link to this heading"></a></h4>
+<p>This container contains the configuration parameters and sub containers of the Cdd_Dma module.</p>
+<section id="cdddmachannel">
+<h5><span class="section-number">5.12.9.1.2.1. </span>CddDmaChannel<a class="headerlink" href="#cdddmachannel" title="Link to this heading"></a></h5>
+<p>This container contains the driver configuration for the DMA channel.</p>
+</section>
+<section id="cdddmainstance">
+<h5><span class="section-number">5.12.9.1.2.2. </span>CddDmaInstance<a class="headerlink" href="#cdddmainstance" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddDmaInstance</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>DMA instance ID derived from the selected channel reference. This is a non-editable parameter automatically populated based on CddDmaChannelRef.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>RTDMA1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>RTDMA1<br>RTDMA2</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id1">
+<h5><span class="section-number">5.12.9.1.2.3. </span>CddDmaChannel<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddDmaChannel</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>DMA channel ID derived from the selected channel reference. This is a non-editable parameter automatically populated based on CddDmaChannelRef.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CH1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CH1<br>CH2<br>CH3<br>CH4<br>CH5<br>CH6<br>CH7<br>CH8<br>CH9<br>CH10</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cdddmainterruptcategory">
+<h5><span class="section-number">5.12.9.1.2.4. </span>CddDmaInterruptCategory<a class="headerlink" href="#cdddmainterruptcategory" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddDmaInterruptCategory</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>This parameters defines the category of the interrupt.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>ISR_CAT1_RTINT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>ISR_CAT1_INT<br>ISR_CAT1_RTINT<br>ISR_CAT2_INT</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cdddmachintnotification">
+<h5><span class="section-number">5.12.9.1.2.5. </span>CddDmaChIntNotification<a class="headerlink" href="#cdddmachintnotification" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddDmaChIntNotification</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Interrupt notification function for transfer</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-build-variant-multiplicity</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>NULL_PTR</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cdddmaoverflowintnotification">
+<h5><span class="section-number">5.12.9.1.2.6. </span>CddDmaOverflowIntNotification<a class="headerlink" href="#cdddmaoverflowintnotification" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddDmaOverflowIntNotification</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Overflow Interrupt notification function</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-build-variant-multiplicity</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>NULL_PTR</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cdddmachannelref">
+<h5><span class="section-number">5.12.9.1.2.7. </span>CddDmaChannelRef<a class="headerlink" href="#cdddmachannelref" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddDmaChannelRef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to the RTDMA channel from the Resource Allocator. This links the configuration to a specific DMA channel available on the device.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="steps-to-configure-cdd-dma-module">
+<h3><span class="section-number">5.12.9.2. </span>Steps To Configure Cdd DMA Module<a class="headerlink" href="#steps-to-configure-cdd-dma-module" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Open EB Tresos configurator tool.</p></li>
+<li><p>Ensure DMA channels have been allocated to the CPU context in the Resource Allocator module (see <a class="reference internal" href="#resource-allocator">Resource Allocator</a> section for details on channel allocation).</p></li>
+<li><p>Navigate to the Cdd_Dma module configuration.</p></li>
+<li><p>For each DMA channel to be used, create a <code class="docutils literal notranslate"><span class="pre">CddDmaChannel</span></code> container.</p></li>
+<li><p>Within each <code class="docutils literal notranslate"><span class="pre">CddDmaChannel</span></code> container, configure the following parameters:</p>
+<ul class="simple">
+<li><p><strong>CddDmaChannelRef</strong>: Reference to the allocated channel from the Resource Allocator path (<code class="docutils literal notranslate"><span class="pre">ResourceAllocatorGeneral/Context/Cdd_Dma/CddDmaAllocatedChannel</span></code>). This links the Cdd_Dma channel configuration to the channel allocated in the Resource Allocator.</p></li>
+<li><p><strong>CddDmaInterruptCategory</strong>: Select the interrupt category for the channel:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ISR_CAT1_INT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ISR_CAT1_RTINT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ISR_CAT2_INT</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>CddDmaChIntNotification</strong>: Specify the callback function name to be invoked when a DMA transfer completes on this channel.</p></li>
+<li><p><strong>CddDmaOverflowIntNotification</strong>: Specify the callback function name to be invoked when a DMA overflow interrupt occurs on this channel.\</p></li>
+</ul>
+</li>
+<li><p>Save the configuration and generate the configuration files.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Global configuration parameters such as channel ID, priority scheme, priorities, emulation mode and MPU configuration are managed in the Resource Allocator module, not in the Cdd_Dma module.</p>
+</div>
+</section>
+</section>
+<section id="examples">
+<h2><span class="section-number">5.12.10. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>The example applications demonstrate use of the Cdd_Dma module. The examples are explained below in detail.</p>
+<section id="cdd-dma-example-mem-transfer">
+<h3><span class="section-number">5.12.10.1. </span>Cdd_Dma_Example_Mem_Transfer<a class="headerlink" href="#cdd-dma-example-mem-transfer" title="Link to this heading"></a></h3>
+<section id="overview-of-cdd-dma-example-mem-transfer">
+<h4><span class="section-number">5.12.10.1.1. </span>Overview of Cdd_Dma_Example_Mem_Transfer<a class="headerlink" href="#overview-of-cdd-dma-example-mem-transfer" title="Link to this heading"></a></h4>
+<p>This example demonstrates basic memory-to-memory DMA transfer functionality:</p>
+<ul class="simple">
+<li><p>Initialization</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EcuM_Init()</span></code> Initializes clock to 200 MHz using <code class="docutils literal notranslate"><span class="pre">Mcu_Init()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_Init()</span></code> initializes DMA driver with EB Tresos configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_GetVersionInfo()</span></code> retrieves software version information (vendor ID, module ID, SW version)</p></li>
+</ul>
+</li>
+<li><p>Transfer Configuration</p>
+<ul>
+<li><p>Configures DMA channel properties using <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_SetChannelProperties()</span></code>:</p>
+<ul>
+<li><p>Software trigger mode (<code class="docutils literal notranslate"><span class="pre">CDD_DMA_TRIGGER_SOFTWARE</span></code>)</p></li>
+<li><p>Continuous mode enabled</p></li>
+<li><p>32-bit data size for read and write operations</p></li>
+<li><p>Channel interrupt enabled at end of transfer</p></li>
+<li><p>Overflow interrupt disabled</p></li>
+</ul>
+</li>
+<li><p>Configures transfer parameters using <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_SetTransferProperties()</span></code>:</p>
+<ul>
+<li><p>Burst size: 4 words (32-bit each)</p></li>
+<li><p>Transfer size: 16 bursts (total 64 words = 256 bytes)</p></li>
+<li><p>Source and destination step sizes: 4 bytes per word</p></li>
+<li><p>No address wrapping (wrap size set to maximum 65535)</p></li>
+<li><p>Source address: <code class="docutils literal notranslate"><span class="pre">TxData</span></code> buffer</p></li>
+<li><p>Destination address: <code class="docutils literal notranslate"><span class="pre">RxData</span></code> buffer</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Transfer Execution</p>
+<ul>
+<li><p>Starts DMA channel using <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_StartChannelTransfer()</span></code></p></li>
+<li><p>Triggers each burst individually using <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_ForcePeripheralEventTrigger()</span></code></p></li>
+<li><p>Monitors burst status using <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_GetChannelStatus()</span></code> to wait for burst completion</p></li>
+<li><p>Verifies data integrity after each burst by comparing transmitted and received data</p></li>
+<li><p>Receives interrupt notification via <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_Channel1_notification()</span></code> callback when entire transfer completes</p></li>
+<li><p>Stops DMA channel using <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_StopChannelTransfer()</span></code></p></li>
+<li><p>Reports transfer success or failure based on data verification</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="sample-log-of-cdd-dma-example-mem-transfer">
+<h4><span class="section-number">5.12.10.1.2. </span>Sample Log of Cdd_Dma_Example_Mem_Transfer<a class="headerlink" href="#sample-log-of-cdd-dma-example-mem-transfer" title="Link to this heading"></a></h4>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Executing</span><span class="w"> </span><span class="n">Cdd_Dma_Example_Mem_Transfer</span><span class="w"> </span><span class="n">example</span>
+<span class="o">---------------------------------------------------------------</span>
+<span class="n">CDD</span><span class="w"> </span><span class="n">DMA</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="o">---------------------</span>
+<span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">255</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="o">---------------------------------------------------------------</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">source</span><span class="w"> </span><span class="n">before</span><span class="w"> </span><span class="n">transfer</span><span class="o">:</span>
+<span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="mi">11</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="mi">13</span><span class="w"> </span><span class="mi">14</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span>
+<span class="n">Data</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">destination</span><span class="w"> </span><span class="n">before</span><span class="w"> </span><span class="n">transfer</span><span class="o">:</span>
+<span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span>
+<span class="n">Data</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">source</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="n">transfer</span><span class="o">:</span>
+<span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="mi">11</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="mi">13</span><span class="w"> </span><span class="mi">14</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span>
+<span class="n">Data</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">destination</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="n">transfer</span><span class="o">:</span>
+<span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="mi">11</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="mi">13</span><span class="w"> </span><span class="mi">14</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span>
+<span class="o">===============================================</span>
+
+<span class="n">Transfer</span><span class="w"> </span><span class="n">successful</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="cdd-dma-example-mem-transfer-mpu">
+<h3><span class="section-number">5.12.10.2. </span>Cdd_Dma_Example_Mem_Transfer_Mpu<a class="headerlink" href="#cdd-dma-example-mem-transfer-mpu" title="Link to this heading"></a></h3>
+<section id="overview-of-cdd-dma-example-mem-transfer-mpu">
+<h4><span class="section-number">5.12.10.2.1. </span>Overview of Cdd_Dma_Example_Mem_Transfer_Mpu<a class="headerlink" href="#overview-of-cdd-dma-example-mem-transfer-mpu" title="Link to this heading"></a></h4>
+<p>This example demonstrates RTDMA Memory Protection Unit (MPU) functionality by intentionally triggering an MPU violation:</p>
+<ul class="simple">
+<li><p>Initialization</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EcuM_Init()</span></code> Initializes clock to 200 MHz using <code class="docutils literal notranslate"><span class="pre">Mcu_Init()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_Init()</span></code> initializes DMA driver with EB Tresos configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_GetVersionInfo()</span></code> retrieves software version information (vendor ID, module ID, SW version)</p></li>
+</ul>
+</li>
+<li><p>MPU Configuration</p>
+<ul>
+<li><p>Configures MPU region with specific address range:</p>
+<ul>
+<li><p>MPU Region Start Address: 0x200E0000</p></li>
+<li><p>MPU Region End Address: 0x200E0FFF</p></li>
+</ul>
+</li>
+<li><p>Places transmit buffer (<code class="docutils literal notranslate"><span class="pre">TxData</span></code>) at 0x200E0100 (within MPU region)</p></li>
+<li><p>Places receive buffer (<code class="docutils literal notranslate"><span class="pre">RxData</span></code>) at 0x200E0FDC (intentionally extends outside MPU region to 0x200E101B)</p></li>
+<li><p>This configuration intentionally causes MPU violation when DMA attempts to write to receive buffer</p></li>
+</ul>
+</li>
+<li><p>ESM and NMI Setup</p>
+<ul>
+<li><p>Registers custom NMI handler <code class="docutils literal notranslate"><span class="pre">CPU1_Custom_NMIHandler()</span></code></p></li>
+<li><p>Configures Error Signaling Module (ESM)</p></li>
+</ul>
+</li>
+<li><p>Transfer Configuration</p>
+<ul>
+<li><p>Configures DMA channel properties using <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_SetChannelProperties()</span></code>:</p>
+<ul>
+<li><p>Software trigger mode (<code class="docutils literal notranslate"><span class="pre">CDD_DMA_TRIGGER_SOFTWARE</span></code>)</p></li>
+<li><p>Continuous mode enabled</p></li>
+<li><p>32-bit data size for read and write operations</p></li>
+<li><p>Channel interrupt enabled at end of transfer</p></li>
+<li><p>Overflow interrupt disabled</p></li>
+</ul>
+</li>
+<li><p>Configures transfer parameters using <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_SetTransferProperties()</span></code>:</p>
+<ul>
+<li><p>Burst size: 4 words (32-bit each)</p></li>
+<li><p>Transfer size: 16 bursts (total 64 words = 256 bytes)</p></li>
+<li><p>Source and destination step sizes: 4 bytes per word</p></li>
+<li><p>No address wrapping (wrap size set to maximum 65535)</p></li>
+<li><p>Source address: <code class="docutils literal notranslate"><span class="pre">TxData</span></code> buffer</p></li>
+<li><p>Destination address: <code class="docutils literal notranslate"><span class="pre">RxData</span></code> buffer</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>When DMA attempts to write to receive buffer outside MPU region:</p>
+<ul>
+<li><p>MPU detects security violation</p></li>
+<li><p>MPU signals Error Aggregator module</p></li>
+<li><p>Error Aggregator communicates fault to ESM</p></li>
+<li><p>ESM triggers NMI interrupt and blocks RTDMA access</p></li>
+</ul>
+</li>
+<li><p>NMI handler increments <code class="docutils literal notranslate"><span class="pre">g_nmiCount</span></code> counter</p>
+<ul>
+<li><p>Verifies NMI was triggered as expected, confirming MPU protection is functioning correctly</p></li>
+<li><p>Reports pass if NMI occurred within timeout, fail otherwise</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="sample-log-of-cdd-dma-example-mem-transfer-mpu">
+<h4><span class="section-number">5.12.10.2.2. </span>Sample Log of Cdd_Dma_Example_Mem_Transfer_Mpu<a class="headerlink" href="#sample-log-of-cdd-dma-example-mem-transfer-mpu" title="Link to this heading"></a></h4>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Executing</span><span class="w"> </span><span class="n">Cdd_Dma_Example_Mem_Transfer_Mpu</span><span class="w"> </span><span class="n">example</span>
+<span class="o">---------------------------------------------------------------</span>
+<span class="n">CDD</span><span class="w"> </span><span class="n">DMA</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="w">  </span><span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="w">  </span><span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="mi">255</span>
+<span class="w">  </span><span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">  </span><span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="o">---------------------------------------------------------------</span>
+
+<span class="n">Starting</span><span class="w"> </span><span class="n">DMA</span><span class="w"> </span><span class="n">transfer</span><span class="p">...</span>
+<span class="n">Triggering</span><span class="w"> </span><span class="n">DMA</span><span class="w"> </span><span class="n">transfers</span><span class="w"> </span><span class="p">(</span><span class="n">expecting</span><span class="w"> </span><span class="n">MPU</span><span class="w"> </span><span class="n">violation</span><span class="p">)...</span>
+<span class="o">---------------------------------------------------------------</span>
+<span class="n">Cdd_Dma_Example_Mem_Transfer_Mpu</span><span class="w"> </span><span class="n">example</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">NMI</span><span class="w"> </span><span class="n">was</span><span class="w"> </span><span class="n">triggered</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">expected</span>
+<span class="o">---------------------------------------------------------------</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="setup-required-to-run-examples">
+<h3><span class="section-number">5.12.10.3. </span>Setup Required to Run Examples<a class="headerlink" href="#setup-required-to-run-examples" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Connect the hardware and power up</p></li>
+<li><p>Connect UART setup to check the log on serial console</p></li>
+</ul>
+</section>
+<section id="how-to-run-examples">
+<h3><span class="section-number">5.12.10.4. </span>How to Run Examples<a class="headerlink" href="#how-to-run-examples" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Open CCS and import the desired example (Cdd_Dma_Example_Mem_Transfer or Cdd_Dma_Example_Mem_Transfer_Mpu)</p></li>
+<li><p>Build project and start debug session</p></li>
+<li><p>Run the application and observe output on serial console</p></li>
+</ul>
+</section>
+<section id="file-structure">
+<h3><span class="section-number">5.12.10.5. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<p>📦f29h85x_mcal<br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┣ 📂examples<br />
+┃ ┣ 📂AppUtils<br />
+┃ ┣ 📂Can<br />
+┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂<strong>Cdd_Dma</strong><br />
+┃ ┃ ┣ 📂<strong>Cdd_Dma_Example_Mem_Transfer</strong><br />
+┃ ┃ ┃ ┣ 📂Common<br />
+┃ ┃ ┃ ┃ ┗ 📂tresos<br />
+┃ ┃ ┃ ┃   ┗ 📂config<br />
+┃ ┃ ┃ ┃     ┣ 📜<strong>Cdd_Dma.xdm</strong> : <em>Generated EB Tresos config file in .xdm format</em><br />
+┃ ┃ ┃ ┃     ┣ 📜Dem.xdm<br />
+┃ ┃ ┃ ┃     ┣ 📜EcuM.xdm<br />
+┃ ┃ ┃ ┃     ┣ 📜Mcu.xdm<br />
+┃ ┃ ┃ ┃     ┗ 📜Os.xdm<br />
+┃ ┃ ┃ ┣ 📂F29H85x<br />
+┃ ┃ ┃ ┃ ┣ 📂CCS<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Cdd_Dma_Example_Mem_Transfer.projectspec</strong><br />
+┃ ┃ ┃ ┃ ┗ 📂Cdd_Dma_Example_Mem_Transfer_Config<br />
+┃ ┃ ┃ ┃   ┣ 📂config<br />
+┃ ┃ ┃ ┃   ┃ ┣ 📜Port.xdm<br />
+┃ ┃ ┃ ┃   ┃ ┗ 📜ResourceAllocator.xdm<br />
+┃ ┃ ┃ ┃   ┣ 📂output<br />
+┃ ┃ ┃ ┃   ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜<strong>Cdd_Dma_Cfg.h</strong> : <em>Contains the generated pre-compiler configuration header</em><br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜<strong>Cdd_Dma_Cbk.h</strong> : <em>Contains callback function declarations</em><br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Dem_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Os_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┗ 📜Port_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜<strong>Cdd_Dma_Cfg.c</strong> : <em>Contains the generated pre-compiler configuration source</em><br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Dem_Cfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Mcu_PBcfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Os_Cfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┗ 📜Port_PBcfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┗ 📂swcd<br />
+┃ ┃ ┃ ┃   ┃   ┣ 📜Cdd_Dma_BSWMD.arxml<br />
+┃ ┃ ┃ ┃   ┃   ┣ 📜Mcu_BSWMD.arxml<br />
+┃ ┃ ┃ ┃   ┃   ┗ 📜Port_BSWMD.arxml<br />
+┃ ┃ ┃ ┃   ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┗ 📜<strong>Cdd_Dma_Example_Mem_Transfer.c</strong> : <em>Example application for Cdd_Dma memory transfer</em><br />
+┃ ┃ ┗ 📂<strong>Cdd_Dma_Example_Mem_Transfer_Mpu</strong><br />
+┃ ┃   ┣ 📂Common<br />
+┃ ┃   ┃ ┗ 📂tresos<br />
+┃ ┃   ┃   ┗ 📂config<br />
+┃ ┃   ┃     ┣ 📜<strong>Cdd_Dma.xdm</strong> : <em>Generated EB Tresos config file in .xdm format</em><br />
+┃ ┃   ┃     ┣ 📜Dem.xdm<br />
+┃ ┃   ┃     ┣ 📜EcuM.xdm<br />
+┃ ┃   ┃     ┣ 📜Mcu.xdm<br />
+┃ ┃   ┃     ┗ 📜Os.xdm<br />
+┃ ┃   ┣ 📂F29H85x<br />
+┃ ┃   ┃ ┣ 📂CCS<br />
+┃ ┃   ┃ ┃ ┗ 📜<strong>Cdd_Dma_Example_Mem_Transfer_Mpu.projectspec</strong><br />
+┃ ┃   ┃ ┗ 📂Cdd_Dma_Example_Mem_Transfer_Mpu_Config<br />
+┃ ┃   ┃   ┣ 📂config<br />
+┃ ┃   ┃   ┃ ┣ 📜Port.xdm<br />
+┃ ┃   ┃   ┃ ┗ 📜ResourceAllocator.xdm<br />
+┃ ┃   ┃   ┣ 📂output<br />
+┃ ┃   ┃   ┃ ┣ 📂include<br />
+┃ ┃   ┃   ┃ ┃ ┣ 📜<strong>Cdd_Dma_Cfg.h</strong> : <em>Contains the generated pre-compiler configuration header</em><br />
+┃ ┃   ┃   ┃ ┃ ┣ 📜<strong>Cdd_Dma_Cbk.h</strong> : <em>Contains callback function declarations</em><br />
+┃ ┃   ┃   ┃ ┃ ┣ 📜Dem_Cfg.h<br />
+┃ ┃   ┃   ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
+┃ ┃   ┃   ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
+┃ ┃   ┃   ┃ ┃ ┣ 📜Os_Cfg.h<br />
+┃ ┃   ┃   ┃ ┃ ┗ 📜Port_Cfg.h<br />
+┃ ┃   ┃   ┃ ┣ 📂src<br />
+┃ ┃   ┃   ┃ ┃ ┣ 📜<strong>Cdd_Dma_Cfg.c</strong> : <em>Contains the generated pre-compiler configuration source</em><br />
+┃ ┃   ┃   ┃ ┃ ┣ 📜Dem_Cfg.c<br />
+┃ ┃   ┃   ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
+┃ ┃   ┃   ┃ ┃ ┣ 📜Mcu_PBcfg.c<br />
+┃ ┃   ┃   ┃ ┃ ┣ 📜Os_Cfg.c<br />
+┃ ┃   ┃   ┃ ┃ ┗ 📜Port_PBcfg.c<br />
+┃ ┃   ┃   ┃ ┗ 📂swcd<br />
+┃ ┃   ┃   ┃   ┣ 📜Cdd_Dma_BSWMD.arxml<br />
+┃ ┃   ┃   ┃   ┣ 📜Mcu_BSWMD.arxml<br />
+┃ ┃   ┃   ┃   ┗ 📜Port_BSWMD.arxml<br />
+┃ ┃   ┃   ┗ 📜CMakeLists.txt<br />
+┃ ┃   ┣ 📜CMakeLists.txt<br />
+┃ ┃   ┗ 📜<strong>Cdd_Dma_Example_Mem_Transfer_Mpu.c</strong> : <em>Example application for Cdd_Dma with MPU</em><br />
+┃ ┣ 📂Cdd_Ecap<br />
+┃ ┣ 📂Cdd_I2c<br />
+┃ ┣ 📂Cdd_Ipc<br />
+┃ ┣ 📂Cdd_Pwm<br />
+┃ ┣ 📂Cdd_Sent<br />
+┃ ┣ 📂Cdd_Uart<br />
+┃ ┣ 📂Cdd_Xbar<br />
+┃ ┣ 📂DeviceSupport<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Empty_Projects<br />
+┃ ┣ 📂Fls<br />
+┃ ┣ 📂Fls_Fapi<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂Lin<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┃ ┣ 📂Rtdma<br />
+┃ ┣ 📂Spi<br />
+┃ ┣ 📂Wdg<br />
+┃ ┗ 📜CMakeLists.txt<br />
+┣ 📂plugins<br />
+┗ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Module_User_Guide_Cdd_Adc.html" class="btn btn-neutral float-left" title="5.11. CDD ADC Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Module_User_Guide_Cdd_Ecap.html" class="btn btn-neutral float-right" title="5.13. CDD ECAP Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2026, Texas Instruments Incorporated.
+        <br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 26.00.00
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

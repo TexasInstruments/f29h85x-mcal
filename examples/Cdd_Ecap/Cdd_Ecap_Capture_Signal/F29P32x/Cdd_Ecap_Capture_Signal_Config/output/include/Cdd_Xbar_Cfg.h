@@ -96,9 +96,9 @@ extern "C" {
 /** \brief CDD XBar configuration Major Version */
 #define CDD_XBAR_CFG_MAJOR_VERSION                (3U)
 /** \brief CDD XBar configuration Minor Version */
-#define CDD_XBAR_CFG_MINOR_VERSION                (0U)
+#define CDD_XBAR_CFG_MINOR_VERSION                (1U)
 /** \brief CDD XBar configuration Patch Version */
-#define CDD_XBAR_CFG_PATCH_VERSION                (1U)
+#define CDD_XBAR_CFG_PATCH_VERSION                (0U)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -172,9 +172,24 @@ extern "C" {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+/** \brief Maximum number of inputs configured per Output crossbar instance */
+#define CDD_XBAR_OUTXBAR_INPUT_COUNT         0U
 
 
+/** \brief Maximum number of inputs configured per EPWM crossbar instance */
+#define CDD_XBAR_EPWMXBAR_INPUT_COUNT         0U
 
+
+/** \brief Maximum number of inputs configured per MINDB crossbar instance */
+#define CDD_XBAR_MINDBXBAR_INPUT_COUNT        0U
+
+
+/** \brief Maximum number of inputs configured per ICL crossbar instance */
+#define CDD_XBAR_ICLXBAR_INPUT_COUNT           0U
+
+
+/** \brief Maximum number of inputs configured per CLB crossbar instance*/
+#define CDD_XBAR_CLBXBAR_INPUT_COUNT           0U
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 /* Design: MCAL-25813 */
@@ -1673,7 +1688,6 @@ typedef enum
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
-#if (0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS)
 /* Design: MCAL-25802 */
 /** \brief Input Crossbar configuration */
 typedef struct Cdd_Xbar_InXbarCfgTag
@@ -1691,15 +1705,13 @@ typedef struct Cdd_Xbar_InXbarCfgTag
     /** \brief Input crossbar lock setting */
     boolean selectConfigLock;   /* Design: MCAL-25707 */
 } Cdd_Xbar_InXbarCfgType;
-#endif
 
-#if (0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS)
 /* Design: MCAL-25803 */
 /** \brief Output Crossbar configuration */
 typedef struct Cdd_Xbar_OutXbarCfgTag
 {
     /** \brief Number of inputs of an output crossbar instance*/
-    uint8 input_count;                               
+    uint8 input_count;
     /** \brief Output crossbar input line */
     uint16 inputLine[CDD_XBAR_OUTXBAR_INPUT_COUNT];     /* Design: MCAL-25724 */
     /** \brief Output crossbar output line */
@@ -1715,106 +1727,85 @@ typedef struct Cdd_Xbar_OutXbarCfgTag
     /** \brief Output crossbar output flag force/clear selection during init */
     Cdd_Xbar_OutFlagInitType outputFlag;             /* Design: MCAL-25813 */
 } Cdd_Xbar_OutXbarCfgType;
-#endif
 
-#if (0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS)
 /* Design: MCAL-25804 */
 /** \brief EPWM Crossbar configuration */
 typedef struct Cdd_Xbar_EPWMXbarCfgTag
 {
     /** \brief Number of crossbar inputs for a crossbar instance*/
     uint8 input_count;          /* Design: MCAL-25725, MCAL-25727, MCAL-25729, MCAL-25731 */
-    /** \brief Crossbar input line */ 
+    /** \brief Crossbar input line */
     uint16 inputLine[CDD_XBAR_EPWMXBAR_INPUT_COUNT];    /* Design: MCAL-25726, MCAL-25728, MCAL-25730, MCAL-25732 */
     /** \brief Crossbar output line */
     uint8 outputLine;         /* Design: MCAL-25822, MCAL-25723, MCAL-25724, MCAL-25825 */
     /** \brief Crossbar output inversion selection */
     boolean outputInversion;  /* Design: MCAL-25714, MCAL-25715, MCAL-25716, MCAL-25717 */
 } Cdd_Xbar_EPWMXbarCfgType;
-#endif
 
-#if (0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS)
 /* Design: MCAL-28162 */
 /** \brief CLB Crossbar configuration */
 typedef struct Cdd_Xbar_CLBXbarCfgTag
 {
     /** \brief Number of crossbar inputs for a crossbar instance*/
     uint8 input_count;          /* Design: MCAL-25725, MCAL-25727, MCAL-25729, MCAL-25731 */
-    /** \brief Crossbar input line */ 
+    /** \brief Crossbar input line */
     uint16 inputLine[CDD_XBAR_CLBXBAR_INPUT_COUNT];    /* Design: MCAL-25726, MCAL-25728, MCAL-25730, MCAL-25732 */
     /** \brief Crossbar output line */
     uint8 outputLine;         /* Design: MCAL-25822, MCAL-25723, MCAL-25724, MCAL-25825 */
     /** \brief Crossbar output inversion selection */
     boolean outputInversion;  /* Design: MCAL-25714, MCAL-25715, MCAL-25716, MCAL-25717 */
 } Cdd_Xbar_CLBXbarCfgType;
-#endif
 
-#if (0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS)
 /* Design: MCAL-28163 */
 /** \brief MINDB Crossbar configuration */
 typedef struct Cdd_Xbar_MINDBXbarCfgTag
 {
     /** \brief Number of crossbar inputs for a crossbar instance*/
     uint8 input_count;          /* Design: MCAL-25725, MCAL-25727, MCAL-25729, MCAL-25731 */
-    /** \brief Crossbar input line */ 
+    /** \brief Crossbar input line */
     uint16 inputLine[CDD_XBAR_MINDBXBAR_INPUT_COUNT];    /* Design: MCAL-25726, MCAL-25728, MCAL-25730, MCAL-25732 */
     /** \brief Crossbar output line */
     uint8 outputLine;         /* Design: MCAL-25822, MCAL-25723, MCAL-25724, MCAL-25825 */
     /** \brief Crossbar output inversion selection */
     boolean outputInversion;  /* Design: MCAL-25714, MCAL-25715, MCAL-25716, MCAL-25717 */
 } Cdd_Xbar_MINDBXbarCfgType;
-#endif
 
-#if (0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS)
 /* Design: MCAL-28164 */
 /** \brief ICL Crossbar configuration */
 typedef struct Cdd_Xbar_ICLXbarCfgTag
 {
     /** \brief Number of crossbar inputs for a crossbar instance*/
     uint8 input_count;          /* Design: MCAL-25725, MCAL-25727, MCAL-25729, MCAL-25731 */
-    /** \brief Crossbar input line */ 
+    /** \brief Crossbar input line */
     uint16 inputLine[CDD_XBAR_ICLXBAR_INPUT_COUNT];    /* Design: MCAL-25726, MCAL-25728, MCAL-25730, MCAL-25732 */
     /** \brief Crossbar output line */
     uint8 outputLine;         /* Design: MCAL-25822, MCAL-25723, MCAL-25724, MCAL-25825 */
     /** \brief Crossbar output inversion selection */
     boolean outputInversion;  /* Design: MCAL-25714, MCAL-25715, MCAL-25716, MCAL-25717 */
 } Cdd_Xbar_ICLXbarCfgType;
-#endif
 
 /* Design: MCAL-25796 */
 /** \brief CDD XBar configuration */
 typedef struct
 {
     /* Design: MCAL-25805 */
-    #if (0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS)
     /** \brief Input Crossbar Configuration */
     Cdd_Xbar_InXbarCfgType Cdd_Xbar_InputCfg[CDD_XBAR_INPUT_XBAR_CONFIGURATIONS];
-    #endif
     /* Design: MCAL-25806 */
-    #if (0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS)
     /** \brief Output Crossbar Configuration */
     Cdd_Xbar_OutXbarCfgType Cdd_Xbar_OutputCfg[CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS];
-    #endif
     /* Design: MCAL-25807 */
-    #if (0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS)
     /** \brief EPWM Crossbar Configuration */
     Cdd_Xbar_EPWMXbarCfgType Cdd_Xbar_EpwmCfg[CDD_XBAR_EPWM_XBAR_CONFIGURATIONS];
-    #endif
     /* Design: MCAL-25808 */
-    #if (0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS)
     /** \brief CLB Crossbar Configuration */
     Cdd_Xbar_CLBXbarCfgType Cdd_Xbar_ClbCfg[CDD_XBAR_CLB_XBAR_CONFIGURATIONS];
-    #endif
     /* Design: MCAL-25809 */
-    #if (0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS)
     /** \brief MINDB Crossbar Configuration */
     Cdd_Xbar_MINDBXbarCfgType Cdd_Xbar_MindbCfg[CDD_XBAR_MINDB_XBAR_CONFIGURATIONS];
-    #endif
     /* Design: MCAL-25810 */
-    #if (0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS)
     /** \brief ICL Crossbar Configuration */
     Cdd_Xbar_ICLXbarCfgType Cdd_Xbar_IclCfg[CDD_XBAR_ICL_XBAR_CONFIGURATIONS];
-    #endif
     /** \brief Output Crossbar Lock */
     boolean outConfigLock;      /* Design: MCAL-25708 */
     /** \brief EPWM Crossbar Lock */
@@ -1825,10 +1816,8 @@ typedef struct
     boolean mindbConfigLock;    /* Design: MCAL-25711 */
     /** \brief ICL Crossbar Lock */
     boolean iclConfigLock;      /* Design: MCAL-25712 */
-    #if (0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS)
     /** \brief Output crossbar flag base address */
     uint32 outputXbarFlagBaseAddress;
-    #endif
     #if (CDD_XBAR_INPUT_FLAG_API == STD_ON)
     /** \brief Crossbar input flag base address*/
     uint32 inputFlagBaseAddress;
@@ -1836,7 +1825,7 @@ typedef struct
 } Cdd_Xbar_ConfigType;
 
 /* CDD XBar Configuration struct extern declaration */
-extern VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config;
+extern CONST(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config;
 
 /*********************************************************************************************************************
  *  Exported Function Prototypes

@@ -56,6 +56,10 @@ This document details AUTOSAR BSW CDD_ADC module implementation
 
 The ADC peripheral initializes and controls the internal Analogue Digital Converter Unit(s) of the microcontroller. The ADC peripheral in the device is Successive Approximation (SAR) type of ADC . The ADC peripherals on this device support selectable resolution of either 16 bit or 12 bit.The ADC is composed of a core and a wrapper; the core is composed of the analog circuits which include the channel select MUX, the Sample-and-Hold (S/H) circuit, the successive approximation circuits, voltage reference circuits, and other analog support circuits. The wrapper is composed of the digital circuits that configure and control the ADC. These circuits include the logic for programmable conversions, result registers, interfaces to analog circuits, interfaces to the peripheral buses,post-processing circuits, and interfaces to other on-chip peripherals.
 
+```{note}
+**ADC Converter Enable Timing:** The application should wait for the necessary delay after all ADC converters have begun powering up(Cdd_Adc_Init) before triggering any SOC conversion. Refer to the device data sheet for the specific timing requirement. This delay ensures proper ADC initialization and stable operation.
+```
+
 ### Hardware Features
 
 #### Hardware Features supported
@@ -67,6 +71,14 @@ The ADC module includes the following features:
 * Selectable internal reference of 2.5V or 3.3V.
 * Differential signal conversions and Single-ended signal conversions.
 * Input multiplexer with up to 80 channels (single-ended) or 40 channels (differential).
+
+```{note}
+F29P32x Device Variant Limitations: On F29P32x devices, the following features are not supported:
+- 16-bit resolution mode: F29P32x ADC instances support 12-bit resolution only.
+- Differential signal conversion mode: F29P32x ADC instances support single-ended conversions only.
+
+See [Device-Variant Specific Limitations](#device-variant-specific-limitations) for details.
+```
 * External channel mux option to expand available ADC channels.
 * 32 configurable SOCs.
 * 32 individually addressable result registers.
@@ -117,6 +129,17 @@ Cdd_Adc Result Safety Checker Block Diagram
 
 * The 1.65V internal reference mode is not supported when the ADC is configured for 16-bit resolution.
 * Temperature sensor sampled in 16-bit mode. It can cause incorrect ADC results.To sample the temperature sensor, the ADC must be in single-ended 12-bit mode.
+
+#### Device-Variant Specific Limitations
+
+**F29P32x devices:**
+
+* **16-bit resolution mode is not supported.** F29P32x ADC instances support 12-bit resolution only.
+* **Differential signal conversion mode is not supported.** F29P32x ADC instances support single-ended conversions only.
+
+```{note}
+The device family is selected in the Resource Allocator module. Ensure the correct device variant (F29P32x, F29H85x, or F29P58x) is configured in the Resource Allocator so that device-specific constraints are applied correctly.
+```
 
 #### Features Not supported by the driver
 
@@ -172,7 +195,15 @@ Cdd_Adc Header File Structure
 
 #### Memory Mapping
 
-Will be added in later release
+The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.
+
+Reference memory map files can be found at:
+
+```text
+{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+```
+
+The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.
 
 #### Scheduling
 
@@ -214,7 +245,14 @@ Development errors are reported to the DET using the service Det_ReportError(), 
 |API called when safety checker is IDLE|CDD_ADC_E_CHECKER_IDLE|0x1FU|
 |API called when safety checker is BUSY|CDD_ADC_E_CHECKER_BUSY|0x20U|
 |Cdd_Adc_SetResolution API called on a hardware unit whose resolution is same as the requested resolution|CDD_ADC_E_ALREADY_SET|0x21U|
-|API called with wrong processing mode (e.g., DMA mode API called on non-DMA group)|CDD_ADC_E_WRONG_PROCESSING_MODE|0x25U|
+
+### Silicon errata workarounds and recommendation
+
+For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata](https://www.ti.com/lit/er/sprz569c/sprz569c.pdf).
+
+| Advisory | Workaround in MCAL driver | Recommended actions for user |
+|----------|--------------------------|-------------------------------|
+| ADC: Interrupts may stop if INTxCONT (Continue-to-Interrupt Mode) is not set | 1. Use Continue-to-Interrupt Mode to prevent the ADCINTFLG from blocking additional ADC interrupts (enable `CddAdcContinueToInterruptMode` for the specified interrupt in EB Tresos to use ContinueToInterrupt mode). <br>2. Check for an overflow condition(ADCINTOVF flag status) in the ISR when clearing the ADCINTFLG: check ADCINTOVF immediately after writing to ADCINTFLGCLR; if it is set, clear ADCINTOVF and write ADCINTFLGCLR a second time to ensure the ADCINTFLG is cleared. The ADCINTOVF register will be set, indicating an ADC conversion interrupt was lost.| Ensure there is always sufficient time to service the ADC ISR and clear the ADCINTFLG before the next ADC interrupt occurs to avoid this condition.|
 
 ### Used resources
 
@@ -254,6 +292,12 @@ Interrupt and the category should be selected in the Cdd_Adc plugin.The Interrup
 ```{Note}
 Same Interrupt Category needs to be configured in both Cdd_Adc and OS Module.
 Since all the PPBs in an ADC hardware share the same interrupt, the category must match for all the PPB containers under an ADC hardware unit container.
+```
+
+```{note}
+**Early Interrupt Pulse Mode (CddAdcInterruptPulseMode = CDD_ADC_PULSE_END_OF_ACQ_WIN):** In early interrupt mode, the ADC interrupt is triggered before the conversion results are ready, allowing the application to perform necessary pre-work so that it can act on the ADC results immediately when they become available.
+The `CddAdcInterruptCycleoffset` parameter configures the number of additional SYSCLK cycles after the falling edge of the SOC pulse(at the end of the acquisition window) before the ADCINT flag is set. If the configured delay extends beyond the End-Of-Conversion (EOC), the interrupt is generated at EOC.
+The driver ISR does not poll the ADCINTxRESULT flag to verify the result latch status before reading. It is recommended to configure a sufficient `CddAdcInterruptCycleoffset` delay to ensure the results are ready.
 ```
 
 #### Instance support
@@ -351,23 +395,48 @@ The Cdd_Adc driver uses interrupts and therefore depends on OS, which configures
 
 #### Resource Allocator
 
-The ADC module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+The ADC module uses the Resource Allocator to allocate ADC peripheral instances to CPU cores and configure their memory-mapped base addresses. Each allocation is placed inside a **Context** that maps to a CPU core (e.g. `CPU1`). The **CurrentContext** parameter in the Resource Allocator selects which Context is active for MCAL execution. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+The ADC Context container supports four types of allocations:
+
+- **`Cdd_AdcAllocatedInstance`**: Allocates an ADC hardware instance. **InstanceName** uses the `CDD_` prefix (e.g. `CDD_ADCA`).
+- **`CddAdcSafetyCheckerInstance`**: Allocates an ADC safety checker instance (e.g. `ADCSAFETYCHECK1`).
+- **`CddAdcCheckerInterruptEvtInstance`**: Allocates an ADC safety checker interrupt event instance (e.g. `ADCSAFETYCHECKINTEVT1`).
+- **`CddAdcGlobalSoftwareForce`**: Allocates the ADC global software force registers (max 1, shared across all CPUs).
+
+Each allocation supports **Frame** (`FRAME0`–`FRAME3`), **DebugHaltEnabled**, and **StandbyModeEnabled** parameters. The **BaseAddr** is auto-calculated based on the selected instance and frame.
 
 ##### Resource Allocator Usage Example
 
-To allocate ADCA to CPU1 using FRAME0:
+To allocate CDD_ADCA to CPU1 using FRAME0:
 
-1. In the Resource Allocator configuration, create a new Adc instance allocation
-2. Set **InstanceName** to `ADCA`
+1. In the Resource Allocator configuration, create a new `Cdd_AdcAllocatedInstance` under the CPU1 Context
+2. Set **InstanceName** to `CDD_ADCA`
 3. Set **Frame** to `FRAME0`
-4. The **BaseAddr** will be automatically calculated as `ADCA_DRIVER_BASE_FRAME(0U)`
+4. The **BaseAddr** will be automatically calculated as `ADCA_BASE_FRAME(0U)`
+5. Optionally add `CddAdcSafetyCheckerInstance`, `CddAdcCheckerInterruptEvtInstance`, and `CddAdcGlobalSoftwareForce` allocations as needed
 
 ```text
 Resource Allocator Configuration:
-├── AdcInstanceAllocation
-│   ├── InstanceName: ADCA
-│   ├── Frame: FRAME0
-│   └── BaseAddr: ADCA_DRIVER_BASE_FRAME(0U)
+├── Context (Core: CPU1)
+│   └── Cdd_Adc
+│       ├── Cdd_AdcAllocatedInstance
+│       │   ├── InstanceName: CDD_ADCA
+│       │   ├── Frame: FRAME0
+│       │   ├── BaseAddr: ADCA_BASE_FRAME(0U)  [auto-calculated]
+│       │   ├── DebugHaltEnabled: true
+│       │   └── StandbyModeEnabled: true
+│       ├── CddAdcSafetyCheckerInstance
+│       │   ├── SafetyCheckerInstance: ADCSAFETYCHECK1
+│       │   ├── Frame: FRAME0
+│       │   └── BaseAddr: ADCSAFETYCHECK1_BASE_FRAME(0U)  [auto-calculated]
+│       ├── CddAdcCheckerInterruptEvtInstance
+│       │   ├── SafetyCheckerIntEvtInstance: ADCSAFETYCHECKINTEVT1
+│       │   ├── Frame: FRAME0
+│       │   └── BaseAddr: ADCSAFETYCHECKINTEVT1_BASE_FRAME(0U)  [auto-calculated]
+│       └── CddAdcGlobalSoftwareForce  [max 1, shared across all CPUs]
+│           ├── Frame: FRAME0
+│           └── GlbSwFrcBaseAddr: ADCGLOBAL_BASE_FRAME(0U)  [auto-calculated]
 ```
 
 ### Configuration
@@ -382,10 +451,10 @@ The generated configuration files should not be modified manually. The config to
 
 
 
-#### CddAdcConfigSet
+##### CddAdcConfigSet
 This container contains the configuration parameters and sub containers of the Cdd Adc module.
 
-##### CddAdcEnableTemperatureSensor
+###### CddAdcEnableTemperatureSensor
 
 | Item ||
 |--------|---------------|
@@ -397,7 +466,7 @@ This container contains the configuration parameters and sub containers of the C
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddAdcLockTemperatureSensor
+###### CddAdcLockTemperatureSensor
 
 | Item ||
 |--------|---------------|
@@ -409,7 +478,7 @@ This container contains the configuration parameters and sub containers of the C
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddAdcInternalTestInput
+###### CddAdcInternalTestInput
 
 | Item ||
 |--------|---------------|
@@ -422,7 +491,7 @@ This container contains the configuration parameters and sub containers of the C
 | **Default-value** | CDD_ADC_TEST_NODE_NO_CONN |
 | **Range** | CDD_ADC_TEST_NODE_NO_CONN<br>CDD_ADC_TEST_NODE_VDDCORE<br>CDD_ADC_TEST_NODE_VDDA<br>CDD_ADC_TEST_NODE_VSSA<br>CDD_ADC_TEST_NODE_VREFLOA<br>CDD_ADC_TEST_NODE_VREFLOB<br>CDD_ADC_TEST_NODE_CDAC1H<br>CDD_ADC_TEST_NODE_CDAC1L<br>CDD_ADC_TEST_NODE_CDAC2H<br>CDD_ADC_TEST_NODE_CDAC2L<br>CDD_ADC_TEST_NODE_CDAC3H<br>CDD_ADC_TEST_NODE_CDAC3L<br>CDD_ADC_TEST_NODE_CDAC4H<br>CDD_ADC_TEST_NODE_CDAC4L<br>CDD_ADC_TEST_NODE_CDAC5H<br>CDD_ADC_TEST_NODE_CDAC5L<br>CDD_ADC_TEST_NODE_CDAC6H<br>CDD_ADC_TEST_NODE_CDAC6L<br>CDD_ADC_TEST_NODE_CDAC7H<br>CDD_ADC_TEST_NODE_CDAC7L<br>CDD_ADC_TEST_NODE_CDAC8H<br>CDD_ADC_TEST_NODE_CDAC8L<br>CDD_ADC_TEST_NODE_CDAC9H<br>CDD_ADC_TEST_NODE_CDAC9L<br>CDD_ADC_TEST_NODE_CDAC10H<br>CDD_ADC_TEST_NODE_CDAC10L<br>CDD_ADC_TEST_NODE_CDAC11H<br>CDD_ADC_TEST_NODE_CDAC11L<br>CDD_ADC_TEST_NODE_ENZ_CALIB_GAIN_3P3 |
 
-##### CddAdcHwUnitAnalogRefABVoltageMode
+###### CddAdcHwUnitAnalogRefABVoltageMode
 
 | Item ||
 |--------|---------------|
@@ -435,7 +504,7 @@ This container contains the configuration parameters and sub containers of the C
 | **Default-value** | CDD_ADC_REFERENCE_INTERNAL |
 | **Range** | CDD_ADC_REFERENCE_INTERNAL<br>CDD_ADC_REFERENCE_EXTERNAL |
 
-##### CddAdcHwUnitAnalogRefABVoltage
+###### CddAdcHwUnitAnalogRefABVoltage
 
 | Item ||
 |--------|---------------|
@@ -448,7 +517,7 @@ This container contains the configuration parameters and sub containers of the C
 | **Default-value** | CDD_ADC_REFERENCE_2_5V |
 | **Range** | CDD_ADC_REFERENCE_3_3V<br>CDD_ADC_REFERENCE_2_5V |
 
-##### CddAdcHwUnitAnalogRefCDEVoltageMode
+###### CddAdcHwUnitAnalogRefCDEVoltageMode
 
 | Item ||
 |--------|---------------|
@@ -461,7 +530,7 @@ This container contains the configuration parameters and sub containers of the C
 | **Default-value** | CDD_ADC_REFERENCE_INTERNAL |
 | **Range** | CDD_ADC_REFERENCE_INTERNAL<br>CDD_ADC_REFERENCE_EXTERNAL |
 
-##### CddAdcHwUnitAnalogRefCDEVoltage
+###### CddAdcHwUnitAnalogRefCDEVoltage
 
 | Item ||
 |--------|---------------|
@@ -474,7 +543,7 @@ This container contains the configuration parameters and sub containers of the C
 | **Default-value** | CDD_ADC_REFERENCE_3_3V |
 | **Range** | CDD_ADC_REFERENCE_3_3V<br>CDD_ADC_REFERENCE_2_5V |
 
-##### CddAdcHwUnit
+###### CddAdcHwUnit
 This container contains the driver configuration (parameters) for the ADC Hardware Unit
 
 ###### CddAdcHwInstance
@@ -506,7 +575,7 @@ This container contains the driver configuration (parameters) for the ADC Hardwa
 | Item ||
 |--------|---------------|
 | **Name** | CddAdcSocPriorityMode |
-| **Description** | This parameter defines the SOC priority of the ADC hardware unit.                                 If the selected priority is 0 then all SOCs are handled in round robin mode,for any other                                value channels with SOC number below the Priority value are handled in high priority mode and                                  the rest of the SOCs will be handled in round robin mode.                                 By default round robin mode is configured. |
+| **Description** | This parameter defines the SOC priority of the ADC hardware unit.                                 If the selected priority is 0 then all SOCs are handled in round robin mode,for any other                               value channels with SOC number below the Priority value are handled in high priority mode and                                 the rest of the SOCs will be handled in round robin mode.                                 By default round robin mode is configured. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -657,7 +726,7 @@ This container contains the driver configuration (parameters) for the ADC Hardwa
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddAdcGroup
+###### CddAdcGroup
 This container contains the Group configuration (parameters).
 
 ###### CddAdcGroupPriority
@@ -850,7 +919,7 @@ This container contains the Group configuration (parameters).
 | Item ||
 |--------|---------------|
 | **Name** | CddAdcContinueToInterruptMode |
-| **Description** | This parameters enables/disables the continue to interrupt mode for the specified interrupt. |
+| **Description** | This parameters enables/disables the continue to interrupt mode for the specified interrupt.When this mode is enabled then interrupt is generated irrespective of whether the flag bit is cleared or not else No further ADCINT pulses are generated until ADCINT flag is cleared. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -871,7 +940,7 @@ This container contains the Group configuration (parameters).
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddAdcChannel
+###### CddAdcChannel
 This container contains the channel configuration (parameters) depending on the hardware capability.
 
 ###### CddAdcChannelId
@@ -930,7 +999,7 @@ This container contains the channel configuration (parameters) depending on the 
 | **Max-value** | 511 |
 | **Min-value** | 15 |
 
-##### CddAdcTriggerRepeater
+###### CddAdcTriggerRepeater
 This container contains the trigger repeater configuration (parameters) depending on the hardware capability. To have this container enabled trigger source type should be hardware, trigger source should be one of the repeaters and trigger repeater should be enabled in the CddAdcGeneral container.
 
 ###### CddAdcRepeaterInstance
@@ -1015,7 +1084,7 @@ This container contains the trigger repeater configuration (parameters) dependin
 | **Max-value** | 65535 |
 | **Min-value** | 0 |
 
-##### CddAdcPpbConfig
+###### CddAdcPpbConfig
 This container contains the PPB configuration (parameters) of the PPB.
 
 ###### CddAdcPpbInstance
@@ -1051,7 +1120,7 @@ This container contains the PPB configuration (parameters) of the PPB.
 | Item ||
 |--------|---------------|
 | **Name** | CddAdcPpbCalibrationOffset |
-| **Description** | This parameters configures the offset calibration for the ADC channel.For values from 0 to 511,the configured value will be subtracted from the PPB result.                                  For values from 512,(1024 - CddAdcPpbCalibrationOffset) value will be added to the PPB result. In case multiple PPBs point to the same SOC,                                 only the OFFCAL of the lowest PPB ID will be applied.                                 This offset value will be subtracted from the raw conversion result and stores the value in the ADC result register.                                  The addition/subtraction satureated at o on the low ed and either 4095/65536 on the high end for 12-bit and 16-bit respectively. |
+| **Description** | This parameters configures the offset calibration for the ADC channel.For values from 0 to 511,the configured value will be subtracted from the PPB result.                                 For values from 512,(1024 - CddAdcPpbCalibrationOffset) value will be added to the PPB result. In case multiple PPBs point to the same SOC,                                 only the OFFCAL of the lowest PPB ID will be applied.                                 This offset value will be subtracted from the raw conversion result and stores the value in the ADC result register.                                 The addition/subtraction satureated at o on the low ed and either 4095/65536 on the high end for 12-bit and 16-bit respectively. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1065,7 +1134,7 @@ This container contains the PPB configuration (parameters) of the PPB.
 | Item ||
 |--------|---------------|
 | **Name** | CddAdcPpbReferenceOffset |
-| **Description** | This parameters configures the reference offset value for the ADC channel.In 12-bit mode the reference offset shouldn't exceed                                    4095 in 12-bit and 65535 in 16-bit mode. |
+| **Description** | This parameters configures the reference offset value for the ADC channel.In 12-bit mode the reference offset shouldn't exceed                                   4095 in 12-bit and 65535 in 16-bit mode. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1140,7 +1209,7 @@ This container contains the PPB configuration (parameters) of the PPB.
 | Item ||
 |--------|---------------|
 | **Name** | CddAdcPpbTripHighLimit |
-| **Description** | High limit - used for limit checking for all types of PB results.                                  When comparing to an ADCPPBxRESULT register, the upper bits will be ignored:TRIPHI[23:17] will be ignored in 16 bit mode and                                  TRIPHI[23:13] will be ignored in 12 bit mode |
+| **Description** | High limit - used for limit checking for all types of PB results.                                 When comparing to an ADCPPBxRESULT register, the upper bits will be ignored:TRIPHI[23:17] will be ignored in 16 bit mode and                                 TRIPHI[23:13] will be ignored in 12 bit mode |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1166,7 +1235,7 @@ This container contains the PPB configuration (parameters) of the PPB.
 | Item ||
 |--------|---------------|
 | **Name** | CddAdcPpbTripLowLimit |
-| **Description** | Extended trip low limit - used for limit checking.When comparing to an ADCPPBxRESULT register, the upper bits will be ignored:                                  TRIPLO2[23:17] will be ignored in 16 bit mode and TRIPLO2[23:13] will be ignored in 12 bit mode |
+| **Description** | Extended trip low limit - used for limit checking.When comparing to an ADCPPBxRESULT register, the upper bits will be ignored:                                 TRIPLO2[23:17] will be ignored in 16 bit mode and TRIPLO2[23:13] will be ignored in 12 bit mode |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1329,7 +1398,7 @@ This container contains the PPB configuration (parameters) of the PPB.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddAdcTripFilterConfig
+###### CddAdcTripFilterConfig
 This container contains the channel configuration (parameters) depending on the hardware capability.
 
 ###### CddAdcTripFilterClk
@@ -1398,7 +1467,7 @@ This container contains the channel configuration (parameters) depending on the 
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddAdcGlobalSwTrigger
+###### CddAdcGlobalSwTrigger
 This container configures the global software trigger.When configured Soc mask of all added ADC instances should match.
 
 ###### CddAdcGlbSwTrigId
@@ -1415,10 +1484,10 @@ This container configures the global software trigger.When configured Soc mask o
 | **Max-value** | 255 |
 | **Min-value** | 0 |
 
-##### CddAdcHwGroup
+###### CddAdcHwGroup
 This container contains the parameter for configuring the hardware for the global software trigger feature.
 
-##### CddAdcHwUnit
+###### CddAdcHwUnit
 
 | Item ||
 |--------|---------------|
@@ -1455,7 +1524,7 @@ This container contains the parameter for configuring the hardware for the globa
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddAdcResultCheckerUnit
+###### CddAdcResultCheckerUnit
 This container contains the safety result checker configuration (parameters).
 
 ###### CddAdcCheckerId
@@ -1495,7 +1564,7 @@ This container contains the safety result checker configuration (parameters).
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddAdcSelResConfig1
+###### CddAdcSelResConfig1
 This container contains the checker result1 configuration (parameters) whose results will be compared.
 
 ###### CddAdcCheckerResultType
@@ -1539,7 +1608,7 @@ This container contains the checker result1 configuration (parameters) whose res
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddAdcSelResConfig2
+###### CddAdcSelResConfig2
 This container contains the checker result2 configuration (parameters) whose results will be compared.
 
 ###### CddAdcCheckerResultType
@@ -1583,7 +1652,7 @@ This container contains the checker result2 configuration (parameters) whose res
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddAdcCheckerIntEvtConfig
+###### CddAdcCheckerIntEvtConfig
 This container configures the triggers for interrupts and events from the safety checker units.
 
 ###### CddAdcIntEvtId
@@ -1609,7 +1678,7 @@ This container configures the triggers for interrupts and events from the safety
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddAdcCheckerIntEvtConfiguration
+###### CddAdcCheckerIntEvtConfiguration
 Configure interrupts and events for the safety checker instance for the specified interrupt event block.
 
 ###### CddAdcSafetyCheckerInstance
@@ -1623,7 +1692,7 @@ Configure interrupts and events for the safety checker instance for the specifie
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddAdcCheckerIntSource
+###### CddAdcCheckerIntSource
 This container selects the source of the safety checker interrupt.
 
 ###### CddAdcCheckerRes1Ovf
@@ -1662,7 +1731,7 @@ This container selects the source of the safety checker interrupt.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddAdcCheckerEvt1Source
+###### CddAdcCheckerEvt1Source
 This container selects the source of the safety checker event signal.
 
 ###### CddAdcCheckerRes1Ovf
@@ -1701,7 +1770,7 @@ This container selects the source of the safety checker event signal.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddAdcCheckerEvt2Source
+###### CddAdcCheckerEvt2Source
 This container selects the source of the safety checker event signal.
 
 ###### CddAdcCheckerRes1Ovf
@@ -1740,7 +1809,7 @@ This container selects the source of the safety checker event signal.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddAdcCheckerEvt3Source
+###### CddAdcCheckerEvt3Source
 This container selects the source of the safety checker event signal.
 
 ###### CddAdcCheckerRes1Ovf
@@ -1779,7 +1848,7 @@ This container selects the source of the safety checker event signal.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddAdcCheckerEvt4Source
+###### CddAdcCheckerEvt4Source
 This container selects the source of the safety checker event signal.
 
 ###### CddAdcCheckerRes1Ovf
@@ -1818,10 +1887,10 @@ This container selects the source of the safety checker event signal.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-#### CddAdcGeneral
+##### CddAdcGeneral
 General configuration (parameters) of the ADC Driver software module.
 
-##### CddAdcDeInitApi
+###### CddAdcDeInitApi
 
 | Item ||
 |--------|---------------|
@@ -1833,7 +1902,7 @@ General configuration (parameters) of the ADC Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### CddAdcDevErrorDetect
+###### CddAdcDevErrorDetect
 
 | Item ||
 |--------|---------------|
@@ -1845,7 +1914,7 @@ General configuration (parameters) of the ADC Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddAdcEnableStartStopGroupApi
+###### CddAdcEnableStartStopGroupApi
 
 | Item ||
 |--------|---------------|
@@ -1857,7 +1926,7 @@ General configuration (parameters) of the ADC Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### CddAdcEnableGlobalSoftwareTrigger
+###### CddAdcEnableGlobalSoftwareTrigger
 
 | Item ||
 |--------|---------------|
@@ -1869,7 +1938,7 @@ General configuration (parameters) of the ADC Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddAdcNotifCapability
+###### CddAdcNotifCapability
 
 | Item ||
 |--------|---------------|
@@ -1881,7 +1950,7 @@ General configuration (parameters) of the ADC Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddAdcHwTriggerApi
+###### CddAdcHwTriggerApi
 
 | Item ||
 |--------|---------------|
@@ -1893,7 +1962,7 @@ General configuration (parameters) of the ADC Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### CddAdcPpbEnable
+###### CddAdcPpbEnable
 
 | Item ||
 |--------|---------------|
@@ -1905,7 +1974,7 @@ General configuration (parameters) of the ADC Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddAdcReadGroupApi
+###### CddAdcReadGroupApi
 
 | Item ||
 |--------|---------------|
@@ -1917,7 +1986,7 @@ General configuration (parameters) of the ADC Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### CddAdcSafetyCheckerEnable
+###### CddAdcSafetyCheckerEnable
 
 | Item ||
 |--------|---------------|
@@ -1929,12 +1998,24 @@ General configuration (parameters) of the ADC Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddAdcSetResolutionApi
+###### CddAdcSetResolutionApi
 
 | Item ||
 |--------|---------------|
 | **Name** | CddAdcSetResolutionApi |
 | **Description** | Adds / removes the service Cdd_Adc_SetResolution() from the code. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### CddAdcVersionInfoApi
+
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcVersionInfoApi |
+| **Description** | Adds / removes the service Cdd_Adc_GetVersionInfo() from the code. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1954,24 +2035,43 @@ The example applications demonstrates usecases of the Cdd_Adc driver APIs. The e
 
 ##### Overview of Cdd_Adc_Example_GlbSwTrig
 
+This example demonstrates how to use the global software trigger. It also demonstrates how PPB trip high and trip low limits work. The group conversion started with `Cdd_Adc_StartGlobalSwTrig` must be stopped with `Cdd_Adc_StopGlobalSwTrig`. `Cdd_Adc_StartGroupConversion` cannot be used before `Cdd_Adc_StopGlobalSwTrig` to start a new group conversion for a group that was already started with `Cdd_Adc_StartGlobalSwTrig`. First stop the global software trigger and then start the normal software group conversion.
+
+When ADCAIN1 is connected to GND, the PPB result of PPB1 (linked to ADCAIN1) will be less than the configured trip low limit, setting the trip low event flag.
+The PPB result of PPB2 (linked to ADCAIN1) will be greater than the configured trip high limit, setting the trip high event flag.
+These events generate a PPB event interrupt to the CPU. While executing the PPB event ISR, the notifications corresponding to the set event flags are called. In this application, the notification count is incremented every time a notification is called.
+
 * Cdd_Adc_Example_GlbSwTrig
   * EcuM_Init()
     * Initialize clock to 200 MHz using Mcu_Init()
     * Initialize pins in analog mode with Port_Init()
     * Initialize Cdd_Adc driver using Cdd_Adc_Init()
-  * Start global software trigger Id 0 conversion
-  * Re-trigger the global software conversion
-  * Stop the global software conversion with Cdd_Adc_StopGlobalSwTrig API
-  * Start software group 1 conversion with Cdd_Adc_StartGroupConversion
-  * After the group conversion is done,print the execution successful statement.
+  * Connect ADCAIN1 to GND to observe PPB trip high and trip low interrupts.
+  * Start global software trigger Id 0 conversion.
+  * Wait until all group conversions are completed and the PPB trip notification count is as expected.
+  * Re-trigger the global software conversion.
+  * Wait until all group conversions are completed and the PPB trip notification count is as expected.
+  * Stop the global software conversion with `Cdd_Adc_StopGlobalSwTrig` API.
+  * Start software group 1 conversion with `Cdd_Adc_StartGroupConversion`.
+  * Wait until the group conversion is complete.
+  * Print the execution successful statement.
+  * Conversion results can be observed from the buffer.
 
 ##### Setup required to run Cdd_Adc_Example_GlbSwTrig
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
-* Provide 0.5V voltage to the pin ADCAIN1 (A1) to observe the trips generating from PPB
+* All ADC instances are configured for 2.5V internal reference voltage mode.
+* Connect GND to ADCAIN1 pin to observe PPB trip interrupts.
+* Connect desired voltage to ADCAIN0 and ADCAIN6 pins.
+* Connect desired voltage to ADCBIN1, ADCBIN2 and ADCBIN3 pins.
+* Connect desired voltage to ADCCIN0, ADCCIN25 and ADCCIN27 pins.
+* Connect desired voltage to ADCDIN26 and ADCDIN27 pins.
+* Connect desired voltage to ADCEIN24 and ADCEIN28 pins.
+
+```{note}
+ADCD and ADCE instances are not configured in this example for F29P32x devices.
+```
 
 ##### How to run Cdd_Adc_Example_GlbSwTrig
 
@@ -1987,21 +2087,36 @@ The example applications demonstrates usecases of the Cdd_Adc driver APIs. The e
 
 ##### Overview of Cdd_Adc_Example_Ppb_TrigRepeater
 
-* EcuM_Init()
-  * Initialize clock to 200 MHz using Mcu_Init()
-  * Initialize pins in analog mode with Port_Init()
-  * Initialize Cdd_Adc driver using Cdd_Adc_Init()
-* Verification of Cdd_Adc PPB and trigger repeater features functionalities together
-* Verify group conversions with trigger repeater as the trigger source. CPU1 timer interrupt as the trigger source for the trigger repeater.
-* Verification group conversions in oversampling and undersampling trigger repeater mode.
-* Verification of trigger repeater groups with normal hardware and software triggered groups.
+This example verifies the Cdd_Adc PPB and trigger repeater features together.
+
+For PPB1 (linked to ADCAIN28), the PPB result is compared against PPB trip limits. When a non-zero voltage is provided, the PPB result will exceed the trip high limit, setting the trip high event flag.
+For PPB2 (linked to ADCAIN0), a non-zero ADC conversion result is produced; the two's complement of that value will be negative and less than the PPB trip low limit, setting the trip low event flag.
+For PPB3 (linked to ADCAIN6), the PPB partial sum value is compared against PPB trip limits; when a non-zero voltage is provided, the partial PPB sum will exceed the trip high limit, setting the trip high event flag. A PPB event interrupt is generated to the CPU. While executing the PPB event ISR, the notifications corresponding to the set event flags are called.
+
+* Cdd_Adc_Example_Ppb_TrigRepeater
+  * EcuM_Init()
+    * Initialize clock to 200 MHz using Mcu_Init()
+    * Initialize pins in analog mode with Port_Init()
+    * Initialize Cdd_Adc driver using Cdd_Adc_Init()
+    * Initialize Gpt driver using Gpt_Init() to use start timer API. Timer interrupt acts as a hardware trigger source for ADC sample conversion in this example.
+  * Verify group conversions with trigger repeater as the trigger source. CPU1 timer interrupt as the trigger source for the trigger repeater.
+  * Group0 and Group3 are triggered by trigger repeater configured in over-sampling mode.
+  * Group1 is triggered by trigger repeater configured in under-sampling mode.
+  * Group2 is triggered by timer interrupt.
+  * Group4 is configured for continuous conversions triggered by software.
+  * Group5 is triggered by the ADC interrupt generated by Group4 after a round of channel conversions.
+  * Number of timer interrupts required to complete the group conversions in over-sampling and under-sampling modes are printed.
+  * The ADC conversion results can be observed in the buffer.
 
 ##### Setup required to run Cdd_Adc_Example_Ppb_TrigRepeater
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest c29 compiler
 * Connect the hardware and power up
 * Connect the uart set up to check the log on serial console
+* ADCA and ADCB instances are configured for 2.5V internal reference voltage mode.
+* Connect a non-zero voltage to ADCAIN0 pin to observe PPB trip low interrupt.
+* Connect a non-zero voltage (greater than 0.7mV) to ADCAIN28 and ADCAIN6 pins to observe PPB trip high interrupt.
+* Connect desired voltage to ADCAIN0, ADCAIN1, ADCAIN6, ADCAIN7, ADCAIN28, ADCAIN30 and ADCAIN31 pins.
+* Connect desired voltage to ADCDIN0 and ADCDIN1 pins.
 
 ##### How to run Cdd_Adc_Example_Ppb_TrigRepeater
 
@@ -2017,18 +2132,18 @@ The example applications demonstrates usecases of the Cdd_Adc driver APIs. The e
 
 ##### Overview Of Cdd_Adc_Example_TempSensor
 
+Channel ID 20 on ADCA and ADCC are both connected to the temperature sensor internally. The ADC conversion results can be passed to `Cdd_Adc_GetTemperatureC` and `Cdd_Adc_GetTemperatureK` APIs to get the temperature value in Celsius and Kelvin respectively.
+
 * Cdd_Adc_Example_TempSensor
   * EcuM_Init()
     * Initialize clock to 200 MHz using Mcu_Init()
     * Initialize pins using Port_Init() to see the print statements on the console
     * Initialize Cdd_Adc driver using Cdd_Adc_Init()
-  * Verification of Cdd_Adc temperature sensor values
-* Channel ID 20 on ADCA and ADCC are both connected to the temperature sensor internally. The ADC conversion results can be passed to GetTemperatureC & GetTemperatureC APIs to get the temperature value in Celsius and Kelvin respectively.
+    * Initialize Gpt driver using Gpt_Init() to use start timer API. Timer interrupt acts as a hardware trigger source for ADC sample conversion in this example.
+  * Verification of Cdd_Adc temperature sensor values.
 
 ##### Setup required to run Cdd_Adc_Example_TempSensor
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 * Connect the hardware and power up
 * Connect the uart and set up the baudrate to check the log on serial console
 
@@ -2042,66 +2157,92 @@ The example applications demonstrates usecases of the Cdd_Adc driver APIs. The e
 ```{literalinclude} Assets/text/Cdd_Adc/F29H85x/Cdd_Adc_Example_TempSensor.txt
 ```
 
-#### Cdd_Adc_Example_Differential
+#### Cdd_Adc_Example_SwHwConversion
 
-##### Overview of Cdd_Adc_Example_Differential
+##### Overview of Cdd_Adc_Example_SwHwConversion
 
-* Cdd_Adc_Example_Differential
+This example demonstrates software and hardware triggered ADC conversions and external voltage reference configuration. Additionally, this example demonstrates differential signal conversion mode and dynamic resolution switching, which are supported only on specific device variants.
+The example also captures the delay stamp, which represents the number of system clock cycles between the group trigger and the actual start of conversion. The delay stamp API can only be called for PPBs linked to hardware-triggered groups.
+
+ADC supports two signal modes:
+- **Single-ended mode:** The input voltage to the converter is sampled through a single pin (ADCINx), referenced to VREFLO.
+- **Differential signaling mode:** The input voltage to the converter is sampled through a pair of input pins — a positive input (ADCINxP) and a negative input (ADCINxN). The actual input voltage is the difference between the two (ADCINxP − ADCINxN).
+
+```{note}
+On F29P32x devices, differential signal conversion mode and 16-bit resolution are not supported. See [Device-Variant Specific Limitations](#device-variant-specific-limitations) for details.
+```
+
+* Cdd_Adc_Example_SwHwConversion
   * EcuM_Init()
     * Initialize clock to 200 MHz using Mcu_Init()
     * Initialize pins in analog mode with Port_Init()
     * Initialize Cdd_Adc driver using Cdd_Adc_Init()
-* Delay stamp is captured for the hardware triggered group
-* ADC conversion results can be observed before and after the resolution change by checking the result buffer
+    * Initialize Gpt driver using Gpt_Init() to use start timer API. Timer interrupt acts as a hardware trigger source for ADC sample conversion in this example.
+  * `Cdd_Adc_SetupResultBuffer` API sets up the result buffer for the specified group. Channel conversion results that are linked to the group will be copied to this buffer.
+  * `Cdd_Adc_EnableGroupNotification` API enables notification for the specified group.
+  * Wait until all group conversions are complete.
+  * Print Group0 and Group1 channel conversion results.
+  * Change the resolution of the ADCA instance to 12-bit and ADCB instance to 16-bit.
+  * Start the group conversions again and observe conversion results in result buffer.
+  * Wait until all group conversions are complete.
+  * Delay stamp is captured for the hardware triggered group.
+  * Print Group0 and Group1 channel conversion results.
+  * The ADC conversion results before and after the resolution change can be observed in the result buffer.
 
-##### Setup required to run Cdd_Adc_Example_Differential
+##### Setup required to run Cdd_Adc_Example_SwHwConversion
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 * Connect the hardware and power up
 * Connect the uart and set up the baudrate to check the log on serial console
-* Connect external voltage to VREFHIAB pin and VREFLOAB to GND.
-* Connect available voltage to ADCAIN2,ADCAIN3 pins whose difference is considered as the input for the conversion. Similarly connect voltage to ADCAIN4 and ADCAIN5 pins and observe the ADC conversion results from the buffer.
-* Connect available voltage to ADCBIN4,ADCBIN5 pins whose difference is considered as the input for the conversion. Similarly connect voltage to ADCBIN6 and ADCBIN7 pins and observe the ADC conversion results from the buffer.
+* Since ADCA and ADCB are configured for external voltage reference mode, connect external voltage to VREFHIAB pin and VREFLOAB to GND (Put Switch S3 as per external voltage reference mode and S4 as per internal reference mode).
+* ADCD is configured for 3.3V internal reference voltage mode.
+* Connect available voltage to ADCAIN2, ADCAIN3 pins. Similarly connect voltage to ADCAIN4 and ADCAIN5 pins and observe the ADC conversion results from the buffer.
+* Connect available voltage to ADCBIN4, ADCBIN5 pins. Similarly connect voltage to ADCBIN6 and ADCBIN7 pins and observe the ADC conversion results from the buffer.
+* Connect desired voltage to ADCDIN0, ADCDIN1, ADCDIN2 and ADCDIN3 pins.
 
-##### How to run Cdd_Adc_Example_Differential
+```{note}
+For differential signal conversion, the difference between the two connected pin voltages is considered as the input for the conversion (e.g., ADCAIN2 − ADCAIN3, ADCBIN4 − ADCBIN5).
+```
 
-* Open CCS and import Cdd_Adc_Example_TempSensor Example
+##### How to run Cdd_Adc_Example_SwHwConversion
+
+* Open CCS and import Cdd_Adc_Example_SwHwConversion Example
 * Build project and start debug project
 
-##### Sample Log of Cdd_Adc_Example_Differential
+##### Sample Log of Cdd_Adc_Example_SwHwConversion
 
-```{literalinclude} Assets/text/Cdd_Adc/F29H85x/Cdd_Adc_Example_Differential.txt
+```{literalinclude} Assets/text/Cdd_Adc/F29H85x/Cdd_Adc_Example_SwHwConversion.txt
 ```
 
 #### Cdd_Adc_Example_DmaTransfer
 
 ##### Overview of Cdd_Adc_Example_DmaTransfer
 
+This example demonstrates the DMA integration with the CDD ADC driver.
+
 * Cdd_Adc_Example_DmaTransfer
   * EcuM_Init()
     * Initialize clock to 200 MHz using Mcu_Init()
-    * Initialize pins with Port_Init()
+    * Initialize pins using Port_Init() to see the print statements on the console
     * Initialize Cdd_Adc driver using Cdd_Adc_Init()
-    * Initialize Cdd_Pwm driver using Cdd_Pwm_Init() to trigger ADC group conversion
-  * Connect voltage to configured channels to observe data transfer from source to destination
-  * Configure RTDMA to transfer ADC conversion results to a buffer after ADC results are latched into the registers
-  * Configure PWM to a specific frequency waveform and enable events to ADC to trigger group conversion
-  * Start DMA channel
-  * Call EnableHardwareTrigger API to start the group conversion
-  * Events from PWM trigger group conversion periodically and after every round of group conversion the generated ADC interrupt triggers DMA transfer
-  * Continue this for some time and observe the results getting transferred to the destination buffer by DMA
-  * Call DisableHardwareTrigger to stop further triggers from PWM to ADC
-  * Stop DMA channel
-  * Print DMA notification count and a set of group conversion results. Finally, print the success statement
+    * Initialize Cdd_Pwm driver using Cdd_Pwm_Init()
+  * `AppUtils_Init()` to initialize App Utils
+  * `Cdd_Dma_Init()` to initialize DMA
+  * `Cdd_Pwm_ConfigureHardware()` to initialize PWM and generate 64KHz frequency waveform
+  * Call `Cdd_Adc_EnableHardwareTrigger` API to start the group conversion
+  * For every 15.625us a trigger is generated to ADC for conversion
+  * The result buffer is updated by DMA after the group is done and the interrupt is generated
+  * Continue this for 1 second and observe the behaviour
+  * Call `Cdd_Adc_DisableHardwareTrigger` to stop further triggers from PWM to ADC
+  * Wait until group status is IDLE
+  * Print the success statement after the example is executed successfully
+  * Observe the ADC conversion results in the buffer
 
 ##### Setup required to run Cdd_Adc_Example_DmaTransfer
 
-* Install Code Composer Studio (CCS) latest version
-* Install latest C29 compiler
 * Connect the hardware and power up
 * Connect the UART setup to check the log on serial console
-* Provide voltage to configured pins to observe channel conversion results at the destination
+* ADCA is configured for 2.5V internal reference voltage mode.
+* Connect desired voltage to ADCAIN0, ADCAIN1, ADCAIN6, ADCAIN7, ADCAIN28, ADCAIN29, ADCAIN30 and ADCAIN31 pins.
 
 ##### How to run Cdd_Adc_Example_DmaTransfer
 

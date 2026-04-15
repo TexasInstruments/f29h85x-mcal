@@ -93,9 +93,9 @@
 /** \brief Driver Implementation Major Version. */
 #define CDD_XBAR_SW_MAJOR_VERSION (3U)
 /** \brief Driver Implementation Minor Version. */
-#define CDD_XBAR_SW_MINOR_VERSION (0U)
+#define CDD_XBAR_SW_MINOR_VERSION (1U)
 /** \brief Driver Implementation Patch Version. */
-#define CDD_XBAR_SW_PATCH_VERSION (1U)
+#define CDD_XBAR_SW_PATCH_VERSION (0U)
 
 /** \brief AUTOSAR Release Spec. Major Version. */
 #define CDD_XBAR_AR_RELEASE_MAJOR_VERSION (4U)
@@ -227,15 +227,21 @@ Cdd_Xbar_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_XBAR_APPL_DATA
 FUNC(void, CDD_XBAR_CODE)
 Cdd_Xbar_Init(P2CONST(Cdd_Xbar_ConfigType, AUTOMATIC, CDD_XBAR_CONFIG_DATA) ConfigPtr);
 
-#if ((0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS) || \
-     (0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS) ||     \
-     (0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS))
 /* Design: MCAL-25739, MCAL-25740 */
 /** \brief Service for selecting available inputs for a given Crossbar Module.
  *
  * Selection of one input line at a time from a group to enable or
  * disable their signal route to the output lines if selectable
  * (i.e., not in a locked state).
+ *
+ * \note Lock granularity differs by crossbar type:
+ *       - For Input Xbar: each instance has an independent lock bit in the INPUTSELECTLOCK
+ *         register. Only the specific Input Xbar instance that has been locked will reject
+ *         input selection; all other Input Xbar instances remain configurable independently.
+ *       - For all other crossbar types (Output Xbar, EPWM Xbar, CLB Xbar, MINDB Xbar,
+ *         ICL Xbar): a single LOCK bit covers the entire crossbar type. Once any instance
+ *         of these types is locked, input selection is rejected for ALL instances of that
+ *         crossbar type.
  *
  * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
  * \param[in] InputLine is the crossbar input. In case of Input Xbar: PortPinId. In case of other
@@ -254,7 +260,6 @@ FUNC(Std_ReturnType, CDD_XBAR_CODE)
 Cdd_Xbar_SelectInput(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit, VAR(uint16, AUTOMATIC) InputLine,
                      VAR(boolean, AUTOMATIC) Selection);
 
-#if (0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS)
 /* Design: MCAL-25741, MCAL-25742 */
 /** \brief Service for enabling or disabling the output latch to drive the output of the selected
  *output crossbar instance.
@@ -439,11 +444,7 @@ Cdd_Xbar_OutStretchPulseClear(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
  *********************************************************************************************************************/
 FUNC(Cdd_Xbar_TickStretchType, CDD_XBAR_CODE)
 Cdd_Xbar_OutStretchPulseCheck(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
-#endif /* STD_ON == CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS */
 
-#if ((0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS) || \
-     (0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS) ||   \
-     (0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS))
 /* Design: MCAL-25753, MCAL-25754 */
 /** \brief Service for inverting and restoring inversion of an output crossbar instance.
  *
@@ -478,9 +479,6 @@ Cdd_Xbar_SelectOutputInversion(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit, VAR(b
  *********************************************************************************************************************/
 FUNC(boolean, CDD_XBAR_CODE)
 Cdd_Xbar_CheckOutputInversion(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
-#endif /* ((0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS) ||                                         \ \
-          (0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS) || \ \
-          (0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS))*/
 
 /* Design: MCAL-25757, MCAL-25758 */
 /** \brief Service for locking the given Crossbar entity for freezing the inputs and output
@@ -491,6 +489,16 @@ Cdd_Xbar_CheckOutputInversion(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
  * further modification to input selection and output inversion.
  * Please mind that once a unit is locked, it can not unlock until
  * system reset.
+ *
+ * \note Lock granularity differs by crossbar type:
+ *       - For Input Xbar: each instance has an independent lock bit in the INPUTSELECTLOCK
+ *         register (one bit per input instance, all R/WSonce). Calling this API locks only
+ *         the specific Input Xbar instance identified by CrossbarUnit; all other Input Xbar
+ *         instances remain unlocked and independently configurable.
+ *       - For all other crossbar types (Output Xbar, EPWM Xbar, CLB Xbar, MINDB Xbar,
+ *         ICL Xbar): the hardware provides a single LOCK bit for the entire crossbar type
+ *         (e.g., OUTPUTXBARLock.LOCK, PWMXBARLock.LOCK). Calling this API on any instance
+ *         of these types locks ALL instances of that crossbar type simultaneously.
  *
  * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
  * \pre Preconditions - Driver is already initialized but not locked.
@@ -507,6 +515,15 @@ FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_Lock(VAR(Cdd_Xbar_Type, AUTOMATIC) 
  *
  * Tells whether the given Crossbar or its given Input Select line is locked or not.
  *
+ * \note Lock status granularity differs by crossbar type:
+ *       - For Input Xbar: each instance has an independent lock bit. This API returns the
+ *         lock status of the specific Input Xbar instance identified by CrossbarUnit only;
+ *         other Input Xbar instances may have a different lock status.
+ *       - For all other crossbar types (Output Xbar, EPWM Xbar, CLB Xbar, MINDB Xbar,
+ *         ICL Xbar): a single LOCK bit covers the entire crossbar type. This API returns
+ *         the shared lock status for the whole crossbar type, regardless of which specific
+ *         instance is passed as CrossbarUnit.
+ *
  * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
  * \pre Preconditions - Driver is already initialized.
  * \post Postconditions - None.
@@ -516,10 +533,6 @@ FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_Lock(VAR(Cdd_Xbar_Type, AUTOMATIC) 
  *
  *********************************************************************************************************************/
 FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_LockStatus(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
-#endif /* ((0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS) \ \
-          || (0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS)   \ \
-          || (0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS) || (0U <                                    \ \
-          CDD_XBAR_ICL_XBAR_CONFIGURATIONS))*/
 
 #if (STD_ON == CDD_XBAR_INPUT_FLAG_API)
 /* Design: MCAL-28151, MCAL-28152 */
@@ -558,7 +571,6 @@ FUNC(Std_ReturnType, CDD_XBAR_CODE)
 Cdd_Xbar_InputFlagClear(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag);
 #endif /* STD_ON == CDD_XBAR_INPUT_FLAG_API */
 
-#if (0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS)
 /* Design: MCAL-36380, MCAL-36379 */
 /** \brief Sets the interrupt type for the specified input crossbar instance.
  *
@@ -618,7 +630,6 @@ Cdd_Xbar_SetExternalInterruptState(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit, V
 FUNC(Std_ReturnType, CDD_XBAR_CODE)
 Cdd_Xbar_GetExternalInterruptCounter(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit,
                                      P2VAR(uint16, AUTOMATIC, CDD_XBAR_APPL_DATA) CounterValue);
-#endif /* 0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS */
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
@@ -637,20 +648,75 @@ static inline FUNC(uint32, CDD_XBAR_CODE) Cdd_Xbar_Input_Selection_Mask(VAR(uint
     return (uint32)1U << (InputLine & 0xFFU);
 }
 
-/** \brief Get group number for a given input line */
-#define CDD_XBAR_GET_GROUP_NUMBER(InputLine) ((uint8)(((InputLine) & 0xFF00U) >> 8U))
+/** \brief Get group number for a given input line.
+ *
+ * Returns the group number extracted from an input line value.
+ *
+ * \param[in] InputLine is the crossbar input line.
+ * \pre None
+ * \post None
+ * \return Group number (high byte of InputLine).
+ *********************************************************************************************************************/
+static inline FUNC(uint8, CDD_XBAR_CODE) Cdd_Xbar_GetGroupNumber(VAR(uint16, AUTOMATIC) InputLine)
+{
+    return ((uint8)(((InputLine) & 0xFF00U) >> 8U));
+}
 
-/** \brief Get crossbar type */
-#define CDD_XBAR_GET_XBAR_TYPE(xbar) ((uint8)(((xbar) & 0xFF00U) >> 8U))
+/** \brief Get crossbar type.
+ *
+ * Returns the crossbar type extracted from a crossbar value.
+ *
+ * \param[in] xbar is the crossbar identifier.
+ * \pre None
+ * \post None
+ * \return Crossbar type (high byte of xbar).
+ *********************************************************************************************************************/
+static inline FUNC(uint8, CDD_XBAR_CODE) Cdd_Xbar_GetXbarType(VAR(uint16, AUTOMATIC) xbar)
+{
+    return ((uint8)(((xbar) & 0xFF00U) >> 8U));
+}
 
-/** \brief Get crossbar output line */
-#define CDD_XBAR_GET_XBAR_INSTANCE(xbar) ((uint8)((xbar) & 0x00FFU))
+/** \brief Get crossbar instance.
+ *
+ * Returns the crossbar instance extracted from a crossbar value.
+ *
+ * \param[in] xbar is the crossbar identifier.
+ * \pre None
+ * \post None
+ * \return Crossbar instance (low byte of xbar).
+ *********************************************************************************************************************/
+static inline FUNC(uint8, CDD_XBAR_CODE) Cdd_Xbar_GetXbarInstance(VAR(uint16, AUTOMATIC) xbar)
+{
+    return ((uint8)((xbar) & 0x00FFU));
+}
 
-/** \brief Get input flag number for a given input flag */
-#define CDD_XBAR_INPUT_FLAG_NUMBER(InputFlag) ((((uint16)(InputFlag)) & 0xFF00U) >> (uint16)8U)
+/** \brief Get input flag number for a given input flag.
+ *
+ * Returns the input flag number extracted from an input flag value.
+ *
+ * \param[in] InputFlag is the crossbar input flag.
+ * \pre None
+ * \post None
+ * \return Input flag number (high byte of InputFlag).
+ *********************************************************************************************************************/
+static inline FUNC(uint16, CDD_XBAR_CODE) Cdd_Xbar_GetInputFlagNumber(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag)
+{
+    return ((((uint16)(InputFlag)) & 0xFF00U) >> (uint16)8U);
+}
 
-/** \brief Get the bit corresponding to the input in the input flag */
-#define CDD_XBAR_INPUT_FLAG_BIT(InputFlag) (((uint16)(InputFlag)) & 0x00FFU)
+/** \brief Get the bit corresponding to the input in the input flag.
+ *
+ * Returns the input flag bit extracted from an input flag value.
+ *
+ * \param[in] InputFlag is the crossbar input flag.
+ * \pre None
+ * \post None
+ * \return Input flag bit (low byte of InputFlag).
+ *********************************************************************************************************************/
+static inline FUNC(uint16, CDD_XBAR_CODE) Cdd_Xbar_GetInputFlagBit(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag)
+{
+    return (((uint16)(InputFlag)) & 0x00FFU);
+}
 
 /**
  * @}

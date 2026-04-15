@@ -40,9 +40,42 @@ The I2C module provides an interface between the MCU and devices compliant with 
 Inter-IC bus (I2C bus) specification version 2.1, and connected by way of an I2C bus. External components
 attached to this 2-wire serial bus can transmit/receive 1- to 8-bit data to/from the device through the I2C module.
 
-The expected flow for utilization of the driver as per the example application is interrupt registration (only required in case of interrupt mode), I2c driver initialization using Cdd_I2c_Init(). Post initialization buffer set up linking is done to point channels to their respective buffers using Cdd_I2c_SetupEB() and for writing data to slaves Cdd_I2c_AsyncTransmit() is used in both polling as well as interrupt mode.
 
-For reception of data from I2c slaves Cdd_I2c_AsyncTransmit() can be used in interrupt mode. If polling mode is being used, use Cdd_I2c_MainFunction() to process any sequence in the queue and update the status of the queue to real time value.
+
+
+The I2C driver supports Controller Mode (Master) and Target Mode (Slave) operation.
+
+#### Controller Mode (Master)
+
+In Controller Mode, the I2C instance initiates and controls all data transfers on the bus. The expected flow for utilization of the driver in controller mode is:
+
+1. Interrupt registration (only required in case of interrupt mode)
+2. I2C driver initialization using Cdd_I2c_Init()
+3. Post initialization, buffer setup linking is done to point channels to their respective buffers using Cdd_I2c_SetupEB() or Cdd_I2c_SetupEBDynamic()
+4. For writing data to target devices, Cdd_I2c_AsyncTransmit() is used in both polling as well as interrupt mode
+5. For reception of data from I2C target devices, Cdd_I2c_AsyncTransmit() can be used in interrupt mode
+6. If polling mode is being used, use Cdd_I2c_MainFunction() to process any sequence in the queue and update the status of the queue to real time value
+
+#### Target Mode (Slave)
+
+In Target Mode, the I2C instance responds to requests from a controller device on the bus. Target Mode supports interrupt mode only. The expected flow for utilization of the driver in target mode is:
+
+1. I2C driver initialization using Cdd_I2c_Init() with the HW unit configured as Target Mode
+2. Submit initial TX buffer using Cdd_I2c_TargetSubmitTxBuffer() for controller read requests
+3. Submit initial RX buffer using Cdd_I2c_TargetSubmitRxBuffer() for controller write requests
+4. Start target mode operation using Cdd_I2c_TargetStart()
+5. Handle notifications via configured callbacks:
+   - Cdd_I2c_TargetRxStartNotification: Called when controller initiates write operation
+   - Cdd_I2c_TargetTxStartNotification: Called when controller initiates read operation
+   - Cdd_I2c_TargetRxCompleteNotification: Called when RX buffer is full or STOP is detected
+   - Cdd_I2c_TargetTxCompleteNotification: Called when TX buffer is empty or STOP is detected
+   - Cdd_I2c_TargetErrorNotification: Called on errors (overflow, underflow, no buffer, NACK)
+6. In notification callbacks, submit new buffers as needed and process received/transmitted data
+7. Stop target mode operation using Cdd_I2c_TargetStop() when done
+
+```{note}
+Controller and Target modes are mutually exclusive per HW unit and are configured at initialization time. Target Mode supports interrupt mode only and cannot be configured in polling mode.
+```
 
 ### Hardware Features
 
@@ -53,33 +86,70 @@ On F29x platforms, there are 2 I2C instances I2CA and I2CB.
 
 #### Hardware Features Supported
 
-* Controller Mode
-* Polling and Interrupt Mode (at instance level)
-* Configurable Baudrate (at instance level)
-* Configurable Own Address (at instance level)
-* 7 and 10 bit Address Schemes (at channel level)
-* Restart Mode: Stop or no stop between channels (at channel level)
-* Read or Write Operation (at channel level)
-* Configurable Target Address (at channel level)
+##### Common Features
+
+| Feature | Description |
+|---------|-------------|
+| Polling Mode | Software polling for I2C events (at instance level) |
+| Interrupt Mode | Hardware interrupt-driven operation (at instance level) |
+| 7-bit Addressing | Standard 7-bit I2C address scheme |
+| 10-bit Addressing | Extended 10-bit I2C address scheme |
+| Configurable Own Address | Device's own I2C address configuration (at instance level) |
+
+##### Controller Mode (Master) Features
+
+| Feature | Description |
+|---------|-------------|
+| Configurable Baudrate | I2C bus speed configuration (at instance level) |
+| Configurable Target Address | Address of target device to communicate with (at channel level) |
+| Restart Mode | Stop or no-stop between channel transfers (at channel level) |
+| Read/Write Operations | Separate read and write channel configurations (at channel level) |
+| Multiple Channels per Sequence | Chain multiple transfers in a single sequence |
+| Sequence Management | Queue and execute multiple sequences |
+
+##### Target Mode (Slave) Features
+
+| Feature | Description |
+|---------|-------------|
+| Address Matching | Respond when own address is detected on bus |
+| TX/RX Buffer Management | Dynamic buffer submission for data transfer |
+| Start Notifications | Callbacks when controller initiates read/write |
+| Completion Notifications | Callbacks when transfer completes or STOP detected |
+| Error Notifications | Callbacks for overflow, underflow, NACK, no buffer |
 
 #### Hardware Features Not Supported by the Driver
 
-* Target Mode and all related features
 * DMA Mode
 * FIFO Mode
 * Multi Master Mode and Arbitration Loss scenarios are not tested
 
 #### Software Supported Features
 
-* Configurable Development Error
+##### Common Features
+
+* Configurable Development Error Detection
+* Configurable Hardware Units
+* Configurable Data Length to Transfer
+* HW Unit Reset API for Bus Recovery
+* Configurable Controller/Target Mode per HW Unit
+
+##### Controller Mode Features
+
 * Configurable Sequence Size
 * Configurable Channel Size
-* Configurable Data Length to Transfer
-* Configurable Hardware Units
 * Configurable Channels
 * Configurable Sequences
 * Multiple Channels in a Sequence
-* Transfer Complete and Error Notification Callback
+* Transfer Complete and Error Notification Callbacks
+
+##### Target Mode Features
+
+* Start/Stop Control API
+* Dynamic TX/RX Buffer Submission
+* Start Notification Callbacks (TX and RX)
+* Complete Notification Callbacks (TX and RX)
+* Error Notification Callback
+* Event Notifications for Transfer Complete, STOP, Buffer Overflow/Underflow, and NACK conditions
 
 ### Source Files
 
@@ -96,10 +166,11 @@ On F29x platforms, there are 2 I2C instances I2CA and I2CB.
  ┃ ┃ ┃ ┗ 📜**Cdd_I2c.h** : *Contains the API declarations of the Cdd_I2c driver to be used by upper layers.*\
  ┃ ┃ ┣ 📂**src**\
  ┃ ┃ ┃ ┣ 📜**Cdd_I2c_Hw.c** : *Contains internal function definitions for HW access.*\
- ┃ ┃ ┃ ┣ 📜**Cdd_I2c_Irq.c** : *Contains the implementation for Cdd_I2c interrupts handlers.*\
- ┃ ┃ ┃ ┣ 📜**Cdd_I2c_Priv.c** : *Contains Functions that support the API for Cdd_I2c driver*\
- ┃ ┃ ┃ ┣ 📜**Cdd_I2c_Utils.c** : *Contains internal function definitions for queue implementation*\
- ┃ ┃ ┃ ┗ 📜**Cdd_I2c.c** : *Contains the implementation of the API for Cdd_I2c driver.*\
+ ┃ ┃ ┃ ┣ 📜**Cdd_I2c_Irq.c** : *Contains the ISR implementation for both controller and target modes.*\
+ ┃ ┃ ┃ ┣ 📜**Cdd_I2c_Priv.c** : *Contains internal function definitions that support the API.*\
+ ┃ ┃ ┃ ┣ 📜**Cdd_I2c_Target.c** : *Contains target mode API implementation.*\
+ ┃ ┃ ┃ ┣ 📜**Cdd_I2c_Utils.c** : *Contains internal function definitions for queue implementation.*\
+ ┃ ┃ ┃ ┗ 📜**Cdd_I2c.c** : *Contains controller mode API implementation.*\
  ┃ ┃ ┗ 📜CMakeLists.txt
 
 Description of generated files is provided below:
@@ -143,9 +214,13 @@ The objects (e.g. variables, functions, constants) are declared by compiler inde
 
 #### Scheduling
 
-|Schedule Function API|Description|
-|------------|---------------|
-|Cdd_I2c_MainFunction|This function process the I2c transmission|
+|Schedule Function API|Description|Applicable Mode|
+|------------|---------------|---------------|
+|Cdd_I2c_MainFunction|This function processes the I2C transmission in polling mode|Controller Mode only|
+
+```{note}
+Cdd_I2c_MainFunction is applicable only for Controller Mode. Target Mode operates entirely in interrupt-driven mode and does not require a cyclic main function. All Target Mode operations are handled through interrupt callbacks.
+```
 
 #### Error Handling
 
@@ -153,7 +228,7 @@ The objects (e.g. variables, functions, constants) are declared by compiler inde
 
 By default, development errors are reported to the DET using the service Det_ReportError(), if development error reporting is enabled (i.e. precompile parameter   CDD_I2C_DEV_ERROR_DETECT==STD_ON). If another module is used for development error reporting, the function prototype for reporting the error can be configured by the integrator, but must have the same signature as the service Det_ReportError(). The reported I2C ID is 255
 
-##### Error Codes
+##### Development Error Codes
 
 |Type of Error|Related Error code|Value (Hex)|
 |----|-----|-------|
@@ -170,6 +245,32 @@ By default, development errors are reported to the DET using the service Det_Rep
 |Buffer direction conflicts with channel direction set via EB|CDD_I2C_E_PARAM_DIRECTION|0x0B|
 |API service called with invalid HW unit ID|CDD_I2C_E_PARAM_HWUNIT|0x16|
 |API service called with sequence is busy|CDD_I2C_E_SEQ_BUSY|0x17|
+|API service called with invalid mode - controller or target|CDD_I2C_E_PARAM_MODE|0x18|
+
+##### Runtime Error Codes
+
+###### Controller Mode Runtime Errors
+
+The following error codes are reported to the application via the Cdd_I2c_SequenceErrorNotification callback in controller mode:
+
+|Type of Error|Related Error code|Value (Hex)|
+|----|-----|-------|
+|NACK was received from target device|CDD_I2C_E_NACK_RECEIVED|0x01|
+|Master lost arbitration (SDA stuck low or another master won arbitration)|CDD_I2C_E_ARBITRATION_FAILURE|0x02|
+|SCL line is stuck low|CDD_I2C_E_BUS_FAILURE|0x03|
+|Sequence was cancelled by user|CDD_I2C_E_CANCELLED|0x04|
+|HW unit was reset (bus-off recovery)|CDD_I2C_E_HW_UNIT_RESET|0x08|
+
+###### Target Mode Runtime Errors
+
+The following error codes are reported to the application via target mode notification callbacks (Cdd_I2c_TargetRxCompleteNotification, Cdd_I2c_TargetTxCompleteNotification, or Cdd_I2c_TargetErrorNotification):
+
+|Type of Error|Related Error code|Value (Hex)|
+|----|-----|-------|
+|Target received NACK from controller|CDD_I2C_E_NACK_RECEIVED|0x01|
+|RX buffer overflow occurred|CDD_I2C_E_RX_OVERFLOW|0x05|
+|TX buffer underflow occurred|CDD_I2C_E_TX_UNDERFLOW|0x06|
+|No buffer was submitted|CDD_I2C_E_NO_BUFFER|0x07|
 
 ### Used Resources
 
@@ -227,69 +328,45 @@ For CDD_I2C Module, data consistency and exclusive access to critical sections a
 |-------|-------|-------|-------|
 |CDD_I2C_EXCLUSIVE_AREA_0 | Cdd_I2c_SetupEB() <br>Cdd_I2c_SetupEBDynamic() <br>Cdd_I2c_AsyncTransmit() <br>Cdd_I2c_Cancel() <br>Cdd_I2c_MainFunction() | To protect against multiple access for shared resources | **OS_RESOURCE** : If the I2C APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br>**None**: If I2C APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed. |
 
-##### Configurable Callback Functions
 
-###### Notifications
 
-At its configurable interfaces the I2C defines notifications that can be mapped to callback functions in case completion of a sequence or failure of a sequence. The mapping is not statically defined by the I2C but can be performed at configuration time.
 
-###### Cdd_I2c_SequenceEndNotification
-
-Sequence transfer successful notification function. Can be configured in the configuration tool.
-Particularities and Limitations: It is advised to keep the code execution in the notification function as short as possible.
-Call context: Interrupt as well as polling
-
-###### Cdd_I2c_SequenceErrorNotification
-
-Sequence transfer error notification function. If the I2c detects an error, this function notifies the application about a communication failure. Can be configured in the configuration tool.
-Particularities and Limitations: It is advised to keep the code execution in the notification function as short as possible.
-Call context: Interrupt as well as polling
-
-For the Following API’s it is possible to be called from the sequence notifications:
-
-   1. Cdd_I2c_GetVersionInfo
-   2. Cdd_I2c_SetupEB
-   3. Cdd_I2c_SetupEBDynamic
-   4. Cdd_I2c_GetResult
-   5. Cdd_I2c_GetSequenceResult
-   6. Cdd_I2c_GetStatus
 
 #### Multi-core and Resource Allocator
 
 
 
 
-The I2C module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+The I2C module uses the Resource Allocator to allocate I2C peripheral instances to CPU cores and configure their memory-mapped base addresses. Each allocation is placed inside a **Context** that maps to a CPU core (e.g. `CPU1`). The **CurrentContext** parameter in the Resource Allocator selects which Context is active for MCAL execution. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
 
 ##### Resource Allocator Usage Example
 
 To allocate I2CA to CPU1 using FRAME0:
 
-1. In the Resource Allocator configuration, create a new I2c instance allocation
+1. In the Resource Allocator configuration, create a new I2c instance allocation under the CPU1 Context
 2. Set **InstanceName** to `I2CA`
 3. Set **Frame** to `FRAME0`
-4. The **BaseAddr** will be automatically calculated as `I2CA_DRIVER_BASE_FRAME(0U)`
+4. Set **BaseAddr** to `I2CA_BASE_FRAME(0U)`
 
 ```text
 Resource Allocator Configuration:
-├── I2cInstanceAllocation
-│   ├── InstanceName: I2CA
-│   ├── Frame: FRAME0
-│   └── BaseAddr: I2CA_DRIVER_BASE_FRAME(0U)
+├── Context (Core: CPU1)
+│   └── I2cInstanceAllocation
+│       ├── InstanceName: I2CA
+│       ├── Frame: FRAME0
+│       └── BaseAddr: I2CA_BASE_FRAME(0U)
 ```
 
 ### Configuration
-
-#### Migration Guide
 
 #### Configuration Parameters
 
 
 
-#### CddI2cGeneral
+##### CddI2cGeneral
 General configuration settings for Complex device driver
 
-##### CddI2cDevErrorDetect
+###### CddI2cDevErrorDetect
 
 | Item ||
 |--------|---------------|
@@ -301,7 +378,7 @@ General configuration settings for Complex device driver
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### CddI2cVersionInfoApi
+###### CddI2cVersionInfoApi
 
 | Item ||
 |--------|---------------|
@@ -313,7 +390,7 @@ General configuration settings for Complex device driver
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### CddI2cCancelApi
+###### CddI2cCancelApi
 
 | Item ||
 |--------|---------------|
@@ -325,7 +402,7 @@ General configuration settings for Complex device driver
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddI2cStatusApi
+###### CddI2cStatusApi
 
 | Item ||
 |--------|---------------|
@@ -337,7 +414,7 @@ General configuration settings for Complex device driver
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddI2cMainFunctionPeriod
+###### CddI2cMainFunctionPeriod
 
 | Item ||
 |--------|---------------|
@@ -354,10 +431,10 @@ General configuration settings for Complex device driver
 | **Max-value** | INF |
 | **Min-value** | 0.0 |
 
-#### CddI2cHwConfig
+##### CddI2cHwConfig
 This container contains the HW unit initialization parameters
 
-##### CddI2cHwUnitMode
+###### CddI2cHwUnitMode
 
 | Item ||
 |--------|---------------|
@@ -370,7 +447,7 @@ This container contains the HW unit initialization parameters
 | **Default-value** | CDD_I2C_MODE_CONTROLLER |
 | **Range** | CDD_I2C_MODE_CONTROLLER<br>CDD_I2C_MODE_TARGET |
 
-##### CddI2cHwUseInterrupts
+###### CddI2cHwUseInterrupts
 
 | Item ||
 |--------|---------------|
@@ -383,7 +460,7 @@ This container contains the HW unit initialization parameters
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddI2cHwBaudrate
+###### CddI2cHwBaudrate
 
 | Item ||
 |--------|---------------|
@@ -398,7 +475,7 @@ This container contains the HW unit initialization parameters
 | **Max-value** | 400000 |
 | **Min-value** | 10000 |
 
-##### CddI2cHwUnitFrequency
+###### CddI2cHwUnitFrequency
 
 | Item ||
 |--------|---------------|
@@ -412,7 +489,7 @@ This container contains the HW unit initialization parameters
 | **Max-value** | 12000000 |
 | **Min-value** | 7000000 |
 
-##### CddI2cHwAddressScheme
+###### CddI2cHwAddressScheme
 
 | Item ||
 |--------|---------------|
@@ -425,7 +502,7 @@ This container contains the HW unit initialization parameters
 | **Default-value** | CDD_I2C_ADDRESS_7_BIT |
 | **Range** | CDD_I2C_ADDRESS_7_BIT<br>CDD_I2C_ADDRESS_10_BIT |
 
-##### CddI2cHwOwnAddress
+###### CddI2cHwOwnAddress
 
 | Item ||
 |--------|---------------|
@@ -439,7 +516,7 @@ This container contains the HW unit initialization parameters
 | **Max-value** | 1023 |
 | **Min-value** | 0 |
 
-##### CddI2cHwIrqType
+###### CddI2cHwIrqType
 
 | Item ||
 |--------|---------------|
@@ -452,7 +529,7 @@ This container contains the HW unit initialization parameters
 | **Default-value** | ISR_CAT1_RTINT |
 | **Range** | ISR_CAT1_INT<br>ISR_CAT1_RTINT<br>ISR_CAT2_INT |
 
-##### CddI2cHwUnitRef
+###### CddI2cHwUnitRef
 
 | Item ||
 |--------|---------------|
@@ -463,7 +540,7 @@ This container contains the HW unit initialization parameters
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddI2cHwFunctionalClock
+###### CddI2cHwFunctionalClock
 
 | Item ||
 |--------|---------------|
@@ -474,7 +551,7 @@ This container contains the HW unit initialization parameters
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddI2cTargetCallbacks
+###### CddI2cTargetCallbacks
 Container for target mode callback notifications. Only visible when HW unit is configured in Target mode.
 
 ###### CddI2cTargetTxStartNotification
@@ -552,10 +629,10 @@ Container for target mode callback notifications. Only visible when HW unit is c
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | NULL_PTR |
 
-#### CddI2cChConfig
+##### CddI2cChConfig
 This container contains the Channel configurations
 
-##### CddI2cChDirection
+###### CddI2cChDirection
 
 | Item ||
 |--------|---------------|
@@ -568,7 +645,7 @@ This container contains the Channel configurations
 | **Default-value** | WRITE |
 | **Range** | WRITE<br>READ |
 
-##### CddI2cChTargetAddress
+###### CddI2cChTargetAddress
 
 | Item ||
 |--------|---------------|
@@ -582,7 +659,7 @@ This container contains the Channel configurations
 | **Max-value** | 1023 |
 | **Min-value** | 0 |
 
-##### CddI2cChTargetAddressScheme
+###### CddI2cChTargetAddressScheme
 
 | Item ||
 |--------|---------------|
@@ -595,10 +672,10 @@ This container contains the Channel configurations
 | **Default-value** | ADDRESS_7_BIT |
 | **Range** | ADDRESS_7_BIT<br>ADDRESS_10_BIT |
 
-#### CddI2cSeqConfig
+##### CddI2cSeqConfig
 This container contains the Sequence configurations
 
-##### CddI2cSeqCompleteNotify
+###### CddI2cSeqCompleteNotify
 
 | Item ||
 |--------|---------------|
@@ -610,7 +687,7 @@ This container contains the Sequence configurations
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | NULL_PTR |
 
-##### CddI2cSeqErrorNotify
+###### CddI2cSeqErrorNotify
 
 | Item ||
 |--------|---------------|
@@ -622,7 +699,7 @@ This container contains the Sequence configurations
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | NULL_PTR |
 
-##### CddI2cSeqRestartModeType
+###### CddI2cSeqRestartModeType
 
 | Item ||
 |--------|---------------|
@@ -635,7 +712,7 @@ This container contains the Sequence configurations
 | **Default-value** | RESTART_MODE_STOP |
 | **Range** | RESTART_MODE_STOP<br>RESTART_MODE_NOSTOP |
 
-##### CddI2cSeqHwUnitAssignment
+###### CddI2cSeqHwUnitAssignment
 
 | Item ||
 |--------|---------------|
@@ -646,8 +723,19 @@ This container contains the Sequence configurations
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddI2cSeqChList
+###### CddI2cSeqChList
 References to I2c channels and their order within the Sequence.
+
+###### CddI2cSeqChAssignment
+
+| Item ||
+|--------|---------------|
+| **Name** | CddI2cSeqChAssignment |
+| **Description** | A Sequence reference to a I2c channel. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 ### Examples
 
 The example applications demonstrates use of I2C module, the list below identifies key steps performed in the example.
@@ -668,8 +756,6 @@ The example applications demonstrates use of I2C module, the list below identifi
 
 ##### Setup Required to Run Example
 
-* Install Code Composer Studio(CCS) latest version
-* Install compiler as recommended
 * Connect the hardware and power up
 * Connect the uart and set up the baudrate to check the log on serial console
 * Note: I2C examples are supported only in F29x LP board
@@ -696,4 +782,87 @@ The example applications demonstrates use of I2C module, the list below identifi
 
 ```{literalinclude} Assets/text/Cdd_I2c/F29H85x/Cdd_I2c_Poll.txt
 ```
+
+#### Cdd_I2c_Target_Loopback
+
+##### Overview
+
+This example demonstrates the I2C Target Mode (Slave) functionality with an external loopback configuration. The example uses two I2C instances on the same device:
+- **I2CA** configured as **Target** (slave) at address 0x48
+- **I2CB** configured as **Controller** (master)
+- I2CA and I2CB are externally connected via wires
+
+**Test Flow:**
+1. Controller (I2CB) writes data to Target (I2CA), target receives and verifies
+2. Controller (I2CB) reads data from Target (I2CA), controller verifies read data
+
+##### Setup Required to Run Example
+
+* Install Code Composer Studio (CCS) latest version
+* Install compiler as recommended
+* Connect the hardware and power up
+* Connect the UART and set up the baudrate to check the log on serial console
+* **IMPORTANT:** External wiring connections required on F29H85x LaunchPad:
+  * Connect **I2CA_SCL (J1 Pin 9)** to **I2CB_SCL (J5 Pin 49)** using a jumper wire
+  * Connect **I2CA_SDA (J1 Pin 10)** to **I2CB_SDA (J5 Pin 50)** using a jumper wire
+
+```{note}
+This example requires external wiring between I2CA and I2CB on the LaunchPad board. Without these connections, the example will not function properly.
+```
+
+##### How to Run Example
+
+* Open CCS and import Cdd_I2c_Target_Loopback Example from the examples directory
+* Ensure external wiring connections are in place as described above
+* Build project and start debug
+* Run the application
+* Observe the UART console output for test results
+
+##### Sample Log
+
+```{code-block}
+Cdd_I2c_Target_Loopback: Example Application - STARTS ...
+
+ Cdd I2c MCAL Version Info
+ -------------------------
+ Vendor ID           : 44
+ Module ID           : 255
+ SW Major Version    : 1
+ SW Minor Version    : 2
+ SW Patch Version    : 0
+
+Controller WR -> Target RX:
+  [0] WR: 0x00  RX: 0x00
+  [1] WR: 0x01  RX: 0x01
+  [2] WR: 0x02  RX: 0x02
+  [3] WR: 0x03  RX: 0x03
+  [4] WR: 0x04  RX: 0x04
+  [5] WR: 0x05  RX: 0x05
+  [6] WR: 0x06  RX: 0x06
+  [7] WR: 0x07  RX: 0x07
+Target TX -> Controller RD:
+  [0] TX: 0x10  RD: 0x10
+  [1] TX: 0x11  RD: 0x11
+  [2] TX: 0x12  RD: 0x12
+  [3] TX: 0x13  RD: 0x13
+  [4] TX: 0x14  RD: 0x14
+  [5] TX: 0x15  RD: 0x15
+  [6] TX: 0x16  RD: 0x16
+  [7] TX: 0x17  RD: 0x17
+Cdd_I2c_Target_Loopback: Example Application - ENDS (Passed)!!!
+Cdd_I2c_Target_Loopback: All tests have passed
+```
+
+##### Expected Results
+
+When the example runs successfully:
+1. Version information is displayed showing I2C MCAL driver version
+2. Controller write test: 8 bytes written by controller match the 8 bytes received by target
+3. Controller read test: 8 bytes read by controller match the 8 bytes transmitted by target
+4. Final message shows "ENDS (Passed)!!!" and "All tests have passed"
+
+If the example fails, check:
+- External wiring connections are correct
+- Both I2CA and I2CB pins are properly configured in Port driver
+- Target address 0x48 matches in both controller channel configuration and target HW unit configuration
 

@@ -133,6 +133,18 @@ LOCAL_INLINE FUNC(void, CDD_IPC_CODE) Cdd_Ipc_SetFlagLtoR(Cdd_Ipc_InstanceType I
  *********************************************************************************************************************/
 LOCAL_INLINE FUNC(void, CDD_IPC_CODE) Cdd_Ipc_AckFlagRtoL(Cdd_Ipc_InstanceType Instance, uint32 Flag);
 
+/* Design: MCAL-30596 */
+/** \brief Clears a flag set by the local core
+ * \param[in]  Instance is the instance in which the flag is being cleared
+ * \param[in]  Flag is the flag bit being cleared
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(void, CDD_IPC_CODE) Cdd_Ipc_ClearFlagLtoR(Cdd_Ipc_InstanceType Instance, uint32 Flag);
+
 /* Design: MCAL-30594 */
 /** \brief Wait for the remote core to send a flag
  * \param[in]  Instance is the instance in which the flag will be set
@@ -165,12 +177,17 @@ static FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_WaitForAck(Cdd_Ipc_InstanceTyp
 
 LOCAL_INLINE FUNC(void, CDD_IPC_CODE) Cdd_Ipc_SetFlagLtoR(Cdd_Ipc_InstanceType Instance, uint32 Flag)
 {
-    HWREG(CDD_IPC_REG_SET(Instance)) = Flag;
+    HWREG(CDD_IPC_REG_SET((uint32)Instance)) = Flag;
 }
 
 LOCAL_INLINE FUNC(void, CDD_IPC_CODE) Cdd_Ipc_AckFlagRtoL(Cdd_Ipc_InstanceType Instance, uint32 Flag)
 {
-    HWREG(CDD_IPC_REG_ACK(Instance)) = Flag;
+    HWREG(CDD_IPC_REG_ACK((uint32)Instance)) = Flag;
+}
+
+LOCAL_INLINE FUNC(void, CDD_IPC_CODE) Cdd_Ipc_ClearFlagLtoR(Cdd_Ipc_InstanceType Instance, uint32 Flag)
+{
+    HWREG(CDD_IPC_REG_CLR((uint32)Instance)) = Flag;
 }
 
 /*********************************************************************************************************************
@@ -199,6 +216,15 @@ Cdd_Ipc_Sync_Process(VAR(Cdd_Ipc_CoreType, AUTOMATIC) RemoteCore)
         Cdd_Ipc_AckFlagRtoL(Cdd_Ipc_Sync_Instances[Cdd_Ipc_ConfigPtr->Cdd_Ipc_LocalCore][RemoteCore], CDD_IPC_FLAG2);
         ret_val =
             Cdd_Ipc_WaitForAck(Cdd_Ipc_Sync_Instances[Cdd_Ipc_ConfigPtr->Cdd_Ipc_LocalCore][RemoteCore], CDD_IPC_FLAG2);
+        if (E_NOT_OK == ret_val)
+        {
+            Cdd_Ipc_ClearFlagLtoR(Cdd_Ipc_Sync_Instances[Cdd_Ipc_ConfigPtr->Cdd_Ipc_LocalCore][RemoteCore],
+                                  CDD_IPC_FLAG2);
+        }
+    }
+    else
+    {
+        Cdd_Ipc_ClearFlagLtoR(Cdd_Ipc_Sync_Instances[Cdd_Ipc_ConfigPtr->Cdd_Ipc_LocalCore][RemoteCore], CDD_IPC_FLAG2);
     }
 
     return ret_val;
@@ -214,8 +240,8 @@ Cdd_Ipc_Transmit_Priv(VAR(PduIdType, AUTOMATIC) ChannelId,
 
     if (E_OK == Cdd_Ipc_GetTxIdxPriv(ChannelId, &instance_index, &channel_index))
     {
-        if (HWREG(CDD_IPC_REG_FLG(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[instance_index].Cdd_Ipc_TxInstance)) ==
-            0U)
+        if (HWREG(CDD_IPC_REG_FLG(
+                (uint32)Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[instance_index].Cdd_Ipc_TxInstance)) == 0U)
         {
             Cdd_Ipc_WriteChannelPriv(instance_index, channel_index, PduInfoPtr);
             return_val = E_OK;
@@ -241,10 +267,10 @@ Cdd_Ipc_RxIndication(VAR(uint8, AUTOMATIC) Instance_Index, VAR(uint8, AUTOMATIC)
             .Cdd_Ipc_UserCallbackFunction(PduInfoPtr);
     }
 #if (STD_ON == CDD_IPC_INTEGRATION_WITH_ASR_COM_STACK_ENABLE)
-    PduR_Cdd_Ipc_RxIndication(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index]
-                                  .Cdd_Ipc_RxChannelConfig[Channel_Index]
-                                  .Cdd_Ipc_PduID,
-                              PduInfoPtr);
+    (void)PduR_Cdd_Ipc_RxIndication(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index]
+                                        .Cdd_Ipc_RxChannelConfig[Channel_Index]
+                                        .Cdd_Ipc_PduID,
+                                    PduInfoPtr);
 #endif
 }
 
@@ -254,12 +280,13 @@ Cdd_Ipc_GetChannelPollingStatus(VAR(uint8, AUTOMATIC) Instance_Index, uint8* Cha
     VAR(boolean, AUTOMATIC) return_val = FALSE;
     VAR(uint8, AUTOMATIC) channel      = 0U;
     VAR(uint32, AUTOMATIC)
-    status = HWREG(CDD_IPC_REG_STS(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
+    status =
+        HWREG(CDD_IPC_REG_STS((uint32)Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
     VAR(uint8, AUTOMATIC) channel_index = 0U;
 
     if (((status & CDD_IPC_FLAG1) == CDD_IPC_FLAG1) && (((status & (CDD_IPC_FLAG2 | CDD_IPC_FLAG0)) == 0U)))
     {
-        channel = (status >> CDD_IPC_CHANNELINDEX) & BIT_MASK_EIGHT;
+        channel = (uint8)((status >> CDD_IPC_CHANNELINDEX) & BIT_MASK_EIGHT);
 
         for (channel_index = 0U;
              channel_index < Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxChannelCount;
@@ -294,33 +321,33 @@ Cdd_Ipc_WriteChannelPriv(VAR(uint8, AUTOMATIC) Instance_Index, VAR(uint8, AUTOMA
     VAR(uint32, AUTOMATIC) dataValue    = 0U;
 
     // Calculate the values to be written to the registers
-    for (byteCnt = 0U; (byteCnt < (uint8)PduInfoPtr->SduLength) && (byteCnt < CDD_IPC_MAX_SIZE); byteCnt++)
+    for (byteCnt = 0U; (byteCnt < (uint8)PduInfoPtr->SduLength); byteCnt++)
     {
         if (byteCnt < CDD_IPC_COMMBYTE)
         {
             // Calculate the command value
-            commandValue |= (PduInfoPtr->SduDataPtr[byteCnt] << (8U * (byteCnt % CDD_IPC_COMMANDSIZE)));
+            commandValue |= ((uint32)PduInfoPtr->SduDataPtr[byteCnt] << (8U * (byteCnt % CDD_IPC_COMMANDSIZE)));
         }
-        else if ((byteCnt >= CDD_IPC_COMMBYTE) && (byteCnt < CDD_IPC_ADDRBYTE))
+        else if (byteCnt < CDD_IPC_ADDRBYTE)
         {
             // Calculate the address value
-            addressValue |=
-                (PduInfoPtr->SduDataPtr[byteCnt] << (8U * ((byteCnt - CDD_IPC_COMMBYTE) % CDD_IPC_COMMANDSIZE)));
+            addressValue |= ((uint32)PduInfoPtr->SduDataPtr[byteCnt]
+                             << (8U * ((byteCnt - CDD_IPC_COMMBYTE) % CDD_IPC_COMMANDSIZE)));
         }
         else
         {
             // Calculate the data value
-            dataValue |=
-                (PduInfoPtr->SduDataPtr[byteCnt] << (8U * ((byteCnt - CDD_IPC_ADDRBYTE) % CDD_IPC_COMMANDSIZE)));
+            dataValue |= ((uint32)PduInfoPtr->SduDataPtr[byteCnt]
+                          << (8U * ((byteCnt - CDD_IPC_ADDRBYTE) % CDD_IPC_COMMANDSIZE)));
         }
     }
 
-    HWREG(CDD_IPC_REG_SENDCOM(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxInstance)) =
+    HWREG(CDD_IPC_REG_SENDCOM((uint32)Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxInstance)) =
         commandValue;
-    HWREG(CDD_IPC_REG_SENDADDR(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxInstance)) =
-        addressValue;
-    HWREG(CDD_IPC_REG_SENDDATA(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxInstance)) =
-        dataValue;
+    HWREG(CDD_IPC_REG_SENDADDR(
+        (uint32)Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxInstance)) = addressValue;
+    HWREG(CDD_IPC_REG_SENDDATA(
+        (uint32)Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxInstance)) = dataValue;
 
     // Flags to indicate the Tx processing type
     if (Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index]
@@ -335,20 +362,21 @@ Cdd_Ipc_WriteChannelPriv(VAR(uint8, AUTOMATIC) Instance_Index, VAR(uint8, AUTOMA
     }
 
     // Flags to indicate the Channel ID
-    flags |= ((Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index]
-                   .Cdd_Ipc_TxChannelConfig[Channel_Index]
-                   .Cdd_Ipc_ChannelID)
+    flags |= ((uint32)(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index]
+                           .Cdd_Ipc_TxChannelConfig[Channel_Index]
+                           .Cdd_Ipc_ChannelID)
               << CDD_IPC_CHANNELINDEX);
 
     // Flags to indicate the length
     flags |= ((uint32)(PduInfoPtr->SduLength) << CDD_IPC_LENGTHINDEX);
 
-    HWREG(CDD_IPC_REG_SET(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxInstance)) = flags;
+    HWREG(CDD_IPC_REG_SET((uint32)Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxInstance)) =
+        flags;
 }
 
 FUNC(void, CDD_IPC_CODE)
 Cdd_Ipc_ReadChannelPriv(VAR(uint8, AUTOMATIC) Instance_Index,
-                        P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr)
+                        P2VAR(PduInfoType, AUTOMATIC, CDD_IPC_APPL_DATA) PduInfoPtr)
 {
     VAR(uint32, AUTOMATIC) flags        = 0U;
     VAR(uint8, AUTOMATIC) length        = 0U;
@@ -357,16 +385,17 @@ Cdd_Ipc_ReadChannelPriv(VAR(uint8, AUTOMATIC) Instance_Index,
     VAR(uint32, AUTOMATIC) addrvalue    = 0U;
     VAR(uint32, AUTOMATIC) datavalue    = 0U;
 
-    flags  = HWREG(CDD_IPC_REG_STS(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
-    length = (flags >> CDD_IPC_LENGTHINDEX) & BIT_MASK_FOUR;
-    ((PduInfoType*)PduInfoPtr)->SduLength = (length > CDD_IPC_MAX_SIZE) ? CDD_IPC_MAX_SIZE : length;
+    flags =
+        HWREG(CDD_IPC_REG_STS((uint32)Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
+    length                = (uint8)((flags >> CDD_IPC_LENGTHINDEX) & BIT_MASK_FOUR);
+    PduInfoPtr->SduLength = (length > CDD_IPC_MAX_SIZE) ? CDD_IPC_MAX_SIZE : length;
 
-    commandvalue =
-        HWREG(CDD_IPC_REG_RECVCOM(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
-    addrvalue =
-        HWREG(CDD_IPC_REG_RECVADDR(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
-    datavalue =
-        HWREG(CDD_IPC_REG_RECVDATA(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
+    commandvalue = HWREG(
+        CDD_IPC_REG_RECVCOM((uint32)Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
+    addrvalue = HWREG(
+        CDD_IPC_REG_RECVADDR((uint32)Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
+    datavalue = HWREG(
+        CDD_IPC_REG_RECVDATA((uint32)Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
 
     for (byteCnt = 0U; (byteCnt < PduInfoPtr->SduLength); byteCnt++)
     {
@@ -375,7 +404,7 @@ Cdd_Ipc_ReadChannelPriv(VAR(uint8, AUTOMATIC) Instance_Index,
             PduInfoPtr->SduDataPtr[byteCnt] =
                 (uint8)((commandvalue >> (8U * (byteCnt % CDD_IPC_COMMANDSIZE))) & BIT_MASK_EIGHT);
         }
-        else if ((byteCnt >= CDD_IPC_COMMBYTE) && (byteCnt < CDD_IPC_ADDRBYTE))
+        else if (byteCnt < CDD_IPC_ADDRBYTE)
         {
             PduInfoPtr->SduDataPtr[byteCnt] =
                 (uint8)((addrvalue >> (8U * ((byteCnt - CDD_IPC_COMMBYTE) % CDD_IPC_COMMANDSIZE))) & BIT_MASK_EIGHT);
@@ -390,8 +419,8 @@ Cdd_Ipc_ReadChannelPriv(VAR(uint8, AUTOMATIC) Instance_Index,
 
 FUNC(void, CDD_IPC_CODE) Cdd_Ipc_Acknowledge(Cdd_Ipc_InstanceType Instance)
 {
-    VAR(uint32, AUTOMATIC) status    = HWREG(CDD_IPC_REG_STS(Instance));
-    HWREG(CDD_IPC_REG_ACK(Instance)) = status;
+    VAR(uint32, AUTOMATIC) status            = HWREG(CDD_IPC_REG_STS((uint32)Instance));
+    HWREG(CDD_IPC_REG_ACK((uint32)Instance)) = status;
 }
 
 void Cdd_Ipc_ProcessIsr(Cdd_Ipc_InstanceType Instance)
@@ -403,7 +432,7 @@ void Cdd_Ipc_ProcessIsr(Cdd_Ipc_InstanceType Instance)
     VAR(uint8, AUTOMATIC) databuffer[CDD_IPC_MAX_SIZE] = {0U};
     pduinfo.SduDataPtr                                 = databuffer;
 
-    if ((HWREG(CDD_IPC_REG_STS(Instance)) & CDD_IPC_FLAG2) != CDD_IPC_FLAG2)
+    if ((HWREG(CDD_IPC_REG_STS((uint32)Instance)) & CDD_IPC_FLAG2) != CDD_IPC_FLAG2)
     {
         status = Cdd_Ipc_GetRxIdxPriv(Instance, &instance_index, &channel_index);
 
@@ -438,14 +467,11 @@ Cdd_Ipc_GetRxIdxPriv(VAR(Cdd_Ipc_InstanceType, AUTOMATIC) Instance, uint8* Insta
 
     for (instance_index = 0U; instance_index < CDD_IPC_RX_INSTANCE_COUNT; instance_index++)
     {
-        if (Instance == Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[instance_index].Cdd_Ipc_RxInstance)
+        return_value = Cdd_Ipc_GetRxChIdx(Instance, instance_index, ChannelIndex);
+        if (E_OK == return_value)
         {
-            return_value = Cdd_Ipc_GetRxChIdx(Instance, instance_index, ChannelIndex);
-            if (E_OK == return_value)
-            {
-                *InstanceIndex = instance_index;
-                break;
-            }
+            *InstanceIndex = instance_index;
+            break;
         }
     }
     if (E_NOT_OK == return_value)
@@ -462,7 +488,7 @@ Cdd_Ipc_GetRxChIdx(VAR(Cdd_Ipc_InstanceType, AUTOMATIC) Instance, uint8 Instance
     VAR(Std_ReturnType, AUTOMATIC) return_value = E_NOT_OK;
     VAR(uint8, AUTOMATIC) channel_index         = 0U;
     VAR(uint8, AUTOMATIC)
-    channel = ((HWREG(CDD_IPC_REG_STS(Instance))) >> CDD_IPC_CHANNELINDEX) & BIT_MASK_EIGHT;
+    channel = (uint8)(((HWREG(CDD_IPC_REG_STS((uint32)Instance))) >> CDD_IPC_CHANNELINDEX) & BIT_MASK_EIGHT);
 
     if (Instance == Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[InstanceIndex].Cdd_Ipc_RxInstance)
     {
@@ -524,8 +550,8 @@ FUNC(boolean, CDD_IPC_CODE) Cdd_Ipc_InstanceStatus(VAR(PduIdType, AUTOMATIC) Cha
 
     if (E_OK == Cdd_Ipc_GetTxIdxPriv(ChannelId, &instance_index, &channel_index))
     {
-        if (HWREG(CDD_IPC_REG_FLG(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[instance_index].Cdd_Ipc_TxInstance)) ==
-            0U)
+        if (HWREG(CDD_IPC_REG_FLG(
+                (uint32)Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[instance_index].Cdd_Ipc_TxInstance)) == 0U)
         {
             return_value = TRUE;
         }
@@ -556,7 +582,7 @@ static FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_WaitForFlag(Cdd_Ipc_InstanceTy
     VAR(Std_ReturnType, AUTOMATIC) return_val = E_OK;
 
     (void)McalLib_GetCounterValue(&startCount);
-    while ((HWREG(CDD_IPC_REG_STS(Instance)) & Flag) != Flag)
+    while ((HWREG(CDD_IPC_REG_STS((uint32)Instance)) & Flag) != Flag)
     {
         (void)McalLib_GetElapsedValue(&startCount, &elapsedCount);
         if (CDD_IPC_CFG_TIMEOUT_CLOCK_CYCLES <= elapsedCount)
@@ -581,7 +607,7 @@ static FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_WaitForAck(Cdd_Ipc_InstanceTyp
 
     (void)McalLib_GetCounterValue(&startCount);
 
-    while ((HWREG(CDD_IPC_REG_FLG(Instance)) & Flag) == Flag)
+    while ((HWREG(CDD_IPC_REG_FLG((uint32)Instance)) & Flag) == Flag)
     {
         (void)McalLib_GetElapsedValue(&startCount, &elapsedCount);
         if (CDD_IPC_CFG_TIMEOUT_CLOCK_CYCLES <= elapsedCount)

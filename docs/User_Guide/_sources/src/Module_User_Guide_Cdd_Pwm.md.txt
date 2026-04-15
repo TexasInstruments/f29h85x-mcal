@@ -476,7 +476,15 @@ Cdd Pwm Header File Structure
 
 #### Memory Mapping
 
-Will be added in later release
+The driver follows the AUTOSAR memory mapping strategy. All memory sections should be stored in memory as per AUTOSAR specifications, considering initialization policy, alignment requirements, safety classification, and core scope where applicable.
+
+Reference memory map files can be found at:
+
+```text
+{MCAL_INSTALL_PATH}\drivers\BSW_Stubs\MemMap\include
+```
+
+The memory sections are organized according to AUTOSAR specifications to ensure proper placement of code and data in different memory regions based on their usage and access patterns.
 
 #### Scheduling
 
@@ -494,11 +502,11 @@ Development errors are reported to the DET using the service Det_ReportError(), 
 |----|-----|-------|
 |API called when the driver is not initialized|CDD_PWM_E_UNINIT|0x0AU|
 |Init API called when the driver is already initialized|CDD_PWM_E_ALREADY_INITIALIZED|0x0BU|
-|Init API called with invalid pointer|CDD_PWM_E_PARAM_POINTER|0x0CU|  
+|Init API called with invalid pointer|CDD_PWM_E_PARAM_POINTER|0x0CU|
 |API called with invalid ID(parameter)|CDD_PWM_E_INVALID_ID|0x0DU|
 |API called for the PWM instance whose has no notification pointer available |CDD_PWM_E_NOTIF_CAPABILITY|0x0EU|
 |API called for the PWM instance whose channel class is not variable period|CDD_PWM_E_CHANNEL_CLASS|0x0FU|
-|API called when the channel configured for the notification is invalid|CDD_PWM_E_INVALID_CHANNEL_NOTIFICATION|0x11U|
+|API called when the channel configured for the notification is invalid|CDD_PWM_E_INVALID_EDGENOTIFICATION|0x11U|
 |API called when the edge notification type is not valid |CDD_PWM_E_INVALID_NOTIFICATION|0x12U|
 |API called when the event count is invalid/out-of-range |CDD_PWM_E_INVALID_EVENT_COUNT|0x13U|
 |API called with invalid/out-of-range duty cycle value|CDD_PWM_E_INVALID_DUTY_CYCLE|0x18U|
@@ -508,6 +516,40 @@ Development errors are reported to the DET using the service Det_ReportError(), 
 |Type of Error|Related Error code|Value (Hex)|
 |----|-----|-------|
 |API called whose notification is already enabled or invalid channel notification is called for the instance|CDD_PWM_E_NOTIF_ALREADY_ENABLED|0x10U|
+|Cdd_Pwm_SetInterruptEventCount API called for an instance whose notification is enabled|CDD_PWM_E_BUSY|0x15U|
+|Cdd_Pwm_EnableNotification API called when the InterruptEventCount is zero|CDD_PWM_E_INVALID_INTEVTCOUNT|0x16U|
+
+#### Error codes in advanced mode
+
+|Type of Error | Related Error code | Value (Hex)|
+|----|-----|-------|
+|API called when the driver is not initialized|CDD_PWM_E_UNINIT|0x0AU|
+|Init API called when the driver is already initialized|CDD_PWM_E_ALREADY_INITIALIZED|0x0BU|
+|Init API called with invalid pointer|CDD_PWM_E_PARAM_POINTER|0x0CU|
+|API called with invalid ID(parameter)|CDD_PWM_E_INVALID_ID|0x0DU|
+|API called for the PWM instance whose has no notification pointer available|CDD_PWM_E_NOTIF_CAPABILITY|0x0EU|
+|API called with invalid output channel|CDD_PWM_E_INVALID_OUTPUT_CHANNEL|0x0FU|
+|API called when the event count is invalid/out-of-range|CDD_PWM_E_INVALID_VALUE|0x13U|
+|API called with invalid prescale value|CDD_PWM_E_INVALID_PRESCALE|0x14U|
+|API called with invalid counter compare value|CDD_PWM_E_INVALID_CTRCOMPARE|0x15U|
+|API called with invalid event|CDD_PWM_E_INVALID_EVENT|0x16U|
+|API called with invalid polarity|CDD_PWM_E_INVALID_POLARITY|0x17U|
+|API called with invalid ADCSOC type|CDD_PWM_E_INVALID_ADCSOC_TYPE|0x18U|
+|API called with invalid event source|CDD_PWM_E_INVALID_EVENT_SRC|0x19U|
+|API called with invalid shadow set|CDD_PWM_E_INVALID_SHDSET|0x1AU|
+
+### Silicon errata workarounds and recommendation
+
+For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata](https://www.ti.com/lit/er/sprz569c/sprz569c.pdf).
+
+| Advisory | Workaround in MCAL driver | Recommended actions for user |
+|----------|--------------------------|-------------------------------|
+| ePWM: An ePWM Glitch can Occur if a Trip Remains Active at the End of the Blanking Window | No workaround is implemented in the CDD PWM driver. | Extend or reduce the blanking window to avoid any undesired trip action. |
+| ePWM: ePWM TZFRC and TZCLR Events may be Missed When PERCLKDIVSEL.EPWMCLKDIV = 1 | No workaround is implemented in the CDD PWM driver. | 1. Configure EPWMCLK = PLLSYSCLK (`PERCLKDIVSEL.EPWMCLKDIV = 0`), or<br>2. Use PWMXBAR → Digital Compare → Trip Zone path as an alternative:<br>   a. Configure both trip zone actions for Digital Compare Output A Event 1/2 Action On EPWMxA and Digital Compare Output B Event 1/2 Action On EPWMxB.<br>      • `EPWM_setTripZoneAction()`<br>   b. Configure the input signals for TRIPIN1-15 or the ORed Combinational logic of TRIPIN1-15.<br>      • `EPWM_selectDigitalCompareTripInput()`<br>   c. Configure the Digital Compare condition for DCAEVT1/2 and DCBEVT1/2.<br>      • `EPWM_setTripZoneDigitalCompareEventCondition()`<br>   d. Configure the PWMXBAR Input to the Digital Compare Submodule to reserved.<br>      • `XBAR_selectEpwmXbarInputSource()` |
+| ePWM: ESM Source for Trip Zone is not Supported | No workaround is implemented in the CDD PWM driver. | Use the error source to generate an NMI interrupt from the respective ESM CPU instance. Within the NMI interrupt, issue a software write using `Cdd_Pwm_ForceTripZoneEvent()` to force a trip on the PWM output. |
+| ePWM: ePWM One-Shot/CBC Trip Event DCxEVTy.force Does Not Set the Trip Condition | No workaround is implemented in the CDD PWM driver. | For devices with `DCxCTL.EVT1/2FRCSYNCSEL` and `DCxCTL.EVT1/2LATSEL`, use Async Path (`DCxCTL.EVT1/2FRCSYNCSEL = 1` and `DCxCTL.EVT1/2LATSEL = 1`) or Sync Path (`DCxCTL.EVT1/2FRCSYNCSEL = 0`). |
+| ePWM: For ePWMs Using Global Load in One-Shot Load Mode, Global Load of Registers may get Delayed When a Write to the GLDCTL2.OSHTLD Register Occurs Within 3 TBCLKs of the Global Load Event | No workaround is implemented in the CDD PWM driver. | Any writes to the `GLDCTL2.OSHTLD` register bit must be a minimum of 3 TBCLK cycles before the configured global load event. |
+| HRPWM: HRPWM High-Resolution Period Shadow to Active Loading Occurs Every ZERO Event, Even if Shadow to Active Load for Period is Set to Only Load on SYNC | No workaround is implemented in the CDD PWM driver. | When using high-resolution period, the sync event is ignored, and shadow-to-active loading occurs every ZERO event. If high-resolution period is disabled, the sync event is not ignored, and shadow-to-active loading occurs on a sync event. |
 
 ### Used resources
 
@@ -619,23 +661,41 @@ For CDD_PWM Module, data consistency and exclusive access to critical sections a
 
 #### Resource Allocator
 
-The PWM module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+The PWM module uses the Resource Allocator to allocate PWM peripheral instances to CPU cores and configure their memory-mapped base addresses. Each allocation is placed inside a **Context** that maps to a CPU core (e.g. `CPU1`). The **CurrentContext** parameter in the Resource Allocator selects which Context is active for MCAL execution. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+The PWM Context container supports two types of allocations:
+
+- **`Cdd_PwmAllocatedInstance`**: Allocates an EPWM hardware instance (e.g. `EPWM1`). Each instance has both a **BaseAddr** and an **XlinkBaseAddr**, both auto-calculated based on the selected instance and frame.
+- **`CddPwmHrpwmCalInstance`**: Allocates an HRPWM calibration instance (e.g. `HRPWMCAL1`). **BaseAddr** is auto-calculated based on the selected instance and frame.
+
+Each allocation supports **Frame** (`FRAME0`–`FRAME3`), **DebugHaltEnabled**, and **StandbyModeEnabled** parameters.
 
 ##### Resource Allocator Usage Example
 
 To allocate EPWM1 to CPU1 using FRAME0:
 
-1. In the Resource Allocator configuration, create a new Pwm instance allocation
+1. In the Resource Allocator configuration, create a new `Cdd_PwmAllocatedInstance` under the CPU1 Context
 2. Set **InstanceName** to `EPWM1`
 3. Set **Frame** to `FRAME0`
-4. The **BaseAddr** will be automatically calculated as `EPWM1_DRIVER_BASE_FRAME(0U)`
+4. The **BaseAddr** will be automatically calculated as `EPWM1_BASE_FRAME(0U)`
+5. The **XlinkBaseAddr** will be automatically calculated as `EPWM1XLINK_BASE_FRAME(0U)`
+6. Optionally configure **DebugHaltEnabled** and **StandbyModeEnabled**
 
 ```text
 Resource Allocator Configuration:
-├── PwmInstanceAllocation
-│   ├── InstanceName: EPWM1
-│   ├── Frame: FRAME0
-│   └── BaseAddr: EPWM1_DRIVER_BASE_FRAME(0U)
+├── Context (Core: CPU1)
+│   └── Cdd_Pwm
+│       ├── Cdd_PwmAllocatedInstance
+│       │   ├── InstanceName: EPWM1
+│       │   ├── Frame: FRAME0
+│       │   ├── BaseAddr: EPWM1_BASE_FRAME(0U)  [auto-calculated]
+│       │   ├── XlinkBaseAddr: EPWM1XLINK_BASE_FRAME(0U)  [auto-calculated]
+│       │   ├── DebugHaltEnabled: true
+│       │   └── StandbyModeEnabled: true
+│       └── CddPwmHrpwmCalInstance
+│           ├── InstanceName: HRPWMCAL1
+│           ├── Frame: FRAME0
+│           └── BaseAddr: HRPWMCAL1_BASE_FRAME(0U)  [auto-calculated]
 ```
 
 ### Configuration
@@ -650,10 +710,10 @@ The generated configuration files should not be modified manually. The config to
 
 
 
-#### CddPwmConfigSet
+##### CddPwmConfigSet
 This container contains the configuration parameters and sub containers of the AUTOSAR Pwm instance.
 
-##### CddPwmAdvancedMode
+###### CddPwmAdvancedMode
 
 | Item ||
 |--------|---------------|
@@ -665,7 +725,7 @@ This container contains the configuration parameters and sub containers of the A
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddPwmHwUnitConfig
+###### CddPwmHwUnitConfig
 Configuration of an individual PWM instance.
 
 ###### CddPwmInstance
@@ -905,7 +965,7 @@ Configuration of an individual PWM instance.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddPwmOutputChannel
+###### CddPwmOutputChannel
 Configuration of output channel A or B.
 
 ###### CddPwmChannel
@@ -984,7 +1044,7 @@ Configuration of output channel A or B.
 | **Max-value** | 100.0 |
 | **Min-value** | 0.0 |
 
-##### CddPwmXlinkConfig
+###### CddPwmXlinkConfig
 Xlink configuration for a frame.
 
 ###### CddPwmXlinkId
@@ -1010,7 +1070,7 @@ Xlink configuration for a frame.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddPwmLinkHwUnit
+###### CddPwmLinkHwUnit
 Xlink configuration for a frame.
 
 ###### CddPwmHwUnit
@@ -1024,10 +1084,10 @@ Xlink configuration for a frame.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-##### CddPwmHrpwmCalibrationConfig
+###### CddPwmHrpwmCalibrationConfig
 Hrpwm calibration instance configuration for a frame.
 
-##### CddPwmHrpwmCalConfig
+###### CddPwmHrpwmCalConfig
 Hrpwm calibration instance configuration for a frame.
 
 ###### CddPwmHrpwmCalInstanceId
@@ -1053,10 +1113,10 @@ Hrpwm calibration instance configuration for a frame.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-#### CddPwmGeneral
+##### CddPwmGeneral
 General configuration (parameters) of the PWM Driver software module.
 
-##### CddPwmDevErrorDetect
+###### CddPwmDevErrorDetect
 
 | Item ||
 |--------|---------------|
@@ -1068,7 +1128,7 @@ General configuration (parameters) of the PWM Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddPwmDeInitApi
+###### CddPwmDeInitApi
 
 | Item ||
 |--------|---------------|
@@ -1083,7 +1143,7 @@ General configuration (parameters) of the PWM Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddPwmNotificationSupported
+###### CddPwmNotificationSupported
 
 | Item ||
 |--------|---------------|
@@ -1095,7 +1155,7 @@ General configuration (parameters) of the PWM Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
-##### CddPwmVersionInfoApi
+###### CddPwmVersionInfoApi
 
 | Item ||
 |--------|---------------|
@@ -1107,7 +1167,7 @@ General configuration (parameters) of the PWM Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddPwmSetDutyCycle
+###### CddPwmSetDutyCycle
 
 | Item ||
 |--------|---------------|
@@ -1122,12 +1182,27 @@ General configuration (parameters) of the PWM Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddPwmSetOutputToIdle
+###### CddPwmSetOutputToIdle
 
 | Item ||
 |--------|---------------|
 | **Name** | CddPwmSetOutputToIdle |
 | **Description** | Adds / removes the service Cdd_Pwm_SetOutputToIdle() from the code. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### CddPwmSetPeriod
+
+| Item ||
+|--------|---------------|
+| **Name** | CddPwmSetPeriod |
+| **Description** | Adds / removes the service Cdd_Pwm_SetPeriod() from the code. |
 | **Multiplicity-Configuration-Class** | -- |
 | Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | Texas Instruments |
@@ -1179,8 +1254,6 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 
 ##### Setup required to run Cdd_Pwm_Example_Chopper example
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 * Connect the pins configured for EPWM as per the example description to the LA to observe generated waveform.
 * Power the board and run the example
 * Open serial console to observe print statements of the example
@@ -1222,8 +1295,6 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 
 ##### Setup required to run Cdd_Pwm_Example_Cmpss_Trip example
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 * Connect the pins configured for EPWM as per the example description to the LA to observe generated waveform.
 * Power the board and run the example
 * Open serial console to observe print statements of the example
@@ -1278,8 +1349,6 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 
 ##### Setup required to run Cdd_Pwm_Example_DC_EventFilter example
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 * Connect the pins configured for EPWM as per the example description to the LA to observe generated waveform.
 * Power the board and run the example
 * Open serial console to observe print statements of the example
@@ -1326,8 +1395,6 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 
 ##### Setup required to run Cdd_Pwm_Example_Deadband example
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 * Connect the pins configured for EPWM as per the example description to the LA to observe generated waveform.
 * Power the board and run the example
 * Open serial console to observe print statements of the example
@@ -1387,8 +1454,6 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 
 ##### Setup required to run Cdd_Pwm_Example_DiodeEmulation example
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 * Connect the pins configured for EPWM as per the example description to the LA to observe generated waveform.
 * Power the board and run the example
 * Open serial console to observe print statements of the example
@@ -1440,8 +1505,6 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 
 ##### Setup required to run Cdd_Pwm_Example_GlobalLoad_And_Link example
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 * Connect the pins configured for EPWM as per the example description to the LA to observe generated waveform.
 * Power the board and run the example
 * Open serial console to observe print statements of the example
@@ -1479,8 +1542,6 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 
 ##### Setup required to run Cdd_Pwm_Example_Hrpwm example
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 * Connect the pins configured for EPWM as per the example description to the LA to observe generated waveform.
 * Power the board and run the example
 * Open serial console to observe print statements of the example
@@ -1520,7 +1581,7 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
     * -TZ1 is on GPIO12 and is linked to Dio Channel 0
   * This example also makes use of the Input X-BAR. GPIO12 (the external trigger) is routed to the input X-BAR, from which it is routed to TZ1.
   * The TZ-Event is defined such that EPWM1 will undergo a One-Shot Trip and EPWM2 will undergo a Cycle-By-Cycle Trip.
-  
+
   ``` text
                _____________             __________________
                |           |             |                |
@@ -1530,8 +1591,6 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 
 ##### Setup required to run Cdd_Pwm_Example_TripZone example
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 * Connect the pins configured for EPWM as per the example description to the LA to observe generated waveform.
 * Connect a switch to the configured trip zone input pin.
 * Power the board and run the example
@@ -1577,8 +1636,6 @@ Cdd_Pwm_Example_TripZone example executed successfully
 
 ##### Setup required to run Cdd_Pwm_Example_UpCountMode example
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 * Connect the pins configured for EPWM as per the example description to the LA to observe generated waveform.
 * Power the board and run the example
 * Open serial console to observe print statements of the example
@@ -1641,8 +1698,6 @@ Cdd_Pwm_Example_UpCountMode executed successfully
 
 ##### Setup required to run Cdd_Pwm_Example_XCmp_MultipleEdges example
 
-* Install Code Composer Studio(CCS) latest version
-* Install latest C29 compiler
 * Connect the pins configured for EPWM as per the example description to the LA to observe generated waveform.
 * Power the board and run the example
 * Open serial console to observe print statements of the example
@@ -1657,7 +1712,7 @@ Cdd_Pwm_Example_UpCountMode executed successfully
 ```{code-block}
 Executing Cdd_Pwm_Example_XCmp_MultipleEdges example
 EPWM1 has split XCMP disabled
-EPWM2 is set to LOAD ONCE XCMP mode 
+EPWM2 is set to LOAD ONCE XCMP mode
 EPWM3 is set to LOAD MULTIPLE XCMP mode
 Enable XCMP load for all EPWM instances
 Number of interrupts detected for EPWM2 are 2000

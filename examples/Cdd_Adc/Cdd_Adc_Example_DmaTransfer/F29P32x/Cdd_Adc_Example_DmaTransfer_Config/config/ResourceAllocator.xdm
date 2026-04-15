@@ -78,6 +78,17 @@
                       </d:ctr>
                     </d:lst>
                     <d:lst name="Cdd_Ecap" type="MAP"/>
+                    <d:lst name="Cdd_Dma" type="MAP">
+                      <d:ctr name="Cdd_Dma_0" type="IDENTIFIABLE">
+                        <d:lst name="CddDmaAllocatedChannel" type="MAP">
+                          <d:ctr name="CddDmaAllocatedChannel_0" 
+                                 type="IDENTIFIABLE">
+                            <d:ref name="ChannelRef" type="REFERENCE" 
+                                   value="ASPath:/ResourceAllocator/ResourceAllocator/ResourceAllocatorGeneral/Cdd_Dma_0/CddDmaHwInstance_0/CddDmaChannel_0"/>
+                          </d:ctr>
+                        </d:lst>
+                      </d:ctr>
+                    </d:lst>
                     <d:lst name="Cdd_I2c" type="MAP"/>
                     <d:lst name="Cdd_Pwm" type="MAP">
                       <d:ctr name="Cdd_Pwm" type="IDENTIFIABLE">
@@ -135,6 +146,52 @@
                 <d:lst name="DLTFifoRegs" type="MAP"/>
                 <d:lst name="Error_Aggregator" type="MAP"/>
                 <d:lst name="ESM" type="MAP"/>
+                <d:lst name="Cdd_Dma" type="MAP">
+                  <d:ctr name="Cdd_Dma_0" type="IDENTIFIABLE">
+                    <d:lst name="CddDmaHwInstance" type="MAP">
+                      <d:ctr name="CddDmaHwInstance_0" type="IDENTIFIABLE">
+                        <d:var name="InstanceName" type="ENUMERATION" 
+                               value="RTDMA1">
+                          <a:a name="IMPORTER_INFO" value="@DEF"/>
+                        </d:var>
+                        <d:var name="Frame" type="ENUMERATION" value="FRAME0">
+                          <a:a name="IMPORTER_INFO" value="@DEF"/>
+                        </d:var>
+                        <d:var name="CddDmaPriorityScheme" type="ENUMERATION" 
+                               value="CDD_DMA_PRIORITY_SOFTWARE_CONFIG"/>
+                        <d:var name="CddDmaEmulationMode" type="ENUMERATION" 
+                               value="CDD_DMA_EMULATION_FREE_RUN"/>
+                        <d:var name="CddDmaMpuEnable" type="BOOLEAN" 
+                               value="false">
+                          <a:a name="IMPORTER_INFO" value="@DEF"/>
+                        </d:var>
+                        <d:lst name="CddDmaMpuRegion" type="MAP"/>
+                        <d:lst name="CddDmaChannel" type="MAP">
+                          <d:ctr name="CddDmaChannel_0" type="IDENTIFIABLE">
+                            <d:var name="ChannelName" type="ENUMERATION" 
+                                   value="CH1">
+                              <a:a name="IMPORTER_INFO">
+                                <a:v>@DEF</a:v>
+                                <a:v>@CALC</a:v>
+                              </a:a>
+                            </d:var>
+                            <d:var name="BaseAddr" type="STRING" 
+                                   value="RTDMA1CH1_BASE_FRAME(0U)">
+                              <a:a name="IMPORTER_INFO">
+                                <a:v>@DEF</a:v>
+                                <a:v>@CALC</a:v>
+                              </a:a>
+                            </d:var>
+                            <d:var name="CddDmaChannelPriority" type="INTEGER" 
+                                   value="1">
+                              <a:a name="IMPORTER_INFO" value="@DEF"/>
+                            </d:var>
+                          </d:ctr>
+                        </d:lst>
+                      </d:ctr>
+                    </d:lst>
+                  </d:ctr>
+                </d:lst>
               </d:ctr>
             </d:ctr>
           </d:chc>

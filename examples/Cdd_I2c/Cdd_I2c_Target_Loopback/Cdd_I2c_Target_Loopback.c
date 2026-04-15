@@ -388,8 +388,8 @@ int main(void)
     uint32              idx;
     Std_VersionInfoType versioninfo;
 
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
 
     AppUtils_Init(200000000U);
 

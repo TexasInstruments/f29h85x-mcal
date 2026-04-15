@@ -72,9 +72,8 @@
  *                2. Set controller state to STARTED.
  *                3. Set PCAN with the below setting.
  *                      Mode: CAN, Clock Freq: 80 MHz, DataBase Entry: 1 Mbits/s,
- *                      BitRate[kbit\s]: 1000, SamplePoint: 60%, Pre-scaler:8,
- *                      TSEG1:5, TSEG2:4, tq: 100 ns, Nq: 10 Sync Jump Width: 4,
- *                      Pre-scaler: 10
+ *                      BitRate[kbit\s]: 1000, SamplePoint: 55.0%, Pre-scaler: 4,
+ *                      TSEG1: 10, TSEG2: 9, tq: 50 ns, Nq: 20, Sync Jump Width: 9
  *                4. Start sending predefined data from PCAN
  *                      CAN-ID: 64h, Can Mode: Classic Length: 8,
  *                      Data(in Hex): D1 1D FF FF F1 1F E1 1E
@@ -82,10 +81,9 @@
  *                6. Read Tx confirmation and rx indication.
  *                7. Validate the received data with pre-defined receive data.
  *                8. Set PCAN with the below setting.
- *                      Mode: CAN, Clock Freq: 80 MHz, DataBase Entry: 5 Mbits/s,
- *                      BitRate[kbit\s]: 5000, SamplePoint: 56.3%, Pre-scaler:1,
- *                      TSEG1:8, TSEG2:7, tq: 12.5 ns, Nq: 16 Sync Jump Width: 7,
- *                      Pre-scaler: 1
+ *                      Mode: CAN FD, Clock Freq: 80 MHz, DataBase Entry: 5 Mbits/s,
+ *                      BitRate[kbit\s]: 5000, SamplePoint: 56.3%, Pre-scaler: 1,
+ *                      TSEG1: 8, TSEG2: 7, tq: 12.5 ns, Nq: 16, Sync Jump Width: 7
  *                9. Start sending predefined data from PCAN
  *                      CAN-ID: 101h, Can Mode: Can FD Length: 64, Data(in Hex):
  *                           0xD1, 0x1D, 0xFF, 0xFF, 0xF1, 0x1F, 0xE1, 0x1E,
@@ -182,8 +180,8 @@ int main(void)
     Pdu.id          = 100U;
     Pdu.sdu         = Can_Data;
     Pdu.swPduHandle = 1;
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(200000000U);  // Init App utils to enable prints
     AppUtils_Printf("Can_Example_Classic_FD : Sample Application - STARTS !!!\n");
 

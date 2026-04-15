@@ -315,6 +315,7 @@ extern "C" {
  All below macros are used for enabling the ISR for a particular hardware.
  */
 
+[!IF "SpiGeneral/SpiLevelDelivered = 2"!][!//
 [!LOOP "SpiDriver"!][!//
 [!LOOP "SpiHwUnitConfig/*"!][!//
 /** \brief Enable/disable SPI Instance ISR */
@@ -327,6 +328,7 @@ extern "C" {
 
 [!ENDLOOP!][!//
 [!ENDLOOP!][!//
+[!ENDIF!][!//
 
 [!LOOP "SpiDriver"!][!//
 [!LOOP "SpiChannel/*"!][!//

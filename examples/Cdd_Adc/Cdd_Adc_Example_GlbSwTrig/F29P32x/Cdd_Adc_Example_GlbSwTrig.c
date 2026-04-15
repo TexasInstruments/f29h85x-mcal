@@ -72,22 +72,42 @@
  * \note application source is specific to F29P32x devices.
  *
  * This examples demonstrates how to use global software trigger.
+ * It also demonstrates how PPB trip high and trip low limit works.
  * The group conversion started with StartGlobalSwTrig must be stopped with StopGlobalSwTrig.
  * StartGroupConversion can't be used before StopGlobalSwTrig to start a new group conversion for the group
  * which was already started with StartGlobalSwTrig.
  * First stop the global software trigger and then start the normal software group conversion.
+ *
+ * Setup required for the example:
+ * All ADC instances are configured for 2.5V internal reference voltage mode.
+ * Connect GND to ADCAIN1 pin to observe PPB trip interrupts.
+ * Connect desired voltage to ADCAIN0 & ADCAIN6 pins.
+ * Connect desired voltage to ADCBIN1,ADCBIN2 & ADCBIN3 pins.
+ * Connect desired voltage to ADCCIN0,ADCCIN25 & ADCCIN27 pins.
+ * When ADCIN1 is connected to the GND, PPB result of the PPB1(linked to ADCIN1) will be less than the configured
+ * trip low limit. It sets trip low event flag.
+ * PPB result of the PPB2(linked to ADCIN1) will be greater than the configured trip high limit.
+ * It sets the trip high event flag.
+ * The above events generate PPB event interrupt to the CPU.
+ * While executing PPB event ISR, the notifications corresponding to these set event flags will be called.
+ * In this application notification count is incremented everytime the notification is called.
  *
  * Steps followed in the example:
  * EcuM_Init()
  *  - Initialize clock to 200 MHz using Mcu_Init()
  *  - Initialize pins in analog mode with Port_Init()
  *  - Initialize Cdd_Adc driver using Cdd_Adc_Init()
- * Connect ADCAIN1 to GND to observe PPB trip high & trip low interrupts
+ * Connect ADCAIN1 to GND to observe PPB trip high & trip low interrupts.
  * Start global software trigger Id 0 conversion
+ * Wait until all group conversions are completed and the PPB trip notification count is as expected.
  * Re-trigger the global software conversion
+ * Wait until all group conversions are completed and the PPB trip notification count is as expected.
  * Stop the global software conversion with Cdd_Adc_StopGlobalSwTrig API
  * Start software group 1 conversion with Cdd_Adc_StartGroupConversion
- * After the group conversion is done,print the execution successful statement.
+ * Wait until the group conversion is complete.
+ * Print the execution successful statement.
+ * Conversion results can be observed from the buffer.
+ *
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -247,8 +267,8 @@ int main()
 {
     Std_ReturnType return_value;
     uint8          group_mask;
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
 
     AppUtils_Init(200000000U);  // Init App utils to enable prints
     AppUtils_Printf("Executing Cdd_Adc_Example_GlbSwTrig example\n");
@@ -286,7 +306,7 @@ int main()
     {
         AppUtils_Printf("Started globalswtrigger %d conversion\n",
                         CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
-        /* Wait until all the group conversions are done configured for the global software trigger
+        /* Wait until all the group conversions that are configured for the global software trigger are complete
          */
         while ((Cdd_Adc_GroupMask != group_mask) || (PpbTripHighCount != 1U) || (PpbTripLowCount != 1U))
         {
@@ -308,7 +328,7 @@ int main()
     {
         AppUtils_Printf("Re-triggers globalswtrigger %d conversion\n",
                         CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
-        /* Wait until all the group conversions are done configured for the global software trigger
+        /* Wait until all the group conversions that are configured for the global software trigger are complete
          */
         while ((Cdd_Adc_GroupMask != group_mask) || (PpbTripHighCount != 2U) || (PpbTripLowCount != 2U))
         {
@@ -322,7 +342,7 @@ int main()
 
     AppUtils_Printf("Completed second round of globalswtrigger %d conversion\n",
                     CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
-    /* Stop the global software trigger once all the group conversions are done */
+    /* Stop the global software trigger once all the group conversions are complete */
     Cdd_Adc_StopGlobalSwTrig(CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
 
     /* Start Global software trigger 2 */
@@ -343,7 +363,7 @@ int main()
     {
         AppUtils_Printf("Started globalswtrigger %d conversion\n",
                         CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_1);
-        /* Wait until all the group conversions are done configured for the global software trigger
+        /* Wait until all the group conversions that are configured for the global software trigger are complete
          */
         while ((Cdd_Adc_GroupMask != group_mask) || (PpbTripHighCount != 3U) || (PpbTripLowCount != 3U))
         {
@@ -358,7 +378,7 @@ int main()
     AppUtils_Printf("Completed globalswtrigger %d conversion\n",
                     CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_1);
 
-    /* Stop the global software trigger once all the group conversions are done */
+    /* Stop the global software trigger once all the group conversions are complete */
     Cdd_Adc_StopGlobalSwTrig(CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_1);
 
     /* Start Global software trigger 3 */
@@ -376,8 +396,8 @@ int main()
     {
         AppUtils_Printf("Started globalswtrigger %d conversion\n",
                         CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_2);
-        /* Wait until all the group conversions are done configured for the global software trigger and PPB interrupts
-         * are received */
+        /* Wait until all the group conversions that are configured for the global software trigger are complete and PPB
+         * interrupts are received */
         while (Cdd_Adc_GroupMask != group_mask)
         {
             McalLib_Delay(100);
@@ -388,7 +408,7 @@ int main()
         AppUtils_Printf("Cdd_Adc_StartGlobalSwTrig API execution unsuccessful");
     }
 
-    /* Stop the global software trigger once all the group conversions are done */
+    /* Stop the global software trigger once all the group conversions are complete */
     Cdd_Adc_StopGlobalSwTrig(CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_2);
 
     AppUtils_Printf("Completed globalswtrigger %d conversion\n",

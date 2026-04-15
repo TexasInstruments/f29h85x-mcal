@@ -11,4 +11,5 @@ target_sources(
               ${CMAKE_CURRENT_LIST_DIR}/output/src/Mcu_Cfg.c
               ${CMAKE_CURRENT_LIST_DIR}/output/src/Os_Cfg.c
               ${CMAKE_CURRENT_LIST_DIR}/output/src/Port_Cfg.c
-              ${CMAKE_CURRENT_LIST_DIR}/output/src/Cdd_Pwm_Cfg.c)
+              ${CMAKE_CURRENT_LIST_DIR}/output/src/Cdd_Pwm_Cfg.c
+              ${CMAKE_CURRENT_LIST_DIR}/output/src/Cdd_Dma_Cfg.c)

@@ -119,6 +119,7 @@
  *  Local Function Prototypes
  *********************************************************************************************************************/
 #if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
+/* Design: MCAL-36246*/
 static Std_ReturnType Cdd_Ecap_checkInitErrors(const Cdd_Ecap_ConfigType *Cdd_Ecap_ConfigPtr);
 static Std_ReturnType Cdd_Ecap_checkSetActivationConditionErrors(Cdd_Ecap_ChannelType    Channel,
                                                                  Cdd_Ecap_ActivationType Activation);
@@ -194,12 +195,14 @@ P2CONST(Cdd_Ecap_ConfigType, AUTOMATIC, CDD_ECAP_CONST) Cdd_Ecap_ConfigPtr = NUL
 #define CDD_ECAP_START_SEC_CODE
 #include "Cdd_Ecap_MemMap.h"
 
+/* Design: MCAL-36086*/
 FUNC(void, CDD_ECAP_CODE)
 Cdd_Ecap_Init(P2CONST(Cdd_Ecap_ConfigType, AUTOMATIC, CDD_ECAP_CFG) ConfigPtr)
 {
     Std_ReturnType retVal = E_OK;
 
 #if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
+    /* Design: MCAL-36089*/
     retVal = Cdd_Ecap_checkInitErrors(ConfigPtr);
 #endif /* (STD_ON == CDD_ECAP_DEV_ERROR_DETECT) */
     if (((Std_ReturnType)E_OK) == retVal)
@@ -210,6 +213,7 @@ Cdd_Ecap_Init(P2CONST(Cdd_Ecap_ConfigType, AUTOMATIC, CDD_ECAP_CFG) ConfigPtr)
         /* Reset(Initialize) Channel object */
         Cdd_Ecap_ResetChObj();
         /* HW Channel Init */
+        /* Design: MCAL-36088, MCAL-36090, MCAL-36091*/
         Cdd_Ecap_HwUnitInit();
 
         Cdd_Ecap_DrvStatus = CDD_ECAP_STATUS_INIT;
@@ -219,6 +223,7 @@ Cdd_Ecap_Init(P2CONST(Cdd_Ecap_ConfigType, AUTOMATIC, CDD_ECAP_CFG) ConfigPtr)
 }
 
 #if (STD_ON == CDD_ECAP_DE_INIT_API)
+/* Design: MCAL-36092, MCAL-36096, MCAL-36237*/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DeInit(void)
 {
     uint8 chIdx;
@@ -226,6 +231,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DeInit(void)
 #if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
     if (CDD_ECAP_STATUS_UNINIT == Cdd_Ecap_DrvStatus)
     {
+        /* Design: MCAL-36094*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_DEINIT_ID, CDD_ECAP_E_UNINIT);
     }
     else
@@ -238,9 +244,11 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DeInit(void)
             if (FALSE == Cdd_Ecap_ChObj.chObj[chIdx].IsRunning)
             {
                 /* Disable and Clear Interrupts */
+                /* Design: MCAL-36093*/
                 Cdd_Ecap_intrDisable(Cdd_Ecap_ConfigPtr->chCfg[chIdx].base_addr, CDD_ECAP_INT_ALL);
                 Cdd_Ecap_intrStatusClear(Cdd_Ecap_ConfigPtr->chCfg[chIdx].base_addr, CDD_ECAP_INT_ALL);
                 /* Disable CAP1-CAP4 register loads */
+                /* Design: MCAL-36095*/
                 Cdd_Ecap_captureLoadingDisable(Cdd_Ecap_ConfigPtr->chCfg[chIdx].base_addr);
 
                 Cdd_Ecap_ResetChObj();
@@ -257,16 +265,19 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DeInit(void)
 }
 #endif /* (STD_ON == CDD_ECAP_DE_INIT_API) */
 
+/* Design: MCAL-36106*/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableNotification(Cdd_Ecap_ChannelType Channel)
 {
 #if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
     if (CDD_ECAP_STATUS_UNINIT == Cdd_Ecap_DrvStatus)
     {
+        /* Design: MCAL-36107*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_DISABLENOTIFICATION_ID,
                               CDD_ECAP_E_UNINIT);
     }
     else if (CDD_ECAP_HW_CNT <= Channel)
     {
+        /* Design: MCAL-36108*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_DISABLENOTIFICATION_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
     }
@@ -282,16 +293,19 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableNotification(Cdd_Ecap_ChannelType Chan
     return;
 }
 
+/* Design: MCAL-36109*/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EnableNotification(Cdd_Ecap_ChannelType Channel)
 {
 #if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
     if (CDD_ECAP_STATUS_UNINIT == Cdd_Ecap_DrvStatus)
     {
+        /* Design: MCAL-36110*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_ENABLENOTIFICATION_ID,
                               CDD_ECAP_E_UNINIT);
     }
     else if (CDD_ECAP_HW_CNT <= Channel)
     {
+        /* Design: MCAL-36111*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_ENABLENOTIFICATION_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
     }
@@ -307,6 +321,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EnableNotification(Cdd_Ecap_ChannelType Chann
     return;
 }
 
+/* Design: MCAL-36097*/
 FUNC(void, CDD_ECAP_CODE)
 Cdd_Ecap_SetActivationCondition(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_ActivationType Activation)
 {
@@ -331,6 +346,7 @@ Cdd_Ecap_SetActivationCondition(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_Activatio
     return;
 }
 
+/* Design: MCAL-36102*/
 FUNC(void, CDD_ECAP_CODE)
 Cdd_Ecap_SetStartLevelCondition(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_StartLevelType StartLevel)
 {
@@ -350,6 +366,7 @@ Cdd_Ecap_SetStartLevelCondition(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_StartLeve
 }
 
 #if (STD_ON == CDD_ECAP_GET_INPUT_STATE_API)
+/* Design: MCAL-36112, MCAL-36117, MCAL-36238, MCAL-36309*/
 FUNC(Cdd_Ecap_InputStateType, CDD_ECAP_CODE) Cdd_Ecap_GetInputState(Cdd_Ecap_ChannelType Channel)
 {
     Std_ReturnType          retVal   = E_OK;
@@ -365,6 +382,7 @@ FUNC(Cdd_Ecap_InputStateType, CDD_ECAP_CODE) Cdd_Ecap_GetInputState(Cdd_Ecap_Cha
         retState = Cdd_Ecap_ChObj.chObj[Channel].InputState;
         if (retState == CDD_ECAP_ACTIVE)
         {
+            /* Design: MCAL-36113*/
             Cdd_Ecap_ChObj.chObj[Channel].InputState = CDD_ECAP_IDLE;
         }
         SchM_Exit_Cdd_Ecap_CDD_ECAP_EXCLUSIVE_AREA_0();
@@ -375,6 +393,7 @@ FUNC(Cdd_Ecap_InputStateType, CDD_ECAP_CODE) Cdd_Ecap_GetInputState(Cdd_Ecap_Cha
 #endif /* (STD_ON == CDD_ECAP_GET_INPUT_STATE_API) */
 
 #if (STD_ON == CDD_ECAP_EDGE_DETECT_API)
+/* Design: MCAL-36159, MCAL-36160, MCAL-36161, MCAL-36162, MCAL-36163, MCAL-36164, MCAL-36241*/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EnableEdgeDetection(Cdd_Ecap_ChannelType Channel)
 {
     Std_ReturnType retVal = E_OK;
@@ -409,6 +428,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EnableEdgeDetection(Cdd_Ecap_ChannelType Chan
     return;
 }
 
+/* Design: MCAL-36165, MCAL-36166, MCAL-36167, MCAL-36168, MCAL-36169, MCAL-36170*/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableEdgeDetection(Cdd_Ecap_ChannelType Channel)
 {
     uint32 baseAddr;
@@ -427,7 +447,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableEdgeDetection(Cdd_Ecap_ChannelType Cha
     else if (CDD_ECAP_MODE_SIGNAL_EDGE_DETECT != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_DISABLEEDGEDETECTION_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
     }
     else
 #endif /* (STD_ON == CDD_ECAP_DEV_ERROR_DETECT) */
@@ -451,6 +471,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableEdgeDetection(Cdd_Ecap_ChannelType Cha
 #endif /* (STD_ON == CDD_ECAP_EDGE_DETECT_API) */
 
 #if (STD_ON == CDD_ECAP_TIMESTAMP_API)
+/* Design: MCAL-36118, MCAL-36126, MCAL-36239*/
 FUNC(void, CDD_ECAP_CODE)
 Cdd_Ecap_StartTimestamp(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_ValueType *BufferPtr, uint16 BufferSize,
                         uint16 NotifyInterval)
@@ -466,18 +487,20 @@ Cdd_Ecap_StartTimestamp(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_ValueType *Buffer
         baseAddr = Cdd_Ecap_ConfigPtr->chCfg[Channel].base_addr;
 
         SchM_Enter_Cdd_Ecap_CDD_ECAP_EXCLUSIVE_AREA_0();
-
+        /* Design: MCAL-36119*/
         Cdd_Ecap_TimeStamp_Init(Channel, BufferPtr, BufferSize, NotifyInterval);
         Cdd_Ecap_ChObj.chObj[Channel].IsRunning = TRUE;
         Cdd_Ecap_ChObj.chObj[Channel].IsActive  = TRUE;
         if ((Cdd_Ecap_ChObj.chObj[Channel].activation_edge == CDD_ECAP_RISING_EDGE) ||
             (Cdd_Ecap_ChObj.chObj[Channel].activation_edge == CDD_ECAP_FALLING_EDGE))
         {
+            /* Design: MCAL-36120*/
             Cdd_Ecap_ConfigEcap(baseAddr, Cdd_Ecap_ChObj.chObj[Channel].activation_edge, CDD_ECAP_ABSOLUTE_MODE,
                                 CDD_ECAP_CEVT1_INT, Channel);
         }
         else
         {
+            /* Design: MCAL-36120*/
             Cdd_Ecap_ConfigEcap(baseAddr, Cdd_Ecap_ChObj.chObj[Channel].activation_edge, CDD_ECAP_ABSOLUTE_MODE,
                                 CDD_ECAP_CEVT1_CEVT2_INT, Channel);
         }
@@ -488,6 +511,7 @@ Cdd_Ecap_StartTimestamp(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_ValueType *Buffer
     return;
 }
 
+/* Design: MCAL-36127, MCAL-36133*/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StopTimestamp(Cdd_Ecap_ChannelType Channel)
 {
     uint32         baseAddr;
@@ -500,6 +524,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StopTimestamp(Cdd_Ecap_ChannelType Channel)
     {
         if ((FALSE == Cdd_Ecap_ChObj.chObj[Channel].IsActive) && (FALSE == Cdd_Ecap_ChObj.chObj[Channel].IsRunning))
         {
+            /* Design: MCAL-36132*/
             (void)Det_ReportRuntimeError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STOPTIMESTAMP_ID,
                                          CDD_ECAP_E_NOT_STARTED);
         }
@@ -508,12 +533,13 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StopTimestamp(Cdd_Ecap_ChannelType Channel)
             baseAddr = Cdd_Ecap_ConfigPtr->chCfg[Channel].base_addr;
 
             SchM_Enter_Cdd_Ecap_CDD_ECAP_EXCLUSIVE_AREA_0();
-
+            /* Design: MCAL-36128*/
             /* Disable and Clear Interrupts */
             Cdd_Ecap_intrDisable(baseAddr, CDD_ECAP_INT_ALL);
             Cdd_Ecap_intrStatusClear(baseAddr, CDD_ECAP_INT_ALL);
             /* Disable CAP1-CAP4 register loads */
             Cdd_Ecap_captureLoadingDisable(baseAddr);
+            /* Design: MCAL-36129*/
             Cdd_Ecap_TimeStamp_Clear(Channel);
 
             Cdd_Ecap_ChObj.chObj[Channel].IsRunning = FALSE;
@@ -526,12 +552,14 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StopTimestamp(Cdd_Ecap_ChannelType Channel)
     return;
 }
 
+/* Design: MCAL-36134, MCAL-36138*/
 FUNC(Cdd_Ecap_IndexType, CDD_ECAP_CODE) Cdd_Ecap_GetTimestampIndex(Cdd_Ecap_ChannelType Channel)
 {
     Cdd_Ecap_IndexType index  = 0U;
     Std_ReturnType     retVal = E_OK;
 
 #if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
+    /* Design: MCAL-36136, MCAL-36137*/
     retVal = Cdd_Ecap_checkGetTimestampIndexErrors(Channel);
 #endif
     if (((Std_ReturnType)E_OK) == retVal)
@@ -540,6 +568,7 @@ FUNC(Cdd_Ecap_IndexType, CDD_ECAP_CODE) Cdd_Ecap_GetTimestampIndex(Cdd_Ecap_Chan
 
         if ((Cdd_Ecap_ChObj.chObj[Channel].IsActive) != (uint32)0U)
         {
+            /* Design: MCAL-36135*/
             index = Cdd_Ecap_ChObj.chObj[Channel].NextTimeStampIndex;
         }
 
@@ -551,6 +580,7 @@ FUNC(Cdd_Ecap_IndexType, CDD_ECAP_CODE) Cdd_Ecap_GetTimestampIndex(Cdd_Ecap_Chan
 #endif /* (STD_ON == CDD_ECAP_TIMESTAMP_API) */
 
 #if (STD_ON == CDD_ECAP_EDGE_COUNT_API)
+/* Design: MCAL-36139, MCAL-36140, MCAL-36141, MCAL-36142*/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_ResetEdgeCount(Cdd_Ecap_ChannelType Channel)
 {
 #if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
@@ -566,7 +596,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_ResetEdgeCount(Cdd_Ecap_ChannelType Channel)
     else if (CDD_ECAP_MODE_EDGE_COUNTER != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_RESETEDGECOUNT_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
     }
     else
 #endif /* (STD_ON == CDD_ECAP_DEV_ERROR_DETECT) */
@@ -577,6 +607,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_ResetEdgeCount(Cdd_Ecap_ChannelType Channel)
     }
 }
 
+/* Design: MCAL-36143, MCAL-36144, MCAL-36145, MCAL-36146, MCAL-36147, MCAL-36148, MCAL-36240*/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EnableEdgeCount(Cdd_Ecap_ChannelType Channel)
 {
     Std_ReturnType retVal = E_OK;
@@ -608,6 +639,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EnableEdgeCount(Cdd_Ecap_ChannelType Channel)
     }
 }
 
+/* Design: MCAL-36149, MCAL-36150, MCAL-36151, MCAL-36152, MCAL-36153, MCAL-36154*/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableEdgeCount(Cdd_Ecap_ChannelType Channel)
 {
     uint32 baseAddr;
@@ -626,7 +658,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableEdgeCount(Cdd_Ecap_ChannelType Channel
     else if (CDD_ECAP_MODE_EDGE_COUNTER != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_DISABLEEDGECOUNT_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
     }
     else
 #endif /* (STD_ON == CDD_ECAP_DEV_ERROR_DETECT) */
@@ -646,6 +678,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableEdgeCount(Cdd_Ecap_ChannelType Channel
     }
 }
 
+/* Design: MCAL-36155, MCAL-36156, MCAL-36157, MCAL-36158*/
 FUNC(Cdd_Ecap_EdgeNumberType, CDD_ECAP_CODE) Cdd_Ecap_GetEdgeNumbers(Cdd_Ecap_ChannelType Channel)
 {
     Cdd_Ecap_EdgeNumberType edgecount = 0U;
@@ -663,7 +696,7 @@ FUNC(Cdd_Ecap_EdgeNumberType, CDD_ECAP_CODE) Cdd_Ecap_GetEdgeNumbers(Cdd_Ecap_Ch
     else if (CDD_ECAP_MODE_EDGE_COUNTER != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_GETEDGENUMBERS_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
     }
     else
 #endif /* (STD_ON == CDD_ECAP_DEV_ERROR_DETECT) */
@@ -678,6 +711,7 @@ FUNC(Cdd_Ecap_EdgeNumberType, CDD_ECAP_CODE) Cdd_Ecap_GetEdgeNumbers(Cdd_Ecap_Ch
 #endif /* (STD_ON == CDD_ECAP_EDGE_COUNT_API) */
 
 #if (STD_ON == CDD_ECAP_SIGNAL_MEASUREMENT_API)
+/* Design: MCAL-36171, MCAL-36172, MCAL-36173, MCAL-36174, MCAL-36175, MCAL-36176, MCAL-36177, MCAL-36242*/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StartSignalMeasurement(Cdd_Ecap_ChannelType Channel)
 {
     Std_ReturnType retVal = E_OK;
@@ -715,6 +749,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StartSignalMeasurement(Cdd_Ecap_ChannelType C
     return;
 }
 
+/* Design: MCAL-36178, MCAL-36179, MCAL-36180, MCAL-36181, MCAL-36182, MCAL-36183*/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StopSignalMeasurement(Cdd_Ecap_ChannelType Channel)
 {
     uint32 baseAddr;
@@ -733,7 +768,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StopSignalMeasurement(Cdd_Ecap_ChannelType Ch
     else if ((CDD_ECAP_MODE_SIGNAL_MEASUREMENT != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STOPSIGNALMEASUREMENT_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
     }
     else
 #endif /* (STD_ON == CDD_ECAP_DEV_ERROR_DETECT) */
@@ -757,6 +792,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StopSignalMeasurement(Cdd_Ecap_ChannelType Ch
 #endif /* (STD_ON == CDD_ECAP_SIGNAL_MEASUREMENT_API) */
 
 #if (STD_ON == CDD_ECAP_GET_TIME_ELAPSED_API)
+/* Design: MCAL-36184, MCAL-36185, MCAL-36186, MCAL-36187, MCAL-36188, MCAL-36189, MCAL-36243*/
 FUNC(Cdd_Ecap_ValueType, CDD_ECAP_CODE) Cdd_Ecap_GetTimeElapsed(Cdd_Ecap_ChannelType Channel)
 {
     Std_ReturnType     retVal      = E_OK;
@@ -799,6 +835,7 @@ FUNC(Cdd_Ecap_ValueType, CDD_ECAP_CODE) Cdd_Ecap_GetTimeElapsed(Cdd_Ecap_Channel
 
 #if (STD_ON == CDD_ECAP_GET_DUTY_CYCLE_VALUES_API)
 FUNC(void, CDD_ECAP_CODE)
+/* Design: MCAL-36190, MCAL-36191, MCAL-36192, MCAL-36193, MCAL-36194, MCAL-36195, MCAL-36196, MCAL-36197, MCAL-36244*/
 Cdd_Ecap_GetDutyCycleValues(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_DutyCycleType *DutyCycleValues)
 {
     Std_ReturnType retVal = E_OK;
@@ -830,6 +867,7 @@ Cdd_Ecap_GetDutyCycleValues(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_DutyCycleType
 
 #if (STD_ON == CDD_ECAP_GET_VERSION_INFO_API)
 FUNC(void, CDD_ECAP_CODE)
+/* Design: MCAL-36198, MCAL-36199, MCAL-36200, MCAL-36245*/
 Cdd_Ecap_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_ECAP_APPL_DATA) VersionInfoPtr)
 {
 #if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
@@ -852,6 +890,7 @@ Cdd_Ecap_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_ECAP_APPL_DATA
 #endif /* CDD_ECAP_GET_VERSION_INFO_API*/
 
 /*Periodic register readback API for CDD ECAP*/
+/* Design: MCAL-36201, MCAL-36202, MCAL-36203*/
 FUNC(void, CDD_ECAP_CODE)
 Cdd_Ecap_PeriodicReadback(Cdd_Ecap_ChannelType Channel,
                           P2VAR(Cdd_Ecap_PeriodicReadBackDataType, AUTOMATIC, CDD_ECAP_APPL_DATA) ReadBackRegisterdata)
@@ -875,6 +914,7 @@ Cdd_Ecap_PeriodicReadback(Cdd_Ecap_ChannelType Channel,
 }
 
 #if (STD_ON == CDD_ECAP_HR_API)
+/* Design: MCAL-36204, MCAL-36205, MCAL-36206, MCAL-36207, MCAL-36208, MCAL-36209, MCAL-36210, MCAL-36247*/
 FUNC(Cdd_Ecap_ChannelHrScaleType, CDD_ECAP_CODE) Cdd_Ecap_GetHrScaleFactor(Cdd_Ecap_ChannelType Channel)
 {
     Std_ReturnType              retVal      = E_OK;
@@ -894,6 +934,7 @@ FUNC(Cdd_Ecap_ChannelHrScaleType, CDD_ECAP_CODE) Cdd_Ecap_GetHrScaleFactor(Cdd_E
     return scaleFactor;
 }
 FUNC(Cdd_Ecap_ChannelHrScaleType, CDD_ECAP_CODE)
+/* Design: MCAL-36211, MCAL-36212, MCAL-36213, MCAL-36214, MCAL-36215, MCAL-36216*/
 Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp(Cdd_Ecap_ChannelType Channel, uint32 timeStamp)
 {
     uint32                      baseAddr;
@@ -943,6 +984,7 @@ static Std_ReturnType Cdd_Ecap_checkSetActivationConditionErrors(Cdd_Ecap_Channe
 
     if (CDD_ECAP_STATUS_UNINIT == Cdd_Ecap_DrvStatus)
     {
+        /* Design: MCAL-36098*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_SETACTIVATIONCONDITION_ID,
                               CDD_ECAP_E_UNINIT);
         retVal = E_NOT_OK;
@@ -950,6 +992,7 @@ static Std_ReturnType Cdd_Ecap_checkSetActivationConditionErrors(Cdd_Ecap_Channe
 
     if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
+        /* Design: MCAL-36099*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_SETACTIVATIONCONDITION_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
         retVal = E_NOT_OK;
@@ -958,13 +1001,15 @@ static Std_ReturnType Cdd_Ecap_checkSetActivationConditionErrors(Cdd_Ecap_Channe
     if ((retVal == (Std_ReturnType)E_OK) &&
         (CDD_ECAP_MODE_SIGNAL_MEASUREMENT == Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode))
     {
+        /* Design: MCAL-36100*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_SETACTIVATIONCONDITION_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
         retVal = E_NOT_OK;
     }
     if ((retVal == (Std_ReturnType)E_OK) && (Activation != CDD_ECAP_RISING_EDGE) &&
         (Activation != CDD_ECAP_FALLING_EDGE) && (Activation != CDD_ECAP_BOTH_EDGES))
     {
+        /* Design: MCAL-36101*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_SETACTIVATIONCONDITION_ID,
                               CDD_ECAP_E_PARAM_ACTIVATION);
         retVal = E_NOT_OK;
@@ -980,6 +1025,7 @@ static Std_ReturnType Cdd_Ecap_checkStartLevelConditionErrors(Cdd_Ecap_ChannelTy
 
     if (CDD_ECAP_STATUS_UNINIT == Cdd_Ecap_DrvStatus)
     {
+        /* Design: MCAL-36103*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_SETSTARTLEVELCONDITION_ID,
                               CDD_ECAP_E_UNINIT);
         retVal = E_NOT_OK;
@@ -987,6 +1033,7 @@ static Std_ReturnType Cdd_Ecap_checkStartLevelConditionErrors(Cdd_Ecap_ChannelTy
 
     if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
+        /* Design: MCAL-36104*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_SETSTARTLEVELCONDITION_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
         retVal = E_NOT_OK;
@@ -995,6 +1042,7 @@ static Std_ReturnType Cdd_Ecap_checkStartLevelConditionErrors(Cdd_Ecap_ChannelTy
     if ((retVal == (Std_ReturnType)E_OK) && (StartLevel != CDD_ECAP_START_LEVEL_RISING_EDGE) &&
         (StartLevel != CDD_ECAP_START_LEVEL_FALLING_EDGE))
     {
+        /* Design: MCAL-36105*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_SETSTARTLEVELCONDITION_ID,
                               CDD_ECAP_E_PARAM_START_LEVEL);
         retVal = E_NOT_OK;
@@ -1010,12 +1058,14 @@ static Std_ReturnType Cdd_Ecap_checkGetInputStateErrors(Cdd_Ecap_ChannelType Cha
 
     if (CDD_ECAP_STATUS_UNINIT == Cdd_Ecap_DrvStatus)
     {
+        /* Design: MCAL-36114*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_GETINPUTSTATE_ID, CDD_ECAP_E_UNINIT);
         retVal = E_NOT_OK;
     }
 
     if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
+        /* Design: MCAL-36115*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_GETINPUTSTATE_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
         retVal = E_NOT_OK;
@@ -1025,8 +1075,9 @@ static Std_ReturnType Cdd_Ecap_checkGetInputStateErrors(Cdd_Ecap_ChannelType Cha
         (CDD_ECAP_MODE_SIGNAL_EDGE_DETECT != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode) &&
         (CDD_ECAP_MODE_SIGNAL_MEASUREMENT != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode))
     {
+        /* Design: MCAL-36116*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_GETINPUTSTATE_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
         retVal = E_NOT_OK;
     }
 
@@ -1057,7 +1108,7 @@ static Std_ReturnType Cdd_Ecap_checkEnableEdgeDetectionErrors(Cdd_Ecap_ChannelTy
         (CDD_ECAP_MODE_SIGNAL_EDGE_DETECT != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_ENABLEEDGEDETECTION_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
         retVal = E_NOT_OK;
     }
 
@@ -1087,7 +1138,7 @@ static Std_ReturnType Cdd_Ecap_checkEnableEdgeCountErrors(Cdd_Ecap_ChannelType C
         (CDD_ECAP_MODE_EDGE_COUNTER != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_ENABLEEDGECOUNT_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
         retVal = E_NOT_OK;
     }
 
@@ -1118,7 +1169,7 @@ static Std_ReturnType Cdd_Ecap_checkStartSignalMeasurementErrors(Cdd_Ecap_Channe
         (CDD_ECAP_MODE_SIGNAL_MEASUREMENT != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STARTSIGNALMEASUREMENT_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
         retVal = E_NOT_OK;
     }
 
@@ -1134,12 +1185,14 @@ static Std_ReturnType Cdd_Ecap_checkStartTimestampErrors(Cdd_Ecap_ChannelType Ch
 
     if (CDD_ECAP_STATUS_UNINIT == Cdd_Ecap_DrvStatus)
     {
+        /* Design: MCAL-36121*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STARTTIMESTAMP_ID, CDD_ECAP_E_UNINIT);
         retVal = E_NOT_OK;
     }
 
     if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
+        /* Design: MCAL-36122*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STARTTIMESTAMP_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
         retVal = E_NOT_OK;
@@ -1149,12 +1202,13 @@ static Std_ReturnType Cdd_Ecap_checkStartTimestampErrors(Cdd_Ecap_ChannelType Ch
         (CDD_ECAP_MODE_TIMESTAMP != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STARTTIMESTAMP_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
         retVal = E_NOT_OK;
     }
 
     if ((retVal == (Std_ReturnType)E_OK) && (NULL_PTR == BufferPtr))
     {
+        /* Design: MCAL-36123*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STARTTIMESTAMP_ID,
                               CDD_ECAP_E_PARAM_POINTER);
         retVal = E_NOT_OK;
@@ -1162,6 +1216,7 @@ static Std_ReturnType Cdd_Ecap_checkStartTimestampErrors(Cdd_Ecap_ChannelType Ch
 
     if ((retVal == (Std_ReturnType)E_OK) && (0U == BufferSize))
     {
+        /* Design: MCAL-36124*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STARTTIMESTAMP_ID,
                               CDD_ECAP_E_PARAM_BUFFER_SIZE);
         retVal = E_NOT_OK;
@@ -1169,6 +1224,7 @@ static Std_ReturnType Cdd_Ecap_checkStartTimestampErrors(Cdd_Ecap_ChannelType Ch
     if ((retVal == (Std_ReturnType)E_OK) && (Cdd_Ecap_ChObj.chObj[Channel].NotificationEnabled == TRUE) &&
         (0U == NotifyInterval))
     {
+        /* Design: MCAL-36125*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STARTTIMESTAMP_ID,
                               CDD_ECAP_E_PARAM_NOTIFY_INTERVAL);
         retVal = E_NOT_OK;
@@ -1185,12 +1241,14 @@ static Std_ReturnType Cdd_Ecap_checkStopTimestampErrors(Cdd_Ecap_ChannelType Cha
 
     if (CDD_ECAP_STATUS_UNINIT == Cdd_Ecap_DrvStatus)
     {
+        /* Design: MCAL-36130*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STOPTIMESTAMP_ID, CDD_ECAP_E_UNINIT);
         retVal = E_NOT_OK;
     }
 
     if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
+        /* Design: MCAL-36131*/
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STOPTIMESTAMP_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
         retVal = E_NOT_OK;
@@ -1200,7 +1258,7 @@ static Std_ReturnType Cdd_Ecap_checkStopTimestampErrors(Cdd_Ecap_ChannelType Cha
         (CDD_ECAP_MODE_TIMESTAMP != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STOPTIMESTAMP_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
         retVal = E_NOT_OK;
     }
 
@@ -1231,7 +1289,7 @@ static Std_ReturnType Cdd_Ecap_checkGetTimestampIndexErrors(Cdd_Ecap_ChannelType
         (CDD_ECAP_MODE_TIMESTAMP != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_GETTIMESTAMPINDEX_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
         retVal = E_NOT_OK;
     }
 
@@ -1263,7 +1321,7 @@ static Std_ReturnType Cdd_Ecap_checkGetDutyCycleValuesErrors(Cdd_Ecap_ChannelTyp
         (CDD_ECAP_MODE_SIGNAL_MEASUREMENT != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_GETDUTYCYCLEVALUES_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
         retVal = E_NOT_OK;
     }
 
@@ -1300,7 +1358,7 @@ static Std_ReturnType Cdd_Ecap_checkGetTimeElapsedErrors(Cdd_Ecap_ChannelType Ch
         (CDD_ECAP_MODE_SIGNAL_MEASUREMENT != Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_GETTIMEELAPSED_ID,
-                              CDD_ECAP_E_PARAM_CHANNEL);
+                              CDD_ECAP_E_PARAM_MODE);
         retVal = E_NOT_OK;
     }
 

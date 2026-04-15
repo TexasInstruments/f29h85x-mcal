@@ -121,7 +121,7 @@ typedef uint64 McalLib_TickType;
 
 /** \brief Delays for a fixed number of cycles.
  *
- * This function generates a constant length delay using assembly code. The loop takes 4 cycles per
+ * This function generates a constant length delay. The loop takes 4 cycles per
  * iteration plus 11 cycles of overhead.
  *
  * \param[in] count The number of delay loop iterations to perform.
@@ -132,7 +132,8 @@ typedef uint64 McalLib_TickType;
  * \retval None
  *
  *********************************************************************************************************************/
-extern FUNC(void, MCAL_LIB_CODE) McalLib_Delay(VAR(uint32, MCAL_LIB_DATA) count);
+extern __attribute__((section(".TI.ramfunc"), noinline)) FUNC(void, MCAL_LIB_CODE)
+    McalLib_Delay(VAR(uint32, MCAL_LIB_DATA) count);
 
 /** \brief Delay function in microseconds.
  *

@@ -65,7 +65,7 @@
  *  File:       Cdd_Adc_Cfg.c
  *  Generator:  Elektrobit Tresos
  *
- *  Description:  Cdd_Adc configuration source file                                                       
+ *  Description:  Cdd_Adc configuration source file
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -123,18 +123,18 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .resolution_update = (boolean)(0U),
             #endif
             .signal_mode = (Cdd_Adc_SignalModeType)CDD_ADC_MODE_SINGLE_ENDED,
-            .socpriority = (Cdd_Adc_SocPriorityType)10U, 
+            .socpriority = (Cdd_Adc_SocPriorityType)10U,
             .voltref = (Cdd_Adc_RefVoltType)CDD_ADC_REFERENCE_2_5V,
             .voltrefmode = (Cdd_Adc_RefModeType)CDD_ADC_REFERENCE_INTERNAL,
             .startppbnum = (Cdd_Adc_PpbType)(0U),
             .ppbcount = (Cdd_Adc_PpbType)(3U),
             .intpulsemode = (Cdd_Adc_EocPulseType)CDD_ADC_PULSE_END_OF_CONV,
             .intoffset = (uint16)0U,
-#if(STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)    
+#if(STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)
             .osdetectmode = ((Cdd_Adc_OsDetectModeType)CDD_ADC_OSDETECT_MODE_DISABLED),
 #endif
-#if(STD_ON == CDD_ADC_EXTCHSEL_CAPABILITY)     
-            .extchnsel = (boolean)(0U),       
+#if(STD_ON == CDD_ADC_EXTCHSEL_CAPABILITY)
+            .extchnsel = (boolean)(0U),
             .extmuxpreselect = (boolean)(0U),
 #endif
             .startgroupnum = (Cdd_Adc_GroupType)(0U),
@@ -143,7 +143,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .result_baseaddr = (uint32)( ADCARESULT_BASE + (CDD_ADC_RESULTBASEADDR_STEP*0U)),
             .analogrefsel = (uint16)ASYSCTL_ANAREFCTL_ANAREFABSEL,
             .analogrefvoltsel = (uint16)ASYSCTL_ANAREFCTL_ANAREFAB_2P5SEL,
-            .inltrimaddress =((uint32 *)&McalLib_DeviceCalibrationData.AdcAInlTrim[0U]),
+            .inltrimaddress =((const uint32 *)&McalLib_DeviceCalibrationData->AdcAInlTrim[0U]),
             .numadc_inltrim = ((uint8)6U)
         },
         [1] =
@@ -155,18 +155,18 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .resolution_update = (boolean)(0U),
             #endif
             .signal_mode = (Cdd_Adc_SignalModeType)CDD_ADC_MODE_SINGLE_ENDED,
-            .socpriority = (Cdd_Adc_SocPriorityType)0U, 
+            .socpriority = (Cdd_Adc_SocPriorityType)0U,
             .voltref = (Cdd_Adc_RefVoltType)CDD_ADC_REFERENCE_3_3V,
             .voltrefmode = (Cdd_Adc_RefModeType)CDD_ADC_REFERENCE_INTERNAL,
             .startppbnum = (Cdd_Adc_PpbType)(3U),
             .ppbcount = (Cdd_Adc_PpbType)(0U),
             .intpulsemode = (Cdd_Adc_EocPulseType)CDD_ADC_PULSE_END_OF_ACQ_WIN,
             .intoffset = (uint16)60000U,
-#if(STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)    
+#if(STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)
             .osdetectmode = ((Cdd_Adc_OsDetectModeType)CDD_ADC_OSDETECT_MODE_DISABLED),
 #endif
-#if(STD_ON == CDD_ADC_EXTCHSEL_CAPABILITY)     
-            .extchnsel = (boolean)(0U),       
+#if(STD_ON == CDD_ADC_EXTCHSEL_CAPABILITY)
+            .extchnsel = (boolean)(0U),
             .extmuxpreselect = (boolean)(0U),
 #endif
             .startgroupnum = (Cdd_Adc_GroupType)(4U),
@@ -175,7 +175,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .result_baseaddr = (uint32)( ADCARESULT_BASE + (CDD_ADC_RESULTBASEADDR_STEP*3U)),
             .analogrefsel = (uint16)ASYSCTL_ANAREFCTL_ANAREFCDESEL,
             .analogrefvoltsel = (uint16)ASYSCTL_ANAREFCTL_ANAREFCDE_2P5SEL,
-            .inltrimaddress =((uint32 *)&McalLib_DeviceCalibrationData.AdcDInlTrim[0U]),
+            .inltrimaddress =((const uint32 *)&McalLib_DeviceCalibrationData->AdcDInlTrim[0U]),
             .numadc_inltrim = ((uint8)3U)
         }
     },
@@ -317,7 +317,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 
     .ppbcfg =
     {
-        [0] =  
+        [0] =
         {
             /* HwunitId: CDD_ADCA */
             .ppb_id = (Cdd_Adc_PpbIdType)(0U),
@@ -334,12 +334,12 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .ppbevtint_notification = (Cdd_Adc_PpbNotifyType)Cdd_Adc_Ppb0Notification,
         #endif
             .ppbcountlimit = (uint16)(1U),
-            .ppbcfg2 = (uint16)((0x0000U) | (((uint8)CDD_ADC_COMPARE_PPBRESULT)<<14U) | (0U)),
+            .ppbcfg2 = (uint16)((0x0000U) | (((uint16)CDD_ADC_COMPARE_PPBRESULT)<<14U) | (0U)),
             .tripfilterenable = (boolean)0U,
-            .tripfilctl = (uint16)(0x0000U),     
+            .tripfilctl = (uint16)(0x0000U),
             .tripfilclk = (uint16)(0x0000U)
         },
-        [1] =  
+        [1] =
         {
             /* HwunitId: CDD_ADCA */
             .ppb_id = (Cdd_Adc_PpbIdType)(1U),
@@ -356,12 +356,12 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .ppbevtint_notification = (Cdd_Adc_PpbNotifyType)Cdd_Adc_Ppb1Notification,
         #endif
             .ppbcountlimit = (uint16)(4U),
-            .ppbcfg2 = (uint16)((0x0000U) | (((uint8)CDD_ADC_COMPARE_PPBRESULT)<<14U) | (2U)),
+            .ppbcfg2 = (uint16)((0x0000U) | (((uint16)CDD_ADC_COMPARE_PPBRESULT)<<14U) | (2U)),
             .tripfilterenable = (boolean)0U,
-            .tripfilctl = (uint16)(0x0000U),     
+            .tripfilctl = (uint16)(0x0000U),
             .tripfilclk = (uint16)(0x0000U)
         },
-        [2] =  
+        [2] =
         {
             /* HwunitId: CDD_ADCA */
             .ppb_id = (Cdd_Adc_PpbIdType)(2U),
@@ -378,9 +378,9 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .ppbevtint_notification = (Cdd_Adc_PpbNotifyType)Cdd_Adc_Ppb2Notification,
         #endif
             .ppbcountlimit = (uint16)(4U),
-            .ppbcfg2 = (uint16)((0x0000U) | (((uint8)CDD_ADC_COMPARE_PPBPSUM)<<14U) | (2U)),
+            .ppbcfg2 = (uint16)((0x0000U) | (((uint16)CDD_ADC_COMPARE_PPBPSUM)<<14U) | (2U)),
             .tripfilterenable = (boolean)0U,
-            .tripfilctl = (uint16)(0x0000U),     
+            .tripfilctl = (uint16)(0x0000U),
             .tripfilclk = (uint16)(0x0000U)
         }
     },
@@ -393,7 +393,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .sample_window = (uint16)(64U),
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
             .extchannelnum = (uint8)(0U),
-#endif   
+#endif
             .soc_num =  (uint8)(0U)
         },
         [1] =
@@ -403,7 +403,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .sample_window = (uint16)(64U),
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
             .extchannelnum = (uint8)(0U),
-#endif   
+#endif
             .soc_num =  (uint8)(1U)
         },
         [2] =
@@ -413,7 +413,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .sample_window = (uint16)(64U),
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
             .extchannelnum = (uint8)(0U),
-#endif   
+#endif
             .soc_num =  (uint8)(2U)
         },
         [3] =
@@ -423,7 +423,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .sample_window = (uint16)(64U),
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
             .extchannelnum = (uint8)(0U),
-#endif   
+#endif
             .soc_num =  (uint8)(3U)
         },
         [4] =
@@ -433,7 +433,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .sample_window = (uint16)(64U),
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
             .extchannelnum = (uint8)(0U),
-#endif   
+#endif
             .soc_num =  (uint8)(4U)
         },
         [5] =
@@ -443,7 +443,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .sample_window = (uint16)(64U),
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
             .extchannelnum = (uint8)(0U),
-#endif   
+#endif
             .soc_num =  (uint8)(5U)
         },
         [6] =
@@ -453,7 +453,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .sample_window = (uint16)(64U),
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
             .extchannelnum = (uint8)(0U),
-#endif   
+#endif
             .soc_num =  (uint8)(6U)
         },
         [7] =
@@ -463,7 +463,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .sample_window = (uint16)(30U),
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
             .extchannelnum = (uint8)(0U),
-#endif   
+#endif
             .soc_num =  (uint8)(0U)
         },
         [8] =
@@ -473,7 +473,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .sample_window = (uint16)(30U),
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
             .extchannelnum = (uint8)(0U),
-#endif   
+#endif
             .soc_num =  (uint8)(1U)
         }
     },

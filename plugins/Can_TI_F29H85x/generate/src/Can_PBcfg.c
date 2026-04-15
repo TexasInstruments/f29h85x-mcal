@@ -171,9 +171,13 @@ CONST(Can_BaudConfigType, CAN_CONFIG_DATA) [!"../../../../@name"!]_[!"../../@nam
 [!VAR "TxDelayComp" = "0"!][!//
 [!VAR "TxDelayComp" = "1"!][!//
 [!IF "node:exists(CanControllerFdBaudrateConfig/CanControllerTrcvDelayCompensationOffset)"!][!//
+[!VAR "TdcoMtq" = "num:i(num:div(num:mul(num:i(CanControllerFdBaudrateConfig/CanControllerTrcvDelayCompensationOffset), $CanClock), 1000000))"!][!//
+[!VAR "TdcfMtq" = "num:i(num:div(num:mul(num:i(CanControllerFdBaudrateConfig/CanControllerTrcvDelayCompensationFilter), $CanClock), 1000000))"!][!//
+[!ASSERT "num:i($TdcoMtq) <= 127","STOP: Converted TDCO value exceeds 127 mtq."!][!//
+[!ASSERT "num:i($TdcfMtq) <= 127","STOP: Converted TDCF value exceeds 127 mtq."!][!//
         .TxDelayCompEnable = (boolean )TRUE,
-        .TxDelayCompFilter = (uint8 )[!"CanControllerFdBaudrateConfig/CanControllerTrcvDelayCompensationFilter"!]U,
-        .CanControllerTrcvDelayCompensationOffset = (uint16 )[!"CanControllerFdBaudrateConfig/CanControllerTrcvDelayCompensationOffset"!]U,
+        .TxDelayCompFilter = (uint8 )[!"$TdcfMtq"!]U,   /* Converted from [!"num:i(CanControllerFdBaudrateConfig/CanControllerTrcvDelayCompensationFilter)"!] ns to mtq */
+        .CanControllerTrcvDelayCompensationOffset = (uint8 )[!"$TdcoMtq"!]U,   /* Converted from [!"num:i(CanControllerFdBaudrateConfig/CanControllerTrcvDelayCompensationOffset)"!] ns to mtq */
 [!ELSE!][!//
         .TxDelayCompEnable = (boolean )FALSE,
 [!ENDIF!][!//
@@ -185,7 +189,7 @@ CONST(Can_BaudConfigType, CAN_CONFIG_DATA) [!"../../../../@name"!]_[!"../../@nam
 /*List of the Baudrate structures */
 [!LOOP "CanConfigSet/CanController/*"!][!//
 
-CONST(Can_BaudConfigType*, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!]_BaudRateConfigList[[!"num:i(count(CanControllerBaudrateConfig/*))"!]]=
+CONSTP2CONST(Can_BaudConfigType, CAN_CONFIG_DATA, CAN_APPL_CONST) [!"../../@name"!]_[!"@name"!]_BaudRateConfigList[[!"num:i(count(CanControllerBaudrateConfig/*))"!]]=
 {
 [!LOOP "CanControllerBaudrateConfig/*"!][!WS "3"!]&[!"../../../../@name"!]_[!"../../@name"!]_[!"@name"!][!IF "not(node:islast())"!],[!CR!][!ENDIF!][!ENDLOOP!][!//
 };
@@ -195,7 +199,7 @@ CONST(Can_BaudConfigType*, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!]_BaudRa
 /*List of the Controller structures */
 [!LOOP "CanConfigSet"!][!//
 
-CONST(Can_ControllerType*, CAN_CONFIG_DATA) [!"@name"!]_CanController_List[]=
+CONSTP2CONST(Can_ControllerType, CAN_CONFIG_DATA, CAN_APPL_CONST) [!"@name"!]_CanController_List[]=
 {
 [!LOOP "CanController/*"!][!//
     &[!"../../@name"!]_[!"@name"!][!IF "not(node:islast())"!],[!CR!][!ENDIF!][!ENDLOOP!]
@@ -222,7 +226,7 @@ CONST(Can_HwFilterType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!LOOP "CanConfigSet"!][!//
 [!LOOP "CanHardwareObject/*"!][!//
 [!IF "num:i(count(CanHwFilter/*)) > 0"!][!//
-CONST(Can_HwFilterType*, CAN_CONFIG_DATA) [!"@name"!]_CanHwFilter_List[] =
+CONSTP2CONST(Can_HwFilterType, CAN_CONFIG_DATA, CAN_APPL_CONST) [!"@name"!]_CanHwFilter_List[] =
 {
 [!LOOP "CanHwFilter/*"!][!//   
      &[!"../../@name"!]_[!"@name"!],
@@ -631,7 +635,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 /* List of the Mailboxes */
 [!LOOP "CanConfigSet"!][!//
 
-CONST(Can_MailboxType*, CAN_CONFIG_DATA) [!"@name"!]_CanHardwareObject_List[] =
+CONSTP2CONST(Can_MailboxType, CAN_CONFIG_DATA, CAN_APPL_CONST) [!"@name"!]_CanHardwareObject_List[] =
 {
 [!LOOP "CanHardwareObject/*"!][!WS "3"!]&[!"../../@name"!]_[!"@name"!][!IF "not(node:islast())"!],[!CR!][!ENDIF!][!ENDLOOP!]
 };

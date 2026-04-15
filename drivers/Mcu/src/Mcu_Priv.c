@@ -92,6 +92,9 @@
 /* SIMRESET Key */
 #define SYSCTL_SIMRESET_KEY ((uint16)0xA5A5U)
 
+/* Delay for 1 ms while the XTAL powers up */
+#define MCU_XTAL_WAIT_CNT_1MS (2500U)
+
 /*********************************************************************************************************************
  * Local Type Declarations
  *********************************************************************************************************************/
@@ -298,16 +301,15 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTAL(void);
  *********************************************************************************************************************/
 static FUNC(void, MCU_CODE) Mcu_SelectXTALSingleEnded(void);
 
-/** \brief Wait for the X1 counter value in the X1CNT register to reach 2047 (0x7ff) atleast 4 times
+/** \brief Wait for the X1 clock to saturate
  *
  * \pre None
  * \post None
- * \return boolean type
- * \retval TRUE if a failure is detected
- *         FALSE if a failure isn't detected
+ * \return None
+ * \retval None
  *
  *********************************************************************************************************************/
-static FUNC(boolean, MCU_CODE) Mcu_PollX1Counter(void);
+static FUNC(void, MCU_CODE) Mcu_PollX1Counter(void);
 
 #if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
 /** \brief Checks the Xtal frequency range
@@ -368,28 +370,6 @@ static FUNC(Mcu_ResetType, MCU_CODE) Mcu_ConvertFirstGroup(Mcu_RawResetType RawR
  *
  *********************************************************************************************************************/
 static FUNC(Mcu_ResetType, MCU_CODE) Mcu_ConvertSecondGroup(Mcu_RawResetType RawResetType);
-
-/** \brief Keep clearing the counter until it is no longer saturated
- *
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- *********************************************************************************************************************/
-static FUNC(void, MCU_CODE) Mcu_ClearX1Counter(void);
-
-/** \brief Wait for the X1 clock to saturate
- *
- * \param[in] loop_count Loop count value
- * \pre None
- * \post None
- * \return boolean type
- * \retval TRUE if X1 clock saturation is successful
- * \retval FALSE if X1 clock saturation fails
- *
- *********************************************************************************************************************/
-static FUNC(boolean, MCU_CODE) Mcu_WaitX1Saturate(uint16 loop_count);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
@@ -605,10 +585,12 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_SetClock(Mcu_ClockConfigPtrType ClockConfigPt
 {
     VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType)E_NOT_OK;
     VAR(uint16, AUTOMATIC) osc_clksrc_sel       = (uint16)0U;
-    VAR(uint32, AUTOMATIC) pll_mult             = (uint32)0U;
-    VAR(uint32, AUTOMATIC) mult                 = (uint32)0U;
-    VAR(uint16, AUTOMATIC) pll_en               = (uint16)0U;
     VAR(uint16, AUTOMATIC) sys_clk_div          = (uint16)0U;
+#if (STD_OFF == MCU_CFG_NO_PLL)
+    VAR(uint32, AUTOMATIC) pll_mult = (uint32)0U;
+    VAR(uint32, AUTOMATIC) mult     = (uint32)0U;
+    VAR(uint16, AUTOMATIC) pll_en   = (uint16)0U;
+#endif
 
     /* Don't proceed to the PLL initialization if an MCD failure is detected. */
     if ((boolean)TRUE == (boolean)Mcu_IsMCDClockFailureDetected())
@@ -663,6 +645,12 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_SetClock(Mcu_ClockConfigPtrType ClockConfigPt
         Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_SYSCLKDIVSEL);
 
 #if (STD_OFF == MCU_CFG_NO_PLL)
+        /* Based on Errata Revision B(MCD: Missing Clock Detect Should be Disabled When the PLL is Enabled
+         * (PLLCLKEN = 1)
+         * if MCD is left enabled while the PLL is active, it may generate false missing clock
+         * detections, potentially causing unintended system resets or clock switching behavior*/
+        HWREGH(DEVCFG_BASE + SYSCTL_O_MCDCR) |= SYSCTL_MCDCR_MCLKOFF;
+
         /* Get the PLL multiplier settings from config */
         pll_mult = (((uint32)ClockConfigPtr->Mcu_PllIntMult) << (uint8)SYSCTL_SYSPLLMULT_IMULT_S);
 
@@ -821,8 +809,7 @@ FUNC(Mcu_RawResetType, MCU_CODE) Mcu_GetResetCause(void)
 {
     VAR(Mcu_RawResetType, AUTOMATIC) reset_causes = (uint32)0U;
 
-    McalLib_BromStatus* bootrom_status;
-    McalLib_BootRomStructure(&bootrom_status);
+    const McalLib_BromStatus* const bootrom_status = McalLib_BootRomStructure();
 
     reset_causes =
         bootrom_status->ResetCause & (SYSCTL_RESC_POR | SYSCTL_RESC_XRSN | SYSCTL_RESC_WDRSN | SYSCTL_RESC_NMIWDRSN |
@@ -865,6 +852,9 @@ FUNC(void, MCU_CODE) Mcu_ClearReset(Mcu_RawResetType RawResetType)
  */
 FUNC(void, MCU_CODE) Mcu_PerformControllerReset(void)
 {
+    /* Clear Boot info Reg7 used to sync HSM and C29 boot rom */
+    HWREG(DEVCFG_BASE + SYSCTL_O_SOC_SECURE_BOOT_INFO_REG7) = MCU_SOC_SECURE_BOOT_INFO_CLEAR_VALUE;
+
     /* Perform Simulated External Reset */
     HWREG(CPUSYS_BASE + SYSCTL_O_SIMRESET) =
         ((uint32)SYSCTL_SIMRESET_KEY << SYSCTL_SIMRESET_KEY_S) | (uint32)SYSCTL_SIMRESET_XRSN;
@@ -943,6 +933,13 @@ FUNC(void, MCU_CODE) Mcu_FillRamSection(Mcu_RamConfigPtrType RamSectionConfigPtr
     VAR(uint8, MCU_VAR) section_writeSize    = 0U;
     VAR(uint8, MCU_VAR) section_defaultValue = 0U;
     VAR(uint32, MCU_VAR) num_iterations      = 0U;
+    VAR(uint32, MCU_VAR) i                   = 0U;
+
+    /* Write buffer pointers for different sizes */
+    P2VAR(uint8, AUTOMATIC, MCU_APPL_DATA) write_buffer_8   = NULL_PTR;
+    P2VAR(uint16, AUTOMATIC, MCU_APPL_DATA) write_buffer_16 = NULL_PTR;
+    P2VAR(uint32, AUTOMATIC, MCU_APPL_DATA) write_buffer_32 = NULL_PTR;
+    P2VAR(uint64, AUTOMATIC, MCU_APPL_DATA) write_buffer_64 = NULL_PTR;
 
     /* Load the RAM Section Base address from the configuration */
     ram_destination = RamSectionConfigPtr->Mcu_RamSectionBaseAddress;
@@ -958,54 +955,44 @@ FUNC(void, MCU_CODE) Mcu_FillRamSection(Mcu_RamConfigPtrType RamSectionConfigPtr
     switch (section_writeSize)
     {
         case 1U:
-        {
             /* section_writeSize == 1U */
-            uint8* write_buffer = ram_destination;
-            for (uint32 i = 0; i < num_iterations; i++)
+            write_buffer_8 = ram_destination;
+            for (i = 0U; i < num_iterations; i++)
             {
-                write_buffer[i] = section_defaultValue;
+                write_buffer_8[i] = section_defaultValue;
             }
             break;
-        }
 
         case 2U:
-        {
             /* section_writeSize == 2U */
-            uint16* write_buffer = (uint16*)ram_destination;
-            for (uint32 i = 0; i < num_iterations; i++)
+            write_buffer_16 = (uint16*)ram_destination;
+            for (i = 0U; i < num_iterations; i++)
             {
-                write_buffer[i] = section_defaultValue;
+                write_buffer_16[i] = section_defaultValue;
             }
             break;
-        }
 
         case 4U:
-        {
             /* section_writeSize == 4U */
-            uint32* write_buffer = (uint32*)ram_destination;
-            for (uint32 i = 0; i < num_iterations; i++)
+            write_buffer_32 = (uint32*)ram_destination;
+            for (i = 0U; i < num_iterations; i++)
             {
-                write_buffer[i] = section_defaultValue;
+                write_buffer_32[i] = section_defaultValue;
             }
             break;
-        }
 
         case 8U:
-        {
             /* section_writeSize == 8U */
-            uint64* write_buffer = (uint64*)ram_destination;
-            for (uint32 i = 0; i < num_iterations; i++)
+            write_buffer_64 = (uint64*)ram_destination;
+            for (i = 0U; i < num_iterations; i++)
             {
-                write_buffer[i] = section_defaultValue;
+                write_buffer_64[i] = section_defaultValue;
             }
             break;
-        }
 
         default:
-        {
             /* Do Nothing */
             break;
-        }
     }
 }
 
@@ -1085,14 +1072,12 @@ static FUNC(Mcu_ResetType, MCU_CODE) Mcu_ConvertSecondGroup(Mcu_RawResetType Raw
         reset_reason = MCU_ESM_NMI_WATCHDOG_RESET;
     }
     /* TI_COVERAGE_GAP_STOP*/
-    /* TI_COVERAGE_GAP_START [Branch Gap] ESM_RESET reason is not supported. Unable to reproduce
-     * condition */
+
     /* ESM reset */
     else if ((uint32)SYSCTL_RESC_ESMRESET == ((uint32)SYSCTL_RESC_ESMRESET & RawResetType))
     {
         reset_reason = MCU_ESM_RESET;
     }
-    /* TI_COVERAGE_GAP_STOP*/
     else
     {
         /* Do Nothing*/
@@ -1285,11 +1270,10 @@ static FUNC(void, MCU_CODE) Mcu_SelectOscSource(Mcu_ClkSourceIdType OscSource)
             /* Select XTAL in single-ended mode and wait for it to power up */
             Mcu_SelectXTALSingleEnded();
             break;
-        /* TI_COVERAGE_GAP_START [Branch Gap] Default check added as MISRA required */
+
         default:
             /* Do nothing. Not a valid oscSource value. */
             break;
-            /* TI_COVERAGE_GAP_STOP*/
     }
 }
 
@@ -1298,7 +1282,6 @@ static FUNC(void, MCU_CODE) Mcu_SelectOscSource(Mcu_ClkSourceIdType OscSource)
  */
 static FUNC(void, MCU_CODE) Mcu_SelectXTAL(void)
 {
-    VAR(boolean, AUTOMATIC) status    = FALSE;
     VAR(uint16, AUTOMATIC) loop_count = (uint16)0U;
 
     /* Enable XOSC pads initialization and set X1, X2 high */
@@ -1314,7 +1297,7 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTAL(void)
     Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_XTALCR);
 
     /*  Wait for the X1 clock to saturate */
-    status = Mcu_PollX1Counter();
+    Mcu_PollX1Counter();
 
     /* Select XTAL as the oscillator source */
     HWREGH(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL1) =
@@ -1326,15 +1309,14 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTAL(void)
     /* If a missing clock failure was detected, try waiting for the X1 counter
     to saturate again. Consider modifying this code to add a 10ms timeout */
     /* TI_COVERAGE_GAP_START [Branch Gap] unable to simulate mcddetect in test */
-    while (((boolean)TRUE == (boolean)Mcu_IsMCDClockFailureDetected()) && ((boolean)status == (boolean)FALSE) &&
-           (loop_count < (uint16)4U))
+    while (((boolean)TRUE == (boolean)Mcu_IsMCDClockFailureDetected()) && (loop_count < (uint16)4U))
     /* TI_COVERAGE_GAP_STOP*/
     {
         /* Clear the MCD failure */
         Mcu_ResetMCD();
 
         /* Wait for the X1 clock to saturate */
-        status = Mcu_PollX1Counter();
+        Mcu_PollX1Counter();
 
         /*  Select XTAL as the oscillator source */
         HWREGH(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL1) =
@@ -1347,7 +1329,7 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTAL(void)
     }
 
     /* TI_COVERAGE_GAP_START [Branch Gap] unable to simulate mcddetect in test */
-    if (status == FALSE)
+    if ((boolean)TRUE == (boolean)Mcu_IsMCDClockFailureDetected())
     {
         /* If code is stuck here, it means crystal has not started.
         Replace crystal or update code below to take necessary actions if crystal is bad
@@ -1362,7 +1344,6 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTAL(void)
  */
 static FUNC(void, MCU_CODE) Mcu_SelectXTALSingleEnded(void)
 {
-    VAR(boolean, AUTOMATIC) status    = FALSE;
     VAR(uint16, AUTOMATIC) loop_count = (uint16)0U;
 
     /* Enable XOSC pads initialization and set X1, X2 high */
@@ -1378,7 +1359,7 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTALSingleEnded(void)
     Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_XTALCR);
 
     /*  Wait for the X1 clock to saturate */
-    status = Mcu_PollX1Counter();
+    Mcu_PollX1Counter();
 
     /* Select XTAL SE as the oscillator source */
     HWREGH(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL1) =
@@ -1390,15 +1371,14 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTALSingleEnded(void)
     /* If a missing clock failure was detected, try waiting for the X1 counter
     to saturate again. Consider modifying this code to add a 10ms timeout */
     /* TI_COVERAGE_GAP_START [Branch Gap] unable to simulate mcddetect in test */
-    while (((boolean)TRUE == (boolean)Mcu_IsMCDClockFailureDetected()) && ((boolean)status == (boolean)FALSE) &&
-           (loop_count < (uint16)4U))
+    while (((boolean)TRUE == (boolean)Mcu_IsMCDClockFailureDetected()) && (loop_count < (uint16)4U))
     /* TI_COVERAGE_GAP_STOP*/
     {
         /* Clear the MCD failure */
         Mcu_ResetMCD();
 
         /* Wait for the X1 clock to saturate */
-        status = Mcu_PollX1Counter();
+        Mcu_PollX1Counter();
 
         /*  Select XTAL SE as the oscillator source */
         HWREGH(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL1) =
@@ -1409,7 +1389,7 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTALSingleEnded(void)
     }
 
     /* TI_COVERAGE_GAP_START [Branch Gap] unable to simulate mcddetect in test */
-    if (status == FALSE)
+    if ((boolean)TRUE == (boolean)Mcu_IsMCDClockFailureDetected())
     {
         /* If code is stuck here, it means crystal has not started.
         Replace crystal or update code below to take necessary actions if crystal is bad
@@ -1420,78 +1400,25 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTALSingleEnded(void)
 }
 
 /*
- * Design: MCAL-28536
- */
-static FUNC(void, MCU_CODE) Mcu_ClearX1Counter(void)
-{
-    /* Keep clearing the counter until it is no longer saturated */
-    while (HWREG(DEVCFG_BASE + SYSCTL_O_X1CNT) > (uint32)SYSCTL_X1CNT_X1CNT_M) /* 0x7FFU*/
-    {
-        HWREG(DEVCFG_BASE + SYSCTL_O_X1CNT) |= ((uint32)SYSCTL_X1CNT_CLR);
-    }
-}
-
-/*
- * Design: MCAL-28537
- */
-static FUNC(boolean, MCU_CODE) Mcu_WaitX1Saturate(uint16 loop_count)
-{
-    VAR(boolean, AUTOMATIC) status       = FALSE;
-    VAR(uint32, AUTOMATIC) local_counter = (uint32)0U;
-
-    /* Wait for the X1 clock to saturate */
-    /* TI_COVERAGE_GAP_START [Branch Gap] unable to reproduce the scenario using S/W */
-    while (HWREG(DEVCFG_BASE + SYSCTL_O_X1CNT) != (uint32)SYSCTL_X1CNT_X1CNT_M) /* 0x7FFU*/
-    {
-        /* If your application is stuck in this loop, please check if the
-        input clock source is valid */
-
-        local_counter++;
-        if (local_counter > (uint32)2500000U)
-        {
-            if (loop_count == (uint16)3U)
-            {
-                status = FALSE;
-            }
-            break;
-        }
-    }
-    /* TI_COVERAGE_GAP_STOP*/
-
-    if ((loop_count == (uint16)3U) && (HWREG(DEVCFG_BASE + SYSCTL_O_X1CNT) == (uint32)SYSCTL_X1CNT_X1CNT_M))
-    {
-        status = TRUE;
-    }
-
-    return status;
-}
-
-/*
  * Design: MCAL-28538
  */
-static FUNC(boolean, MCU_CODE) Mcu_PollX1Counter(void)
+/* Due to a known hardware issue in this silicon revision, the X1CNT clear
+ * operation does not function correctly.
+ *
+ * Original intended sequence:
+ *  - Wait for X1CNT register to saturate (0x7FF)
+ *  - Clear X1CNT
+ *  - Repeat until saturation is observed multiple times
+ * As a workaround, a fixed delay of 1 ms is introduced to allow sufficient crystal power up*/
+
+static FUNC(void, MCU_CODE) Mcu_PollX1Counter(void)
 {
-    VAR(uint16, AUTOMATIC) loop_count = (uint16)0U;
-    VAR(boolean, AUTOMATIC) status    = FALSE;
-
-    /* Delay for 1 ms while the XTAL powers up
-    2500 loops, 4 cycles per loop + 11 cycles overhead = 10011 cycles */
-    McalLib_Delay((uint32)2500U);
-
-    /* Clear and saturate X1CNT 4 times to guarantee operation */
-    do
-    {
-        /* Keep clearing the counter until it is no longer saturated */
-        Mcu_ClearX1Counter();
-
-        /* Wait for the X1 clock to saturate */
-        status = Mcu_WaitX1Saturate(loop_count);
-
-        /* Increment the counter */
-        loop_count++;
-    } while (loop_count < (uint16)4U);
-
-    return status;
+    /*
+     * Delay for 1 ms while the XTAL powers up
+     *
+     * 2500 loops, 4 cycles per loop + 11 cycles overhead = 10011 cycles
+     */
+    McalLib_Delay(MCU_XTAL_WAIT_CNT_1MS);
 }
 
 /*
@@ -1616,9 +1543,9 @@ static FUNC(boolean, MCU_CODE) Mcu_PllSettingsRangeCheck(Mcu_ClockConfigPtrType 
 
 #if (STD_OFF == MCU_CFG_NO_PLL)
     /* Check the PLL settings */
-    if ((MCU_PLLREFDIV_MAX < ClockConfigPtr->Mcu_PllRefDiv) ||   /* Reference Divider Max Range: 32U */
-        (MCU_PLLINTMULT_MAX < ClockConfigPtr->Mcu_PllIntMult) || /* Integer Multiplier Max Range: 255U */
-        (MCU_PLLOUTDIV_MAX < ClockConfigPtr->Mcu_PllOutDiv))     /* Output Divider Max Range: 32U */
+    /* Note: MCU_PLLINTMULT_MAX check is not needed as Mcu_PllIntMult is uint8 type (max value 255U) */
+    if ((MCU_PLLREFDIV_MAX < ClockConfigPtr->Mcu_PllRefDiv) || /* Reference Divider Max Range: 32U */
+        (MCU_PLLOUTDIV_MAX < ClockConfigPtr->Mcu_PllOutDiv))   /* Output Divider Max Range: 32U */
     {
         /* Invalid Parameters */
         status = TRUE;
@@ -1660,6 +1587,10 @@ static FUNC(boolean, MCU_CODE) Mcu_DerivedClockFreqRangeCheck(const Mcu_CalClkVa
 }
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
 
+/*
+ * Design: MCAL-35337
+ */
+#if (STD_ON == MCU_CFG_INIT_CLOCK_API)
 FUNC(void, MCU_CODE) Mcu_CalculateClocks(Mcu_ClockConfigPtrType ClockConfigPtr, Mcu_CalClkValueType* CalClockValue)
 {
     /* Get Clock Source Frequency from Internal Osciallator */
@@ -1694,6 +1625,7 @@ FUNC(void, MCU_CODE) Mcu_CalculateClocks(Mcu_ClockConfigPtrType ClockConfigPtr, 
     CalClockValue->sys_clk =
         (CalClockValue->pll_raw_clk / (uint32)(ClockConfigPtr->Mcu_SysClkDiv)); /* ex: System Clock  = (200 MHz / 1) */
 }
+#endif
 
 /*********************************************************************************************************************
  *  Local Functions Definition

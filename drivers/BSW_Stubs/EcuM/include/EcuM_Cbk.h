@@ -63,11 +63,11 @@
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       EcuM_Cbk.h
- *  Project:    C28x MCAL
- *  Module:     Ecu Manager
  *  Generator:  None
  *
  *  Description:  This file contains interface header for EcuM callback functions.
+ *                This source code is for reference only, it should not be used as-is in a 
+ *                typical customer applications
  *
  *********************************************************************************************************************/
 #ifndef ECUM_CBK_H

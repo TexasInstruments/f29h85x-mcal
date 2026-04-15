@@ -246,6 +246,8 @@ typedef enum
 /** \brief IPC Instance type */
 typedef enum
 {
+    /** \brief No IPC instance*/
+    CDD_IPC_INSTANCE_NONE = 0U,
     /** \brief CPU1 - Local core, CPU2 - Remote core, Instance 1 */
     CDD_IPC_CPU1_L_CPU2_R_INST0 = CPU1IPCSEND_BASE + IPC_O_CPU1TOCPU2INTIPCSET(0U),
     /** \brief CPU1 - Local core, CPU2 - Remote core, Instance 2 */

@@ -186,8 +186,8 @@ void Cdd_Adc_Group2Notification(void)
 
 int main()
 {
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     /* To print the statements */
     AppUtils_Init(200000000U);
     AppUtils_Printf("Executing Cdd_Adc_Example_TempSensor example\n");
@@ -224,7 +224,7 @@ int main()
     /* Start the hardware group conversion */
     Cdd_Adc_EnableHardwareTrigger(CddAdcConf_CddAdcGroup_CddAdcGroup_1);
 
-    /* Wait until both the group conversions are done */
+    /* Wait until both the group conversions are complete */
     while ((Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_0) != CDD_ADC_IDLE) ||
            (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_1) != CDD_ADC_IDLE))
     {

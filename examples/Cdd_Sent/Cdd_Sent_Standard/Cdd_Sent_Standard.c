@@ -139,8 +139,8 @@ volatile uint32 data_received_count = 0;
 int main(void)
 {
     Std_ReturnType return_value = E_NOT_OK;
-    DeviceSupport_Init();
     EcuM_Init();
+    DeviceSupport_Init();
     AppUtils_Init(200000000U);
     AppUtils_Printf("Cdd_Sent Driver Sample Application - Starts!!!\n\r");
     /*  get version Info */
