@@ -209,14 +209,26 @@ The Driver doesn’t register any interrupts handler (ISR), it’s expected that
 For every CAN Instance, an ISR requires to be registered. The Interrupt number associated with instance of the CAN is detailed in TRM (also, please refer the Example application).
 Interrupt type should be selected in CAN plugin.
 
-|Can Instance| Interrupt handler|
-|------------|-----------------|
-|Can A| Can_1_Int1ISR|
-|Can B| Can_2_Int1ISR|
-|Can C| Can_3_Int1ISR|
-|Can D| Can_4_Int1ISR|
-|Can E| Can_5_Int1ISR|
-|Can F| Can_6_Int1ISR|
+|Can Instance| Interrupt Name | Interrupt handler|
+|------------|----------------|-----------------|
+|MCANA| MCANA_INT0 | Can_A_Int0ISR|
+|MCANA| MCANA_INT1 | Can_A_Int1ISR|
+|MCANA| MCANA_WAKE_AND_TS_PLS_INT | Can_A_WakeUpISR|
+|MCANB| MCANB_INT0 | Can_B_Int0ISR|
+|MCANB| MCANB_INT1 | Can_B_Int1ISR|
+|MCANB| MCANB_WAKE_AND_TS_PLS_INT | Can_B_WakeUpISR|
+|MCANC| MCANC_INT0 | Can_C_Int0ISR|
+|MCANC| MCANC_INT1 | Can_C_Int1ISR|
+|MCANC| MCANC_WAKE_AND_TS_PLS_INT | Can_C_WakeUpISR|
+|MCAND| MCAND_INT0 | Can_D_Int0ISR|
+|MCAND| MCAND_INT1 | Can_D_Int1ISR|
+|MCAND| MCAND_WAKE_AND_TS_PLS_INT | Can_D_WakeUpISR|
+|MCANE| MCANE_INT0 | Can_E_Int0ISR|
+|MCANE| MCANE_INT1 | Can_E_Int1ISR|
+|MCANE| MCANE_WAKE_AND_TS_PLS_INT | Can_E_WakeUpISR|
+|MCANF| MCANF_INT0 | Can_F_Int0ISR|
+|MCANF| MCANF_INT1 | Can_F_Int1ISR|
+|MCANF| MCANF_WAKE_AND_TS_PLS_INT | Can_F_WakeUpISR|
 
 ```{NOTE}
 Same interrupt category should be configured in Os module. Nesting of CAN interrupts is not allowed. In case nesting of CAN interrupt is enabled, data integrity cannot be ensured.
@@ -1836,6 +1848,16 @@ This container contains the parameter for configuring the period for cyclic call
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 Refer [AUTOSAR_SWS_CANDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_CANDriver.pdf) for configuration parameters details
+
+#### Bit Timing and Sampling Point Calculation
+
+Selecting the correct CAN bit timing parameters (prescaler, TSEG1, TSEG2, SJW) for a given clock frequency, target bit rate, and desired sampling point can be complex. A Microsoft Excel–based bit timing calculator is provided to assist with this.
+
+```{note}
+Download the calculator: [MCAN_BitTimingCalculator.xls](Assets/tables/MCAN_BitTimingCalculator.xls)
+
+Open the sheet, enter your CAN clock frequency and target bit rate, and the calculator will derive valid prescaler, TSEG1, TSEG2, and SJW values along with the resulting sampling point percentage for both the **nominal** (arbitration) phase and the **data** phase (CAN FD).
+```
 
 #### Steps To Configure Can Module
 

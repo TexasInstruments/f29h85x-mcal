@@ -415,7 +415,7 @@ extern FUNC(void, FLS_CODE) Fls_Fapi_issueAsyncCommand(void);
 
 /** \brief Issues a bank erase command to the Flash State Machine along with a user-provided sector
  *mask
- * \param[in] pu32StartAddress Flash bank address for bank erase operation
+ * \param[in] pu32StartAddress Const pointer to Flash bank address for bank erase operation
  * \pre None
  * \post None
  * \return returns success or failure status
@@ -424,7 +424,7 @@ extern FUNC(void, FLS_CODE) Fls_Fapi_issueAsyncCommand(void);
  * \retval Fapi_Error_FlashRegsNotWritable:  Flash register write failed
  *
  *********************************************************************************************************************/
-extern FUNC(void, FLS_CODE) Fls_Fapi_issueBankEraseCommand(uint32 *pu32StartAddress);
+extern FUNC(void, FLS_CODE) Fls_Fapi_issueBankEraseCommand(const uint32 *pu32StartAddress);
 
 /** \brief Initializes the API for first use or frequency change
  * \param[in] u32HclkFrequency System clock frequency in MHz
@@ -440,7 +440,7 @@ extern FUNC(void, FLS_CODE) Fls_Fapi_issueBankEraseCommand(uint32 *pu32StartAddr
 extern FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_initializeAPI(uint32 u32HclkFrequency);
 
 /** \brief Verifies region specified is erased value.
- * \param[in] pu32StartAddress Start address for region to blank check
+ * \param[in] pu32StartAddress Const pointer to start address for region to blank check
  * \param[in] u32Length Length of region in 32-bit words to blank check
  * \param[out] poFlashStatusWord Returns the status of the operation if result is not
  *Fapi_Status_Success au32StatusWord[0] Address of first non-blank location au32StatusWord[1] Data
@@ -455,12 +455,12 @@ extern FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_initializeAPI(uint32 u32HclkFrequ
  *
  *********************************************************************************************************************/
 extern FUNC(Std_ReturnType, FLS_CODE)
-    Fls_Fapi_doBlankCheck(uint32 *pu32StartAddress, uint32 u32Length, Fls_FlashStatusWordType *poFlashStatusWord);
+    Fls_Fapi_doBlankCheck(const uint32 *pu32StartAddress, uint32 u32Length, Fls_FlashStatusWordType *poFlashStatusWord);
 
 /** \brief Verifies region specified against provided data
- * \param[in] pu32StartAddress Start address for region to verify
+ * \param[in] pu32StartAddress Const pointer to start address for region to verify
  * \param[in] u32Length Length of region in 32-bit words to verify
- * \param[in] pu32CheckValueBuffer address of buffer to verify region against. Data buffer should be
+ * \param[in] pu32CheckValueBuffer Const pointer to address of buffer to verify region against. Data buffer should be
  *128-bit aligned.
  * \param[out] poFlashStatusWord Returns the status of the operation if result is not
  *Fapi_Status_Success au32StatusWord[0] Address of first verify failure location au32StatusWord[1]
@@ -475,13 +475,13 @@ extern FUNC(Std_ReturnType, FLS_CODE)
  *
  *********************************************************************************************************************/
 extern FUNC(Std_ReturnType, FLS_CODE)
-    Fls_Fapi_doVerify(uint32 *pu32StartAddress, uint32 u32Length, uint32 *pu32CheckValueBuffer,
+    Fls_Fapi_doVerify(const uint32 *pu32StartAddress, uint32 u32Length, const uint32 *pu32CheckValueBuffer,
                       Fls_FlashStatusWordType *poFlashStatusWord);
 
 /** \brief Verifies region specified against provided data
- * \param[in] pu8StartAddress Start address for region to verify
+ * \param[in] pu8StartAddress Const pointer to start address for region to verify
  * \param[in] u32ByteCount Number of bytes to verify
- * \param[in] pu8CheckValueBuffer address of buffer to verify region against
+ * \param[in] pu8CheckValueBuffer Const pointer to address of buffer to verify region against
  * \param[out] poFlashStatusWord Returns the status of the operation if result is not
  *Fapi_Status_Success au32StatusWord[0] Address of first verify failure location au32StatusWord[1]
  *Data read at first verify failure location au32StatusWord[2] Value of compare data
@@ -495,7 +495,7 @@ extern FUNC(Std_ReturnType, FLS_CODE)
  *
  *********************************************************************************************************************/
 extern FUNC(Std_ReturnType, FLS_CODE)
-    Fls_Fapi_doVerifyByByte(uint8 *pu8StartAddress, uint32 u32ByteCount, uint8 *pu8CheckValueBuffer,
+    Fls_Fapi_doVerifyByByte(const uint8 *pu8StartAddress, uint32 u32ByteCount, const uint8 *pu8CheckValueBuffer,
                             Fls_FlashStatusWordType *poFlashStatusWord);
 
 /** \brief Sets up data and issues program command to valid flash memory addresses

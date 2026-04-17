@@ -1,6 +1,18 @@
 # CDD IPC Module Migration
 
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+---
 
 ## v02.00.00 (i.e release v01.04.00) from v01.00.02 (i.e release v01.03.00) Migration
 
@@ -21,7 +33,7 @@ Resource Allocator becomes a mandatory architectural foundation for the CDD IPC 
 
 #### Old vs New Configuration
 
-**Previous Configuration (v01.00.02):**
+**Old (v01.00.02):**
 Local core context was set directly within CDD IPC module configuration.
 
 ```{figure} Assets/images/migration/cdd_ipc_module/01_01_cdd_ipc_module_old_context_config.png
@@ -32,7 +44,7 @@ Local core context was set directly within CDD IPC module configuration.
 v01.00.02: Local core context was set directly within CDD IPC module configuration
 ```
 
-**New Configuration (v02.00.00):**
+**New (v02.00.00):**
 Context is now centralized in Resource Allocator, replacing direct IPC context configuration.
 
 ```{figure} Assets/images/migration/cdd_ipc_module/01_04_cdd_ipc_module_new_ra_context.png
@@ -61,10 +73,10 @@ Version v02.00.00 introduces automatic configuration filtering where remote core
 
 #### Old vs New Configuration Filtering
 
-**Previous Configuration (v01.00.02):**
+**Old (v01.00.02):**
 Remote core selection and TX/RX instances were configured directly without context-based filtering.
 
-**New Configuration (v02.00.00):**
+**New (v02.00.00):**
 Remote core options and instance selections are automatically filtered based on Resource Allocator context.
 
 #### Migration Actions

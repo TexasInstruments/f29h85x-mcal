@@ -703,8 +703,44 @@ Example:
 <td><p>All Modules: Link time optimization is not verified for all modules</p></td>
 <td><p>C29xMCAL_01.03.00</p></td>
 <td><p>Link time optimization (LTO) had not been verified across all modules, which could cause unexpected behavior or build issues if enabled.</p></td>
-<td><p>1. Add <code class="docutils literal notranslate"><span class="pre">-flto</span></code> flag to compiler options. <br>2. Build the MCAL project. <br>3. Behavior is not verified there might be unexpecetd issues.</p></td>
+<td><p>1. Add <code class="docutils literal notranslate"><span class="pre">-flto</span></code> flag to compiler options. <br>2. Build the MCAL project. <br>3. Behavior is not verified there might be unexpected issues.</p></td>
 <td><p>Verified link time optimization (LTO) across all MCAL modules. LTO is now supported and validated for all drivers.</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL-36814</p></td>
+<td><p>All</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>All Modules: MainFunction execution context incorrectly set to UNSPECIFIED in bswmd.arxml</p></td>
+<td><p>C29xMCAL_01.04.01</p></td>
+<td><p>The main function execution context in bswmd.arxml files for all MCAL modules was set to UNSPECIFIED instead of TASK. This may cause integration issues with BSW tooling that validates the execution context of scheduled main functions.</p></td>
+<td><p>1. Open the bswmd.arxml file for any MCAL module. <br>2. Inspect the <code class="docutils literal notranslate"><span class="pre">&lt;EXECUTION-CONTEXT&gt;</span></code> element for the main function entry. <br>3. Observe that the context is set to UNSPECIFIED instead of TASK.</p></td>
+<td><p>Updated all MCAL module bswmd.arxml files to set the main function execution context to TASK as required by the AUTOSAR specification.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-36584</p></td>
+<td><p>All</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>All Modules: BSWModuleEntry incorrectly uses expectedEntry instead of implementedEntry in bswmd.arxml</p></td>
+<td><p>C29xMCAL_01.00.00 <br>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01</p></td>
+<td><p>The bswmd.arxml files for all MCAL modules used a mix of <code class="docutils literal notranslate"><span class="pre">expectedEntry</span></code> and <code class="docutils literal notranslate"><span class="pre">implementedEntry</span></code> attributes for BSWModuleEntry elements. All entries should use <code class="docutils literal notranslate"><span class="pre">implementedEntry</span></code> to correctly reflect the implemented interface, which may cause validation failures in AUTOSAR tooling.</p></td>
+<td><p>1. Open the bswmd.arxml file for any MCAL module. <br>2. Inspect the BSWModuleEntry elements. <br>3. Observe that some entries use <code class="docutils literal notranslate"><span class="pre">expectedEntry</span></code> instead of <code class="docutils literal notranslate"><span class="pre">implementedEntry</span></code>.</p></td>
+<td><p>Replaced all <code class="docutils literal notranslate"><span class="pre">expectedEntry</span></code> attributes with <code class="docutils literal notranslate"><span class="pre">implementedEntry</span></code> in the bswmd.arxml files across all MCAL modules to correctly reflect the implemented BSW module interface.</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL-36562</p></td>
+<td><p>CDD IPC</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>CDD IPC: Incorrect IPC instances reserved when CddIpcReservedInstances is set to 1</p></td>
+<td><p>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01</p></td>
+<td><p>When <code class="docutils literal notranslate"><span class="pre">CddIpcReservedInstances</span></code> is set to 1, the wrong IPC instances were being reserved — INST2 was skipped and INST3 was incorrectly included instead, resulting in non-continuous instance numbering. This causes incorrect IPC instances to be available for configuration in EB Tresos.</p></td>
+<td><p>1. Open EB Tresos with the CDD IPC plugin. <br>2. Set <code class="docutils literal notranslate"><span class="pre">CddIpcReservedInstances</span></code> to 1. <br>3. Observe the available IPC instances — INST2 is missing and INST3 is incorrectly included.</p></td>
+<td><p>Corrected the IPC instance reservation logic to ensure continuous and correct instance numbering when <code class="docutils literal notranslate"><span class="pre">CddIpcReservedInstances</span></code> is set to 1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-35788</p></td>
+<td><p>Mcal_Lib</p></td>
+<td><p>S2-Major</p></td>
+<td><p>Mcal_Lib: Symbol redefinition conflict for Mcalib_BromStatus and McalLib_DeviceCalibrationData when used alongside f29x_sdk</p></td>
+<td><p>C29xMCAL_01.03.00</p></td>
+<td><p>When MCAL and f29x_sdk are used together, <code class="docutils literal notranslate"><span class="pre">Mcalib_BromStatus</span></code> and <code class="docutils literal notranslate"><span class="pre">McalLib_DeviceCalibrationData</span></code> are defined as constants in both packages, causing a linker redefinition conflict. If a customer renames these symbols in MCAL to resolve the conflict, incorrect ADC trim values are loaded with no warning given, resulting in degraded MCU and CDD ADC performance.</p></td>
+<td><p>1. Use MCAL together with f29x_sdk in the same project. <br>2. Observe linker redefinition errors for <code class="docutils literal notranslate"><span class="pre">Mcalib_BromStatus</span></code> and <code class="docutils literal notranslate"><span class="pre">McalLib_DeviceCalibrationData</span></code>. <br>3. Rename the symbols in MCAL to resolve the conflict. <br>4. Observe that MCU and CDD ADC produce unexpected results due to incorrect trim values being loaded.</p></td>
+<td><p>Changed <code class="docutils literal notranslate"><span class="pre">Mcalib_BromStatus</span></code> and <code class="docutils literal notranslate"><span class="pre">McalLib_DeviceCalibrationData</span></code> in <code class="docutils literal notranslate"><span class="pre">Mcal_Lib_BootRom.c</span></code> from constant definitions to pointers referencing the reserved memory locations. This eliminates the redefinition conflict when used alongside f29x_sdk while ensuring the correct trim values are always accessed.</p></td>
 </tr>
 </tbody>
 </table>

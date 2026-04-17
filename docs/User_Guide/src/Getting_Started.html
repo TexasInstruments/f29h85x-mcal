@@ -97,6 +97,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#apputils">4.10.2. AppUtils</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bsw-stubs">4.10.3. BSW Stubs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#device-support">4.10.4. Device Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#empty-projects">4.10.5. Empty Projects</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#build-system">4.11. Build system</a><ul>
@@ -124,6 +125,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#boot-modes">4.13. Boot Modes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#loading-example-configs-to-eb-tresos">4.14. Loading example configs to EB tresos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ai-coding-assistant-support">4.15. AI Coding Assistant Support</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ccs-ai-coding-assistant">4.15.1. CCS AI Coding Assistant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#llm-context-files">4.15.2. LLM Context Files</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ModuleUserGuide_list.html">5. Module User Guide</a></li>
@@ -245,7 +251,7 @@
 <p>F29H85x MCAL consists of three main components, Micro-controller abstraction layer (MCAL Driver code), Bare metal Example applications &amp; EB Tresos studio Plugins.</p>
 <ul class="simple">
 <li><p><strong>drivers</strong>: The drivers folder includes driver code of MCAL modules. The MCAL drivers implement the Software specification as mentioned in the AUTOSAR 4.3.1 release. It also contains basic software stubs and hardware register information.</p></li>
-<li><p><strong>examples</strong>: The examples folder includes bare metal example applications for the MCAL driver modules that can be compiled and run on hardware. Additionally, the device support and AppUtils folders are included to support Flash-programming and UART console functionality.</p></li>
+<li><p><strong>examples</strong>: The examples folder includes bare metal example applications for the MCAL driver modules that can be compiled and run on hardware. Additionally, the device support and AppUtils folders are included to support Flash-programming and UART console functionality. Where applicable, examples include device-specific configuration sub-folders for supported device variants (F29H85x, F29P32x, F29P58x).</p></li>
 <li><p><strong>plugins</strong>: The plugins folder includes plugins for the MCAL modules that can be loaded, compiled and generate configuration files with EB Tresos Studio software.</p></li>
 </ul>
 </section>
@@ -266,17 +272,26 @@
 ┣ 📂<strong>examples</strong><br />
 ┃ ┣ 📂ModuleName<br />
 ┃ ┃ ┣ 📂ModuleName_Example<br />
-┃ ┃ ┃ ┣ 📂CCS<br />
-┃ ┃ ┃ ┃ ┗ 📜ModuleName_Example.projectspec : <em>Project template which can be imported into CCS</em><br />
-┃ ┃ ┃ ┣ 📂ModuleName_config<br />
-┃ ┃ ┃ ┃ ┣ 📂config<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName.xdm : <em>Generated EB Tresos config file in .xdm format</em><br />
-┃ ┃ ┃ ┃ ┣ 📂include<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.h : <em>Contains the generated pre-compiler configuration header.</em><br />
-┃ ┃ ┃ ┃ ┣ 📂src<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.c or ModuleName_LCfg.c or ModuleName_PBCfg.c : <em>Contains the pre/Link/Post build configuration parameters.</em><br />
-┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
-┃ ┃ ┃ ┣ 📜ModuleName_example.c : <em>Example application for driver</em><br />
+┃ ┃ ┃ ┣ 📂Common<br />
+┃ ┃ ┃ ┃ ┗ 📂tresos<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📂config<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ModuleName.xdm : <em>Common EB Tresos config files shared across device variants</em><br />
+┃ ┃ ┃ ┣ 📂<strong>F29H85x</strong>\ <em>(device-specific sub-folder, also F29P32x / F29P58x)</em><br />
+┃ ┃ ┃ ┃ ┣ 📂CCS<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜ModuleName_Example.projectspec : <em>Project template which can be imported into CCS</em><br />
+┃ ┃ ┃ ┃ ┗ 📂ModuleName_Example_Config<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📂config<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ModuleName.xdm : <em>Device-specific EB Tresos config file in .xdm format</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📂output<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ModuleName_Cfg.h : <em>Contains the generated pre-compiler configuration header.</em><br />
+┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ModuleName_Cfg.c or ModuleName_PBcfg.c : <em>Contains the pre/Post build configuration parameters.</em><br />
+┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂swcd<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ModuleName_BSWMD.arxml : <em>Generated Base Software Module Description</em><br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜ModuleName_Example.c : <em>Example application for driver</em><br />
+┃ ┃ ┃ ┣ 📜ModuleName_Example.h<br />
 ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
 ┃ ┗ 📜CMakeLists.txt<br />
 ┣ 📂<strong>plugins</strong><br />
@@ -595,7 +610,9 @@
 ┃ ┣ 📂AppUtils<br />
 ┃ ┣ 📂Can<br />
 ┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Dma<br />
 ┃ ┣ 📂Cdd_Ecap<br />
+┃ ┣ 📂Cdd_I2c<br />
 ┃ ┣ 📂Cdd_Ipc<br />
 ┃ ┣ 📂Cdd_Pwm<br />
 ┃ ┣ 📂Cdd_Sent<br />
@@ -611,11 +628,14 @@
 ┃ ┃ ┣ 📜CMakeLists.txt<br />
 ┃ ┃ ┗ 📜makefile.defs<br />
 ┃ ┣ 📂Dio<br />
+┃ ┣ 📂Empty_Projects<br />
 ┃ ┣ 📂Fls<br />
+┃ ┣ 📂Fls_Fapi<br />
 ┃ ┣ 📂Gpt<br />
 ┃ ┣ 📂Lin<br />
 ┃ ┣ 📂Mcu<br />
 ┃ ┣ 📂Port<br />
+┃ ┣ 📂Rtdma<br />
 ┃ ┣ 📂Spi<br />
 ┃ ┗ 📂Wdg<br />
 ┣ 📂plugins<br />
@@ -645,7 +665,9 @@ Refer <a class="reference external" href="https://software-dl.ti.com/codegen/doc
 ┃ ┃ ┗ 📜CMakeLists.txt<br />
 ┃ ┣ 📂Can<br />
 ┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Dma<br />
 ┃ ┣ 📂Cdd_Ecap<br />
+┃ ┣ 📂Cdd_I2c<br />
 ┃ ┣ 📂Cdd_Ipc<br />
 ┃ ┣ 📂Cdd_Pwm<br />
 ┃ ┣ 📂Cdd_Sent<br />
@@ -653,11 +675,14 @@ Refer <a class="reference external" href="https://software-dl.ti.com/codegen/doc
 ┃ ┣ 📂Cdd_Xbar<br />
 ┃ ┣ 📂DeviceSupport<br />
 ┃ ┣ 📂Dio<br />
+┃ ┣ 📂Empty_Projects<br />
 ┃ ┣ 📂Fls<br />
+┃ ┣ 📂Fls_Fapi<br />
 ┃ ┣ 📂Gpt<br />
 ┃ ┣ 📂Lin<br />
 ┃ ┣ 📂Mcu<br />
 ┃ ┣ 📂Port<br />
+┃ ┣ 📂Rtdma<br />
 ┃ ┣ 📂Spi<br />
 ┃ ┗ 📂Wdg<br />
 ┣ 📂plugins<br />
@@ -690,6 +715,7 @@ Refer <a class="reference external" href="https://software-dl.ti.com/codegen/doc
 ┃ ┃ ┣ 📜<strong>Dem</strong><br />
 ┃ ┃ ┣ 📜<strong>Det</strong><br />
 ┃ ┃ ┣ 📜<strong>EcuM</strong><br />
+┃ ┃ ┣ 📜<strong>Fee</strong><br />
 ┃ ┃ ┣ 📜<strong>LinIf</strong><br />
 ┃ ┃ ┣ 📜<strong>MemMap</strong><br />
 ┃ ┃ ┣ 📜<strong>OS</strong><br />
@@ -697,13 +723,14 @@ Refer <a class="reference external" href="https://software-dl.ti.com/codegen/doc
 ┃ ┃ ┗ 📜<strong>SchM</strong><br />
 ┃ ┣ 📂Can<br />
 ┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Dma<br />
 ┃ ┣ 📂Cdd_Ecap<br />
+┃ ┣ 📂Cdd_I2c<br />
 ┃ ┣ 📂Cdd_Ipc<br />
 ┃ ┣ 📂Cdd_Pwm<br />
 ┃ ┣ 📂Cdd_Sent<br />
 ┃ ┣ 📂Cdd_Uart<br />
 ┃ ┣ 📂Cdd_Xbar<br />
-┃ ┣ 📂DeviceSupport<br />
 ┃ ┣ 📂Dio<br />
 ┃ ┣ 📂Fls<br />
 ┃ ┣ 📂Gpt<br />
@@ -732,7 +759,9 @@ Refer <a class="reference external" href="https://software-dl.ti.com/codegen/doc
 ┃ ┣ 📂AppUtils<br />
 ┃ ┣ 📂Can<br />
 ┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Dma<br />
 ┃ ┣ 📂Cdd_Ecap<br />
+┃ ┣ 📂Cdd_I2c<br />
 ┃ ┣ 📂Cdd_Ipc<br />
 ┃ ┣ 📂Cdd_Pwm<br />
 ┃ ┣ 📂Cdd_Sent<br />
@@ -746,11 +775,14 @@ Refer <a class="reference external" href="https://software-dl.ti.com/codegen/doc
 ┃ ┃ ┣ 📂<strong>LinkerCMD</strong>\ : <em>Contains linker files</em><br />
 ┃ ┃ ┗ 📂<strong>targetconfigs</strong>\ : <em>Contains target configuration files for CCS</em><br />
 ┃ ┣ 📂Dio<br />
+┃ ┣ 📂Empty_Projects<br />
 ┃ ┣ 📂Fls<br />
+┃ ┣ 📂Fls_Fapi<br />
 ┃ ┣ 📂Gpt<br />
 ┃ ┣ 📂Lin<br />
 ┃ ┣ 📂Mcu<br />
 ┃ ┣ 📂Port<br />
+┃ ┣ 📂Rtdma<br />
 ┃ ┣ 📂Spi<br />
 ┃ ┗ 📂Wdg<br />
 ┣ 📂plugins<br />
@@ -768,6 +800,55 @@ For using other variants of these device family, the linker file needs to be upd
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>Device Support source code is for reference only, it should not be used as-is in a typical AUTOSAR applications.</p>
+</div>
+</section>
+<section id="empty-projects">
+<h3><span class="section-number">4.10.5. </span>Empty Projects<a class="headerlink" href="#empty-projects" title="Link to this heading"></a></h3>
+<p>📦<strong>F29x_MCAL</strong><br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┣ 📂<strong>examples</strong><br />
+┃ ┣ 📂AppUtils<br />
+┃ ┣ 📂Can<br />
+┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Dma<br />
+┃ ┣ 📂Cdd_Ecap<br />
+┃ ┣ 📂Cdd_I2c<br />
+┃ ┣ 📂Cdd_Ipc<br />
+┃ ┣ 📂Cdd_Pwm<br />
+┃ ┣ 📂Cdd_Sent<br />
+┃ ┣ 📂Cdd_Uart<br />
+┃ ┣ 📂Cdd_Xbar<br />
+┃ ┣ 📂DeviceSupport<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂<strong>Empty_Projects</strong><br />
+┃ ┃ ┣ 📂<strong>F29H85x</strong>\ <em>(also F29P32x / F29P58x)</em><br />
+┃ ┃ ┃ ┣ 📂<strong>CCS</strong><br />
+┃ ┃ ┃ ┃ ┗ 📜<strong>Empty_Project.projectspec</strong> : <em>CCS project template for the empty project</em><br />
+┃ ┃ ┃ ┣ 📂<strong>Empty_Project_Config</strong><br />
+┃ ┃ ┃ ┃ ┣ 📂config<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜*.xdm : <em>EB Tresos configuration files</em><br />
+┃ ┃ ┃ ┃ ┣ 📂output<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📂src<br />
+┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┣ 📂Fls<br />
+┃ ┗ 📂…<br />
+┣ 📂plugins<br />
+┣ 📜<strong>CMakeLists.txt</strong> : <em>Top-level CMake file</em><br />
+┗ 📜CMakePresets.json</p>
+<p>Empty Projects are provided as a starting point for customers to build their own AUTOSAR application on top of the F29x MCAL. They include a basic set of MCAL modules with recommended configurations — customers can add more modules or adjust settings as needed for their application.</p>
+<p>Each Empty Project contains the following reference infrastructure that can be used directly or adapted:</p>
+<ul class="simple">
+<li><p><strong>EB Tresos project</strong>: A reference EB Tresos project with basic MCAL module configurations pre-loaded. Customers can extend this project by adding or modifying module configurations as required by their application.</p></li>
+<li><p><strong>CCS project</strong>: A reference CCS project (<code class="docutils literal notranslate"><span class="pre">.projectspec</span></code>) that can be imported into Code Composer Studio. It is pre-configured with the necessary build settings, include paths, and source files to compile and run on the target hardware.</p></li>
+<li><p><strong>CMake infrastructure</strong>: A reference CMake setup that mirrors the structure used by the MCAL examples. Customers can use this as a template to integrate their application source files and MCAL driver libraries into a CMake-based build system.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Empty Projects are available for each supported device variant (F29H85x, F29P32x, F29P58x). Customers should use the sub-folder corresponding to their target device.</p>
 </div>
 </section>
 </section>
@@ -808,15 +889,16 @@ It can generate native build files for different platforms and compilers, such a
 ┃ ┣ 📂Can<br />
 ┃ ┃ ┣ 📂include<br />
 ┃ ┃ ┃ ┣ 📜Can.h<br />
-┃ ┃ ┃ ┣ 📜Can_Priv.h<br />
-┃ ┃ ┃ ┗ 📜Can_Reg_Access.h<br />
+┃ ┃ ┃ ┗ 📜Can_Priv.h<br />
 ┃ ┃ ┣ 📂src<br />
 ┃ ┃ ┃ ┣ 📜Can.c<br />
 ┃ ┃ ┃ ┣ 📜Can_Irq.c<br />
 ┃ ┃ ┃ ┗ 📜Can_Priv.c<br />
 ┃ ┃ ┗ 📜CMakeLists.txt : <em>CAN driver CMake file</em><br />
 ┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Dma<br />
 ┃ ┣ 📂Cdd_Ecap<br />
+┃ ┣ 📂Cdd_I2c<br />
 ┃ ┣ 📂Cdd_Ipc<br />
 ┃ ┣ 📂Cdd_Pwm<br />
 ┃ ┣ 📂Cdd_Sent<br />
@@ -836,43 +918,63 @@ It can generate native build files for different platforms and compilers, such a
 ┃ ┣ 📂AppUtils<br />
 ┃ ┣ 📂Can<br />
 ┃ ┃ ┣ 📂<strong>Can_Example_Classic_FD</strong><br />
-┃ ┃ ┃ ┣ 📂CCS<br />
-┃ ┃ ┃ ┣ 📂<strong>f29h85x_config</strong><br />
-┃ ┃ ┃ ┃ ┣ 📂config<br />
-┃ ┃ ┃ ┃ ┣ 📂<strong>include</strong><br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜Can_Cfg.h<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
-┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h<br />
-┃ ┃ ┃ ┃ ┣ 📂<strong>src</strong><br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜Can_Cfg.c<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜Can_PBcfg.c<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c<br />
-┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c<br />
-┃ ┃ ┃ ┃ ┗ 📜<strong>CMakeLists.txt</strong> : <em>CMake file for f29h85x_config folder</em><br />
+┃ ┃ ┃ ┣ 📂Common<br />
+┃ ┃ ┃ ┃ ┗ 📂tresos<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📂config<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Can.xdm : <em>Common EB Tresos config shared across device variants</em><br />
+┃ ┃ ┃ ┣ 📂<strong>F29H85x</strong>\ <em>(also F29P32x / F29P58x)</em><br />
+┃ ┃ ┃ ┃ ┣ 📂CCS<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Can_Example_Classic_FD.projectspec<br />
+┃ ┃ ┃ ┃ ┗ 📂<strong>Can_Example_Classic_FD_Config</strong><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📂config<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Port.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ResourceAllocator.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📂output<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂<strong>include</strong><br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Can_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂<strong>src</strong><br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Can_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Can_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂<strong>swcd</strong><br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Can_BSWMD.arxml<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_BSWMD.arxml<br />
+┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_BSWMD.arxml<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>CMakeLists.txt</strong> : <em>CMake file for Can_Example_Classic_FD_Config folder</em><br />
 ┃ ┃ ┃ ┣ 📜Can_Example_Classic_FD.c<br />
 ┃ ┃ ┃ ┣ 📜Can_Example_Classic_FD.h<br />
 ┃ ┃ ┃ ┗ 📜<strong>CMakeLists.txt</strong> : <em>Can_Example_Classic_FD CAN example CMake file</em><br />
 ┃ ┃ ┣ 📂Can_Example_Icom<br />
-┃ ┃ ┗ 📂Can_Example_loopback<br />
+┃ ┃ ┣ 📂Can_Example_Loopback<br />
+┃ ┃ ┗ 📂Can_Example_Wakeup<br />
 ┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Dma<br />
 ┃ ┣ 📂Cdd_Ecap<br />
+┃ ┣ 📂Cdd_I2c<br />
 ┃ ┣ 📂Cdd_Ipc<br />
+┃ ┣ 📂Cdd_Pwm<br />
 ┃ ┣ 📂Cdd_Sent<br />
 ┃ ┣ 📂Cdd_Uart<br />
 ┃ ┣ 📂Cdd_Xbar<br />
 ┃ ┣ 📂DeviceSupport<br />
 ┃ ┣ 📂Dio<br />
+┃ ┣ 📂Empty_Projects<br />
 ┃ ┣ 📂Fls<br />
+┃ ┣ 📂Fls_Fapi<br />
 ┃ ┣ 📂Gpt<br />
 ┃ ┣ 📂Lin<br />
 ┃ ┣ 📂Mcu<br />
 ┃ ┣ 📂Port<br />
+┃ ┣ 📂Rtdma<br />
 ┃ ┣ 📂Spi<br />
 ┃ ┣ 📂Wdg<br />
 ┃ ┗ 📜<strong>CMakeLists.txt</strong> : <em>Examples CMake file</em><br />
@@ -945,7 +1047,7 @@ It can generate native build files for different platforms and compilers, such a
 <section id="f29x-mcal-specific-options-during-cmake-configure-stage-1">
 <h5><span class="section-number">4.11.1.2.1. </span>F29x MCAL Specific options during <em>CMake configure</em> (Stage 1)<a class="headerlink" href="#f29x-mcal-specific-options-during-cmake-configure-stage-1" title="Link to this heading"></a></h5>
 <p>To configure CMake following command can be executed in terminal -</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>**cmake<span class="w"> </span>-S<span class="w"> </span><span class="o">{</span>source_dir_path<span class="o">}</span><span class="w"> </span>--preset<span class="w"> </span><span class="o">{</span>preset_name<span class="o">}</span><span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>build_type<span class="o">}</span><span class="w"> </span>-DBUILD_CONFIGURATION<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>build_configuration<span class="o">}</span><span class="w"> </span>-DTCP<span class="o">={</span>path-to-the-compiler<span class="o">}</span>**
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-S<span class="w"> </span><span class="o">{</span>source_dir_path<span class="o">}</span><span class="w"> </span>--preset<span class="w"> </span><span class="o">{</span>preset_name<span class="o">}</span><span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>build_type<span class="o">}</span><span class="w"> </span>-DBUILD_CONFIGURATION<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>build_configuration<span class="o">}</span><span class="w"> </span>-DTCP<span class="o">={</span>path-to-the-compiler<span class="o">}</span>
 </pre></div>
 </div>
 <p>For example,</p>
@@ -974,11 +1076,11 @@ It can generate native build files for different platforms and compilers, such a
 <section id="f29x-mcal-specific-options-during-cmake-build-stage-2">
 <h5><span class="section-number">4.11.1.2.2. </span>F29x MCAL Specific options during <em>CMake build</em> (Stage 2)<a class="headerlink" href="#f29x-mcal-specific-options-during-cmake-build-stage-2" title="Link to this heading"></a></h5>
 <p>To build following command can be executed in terminal -</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>**cmake<span class="w"> </span>--build<span class="w"> </span><span class="o">{</span>path-to-the-CMake-generated-files<span class="o">}</span><span class="w"> </span>-t<span class="w"> </span><span class="o">{</span>target<span class="o">}</span>**
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--build<span class="w"> </span><span class="o">{</span>path-to-the-CMake-generated-files<span class="o">}</span><span class="w"> </span>-t<span class="w"> </span><span class="o">{</span>target<span class="o">}</span>
 </pre></div>
 </div>
 <p>For example,</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>**cmake<span class="w"> </span>--build<span class="w"> </span>build/artefacts<span class="w"> </span>-t<span class="w"> </span>Can_Example_Classic_FD**
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--build<span class="w"> </span>build/artefacts<span class="w"> </span>-t<span class="w"> </span>Can_Example_Classic_FD
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -1022,34 +1124,44 @@ It can generate native build files for different platforms and compilers, such a
 <h3><span class="section-number">4.11.2. </span>Code Composer Studio (CCS)<a class="headerlink" href="#code-composer-studio-ccs" title="Link to this heading"></a></h3>
 <section id="importing-projects-into-ccs">
 <h4><span class="section-number">4.11.2.1. </span>Importing projects into CCS<a class="headerlink" href="#importing-projects-into-ccs" title="Link to this heading"></a></h4>
-<p>📦<strong>F29x_mcal</strong><br />
+<p>📦<strong>F29x_MCAL</strong><br />
 ┣ 📂build<br />
+┣ 📂docs<br />
 ┣ 📂drivers<br />
 ┣ 📂<strong>examples</strong><br />
 ┃ ┣ 📂AppUtils<br />
 ┃ ┣ 📂Can<br />
 ┃ ┃ ┣ 📂<strong>Can_Example_Classic_FD</strong><br />
-┃ ┃ ┃ ┣ 📂CCS<br />
-┃ ┃ ┃ ┃ ┗ 📜<strong>Can_Example_Classic_FD.projectspec</strong> : <em>Project template which can be imported into CCS</em><br />
-┃ ┃ ┃ ┣ 📂f29h85x_config<br />
+┃ ┃ ┃ ┣ 📂Common<br />
+┃ ┃ ┃ ┣ 📂<strong>F29H85x</strong>\ <em>(also F29P32x / F29P58x)</em><br />
+┃ ┃ ┃ ┃ ┣ 📂<strong>CCS</strong><br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Can_Example_Classic_FD.projectspec</strong> : <em>Project template which can be imported into CCS</em><br />
+┃ ┃ ┃ ┃ ┗ 📂Can_Example_Classic_FD_Config<br />
 ┃ ┃ ┃ ┣ 📜Can_Example_Classic_FD.c<br />
 ┃ ┃ ┃ ┣ 📜Can_Example_Classic_FD.h<br />
 ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
 ┃ ┃ ┣ 📂Can_Example_Icom<br />
-┃ ┃ ┗ 📂Can_Example_loopback<br />
+┃ ┃ ┣ 📂Can_Example_Loopback<br />
+┃ ┃ ┗ 📂Can_Example_Wakeup<br />
 ┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Dma<br />
 ┃ ┣ 📂Cdd_Ecap<br />
+┃ ┣ 📂Cdd_I2c<br />
 ┃ ┣ 📂Cdd_Ipc<br />
 ┃ ┣ 📂Cdd_Pwm<br />
 ┃ ┣ 📂Cdd_Sent<br />
+┃ ┣ 📂Cdd_Uart<br />
 ┃ ┣ 📂Cdd_Xbar<br />
 ┃ ┣ 📂DeviceSupport<br />
 ┃ ┣ 📂Dio<br />
+┃ ┣ 📂Empty_Projects<br />
 ┃ ┣ 📂Fls<br />
+┃ ┣ 📂Fls_Fapi<br />
 ┃ ┣ 📂Gpt<br />
 ┃ ┣ 📂Lin<br />
 ┃ ┣ 📂Mcu<br />
 ┃ ┣ 📂Port<br />
+┃ ┣ 📂Rtdma<br />
 ┃ ┣ 📂Spi<br />
 ┃ ┣ 📂Wdg<br />
 ┃ ┗ 📜CMakeLists.txt<br />
@@ -1286,6 +1398,35 @@ then an exception will occur.</p>
 </figure>
 </li>
 </ol>
+</section>
+<section id="ai-coding-assistant-support">
+<h2><span class="section-number">4.15. </span>AI Coding Assistant Support<a class="headerlink" href="#ai-coding-assistant-support" title="Link to this heading"></a></h2>
+<p><span class="sd-sphinx-override sd-badge sd-bg-warning sd-bg-text-warning">Beta</span></p>
+<p>F29x MCAL includes support for AI-assisted development workflows to help developers get started more quickly and efficiently.</p>
+<section id="ccs-ai-coding-assistant">
+<h3><span class="section-number">4.15.1. </span>CCS AI Coding Assistant<a class="headerlink" href="#ccs-ai-coding-assistant" title="Link to this heading"></a></h3>
+<p>An <code class="docutils literal notranslate"><span class="pre">AGENTS.md</span></code> file is included in the package to enable AI coding agent workflows within Code Composer Studio (CCS). AI coding agents can use this file to automatically generate functional F29x MCAL example projects with minimal manual setup.</p>
+<p><strong>Key capabilities:</strong></p>
+<ul class="simple">
+<li><p>AI coding agents can automatically create working F29x MCAL example projects</p></li>
+<li><p>Compatible with CCS v20.05.00 and later</p></li>
+<li><p>CCS provides integrated MCP (Model Context Protocol) services for build and debug operations, enabling AI agents to detect and resolve issues automatically during development</p></li>
+</ul>
+<p>For more information on AI coding assistant support in CCS, refer to the <a class="reference external" href="https://software-dl.ti.com/ccs/esd/documents/users_guide/index_ai.html">CCS User Guide — AI Coding Assistants</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As with any AI-based tooling, results may vary. The <code class="docutils literal notranslate"><span class="pre">AGENTS.md</span></code> file will be updated iteratively based on user feedback. Always review AI-generated code before integrating it into your application.</p>
+</div>
+</section>
+<section id="llm-context-files">
+<h3><span class="section-number">4.15.2. </span>LLM Context Files<a class="headerlink" href="#llm-context-files" title="Link to this heading"></a></h3>
+<p>The following files are provided to give AI language models structured context about the F29x MCAL project:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://software-dl.ti.com/C2000/docs/mcal/F29H85x/26.00.00/llms.txt">llms.txt</a> — A concise summary of the project structure and APIs, following the <a class="reference external" href="https://llmstxt.org/">llms.txt standard</a></p></li>
+<li><p><a class="reference external" href="https://software-dl.ti.com/C2000/docs/mcal/F29H85x/26.00.00/llms-full.txt">llms-full.txt</a> — A comprehensive version with full project context for AI tools</p></li>
+</ul>
+<p>These files help AI tools better understand the F29x MCAL project structure and APIs, enabling more accurate code suggestions and project generation.</p>
+</section>
 </section>
 </section>
 

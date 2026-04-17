@@ -2,6 +2,213 @@
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
+## v04.00.00 (i.e release v26.00.00) from v03.00.00 (i.e release v01.04.01) Migration
+
+### Summary
+
+This release contains plugin-only changes. The Port driver API is unchanged. The EB Tresos plugin configuration is updated for AUTOSAR compliance and improved device-variant support:
+
+1. **PortPhysicalPinId Enum Prefix Added**: Physical pin number enum values now carry a `PORT_PIN_` prefix to comply with AUTOSAR ENUMERATION naming rules.
+2. **Peripheral Signal Name Slash Replacement**: `/` characters in `MuxModeSignalType` enum values replaced with `_` for AUTOSAR short name compliance.
+
+### Change 1: PortPhysicalPinId Enum Values — `PORT_PIN_` Prefix Added
+
+#### Description
+
+AUTOSAR requires that all ENUMERATION literals begin with an alphabetic character. Previous releases used numeric-only values for `PortPhysicalPinId` (e.g., `1`, `10`, `100`), which violates this rule. All `PortPhysicalPinId` enum entries now carry the `PORT_PIN_` prefix.
+
+This change affects the generated ARXML and any existing EB Tresos configuration that has a `PortPhysicalPinId` parameter set.
+
+#### Old vs New PortPhysicalPinId Values
+
+**PortPhysicalPinId Value Mapping (examples):**
+
+| v03.00.00 | v04.00.00 |
+|--------------|------------|
+| `1` | `PORT_PIN_1` |
+| `10` | `PORT_PIN_10` |
+| `100` | `PORT_PIN_100` |
+| `125` | `PORT_PIN_125` |
+
+**Pattern:** `{N}` → `PORT_PIN_{N}` for all physical pin number values.
+
+#### Migration Actions
+
+1. **Open your Port configuration** in EB Tresos.
+2. **Run Auto-calculate** in EB Tresos to update the PortPhysicalPinId value.
+3. **Regenerate the configuration** and verify that the generated code compiles without errors.
+
+
+```{figure} Assets/images/migration/port_module/02_01_port_physical_pin_id_old.png
+:alt: PortPhysicalPinId old numeric values
+:align: center
+:width: 80%
+
+v03.00.00: PortPhysicalPinId dropdown showing numeric-only values
+```
+
+```{figure} Assets/images/migration/port_module/02_02_port_physical_pin_id_new.png
+:alt: PortPhysicalPinId new PORT_PIN_ prefixed values
+:align: center
+:width: 80%
+
+v04.00.00: PortPhysicalPinId dropdown showing PORT_PIN_ prefixed values
+```
+
+---
+
+### Change 2: MuxModeSignalType Peripheral Names — `/` Replaced with `_`
+
+#### Description
+
+Some peripheral signal type names in the `PortPinPeripheralSignal` / `MuxModeSignalType` enumeration previously contained `/` characters (e.g., `A0/C24/DACA_OUT`). The `/` character is not valid in AUTOSAR short names. All such entries now use `_` instead of `/`.
+
+This change affects any existing configuration that references a peripheral signal name containing a `/`.
+
+#### Old vs New Signal Names
+
+**MuxModeSignalType Name Mapping (examples):**
+
+| v03.00.00 | v04.00.00 |
+|--------------|------------|
+| `A0/C24/DACA_OUT` | `A0_C24_DACA_OUT` |
+
+**Pattern:** All `/` characters in signal type names → `_`.
+
+```{NOTE}
+Most GPIO and non-analog signal names are unaffected. Only entries where a single pin serves multiple analog functions (e.g., ADC channels that share a pin with DAC outputs) used the `/` separator. Review your `PortPinPeripheralSignal` selections if you configured any ANALOG or ADC-related peripheral signals.
+```
+
+#### Migration Actions
+
+1. **Open your Port configuration** in EB Tresos.
+2. **Run Auto-calculate** in EB Tresos to update the PortPhysicalPinId value.
+3. **Regenerate the configuration** and run AUTOSAR validation to confirm no short-name errors remain.
+
+```{figure} Assets/images/migration/port_module/03_01_port_signal_old_slash.png
+:alt: PortPinPeripheralSignal old slash-based name
+:align: center
+:width: 80%
+
+v03.00.00: PortPinPeripheralSignal showing slash-separated signal name (e.g. A0/C24/DACA_OUT)
+```
+
+```{figure} Assets/images/migration/port_module/03_02_port_signal_new_underscore.png
+:alt: PortPinPeripheralSignal new underscore-based name
+:align: center
+:width: 80%
+
+v04.00.00: PortPinPeripheralSignal showing underscore-replaced signal name (e.g. A0_C24_DACA_OUT)
+```
+
+The code snippet given below can be used to migrate the PORT module changes from v03.00.00 to v04.00.00. 
+
+```python
+"""
+Script to find all Port.xdm files recursively in a given directory and apply
+the following transformations:
+
+1. PortPhysicalPinId: Prefix values with PORT_PIN_ if not already prefixed.
+   Example: value="G2" -> value="PORT_PIN_G2"
+
+2. PortPinPeripheralSignal: Replace '/' and ',' with '_' in values.
+   Example: value="A0/C24/DACA_OUT" -> value="A0_C24_DACA_OUT"
+
+3. PortPinName: Replace '/' and ',' with '_' in values.
+   Example: value="A6/E24,GPIO224" -> value="A6_E24_GPIO224"
+
+Usage: python fix_port_pin_id.py <folder_path>
+  Example: python fix_port_pin_id.py .
+  Example: python fix_port_pin_id.py examples/Port
+"""
+
+import os
+import re
+import sys
+
+if len(sys.argv) < 2:
+    print("Usage: python fix_port_pin_id.py <folder_path>")
+    print("  Example: python fix_port_pin_id.py .")
+    print("  Example: python fix_port_pin_id.py examples/Port")
+    sys.exit(1)
+
+search_path = sys.argv[1]
+
+if not os.path.isdir(search_path):
+    print(f"Error: '{search_path}' is not a valid directory.")
+    sys.exit(1)
+
+# Pattern 1: PortPhysicalPinId - prefix with PORT_PIN_
+pattern_physical_pin = re.compile(
+    r'(name="PortPhysicalPinId"\s+type="ENUMERATION"\s+value=")'
+    r'((?!PORT_PIN_)([^"]+))'
+    r'(")'
+)
+replacement_physical_pin = r'\1PORT_PIN_\3\4'
+
+
+def replace_slash_comma(match):
+    """Replace '/' and ',' with '_' in the matched value."""
+    prefix = match.group(1)
+    value = match.group(2)
+    suffix = match.group(3)
+    new_value = value.replace("/", "_").replace(",", "_")
+    return prefix + new_value + suffix
+
+
+# Pattern 2: PortPinPeripheralSignal - replace / and , with _
+pattern_peripheral_signal = re.compile(
+    r'(name="PortPinPeripheralSignal"\s+type="ENUMERATION"\s+value=")'
+    r'([^"]*[/,][^"]*)'
+    r'(")'
+)
+
+# Pattern 3: PortPinName - replace / and , with _
+pattern_pin_name = re.compile(
+    r'(name="PortPinName"\s+type="ENUMERATION"\s+value=")'
+    r'([^"]*[/,][^"]*)'
+    r'(")'
+)
+
+files_updated = 0
+files_skipped = 0
+
+for dirpath, dirnames, filenames in os.walk(search_path):
+    for filename in filenames:
+        if filename == "Port.xdm":
+            filepath = os.path.join(dirpath, filename)
+            with open(filepath, "r", encoding="utf-8") as f:
+                content = f.read()
+
+            new_content = content
+
+            # Apply Pattern 1: PortPhysicalPinId
+            new_content = pattern_physical_pin.sub(
+                replacement_physical_pin, new_content
+            )
+
+            # Apply Pattern 2: PortPinPeripheralSignal
+            new_content = pattern_peripheral_signal.sub(
+                replace_slash_comma, new_content
+            )
+
+            # Apply Pattern 3: PortPinName
+            new_content = pattern_pin_name.sub(replace_slash_comma, new_content)
+
+            if new_content != content:
+                with open(filepath, "w", encoding="utf-8") as f:
+                    f.write(new_content)
+                print(f"Updated: {filepath}")
+                files_updated += 1
+            else:
+                print(f"No changes: {filepath}")
+                files_skipped += 1
+
+print(f"\nDone. Updated: {files_updated}, No changes: {files_skipped}")
+```
+
+---
+
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
 ### Summary
@@ -20,10 +227,10 @@ Resource Allocator becomes a mandatory architectural foundation for the Port mod
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 Direct device variant selection was used within Port module configuration.
 
-```{figure} Assets/images/migration/port_module/02_01_port_module_old_config.png
+```{figure} Assets/images/migration/port_module/01_01_port_module_old_config.png
 :alt: Old Port Config
 :align: center
 :width: 80%
@@ -31,10 +238,10 @@ Direct device variant selection was used within Port module configuration.
 v02.00.00: PortDeviceVariant configured within Port module
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 Port module automatically reads device variant information from Resource Allocator to determine available pins and mux options.
 
-```{figure} Assets/images/migration/port_module/02_02_port_module_new_config.png
+```{figure} Assets/images/migration/port_module/01_02_port_module_new_config.png
 :alt: New Port Config
 :align: center
 :width: 80%

@@ -133,7 +133,7 @@ LOCAL_INLINE FUNC(void, CDD_IPC_CODE) Cdd_Ipc_SetFlagLtoR(Cdd_Ipc_InstanceType I
  *********************************************************************************************************************/
 LOCAL_INLINE FUNC(void, CDD_IPC_CODE) Cdd_Ipc_AckFlagRtoL(Cdd_Ipc_InstanceType Instance, uint32 Flag);
 
-/* Design: MCAL-30596 */
+/* Design: MCAL-37106 */
 /** \brief Clears a flag set by the local core
  * \param[in]  Instance is the instance in which the flag is being cleared
  * \param[in]  Flag is the flag bit being cleared

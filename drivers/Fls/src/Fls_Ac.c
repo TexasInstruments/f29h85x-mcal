@@ -113,12 +113,14 @@ static FUNC(uint32, FLS_CODE) Fls_Fapi_flushPipeline(void);
 /* Device Family Dependent FSM commands */
 
 static FUNC(Std_ReturnType, FLS_CODE)
-    Fls_Fapi_loopRegionForValue(uint32 *pu32StartAddress, uint32 u32Length, Fls_FlashStatusWordType *poFlashStatusWord,
-                                uint32 *pu32CheckValue, Fls_FapiRegionValueType oRegionValue);
+    Fls_Fapi_loopRegionForValue(const uint32 *pu32StartAddress, uint32 u32Length,
+                                Fls_FlashStatusWordType *poFlashStatusWord, const uint32 *pu32CheckValue,
+                                Fls_FapiRegionValueType oRegionValue);
 
 static FUNC(Std_ReturnType, FLS_CODE)
-    Fls_Fapi_checkRegionForValue(uint32 *pu32StartAddress, uint32 u32Length, Fls_FlashStatusWordType *poFlashStatusWord,
-                                 uint32 *pu32CheckValue, Fls_FapiRegionValueType oRegionValue);
+    Fls_Fapi_checkRegionForValue(const uint32 *pu32StartAddress, uint32 u32Length,
+                                 Fls_FlashStatusWordType *poFlashStatusWord, const uint32 *pu32CheckValue,
+                                 Fls_FapiRegionValueType oRegionValue);
 
 static FUNC(void, FLS_CODE) Fls_F29WriteTrims(uint32 reg_offset, uint32 mask, uint32 shift, uint32 value);
 static FUNC(void, FLS_CODE) Fls_F29SetWaitstates(uint16 waitstates);
@@ -322,7 +324,7 @@ Fls_Fapi_issueAsyncCommandWithAddress(const uint32 *pu32StartAddress)
 /*
  *   Issues bank erase command to the Flash State Machine for the given bank address
  */
-FUNC(void, FLS_CODE) Fls_Fapi_issueBankEraseCommand(uint32 *pu32StartAddress)
+FUNC(void, FLS_CODE) Fls_Fapi_issueBankEraseCommand(const uint32 *pu32StartAddress)
 {
     /* Bit field: | 4   3  |  2   1   0| */
     /* Bit field:   FLCID      BankID    */
@@ -382,14 +384,15 @@ static FUNC(uint32, FLS_CODE) Fls_Fapi_flushPipeline(void)
  *   Loops the specified region for the looking for the specified check value.
  */
 static FUNC(Std_ReturnType, FLS_CODE)
-    Fls_Fapi_loopRegionForValue(uint32 *pu32StartAddress, uint32 u32Length, Fls_FlashStatusWordType *poFlashStatusWord,
-                                uint32 *pu32CheckValue, Fls_FapiRegionValueType oRegionValue)
+    Fls_Fapi_loopRegionForValue(const uint32 *pu32StartAddress, uint32 u32Length,
+                                Fls_FlashStatusWordType *poFlashStatusWord, const uint32 *pu32CheckValue,
+                                Fls_FapiRegionValueType oRegionValue)
 {
-    VAR(volatile Std_ReturnType, AUTOMATIC) oErrorReturn       = E_OK;
-    VAR(uint32, AUTOMATIC) u32CurrentLength                    = u32Length;
-    P2VAR(uint32, AUTOMATIC, FLS_APPL_DATA) pu32CurrentAddress = pu32StartAddress;
-    VAR(uint32, AUTOMATIC) u32ExpectedVal                      = (uint32)0U;
-    VAR(uint32, AUTOMATIC) index                               = (uint32)0U;
+    VAR(volatile Std_ReturnType, AUTOMATIC) oErrorReturn         = E_OK;
+    VAR(uint32, AUTOMATIC) u32CurrentLength                      = u32Length;
+    P2CONST(uint32, AUTOMATIC, FLS_APPL_DATA) pu32CurrentAddress = pu32StartAddress;
+    VAR(uint32, AUTOMATIC) u32ExpectedVal                        = (uint32)0U;
+    VAR(uint32, AUTOMATIC) index                                 = (uint32)0U;
 
     /* step through each flash location */
     /* while( u32CurrentLength-- > 0U) */ /* Misra C overflow */
@@ -429,8 +432,9 @@ static FUNC(Std_ReturnType, FLS_CODE)
  *   Loops the specified region looking for the specified check value
  */
 static FUNC(Std_ReturnType, FLS_CODE)
-    Fls_Fapi_checkRegionForValue(uint32 *pu32StartAddress, uint32 u32Length, Fls_FlashStatusWordType *poFlashStatusWord,
-                                 uint32 *pu32CheckValue, Fls_FapiRegionValueType oRegionValue)
+    Fls_Fapi_checkRegionForValue(const uint32 *pu32StartAddress, uint32 u32Length,
+                                 Fls_FlashStatusWordType *poFlashStatusWord, const uint32 *pu32CheckValue,
+                                 Fls_FapiRegionValueType oRegionValue)
 {
     VAR(Std_ReturnType, AUTOMATIC) oErrorReturn = E_OK;
 
@@ -449,14 +453,14 @@ static FUNC(Std_ReturnType, FLS_CODE)
  *   Loops the specified region for the looking for the specified check value.
  */
 static FUNC(Std_ReturnType, FLS_CODE)
-    Fls_Fapi_loopRegionForValueByByte(uint8 *pu8StartAddress, uint32 u32ByteCount,
-                                      Fls_FlashStatusWordType *poFlashStatusWord, uint8 *pu8CheckValue,
+    Fls_Fapi_loopRegionForValueByByte(const uint8 *pu8StartAddress, uint32 u32ByteCount,
+                                      Fls_FlashStatusWordType *poFlashStatusWord, const uint8 *pu8CheckValue,
                                       Fls_FapiRegionValueType oRegionValue)
 {
-    VAR(Std_ReturnType, AUTOMATIC) oErrorReturn                 = E_OK;
-    P2VAR(uint8, AUTOMATIC, FLS_APPL_DATA) pu8CurrentCheckValue = pu8CheckValue;
-    P2VAR(uint8, AUTOMATIC, FLS_APPL_DATA) pu8CurrentAddress    = (uint8 *)(pu8StartAddress);
-    VAR(uint32, AUTOMATIC) index                                = (uint32)0U;
+    VAR(Std_ReturnType, AUTOMATIC) oErrorReturn                   = E_OK;
+    P2CONST(uint8, AUTOMATIC, FLS_APPL_DATA) pu8CurrentCheckValue = pu8CheckValue;
+    P2CONST(uint8, AUTOMATIC, FLS_APPL_DATA) pu8CurrentAddress    = pu8StartAddress;
+    VAR(uint32, AUTOMATIC) index                                  = (uint32)0U;
 
     for (index = 0; index < u32ByteCount; index++)
     {
@@ -488,8 +492,8 @@ static FUNC(Std_ReturnType, FLS_CODE)
  *   Loops the specified region for the looking for the specified check value by byte.
  */
 static FUNC(Std_ReturnType, FLS_CODE)
-    Fls_Fapi_checkRegionForValueByByte(uint8 *pu8StartAddress, uint32 u32ByteCount,
-                                       Fls_FlashStatusWordType *poFlashStatusWord, uint8 *pu8CheckValue,
+    Fls_Fapi_checkRegionForValueByByte(const uint8 *pu8StartAddress, uint32 u32ByteCount,
+                                       Fls_FlashStatusWordType *poFlashStatusWord, const uint8 *pu8CheckValue,
                                        Fls_FapiRegionValueType oRegionValue)
 {
     VAR(Std_ReturnType, AUTOMATIC) oErrorReturn = E_OK;
@@ -508,7 +512,7 @@ static FUNC(Std_ReturnType, FLS_CODE)
 }
 
 FUNC(Std_ReturnType, FLS_CODE)
-Fls_Fapi_doVerifyByByte(uint8 *pu8StartAddress, uint32 u32ByteCount, uint8 *pu8CheckValueBuffer,
+Fls_Fapi_doVerifyByByte(const uint8 *pu8StartAddress, uint32 u32ByteCount, const uint8 *pu8CheckValueBuffer,
                         Fls_FlashStatusWordType *poFlashStatusWord)
 {
     return (Fls_Fapi_checkRegionForValueByByte(pu8StartAddress, u32ByteCount, poFlashStatusWord, pu8CheckValueBuffer,
@@ -519,7 +523,7 @@ Fls_Fapi_doVerifyByByte(uint8 *pu8StartAddress, uint32 u32ByteCount, uint8 *pu8C
  *   This is the function to do a data verify on flash memory
  */
 FUNC(Std_ReturnType, FLS_CODE)
-Fls_Fapi_doVerify(uint32 *pu32StartAddress, uint32 u32Length, uint32 *pu32CheckValueBuffer,
+Fls_Fapi_doVerify(const uint32 *pu32StartAddress, uint32 u32Length, const uint32 *pu32CheckValueBuffer,
                   Fls_FlashStatusWordType *poFlashStatusWord)
 {
     VAR(Std_ReturnType, AUTOMATIC) oErrorReturn = E_OK;
@@ -532,7 +536,7 @@ Fls_Fapi_doVerify(uint32 *pu32StartAddress, uint32 u32Length, uint32 *pu32CheckV
  *   This is the function to do a blank check on flash addresses
  */
 FUNC(Std_ReturnType, FLS_CODE)
-Fls_Fapi_doBlankCheck(uint32 *pu32StartAddress, uint32 u32Length, Fls_FlashStatusWordType *poFlashStatusWord)
+Fls_Fapi_doBlankCheck(const uint32 *pu32StartAddress, uint32 u32Length, Fls_FlashStatusWordType *poFlashStatusWord)
 {
     VAR(Std_ReturnType, AUTOMATIC) oErrorReturn = E_OK;
     VAR(uint32, AUTOMATIC) u32CheckValue        = (uint32)0xFFFFFFFFU;

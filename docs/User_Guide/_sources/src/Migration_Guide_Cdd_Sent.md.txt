@@ -1,6 +1,18 @@
 # CDD SENT Module Migration
 
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+---
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.01 (i.e release v01.03.00) Migration
 
@@ -21,7 +33,7 @@ Resource Allocator becomes a mandatory architectural foundation for the CDD SENT
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.01):**
+**Old (v02.00.01):**
 Direct parameter selection was used without Resource Allocator dependency.
 
 ```{figure} Assets/images/migration/cdd_sent_module/02_01_cdd_sent_module_old_config.png
@@ -32,7 +44,7 @@ Direct parameter selection was used without Resource Allocator dependency.
 v02.00.01: Direct SENT controller parameter selection
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 CDD SENT configurations now reference instances allocated through Resource Allocator.
 
 ```{figure} Assets/images/migration/cdd_sent_module/02_03_cdd_sent_module_select_instance.png
@@ -216,7 +228,7 @@ For any reference parameters expecting reference to a SENT configuration:
 
 **Generated .xdm File Structure Comparison:**
 
-**Before Editing (v01.00.00 Generated .xdm File):**
+**Old (v01.00.00 Generated .xdm File):**
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Sent" type="AR-PACKAGE">
@@ -226,7 +238,7 @@ For any reference parameters expecting reference to a SENT configuration:
 <a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Sent"/>
 ```
 
-**After Editing (v02.00.00 Compatible .xdm File):**
+**New (v02.00.00 Compatible .xdm File):**
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Sent" type="AR-PACKAGE">

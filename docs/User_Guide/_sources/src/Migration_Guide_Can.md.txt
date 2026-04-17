@@ -2,6 +2,119 @@
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
+## v04.00.00 (i.e release v26.00.00) from v03.01.00 (i.e release v01.04.01) Migration
+
+### Summary
+
+Version v04.00.00 introduces the following changes to the CAN module:
+
+1. **Standard Filter Type Enum Value Renamed**: `CAN_FILTER_DISABLED` renamed to `CAN_SFT_FILTER_DISABLED_EFT_RANGE_NO_XIDAM` to accurately reflect the dual behavior of filter type `0x03`
+2. **CanMainFunctionRWPeriodRef Validation Added**: `CanMainFunctionRWPeriodRef` is now required when the associated controller uses POLLING or MIXED processing mode
+3. **TDC Parameters Now Interpreted as Nanoseconds**: `CanControllerTrcvDelayCompensationOffset` and `CanControllerTrcvDelayCompensationFilter` are now correctly treated as nanosecond values and converted to MTQ at code-generation time — configurations with non-zero TDC values must be recalculated
+
+### Change 1: Standard Filter Type Enum Value Renamed
+
+#### Description
+
+The CanStandardFilterType enum value CAN_FILTER_DISABLED (numeric value 0x03) has been renamed to CAN_SFT_FILTER_DISABLED_EFT_RANGE_NO_XIDAM. The new name accurately reflects the dual behavior of this value: for Standard Frame Type (SFT) filters it disables the filter, and for Extended Frame Type (EFT) range filters it applies the range without the XIDAM mask.
+
+
+#### Old vs New
+
+**Old (v03.10.00):**
+
+```{figure} Assets/images/migration/can_module/04_01_old_filter_types.png
+:alt: Add Hardware Object Instance
+:align: center
+:width: 80%
+
+Old CAN Filter Types
+```
+
+**New (v04.00.00):**
+
+```{figure} Assets/images/migration/can_module/04_02_new_filter_types.png
+:alt: Add Hardware Object Instance
+:align: center
+:width: 80%
+
+New CAN Filter Types
+```
+
+#### Migration Actions
+
+1. **Regenerate configuration** — EB Tresos will generate the updated enum value name in `Can_Cfg.h` automatically
+2. **Recompile** the application to confirm no remaining references to the old name
+
+### Change 2: CanMainFunctionRWPeriodRef Now Required for POLLING/MIXED Mode due to AUTOSAR requirement
+
+#### Description
+
+AUTOSAR requirement enforces that `CanMainFunctionRWPeriodRef` must be configured for any Hardware Object Handle whose associated controller uses POLLING or MIXED processing mode. Previously this reference was optional and could be left unconfigured; now leaving it unconfigured produces a validation error in EB Tresos at configuration time as prescribed by AUTOSAR.
+
+#### Old vs New
+
+**Old (v03.01.00):**
+
+`CanMainFunctionRWPeriodRef` had no mandatory validation — it could be left empty even when the controller used POLLING or MIXED mode processing.
+
+**New (v04.00.00):**
+
+EB Tresos enforces that `CanMainFunctionRWPeriodRef` must reference a valid `CanMainFunctionPeriod` entry when:
+- `CanObjectType = RECEIVE` and the controller's `CanRxProcessing = POLLING` or `MIXED`, or
+- `CanObjectType = TRANSMIT` and the controller's `CanTxProcessing = POLLING` or `MIXED`
+
+Validation fails with the error:
+
+```{figure} Assets/images/migration/can_module/05_01_main_function_warning.png
+:alt: Add Hardware Object Instance
+:align: center
+:width: 80%
+
+Validation for CanMainFunctionRWPeriodRef
+```
+
+#### Migration Actions
+
+1. **Open EB Tresos** and navigate to each `CanHardwareObject` container
+2. **Check processing mode** for each Hardware Object Handle, check whether the associated controller uses POLLING or MIXED mode for the corresponding direction (receive or transmit)
+3. **Configure the reference** `CanMainFunctionRWPeriodRef` to point to the appropriate `CanMainFunctionPeriod` entry for any Hardware Object Handle that was previously left unconfigured
+4. **Run validation** in EB Tresos to confirm the validation check
+
+### Change 3: TDC Parameters Now Interpreted as Nanoseconds
+
+#### Description
+
+The FD baud-rate parameters `CanControllerTrcvDelayCompensationOffset` and `CanControllerTrcvDelayCompensationFilter` have always been labeled as nanoseconds in the EB Tresos GUI, but in v03.01.00 the generated code passed the raw config values directly to the hardware register as Minimum Time Quanta (MTQ). This meant users who wanted TDC to function correctly had to enter MTQ values despite the nanosecond label.
+
+In v04.00.00, the code generator now correctly converts these values from nanoseconds to MTQ. 
+
+```{NOTE}
+If both `CanControllerTrcvDelayCompensationOffset` and `CanControllerTrcvDelayCompensationFilter` are `0`, TDC remains disabled and no action is required.
+```
+
+#### Old vs New
+
+**Old (v03.01.00):**
+
+The raw config value was passed directly to the hardware register as MTQ, despite the EB Tresos parameter label showing nanoseconds.
+
+**New (v04.00.00):**
+
+The value is converted from nanoseconds to MTQ at code-generation time. The comment in the generated file shows the source nanosecond value for traceability.
+
+#### Migration Actions
+
+1. **Check your current TDC parameter values** — open EB Tresos and locate `CanControllerTrcvDelayCompensationOffset` and `CanControllerTrcvDelayCompensationFilter` under each FD baud-rate configuration
+2. **If both values are 0**: no action required — TDC is disabled and behavior is unchanged
+3. **If either value is non-zero**, the existing values were being used as MTQ and must now be replaced with nanosecond equivalents:
+   - Determine the correct TDC offset and filter values in nanoseconds for your transceiver
+   - Update `CanControllerTrcvDelayCompensationOffset` and `CanControllerTrcvDelayCompensationFilter` in EB Tresos to the nanosecond values
+4. **Regenerate** the configuration using EB Tresos
+5. **Recompile** and confirm the generated `Can_PBcfg.c` contains the conversion comments and that no code-generation assertion errors are reported
+
+---
+
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
 ### Summary
@@ -22,7 +135,7 @@ Resource Allocator becomes a mandatory architectural foundation, replacing direc
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 
 ```{figure} Assets/images/migration/can_module/02_00_can_module_old_config.png
 :alt: Open CAN Controller
@@ -32,7 +145,7 @@ Resource Allocator becomes a mandatory architectural foundation, replacing direc
 v02.00.00: Direct controller parameter selection with CanControllerInstance as MCAN1 and CanControllerBaseAddress in hexadecimal format (0x60020000)
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 
 ```{figure} Assets/images/migration/can_module/02_01_can_module_select_instance.png
 :alt: Select CAN Instance
@@ -329,7 +442,7 @@ The **CanOsCounterRef** parameter used as tick reference to calculate CAN_CFG_TI
 |-----------|-----------|
 | `CanOsCounterRef` | `CanSysClockRef` |
 
-**Previous Configuration (v01.00.01):**
+**Old (v01.00.01):**
 
 ```{figure} Assets/images/migration/can_module/00_01_can_module_old_clock_config.png
 :alt: Old CAN Clock Config
@@ -339,7 +452,7 @@ The **CanOsCounterRef** parameter used as tick reference to calculate CAN_CFG_TI
 v01.00.01: CanOsCounterRef parameter used as tick reference for timeout calculation
 ```
 
-**New Configuration (v01.01.00):**
+**New (v01.01.00):**
 
 ```{figure} Assets/images/migration/can_module/00_02_can_module_new_clock_config.png
 :alt: New CAN Clock Config

@@ -1,14 +1,28 @@
 # CDD ECAP Module Migration
 
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+
+---
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
 ### Summary
 
-Version v03.00.00 introduces **Resource Allocator as a mandatory architectural foundation**. This represents a fundamental shift from direct parameter configuration to centralized resource management:
+Version v03.00.00 introduces **Resource Allocator as a mandatory architectural foundation** and replaces duty cycle measurement from the signal measurement API with a dedicated API:
 
 1. **Resource Allocator Introduction and Channel Configuration Updates**: Resource Allocator becomes mandatory with CDD ECAP channel configurations updated to reference Resource Allocator instances
+2. **Duty Cycle Removed from Signal Measurement Property — Use `Cdd_Ecap_GetDutyCycleValues()` Instead**: `CDD_ECAP_DUTY_CYCLE` removed from `Cdd_Ecap_SignalMeasurementPropertyType`; replaced by a dedicated `Cdd_Ecap_GetDutyCycleValues()` API
 
 **PREREQUISITE:** Complete [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md#module-setup-and-configuration) before proceeding.
 
@@ -20,7 +34,7 @@ Resource Allocator becomes a mandatory architectural foundation for the CDD ECAP
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 Direct parameter selection was used without Resource Allocator dependency.
 
 ```{figure} Assets/images/migration/cdd_ecap_module/02_01_cdd_ecap_module_old_config.png
@@ -31,7 +45,7 @@ Direct parameter selection was used without Resource Allocator dependency.
 v02.00.00: Direct ECAP channel parameter selection
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 CDD ECAP channel configurations now reference instances allocated through Resource Allocator.
 
 ```{figure} Assets/images/migration/cdd_ecap_module/02_03_cdd_ecap_module_select_instance.png
@@ -89,6 +103,49 @@ Set the appropriate InstanceName (e.g., ECAP1, ECAP2, etc.)
 ```{NOTE}
 The Resource Allocator module must be configured before the CDD ECAP module to ensure correct instance availability. Available ECAP instances are determined by the Resource Allocator's Cdd_EcapAllocatedInstance configuration for the current context.
 ```
+
+### Change 2: Duty Cycle Removed from Signal Measurement Property — Use `Cdd_Ecap_GetDutyCycleValues()` Instead
+
+#### Description
+
+`CDD_ECAP_DUTY_CYCLE` has been removed from the `Cdd_Ecap_SignalMeasurementPropertyType` enum, which is used as input to `Cdd_Ecap_GetTimeElapsed()`. Duty cycle is not an AUTOSAR-defined signal measurement property.
+
+A dedicated API `Cdd_Ecap_GetDutyCycleValues()` has been added to calculate duty cycle. It returns a `Cdd_Ecap_DutyCycleType` struct containing `ActiveTime` and `PeriodTime`, from which the duty cycle can be derived.
+
+Any application code that passed `CDD_ECAP_DUTY_CYCLE` to `Cdd_Ecap_GetTimeElapsed()` must be updated to use the new API.
+
+#### Old vs New
+
+**`Cdd_Ecap_SignalMeasurementPropertyType` enum:**
+
+| v02.00.00 | v03.00.00 |
+|-----------|-----------|
+| `CDD_ECAP_LOW_TIME` | `CDD_ECAP_LOW_TIME` |
+| `CDD_ECAP_HIGH_TIME` | `CDD_ECAP_HIGH_TIME` |
+| `CDD_ECAP_PERIOD_TIME` | `CDD_ECAP_PERIOD_TIME` |
+| `CDD_ECAP_DUTY_CYCLE` | *(removed)* |
+
+**Code Example:**
+
+```c
+// v02.00.00 — duty cycle via GetTimeElapsed (no longer valid)
+Cdd_Ecap_ValueType dutyCycle = Cdd_Ecap_GetTimeElapsed(channel);  // with CDD_ECAP_DUTY_CYCLE property
+
+// v03.00.00 — dedicated API
+Cdd_Ecap_DutyCycleType dcValues;
+Cdd_Ecap_GetDutyCycleValues(channel, &dcValues);
+// dcValues.ActiveTime — active (high) time of the signal
+// dcValues.PeriodTime — full period time of the signal
+```
+
+#### Migration Actions
+
+1. **Search Application Code:** Find all uses of `CDD_ECAP_DUTY_CYCLE` passed to `Cdd_Ecap_GetTimeElapsed()`.
+2. **Enable New API:** Set `CDD_ECAP_GET_DUTY_CYCLE_VALUES_API` to `STD_ON` in your ECAP plugin configuration.
+3. **Replace API Call:** Replace `Cdd_Ecap_GetTimeElapsed()` duty cycle calls with `Cdd_Ecap_GetDutyCycleValues()`, using the returned `ActiveTime` and `PeriodTime` fields.
+4. **Verify Compilation:** Clean build and confirm no undefined references to `CDD_ECAP_DUTY_CYCLE`.
+
+---
 
 ## v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration
 

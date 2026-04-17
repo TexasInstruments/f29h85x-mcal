@@ -1,6 +1,18 @@
 # SPI Module Migration
 
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+---
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
@@ -23,7 +35,7 @@ Resource Allocator becomes a mandatory architectural foundation, replacing direc
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 Direct parameter selection was used without Resource Allocator dependency.
 
 ```{figure} Assets/images/migration/spi_module/02_01_spi_module_old_hwunit_config.png
@@ -34,7 +46,7 @@ Direct parameter selection was used without Resource Allocator dependency.
 v02.00.00: Direct SPI unit parameter selection with SPI_UNIT_SPIA format
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 SPI hardware unit configurations now reference the SPI instances allocated through Resource Allocator.
 
 ```{figure} Assets/images/migration/spi_module/02_04_spi_module_select_instance.png
@@ -134,7 +146,7 @@ SpiHwUnit configurations are updated to reference SPI instances allocated throug
 
 #### Old vs New Hardware Unit Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 Direct SPI unit parameter selection with SPI_UNIT_SPIA format.
 
 ```{figure} Assets/images/migration/spi_module/02_01_spi_module_old_hwunit_config.png
@@ -145,7 +157,7 @@ Direct SPI unit parameter selection with SPI_UNIT_SPIA format.
 v02.00.00: Direct SPI unit parameter selection with SPI_UNIT_SPIA format
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 SpiHwUnitType parameter now references Resource Allocator's SpiAllocatedInstance.
 
 
@@ -172,7 +184,7 @@ SpiExternalDevice configurations are updated to reference SPI instances allocate
 
 #### Old vs New External Device Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 SpiExternalDevice used direct SPI unit parameter selection.
 
 ```{figure} Assets/images/migration/spi_module/02_02_spi_module_old_extdevice_config.png
@@ -183,7 +195,7 @@ SpiExternalDevice used direct SPI unit parameter selection.
 v02.00.00: SpiExternalDevice with direct SPI unit parameter selection with SPI_UNIT_SPIA format
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 SpiExternalDevice configurations reference allocated instances from Resource Allocator.
 
 ```{figure} Assets/images/migration/spi_module/03_02_spi_module_configure_external_device.png

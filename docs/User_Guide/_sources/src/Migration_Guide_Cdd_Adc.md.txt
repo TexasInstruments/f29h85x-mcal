@@ -1,5 +1,15 @@
 # CDD ADC Module Migration
 
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.01 (i.e release v01.03.00) Migration
@@ -22,7 +32,7 @@ Resource Allocator becomes a mandatory architectural foundation for the CDD ADC 
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.01):**
+**Old (v02.00.01):**
 Direct parameter selection was used without Resource Allocator dependency.
 
 ```{figure} Assets/images/migration/cdd_adc_module/02_01_cdd_adc_module_old_config.png
@@ -33,7 +43,7 @@ Direct parameter selection was used without Resource Allocator dependency.
 v02.00.01: Direct ADC hardware unit parameter selection
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 CDD ADC hardware unit configurations now reference instances allocated through Resource Allocator.
 
 ```{figure} Assets/images/migration/cdd_adc_module/02_03_cdd_adc_module_select_instance.png
@@ -124,10 +134,10 @@ Version v03.00.00 introduces SDK-based DMA integration for efficient ADC result 
 
 #### Old vs New DMA Configuration
 
-**Previous Configuration (v02.00.01):**
+**Old (v02.00.01):**
 No DMA integration available for ADC result transfers.
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 Optional SDK-based DMA integration with CddAdcEnableDma parameter.
 
 ```{figure} Assets/images/migration/cdd_adc_module/03_01_cdd_adc_module_add_group_instance.png
@@ -269,7 +279,7 @@ For `CddAdcPpbChannel` references expecting a channel reference:
 
 **Generated .xdm File Structure Comparison:**
 
-**Before Editing (v01.00.00 Generated .xdm File):**
+**Old (v01.00.00 Generated .xdm File):**
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Adc" type="AR-PACKAGE">
@@ -279,7 +289,7 @@ For `CddAdcPpbChannel` references expecting a channel reference:
 <a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Adc"/>
 ```
 
-**After Editing (v02.00.00 Compatible .xdm File):**
+**New (v02.00.00 Compatible .xdm File):**
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Adc" type="AR-PACKAGE">

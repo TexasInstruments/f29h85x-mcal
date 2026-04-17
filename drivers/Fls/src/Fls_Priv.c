@@ -822,6 +822,9 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_Callf29Erase(uint32 chunkSize)
     {
         retVal = Fls_F29AsyncSectorErase();
     }
+    /* Condition is statically unreachable via normal
+     * code paths, but retained as a defensive measure against memory corruption
+     * or direct external writes to Fls_DrvObj.typeoferase. */
     else if (Fls_DrvObj.typeoferase == FLS_BANK_ERASE)
     {
         retVal = Fls_F29AsyncBankErase();

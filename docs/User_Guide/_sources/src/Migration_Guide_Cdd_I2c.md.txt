@@ -1,0 +1,92 @@
+# CDD I2C Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v01.03.00 (i.e release v26.00.00) from v01.01.00 (i.e release v01.04.01) Migration
+
+### Summary
+
+Version v01.03.00 introduces I2C target (slave) mode support and restructures the interrupt/polling configuration from a global setting to per-HW-unit control:
+
+1. **Per-HW-Unit Interrupt Configuration**: The global `CddI2cUseInterrupts` flag is replaced by a per-HW-unit `CddI2cHwUseInterrupts` parameter, allowing each I2C instance to be independently configured for polling or interrupt mode.
+2. **`Cdd_I2c_PollingModeProcessing()` Removed**: Polling is now integrated into `Cdd_I2c_MainFunction()`; the standalone polling processing API is removed.
+
+---
+
+### Change 1: Per-HW-Unit Interrupt/Polling Configuration
+
+#### Description
+
+Previously, interrupt or polling mode was selected globally for all I2C HW units through a single `CddI2cUseInterrupts` boolean in the `CddI2cGeneral` container. In v01.02.00, this global flag is removed. Each HW unit now has its own `CddI2cHwUseInterrupts` parameter inside its `CddI2cHwConfig` entry.
+
+Additionally, the generated macros are updated: two separate macros (`CDD_I2C_POLLING_MODE` and `CDD_I2C_INTERRUPT_MODE`) are now generated based on whether any HW unit is in polling or interrupt mode respectively.
+
+#### Old vs New Configuration
+
+| Parameter | v01.01.00 | v01.02.00 |
+|-----------|-----------|-----------|
+| Location | `CddI2cGeneral/CddI2cUseInterrupts` (global) | `CddI2cHwConfig/<unit>/CddI2cHwUseInterrupts` (per HW unit) |
+| Scope | All HW units share one setting | Each HW unit configured independently |
+
+**Generated Macro Changes:**
+
+| Macro | v01.01.00 | v01.02.00 |
+|-------|-----------|-----------|
+| `CDD_I2C_POLLING_MODE` | `STD_ON` if `CddI2cUseInterrupts = false` | `STD_ON` if any HW unit has `CddI2cHwUseInterrupts = false` |
+| `CDD_I2C_INTERRUPT_MODE` | Not generated | `STD_ON` if any HW unit has interrupts or Target mode enabled |
+| `CDD_I2C_CONTROLLER_ACTIVE` | Not generated | `STD_ON` if any HW unit is in controller mode |
+| `CDD_I2C_TARGET_ACTIVE` | Not generated | `STD_ON` if any HW unit is in target mode |
+
+#### Migration Actions
+
+1. **Open your I2C configuration** in EB Tresos.
+2. **Navigate to `CddI2cGeneral`** and note the current value of `CddI2cUseInterrupts` (`true` = interrupt mode, `false` = polling mode).
+3. **Remove `CddI2cUseInterrupts`** — this parameter no longer exists.
+4. **Navigate to each `CddI2cHwConfig` entry** for your configured HW units.
+5. **Set `CddI2cHwUseInterrupts`** on each HW unit to match your previous global setting:
+   - If old `CddI2cUseInterrupts = true` → set `CddI2cHwUseInterrupts = true` on each unit
+   - If old `CddI2cUseInterrupts = false` → leave `CddI2cHwUseInterrupts = false` (default) on each unit
+6. **Update application code**: Replace any `#if (STD_ON == CDD_I2C_POLLING_MODE)` guards with the new equivalent. Logic is the same but note that `CDD_I2C_INTERRUPT_MODE` is now also available.
+7. **Regenerate configuration**.
+
+```{figure} Assets/images/migration/cdd_i2c_module/01_01_i2c_old_global_interrupt.png
+:alt: CddI2cGeneral old global interrupt setting
+:align: center
+:width: 80%
+
+v01.01.00: CddI2cGeneral showing global CddI2cUseInterrupts parameter
+```
+
+```{figure} Assets/images/migration/cdd_i2c_module/01_02_i2c_new_per_unit_interrupt.png
+:alt: CddI2cHwConfig new per-unit interrupt setting
+:align: center
+:width: 80%
+
+v01.02.00: CddI2cHwConfig showing per-unit CddI2cHwUseInterrupts parameter
+```
+
+---
+
+### Change 2: `Cdd_I2c_PollingModeProcessing()` Removed
+
+#### Description
+
+The `Cdd_I2c_PollingModeProcessing()` API has been removed. In v01.01.00, this function was used to process pending I2C transfers when interrupts were disabled. In v01.02.00, polling processing is handled internally by `Cdd_I2c_MainFunction()` (available when `CDD_I2C_CONTROLLER_ACTIVE == STD_ON`).
+
+The service ID previously assigned to this function (`CDD_I2C_SID_POLLING_MODE_PROCESSING = 0x0A`) has been reassigned to `Cdd_I2c_GetStatus()`.
+
+#### Old vs New
+
+| v01.01.00 | v01.02.00 |
+|-----------|-----------|
+| `Cdd_I2c_PollingModeProcessing()` — explicit polling processing API | Removed — use `Cdd_I2c_MainFunction()` for controller polling |
+| `CDD_I2C_SID_POLLING_MODE_PROCESSING (0x0AU)` | Removed |
+| `CDD_I2C_SID_GET_STATUS (0x0BU)` | `CDD_I2C_SID_GET_STATUS (0x0AU)` (renumbered) |
+
+#### Migration Actions
+
+1. **Search your application code** for all calls to `Cdd_I2c_PollingModeProcessing()`.
+2. **Replace** each call with `Cdd_I2c_MainFunction()` — this now handles both periodic timeout checking and polling-mode transfer processing for controller mode.
+3. **Remove** any `#if (STD_ON == CDD_I2C_POLLING_MODE)` guards previously wrapping `Cdd_I2c_PollingModeProcessing()` calls — `Cdd_I2c_MainFunction()` is available whenever `CDD_I2C_CONTROLLER_ACTIVE == STD_ON`.
+4. **Verify** no code references `CDD_I2C_SID_POLLING_MODE_PROCESSING` numerically — if so, update to the new service ID assignments.
+

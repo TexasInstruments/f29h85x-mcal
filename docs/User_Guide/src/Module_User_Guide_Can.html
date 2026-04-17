@@ -101,7 +101,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">5.2.11. Configuration</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">5.2.11.1. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-can-module">5.2.11.2. Steps To Configure Can Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bit-timing-and-sampling-point-calculation">5.2.11.2. Bit Timing and Sampling Point Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-can-module">5.2.11.3. Steps To Configure Can Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">5.2.12. Examples</a><ul>
@@ -523,27 +524,82 @@ Interrupt type should be selected in CAN plugin.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Can Instance</p></th>
+<th class="head"><p>Interrupt Name</p></th>
 <th class="head"><p>Interrupt handler</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Can A</p></td>
-<td><p>Can_1_Int1ISR</p></td>
+<tr class="row-even"><td><p>MCANA</p></td>
+<td><p>MCANA_INT0</p></td>
+<td><p>Can_A_Int0ISR</p></td>
 </tr>
-<tr class="row-odd"><td><p>Can B</p></td>
-<td><p>Can_2_Int1ISR</p></td>
+<tr class="row-odd"><td><p>MCANA</p></td>
+<td><p>MCANA_INT1</p></td>
+<td><p>Can_A_Int1ISR</p></td>
 </tr>
-<tr class="row-even"><td><p>Can C</p></td>
-<td><p>Can_3_Int1ISR</p></td>
+<tr class="row-even"><td><p>MCANA</p></td>
+<td><p>MCANA_WAKE_AND_TS_PLS_INT</p></td>
+<td><p>Can_A_WakeUpISR</p></td>
 </tr>
-<tr class="row-odd"><td><p>Can D</p></td>
-<td><p>Can_4_Int1ISR</p></td>
+<tr class="row-odd"><td><p>MCANB</p></td>
+<td><p>MCANB_INT0</p></td>
+<td><p>Can_B_Int0ISR</p></td>
 </tr>
-<tr class="row-even"><td><p>Can E</p></td>
-<td><p>Can_5_Int1ISR</p></td>
+<tr class="row-even"><td><p>MCANB</p></td>
+<td><p>MCANB_INT1</p></td>
+<td><p>Can_B_Int1ISR</p></td>
 </tr>
-<tr class="row-odd"><td><p>Can F</p></td>
-<td><p>Can_6_Int1ISR</p></td>
+<tr class="row-odd"><td><p>MCANB</p></td>
+<td><p>MCANB_WAKE_AND_TS_PLS_INT</p></td>
+<td><p>Can_B_WakeUpISR</p></td>
+</tr>
+<tr class="row-even"><td><p>MCANC</p></td>
+<td><p>MCANC_INT0</p></td>
+<td><p>Can_C_Int0ISR</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCANC</p></td>
+<td><p>MCANC_INT1</p></td>
+<td><p>Can_C_Int1ISR</p></td>
+</tr>
+<tr class="row-even"><td><p>MCANC</p></td>
+<td><p>MCANC_WAKE_AND_TS_PLS_INT</p></td>
+<td><p>Can_C_WakeUpISR</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAND</p></td>
+<td><p>MCAND_INT0</p></td>
+<td><p>Can_D_Int0ISR</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAND</p></td>
+<td><p>MCAND_INT1</p></td>
+<td><p>Can_D_Int1ISR</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAND</p></td>
+<td><p>MCAND_WAKE_AND_TS_PLS_INT</p></td>
+<td><p>Can_D_WakeUpISR</p></td>
+</tr>
+<tr class="row-even"><td><p>MCANE</p></td>
+<td><p>MCANE_INT0</p></td>
+<td><p>Can_E_Int0ISR</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCANE</p></td>
+<td><p>MCANE_INT1</p></td>
+<td><p>Can_E_Int1ISR</p></td>
+</tr>
+<tr class="row-even"><td><p>MCANE</p></td>
+<td><p>MCANE_WAKE_AND_TS_PLS_INT</p></td>
+<td><p>Can_E_WakeUpISR</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCANF</p></td>
+<td><p>MCANF_INT0</p></td>
+<td><p>Can_F_Int0ISR</p></td>
+</tr>
+<tr class="row-even"><td><p>MCANF</p></td>
+<td><p>MCANF_INT1</p></td>
+<td><p>Can_F_Int1ISR</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCANF</p></td>
+<td><p>MCANF_WAKE_AND_TS_PLS_INT</p></td>
+<td><p>Can_F_WakeUpISR</p></td>
 </tr>
 </tbody>
 </table>
@@ -4850,8 +4906,17 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </section>
 </section>
 </section>
+<section id="bit-timing-and-sampling-point-calculation">
+<h3><span class="section-number">5.2.11.2. </span>Bit Timing and Sampling Point Calculation<a class="headerlink" href="#bit-timing-and-sampling-point-calculation" title="Link to this heading"></a></h3>
+<p>Selecting the correct CAN bit timing parameters (prescaler, TSEG1, TSEG2, SJW) for a given clock frequency, target bit rate, and desired sampling point can be complex. A Microsoft Excel–based bit timing calculator is provided to assist with this.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Download the calculator: <a class="reference download internal" download="" href="../_downloads/7b2fb8f16f83a5a3f215b5982e97f0d3/MCAN_BitTimingCalculator.xls"><span class="xref download myst">MCAN_BitTimingCalculator.xls</span></a></p>
+<p>Open the sheet, enter your CAN clock frequency and target bit rate, and the calculator will derive valid prescaler, TSEG1, TSEG2, and SJW values along with the resulting sampling point percentage for both the <strong>nominal</strong> (arbitration) phase and the <strong>data</strong> phase (CAN FD).</p>
+</div>
+</section>
 <section id="steps-to-configure-can-module">
-<h3><span class="section-number">5.2.11.2. </span>Steps To Configure Can Module<a class="headerlink" href="#steps-to-configure-can-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.2.11.3. </span>Steps To Configure Can Module<a class="headerlink" href="#steps-to-configure-can-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool and load Port, Mcu and Can modules</p></li>
 <li><p>Open PORT module plugin and configure required pins as CAN-TX, CAN-RX</p></li>

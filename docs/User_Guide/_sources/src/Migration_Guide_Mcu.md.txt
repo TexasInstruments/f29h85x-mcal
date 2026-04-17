@@ -2,6 +2,74 @@
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
+## v02.02.00 (i.e release v26.00.00) from v02.01.01 (i.e release v01.04.01) Migration
+
+### Summary
+
+Version v02.02.00 introduces the following changes to the MCU module:
+
+1. **Automatic CPUSEL/FRAMESEL Register Writes via ResourceAllocator**: `Mcu_Init()` now writes CPUSEL and FRAMESEL peripheral ownership registers from ResourceAllocator configuration
+2. **McuSysClkDiv Recommended Configuration Update (Errata Advisory)**: Configurator now warns when McuSysClkDiv = 1; recommended to use McuSysClkDiv >= 2 to avoid XRSn reset errata
+
+
+### Change 1: Automatic CPUSEL/FRAMESEL Register Writes via ResourceAllocator
+
+#### Description
+
+Version v02.02.00 extends `Mcu_Init()` to write CPUSEL (CPU selection) and FRAMESEL (frame selection) peripheral ownership registers for all peripherals configured in the ResourceAllocator plugin. The configuration is generated into a new `Mcu_PeripheralConfigSet[]` array and `Mcu_PeripheralConfig` struct in `Mcu_Cfg.c`.
+
+Projects that previously wrote CPUSEL/FRAMESEL registers manually must remove those manual writes to avoid conflicts.
+
+#### Old vs New
+
+| Behavior | v02.01.01 | v02.02.00 |
+|----------|-----------|-----------|
+| CPUSEL/FRAMESEL register writes | Application responsibility (manual) | Written automatically by `Mcu_Init()` from ResourceAllocator config |
+
+
+```{WARNING}
+If your application or any BSW module manually writes CPUSEL or FRAMESEL registers, those writes must be removed. Duplicate writes after `Mcu_Init()` may overwrite the generated ownership configuration and cause unexpected peripheral behavior.
+```
+
+#### Migration Actions
+
+1. **Verify ResourceAllocator configuration:** Confirm that the ResourceAllocator plugin is configured with the correct CPU and frame ownership for each peripheral used in your project
+2. **Identify manual CPUSEL/FRAMESEL writes:** Search your application code and any BSW integration code for direct writes to CPUSEL and FRAMESEL registers for the peripherals listed above
+3. **Remove manual register writes:** Delete or disable all manual CPUSEL/FRAMESEL register writes that are now handled by `Mcu_Init()`
+4. **Regenerate MCU configuration files:** Regenerate `Mcu_Cfg.c` and `Mcu_Cfg.h` using the updated generator (see Change 1, step 1 — this step is shared)
+5. **Verify Compilation and runtime behavior:** Clean build, run on target, and confirm all peripherals are accessible from the expected CPU after `Mcu_Init()` completes
+
+### Change 2: McuSysClkDiv Recommended Configuration Update (Errata Advisory)
+
+#### Description
+
+Due to a silicon errata, issuing a device reset (XRSn — internal or external) can put the device into an unexpected fault state when `SYSCLKDIVSEL.PLLSYSCLKDIV = 0`, which corresponds to `McuSysClkDiv = 1` (divide by 1). To address this, the recommended default value of `McuSysClkDiv` has been changed from `1` to `2` across all example presets. The configurator tool now displays a warning whenever `McuSysClkDiv = 1` is configured.
+
+No automatic migration is performed — users who currently have `McuSysClkDiv = 1` must manually update their configuration to avoid the errata condition.
+
+```{WARNING}
+Silicon errata advisory: "System: Issuing device reset (XRSn) can cause unexpected fault if SYSCLKDIVSEL.PLLSYSCLKDIV = 0". If your configuration uses McuSysClkDiv = 1, update it to 2 or higher to avoid this condition.
+```
+
+#### Old vs New
+
+| Behavior | v02.01.01 | v02.02.00 |
+|----------|-----------|-----------|
+| `McuSysClkDiv` default value | `1` (divide by 1) | `2` (divide by 2) |
+| Configurator warning when `McuSysClkDiv = 1` | Not present | Warning shown |
+
+#### Migration Actions
+
+1. **Check current McuSysClkDiv value:** Open your Mcu plugin configuration and check the value of `McuSysClkDiv` in each clock setting
+2. **Update if set to 1:** If `McuSysClkDiv = 1`, change it to `2` or higher. Using a value of `1` (divide by 1) triggers the silicon errata condition where a device reset (XRSn) can cause an unexpected fault state
+3. **Regenerate and rebuild:** Regenerate configuration files and do a clean build
+
+```{NOTE}
+For full details on this errata, refer to the silicon errata document: https://www.ti.com/lit/er/sprz569c/sprz569c.pdf
+```
+
+---
+
 ## v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration
 
 ### Summary

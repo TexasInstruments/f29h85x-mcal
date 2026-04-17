@@ -1,0 +1,57 @@
+# DIO Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v01.01.00 (i.e release v26.00.00) from v01.01.00 (i.e release v01.04.01) Migration
+
+### Summary
+
+Version v01.01.00 updates DIO port identifier macros to comply with AUTOSAR naming guidelines:
+
+1. **Port Identifier Macro Rename**: Generated port identifier macros renamed from `GPIO_PORT_*` to `DIO_PORT_*` for AUTOSAR naming compliance.
+
+### Change 1: Port Identifier Macro Rename
+
+#### Description
+
+The generated port identifier macros in `Dio_Cfg.h` previously used a `GPIO_PORT_` prefix. These have been renamed to use the `DIO_PORT_` prefix to comply with AUTOSAR naming conventions (SRS_BSW_00321) and avoid potential conflicts with other module definitions.
+
+Any application code that directly references the `GPIO_PORT_*` macros must be updated.
+
+#### Old vs New Port Identifiers
+
+**Port Identifier Macro Mapping:**
+
+| v01.01.00 and older | v01.01.00 |
+|---------------------|-----------|
+| `GPIO_PORT_A` | `DIO_PORT_A` |
+| `GPIO_PORT_B` | `DIO_PORT_B` |
+| `GPIO_PORT_C` | `DIO_PORT_C` |
+| `GPIO_PORT_D` | `DIO_PORT_D` |
+| `GPIO_PORT_E` | `DIO_PORT_E` |
+| `GPIO_PORT_F` | `DIO_PORT_F` |
+| `GPIO_PORT_G` | `DIO_PORT_G` |
+| `GPIO_PORT_H` | `DIO_PORT_H` |
+
+**Pattern:** `GPIO_PORT_{X}` → `DIO_PORT_{X}` for all port identifiers.`
+
+**Code Example:**
+
+```c
+// v01.01.00 and older
+Dio_WritePort(GPIO_PORT_A, 0xFFFFFFFFU);
+
+// v01.01.00
+Dio_WritePort(DIO_PORT_A, 0xFFFFFFFFU);
+```
+
+#### Migration Actions
+
+1. **Search Application Code:** Find all references to `GPIO_PORT_A` through `GPIO_PORT_H` in your application code.
+2. **Replace Macro Names:** Update all references from `GPIO_PORT_*` to `DIO_PORT_*` (e.g., `GPIO_PORT_A` → `DIO_PORT_A`).
+3. **Regenerate Configuration:** Regenerate DIO configuration to get the updated `Dio_Cfg.h` with new macro names.
+4. **Verify Compilation:** Clean build and verify no compilation errors related to undefined `GPIO_PORT_*` symbols.
+
+```{NOTE}
+The `DioConf_DioPort_*` and `DioConf_DioChannel_*` symbolic name macros are unaffected by this change and do not require updates.
+```

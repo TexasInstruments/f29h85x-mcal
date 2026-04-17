@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>6.7. Port Module Migration &mdash; Documentation for F29H85x</title>
+  <title>6.8. Port Module Migration &mdash; Documentation for F29H85x</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.8. SPI Module Migration" href="Migration_Guide_Spi.html" />
-    <link rel="prev" title="6.6. MCU Module Migration" href="Migration_Guide_Mcu.html" /> 
+    <link rel="next" title="6.9. SPI Module Migration" href="Migration_Guide_Spi.html" />
+    <link rel="prev" title="6.7. MCU Module Migration" href="Migration_Guide_Mcu.html" /> 
 </head>
 
 <body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
@@ -69,33 +69,41 @@
 <li class="toctree-l1 current"><a class="reference internal" href="MigrationGuide_list.html">6. Migration Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="Migration_Guide_ResourceAllocator.html">6.1. Resource Allocator Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Can.html">6.2. CAN Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Gpt.html">6.3. GPT Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Fls.html">6.4. FLS Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Lin.html">6.5. LIN Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Mcu.html">6.6. MCU Module Migration</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">6.7. Port Module Migration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration">6.7.1. v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#summary">6.7.1.1. Summary</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-1-resource-allocator-introduction-and-device-variant-centralization">6.7.1.2. Change 1: Resource Allocator Introduction and Device Variant Centralization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Dio.html">6.3. DIO Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Gpt.html">6.4. GPT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Fls.html">6.5. FLS Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Lin.html">6.6. LIN Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Mcu.html">6.7. MCU Module Migration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.8. Port Module Migration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#v04-00-00-i-e-release-v26-00-00-from-v03-00-00-i-e-release-v01-04-01-migration">6.8.1. v04.00.00 (i.e release v26.00.00) from v03.00.00 (i.e release v01.04.01) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#summary">6.8.1.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-portphysicalpinid-enum-values-port-pin-prefix-added">6.8.1.2. Change 1: PortPhysicalPinId Enum Values — <code class="docutils literal notranslate"><span class="pre">PORT_PIN_</span></code> Prefix Added</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-muxmodesignaltype-peripheral-names-replaced-with">6.8.1.3. Change 2: MuxModeSignalType Peripheral Names — <code class="docutils literal notranslate"><span class="pre">/</span></code> Replaced with <code class="docutils literal notranslate"><span class="pre">_</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#v02-00-00-i-e-release-v01-03-00-from-v01-01-00-i-e-release-v01-02-00-migration">6.7.2. v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id1">6.7.2.1. Summary</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-1-port-pin-name-changes">6.7.2.2. Change 1: Port Pin Name Changes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-2-configuration-structure-name-change">6.7.2.3. Change 2: Configuration Structure Name Change</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration">6.8.2. v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">6.8.2.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-resource-allocator-introduction-and-device-variant-centralization">6.8.2.2. Change 1: Resource Allocator Introduction and Device Variant Centralization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#v02-00-00-i-e-release-v01-03-00-from-v01-01-00-i-e-release-v01-02-00-migration">6.8.3. v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">6.8.3.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-port-pin-name-changes">6.8.3.2. Change 1: Port Pin Name Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-configuration-structure-name-change">6.8.3.3. Change 2: Configuration Structure Name Change</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Spi.html">6.8. SPI Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Wdg.html">6.9. WDG Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Adc.html">6.10. CDD ADC Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ecap.html">6.11. CDD ECAP Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ipc.html">6.12. CDD IPC Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Sent.html">6.13. CDD SENT Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Pwm.html">6.14. CDD PWM Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Uart.html">6.15. CDD UART Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Xbar.html">6.16. CDD XBAR Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Spi.html">6.9. SPI Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Wdg.html">6.10. WDG Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Adc.html">6.11. CDD ADC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ecap.html">6.12. CDD ECAP Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_I2c.html">6.13. CDD I2C Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ipc.html">6.14. CDD IPC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Sent.html">6.15. CDD SENT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Pwm.html">6.16. CDD PWM Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Uart.html">6.17. CDD UART Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Xbar.html">6.18. CDD XBAR Module Migration</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">7. API guide</a></li>
@@ -118,7 +126,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="MigrationGuide_list.html"><span class="section-number">6. </span>Migration Guide</a> &raquo;</li>
-      <li><span class="section-number">6.7. </span>Port Module Migration</li>
+      <li><span class="section-number">6.8. </span>Port Module Migration</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -128,12 +136,232 @@
            <div itemprop="articleBody">
              
   <section id="port-module-migration">
-<h1><span class="section-number">6.7. </span>Port Module Migration<a class="headerlink" href="#port-module-migration" title="Link to this heading"></a></h1>
+<h1><span class="section-number">6.8. </span>Port Module Migration<a class="headerlink" href="#port-module-migration" title="Link to this heading"></a></h1>
 <p><strong>Migration Approach:</strong> Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.</p>
-<section id="v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration">
-<h2><span class="section-number">6.7.1. </span>v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration<a class="headerlink" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration" title="Link to this heading"></a></h2>
+<section id="v04-00-00-i-e-release-v26-00-00-from-v03-00-00-i-e-release-v01-04-01-migration">
+<h2><span class="section-number">6.8.1. </span>v04.00.00 (i.e release v26.00.00) from v03.00.00 (i.e release v01.04.01) Migration<a class="headerlink" href="#v04-00-00-i-e-release-v26-00-00-from-v03-00-00-i-e-release-v01-04-01-migration" title="Link to this heading"></a></h2>
 <section id="summary">
-<h3><span class="section-number">6.7.1.1. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.8.1.1. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h3>
+<p>This release contains plugin-only changes. The Port driver API is unchanged. The EB Tresos plugin configuration is updated for AUTOSAR compliance and improved device-variant support:</p>
+<ol class="arabic simple">
+<li><p><strong>PortPhysicalPinId Enum Prefix Added</strong>: Physical pin number enum values now carry a <code class="docutils literal notranslate"><span class="pre">PORT_PIN_</span></code> prefix to comply with AUTOSAR ENUMERATION naming rules.</p></li>
+<li><p><strong>Peripheral Signal Name Slash Replacement</strong>: <code class="docutils literal notranslate"><span class="pre">/</span></code> characters in <code class="docutils literal notranslate"><span class="pre">MuxModeSignalType</span></code> enum values replaced with <code class="docutils literal notranslate"><span class="pre">_</span></code> for AUTOSAR short name compliance.</p></li>
+</ol>
+</section>
+<section id="change-1-portphysicalpinid-enum-values-port-pin-prefix-added">
+<h3><span class="section-number">6.8.1.2. </span>Change 1: PortPhysicalPinId Enum Values — <code class="docutils literal notranslate"><span class="pre">PORT_PIN_</span></code> Prefix Added<a class="headerlink" href="#change-1-portphysicalpinid-enum-values-port-pin-prefix-added" title="Link to this heading"></a></h3>
+<section id="description">
+<h4><span class="section-number">6.8.1.2.1. </span>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h4>
+<p>AUTOSAR requires that all ENUMERATION literals begin with an alphabetic character. Previous releases used numeric-only values for <code class="docutils literal notranslate"><span class="pre">PortPhysicalPinId</span></code> (e.g., <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">10</span></code>, <code class="docutils literal notranslate"><span class="pre">100</span></code>), which violates this rule. All <code class="docutils literal notranslate"><span class="pre">PortPhysicalPinId</span></code> enum entries now carry the <code class="docutils literal notranslate"><span class="pre">PORT_PIN_</span></code> prefix.</p>
+<p>This change affects the generated ARXML and any existing EB Tresos configuration that has a <code class="docutils literal notranslate"><span class="pre">PortPhysicalPinId</span></code> parameter set.</p>
+</section>
+<section id="old-vs-new-portphysicalpinid-values">
+<h4><span class="section-number">6.8.1.2.2. </span>Old vs New PortPhysicalPinId Values<a class="headerlink" href="#old-vs-new-portphysicalpinid-values" title="Link to this heading"></a></h4>
+<p><strong>PortPhysicalPinId Value Mapping (examples):</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>v03.00.00</p></th>
+<th class="head"><p>v04.00.00</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PORT_PIN_1</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PORT_PIN_10</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">100</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PORT_PIN_100</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">125</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PORT_PIN_125</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pattern:</strong> <code class="docutils literal notranslate"><span class="pre">{N}</span></code> → <code class="docutils literal notranslate"><span class="pre">PORT_PIN_{N}</span></code> for all physical pin number values.</p>
+</section>
+<section id="migration-actions">
+<h4><span class="section-number">6.8.1.2.3. </span>Migration Actions<a class="headerlink" href="#migration-actions" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Open your Port configuration</strong> in EB Tresos.</p></li>
+<li><p><strong>Run Auto-calculate</strong> in EB Tresos to update the PortPhysicalPinId value.</p></li>
+<li><p><strong>Regenerate the configuration</strong> and verify that the generated code compiles without errors.</p></li>
+</ol>
+<figure class="align-center" id="id11">
+<a class="reference internal image-reference" href="../_images/02_01_port_physical_pin_id_old.png"><img alt="PortPhysicalPinId old numeric values" src="../_images/02_01_port_physical_pin_id_old.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 6.29 </span><span class="caption-text">v03.00.00: PortPhysicalPinId dropdown showing numeric-only values</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id12">
+<a class="reference internal image-reference" href="../_images/02_02_port_physical_pin_id_new.png"><img alt="PortPhysicalPinId new PORT_PIN_ prefixed values" src="../_images/02_02_port_physical_pin_id_new.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 6.30 </span><span class="caption-text">v04.00.00: PortPhysicalPinId dropdown showing PORT_PIN_ prefixed values</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<hr class="docutils" />
+<section id="change-2-muxmodesignaltype-peripheral-names-replaced-with">
+<h3><span class="section-number">6.8.1.3. </span>Change 2: MuxModeSignalType Peripheral Names — <code class="docutils literal notranslate"><span class="pre">/</span></code> Replaced with <code class="docutils literal notranslate"><span class="pre">_</span></code><a class="headerlink" href="#change-2-muxmodesignaltype-peripheral-names-replaced-with" title="Link to this heading"></a></h3>
+<section id="id1">
+<h4><span class="section-number">6.8.1.3.1. </span>Description<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>Some peripheral signal type names in the <code class="docutils literal notranslate"><span class="pre">PortPinPeripheralSignal</span></code> / <code class="docutils literal notranslate"><span class="pre">MuxModeSignalType</span></code> enumeration previously contained <code class="docutils literal notranslate"><span class="pre">/</span></code> characters (e.g., <code class="docutils literal notranslate"><span class="pre">A0/C24/DACA_OUT</span></code>). The <code class="docutils literal notranslate"><span class="pre">/</span></code> character is not valid in AUTOSAR short names. All such entries now use <code class="docutils literal notranslate"><span class="pre">_</span></code> instead of <code class="docutils literal notranslate"><span class="pre">/</span></code>.</p>
+<p>This change affects any existing configuration that references a peripheral signal name containing a <code class="docutils literal notranslate"><span class="pre">/</span></code>.</p>
+</section>
+<section id="old-vs-new-signal-names">
+<h4><span class="section-number">6.8.1.3.2. </span>Old vs New Signal Names<a class="headerlink" href="#old-vs-new-signal-names" title="Link to this heading"></a></h4>
+<p><strong>MuxModeSignalType Name Mapping (examples):</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>v03.00.00</p></th>
+<th class="head"><p>v04.00.00</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">A0/C24/DACA_OUT</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">A0_C24_DACA_OUT</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pattern:</strong> All <code class="docutils literal notranslate"><span class="pre">/</span></code> characters in signal type names → <code class="docutils literal notranslate"><span class="pre">_</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Most GPIO and non-analog signal names are unaffected. Only entries where a single pin serves multiple analog functions (e.g., ADC channels that share a pin with DAC outputs) used the <code class="docutils literal notranslate"><span class="pre">/</span></code> separator. Review your <code class="docutils literal notranslate"><span class="pre">PortPinPeripheralSignal</span></code> selections if you configured any ANALOG or ADC-related peripheral signals.</p>
+</div>
+</section>
+<section id="id2">
+<h4><span class="section-number">6.8.1.3.3. </span>Migration Actions<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Open your Port configuration</strong> in EB Tresos.</p></li>
+<li><p><strong>Run Auto-calculate</strong> in EB Tresos to update the PortPhysicalPinId value.</p></li>
+<li><p><strong>Regenerate the configuration</strong> and run AUTOSAR validation to confirm no short-name errors remain.</p></li>
+</ol>
+<figure class="align-center" id="id13">
+<a class="reference internal image-reference" href="../_images/03_01_port_signal_old_slash.png"><img alt="PortPinPeripheralSignal old slash-based name" src="../_images/03_01_port_signal_old_slash.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 6.31 </span><span class="caption-text">v03.00.00: PortPinPeripheralSignal showing slash-separated signal name (e.g. A0/C24/DACA_OUT)</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id14">
+<a class="reference internal image-reference" href="../_images/03_02_port_signal_new_underscore.png"><img alt="PortPinPeripheralSignal new underscore-based name" src="../_images/03_02_port_signal_new_underscore.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 6.32 </span><span class="caption-text">v04.00.00: PortPinPeripheralSignal showing underscore-replaced signal name (e.g. A0_C24_DACA_OUT)</span><a class="headerlink" href="#id14" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The code snippet given below can be used to migrate the PORT module changes from v03.00.00 to v04.00.00.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Script to find all Port.xdm files recursively in a given directory and apply</span>
+<span class="sd">the following transformations:</span>
+
+<span class="sd">1. PortPhysicalPinId: Prefix values with PORT_PIN_ if not already prefixed.</span>
+<span class="sd">   Example: value=&quot;G2&quot; -&gt; value=&quot;PORT_PIN_G2&quot;</span>
+
+<span class="sd">2. PortPinPeripheralSignal: Replace &#39;/&#39; and &#39;,&#39; with &#39;_&#39; in values.</span>
+<span class="sd">   Example: value=&quot;A0/C24/DACA_OUT&quot; -&gt; value=&quot;A0_C24_DACA_OUT&quot;</span>
+
+<span class="sd">3. PortPinName: Replace &#39;/&#39; and &#39;,&#39; with &#39;_&#39; in values.</span>
+<span class="sd">   Example: value=&quot;A6/E24,GPIO224&quot; -&gt; value=&quot;A6_E24_GPIO224&quot;</span>
+
+<span class="sd">Usage: python fix_port_pin_id.py &lt;folder_path&gt;</span>
+<span class="sd">  Example: python fix_port_pin_id.py .</span>
+<span class="sd">  Example: python fix_port_pin_id.py examples/Port</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Usage: python fix_port_pin_id.py &lt;folder_path&gt;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Example: python fix_port_pin_id.py .&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Example: python fix_port_pin_id.py examples/Port&quot;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">search_path</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">search_path</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: &#39;</span><span class="si">{</span><span class="n">search_path</span><span class="si">}</span><span class="s2">&#39; is not a valid directory.&quot;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Pattern 1: PortPhysicalPinId - prefix with PORT_PIN_</span>
+<span class="n">pattern_physical_pin</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s1">&#39;(name=&quot;PortPhysicalPinId&quot;\s+type=&quot;ENUMERATION&quot;\s+value=&quot;)&#39;</span>
+    <span class="sa">r</span><span class="s1">&#39;((?!PORT_PIN_)([^&quot;]+))&#39;</span>
+    <span class="sa">r</span><span class="s1">&#39;(&quot;)&#39;</span>
+<span class="p">)</span>
+<span class="n">replacement_physical_pin</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\1PORT_PIN_\3\4&#39;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">replace_slash_comma</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace &#39;/&#39; and &#39;,&#39; with &#39;_&#39; in the matched value.&quot;&quot;&quot;</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">suffix</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">new_value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">new_value</span> <span class="o">+</span> <span class="n">suffix</span>
+
+
+<span class="c1"># Pattern 2: PortPinPeripheralSignal - replace / and , with _</span>
+<span class="n">pattern_peripheral_signal</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s1">&#39;(name=&quot;PortPinPeripheralSignal&quot;\s+type=&quot;ENUMERATION&quot;\s+value=&quot;)&#39;</span>
+    <span class="sa">r</span><span class="s1">&#39;([^&quot;]*[/,][^&quot;]*)&#39;</span>
+    <span class="sa">r</span><span class="s1">&#39;(&quot;)&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># Pattern 3: PortPinName - replace / and , with _</span>
+<span class="n">pattern_pin_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s1">&#39;(name=&quot;PortPinName&quot;\s+type=&quot;ENUMERATION&quot;\s+value=&quot;)&#39;</span>
+    <span class="sa">r</span><span class="s1">&#39;([^&quot;]*[/,][^&quot;]*)&#39;</span>
+    <span class="sa">r</span><span class="s1">&#39;(&quot;)&#39;</span>
+<span class="p">)</span>
+
+<span class="n">files_updated</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">files_skipped</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">search_path</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="o">==</span> <span class="s2">&quot;Port.xdm&quot;</span><span class="p">:</span>
+            <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+            <span class="n">new_content</span> <span class="o">=</span> <span class="n">content</span>
+
+            <span class="c1"># Apply Pattern 1: PortPhysicalPinId</span>
+            <span class="n">new_content</span> <span class="o">=</span> <span class="n">pattern_physical_pin</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
+                <span class="n">replacement_physical_pin</span><span class="p">,</span> <span class="n">new_content</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Apply Pattern 2: PortPinPeripheralSignal</span>
+            <span class="n">new_content</span> <span class="o">=</span> <span class="n">pattern_peripheral_signal</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
+                <span class="n">replace_slash_comma</span><span class="p">,</span> <span class="n">new_content</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Apply Pattern 3: PortPinName</span>
+            <span class="n">new_content</span> <span class="o">=</span> <span class="n">pattern_pin_name</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replace_slash_comma</span><span class="p">,</span> <span class="n">new_content</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">new_content</span> <span class="o">!=</span> <span class="n">content</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new_content</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Updated: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">files_updated</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No changes: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">files_skipped</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Done. Updated: </span><span class="si">{</span><span class="n">files_updated</span><span class="si">}</span><span class="s2">, No changes: </span><span class="si">{</span><span class="n">files_skipped</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration">
+<h2><span class="section-number">6.8.2. </span>v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration<a class="headerlink" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3><span class="section-number">6.8.2.1. </span>Summary<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
 <p>Version v03.00.00 introduces <strong>Resource Allocator as a mandatory architectural foundation</strong>. This represents a fundamental shift from direct parameter configuration to centralized resource management with device-specific pin configurations:</p>
 <ol class="arabic simple">
 <li><p><strong>Resource Allocator Introduction and Device Variant Centralization</strong>: Resource Allocator becomes mandatory with device variant selection moved from Port module to centralized Resource Allocator</p></li>
@@ -141,27 +369,27 @@
 <p><strong>PREREQUISITE:</strong> Complete <a class="reference internal" href="Migration_Guide_ResourceAllocator.html#module-setup-and-configuration"><span class="std std-ref">Resource Allocator Setup</span></a> before proceeding.</p>
 </section>
 <section id="change-1-resource-allocator-introduction-and-device-variant-centralization">
-<h3><span class="section-number">6.7.1.2. </span>Change 1: Resource Allocator Introduction and Device Variant Centralization<a class="headerlink" href="#change-1-resource-allocator-introduction-and-device-variant-centralization" title="Link to this heading"></a></h3>
-<section id="description">
-<h4><span class="section-number">6.7.1.2.1. </span>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h4>
+<h3><span class="section-number">6.8.2.2. </span>Change 1: Resource Allocator Introduction and Device Variant Centralization<a class="headerlink" href="#change-1-resource-allocator-introduction-and-device-variant-centralization" title="Link to this heading"></a></h3>
+<section id="id4">
+<h4><span class="section-number">6.8.2.2.1. </span>Description<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
 <p>Resource Allocator becomes a mandatory architectural foundation for the Port module, with device variant selection moved to centralized resource management. Resource Allocator determines available pins and mux options, while device-specific pin configurations, mux modes, and package information are now derived from Resource Allocator settings.</p>
 </section>
 <section id="old-vs-new-configuration">
-<h4><span class="section-number">6.7.1.2.2. </span>Old vs New Configuration<a class="headerlink" href="#old-vs-new-configuration" title="Link to this heading"></a></h4>
-<p><strong>Previous Configuration (v02.00.00):</strong>
+<h4><span class="section-number">6.8.2.2.2. </span>Old vs New Configuration<a class="headerlink" href="#old-vs-new-configuration" title="Link to this heading"></a></h4>
+<p><strong>Old (v02.00.00):</strong>
 Direct device variant selection was used within Port module configuration.</p>
-<figure class="align-center" id="id6">
-<a class="reference internal image-reference" href="../_images/02_01_port_module_old_config.png"><img alt="Old Port Config" src="../_images/02_01_port_module_old_config.png" style="width: 80%;" /></a>
+<figure class="align-center" id="id15">
+<a class="reference internal image-reference" href="../_images/01_01_port_module_old_config.png"><img alt="Old Port Config" src="../_images/01_01_port_module_old_config.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 6.26 </span><span class="caption-text">v02.00.00: PortDeviceVariant configured within Port module</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 6.33 </span><span class="caption-text">v02.00.00: PortDeviceVariant configured within Port module</span><a class="headerlink" href="#id15" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p><strong>New Configuration (v03.00.00):</strong>
+<p><strong>New (v03.00.00):</strong>
 Port module automatically reads device variant information from Resource Allocator to determine available pins and mux options.</p>
-<figure class="align-center" id="id7">
-<a class="reference internal image-reference" href="../_images/02_02_port_module_new_config.png"><img alt="New Port Config" src="../_images/02_02_port_module_new_config.png" style="width: 80%;" /></a>
+<figure class="align-center" id="id16">
+<a class="reference internal image-reference" href="../_images/01_02_port_module_new_config.png"><img alt="New Port Config" src="../_images/01_02_port_module_new_config.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 6.27 </span><span class="caption-text">v03.00.00: Port module configuration without PortDeviceVariant - device settings now derived from Resource Allocator</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 6.34 </span><span class="caption-text">v03.00.00: Port module configuration without PortDeviceVariant - device settings now derived from Resource Allocator</span><a class="headerlink" href="#id16" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p><strong>Parameter Source Changes:</strong></p>
@@ -192,8 +420,8 @@ Port module automatically reads device variant information from Resource Allocat
 </tbody>
 </table>
 </section>
-<section id="migration-actions">
-<h4><span class="section-number">6.7.1.2.3. </span>Migration Actions<a class="headerlink" href="#migration-actions" title="Link to this heading"></a></h4>
+<section id="id5">
+<h4><span class="section-number">6.8.2.2.3. </span>Migration Actions<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Setup Resource Allocator:</strong> Follow <a class="reference internal" href="Migration_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Setup</span></a> with Device, Variant, and Package parameters</p></li>
 <li><p><strong>Navigate to Port Configuration:</strong> Navigate to <strong>Port → PortContainer → PortPin</strong></p></li>
@@ -207,9 +435,9 @@ Port module automatically reads device variant information from Resource Allocat
 </section>
 </section>
 <section id="v02-00-00-i-e-release-v01-03-00-from-v01-01-00-i-e-release-v01-02-00-migration">
-<h2><span class="section-number">6.7.2. </span>v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration<a class="headerlink" href="#v02-00-00-i-e-release-v01-03-00-from-v01-01-00-i-e-release-v01-02-00-migration" title="Link to this heading"></a></h2>
-<section id="id1">
-<h3><span class="section-number">6.7.2.1. </span>Summary<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<h2><span class="section-number">6.8.3. </span>v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration<a class="headerlink" href="#v02-00-00-i-e-release-v01-03-00-from-v01-01-00-i-e-release-v01-02-00-migration" title="Link to this heading"></a></h2>
+<section id="id6">
+<h3><span class="section-number">6.8.3.1. </span>Summary<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
 <p>Version v02.00.00 introduces major changes that require attention when migrating from v01.01.00 or any older versions:</p>
 <ol class="arabic simple">
 <li><p><strong>Port Pin Name Changes</strong>: PortPinName and PortPinPeripheralSignal naming conventions updated, affecting configuration compatibility</p></li>
@@ -217,13 +445,13 @@ Port module automatically reads device variant information from Resource Allocat
 </ol>
 </section>
 <section id="change-1-port-pin-name-changes">
-<h3><span class="section-number">6.7.2.2. </span>Change 1: Port Pin Name Changes<a class="headerlink" href="#change-1-port-pin-name-changes" title="Link to this heading"></a></h3>
-<section id="id2">
-<h4><span class="section-number">6.7.2.2.1. </span>Description<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<h3><span class="section-number">6.8.3.2. </span>Change 1: Port Pin Name Changes<a class="headerlink" href="#change-1-port-pin-name-changes" title="Link to this heading"></a></h3>
+<section id="id7">
+<h4><span class="section-number">6.8.3.2.1. </span>Description<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
 <p>Version v02.00.00 updates <code class="docutils literal notranslate"><span class="pre">PortPinName</span></code> and <code class="docutils literal notranslate"><span class="pre">PortPinPeripheralSignal</span></code> naming conventions, impacting configuration parameters. Port configurations from v01.01.00 or older versions are not directly compatible with v02.00.00 due to these naming changes.</p>
 </section>
 <section id="old-vs-new-pin-naming">
-<h4><span class="section-number">6.7.2.2.2. </span>Old vs New Pin Naming<a class="headerlink" href="#old-vs-new-pin-naming" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.8.3.2.2. </span>Old vs New Pin Naming<a class="headerlink" href="#old-vs-new-pin-naming" title="Link to this heading"></a></h4>
 <p><strong>Pin Naming Convention Changes:</strong></p>
 <table class="docutils align-default">
 <thead>
@@ -248,8 +476,8 @@ Port module automatically reads device variant information from Resource Allocat
 </tbody>
 </table>
 </section>
-<section id="id3">
-<h4><span class="section-number">6.7.2.2.3. </span>Migration Actions<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<section id="id8">
+<h4><span class="section-number">6.8.3.2.3. </span>Migration Actions<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Open Configuration:</strong> Open your existing configuration in the latest plugin version</p></li>
 <li><p><strong>Identify Incompatible Configurations:</strong> The plugin will automatically flag incompatible pin configurations</p></li>
@@ -259,13 +487,13 @@ Port module automatically reads device variant information from Resource Allocat
 </section>
 </section>
 <section id="change-2-configuration-structure-name-change">
-<h3><span class="section-number">6.7.2.3. </span>Change 2: Configuration Structure Name Change<a class="headerlink" href="#change-2-configuration-structure-name-change" title="Link to this heading"></a></h3>
-<section id="id4">
-<h4><span class="section-number">6.7.2.3.1. </span>Description<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<h3><span class="section-number">6.8.3.3. </span>Change 2: Configuration Structure Name Change<a class="headerlink" href="#change-2-configuration-structure-name-change" title="Link to this heading"></a></h3>
+<section id="id9">
+<h4><span class="section-number">6.8.3.3.1. </span>Description<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
 <p>Version v02.00.00 changes the configuration structure name for AUTOSAR TPS_ECUC_08011 compliance, requiring updates to application code that references the Port configuration structure.</p>
 </section>
 <section id="old-vs-new-configuration-structure">
-<h4><span class="section-number">6.7.2.3.2. </span>Old vs New Configuration Structure<a class="headerlink" href="#old-vs-new-configuration-structure" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.8.3.3.2. </span>Old vs New Configuration Structure<a class="headerlink" href="#old-vs-new-configuration-structure" title="Link to this heading"></a></h4>
 <p><strong>Configuration Structure Name Mapping:</strong></p>
 <table class="docutils align-default">
 <thead>
@@ -288,8 +516,8 @@ Port module automatically reads device variant information from Resource Allocat
 </pre></div>
 </div>
 </section>
-<section id="id5">
-<h4><span class="section-number">6.7.2.3.3. </span>Migration Actions<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<section id="id10">
+<h4><span class="section-number">6.8.3.3.3. </span>Migration Actions<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Search Application Code:</strong> Find all references to <code class="docutils literal notranslate"><span class="pre">Port_PortConfigSet</span></code> in your application code</p></li>
 <li><p><strong>Replace Structure Name:</strong> Update all references from <code class="docutils literal notranslate"><span class="pre">Port_PortConfigSet</span></code> to <code class="docutils literal notranslate"><span class="pre">Port_Config</span></code></p></li>
@@ -306,8 +534,8 @@ Port module automatically reads device variant information from Resource Allocat
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Migration_Guide_Mcu.html" class="btn btn-neutral float-left" title="6.6. MCU Module Migration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Migration_Guide_Spi.html" class="btn btn-neutral float-right" title="6.8. SPI Module Migration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Migration_Guide_Mcu.html" class="btn btn-neutral float-left" title="6.7. MCU Module Migration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Migration_Guide_Spi.html" class="btn btn-neutral float-right" title="6.9. SPI Module Migration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

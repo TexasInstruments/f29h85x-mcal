@@ -264,7 +264,11 @@ Example:
 | MCAL-35835 | Can, CDD SENT | S3-Minor | CAN, CDD SENT: Pointer-list arrays incorrectly declared using `CONST(Type*, memclass)` instead of `CONSTP2CONST` | C29xMCAL_01.04.01 | Config arrays holding pointers to const objects (e.g., baud-rate config lists, mailbox lists, SENT channel/MTP config lists) were declared with `CONST(Type*, memclass)`, which expands to a non-const pointer to const data. This caused the linker to place these arrays in `.bss`/`.data` sections instead of const/rodata sections, resulting in memmap section check failures for CAN and CDD SENT. No functional behavior is affected at runtime. | 1. Build any CAN or CDD SENT test or example. <br>2. Read the generated MAP file. <br>3. Observe that the MAP file reports unmapped sections (`.bss.CanConfigSet_*_List`, `.data.CddSentConfig_*_List`). | Replaced all `CONST(Type*, memclass)` declarations for pointer-list arrays with the correct `CONSTP2CONST(Type, memclass, ptrclass)` AUTOSAR macro in the EB Tresos generator templates (`Can_Cfg.c`, `Can_PBcfg.c`, `Can_Cfg.h`, `Cdd_Sent_Cfg.c`). Updated the corresponding struct field types in `Can.h` and `Cdd_Sent.h` from `const Type**` to `const Type * const *` to match, and updated the local variable in `Cdd_Sent_Priv.c` that receives a list element from `P2VAR` to `P2CONST`. All CAN and CDD SENT output files must be regenerated from EB Tresos to pick up the template fixes. |
 | MCAL-35808 | Mcal_Lib | S3-Minor | Dependency of Mcal_Lib_MemMap.h for MCAL drivers | C29xMCAL_01.04.01 | Potential MemMap generation issues due to missing function documentation | Mcal_Lib_MemMap.h is included in sys_pmu.c. |  Corrected the MCAL_Lib_Bswmd.arxml with Module definition and other required parameters to create the Module and generate MemMap in Davinci|
 | MCAL-35347 | CDD I2C | S2-Major | I2C: Cancel API is not functional | C29xMCAL_01.04.00 | The `I2C_Cancel` API does not successfully cancel an ongoing I2C transfer in either polling or interrupt mode, which may cause the driver to hang and result in unexpected behavior in applications relying on transfer cancellation. | 1. Start an I2C transfer. <br>2. Immediately cancel the transfer by invoking the `I2C_Cancel` API. <br>3. Observe that the cancellation does not take effect and the driver may hang. | Implemented the `I2C_Cancel` API to correctly abort an ongoing I2C transfer in both polling and interrupt modes, ensuring the driver returns to an idle state after cancellation. |
-| MCAL-32321 | All | S2-Major | All Modules: Link time optimization is not verified for all modules | C29xMCAL_01.03.00 | Link time optimization (LTO) had not been verified across all modules, which could cause unexpected behavior or build issues if enabled. | 1. Add `-flto` flag to compiler options. <br>2. Build the MCAL project. <br>3. Behavior is not verified there might be unexpecetd issues. | Verified link time optimization (LTO) across all MCAL modules. LTO is now supported and validated for all drivers. |
+| MCAL-32321 | All | S2-Major | All Modules: Link time optimization is not verified for all modules | C29xMCAL_01.03.00 | Link time optimization (LTO) had not been verified across all modules, which could cause unexpected behavior or build issues if enabled. | 1. Add `-flto` flag to compiler options. <br>2. Build the MCAL project. <br>3. Behavior is not verified there might be unexpected issues. | Verified link time optimization (LTO) across all MCAL modules. LTO is now supported and validated for all drivers. |
+| MCAL-36814 | All | S3-Minor | All Modules: MainFunction execution context incorrectly set to UNSPECIFIED in bswmd.arxml | C29xMCAL_01.04.01 | The main function execution context in bswmd.arxml files for all MCAL modules was set to UNSPECIFIED instead of TASK. This may cause integration issues with BSW tooling that validates the execution context of scheduled main functions. | 1. Open the bswmd.arxml file for any MCAL module. <br>2. Inspect the `<EXECUTION-CONTEXT>` element for the main function entry. <br>3. Observe that the context is set to UNSPECIFIED instead of TASK. | Updated all MCAL module bswmd.arxml files to set the main function execution context to TASK as required by the AUTOSAR specification. |
+| MCAL-36584 | All | S3-Minor | All Modules: BSWModuleEntry incorrectly uses expectedEntry instead of implementedEntry in bswmd.arxml | C29xMCAL_01.00.00 <br>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01 | The bswmd.arxml files for all MCAL modules used a mix of `expectedEntry` and `implementedEntry` attributes for BSWModuleEntry elements. All entries should use `implementedEntry` to correctly reflect the implemented interface, which may cause validation failures in AUTOSAR tooling. | 1. Open the bswmd.arxml file for any MCAL module. <br>2. Inspect the BSWModuleEntry elements. <br>3. Observe that some entries use `expectedEntry` instead of `implementedEntry`. | Replaced all `expectedEntry` attributes with `implementedEntry` in the bswmd.arxml files across all MCAL modules to correctly reflect the implemented BSW module interface. |
+| MCAL-36562 | CDD IPC | S3-Minor | CDD IPC: Incorrect IPC instances reserved when CddIpcReservedInstances is set to 1 | C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01 | When `CddIpcReservedInstances` is set to 1, the wrong IPC instances were being reserved — INST2 was skipped and INST3 was incorrectly included instead, resulting in non-continuous instance numbering. This causes incorrect IPC instances to be available for configuration in EB Tresos. | 1. Open EB Tresos with the CDD IPC plugin. <br>2. Set `CddIpcReservedInstances` to 1. <br>3. Observe the available IPC instances — INST2 is missing and INST3 is incorrectly included. | Corrected the IPC instance reservation logic to ensure continuous and correct instance numbering when `CddIpcReservedInstances` is set to 1. |
+| MCAL-35788 | Mcal_Lib | S2-Major | Mcal_Lib: Symbol redefinition conflict for Mcalib_BromStatus and McalLib_DeviceCalibrationData when used alongside f29x_sdk | C29xMCAL_01.03.00 | When MCAL and f29x_sdk are used together, `Mcalib_BromStatus` and `McalLib_DeviceCalibrationData` are defined as constants in both packages, causing a linker redefinition conflict. If a customer renames these symbols in MCAL to resolve the conflict, incorrect ADC trim values are loaded with no warning given, resulting in degraded MCU and CDD ADC performance. | 1. Use MCAL together with f29x_sdk in the same project. <br>2. Observe linker redefinition errors for `Mcalib_BromStatus` and `McalLib_DeviceCalibrationData`. <br>3. Rename the symbols in MCAL to resolve the conflict. <br>4. Observe that MCU and CDD ADC produce unexpected results due to incorrect trim values being loaded. | Changed `Mcalib_BromStatus` and `McalLib_DeviceCalibrationData` in `Mcal_Lib_BootRom.c` from constant definitions to pointers referencing the reserved memory locations. This eliminates the redefinition conflict when used alongside f29x_sdk while ensuring the correct trim values are always accessed. |
 
 ## Known Issues And Limitations
 
@@ -4871,7 +4875,7 @@ F29H85x MCAL consists of three main components, Micro-controller abstraction lay
 
 * **drivers**: The drivers folder includes driver code of MCAL modules. The MCAL drivers implement the Software specification as mentioned in the AUTOSAR 4.3.1 release. It also contains basic software stubs and hardware register information.
 
-* **examples**: The examples folder includes bare metal example applications for the MCAL driver modules that can be compiled and run on hardware. Additionally, the device support and AppUtils folders are included to support Flash-programming and UART console functionality.
+* **examples**: The examples folder includes bare metal example applications for the MCAL driver modules that can be compiled and run on hardware. Additionally, the device support and AppUtils folders are included to support Flash-programming and UART console functionality. Where applicable, examples include device-specific configuration sub-folders for supported device variants (F29H85x, F29P32x, F29P58x).
 
 * **plugins**: The plugins folder includes plugins for the MCAL modules that can be loaded, compiled and generate configuration files with EB Tresos Studio software.
 
@@ -4892,17 +4896,26 @@ F29H85x MCAL consists of three main components, Micro-controller abstraction lay
  ┣ 📂**examples**\
  ┃ ┣ 📂ModuleName\
  ┃ ┃ ┣ 📂ModuleName_Example\
- ┃ ┃ ┃ ┣ 📂CCS\
- ┃ ┃ ┃ ┃ ┗ 📜ModuleName_Example.projectspec : *Project template which can be imported into CCS*\
- ┃ ┃ ┃ ┣ 📂ModuleName_config\
- ┃ ┃ ┃ ┃ ┣ 📂config\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName.xdm : *Generated EB Tresos config file in .xdm format*\
- ┃ ┃ ┃ ┃ ┣ 📂include\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.h : *Contains the generated pre-compiler configuration header.*\
- ┃ ┃ ┃ ┃ ┣ 📂src\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.c or ModuleName_LCfg.c or ModuleName_PBCfg.c : *Contains the pre/Link/Post build configuration parameters.*\
- ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
- ┃ ┃ ┃ ┣ 📜ModuleName_example.c : *Example application for driver*\
+ ┃ ┃ ┃ ┣ 📂Common\
+ ┃ ┃ ┃ ┃ ┗ 📂tresos\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ModuleName.xdm : *Common EB Tresos config files shared across device variants*\
+ ┃ ┃ ┃ ┣ 📂**F29H85x**\ *(device-specific sub-folder, also F29P32x / F29P58x)*\
+ ┃ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜ModuleName_Example.projectspec : *Project template which can be imported into CCS*\
+ ┃ ┃ ┃ ┃ ┗ 📂ModuleName_Example_Config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ModuleName.xdm : *Device-specific EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂output\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ModuleName_Cfg.h : *Contains the generated pre-compiler configuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ModuleName_Cfg.c or ModuleName_PBcfg.c : *Contains the pre/Post build configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂swcd\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ModuleName_BSWMD.arxml : *Generated Base Software Module Description*\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜ModuleName_Example.c : *Example application for driver*\
+ ┃ ┃ ┃ ┣ 📜ModuleName_Example.h\
  ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
  ┃ ┗ 📜CMakeLists.txt\
  ┣ 📂**plugins**\
@@ -5047,7 +5060,9 @@ You can downloaded CCS from [ti.com](https://www.ti.com/tool/CCSTUDIO#downloads)
  ┃ ┣ 📂AppUtils\
  ┃ ┣ 📂Can\
  ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Dma\
  ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_I2c\
  ┃ ┣ 📂Cdd_Ipc\
  ┃ ┣ 📂Cdd_Pwm\
  ┃ ┣ 📂Cdd_Sent\
@@ -5063,11 +5078,14 @@ You can downloaded CCS from [ti.com](https://www.ti.com/tool/CCSTUDIO#downloads)
  ┃ ┃ ┣ 📜CMakeLists.txt\
  ┃ ┃ ┗ 📜makefile.defs\
  ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Empty_Projects\
  ┃ ┣ 📂Fls\
+ ┃ ┣ 📂Fls_Fapi\
  ┃ ┣ 📂Gpt\
  ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcu\
  ┃ ┣ 📂Port\
+ ┃ ┣ 📂Rtdma\
  ┃ ┣ 📂Spi\
  ┃ ┗ 📂Wdg\
  ┣ 📂plugins\
@@ -5097,7 +5115,9 @@ Start-up code is for reference only, it should not be used as-is in a typical AU
  ┃ ┃ ┗ 📜CMakeLists.txt\
  ┃ ┣ 📂Can\
  ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Dma\
  ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_I2c\
  ┃ ┣ 📂Cdd_Ipc\
  ┃ ┣ 📂Cdd_Pwm\
  ┃ ┣ 📂Cdd_Sent\
@@ -5105,11 +5125,14 @@ Start-up code is for reference only, it should not be used as-is in a typical AU
  ┃ ┣ 📂Cdd_Xbar\
  ┃ ┣ 📂DeviceSupport\
  ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Empty_Projects\
  ┃ ┣ 📂Fls\
+ ┃ ┣ 📂Fls_Fapi\
  ┃ ┣ 📂Gpt\
  ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcu\
  ┃ ┣ 📂Port\
+ ┃ ┣ 📂Rtdma\
  ┃ ┣ 📂Spi\
  ┃ ┗ 📂Wdg\
  ┣ 📂plugins\
@@ -5148,6 +5171,7 @@ AppUtils source code is for reference only, it should not be used as-is in a typ
  ┃ ┃ ┣ 📜**Dem**\
  ┃ ┃ ┣ 📜**Det**\
  ┃ ┃ ┣ 📜**EcuM**\
+ ┃ ┃ ┣ 📜**Fee**\
  ┃ ┃ ┣ 📜**LinIf**\
  ┃ ┃ ┣ 📜**MemMap**\
  ┃ ┃ ┣ 📜**OS**\
@@ -5155,13 +5179,14 @@ AppUtils source code is for reference only, it should not be used as-is in a typ
  ┃ ┃ ┗ 📜**SchM**\
  ┃ ┣ 📂Can\
  ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Dma\
  ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_I2c\
  ┃ ┣ 📂Cdd_Ipc\
  ┃ ┣ 📂Cdd_Pwm\
  ┃ ┣ 📂Cdd_Sent\
  ┃ ┣ 📂Cdd_Uart\
  ┃ ┣ 📂Cdd_Xbar\
- ┃ ┣ 📂DeviceSupport\
  ┃ ┣ 📂Dio\
  ┃ ┣ 📂Fls\
  ┃ ┣ 📂Gpt\
@@ -5191,7 +5216,9 @@ BSW Stubs source code is for reference only, it should not be used as-is in a ty
  ┃ ┣ 📂AppUtils\
  ┃ ┣ 📂Can\
  ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Dma\
  ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_I2c\
  ┃ ┣ 📂Cdd_Ipc\
  ┃ ┣ 📂Cdd_Pwm\
  ┃ ┣ 📂Cdd_Sent\
@@ -5205,11 +5232,14 @@ BSW Stubs source code is for reference only, it should not be used as-is in a ty
  ┃ ┃ ┣ 📂**LinkerCMD**\ : *Contains linker files*\
  ┃ ┃ ┗ 📂**targetconfigs**\ : *Contains target configuration files for CCS*\
  ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Empty_Projects\
  ┃ ┣ 📂Fls\
+ ┃ ┣ 📂Fls_Fapi\
  ┃ ┣ 📂Gpt\
  ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcu\
  ┃ ┣ 📂Port\
+ ┃ ┣ 📂Rtdma\
  ┃ ┣ 📂Spi\
  ┃ ┗ 📂Wdg\
  ┣ 📂plugins\
@@ -5229,6 +5259,58 @@ For using other variants of these device family, the linker file needs to be upd
  ```{Attention}
 Device Support source code is for reference only, it should not be used as-is in a typical AUTOSAR applications.
  ```
+
+### Empty Projects
+
+📦**F29x_MCAL**\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂**examples**\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Dma\
+ ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_I2c\
+ ┃ ┣ 📂Cdd_Ipc\
+ ┃ ┣ 📂Cdd_Pwm\
+ ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Uart\
+ ┃ ┣ 📂Cdd_Xbar\
+ ┃ ┣ 📂DeviceSupport\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂**Empty_Projects**\
+ ┃ ┃ ┣ 📂**F29H85x**\ *(also F29P32x / F29P58x)*\
+ ┃ ┃ ┃ ┣ 📂**CCS**\
+ ┃ ┃ ┃ ┃ ┗ 📜**Empty_Project.projectspec** : *CCS project template for the empty project*\
+ ┃ ┃ ┃ ┣ 📂**Empty_Project_Config**\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜*.xdm : *EB Tresos configuration files*\
+ ┃ ┃ ┃ ┃ ┣ 📂output\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂src\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂Fls\
+ ┃ ┗ 📂...\
+ ┣ 📂plugins\
+ ┣ 📜**CMakeLists.txt** : *Top-level CMake file*\
+ ┗ 📜CMakePresets.json
+
+Empty Projects are provided as a starting point for customers to build their own AUTOSAR application on top of the F29x MCAL. They include a basic set of MCAL modules with recommended configurations — customers can add more modules or adjust settings as needed for their application.
+
+Each Empty Project contains the following reference infrastructure that can be used directly or adapted:
+
+* **EB Tresos project**: A reference EB Tresos project with basic MCAL module configurations pre-loaded. Customers can extend this project by adding or modifying module configurations as required by their application.
+
+* **CCS project**: A reference CCS project (`.projectspec`) that can be imported into Code Composer Studio. It is pre-configured with the necessary build settings, include paths, and source files to compile and run on the target hardware.
+
+* **CMake infrastructure**: A reference CMake setup that mirrors the structure used by the MCAL examples. Customers can use this as a template to integrate their application source files and MCAL driver libraries into a CMake-based build system.
+
+```{Note}
+Empty Projects are available for each supported device variant (F29H85x, F29P32x, F29P58x). Customers should use the sub-folder corresponding to their target device.
+```
 
 ## Build system
 
@@ -5269,15 +5351,16 @@ For more information on CMake, please refer CMake [official documentation](https
  ┃ ┣ 📂Can\
  ┃ ┃ ┣ 📂include\
  ┃ ┃ ┃ ┣ 📜Can.h\
- ┃ ┃ ┃ ┣ 📜Can_Priv.h\
- ┃ ┃ ┃ ┗ 📜Can_Reg_Access.h\
+ ┃ ┃ ┃ ┗ 📜Can_Priv.h\
  ┃ ┃ ┣ 📂src\
  ┃ ┃ ┃ ┣ 📜Can.c\
  ┃ ┃ ┃ ┣ 📜Can_Irq.c\
  ┃ ┃ ┃ ┗ 📜Can_Priv.c\
  ┃ ┃ ┗ 📜CMakeLists.txt : *CAN driver CMake file*\
  ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Dma\
  ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_I2c\
  ┃ ┣ 📂Cdd_Ipc\
  ┃ ┣ 📂Cdd_Pwm\
  ┃ ┣ 📂Cdd_Sent\
@@ -5297,43 +5380,63 @@ For more information on CMake, please refer CMake [official documentation](https
  ┃ ┣ 📂AppUtils\
  ┃ ┣ 📂Can\
  ┃ ┃ ┣ 📂**Can_Example_Classic_FD**\
- ┃ ┃ ┃ ┣ 📂CCS\
- ┃ ┃ ┃ ┣ 📂**f29h85x_config**\
- ┃ ┃ ┃ ┃ ┣ 📂config\
- ┃ ┃ ┃ ┃ ┣ 📂**include**\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜Can_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
- ┃ ┃ ┃ ┃ ┣ 📂**src**\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜Can_Cfg.c\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜Can_PBcfg.c\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
- ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c\
- ┃ ┃ ┃ ┃ ┗ 📜**CMakeLists.txt** : *CMake file for f29h85x_config folder*\
+ ┃ ┃ ┃ ┣ 📂Common\
+ ┃ ┃ ┃ ┃ ┗ 📂tresos\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Can.xdm : *Common EB Tresos config shared across device variants*\
+ ┃ ┃ ┃ ┣ 📂**F29H85x**\ *(also F29P32x / F29P58x)*\
+ ┃ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Can_Example_Classic_FD.projectspec\
+ ┃ ┃ ┃ ┃ ┗ 📂**Can_Example_Classic_FD_Config**\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ResourceAllocator.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂output\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂**include**\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Can_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂**src**\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Can_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Can_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂**swcd**\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Can_BSWMD.arxml\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_BSWMD.arxml\
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_BSWMD.arxml\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**CMakeLists.txt** : *CMake file for Can_Example_Classic_FD_Config folder*\
  ┃ ┃ ┃ ┣ 📜Can_Example_Classic_FD.c\
  ┃ ┃ ┃ ┣ 📜Can_Example_Classic_FD.h\
  ┃ ┃ ┃ ┗ 📜**CMakeLists.txt** : *Can_Example_Classic_FD CAN example CMake file*\
  ┃ ┃ ┣ 📂Can_Example_Icom\
- ┃ ┃ ┗ 📂Can_Example_loopback\
+ ┃ ┃ ┣ 📂Can_Example_Loopback\
+ ┃ ┃ ┗ 📂Can_Example_Wakeup\
  ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Dma\
  ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_I2c\
  ┃ ┣ 📂Cdd_Ipc\
+ ┃ ┣ 📂Cdd_Pwm\
  ┃ ┣ 📂Cdd_Sent\
  ┃ ┣ 📂Cdd_Uart\
  ┃ ┣ 📂Cdd_Xbar\
  ┃ ┣ 📂DeviceSupport\
  ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Empty_Projects\
  ┃ ┣ 📂Fls\
+ ┃ ┣ 📂Fls_Fapi\
  ┃ ┣ 📂Gpt\
  ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcu\
  ┃ ┣ 📂Port\
+ ┃ ┣ 📂Rtdma\
  ┃ ┣ 📂Spi\
  ┃ ┣ 📂Wdg\
  ┃ ┗ 📜**CMakeLists.txt** : *Examples CMake file*\
@@ -5392,7 +5495,7 @@ F29x MCAL specific CMake files are described below -
 To configure CMake following command can be executed in terminal -
 
 ```{code-block} shell
-**cmake -S {source_dir_path} --preset {preset_name} -DCMAKE_BUILD_TYPE = {build_type} -DBUILD_CONFIGURATION = {build_configuration} -DTCP={path-to-the-compiler}**
+cmake -S {source_dir_path} --preset {preset_name} -DCMAKE_BUILD_TYPE = {build_type} -DBUILD_CONFIGURATION = {build_configuration} -DTCP={path-to-the-compiler}
 ```
 
 For example,
@@ -5412,13 +5515,13 @@ Configure Option  |Description|
 To build following command can be executed in terminal -
 
 ```{code-block} shell
-**cmake --build {path-to-the-CMake-generated-files} -t {target}**
+cmake --build {path-to-the-CMake-generated-files} -t {target}
 ```
 
 For example,
 
 ```{code-block} shell
-**cmake --build build/artefacts -t Can_Example_Classic_FD**
+cmake --build build/artefacts -t Can_Example_Classic_FD
 ```
 
 Configure Option  |Description|
@@ -5448,34 +5551,44 @@ For more information on CMake support by the C29Clang compiler you can refer [co
 
 #### Importing projects into CCS
 
-📦**F29x_mcal**\
+📦**F29x_MCAL**\
  ┣ 📂build\
+ ┣ 📂docs\
  ┣ 📂drivers\
  ┣ 📂**examples**\
  ┃ ┣ 📂AppUtils\
  ┃ ┣ 📂Can\
  ┃ ┃ ┣ 📂**Can_Example_Classic_FD**\
- ┃ ┃ ┃ ┣ 📂CCS\
- ┃ ┃ ┃ ┃ ┗ 📜**Can_Example_Classic_FD.projectspec** : *Project template which can be imported into CCS*\
- ┃ ┃ ┃ ┣ 📂f29h85x_config\
+ ┃ ┃ ┃ ┣ 📂Common\
+ ┃ ┃ ┃ ┣ 📂**F29H85x**\ *(also F29P32x / F29P58x)*\
+ ┃ ┃ ┃ ┃ ┣ 📂**CCS**\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Can_Example_Classic_FD.projectspec** : *Project template which can be imported into CCS*\
+ ┃ ┃ ┃ ┃ ┗ 📂Can_Example_Classic_FD_Config\
  ┃ ┃ ┃ ┣ 📜Can_Example_Classic_FD.c\
  ┃ ┃ ┃ ┣ 📜Can_Example_Classic_FD.h\
  ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
  ┃ ┃ ┣ 📂Can_Example_Icom\
- ┃ ┃ ┗ 📂Can_Example_loopback\
+ ┃ ┃ ┣ 📂Can_Example_Loopback\
+ ┃ ┃ ┗ 📂Can_Example_Wakeup\
  ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Dma\
  ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_I2c\
  ┃ ┣ 📂Cdd_Ipc\
  ┃ ┣ 📂Cdd_Pwm\
  ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Uart\
  ┃ ┣ 📂Cdd_Xbar\
  ┃ ┣ 📂DeviceSupport\
  ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Empty_Projects\
  ┃ ┣ 📂Fls\
+ ┃ ┣ 📂Fls_Fapi\
  ┃ ┣ 📂Gpt\
  ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcu\
  ┃ ┣ 📂Port\
+ ┃ ┣ 📂Rtdma\
  ┃ ┣ 📂Spi\
  ┃ ┣ 📂Wdg\
  ┃ ┗ 📜CMakeLists.txt\
@@ -5704,6 +5817,37 @@ Will be added in later release.
     EB Tresos - MultiTask Wizard Shortcut Button
     ```
 
+## AI Coding Assistant Support
+
+{bdg-warning}`Beta`
+
+F29x MCAL includes support for AI-assisted development workflows to help developers get started more quickly and efficiently.
+
+### CCS AI Coding Assistant
+
+An `AGENTS.md` file is included in the package to enable AI coding agent workflows within Code Composer Studio (CCS). AI coding agents can use this file to automatically generate functional F29x MCAL example projects with minimal manual setup.
+
+**Key capabilities:**
+
+* AI coding agents can automatically create working F29x MCAL example projects
+* Compatible with CCS v20.05.00 and later
+* CCS provides integrated MCP (Model Context Protocol) services for build and debug operations, enabling AI agents to detect and resolve issues automatically during development
+
+For more information on AI coding assistant support in CCS, refer to the [CCS User Guide — AI Coding Assistants](https://software-dl.ti.com/ccs/esd/documents/users_guide/index_ai.html).
+
+```{Note}
+As with any AI-based tooling, results may vary. The `AGENTS.md` file will be updated iteratively based on user feedback. Always review AI-generated code before integrating it into your application.
+```
+
+### LLM Context Files
+
+The following files are provided to give AI language models structured context about the F29x MCAL project:
+
+* [llms.txt](https://software-dl.ti.com/C2000/docs/mcal/F29H85x/26.00.00/llms.txt) — A concise summary of the project structure and APIs, following the [llms.txt standard](https://llmstxt.org/)
+* [llms-full.txt](https://software-dl.ti.com/C2000/docs/mcal/F29H85x/26.00.00/llms-full.txt) — A comprehensive version with full project context for AI tools
+
+These files help AI tools better understand the F29x MCAL project structure and APIs, enabling more accurate code suggestions and project generation.
+
 
 # Key Performance and Memory Consumption Data
 
@@ -5841,7 +5985,7 @@ The memory footprint values represent only the module-specific driver sections f
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Fls_App_Example   | 6960    | 0    | 204    | 96    |
+| Fls_App_Example   | 6956    | 0    | 200    | 96    |
  
 ### GPT
 
@@ -5880,9 +6024,9 @@ The memory footprint values represent only the module-specific driver sections f
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Spi_Example_Sync_AsyncTransfer   | 12740    | 0    | 948    | 260    |
- | Spi_Example_AsyncTransfer_Interrupt   | 12786    | 0    | 836    | 284    |
- | Spi_Example_SyncTransfer   | 12422    | 0    | 676    | 164    |
+| Spi_Example_Sync_AsyncTransfer   | 12756    | 0    | 948    | 260    |
+ | Spi_Example_AsyncTransfer_Interrupt   | 12802    | 0    | 836    | 284    |
+ | Spi_Example_SyncTransfer   | 12438    | 0    | 676    | 164    |
  | Spi_Example_External_Loopback   | 12916    | 0    | 424    | 104    |
  
 ### WDG
@@ -6362,6 +6506,7 @@ Once the exporter run is successful, the generated ARXML file can be used as the
  
 Migration_Guide_ResourceAllocator
 Migration_Guide_Can
+Migration_Guide_Dio
 Migration_Guide_Gpt
 Migration_Guide_Fls
 Migration_Guide_Lin
@@ -6371,6 +6516,7 @@ Migration_Guide_Spi
 Migration_Guide_Wdg
 Migration_Guide_Cdd_Adc
 Migration_Guide_Cdd_Ecap
+Migration_Guide_Cdd_I2c
 Migration_Guide_Cdd_Ipc
 Migration_Guide_Cdd_Sent
 Migration_Guide_Cdd_Pwm
@@ -6387,6 +6533,8 @@ Migration_Guide_Cdd_Xbar
 The Resource Allocator module is introduced in MCAL release 01.04.00 as a mandatory foundational configuration module. It centralizes hardware resource management and provides device-specific configuration to all MCAL modules. Resource Allocator is not available in earlier versions.
 
 The Resource Allocator is a **configuration-only module** introduced in MCAL release 01.04.00 as the mandatory foundation for hardware resource management.
+
+---
 
 ## Module Setup and Configuration
 
@@ -6452,6 +6600,118 @@ All MCAL modules will operate on the configured context.
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
+## v04.00.00 (i.e release v26.00.00) from v03.01.00 (i.e release v01.04.01) Migration
+
+### Summary
+
+Version v04.00.00 introduces the following changes to the CAN module:
+
+1. **Standard Filter Type Enum Value Renamed**: `CAN_FILTER_DISABLED` renamed to `CAN_SFT_FILTER_DISABLED_EFT_RANGE_NO_XIDAM` to accurately reflect the dual behavior of filter type `0x03`
+2. **CanMainFunctionRWPeriodRef Validation Added**: `CanMainFunctionRWPeriodRef` is now required when the associated controller uses POLLING or MIXED processing mode
+3. **TDC Parameters Now Interpreted as Nanoseconds**: `CanControllerTrcvDelayCompensationOffset` and `CanControllerTrcvDelayCompensationFilter` are now correctly treated as nanosecond values and converted to MTQ at code-generation time — configurations with non-zero TDC values must be recalculated
+
+### Change 1: Standard Filter Type Enum Value Renamed
+
+#### Description
+
+The CanStandardFilterType enum value CAN_FILTER_DISABLED (numeric value 0x03) has been renamed to CAN_SFT_FILTER_DISABLED_EFT_RANGE_NO_XIDAM. The new name accurately reflects the dual behavior of this value: for Standard Frame Type (SFT) filters it disables the filter, and for Extended Frame Type (EFT) range filters it applies the range without the XIDAM mask.
+
+#### Old vs New
+
+**Old (v03.10.00):**
+
+```{figure} Assets/images/migration/can_module/04_01_old_filter_types.png
+:alt: Add Hardware Object Instance
+:align: center
+:width: 80%
+
+Old CAN Filter Types
+```
+
+**New (v04.00.00):**
+
+```{figure} Assets/images/migration/can_module/04_02_new_filter_types.png
+:alt: Add Hardware Object Instance
+:align: center
+:width: 80%
+
+New CAN Filter Types
+```
+
+#### Migration Actions
+
+1. **Regenerate configuration** — EB Tresos will generate the updated enum value name in `Can_Cfg.h` automatically
+2. **Recompile** the application to confirm no remaining references to the old name
+
+### Change 2: CanMainFunctionRWPeriodRef Now Required for POLLING/MIXED Mode due to AUTOSAR requirement
+
+#### Description
+
+AUTOSAR requirement enforces that `CanMainFunctionRWPeriodRef` must be configured for any Hardware Object Handle whose associated controller uses POLLING or MIXED processing mode. Previously this reference was optional and could be left unconfigured; now leaving it unconfigured produces a validation error in EB Tresos at configuration time as prescribed by AUTOSAR.
+
+#### Old vs New
+
+**Old (v03.01.00):**
+
+`CanMainFunctionRWPeriodRef` had no mandatory validation — it could be left empty even when the controller used POLLING or MIXED mode processing.
+
+**New (v04.00.00):**
+
+EB Tresos enforces that `CanMainFunctionRWPeriodRef` must reference a valid `CanMainFunctionPeriod` entry when:
+- `CanObjectType = RECEIVE` and the controller's `CanRxProcessing = POLLING` or `MIXED`, or
+- `CanObjectType = TRANSMIT` and the controller's `CanTxProcessing = POLLING` or `MIXED`
+
+Validation fails with the error:
+
+```{figure} Assets/images/migration/can_module/05_01_main_function_warning.png
+:alt: Add Hardware Object Instance
+:align: center
+:width: 80%
+
+Validation for CanMainFunctionRWPeriodRef
+```
+
+#### Migration Actions
+
+1. **Open EB Tresos** and navigate to each `CanHardwareObject` container
+2. **Check processing mode** for each Hardware Object Handle, check whether the associated controller uses POLLING or MIXED mode for the corresponding direction (receive or transmit)
+3. **Configure the reference** `CanMainFunctionRWPeriodRef` to point to the appropriate `CanMainFunctionPeriod` entry for any Hardware Object Handle that was previously left unconfigured
+4. **Run validation** in EB Tresos to confirm the validation check
+
+### Change 3: TDC Parameters Now Interpreted as Nanoseconds
+
+#### Description
+
+The FD baud-rate parameters `CanControllerTrcvDelayCompensationOffset` and `CanControllerTrcvDelayCompensationFilter` have always been labeled as nanoseconds in the EB Tresos GUI, but in v03.01.00 the generated code passed the raw config values directly to the hardware register as Minimum Time Quanta (MTQ). This meant users who wanted TDC to function correctly had to enter MTQ values despite the nanosecond label.
+
+In v04.00.00, the code generator now correctly converts these values from nanoseconds to MTQ. 
+
+```{NOTE}
+If both `CanControllerTrcvDelayCompensationOffset` and `CanControllerTrcvDelayCompensationFilter` are `0`, TDC remains disabled and no action is required.
+```
+
+#### Old vs New
+
+**Old (v03.01.00):**
+
+The raw config value was passed directly to the hardware register as MTQ, despite the EB Tresos parameter label showing nanoseconds.
+
+**New (v04.00.00):**
+
+The value is converted from nanoseconds to MTQ at code-generation time. The comment in the generated file shows the source nanosecond value for traceability.
+
+#### Migration Actions
+
+1. **Check your current TDC parameter values** — open EB Tresos and locate `CanControllerTrcvDelayCompensationOffset` and `CanControllerTrcvDelayCompensationFilter` under each FD baud-rate configuration
+2. **If both values are 0**: no action required — TDC is disabled and behavior is unchanged
+3. **If either value is non-zero**, the existing values were being used as MTQ and must now be replaced with nanosecond equivalents:
+   - Determine the correct TDC offset and filter values in nanoseconds for your transceiver
+   - Update `CanControllerTrcvDelayCompensationOffset` and `CanControllerTrcvDelayCompensationFilter` in EB Tresos to the nanosecond values
+4. **Regenerate** the configuration using EB Tresos
+5. **Recompile** and confirm the generated `Can_PBcfg.c` contains the conversion comments and that no code-generation assertion errors are reported
+
+---
+
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
 ### Summary
@@ -6472,7 +6732,7 @@ Resource Allocator becomes a mandatory architectural foundation, replacing direc
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 
 ```{figure} Assets/images/migration/can_module/02_00_can_module_old_config.png
 :alt: Open CAN Controller
@@ -6482,7 +6742,7 @@ Resource Allocator becomes a mandatory architectural foundation, replacing direc
 v02.00.00: Direct controller parameter selection with CanControllerInstance as MCAN1 and CanControllerBaseAddress in hexadecimal format (0x60020000)
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 
 ```{figure} Assets/images/migration/can_module/02_01_can_module_select_instance.png
 :alt: Select CAN Instance
@@ -6776,7 +7036,7 @@ The **CanOsCounterRef** parameter used as tick reference to calculate CAN_CFG_TI
 |-----------|-----------|
 | `CanOsCounterRef` | `CanSysClockRef` |
 
-**Previous Configuration (v01.00.01):**
+**Old (v01.00.01):**
 
 ```{figure} Assets/images/migration/can_module/00_01_can_module_old_clock_config.png
 :alt: Old CAN Clock Config
@@ -6786,7 +7046,7 @@ The **CanOsCounterRef** parameter used as tick reference to calculate CAN_CFG_TI
 v01.00.01: CanOsCounterRef parameter used as tick reference for timeout calculation
 ```
 
-**New Configuration (v01.01.00):**
+**New (v01.01.00):**
 
 ```{figure} Assets/images/migration/can_module/00_02_can_module_new_clock_config.png
 :alt: New CAN Clock Config
@@ -6806,51 +7066,76 @@ v01.01.00: CanSysClockRef parameter references MCU system clock directly
 
 **Benefits:** This change eliminates dependency between CAN and OS modules, provides more direct and reliable timeout calculation based on system clock, and simplifies configuration by using MCU system clock directly.
 
-# GPT Module Migration
+# DIO Module Migration
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
-## v02.00.00 (i.e release v01.03.00) from v01.00.02 (i.e release v01.02.00) Migration
+## v01.01.00 (i.e release v26.00.00) from v01.01.00 (i.e release v01.04.01) Migration
 
 ### Summary
 
-Version v02.00.00 introduces configuration structure name changes to comply with AUTOSAR requirement TPS_ECUC_08011:
+Version v01.01.00 updates DIO port identifier macros to comply with AUTOSAR naming guidelines:
 
-1. **Configuration Structure Name Change**: GPT configuration structure name updated for AUTOSAR TPS_ECUC_08011 compliance
+1. **Port Identifier Macro Rename**: Generated port identifier macros renamed from `GPIO_PORT_*` to `DIO_PORT_*` for AUTOSAR naming compliance.
 
-### Change 1: Configuration Structure Name Change
+### Change 1: Port Identifier Macro Rename
 
 #### Description
 
-Version v02.00.00 changes the configuration structure name for AUTOSAR TPS_ECUC_08011 compliance. This change ensures compliance with AUTOSAR naming conventions and requires updates to application code that references the GPT configuration structure.
+The generated port identifier macros in `Dio_Cfg.h` previously used a `GPIO_PORT_` prefix. These have been renamed to use the `DIO_PORT_` prefix to comply with AUTOSAR naming conventions (SRS_BSW_00321) and avoid potential conflicts with other module definitions.
 
-#### Old vs New Configuration Structure
+Any application code that directly references the `GPIO_PORT_*` macros must be updated.
 
-**Configuration Structure Name Mapping:**
+#### Old vs New Port Identifiers
 
-| v01.00.02 and older | v02.00.00 |
+**Port Identifier Macro Mapping:**
+
+| v01.01.00 and older | v01.01.00 |
 |---------------------|-----------|
-| `Gpt_ConfigSetptr` | `Gpt_Config` |
+| `GPIO_PORT_A` | `DIO_PORT_A` |
+| `GPIO_PORT_B` | `DIO_PORT_B` |
+| `GPIO_PORT_C` | `DIO_PORT_C` |
+| `GPIO_PORT_D` | `DIO_PORT_D` |
+| `GPIO_PORT_E` | `DIO_PORT_E` |
+| `GPIO_PORT_F` | `DIO_PORT_F` |
+| `GPIO_PORT_G` | `DIO_PORT_G` |
+| `GPIO_PORT_H` | `DIO_PORT_H` |
 
-**Code Examples:**
+**Pattern:** `GPIO_PORT_{X}` → `DIO_PORT_{X}` for all port identifiers.`
+
+**Code Example:**
 
 ```c
-// v01.00.02 and older
-Gpt_Init(&Gpt_ConfigSetptr);
+// v01.01.00 and older
+Dio_WritePort(GPIO_PORT_A, 0xFFFFFFFFU);
 
-// v02.00.00
-Gpt_Init(&Gpt_Config);
+// v01.01.00
+Dio_WritePort(DIO_PORT_A, 0xFFFFFFFFU);
 ```
 
 #### Migration Actions
 
-1. **Search Application Code:** Find all references to `Gpt_ConfigSetptr` in your application code
-2. **Replace Structure Name:** Update all references from `Gpt_ConfigSetptr` to `Gpt_Config`
-3. **Update Function Calls:** Ensure all GPT initialization calls use the new structure name
-4. **Update Upper Modules:** Update any upper module that references the configuration structures to use the new structure name
-5. **Verify Compilation:** Clean build and verify no compilation errors related to GPT configuration structure
+1. **Search Application Code:** Find all references to `GPIO_PORT_A` through `GPIO_PORT_H` in your application code.
+2. **Replace Macro Names:** Update all references from `GPIO_PORT_*` to `DIO_PORT_*` (e.g., `GPIO_PORT_A` → `DIO_PORT_A`).
+3. **Regenerate Configuration:** Regenerate DIO configuration to get the updated `Dio_Cfg.h` with new macro names.
+4. **Verify Compilation:** Clean build and verify no compilation errors related to undefined `GPIO_PORT_*` symbols.
+
+```{NOTE}
+The `DioConf_DioPort_*` and `DioConf_DioChannel_*` symbolic name macros are unaffected by this change and do not require updates.
+```
+
 
 # CDD ADC Module Migration
+
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
@@ -6874,7 +7159,7 @@ Resource Allocator becomes a mandatory architectural foundation for the CDD ADC 
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.01):**
+**Old (v02.00.01):**
 Direct parameter selection was used without Resource Allocator dependency.
 
 ```{figure} Assets/images/migration/cdd_adc_module/02_01_cdd_adc_module_old_config.png
@@ -6885,7 +7170,7 @@ Direct parameter selection was used without Resource Allocator dependency.
 v02.00.01: Direct ADC hardware unit parameter selection
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 CDD ADC hardware unit configurations now reference instances allocated through Resource Allocator.
 
 ```{figure} Assets/images/migration/cdd_adc_module/02_03_cdd_adc_module_select_instance.png
@@ -6976,10 +7261,10 @@ Version v03.00.00 introduces SDK-based DMA integration for efficient ADC result 
 
 #### Old vs New DMA Configuration
 
-**Previous Configuration (v02.00.01):**
+**Old (v02.00.01):**
 No DMA integration available for ADC result transfers.
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 Optional SDK-based DMA integration with CddAdcEnableDma parameter.
 
 ```{figure} Assets/images/migration/cdd_adc_module/03_01_cdd_adc_module_add_group_instance.png
@@ -7120,7 +7405,7 @@ For `CddAdcPpbChannel` references expecting a channel reference:
 
 **Generated .xdm File Structure Comparison:**
 
-**Before Editing (v01.00.00 Generated .xdm File):**
+**Old (v01.00.00 Generated .xdm File):**
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Adc" type="AR-PACKAGE">
@@ -7130,7 +7415,7 @@ For `CddAdcPpbChannel` references expecting a channel reference:
 <a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Adc"/>
 ```
 
-**After Editing (v02.00.00 Compatible .xdm File):**
+**New (v02.00.00 Compatible .xdm File):**
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Adc" type="AR-PACKAGE">
@@ -7146,15 +7431,28 @@ Only the generated .xdm files (created by EB Tresos from your configuration) can
 
 # CDD ECAP Module Migration
 
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+---
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
 ### Summary
 
-Version v03.00.00 introduces **Resource Allocator as a mandatory architectural foundation**. This represents a fundamental shift from direct parameter configuration to centralized resource management:
+Version v03.00.00 introduces **Resource Allocator as a mandatory architectural foundation** and replaces duty cycle measurement from the signal measurement API with a dedicated API:
 
 1. **Resource Allocator Introduction and Channel Configuration Updates**: Resource Allocator becomes mandatory with CDD ECAP channel configurations updated to reference Resource Allocator instances
+2. **Duty Cycle Removed from Signal Measurement Property — Use `Cdd_Ecap_GetDutyCycleValues()` Instead**: `CDD_ECAP_DUTY_CYCLE` removed from `Cdd_Ecap_SignalMeasurementPropertyType`; replaced by a dedicated `Cdd_Ecap_GetDutyCycleValues()` API
 
 **PREREQUISITE:** Complete [Resource Allocator Setup](Migration_Guide_ResourceAllocator.md#module-setup-and-configuration) before proceeding.
 
@@ -7166,7 +7464,7 @@ Resource Allocator becomes a mandatory architectural foundation for the CDD ECAP
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 Direct parameter selection was used without Resource Allocator dependency.
 
 ```{figure} Assets/images/migration/cdd_ecap_module/02_01_cdd_ecap_module_old_config.png
@@ -7177,7 +7475,7 @@ Direct parameter selection was used without Resource Allocator dependency.
 v02.00.00: Direct ECAP channel parameter selection
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 CDD ECAP channel configurations now reference instances allocated through Resource Allocator.
 
 ```{figure} Assets/images/migration/cdd_ecap_module/02_03_cdd_ecap_module_select_instance.png
@@ -7235,6 +7533,49 @@ Set the appropriate InstanceName (e.g., ECAP1, ECAP2, etc.)
 ```{NOTE}
 The Resource Allocator module must be configured before the CDD ECAP module to ensure correct instance availability. Available ECAP instances are determined by the Resource Allocator's Cdd_EcapAllocatedInstance configuration for the current context.
 ```
+
+### Change 2: Duty Cycle Removed from Signal Measurement Property — Use `Cdd_Ecap_GetDutyCycleValues()` Instead
+
+#### Description
+
+`CDD_ECAP_DUTY_CYCLE` has been removed from the `Cdd_Ecap_SignalMeasurementPropertyType` enum, which is used as input to `Cdd_Ecap_GetTimeElapsed()`. Duty cycle is not an AUTOSAR-defined signal measurement property.
+
+A dedicated API `Cdd_Ecap_GetDutyCycleValues()` has been added to calculate duty cycle. It returns a `Cdd_Ecap_DutyCycleType` struct containing `ActiveTime` and `PeriodTime`, from which the duty cycle can be derived.
+
+Any application code that passed `CDD_ECAP_DUTY_CYCLE` to `Cdd_Ecap_GetTimeElapsed()` must be updated to use the new API.
+
+#### Old vs New
+
+**`Cdd_Ecap_SignalMeasurementPropertyType` enum:**
+
+| v02.00.00 | v03.00.00 |
+|-----------|-----------|
+| `CDD_ECAP_LOW_TIME` | `CDD_ECAP_LOW_TIME` |
+| `CDD_ECAP_HIGH_TIME` | `CDD_ECAP_HIGH_TIME` |
+| `CDD_ECAP_PERIOD_TIME` | `CDD_ECAP_PERIOD_TIME` |
+| `CDD_ECAP_DUTY_CYCLE` | *(removed)* |
+
+**Code Example:**
+
+```c
+// v02.00.00 — duty cycle via GetTimeElapsed (no longer valid)
+Cdd_Ecap_ValueType dutyCycle = Cdd_Ecap_GetTimeElapsed(channel);  // with CDD_ECAP_DUTY_CYCLE property
+
+// v03.00.00 — dedicated API
+Cdd_Ecap_DutyCycleType dcValues;
+Cdd_Ecap_GetDutyCycleValues(channel, &dcValues);
+// dcValues.ActiveTime — active (high) time of the signal
+// dcValues.PeriodTime — full period time of the signal
+```
+
+#### Migration Actions
+
+1. **Search Application Code:** Find all uses of `CDD_ECAP_DUTY_CYCLE` passed to `Cdd_Ecap_GetTimeElapsed()`.
+2. **Enable New API:** Set `CDD_ECAP_GET_DUTY_CYCLE_VALUES_API` to `STD_ON` in your ECAP plugin configuration.
+3. **Replace API Call:** Replace `Cdd_Ecap_GetTimeElapsed()` duty cycle calls with `Cdd_Ecap_GetDutyCycleValues()`, using the returned `ActiveTime` and `PeriodTime` fields.
+4. **Verify Compilation:** Clean build and confirm no undefined references to `CDD_ECAP_DUTY_CYCLE`.
+
+---
 
 ## v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration
 
@@ -7301,9 +7642,115 @@ Version v02.00.00 introduces high-resolution (HR) mode capabilities for finer ca
 For users migrating from v1.0.0 to v2.0.0 who do not require High-Resolution Mode features or Emulation Mode support, the default configurations ensure backward compatibility and will not affect your current working setup.
 ```
 
-# CDD IPC Module Migration
+# CDD I2C Module Migration
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v01.03.00 (i.e release v26.00.00) from v01.01.00 (i.e release v01.04.01) Migration
+
+### Summary
+
+Version v01.03.00 introduces I2C target (slave) mode support and restructures the interrupt/polling configuration from a global setting to per-HW-unit control:
+
+1. **Per-HW-Unit Interrupt Configuration**: The global `CddI2cUseInterrupts` flag is replaced by a per-HW-unit `CddI2cHwUseInterrupts` parameter, allowing each I2C instance to be independently configured for polling or interrupt mode.
+2. **`Cdd_I2c_PollingModeProcessing()` Removed**: Polling is now integrated into `Cdd_I2c_MainFunction()`; the standalone polling processing API is removed.
+
+---
+
+### Change 1: Per-HW-Unit Interrupt/Polling Configuration
+
+#### Description
+
+Previously, interrupt or polling mode was selected globally for all I2C HW units through a single `CddI2cUseInterrupts` boolean in the `CddI2cGeneral` container. In v01.02.00, this global flag is removed. Each HW unit now has its own `CddI2cHwUseInterrupts` parameter inside its `CddI2cHwConfig` entry.
+
+Additionally, the generated macros are updated: two separate macros (`CDD_I2C_POLLING_MODE` and `CDD_I2C_INTERRUPT_MODE`) are now generated based on whether any HW unit is in polling or interrupt mode respectively.
+
+#### Old vs New Configuration
+
+| Parameter | v01.01.00 | v01.02.00 |
+|-----------|-----------|-----------|
+| Location | `CddI2cGeneral/CddI2cUseInterrupts` (global) | `CddI2cHwConfig/<unit>/CddI2cHwUseInterrupts` (per HW unit) |
+| Scope | All HW units share one setting | Each HW unit configured independently |
+
+**Generated Macro Changes:**
+
+| Macro | v01.01.00 | v01.02.00 |
+|-------|-----------|-----------|
+| `CDD_I2C_POLLING_MODE` | `STD_ON` if `CddI2cUseInterrupts = false` | `STD_ON` if any HW unit has `CddI2cHwUseInterrupts = false` |
+| `CDD_I2C_INTERRUPT_MODE` | Not generated | `STD_ON` if any HW unit has interrupts or Target mode enabled |
+| `CDD_I2C_CONTROLLER_ACTIVE` | Not generated | `STD_ON` if any HW unit is in controller mode |
+| `CDD_I2C_TARGET_ACTIVE` | Not generated | `STD_ON` if any HW unit is in target mode |
+
+#### Migration Actions
+
+1. **Open your I2C configuration** in EB Tresos.
+2. **Navigate to `CddI2cGeneral`** and note the current value of `CddI2cUseInterrupts` (`true` = interrupt mode, `false` = polling mode).
+3. **Remove `CddI2cUseInterrupts`** — this parameter no longer exists.
+4. **Navigate to each `CddI2cHwConfig` entry** for your configured HW units.
+5. **Set `CddI2cHwUseInterrupts`** on each HW unit to match your previous global setting:
+   - If old `CddI2cUseInterrupts = true` → set `CddI2cHwUseInterrupts = true` on each unit
+   - If old `CddI2cUseInterrupts = false` → leave `CddI2cHwUseInterrupts = false` (default) on each unit
+6. **Update application code**: Replace any `#if (STD_ON == CDD_I2C_POLLING_MODE)` guards with the new equivalent. Logic is the same but note that `CDD_I2C_INTERRUPT_MODE` is now also available.
+7. **Regenerate configuration**.
+
+```{figure} Assets/images/migration/cdd_i2c_module/01_01_i2c_old_global_interrupt.png
+:alt: CddI2cGeneral old global interrupt setting
+:align: center
+:width: 80%
+
+v01.01.00: CddI2cGeneral showing global CddI2cUseInterrupts parameter
+```
+
+```{figure} Assets/images/migration/cdd_i2c_module/01_02_i2c_new_per_unit_interrupt.png
+:alt: CddI2cHwConfig new per-unit interrupt setting
+:align: center
+:width: 80%
+
+v01.02.00: CddI2cHwConfig showing per-unit CddI2cHwUseInterrupts parameter
+```
+
+---
+
+### Change 2: `Cdd_I2c_PollingModeProcessing()` Removed
+
+#### Description
+
+The `Cdd_I2c_PollingModeProcessing()` API has been removed. In v01.01.00, this function was used to process pending I2C transfers when interrupts were disabled. In v01.02.00, polling processing is handled internally by `Cdd_I2c_MainFunction()` (available when `CDD_I2C_CONTROLLER_ACTIVE == STD_ON`).
+
+The service ID previously assigned to this function (`CDD_I2C_SID_POLLING_MODE_PROCESSING = 0x0A`) has been reassigned to `Cdd_I2c_GetStatus()`.
+
+#### Old vs New
+
+| v01.01.00 | v01.02.00 |
+|-----------|-----------|
+| `Cdd_I2c_PollingModeProcessing()` — explicit polling processing API | Removed — use `Cdd_I2c_MainFunction()` for controller polling |
+| `CDD_I2C_SID_POLLING_MODE_PROCESSING (0x0AU)` | Removed |
+| `CDD_I2C_SID_GET_STATUS (0x0BU)` | `CDD_I2C_SID_GET_STATUS (0x0AU)` (renumbered) |
+
+#### Migration Actions
+
+1. **Search your application code** for all calls to `Cdd_I2c_PollingModeProcessing()`.
+2. **Replace** each call with `Cdd_I2c_MainFunction()` — this now handles both periodic timeout checking and polling-mode transfer processing for controller mode.
+3. **Remove** any `#if (STD_ON == CDD_I2C_POLLING_MODE)` guards previously wrapping `Cdd_I2c_PollingModeProcessing()` calls — `Cdd_I2c_MainFunction()` is available whenever `CDD_I2C_CONTROLLER_ACTIVE == STD_ON`.
+4. **Verify** no code references `CDD_I2C_SID_POLLING_MODE_PROCESSING` numerically — if so, update to the new service ID assignments.
+
+
+
+# CDD IPC Module Migration
+
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+---
 
 ## v02.00.00 (i.e release v01.04.00) from v01.00.02 (i.e release v01.03.00) Migration
 
@@ -7324,7 +7771,7 @@ Resource Allocator becomes a mandatory architectural foundation for the CDD IPC 
 
 #### Old vs New Configuration
 
-**Previous Configuration (v01.00.02):**
+**Old (v01.00.02):**
 Local core context was set directly within CDD IPC module configuration.
 
 ```{figure} Assets/images/migration/cdd_ipc_module/01_01_cdd_ipc_module_old_context_config.png
@@ -7335,7 +7782,7 @@ Local core context was set directly within CDD IPC module configuration.
 v01.00.02: Local core context was set directly within CDD IPC module configuration
 ```
 
-**New Configuration (v02.00.00):**
+**New (v02.00.00):**
 Context is now centralized in Resource Allocator, replacing direct IPC context configuration.
 
 ```{figure} Assets/images/migration/cdd_ipc_module/01_04_cdd_ipc_module_new_ra_context.png
@@ -7364,10 +7811,10 @@ Version v02.00.00 introduces automatic configuration filtering where remote core
 
 #### Old vs New Configuration Filtering
 
-**Previous Configuration (v01.00.02):**
+**Old (v01.00.02):**
 Remote core selection and TX/RX instances were configured directly without context-based filtering.
 
-**New Configuration (v02.00.00):**
+**New (v02.00.00):**
 Remote core options and instance selections are automatically filtered based on Resource Allocator context.
 
 #### Migration Actions
@@ -7407,7 +7854,19 @@ The Resource Allocator module must be configured before the CDD IPC module to en
 
 # CDD PWM Module Migration
 
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+---
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
@@ -7429,7 +7888,7 @@ Resource Allocator becomes a mandatory architectural foundation for the CDD PWM 
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 Direct parameter selection was used without Resource Allocator dependency.
 
 ```{figure} Assets/images/migration/cdd_pwm_module/02_01_cdd_pwm_module_old_config.png
@@ -7440,7 +7899,7 @@ Direct parameter selection was used without Resource Allocator dependency.
 v02.00.00: Direct PWM instance parameter selection
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 CDD PWM configurations now reference instances allocated through Resource Allocator.
 
 ```{figure} Assets/images/migration/cdd_pwm_module/02_03_cdd_pwm_module_select_instance.png
@@ -7503,10 +7962,10 @@ Version v03.00.00 adds optional HRPWM (High-Resolution PWM) calibration instance
 
 #### Old vs New HRPWM Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 Limited HRPWM configuration options without calibration instance support.
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 Optional HRPWM calibration instance configuration through CddPwmHrpwmCalibrationConfig container in advanced mode.
 
 #### Migration Actions
@@ -7665,7 +8124,19 @@ For users migrating from v1.0.0 to v2.0.0 who do not require Advanced Mode featu
 
 # CDD SENT Module Migration
 
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+---
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.01 (i.e release v01.03.00) Migration
 
@@ -7686,7 +8157,7 @@ Resource Allocator becomes a mandatory architectural foundation for the CDD SENT
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.01):**
+**Old (v02.00.01):**
 Direct parameter selection was used without Resource Allocator dependency.
 
 ```{figure} Assets/images/migration/cdd_sent_module/02_01_cdd_sent_module_old_config.png
@@ -7697,7 +8168,7 @@ Direct parameter selection was used without Resource Allocator dependency.
 v02.00.01: Direct SENT controller parameter selection
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 CDD SENT configurations now reference instances allocated through Resource Allocator.
 
 ```{figure} Assets/images/migration/cdd_sent_module/02_03_cdd_sent_module_select_instance.png
@@ -7881,7 +8352,7 @@ For any reference parameters expecting reference to a SENT configuration:
 
 **Generated .xdm File Structure Comparison:**
 
-**Before Editing (v01.00.00 Generated .xdm File):**
+**Old (v01.00.00 Generated .xdm File):**
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Sent" type="AR-PACKAGE">
@@ -7891,7 +8362,7 @@ For any reference parameters expecting reference to a SENT configuration:
 <a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Sent"/>
 ```
 
-**After Editing (v02.00.00 Compatible .xdm File):**
+**New (v02.00.00 Compatible .xdm File):**
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Sent" type="AR-PACKAGE">
@@ -7907,7 +8378,19 @@ Only the generated .xdm files (created by EB Tresos from your configuration) can
 
 # CDD UART Module Migration
 
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+---
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
@@ -7927,7 +8410,7 @@ Resource Allocator becomes a mandatory architectural foundation for the CDD UART
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 Direct parameter selection was used without Resource Allocator dependency.
 
 ```{figure} Assets/images/migration/cdd_uart_module/05_01_cdd_uart_module_old_config.png
@@ -7938,7 +8421,7 @@ Direct parameter selection was used without Resource Allocator dependency.
 v02.00.00: Direct UART instance parameter selection
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 CDD UART configurations now reference instances allocated through Resource Allocator.
 
 ```{figure} Assets/images/migration/cdd_uart_module/05_03_cdd_uart_module_select_instance.png
@@ -8070,6 +8553,41 @@ Version v02.00.00 changes clock frequency selection from hardcoded values to MCU
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
+## v03.01.00 (i.e release v26.00.00) from v03.00.00 (i.e release v01.04.01) Migration
+
+### Summary
+
+1. **XINT Support Added in driver**: Three new APIs and supporting types allow management of external interrupts through the Input XBAR. Previously this feature was implemented as an example.
+
+### Change 1: XINT Support Added to CDD XBAR
+
+#### Description
+
+Three new public APIs have been added to enable management of external interrupts (XINT) through the Input XBAR. A new plugin parameter `CddXbarExternalInterruptEdge` has been added to Input XBAR instance configuration to control the interrupt trigger edge. This parameter is only active for Input XBAR instances connected to XINT lines: INPUT_XBAR4 (XINT1), INPUT_XBAR5 (XINT2), INPUT_XBAR6 (XINT3), INPUT_XBAR13 (XINT4), and INPUT_XBAR14 (XINT5). The parameter defaults to disabled and does not affect other Input XBAR instances.
+
+New APIs added in v03.01.00:
+
+| API | Description |
+|---|---|
+| `Cdd_Xbar_SetExternalInterruptType(CrossbarUnit, IntType)` | Sets the interrupt trigger edge for an XINT line |
+| `Cdd_Xbar_SetExternalInterruptState(CrossbarUnit, Enable)` | Enables or disables an XINT line |
+| `Cdd_Xbar_GetExternalInterruptCounter(CrossbarUnit, CounterValue)` | Reads the XINT counter value |
+
+New types added in v03.01.00:
+
+- `Cdd_Xbar_IntType`: `CDD_XBAR_INT_TYPE_NEGATIVE_EDGE`, `CDD_XBAR_INT_TYPE_POSITIVE_EDGE`, `CDD_XBAR_INT_TYPE_BOTH_EDGES`, `CDD_XBAR_INT_TYPE_DISABLED`
+- `Cdd_Xbar_ExternalIntNum`: `CDD_XBAR_XINT1`, `CDD_XBAR_XINT2`, `CDD_XBAR_XINT3`, `CDD_XBAR_XINT4`, `CDD_XBAR_XINT5`, `CDD_XBAR_XINT_DISABLED`
+
+#### Migration Actions
+
+Existing configurations, generated code, and application code continue to work without modification. The new `CddXbarExternalInterruptEdge` plugin parameter defaults to disabled and does not alter the behavior of existing Input XBAR instances.
+
+```{NOTE}
+To use XINT functionality, add `CddXbarExternalInterruptEdge` to the relevant Input XBAR instance configuration (INPUT_XBAR4 through INPUT_XBAR6, INPUT_XBAR13, INPUT_XBAR14) and call the new APIs from application code. This is optional and does not affect instances where XINT is not needed.
+```
+
+---
+
 ## v03.00.00 (i.e release v01.04.00) from v02.00.02 (i.e release v01.03.00) Migration
 
 ### Summary
@@ -8089,10 +8607,10 @@ Resource Allocator becomes a mandatory architectural foundation for the CDD XBAR
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.02):**
+**Old (v02.00.02):**
 Direct parameter configuration was used without Resource Allocator dependency.
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 XBAR resources and device configuration now managed through Resource Allocator.
 
 ```{figure} Assets/images/migration/cdd_xbar_module/01_02_cdd_xbar_module_configure_device.png
@@ -8129,10 +8647,10 @@ Version v03.00.00 restructures API configuration parameters for improved functio
 
 #### Old vs New API Configuration
 
-**Previous Configuration (v02.00.02):**
+**Old (v02.00.02):**
 Direct API parameter configuration with basic structure.
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 Enhanced parameter structure for better control with Resource Allocator integration.
 
 #### Migration Actions
@@ -8258,7 +8776,7 @@ For any reference parameters expecting reference to an XBAR configuration:
 
 **Generated .xdm File Structure Comparison:**
 
-**Before Editing (v01.00.00 Generated .xdm File):**
+**Old (v01.00.00 Generated .xdm File):**
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Xbar" type="AR-PACKAGE">
@@ -8268,7 +8786,7 @@ For any reference parameters expecting reference to an XBAR configuration:
 <a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Xbar"/>
 ```
 
-**After Editing (v02.00.00 Compatible .xdm File):**
+**New (v02.00.00 Compatible .xdm File):**
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Xbar" type="AR-PACKAGE">
@@ -8284,7 +8802,19 @@ Only the generated .xdm files (created by EB Tresos from your configuration) can
 
 # FLS Module Migration
 
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+---
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
@@ -8305,7 +8835,7 @@ Resource Allocator becomes a mandatory architectural foundation for the FLS modu
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 Direct flash parameter configuration was used with manual FlsTotalSize and device variant selection.
 
 ```{figure} Assets/images/migration/fls_module/02_01_fls_module_old_config.png
@@ -8316,7 +8846,7 @@ Direct flash parameter configuration was used with manual FlsTotalSize and devic
 v02.00.00: Direct FlsTotalSize and device variant parameter configuration
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 FLS parameters are automatically derived from Resource Allocator configuration.
 
 ```{figure} Assets/images/migration/fls_module/02_02_fls_module_new_config.png
@@ -8409,9 +8939,77 @@ Fls_Init(&Fls_Config);
 5. **Verify Compilation:** Clean build and verify no compilation errors related to FLS configuration structure
 
 
-# LIN Module Migration
+# GPT Module Migration
+
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+---
+
+## v02.00.00 (i.e release v01.03.00) from v01.00.02 (i.e release v01.02.00) Migration
+
+### Summary
+
+Version v02.00.00 introduces configuration structure name changes to comply with AUTOSAR requirement TPS_ECUC_08011:
+
+1. **Configuration Structure Name Change**: GPT configuration structure name updated for AUTOSAR TPS_ECUC_08011 compliance
+
+### Change 1: Configuration Structure Name Change
+
+#### Description
+
+Version v02.00.00 changes the configuration structure name for AUTOSAR TPS_ECUC_08011 compliance. This change ensures compliance with AUTOSAR naming conventions and requires updates to application code that references the GPT configuration structure.
+
+#### Old vs New Configuration Structure
+
+**Configuration Structure Name Mapping:**
+
+| v01.00.02 and older | v02.00.00 |
+|---------------------|-----------|
+| `Gpt_ConfigSetptr` | `Gpt_Config` |
+
+**Code Examples:**
+
+```c
+// v01.00.02 and older
+Gpt_Init(&Gpt_ConfigSetptr);
+
+// v02.00.00
+Gpt_Init(&Gpt_Config);
+```
+
+#### Migration Actions
+
+1. **Search Application Code:** Find all references to `Gpt_ConfigSetptr` in your application code
+2. **Replace Structure Name:** Update all references from `Gpt_ConfigSetptr` to `Gpt_Config`
+3. **Update Function Calls:** Ensure all GPT initialization calls use the new structure name
+4. **Update Upper Modules:** Update any upper module that references the configuration structures to use the new structure name
+5. **Verify Compilation:** Clean build and verify no compilation errors related to GPT configuration structure
+
+# LIN Module Migration
+
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+---
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
@@ -8434,7 +9032,7 @@ Resource Allocator becomes a mandatory architectural foundation for the LIN modu
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 Direct parameter selection was used without Resource Allocator dependency.
 
 ```{figure} Assets/images/migration/lin_module/02_01_lin_module_old_config.png
@@ -8445,7 +9043,7 @@ Direct parameter selection was used without Resource Allocator dependency.
 v02.00.00: Direct LIN instance parameter selection with LIN_INSTANCE_A naming
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 LIN configurations now reference the LIN instances allocated through Resource Allocator.
 
 ```{figure} Assets/images/migration/lin_module/02_03_lin_module_select_instance.png
@@ -8633,6 +9231,72 @@ Lin_Init(&Lin_Config);
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
+## v02.02.00 (i.e release v26.00.00) from v02.01.01 (i.e release v01.04.01) Migration
+
+### Summary
+
+Version v02.02.00 introduces the following changes to the MCU module:
+
+1. **Automatic CPUSEL/FRAMESEL Register Writes via ResourceAllocator**: `Mcu_Init()` now writes CPUSEL and FRAMESEL peripheral ownership registers from ResourceAllocator configuration
+2. **McuSysClkDiv Recommended Configuration Update (Errata Advisory)**: Configurator now warns when McuSysClkDiv = 1; recommended to use McuSysClkDiv >= 2 to avoid XRSn reset errata
+
+### Change 1: Automatic CPUSEL/FRAMESEL Register Writes via ResourceAllocator
+
+#### Description
+
+Version v02.02.00 extends `Mcu_Init()` to write CPUSEL (CPU selection) and FRAMESEL (frame selection) peripheral ownership registers for all peripherals configured in the ResourceAllocator plugin. The configuration is generated into a new `Mcu_PeripheralConfigSet[]` array and `Mcu_PeripheralConfig` struct in `Mcu_Cfg.c`.
+
+Projects that previously wrote CPUSEL/FRAMESEL registers manually must remove those manual writes to avoid conflicts.
+
+#### Old vs New
+
+| Behavior | v02.01.01 | v02.02.00 |
+|----------|-----------|-----------|
+| CPUSEL/FRAMESEL register writes | Application responsibility (manual) | Written automatically by `Mcu_Init()` from ResourceAllocator config |
+
+```{WARNING}
+If your application or any BSW module manually writes CPUSEL or FRAMESEL registers, those writes must be removed. Duplicate writes after `Mcu_Init()` may overwrite the generated ownership configuration and cause unexpected peripheral behavior.
+```
+
+#### Migration Actions
+
+1. **Verify ResourceAllocator configuration:** Confirm that the ResourceAllocator plugin is configured with the correct CPU and frame ownership for each peripheral used in your project
+2. **Identify manual CPUSEL/FRAMESEL writes:** Search your application code and any BSW integration code for direct writes to CPUSEL and FRAMESEL registers for the peripherals listed above
+3. **Remove manual register writes:** Delete or disable all manual CPUSEL/FRAMESEL register writes that are now handled by `Mcu_Init()`
+4. **Regenerate MCU configuration files:** Regenerate `Mcu_Cfg.c` and `Mcu_Cfg.h` using the updated generator (see Change 1, step 1 — this step is shared)
+5. **Verify Compilation and runtime behavior:** Clean build, run on target, and confirm all peripherals are accessible from the expected CPU after `Mcu_Init()` completes
+
+### Change 2: McuSysClkDiv Recommended Configuration Update (Errata Advisory)
+
+#### Description
+
+Due to a silicon errata, issuing a device reset (XRSn — internal or external) can put the device into an unexpected fault state when `SYSCLKDIVSEL.PLLSYSCLKDIV = 0`, which corresponds to `McuSysClkDiv = 1` (divide by 1). To address this, the recommended default value of `McuSysClkDiv` has been changed from `1` to `2` across all example presets. The configurator tool now displays a warning whenever `McuSysClkDiv = 1` is configured.
+
+No automatic migration is performed — users who currently have `McuSysClkDiv = 1` must manually update their configuration to avoid the errata condition.
+
+```{WARNING}
+Silicon errata advisory: "System: Issuing device reset (XRSn) can cause unexpected fault if SYSCLKDIVSEL.PLLSYSCLKDIV = 0". If your configuration uses McuSysClkDiv = 1, update it to 2 or higher to avoid this condition.
+```
+
+#### Old vs New
+
+| Behavior | v02.01.01 | v02.02.00 |
+|----------|-----------|-----------|
+| `McuSysClkDiv` default value | `1` (divide by 1) | `2` (divide by 2) |
+| Configurator warning when `McuSysClkDiv = 1` | Not present | Warning shown |
+
+#### Migration Actions
+
+1. **Check current McuSysClkDiv value:** Open your Mcu plugin configuration and check the value of `McuSysClkDiv` in each clock setting
+2. **Update if set to 1:** If `McuSysClkDiv = 1`, change it to `2` or higher. Using a value of `1` (divide by 1) triggers the silicon errata condition where a device reset (XRSn) can cause an unexpected fault state
+3. **Regenerate and rebuild:** Regenerate configuration files and do a clean build
+
+```{NOTE}
+For full details on this errata, refer to the silicon errata document: https://www.ti.com/lit/er/sprz569c/sprz569c.pdf
+```
+
+---
+
 ## v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration
 
 ### Summary
@@ -8682,6 +9346,210 @@ Mcu_Init(&Mcu_Config*);
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
+## v04.00.00 (i.e release v26.00.00) from v03.00.00 (i.e release v01.04.01) Migration
+
+### Summary
+
+This release contains plugin-only changes. The Port driver API is unchanged. The EB Tresos plugin configuration is updated for AUTOSAR compliance and improved device-variant support:
+
+1. **PortPhysicalPinId Enum Prefix Added**: Physical pin number enum values now carry a `PORT_PIN_` prefix to comply with AUTOSAR ENUMERATION naming rules.
+2. **Peripheral Signal Name Slash Replacement**: `/` characters in `MuxModeSignalType` enum values replaced with `_` for AUTOSAR short name compliance.
+
+### Change 1: PortPhysicalPinId Enum Values — `PORT_PIN_` Prefix Added
+
+#### Description
+
+AUTOSAR requires that all ENUMERATION literals begin with an alphabetic character. Previous releases used numeric-only values for `PortPhysicalPinId` (e.g., `1`, `10`, `100`), which violates this rule. All `PortPhysicalPinId` enum entries now carry the `PORT_PIN_` prefix.
+
+This change affects the generated ARXML and any existing EB Tresos configuration that has a `PortPhysicalPinId` parameter set.
+
+#### Old vs New PortPhysicalPinId Values
+
+**PortPhysicalPinId Value Mapping (examples):**
+
+| v03.00.00 | v04.00.00 |
+|--------------|------------|
+| `1` | `PORT_PIN_1` |
+| `10` | `PORT_PIN_10` |
+| `100` | `PORT_PIN_100` |
+| `125` | `PORT_PIN_125` |
+
+**Pattern:** `{N}` → `PORT_PIN_{N}` for all physical pin number values.
+
+#### Migration Actions
+
+1. **Open your Port configuration** in EB Tresos.
+2. **Run Auto-calculate** in EB Tresos to update the PortPhysicalPinId value.
+3. **Regenerate the configuration** and verify that the generated code compiles without errors.
+
+```{figure} Assets/images/migration/port_module/02_01_port_physical_pin_id_old.png
+:alt: PortPhysicalPinId old numeric values
+:align: center
+:width: 80%
+
+v03.00.00: PortPhysicalPinId dropdown showing numeric-only values
+```
+
+```{figure} Assets/images/migration/port_module/02_02_port_physical_pin_id_new.png
+:alt: PortPhysicalPinId new PORT_PIN_ prefixed values
+:align: center
+:width: 80%
+
+v04.00.00: PortPhysicalPinId dropdown showing PORT_PIN_ prefixed values
+```
+
+---
+
+### Change 2: MuxModeSignalType Peripheral Names — `/` Replaced with `_`
+
+#### Description
+
+Some peripheral signal type names in the `PortPinPeripheralSignal` / `MuxModeSignalType` enumeration previously contained `/` characters (e.g., `A0/C24/DACA_OUT`). The `/` character is not valid in AUTOSAR short names. All such entries now use `_` instead of `/`.
+
+This change affects any existing configuration that references a peripheral signal name containing a `/`.
+
+#### Old vs New Signal Names
+
+**MuxModeSignalType Name Mapping (examples):**
+
+| v03.00.00 | v04.00.00 |
+|--------------|------------|
+| `A0/C24/DACA_OUT` | `A0_C24_DACA_OUT` |
+
+**Pattern:** All `/` characters in signal type names → `_`.
+
+```{NOTE}
+Most GPIO and non-analog signal names are unaffected. Only entries where a single pin serves multiple analog functions (e.g., ADC channels that share a pin with DAC outputs) used the `/` separator. Review your `PortPinPeripheralSignal` selections if you configured any ANALOG or ADC-related peripheral signals.
+```
+
+#### Migration Actions
+
+1. **Open your Port configuration** in EB Tresos.
+2. **Run Auto-calculate** in EB Tresos to update the PortPhysicalPinId value.
+3. **Regenerate the configuration** and run AUTOSAR validation to confirm no short-name errors remain.
+
+```{figure} Assets/images/migration/port_module/03_01_port_signal_old_slash.png
+:alt: PortPinPeripheralSignal old slash-based name
+:align: center
+:width: 80%
+
+v03.00.00: PortPinPeripheralSignal showing slash-separated signal name (e.g. A0/C24/DACA_OUT)
+```
+
+```{figure} Assets/images/migration/port_module/03_02_port_signal_new_underscore.png
+:alt: PortPinPeripheralSignal new underscore-based name
+:align: center
+:width: 80%
+
+v04.00.00: PortPinPeripheralSignal showing underscore-replaced signal name (e.g. A0_C24_DACA_OUT)
+```
+
+The code snippet given below can be used to migrate the PORT module changes from v03.00.00 to v04.00.00. 
+
+```python
+"""
+Script to find all Port.xdm files recursively in a given directory and apply
+the following transformations:
+
+1. PortPhysicalPinId: Prefix values with PORT_PIN_ if not already prefixed.
+   Example: value="G2" -> value="PORT_PIN_G2"
+
+2. PortPinPeripheralSignal: Replace '/' and ',' with '_' in values.
+   Example: value="A0/C24/DACA_OUT" -> value="A0_C24_DACA_OUT"
+
+3. PortPinName: Replace '/' and ',' with '_' in values.
+   Example: value="A6/E24,GPIO224" -> value="A6_E24_GPIO224"
+
+Usage: python fix_port_pin_id.py <folder_path>
+  Example: python fix_port_pin_id.py .
+  Example: python fix_port_pin_id.py examples/Port
+"""
+
+import os
+import re
+import sys
+
+if len(sys.argv) < 2:
+    print("Usage: python fix_port_pin_id.py <folder_path>")
+    print("  Example: python fix_port_pin_id.py .")
+    print("  Example: python fix_port_pin_id.py examples/Port")
+    sys.exit(1)
+
+search_path = sys.argv[1]
+
+if not os.path.isdir(search_path):
+    print(f"Error: '{search_path}' is not a valid directory.")
+    sys.exit(1)
+
+# Pattern 1: PortPhysicalPinId - prefix with PORT_PIN_
+pattern_physical_pin = re.compile(
+    r'(name="PortPhysicalPinId"\s+type="ENUMERATION"\s+value=")'
+    r'((?!PORT_PIN_)([^"]+))'
+    r'(")'
+)
+replacement_physical_pin = r'\1PORT_PIN_\3\4'
+
+def replace_slash_comma(match):
+    """Replace '/' and ',' with '_' in the matched value."""
+    prefix = match.group(1)
+    value = match.group(2)
+    suffix = match.group(3)
+    new_value = value.replace("/", "_").replace(",", "_")
+    return prefix + new_value + suffix
+
+# Pattern 2: PortPinPeripheralSignal - replace / and , with _
+pattern_peripheral_signal = re.compile(
+    r'(name="PortPinPeripheralSignal"\s+type="ENUMERATION"\s+value=")'
+    r'([^"]*[/,][^"]*)'
+    r'(")'
+)
+
+# Pattern 3: PortPinName - replace / and , with _
+pattern_pin_name = re.compile(
+    r'(name="PortPinName"\s+type="ENUMERATION"\s+value=")'
+    r'([^"]*[/,][^"]*)'
+    r'(")'
+)
+
+files_updated = 0
+files_skipped = 0
+
+for dirpath, dirnames, filenames in os.walk(search_path):
+    for filename in filenames:
+        if filename == "Port.xdm":
+            filepath = os.path.join(dirpath, filename)
+            with open(filepath, "r", encoding="utf-8") as f:
+                content = f.read()
+
+            new_content = content
+
+            # Apply Pattern 1: PortPhysicalPinId
+            new_content = pattern_physical_pin.sub(
+                replacement_physical_pin, new_content
+            )
+
+            # Apply Pattern 2: PortPinPeripheralSignal
+            new_content = pattern_peripheral_signal.sub(
+                replace_slash_comma, new_content
+            )
+
+            # Apply Pattern 3: PortPinName
+            new_content = pattern_pin_name.sub(replace_slash_comma, new_content)
+
+            if new_content != content:
+                with open(filepath, "w", encoding="utf-8") as f:
+                    f.write(new_content)
+                print(f"Updated: {filepath}")
+                files_updated += 1
+            else:
+                print(f"No changes: {filepath}")
+                files_skipped += 1
+
+print(f"\nDone. Updated: {files_updated}, No changes: {files_skipped}")
+```
+
+---
+
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
 ### Summary
@@ -8700,10 +9568,10 @@ Resource Allocator becomes a mandatory architectural foundation for the Port mod
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 Direct device variant selection was used within Port module configuration.
 
-```{figure} Assets/images/migration/port_module/02_01_port_module_old_config.png
+```{figure} Assets/images/migration/port_module/01_01_port_module_old_config.png
 :alt: Old Port Config
 :align: center
 :width: 80%
@@ -8711,10 +9579,10 @@ Direct device variant selection was used within Port module configuration.
 v02.00.00: PortDeviceVariant configured within Port module
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 Port module automatically reads device variant information from Resource Allocator to determine available pins and mux options.
 
-```{figure} Assets/images/migration/port_module/02_02_port_module_new_config.png
+```{figure} Assets/images/migration/port_module/01_02_port_module_new_config.png
 :alt: New Port Config
 :align: center
 :width: 80%
@@ -8809,7 +9677,19 @@ Port_Init(&Port_Config);
 
 # SPI Module Migration
 
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+---
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
@@ -8832,7 +9712,7 @@ Resource Allocator becomes a mandatory architectural foundation, replacing direc
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 Direct parameter selection was used without Resource Allocator dependency.
 
 ```{figure} Assets/images/migration/spi_module/02_01_spi_module_old_hwunit_config.png
@@ -8843,7 +9723,7 @@ Direct parameter selection was used without Resource Allocator dependency.
 v02.00.00: Direct SPI unit parameter selection with SPI_UNIT_SPIA format
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 SPI hardware unit configurations now reference the SPI instances allocated through Resource Allocator.
 
 ```{figure} Assets/images/migration/spi_module/02_04_spi_module_select_instance.png
@@ -8943,7 +9823,7 @@ SpiHwUnit configurations are updated to reference SPI instances allocated throug
 
 #### Old vs New Hardware Unit Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 Direct SPI unit parameter selection with SPI_UNIT_SPIA format.
 
 ```{figure} Assets/images/migration/spi_module/02_01_spi_module_old_hwunit_config.png
@@ -8954,7 +9834,7 @@ Direct SPI unit parameter selection with SPI_UNIT_SPIA format.
 v02.00.00: Direct SPI unit parameter selection with SPI_UNIT_SPIA format
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 SpiHwUnitType parameter now references Resource Allocator's SpiAllocatedInstance.
 
 ```{figure} Assets/images/migration/spi_module/02_04_spi_module_select_instance.png
@@ -8980,7 +9860,7 @@ SpiExternalDevice configurations are updated to reference SPI instances allocate
 
 #### Old vs New External Device Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 SpiExternalDevice used direct SPI unit parameter selection.
 
 ```{figure} Assets/images/migration/spi_module/02_02_spi_module_old_extdevice_config.png
@@ -8991,7 +9871,7 @@ SpiExternalDevice used direct SPI unit parameter selection.
 v02.00.00: SpiExternalDevice with direct SPI unit parameter selection with SPI_UNIT_SPIA format
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 SpiExternalDevice configurations reference allocated instances from Resource Allocator.
 
 ```{figure} Assets/images/migration/spi_module/03_02_spi_module_configure_external_device.png
@@ -9055,7 +9935,19 @@ Spi_Init(&Spi_Config);
 
 # WDG Module Migration
 
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+---
 
 ## v02.00.00 (i.e release v01.03.00) from v01.00.01 (i.e release v01.02.00) Migration
 
@@ -10295,14 +11187,26 @@ The Driver doesn’t register any interrupts handler (ISR), it’s expected that
 For every CAN Instance, an ISR requires to be registered. The Interrupt number associated with instance of the CAN is detailed in TRM (also, please refer the Example application).
 Interrupt type should be selected in CAN plugin.
 
-|Can Instance| Interrupt handler|
-|------------|-----------------|
-|Can A| Can_1_Int1ISR|
-|Can B| Can_2_Int1ISR|
-|Can C| Can_3_Int1ISR|
-|Can D| Can_4_Int1ISR|
-|Can E| Can_5_Int1ISR|
-|Can F| Can_6_Int1ISR|
+|Can Instance| Interrupt Name | Interrupt handler|
+|------------|----------------|-----------------|
+|MCANA| MCANA_INT0 | Can_A_Int0ISR|
+|MCANA| MCANA_INT1 | Can_A_Int1ISR|
+|MCANA| MCANA_WAKE_AND_TS_PLS_INT | Can_A_WakeUpISR|
+|MCANB| MCANB_INT0 | Can_B_Int0ISR|
+|MCANB| MCANB_INT1 | Can_B_Int1ISR|
+|MCANB| MCANB_WAKE_AND_TS_PLS_INT | Can_B_WakeUpISR|
+|MCANC| MCANC_INT0 | Can_C_Int0ISR|
+|MCANC| MCANC_INT1 | Can_C_Int1ISR|
+|MCANC| MCANC_WAKE_AND_TS_PLS_INT | Can_C_WakeUpISR|
+|MCAND| MCAND_INT0 | Can_D_Int0ISR|
+|MCAND| MCAND_INT1 | Can_D_Int1ISR|
+|MCAND| MCAND_WAKE_AND_TS_PLS_INT | Can_D_WakeUpISR|
+|MCANE| MCANE_INT0 | Can_E_Int0ISR|
+|MCANE| MCANE_INT1 | Can_E_Int1ISR|
+|MCANE| MCANE_WAKE_AND_TS_PLS_INT | Can_E_WakeUpISR|
+|MCANF| MCANF_INT0 | Can_F_Int0ISR|
+|MCANF| MCANF_INT1 | Can_F_Int1ISR|
+|MCANF| MCANF_WAKE_AND_TS_PLS_INT | Can_F_WakeUpISR|
 
 ```{NOTE}
 Same interrupt category should be configured in Os module. Nesting of CAN interrupts is not allowed. In case nesting of CAN interrupt is enabled, data integrity cannot be ensured.
@@ -11919,6 +12823,16 @@ This container contains the parameter for configuring the period for cyclic call
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 Refer [AUTOSAR_SWS_CANDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_CANDriver.pdf) for configuration parameters details
+
+#### Bit Timing and Sampling Point Calculation
+
+Selecting the correct CAN bit timing parameters (prescaler, TSEG1, TSEG2, SJW) for a given clock frequency, target bit rate, and desired sampling point can be complex. A Microsoft Excel–based bit timing calculator is provided to assist with this.
+
+```{note}
+Download the calculator: [MCAN_BitTimingCalculator.xls](Assets/tables/MCAN_BitTimingCalculator.xls)
+
+Open the sheet, enter your CAN clock frequency and target bit rate, and the calculator will derive valid prescaler, TSEG1, TSEG2, and SJW values along with the resulting sampling point percentage for both the **nominal** (arbitration) phase and the **data** phase (CAN FD).
+```
 
 #### Steps To Configure Can Module
 
@@ -13791,11 +14705,11 @@ The Driver doesn’t register any interrupts handler (ISR), it’s expected that
 
 For every Gpt channel with notification enabled, an ISR requires to be registered. The Interrupt number associated with instance of the Timer is detailed in TRM (also, please refer the Example application).
 
-|GptChannelId|Timer Instance|Associated ISR (if notification is enabled)|
-|----|-----|-------|
-|0 | Timer 0 | Gpt_Ch0Isr|
-|1 | Timer 1 | Gpt_Ch1Isr|
-|2 | Timer 2 | Gpt_Ch2Isr|
+|Timer Instance| Interrupt Name | Interrupt handler (if notification is enabled)|
+|-----|----------------|-------|
+| CPUTIMER0 | CPU_TINT0 | Gpt_Ch0Isr|
+| CPUTIMER1 | CPU_TINT1 | Gpt_Ch1Isr|
+| CPUTIMER2 | CPU_TINT2 | Gpt_Ch2Isr|
 
 ```{NOTE}
 Same interrupt category should be configured in Os module
@@ -14798,12 +15712,12 @@ For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Ti
 Lin driver provides ISR for wake up detection. The interrupt vector lines to be used is configurable in Lin driver.
  The ISR for Wake up detection is implemented in the file Lin_Irq.c.
 
- |Lin Instance| Interrupt handler|Interrupt Line|
-|------------|-----------------|----------------|
-|Lin A| Lin_A_Int0ISR|Line 0|
-|Lin A| Lin_A_Int1ISR|Line 1|
-|Lin B| Lin_B_Int0ISR|Line 0|
-|Lin B| Lin_B_Int1ISR|Line 1|
+|Lin Instance| Interrupt Name | Interrupt handler|
+|------------|----------------|-----------------|
+|LINA| LINA_0 | Lin_A_Int0ISR|
+|LINA| LINA_1 | Lin_A_Int1ISR|
+|LINB| LINB_0 | Lin_B_Int0ISR|
+|LINB| LINB_1 | Lin_B_Int1ISR|
 
 ```{Note}
 Same Interrupt Category needs to be configured in both Lin and OS Modules.
@@ -15577,6 +16491,15 @@ derived from the CPU SYSCLK or PLLSYSCLK.
 STANDBY is good for an application where the wake-up signal comes from an external system (or CPU subsystem) rather than a peripheral input.
 
 An NMI (or optionally) any interrupt or a configured GPIO can wake the CPU from STANDBY mode. Each GPIO from GPIO0-63 can be configured to wake the CPU when the GPIO are driven active low
+
+###### Configuring IDLE or STANDBY Mode in EB Tresos
+
+The low power mode is selected using the **`McuMode`** parameter inside **`McuModeSettingConf`** in EB Tresos:
+
+| `McuMode` value | Mode activated |
+|:---------------:|:--------------:|
+| `0`             | IDLE           |
+| `1`             | STANDBY        |
 
 ##### Ram Initialization
 
@@ -17939,13 +18862,13 @@ The Driver doesn’t register any interrupts handler (ISR), it’s expected that
 For every SPI Instance, an ISR requires to be registered. The Interrupt number associated with instance of the SPI is detailed in TRM (also, please refer the Example application).
 Interrupt type should be selected in SPI plugin.
 
-|SPI Instance| Interrupt handler|
-|------------|-----------------|
-|SPIA| SPIA_RxINT|
-|SPIB| SPIB_RxINT|
-|SPIC| SPIC_RxINT|
-|SPID| SPID_RxINT|
-|SPIE| SPIE_RxINT|
+|SPI Instance| Interrupt Name | Interrupt handler|
+|------------|----------------|-----------------|
+|SPIA| SPIA_RXINT | Spi_A_RxISR|
+|SPIB| SPIB_RXINT | Spi_B_RxISR|
+|SPIC| SPIC_RXINT | Spi_C_RxISR|
+|SPID| SPID_RXINT | Spi_D_RxISR|
+|SPIE| SPIE_RXINT | Spi_E_RxISR|
 
 ```{NOTE}
 Same Interrupt Category needs to be configured in both SPI and OS Modules.
@@ -18484,6 +19407,10 @@ The communication settings of an external device. Closely linked to SpiJob.
 | **Default-value** | 0.0 |
 | **Max-value** | 5000000.0 |
 | **Min-value** | 0.0 |
+
+```{Note}
+SPI Baudrate field in the configurator is implemented as float due to AUTOSAR requirement. If a float value is configured as baud rate, the calculated clock divider value is rounded to an integer. Therefore, floating point values for baud rate are not supported.
+```
 
 ###### SpiclkDivider
 
@@ -19306,6 +20233,8 @@ More details of Safety Mechanisms can be found in Safety Manual.
 
 #### Interrupt Handling
 
+There are no Interrupts in Wdg. The Watchdog module does not use any hardware interrupts; it operates by triggering a system reset upon timeout expiry.
+
 #### Instance support
 
 |CPU instances|supported|
@@ -19894,33 +20823,33 @@ For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Ti
 Cdd_Adc driver provides ISRs. The ISRs are implemented in the Cdd_Adc_Irq.c file.
 Interrupt and the category should be selected in the Cdd_Adc plugin.The Interrupt ID associated with the ADC instance is mentioned in the TRM (also, please refer the Example application).
 
- |Cdd_Adc Instance| Interrupt handler|
-|------------|-----------------|
-|ADCA| Cdd_Adc_ADCA_Int1Isr|
-|ADCA| Cdd_Adc_ADCA_Int2Isr|
-|ADCA| Cdd_Adc_ADCA_Int3Isr|
-|ADCA| Cdd_Adc_ADCA_Int4Isr|
-|ADCA| Cdd_Adc_ADCA_PpbEvtIntIsr|
-|ADCB| Cdd_Adc_ADCB_Int1Isr|
-|ADCB| Cdd_Adc_ADCB_Int2Isr|
-|ADCB| Cdd_Adc_ADCB_Int3Isr|
-|ADCB| Cdd_Adc_ADCB_Int4Isr|
-|ADCB| Cdd_Adc_ADCB_PpbEvtIntIsr|
-|ADCC| Cdd_Adc_ADCC_Int1Isr|
-|ADCC| Cdd_Adc_ADCC_Int2Isr|
-|ADCC| Cdd_Adc_ADCC_Int3Isr|
-|ADCC| Cdd_Adc_ADCC_Int4Isr|
-|ADCC| Cdd_Adc_ADCC_PpbEvtIntIsr|
-|ADCD| Cdd_Adc_ADCD_Int1Isr|
-|ADCD| Cdd_Adc_ADCD_Int2Isr|
-|ADCD| Cdd_Adc_ADCD_Int3Isr|
-|ADCD| Cdd_Adc_ADCD_Int4Isr|
-|ADCD| Cdd_Adc_ADCE_PpbEvtIntIsr|
-|ADCE| Cdd_Adc_ADCE_Int1Isr|
-|ADCE| Cdd_Adc_ADCE_Int2Isr|
-|ADCE| Cdd_Adc_ADCE_Int3Isr|
-|ADCE| Cdd_Adc_ADCE_Int4Isr|
-|ADCE| Cdd_Adc_ADCE_PpbEvtIntIsr|
+|Cdd_Adc Instance| Interrupt Name | Interrupt handler|
+|------------|----------------|-----------------|
+|ADCA| ADCAINT1 | Cdd_Adc_ADCA_Int1Isr|
+|ADCA| ADCAINT2 | Cdd_Adc_ADCA_Int2Isr|
+|ADCA| ADCAINT3 | Cdd_Adc_ADCA_Int3Isr|
+|ADCA| ADCAINT4 | Cdd_Adc_ADCA_Int4Isr|
+|ADCA| ADCA_EVT_INT | Cdd_Adc_ADCA_PpbEvtIntIsr|
+|ADCB| ADCBINT1 | Cdd_Adc_ADCB_Int1Isr|
+|ADCB| ADCBINT2 | Cdd_Adc_ADCB_Int2Isr|
+|ADCB| ADCBINT3 | Cdd_Adc_ADCB_Int3Isr|
+|ADCB| ADCBINT4 | Cdd_Adc_ADCB_Int4Isr|
+|ADCB| ADCB_EVT_INT | Cdd_Adc_ADCB_PpbEvtIntIsr|
+|ADCC| ADCCINT1 | Cdd_Adc_ADCC_Int1Isr|
+|ADCC| ADCCINT2 | Cdd_Adc_ADCC_Int2Isr|
+|ADCC| ADCCINT3 | Cdd_Adc_ADCC_Int3Isr|
+|ADCC| ADCCINT4 | Cdd_Adc_ADCC_Int4Isr|
+|ADCC| ADCC_EVT_INT | Cdd_Adc_ADCC_PpbEvtIntIsr|
+|ADCD| ADCDINT1 | Cdd_Adc_ADCD_Int1Isr|
+|ADCD| ADCDINT2 | Cdd_Adc_ADCD_Int2Isr|
+|ADCD| ADCDINT3 | Cdd_Adc_ADCD_Int3Isr|
+|ADCD| ADCDINT4 | Cdd_Adc_ADCD_Int4Isr|
+|ADCD| ADCD_EVT_INT | Cdd_Adc_ADCD_PpbEvtIntIsr|
+|ADCE| ADCEINT1 | Cdd_Adc_ADCE_Int1Isr|
+|ADCE| ADCEINT2 | Cdd_Adc_ADCE_Int2Isr|
+|ADCE| ADCEINT3 | Cdd_Adc_ADCE_Int3Isr|
+|ADCE| ADCEINT4 | Cdd_Adc_ADCE_Int4Isr|
+|ADCE| ADCE_EVT_INT | Cdd_Adc_ADCE_PpbEvtIntIsr|
 
 ```{Note}
 Same Interrupt Category needs to be configured in both Cdd_Adc and OS Module.
@@ -22196,28 +23125,28 @@ The Driver doesn’t register any interrupts handler (ISR), it’s expected that
 For every RTDMA channel, an ISR requires to be registered if Channel notification is enabled. The Interrupt number associated with RTDMA channel is detailed in TRM (also, please refer the Example application).
 Interrupt category should be selected in the Cdd_Dma plugin.
 
-| Cdd Dma Instance | Cdd Dma Channel | Interrupt handler | INT Signal Name |
-| ---------------- | ---------------- | ---------------- | ---------------- |
-| CDD_DMA1 | CDD_DMA_CH1 | Cdd_Dma_RTDMA1_CH1_Isr | RTDMA1_CH1INT |
-| CDD_DMA1 | CDD_DMA_CH2 | Cdd_Dma_RTDMA1_CH2_Isr | RTDMA1_CH2INT |
-| CDD_DMA1 | CDD_DMA_CH3 | Cdd_Dma_RTDMA1_CH3_Isr | RTDMA1_CH3INT |
-| CDD_DMA1 | CDD_DMA_CH4 | Cdd_Dma_RTDMA1_CH4_Isr | RTDMA1_CH4INT |
-| CDD_DMA1 | CDD_DMA_CH5 | Cdd_Dma_RTDMA1_CH5_Isr | RTDMA1_CH5INT |
-| CDD_DMA1 | CDD_DMA_CH6 | Cdd_Dma_RTDMA1_CH6_Isr | RTDMA1_CH6INT |
-| CDD_DMA1 | CDD_DMA_CH7 | Cdd_Dma_RTDMA1_CH7_Isr | RTDMA1_CH7INT |
-| CDD_DMA1 | CDD_DMA_CH8 | Cdd_Dma_RTDMA1_CH8_Isr | RTDMA1_CH8INT |
-| CDD_DMA1 | CDD_DMA_CH9 | Cdd_Dma_RTDMA1_CH9_Isr | RTDMA1_CH9INT |
-| CDD_DMA1 | CDD_DMA_CH10 | Cdd_Dma_RTDMA1_CH10_Isr | RTDMA1_CH10INT |
-| CDD_DMA2 | CDD_DMA_CH1 | Cdd_Dma_RTDMA2_CH1_Isr | RTDMA2_CH1INT |
-| CDD_DMA2 | CDD_DMA_CH2 | Cdd_Dma_RTDMA2_CH2_Isr | RTDMA2_CH2INT |
-| CDD_DMA2 | CDD_DMA_CH3 | Cdd_Dma_RTDMA2_CH3_Isr | RTDMA2_CH3INT |
-| CDD_DMA2 | CDD_DMA_CH4 | Cdd_Dma_RTDMA2_CH4_Isr | RTDMA2_CH4INT |
-| CDD_DMA2 | CDD_DMA_CH5 | Cdd_Dma_RTDMA2_CH5_Isr | RTDMA2_CH5INT |
-| CDD_DMA2 | CDD_DMA_CH6 | Cdd_Dma_RTDMA2_CH6_Isr | RTDMA2_CH6INT |
-| CDD_DMA2 | CDD_DMA_CH7 | Cdd_Dma_RTDMA2_CH7_Isr | RTDMA2_CH7INT |
-| CDD_DMA2 | CDD_DMA_CH8 | Cdd_Dma_RTDMA2_CH8_Isr | RTDMA2_CH8INT |
-| CDD_DMA2 | CDD_DMA_CH9 | Cdd_Dma_RTDMA2_CH9_Isr | RTDMA2_CH9INT |
-| CDD_DMA2 | CDD_DMA_CH10 | Cdd_Dma_RTDMA2_CH10_Isr | RTDMA2_CH10INT |
+| Cdd Dma Instance | Interrupt Name | Interrupt handler |
+| ---------------- | -------------- | ----------------- |
+| RTDMA1 | RTDMA1_CH1INT | Cdd_Dma_RTDMA1_CH1_Isr |
+| RTDMA1 | RTDMA1_CH2INT | Cdd_Dma_RTDMA1_CH2_Isr |
+| RTDMA1 | RTDMA1_CH3INT | Cdd_Dma_RTDMA1_CH3_Isr |
+| RTDMA1 | RTDMA1_CH4INT | Cdd_Dma_RTDMA1_CH4_Isr |
+| RTDMA1 | RTDMA1_CH5INT | Cdd_Dma_RTDMA1_CH5_Isr |
+| RTDMA1 | RTDMA1_CH6INT | Cdd_Dma_RTDMA1_CH6_Isr |
+| RTDMA1 | RTDMA1_CH7INT | Cdd_Dma_RTDMA1_CH7_Isr |
+| RTDMA1 | RTDMA1_CH8INT | Cdd_Dma_RTDMA1_CH8_Isr |
+| RTDMA1 | RTDMA1_CH9INT | Cdd_Dma_RTDMA1_CH9_Isr |
+| RTDMA1 | RTDMA1_CH10INT | Cdd_Dma_RTDMA1_CH10_Isr |
+| RTDMA2 | RTDMA2_CH1INT | Cdd_Dma_RTDMA2_CH1_Isr |
+| RTDMA2 | RTDMA2_CH2INT | Cdd_Dma_RTDMA2_CH2_Isr |
+| RTDMA2 | RTDMA2_CH3INT | Cdd_Dma_RTDMA2_CH3_Isr |
+| RTDMA2 | RTDMA2_CH4INT | Cdd_Dma_RTDMA2_CH4_Isr |
+| RTDMA2 | RTDMA2_CH5INT | Cdd_Dma_RTDMA2_CH5_Isr |
+| RTDMA2 | RTDMA2_CH6INT | Cdd_Dma_RTDMA2_CH6_Isr |
+| RTDMA2 | RTDMA2_CH7INT | Cdd_Dma_RTDMA2_CH7_Isr |
+| RTDMA2 | RTDMA2_CH8INT | Cdd_Dma_RTDMA2_CH8_Isr |
+| RTDMA2 | RTDMA2_CH9INT | Cdd_Dma_RTDMA2_CH9_Isr |
+| RTDMA2 | RTDMA2_CH10INT | Cdd_Dma_RTDMA2_CH10_Isr |
 
 #### Instance support
 
@@ -23043,16 +23972,16 @@ Interrupt category should be selected in the Cdd_Ecap plugin.
 
 Cdd_Ecap driver provides ISRs. The ISRs are implemented in the Cdd_Ecap_Irq.c file.
 
-|Cdd Ecap ChannelInstance         | Interrupt handler             |INT Signal Name                                                                                                                |
-|---------------------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
-| CDD ECAP Channel 0              | Cdd_Ecap_ch0Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
-| CDD ECAP Channel 1              | Cdd_Ecap_ch1Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
-| CDD ECAP Channel 2              | Cdd_Ecap_ch2Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
-| CDD ECAP Channel 3              | Cdd_Ecap_ch3Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
-| CDD ECAP Channel 4              | Cdd_Ecap_ch4Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
-| CDD ECAP Channel 5              | Cdd_Ecap_ch5Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
-| CDD ECAP Channel 4              | Cdd_Ecap_HR_ch4Notify         | Depends on the HRCAP HW instance used for the Cdd ECAP channel. HRCAP5_INT/HRCAP6_INT                                         |
-| CDD ECAP Channel 5              | Cdd_Ecap_HR_ch5Notify         | Depends on the HRCAP HW instance used for the Cdd ECAP channel.  HRCAP5_INT/HRCAP6_INT                                        |
+|Cdd Ecap ChannelInstance         | Interrupt Name                                                                                                                | Interrupt handler             |
+|---------------------------------|-------------------------------------------------------------------------------------------------------------------------------|-------------------------------|
+| CDD ECAP Channel 0              | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    | Cdd_Ecap_ch0Notify            |
+| CDD ECAP Channel 1              | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    | Cdd_Ecap_ch1Notify            |
+| CDD ECAP Channel 2              | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    | Cdd_Ecap_ch2Notify            |
+| CDD ECAP Channel 3              | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    | Cdd_Ecap_ch3Notify            |
+| CDD ECAP Channel 4              | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    | Cdd_Ecap_ch4Notify            |
+| CDD ECAP Channel 5              | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    | Cdd_Ecap_ch5Notify            |
+| CDD ECAP Channel 4              | Depends on the HRCAP HW instance used for the Cdd ECAP channel. HRCAP5_INT/HRCAP6_INT                                         | Cdd_Ecap_HR_ch4Notify         |
+| CDD ECAP Channel 5              | Depends on the HRCAP HW instance used for the Cdd ECAP channel. HRCAP5_INT/HRCAP6_INT                                         | Cdd_Ecap_HR_ch5Notify         |
 
 ```{Note}
 Same Interrupt Category needs to be configured in both Cdd_Ecap and OS Modules.
@@ -23922,10 +24851,10 @@ Interrupt routines are provided by the CDD I2C driver is Cdd_I2c_Isr_Handler(). 
 Interrupt handler shall be provided for each instance of the CDD I2C driver.
 The corresponding CDD I2C Interrupt numbers are:
 
-| Hardware Unit| ISR Handler Mapped| Interrupt Number|
+| Hardware Unit| Interrupt Name | Interrupt handler|
 |-----|-----|-----|
-|A|Cdd_I2c_I2CA_ISR|149|
-|B|Cdd_I2c_I2CB_ISR|151|
+|I2CA| I2CA_INT | Cdd_I2c_I2CA_ISR|
+|I2CB| I2CB_INT | Cdd_I2c_I2CB_ISR|
 
 ```{NOTE}
 Same Interrupt Category needs to be configured in both I2C and OS Modules.
@@ -24703,16 +25632,16 @@ The Driver doesn’t register any interrupts handler (ISR), it’s expected that
 For every IPC Rx Instance, an ISR requires to be registered. The Interrupt number associated with instance of the IPC is detailed in TRM (also, please refer the Example application).
 Interrupt category should be selected in the Cdd_Ipc plugin.
 
-|Cdd Ipc Instance| Interrupt handler|INT Signal Name|
-|------------|-----------------|--------------------|
-| CDD_IPC_CPU1_L_CPU2_R_INST0 | Cdd_Ipc_CPU1_L_CPU2_R_INST0_ISR | IPC_INT1_1 |
-| CDD_IPC_CPU1_L_CPU2_R_INST1 | Cdd_Ipc_CPU1_L_CPU2_R_INST1_ISR | IPC_INT1_2 |
-| CDD_IPC_CPU1_L_CPU2_R_INST2 | Cdd_Ipc_CPU1_L_CPU2_R_INST2_ISR | IPC_INT1_3 |
-| CDD_IPC_CPU1_L_CPU2_R_INST3 | Cdd_Ipc_CPU1_L_CPU2_R_INST3_ISR | IPC_INT1_4 |
-| CDD_IPC_CPU1_L_CPU3_R_INST0 | Cdd_Ipc_CPU1_L_CPU3_R_INST0_ISR | IPC_INT2_1 |
-| CDD_IPC_CPU1_L_CPU3_R_INST1 | Cdd_Ipc_CPU1_L_CPU3_R_INST1_ISR | IPC_INT2_2 |
-| CDD_IPC_CPU1_L_CPU3_R_INST2 | Cdd_Ipc_CPU1_L_CPU3_R_INST2_ISR | IPC_INT2_3 |
-| CDD_IPC_CPU1_L_CPU3_R_INST3 | Cdd_Ipc_CPU1_L_CPU3_R_INST3_ISR | IPC_INT2_4 |
+|Cdd Ipc Instance| Interrupt Name | Interrupt handler|
+|----------------|----------------|-----------------|
+| CDD_IPC_CPU1_L_CPU2_R_INST0 | IPC_INT1_1 | Cdd_Ipc_CPU1_L_CPU2_R_INST0_ISR |
+| CDD_IPC_CPU1_L_CPU2_R_INST1 | IPC_INT1_2 | Cdd_Ipc_CPU1_L_CPU2_R_INST1_ISR |
+| CDD_IPC_CPU1_L_CPU2_R_INST2 | IPC_INT1_3 | Cdd_Ipc_CPU1_L_CPU2_R_INST2_ISR |
+| CDD_IPC_CPU1_L_CPU2_R_INST3 | IPC_INT1_4 | Cdd_Ipc_CPU1_L_CPU2_R_INST3_ISR |
+| CDD_IPC_CPU1_L_CPU3_R_INST0 | IPC_INT2_1 | Cdd_Ipc_CPU1_L_CPU3_R_INST0_ISR |
+| CDD_IPC_CPU1_L_CPU3_R_INST1 | IPC_INT2_2 | Cdd_Ipc_CPU1_L_CPU3_R_INST1_ISR |
+| CDD_IPC_CPU1_L_CPU3_R_INST2 | IPC_INT2_3 | Cdd_Ipc_CPU1_L_CPU3_R_INST2_ISR |
+| CDD_IPC_CPU1_L_CPU3_R_INST3 | IPC_INT2_4 | Cdd_Ipc_CPU1_L_CPU3_R_INST3_ISR |
 
 ```{Note}
 Same Interrupt Category needs to be configured in both Cdd_Ipc and OS Modules.
@@ -25845,49 +26774,49 @@ For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Ti
 Cdd_Pwm driver provides ISRs. The ISRs are implemented in the Cdd_Pwm_Irq.c file.
 Interrupt and the category should be selected in the Cdd_Pwm plugin.The Interrupt ID associated with the PWM instance is mentioned in the TRM (also, please refer the Example application).
 
-|Cdd_Pwm Instance| Interrupt handler|
-|------------|-----------------|
-|EPWM1| Cdd_Pwm_Epwm1_IntIsr|
-|EPWM2| Cdd_Pwm_Epwm2_IntIsr|
-|EPWM3| Cdd_Pwm_Epwm3_IntIsr|
-|EPWM4| Cdd_Pwm_Epwm4_IntIsr|
-|EPWM5| Cdd_Pwm_Epwm5_IntIsr|
-|EPWM6| Cdd_Pwm_Epwm6_IntIsr|
-|EPWM7| Cdd_Pwm_Epwm7_IntIsr|
-|EPWM8| Cdd_Pwm_Epwm8_IntIsr|
-|EPWM9| Cdd_Pwm_Epwm9_IntIsr|
-|EPWM10| Cdd_Pwm_Epwm10_IntIsr|
-|EPWM11| Cdd_Pwm_Epwm11_IntIsr|
-|EPWM12| Cdd_Pwm_Epwm12_IntIsr|
-|EPWM13| Cdd_Pwm_Epwm13_IntIsr|
-|EPWM14| Cdd_Pwm_Epwm14_IntIsr|
-|EPWM15| Cdd_Pwm_Epwm15_IntIsr|
-|EPWM16| Cdd_Pwm_Epwm16_IntIsr|
-|EPWM17| Cdd_Pwm_Epwm17_IntIsr|
-|EPWM18| Cdd_Pwm_Epwm18_IntIsr|
+|Cdd_Pwm Instance| Interrupt Name | Interrupt handler|
+|------------|----------------|-----------------|
+|EPWM1| EPWM1_INT | Cdd_Pwm_Epwm1_IntIsr|
+|EPWM2| EPWM2_INT | Cdd_Pwm_Epwm2_IntIsr|
+|EPWM3| EPWM3_INT | Cdd_Pwm_Epwm3_IntIsr|
+|EPWM4| EPWM4_INT | Cdd_Pwm_Epwm4_IntIsr|
+|EPWM5| EPWM5_INT | Cdd_Pwm_Epwm5_IntIsr|
+|EPWM6| EPWM6_INT | Cdd_Pwm_Epwm6_IntIsr|
+|EPWM7| EPWM7_INT | Cdd_Pwm_Epwm7_IntIsr|
+|EPWM8| EPWM8_INT | Cdd_Pwm_Epwm8_IntIsr|
+|EPWM9| EPWM9_INT | Cdd_Pwm_Epwm9_IntIsr|
+|EPWM10| EPWM10_INT | Cdd_Pwm_Epwm10_IntIsr|
+|EPWM11| EPWM11_INT | Cdd_Pwm_Epwm11_IntIsr|
+|EPWM12| EPWM12_INT | Cdd_Pwm_Epwm12_IntIsr|
+|EPWM13| EPWM13_INT | Cdd_Pwm_Epwm13_IntIsr|
+|EPWM14| EPWM14_INT | Cdd_Pwm_Epwm14_IntIsr|
+|EPWM15| EPWM15_INT | Cdd_Pwm_Epwm15_IntIsr|
+|EPWM16| EPWM16_INT | Cdd_Pwm_Epwm16_IntIsr|
+|EPWM17| EPWM17_INT | Cdd_Pwm_Epwm17_IntIsr|
+|EPWM18| EPWM18_INT | Cdd_Pwm_Epwm18_IntIsr|
 
 The trip zone interrupts are only supported in advanced mode.
 
-|Cdd_Pwm Instance| Interrupt handler|
-|------------|-----------------|
-|EPWM1| Cdd_Pwm_Epwm1_TzIntIsr|
-|EPWM2| Cdd_Pwm_Epwm2_TzIntIsr|
-|EPWM3| Cdd_Pwm_Epwm3_TzIntIsr|
-|EPWM4| Cdd_Pwm_Epwm4_TzIntIsr|
-|EPWM5| Cdd_Pwm_Epwm5_TzIntIsr|
-|EPWM6| Cdd_Pwm_Epwm6_TzIntIsr|
-|EPWM7| Cdd_Pwm_Epwm7_TzIntIsr|
-|EPWM8| Cdd_Pwm_Epwm8_TzIntIsr|
-|EPWM9| Cdd_Pwm_Epwm9_TzIntIsr|
-|EPWM10| Cdd_Pwm_Epwm10_TzIntIsr|
-|EPWM11| Cdd_Pwm_Epwm11_TzIntIsr|
-|EPWM12| Cdd_Pwm_Epwm12_TzIntIsr|
-|EPWM13| Cdd_Pwm_Epwm13_TzIntIsr|
-|EPWM14| Cdd_Pwm_Epwm14_TzIntIsr|
-|EPWM15| Cdd_Pwm_Epwm15_TzIntIsr|
-|EPWM16| Cdd_Pwm_Epwm16_TzIntIsr|
-|EPWM17| Cdd_Pwm_Epwm17_TzIntIsr|
-|EPWM18| Cdd_Pwm_Epwm18_TzIntIsr|
+|Cdd_Pwm Instance| Interrupt Name | Interrupt handler|
+|------------|----------------|-----------------|
+|EPWM1| EPWM1_TZINT | Cdd_Pwm_Epwm1_TzIntIsr|
+|EPWM2| EPWM2_TZINT | Cdd_Pwm_Epwm2_TzIntIsr|
+|EPWM3| EPWM3_TZINT | Cdd_Pwm_Epwm3_TzIntIsr|
+|EPWM4| EPWM4_TZINT | Cdd_Pwm_Epwm4_TzIntIsr|
+|EPWM5| EPWM5_TZINT | Cdd_Pwm_Epwm5_TzIntIsr|
+|EPWM6| EPWM6_TZINT | Cdd_Pwm_Epwm6_TzIntIsr|
+|EPWM7| EPWM7_TZINT | Cdd_Pwm_Epwm7_TzIntIsr|
+|EPWM8| EPWM8_TZINT | Cdd_Pwm_Epwm8_TzIntIsr|
+|EPWM9| EPWM9_TZINT | Cdd_Pwm_Epwm9_TzIntIsr|
+|EPWM10| EPWM10_TZINT | Cdd_Pwm_Epwm10_TzIntIsr|
+|EPWM11| EPWM11_TZINT | Cdd_Pwm_Epwm11_TzIntIsr|
+|EPWM12| EPWM12_TZINT | Cdd_Pwm_Epwm12_TzIntIsr|
+|EPWM13| EPWM13_TZINT | Cdd_Pwm_Epwm13_TzIntIsr|
+|EPWM14| EPWM14_TZINT | Cdd_Pwm_Epwm14_TzIntIsr|
+|EPWM15| EPWM15_TZINT | Cdd_Pwm_Epwm15_TzIntIsr|
+|EPWM16| EPWM16_TZINT | Cdd_Pwm_Epwm16_TzIntIsr|
+|EPWM17| EPWM17_TZINT | Cdd_Pwm_Epwm17_TzIntIsr|
+|EPWM18| EPWM18_TZINT | Cdd_Pwm_Epwm18_TzIntIsr|
 
 ```{Note}
 Same Interrupt Category needs to be configured in both Cdd_Pwm and OS Module.
@@ -27272,14 +28201,14 @@ More details of Safety Mechanisms can be found in Safety Manual.
 Cdd_Sent driver provides ISR. The interrupt vector lines to be used is configurable in Cdd_Sent driver.
 The ISR functionality is implemented in the file Cdd_Sent_Irq.c.
 
-|Cdd_Sent Instance| Interrupt handler|Interrupt Line|
-|------------|-----------------|----------------|
-|Cdd_Sent 1| Cdd_Sent_1_ISR,|Line 0|
-|Cdd_Sent 2| Cdd_Sent_2_ISR|Line 0|
-|Cdd_Sent 3| Cdd_Sent_3_ISR|Line 0|
-|Cdd_Sent 4| Cdd_Sent_4_ISR|Line 0|
-|Cdd_Sent 5| Cdd_Sent_5_ISR|Line 0|
-|Cdd_Sent 6| Cdd_Sent_6_ISR|Line 0|
+|Cdd_Sent Instance| Interrupt Name | Interrupt handler|
+|------------|----------------|-----------------|
+|SENT1| SENT1_INT | Cdd_Sent_1_ISR|
+|SENT2| SENT2_INT | Cdd_Sent_2_ISR|
+|SENT3| SENT3_INT | Cdd_Sent_3_ISR|
+|SENT4| SENT4_INT | Cdd_Sent_4_ISR|
+|SENT5| SENT5_INT | Cdd_Sent_5_ISR|
+|SENT6| SENT6_INT | Cdd_Sent_6_ISR|
 
 ```{Note}
 Same Interrupt Category needs to be configured in both Cdd_Sent and OS Modules.
@@ -29682,14 +30611,14 @@ For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Ti
 Cdd_Uart driver provides ISRs. The ISRs are implemented in the Cdd_Uart_Irq.c file.
 Interrupt and the category should be selected in the Cdd_Uart plugin.The Interrupt ID associated with the UART instance is mentioned in the TRM (also, please refer the Example application).
 
- |Cdd_Uart Instance| Interrupt handler|
-|------------|-----------------|
-|UartA|Cdd_Uart_A_ISR|
-|UartB|Cdd_Uart_B_ISR|
-|UartC|Cdd_Uart_C_ISR|
-|UartD|Cdd_Uart_D_ISR|
-|UartE|Cdd_Uart_E_ISR|
-|UartF|Cdd_Uart_F_ISR|
+|Cdd_Uart Instance| Interrupt Name | Interrupt handler|
+|------------|----------------|-----------------|
+|UARTA| UARTA_INT | Cdd_Uart_A_ISR|
+|UARTB| UARTB_INT | Cdd_Uart_B_ISR|
+|UARTC| UARTC_INT | Cdd_Uart_C_ISR|
+|UARTD| UARTD_INT | Cdd_Uart_D_ISR|
+|UARTE| UARTE_INT | Cdd_Uart_E_ISR|
+|UARTF| UARTF_INT | Cdd_Uart_F_ISR|
 
 #### Instance support
 

@@ -1305,6 +1305,11 @@ static FUNC(void, SPI_CODE) Spi_ConfigChannel(P2CONST(Spi_HwUnitObjType, AUTOMAT
     McalLib_RegMFWriteRaw16(baseAddr + SPI_O_CCR, SPI_CCR_SPICHAR_M, SPI_CCR_SPICHAR_S,
                             (uint16)chObj->chCfg->dataWidth - 1U);
 
+    /* Dummy read of SPI_O_CCR to introduce a delay after updating the SPICHAR field,
+     * ensuring the hardware register update takes effect before subsequent operations. */
+    (void)McalLib_RegReadRaw16(baseAddr + SPI_O_CCR);
+    /*ToDo : Analyze the impact of changing channel configuration */
+
     return;
 }
 
@@ -1322,7 +1327,7 @@ static FUNC(void, SPI_CODE)
     /*clear all interrupt flags*/
     Spi_ClearAllInterruptFlags(baseAddr);
 
-    /*Reset HW unit*/
+    /*Reset the SPI transmit and receive channels*/
     McalLib_RegBitClear16(hwUnitObj->baseAddr + SPI_O_FFTX, SPI_FFTX_SPIRST);
     McalLib_RegBitSet16(hwUnitObj->baseAddr + SPI_O_FFTX, SPI_FFTX_SPIRST);
 

@@ -1,6 +1,18 @@
 # LIN Module Migration
 
+Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
+                                    
+1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
+2. Regenerate all module configurations using the updated plugins
+3. Build against the latest driver source
+
+This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+
+---
+
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+---
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
@@ -23,7 +35,7 @@ Resource Allocator becomes a mandatory architectural foundation for the LIN modu
 
 #### Old vs New Configuration
 
-**Previous Configuration (v02.00.00):**
+**Old (v02.00.00):**
 Direct parameter selection was used without Resource Allocator dependency.
 
 ```{figure} Assets/images/migration/lin_module/02_01_lin_module_old_config.png
@@ -34,7 +46,7 @@ Direct parameter selection was used without Resource Allocator dependency.
 v02.00.00: Direct LIN instance parameter selection with LIN_INSTANCE_A naming
 ```
 
-**New Configuration (v03.00.00):**
+**New (v03.00.00):**
 LIN configurations now reference the LIN instances allocated through Resource Allocator.
 
 ```{figure} Assets/images/migration/lin_module/02_03_lin_module_select_instance.png

@@ -118,9 +118,6 @@
 extern VAR(uint32, FLS_VAR_NO_INIT_32) Fls_CMD_WE_Protection_A_Mask; /* protection for the first 32 sectors */
 extern VAR(uint32, FLS_VAR_NO_INIT_32) Fls_CMD_WE_Protection_B_Mask; /* protection for the 32 – 256 sectors */
 
-/*Set Erase Type Parameters */
-VAR(uint32, FLS_VAR_NO_INIT_32) sector_or_banksize;
-
 #define FLS_STOP_SEC_VAR_NO_INIT_32
 #include "Fls_MemMap.h"
 
@@ -1117,6 +1114,7 @@ FUNC(void, FLS_CODE) Fls_Cancel(void)
  */
 FUNC(uint32, FLS_CODE) Fls_SetEraseType(Fls_EraseType erasetype)
 {
+    VAR(uint32, AUTOMATIC) sector_or_banksize;
     switch (erasetype)
     {
         case FLS_SECTOR_ERASE:

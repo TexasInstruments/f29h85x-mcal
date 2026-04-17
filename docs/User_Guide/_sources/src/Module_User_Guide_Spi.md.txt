@@ -195,13 +195,13 @@ The Driver doesn’t register any interrupts handler (ISR), it’s expected that
 For every SPI Instance, an ISR requires to be registered. The Interrupt number associated with instance of the SPI is detailed in TRM (also, please refer the Example application).
 Interrupt type should be selected in SPI plugin.
 
-|SPI Instance| Interrupt handler|
-|------------|-----------------|
-|SPIA| SPIA_RxINT|
-|SPIB| SPIB_RxINT|
-|SPIC| SPIC_RxINT|
-|SPID| SPID_RxINT|
-|SPIE| SPIE_RxINT|
+|SPI Instance| Interrupt Name | Interrupt handler|
+|------------|----------------|-----------------|
+|SPIA| SPIA_RXINT | Spi_A_RxISR|
+|SPIB| SPIB_RXINT | Spi_B_RxISR|
+|SPIC| SPIC_RXINT | Spi_C_RxISR|
+|SPID| SPID_RXINT | Spi_D_RxISR|
+|SPIE| SPIE_RXINT | Spi_E_RxISR|
 
 ```{NOTE}
 Same Interrupt Category needs to be configured in both SPI and OS Modules.
@@ -742,6 +742,11 @@ The communication settings of an external device. Closely linked to SpiJob.
 | **Default-value** | 0.0 |
 | **Max-value** | 5000000.0 |
 | **Min-value** | 0.0 |
+
+
+```{Note}
+SPI Baudrate field in the configurator is implemented as float due to AUTOSAR requirement. If a float value is configured as baud rate, the calculated clock divider value is rounded to an integer. Therefore, floating point values for baud rate are not supported.
+```
 
 ###### SpiclkDivider
 
