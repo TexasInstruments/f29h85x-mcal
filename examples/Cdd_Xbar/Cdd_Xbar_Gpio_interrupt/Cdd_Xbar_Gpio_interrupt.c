@@ -248,7 +248,7 @@ int main(void)
     {
         /* Resetting the GPIO0 to STD_LOW */
         Dio_WriteChannel(DioConf_DioChannel_GPIO0, STD_LOW);
-        McalLib_Delay(1);
+        McalLib_Delay(2);
         count = 0U; /* Reset counter */
 
         for (loop = 0U; loop < 0xFFU; loop++)

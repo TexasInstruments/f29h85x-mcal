@@ -87,11 +87,11 @@
 
 /* vendor specific version information check */
 
-#if ((CDD_ADC_SW_MAJOR_VERSION != (3U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
+#if ((CDD_ADC_SW_MAJOR_VERSION != (4U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Cdd_Adc.c and Cdd_Adc.h are not matching!"
 #endif
 
-#if ((CDD_ADC_CFG_MAJOR_VERSION != (3U)) || (CDD_ADC_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_ADC_CFG_MAJOR_VERSION != (4U)) || (CDD_ADC_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Cdd_Adc.c and Cdd_Adc_Cfg.h are not matching!"
 #endif
 
@@ -431,6 +431,7 @@ Cdd_Adc_SetupResultBuffer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
 
     if ((E_OK == det_returnval) && (TRUE == Cdd_Adc_CfgPtr->groupcfg[Group].dma_mode))
     {
+        /* Design: MCAL-32669 */
         /* Report error if the group is configured for DMA */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_SETUP_RESULT_BUFFER,
                               CDD_ADC_E_WRONG_PROCESSING_MODE);
@@ -788,6 +789,7 @@ Cdd_Adc_ReadGroup(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
 
     if ((E_OK == det_retval) && (TRUE == Cdd_Adc_CfgPtr->groupcfg[Group].dma_mode))
     {
+        /* Design: MCAL-32670 */
         /* Report error if the group is configured for DMA */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_READ_GROUP,
                               CDD_ADC_E_WRONG_PROCESSING_MODE);
@@ -906,6 +908,7 @@ Cdd_Adc_GetStreamLastPointer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
 
     if ((E_OK == return_val) && (TRUE == Cdd_Adc_CfgPtr->groupcfg[Group].dma_mode))
     {
+        /* Design: MCAL-32671 */
         /* Report error if the group is configured for DMA */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_STREAM_LAST_POINTER,
                               CDD_ADC_E_WRONG_PROCESSING_MODE);
@@ -1370,10 +1373,10 @@ Cdd_Adc_ConfigurePpbNotification(VAR(Cdd_Adc_PpbType, AUTOMATIC) PpbId, VAR(bool
 /* Design: MCAL-31300,MCAL-31329,MCAL-31328,MCAL-31327,MCAL-31299 */
 FUNC(sint16, CDD_ADC_CODE)
 Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
-                        VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult)
+                        VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult, VAR(float32, AUTOMATIC) VoltRef)
 {
     sint16  temp_value = 0;
-    float32 vref = 0.0f, temp = 0.0f;
+    float32 temp       = 0.0f;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     Std_ReturnType return_value = E_NOT_OK;
     if (FALSE == Cdd_Adc_IsInitialized)
@@ -1398,9 +1401,8 @@ Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
-        vref = (Cdd_Adc_CfgPtr->hwunitcfg[HwUnit].voltref == CDD_ADC_REFERENCE_3_3V) ? (3.3F) : (2.5F);
         /* Read temp sensor slope and offset locations from OTP and convert */
-        temp = ((float32)TempResult * ((float32)vref / 2.5F));
+        temp = ((float32)TempResult * (VoltRef / 2.5F));
         if (Cdd_Adc_CfgPtr->hwunitcfg[HwUnit].voltrefmode == CDD_ADC_REFERENCE_INTERNAL)
         {
             temp_value = (sint16)((((sint32)temp - CDD_ADC_INT_REF_TSOFFSET) * 4096) / CDD_ADC_INT_REF_TSSLOPE);
@@ -1417,10 +1419,10 @@ Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
 /* Design: MCAL-31304,MCAL-31303,MCAL-31302,MCAL-31301 */
 FUNC(sint16, CDD_ADC_CODE)
 Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
-                        VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult)
+                        VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult, VAR(float32, AUTOMATIC) VoltRef)
 {
     sint16  temp_value = 0;
-    float32 vref = 0.0f, temp = 0.0f;
+    float32 temp       = 0.0f;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     Std_ReturnType return_value = E_NOT_OK;
     if (FALSE == Cdd_Adc_IsInitialized)
@@ -1443,9 +1445,8 @@ Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
-        vref = (float32)((Cdd_Adc_CfgPtr->hwunitcfg[HwUnit].voltref == CDD_ADC_REFERENCE_3_3V) ? (3.3F) : (2.5F));
         /*  Read temp sensor slope and offset locations from OTP and convert */
-        temp = ((float32)TempResult * ((float32)vref / 2.5F));
+        temp = ((float32)TempResult * (VoltRef / 2.5F));
         if (Cdd_Adc_CfgPtr->hwunitcfg[HwUnit].voltrefmode == CDD_ADC_REFERENCE_INTERNAL)
         {
             temp_value = (sint16)(((((sint32)temp - CDD_ADC_INT_REF_TSOFFSET) * 4096) / CDD_ADC_INT_REF_TSSLOPE) + 273);

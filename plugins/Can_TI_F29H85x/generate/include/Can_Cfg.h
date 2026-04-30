@@ -484,6 +484,13 @@ extern boolean [!"CanGeneral/CanLPduReceiveCalloutFunction"!](Can_HwHandleType H
 
 /*****************************************************************************
  *
+ * \brief Max number of controller instances per device
+ *
+ *****************************************************************************/
+#define KMAX_CONTROLLER_PER_DEVICE              ([!"num:i(count(ecu:list('ResourceAllocator_F29H85x.CanInstanceName')))"!]U)
+
+/*****************************************************************************
+ *
  * \brief Max number of receive dedicated mailboxes per controller 
  *
  *****************************************************************************/

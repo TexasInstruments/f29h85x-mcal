@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>6.2. CAN Module Migration &mdash; Documentation for F29H85x</title>
+  <title>6.3. CAN Module Migration &mdash; Documentation for F29H85x</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.3. DIO Module Migration" href="Migration_Guide_Dio.html" />
-    <link rel="prev" title="6.1. Resource Allocator Module" href="Migration_Guide_ResourceAllocator.html" /> 
+    <link rel="next" title="6.4. DIO Module Migration" href="Migration_Guide_Dio.html" />
+    <link rel="prev" title="6.2. Resource Allocator Module" href="Migration_Guide_ResourceAllocator.html" /> 
 </head>
 
 <body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
@@ -67,51 +67,52 @@
 <li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ModuleUserGuide_list.html">5. Module User Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="MigrationGuide_list.html">6. Migration Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_ResourceAllocator.html">6.1. Resource Allocator Module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">6.2. CAN Module Migration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#v04-00-00-i-e-release-v26-00-00-from-v03-01-00-i-e-release-v01-04-01-migration">6.2.1. v04.00.00 (i.e release v26.00.00) from v03.01.00 (i.e release v01.04.01) Migration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#summary">6.2.1.1. Summary</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-1-standard-filter-type-enum-value-renamed">6.2.1.2. Change 1: Standard Filter Type Enum Value Renamed</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-2-canmainfunctionrwperiodref-now-required-for-polling-mixed-mode-due-to-autosar-requirement">6.2.1.3. Change 2: CanMainFunctionRWPeriodRef Now Required for POLLING/MIXED Mode due to AUTOSAR requirement</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-3-tdc-parameters-now-interpreted-as-nanoseconds">6.2.1.4. Change 3: TDC Parameters Now Interpreted as Nanoseconds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Intro.html">6.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_ResourceAllocator.html">6.2. Resource Allocator Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.3. CAN Module Migration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#v04-00-00-i-e-release-v26-00-00-from-v03-01-00-i-e-release-v01-04-01-migration">6.3.1. v04.00.00 (i.e release v26.00.00) from v03.01.00 (i.e release v01.04.01) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#summary">6.3.1.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-standard-filter-type-enum-value-renamed">6.3.1.2. Change 1: Standard Filter Type Enum Value Renamed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-canmainfunctionrwperiodref-now-required-for-polling-mixed-mode-due-to-autosar-requirement">6.3.1.3. Change 2: CanMainFunctionRWPeriodRef Now Required for POLLING/MIXED Mode due to AUTOSAR requirement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-3-tdc-parameters-now-interpreted-as-nanoseconds">6.3.1.4. Change 3: TDC Parameters Now Interpreted as Nanoseconds</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration">6.2.2. v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id7">6.2.2.1. Summary</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-1-resource-allocator-introduction">6.2.2.2. Change 1: Resource Allocator Introduction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-2-controller-name-updates">6.2.2.3. Change 2: Controller Name Updates</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-3-isr-name-updates">6.2.2.4. Change 3: ISR Name Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration">6.3.2. v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id7">6.3.2.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-resource-allocator-introduction">6.3.2.2. Change 1: Resource Allocator Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-controller-name-updates">6.3.2.3. Change 2: Controller Name Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-3-isr-name-updates">6.3.2.4. Change 3: ISR Name Updates</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#v02-00-00-i-e-release-v01-03-00-from-v01-01-00-i-e-release-v01-02-00-migration">6.2.3. v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id13">6.2.3.1. Summary</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-1-hardware-object-parameter-redefinition">6.2.3.2. Change 1: Hardware Object Parameter Redefinition</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-2-application-code-update">6.2.3.3. Change 2: Application Code Update</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#v02-00-00-i-e-release-v01-03-00-from-v01-01-00-i-e-release-v01-02-00-migration">6.3.3. v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id13">6.3.3.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-hardware-object-parameter-redefinition">6.3.3.2. Change 1: Hardware Object Parameter Redefinition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-application-code-update">6.3.3.3. Change 2: Application Code Update</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#v01-01-00-i-e-release-v01-02-00-from-v01-00-01-i-e-release-v01-01-00-migration">6.2.4. v01.01.00 (i.e release v01.02.00) from v01.00.01 (i.e release v01.01.00) Migration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id18">6.2.4.1. Summary</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-1-clock-reference-parameter-update">6.2.4.2. Change 1: Clock Reference Parameter Update</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#v01-01-00-i-e-release-v01-02-00-from-v01-00-01-i-e-release-v01-01-00-migration">6.3.4. v01.01.00 (i.e release v01.02.00) from v01.00.01 (i.e release v01.01.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id18">6.3.4.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-clock-reference-parameter-update">6.3.4.2. Change 1: Clock Reference Parameter Update</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Dio.html">6.3. DIO Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Gpt.html">6.4. GPT Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Fls.html">6.5. FLS Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Lin.html">6.6. LIN Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Mcu.html">6.7. MCU Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Port.html">6.8. Port Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Spi.html">6.9. SPI Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Wdg.html">6.10. WDG Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Adc.html">6.11. CDD ADC Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ecap.html">6.12. CDD ECAP Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_I2c.html">6.13. CDD I2C Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ipc.html">6.14. CDD IPC Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Sent.html">6.15. CDD SENT Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Pwm.html">6.16. CDD PWM Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Uart.html">6.17. CDD UART Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Xbar.html">6.18. CDD XBAR Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Dio.html">6.4. DIO Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Gpt.html">6.5. GPT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Fls.html">6.6. FLS Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Lin.html">6.7. LIN Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Mcu.html">6.8. MCU Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Port.html">6.9. Port Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Spi.html">6.10. SPI Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Wdg.html">6.11. WDG Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Adc.html">6.12. CDD ADC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ecap.html">6.13. CDD ECAP Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_I2c.html">6.14. CDD I2C Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ipc.html">6.15. CDD IPC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Sent.html">6.16. CDD SENT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Pwm.html">6.17. CDD PWM Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Uart.html">6.18. CDD UART Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Xbar.html">6.19. CDD XBAR Module Migration</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">7. API guide</a></li>
@@ -134,7 +135,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="MigrationGuide_list.html"><span class="section-number">6. </span>Migration Guide</a> &raquo;</li>
-      <li><span class="section-number">6.2. </span>CAN Module Migration</li>
+      <li><span class="section-number">6.3. </span>CAN Module Migration</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -144,12 +145,12 @@
            <div itemprop="articleBody">
              
   <section id="can-module-migration">
-<h1><span class="section-number">6.2. </span>CAN Module Migration<a class="headerlink" href="#can-module-migration" title="Link to this heading"></a></h1>
+<h1><span class="section-number">6.3. </span>CAN Module Migration<a class="headerlink" href="#can-module-migration" title="Link to this heading"></a></h1>
 <p><strong>Migration Approach:</strong> Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.</p>
 <section id="v04-00-00-i-e-release-v26-00-00-from-v03-01-00-i-e-release-v01-04-01-migration">
-<h2><span class="section-number">6.2.1. </span>v04.00.00 (i.e release v26.00.00) from v03.01.00 (i.e release v01.04.01) Migration<a class="headerlink" href="#v04-00-00-i-e-release-v26-00-00-from-v03-01-00-i-e-release-v01-04-01-migration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">6.3.1. </span>v04.00.00 (i.e release v26.00.00) from v03.01.00 (i.e release v01.04.01) Migration<a class="headerlink" href="#v04-00-00-i-e-release-v26-00-00-from-v03-01-00-i-e-release-v01-04-01-migration" title="Link to this heading"></a></h2>
 <section id="summary">
-<h3><span class="section-number">6.2.1.1. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.3.1.1. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h3>
 <p>Version v04.00.00 introduces the following changes to the CAN module:</p>
 <ol class="arabic simple">
 <li><p><strong>Standard Filter Type Enum Value Renamed</strong>: <code class="docutils literal notranslate"><span class="pre">CAN_FILTER_DISABLED</span></code> renamed to <code class="docutils literal notranslate"><span class="pre">CAN_SFT_FILTER_DISABLED_EFT_RANGE_NO_XIDAM</span></code> to accurately reflect the dual behavior of filter type <code class="docutils literal notranslate"><span class="pre">0x03</span></code></p></li>
@@ -158,13 +159,13 @@
 </ol>
 </section>
 <section id="change-1-standard-filter-type-enum-value-renamed">
-<h3><span class="section-number">6.2.1.2. </span>Change 1: Standard Filter Type Enum Value Renamed<a class="headerlink" href="#change-1-standard-filter-type-enum-value-renamed" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.3.1.2. </span>Change 1: Standard Filter Type Enum Value Renamed<a class="headerlink" href="#change-1-standard-filter-type-enum-value-renamed" title="Link to this heading"></a></h3>
 <section id="description">
-<h4><span class="section-number">6.2.1.2.1. </span>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.1.2.1. </span>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h4>
 <p>The CanStandardFilterType enum value CAN_FILTER_DISABLED (numeric value 0x03) has been renamed to CAN_SFT_FILTER_DISABLED_EFT_RANGE_NO_XIDAM. The new name accurately reflects the dual behavior of this value: for Standard Frame Type (SFT) filters it disables the filter, and for Extended Frame Type (EFT) range filters it applies the range without the XIDAM mask.</p>
 </section>
 <section id="old-vs-new">
-<h4><span class="section-number">6.2.1.2.2. </span>Old vs New<a class="headerlink" href="#old-vs-new" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.1.2.2. </span>Old vs New<a class="headerlink" href="#old-vs-new" title="Link to this heading"></a></h4>
 <p><strong>Old (v03.10.00):</strong></p>
 <figure class="align-center" id="id21">
 <a class="reference internal image-reference" href="../_images/04_01_old_filter_types.png"><img alt="Add Hardware Object Instance" src="../_images/04_01_old_filter_types.png" style="width: 80%;" /></a>
@@ -181,7 +182,7 @@
 </figure>
 </section>
 <section id="migration-actions">
-<h4><span class="section-number">6.2.1.2.3. </span>Migration Actions<a class="headerlink" href="#migration-actions" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.1.2.3. </span>Migration Actions<a class="headerlink" href="#migration-actions" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Regenerate configuration</strong> — EB Tresos will generate the updated enum value name in <code class="docutils literal notranslate"><span class="pre">Can_Cfg.h</span></code> automatically</p></li>
 <li><p><strong>Recompile</strong> the application to confirm no remaining references to the old name</p></li>
@@ -189,13 +190,13 @@
 </section>
 </section>
 <section id="change-2-canmainfunctionrwperiodref-now-required-for-polling-mixed-mode-due-to-autosar-requirement">
-<h3><span class="section-number">6.2.1.3. </span>Change 2: CanMainFunctionRWPeriodRef Now Required for POLLING/MIXED Mode due to AUTOSAR requirement<a class="headerlink" href="#change-2-canmainfunctionrwperiodref-now-required-for-polling-mixed-mode-due-to-autosar-requirement" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.3.1.3. </span>Change 2: CanMainFunctionRWPeriodRef Now Required for POLLING/MIXED Mode due to AUTOSAR requirement<a class="headerlink" href="#change-2-canmainfunctionrwperiodref-now-required-for-polling-mixed-mode-due-to-autosar-requirement" title="Link to this heading"></a></h3>
 <section id="id1">
-<h4><span class="section-number">6.2.1.3.1. </span>Description<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.1.3.1. </span>Description<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
 <p>AUTOSAR requirement enforces that <code class="docutils literal notranslate"><span class="pre">CanMainFunctionRWPeriodRef</span></code> must be configured for any Hardware Object Handle whose associated controller uses POLLING or MIXED processing mode. Previously this reference was optional and could be left unconfigured; now leaving it unconfigured produces a validation error in EB Tresos at configuration time as prescribed by AUTOSAR.</p>
 </section>
 <section id="id2">
-<h4><span class="section-number">6.2.1.3.2. </span>Old vs New<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.1.3.2. </span>Old vs New<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
 <p><strong>Old (v03.01.00):</strong></p>
 <p><code class="docutils literal notranslate"><span class="pre">CanMainFunctionRWPeriodRef</span></code> had no mandatory validation — it could be left empty even when the controller used POLLING or MIXED mode processing.</p>
 <p><strong>New (v04.00.00):</strong></p>
@@ -213,7 +214,7 @@
 </figure>
 </section>
 <section id="id3">
-<h4><span class="section-number">6.2.1.3.3. </span>Migration Actions<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.1.3.3. </span>Migration Actions<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Open EB Tresos</strong> and navigate to each <code class="docutils literal notranslate"><span class="pre">CanHardwareObject</span></code> container</p></li>
 <li><p><strong>Check processing mode</strong> for each Hardware Object Handle, check whether the associated controller uses POLLING or MIXED mode for the corresponding direction (receive or transmit)</p></li>
@@ -223,9 +224,9 @@
 </section>
 </section>
 <section id="change-3-tdc-parameters-now-interpreted-as-nanoseconds">
-<h3><span class="section-number">6.2.1.4. </span>Change 3: TDC Parameters Now Interpreted as Nanoseconds<a class="headerlink" href="#change-3-tdc-parameters-now-interpreted-as-nanoseconds" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.3.1.4. </span>Change 3: TDC Parameters Now Interpreted as Nanoseconds<a class="headerlink" href="#change-3-tdc-parameters-now-interpreted-as-nanoseconds" title="Link to this heading"></a></h3>
 <section id="id4">
-<h4><span class="section-number">6.2.1.4.1. </span>Description<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.1.4.1. </span>Description<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
 <p>The FD baud-rate parameters <code class="docutils literal notranslate"><span class="pre">CanControllerTrcvDelayCompensationOffset</span></code> and <code class="docutils literal notranslate"><span class="pre">CanControllerTrcvDelayCompensationFilter</span></code> have always been labeled as nanoseconds in the EB Tresos GUI, but in v03.01.00 the generated code passed the raw config values directly to the hardware register as Minimum Time Quanta (MTQ). This meant users who wanted TDC to function correctly had to enter MTQ values despite the nanosecond label.</p>
 <p>In v04.00.00, the code generator now correctly converts these values from nanoseconds to MTQ.</p>
 <div class="admonition note">
@@ -234,14 +235,14 @@
 </div>
 </section>
 <section id="id5">
-<h4><span class="section-number">6.2.1.4.2. </span>Old vs New<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.1.4.2. </span>Old vs New<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
 <p><strong>Old (v03.01.00):</strong></p>
 <p>The raw config value was passed directly to the hardware register as MTQ, despite the EB Tresos parameter label showing nanoseconds.</p>
 <p><strong>New (v04.00.00):</strong></p>
 <p>The value is converted from nanoseconds to MTQ at code-generation time. The comment in the generated file shows the source nanosecond value for traceability.</p>
 </section>
 <section id="id6">
-<h4><span class="section-number">6.2.1.4.3. </span>Migration Actions<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.1.4.3. </span>Migration Actions<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Check your current TDC parameter values</strong> — open EB Tresos and locate <code class="docutils literal notranslate"><span class="pre">CanControllerTrcvDelayCompensationOffset</span></code> and <code class="docutils literal notranslate"><span class="pre">CanControllerTrcvDelayCompensationFilter</span></code> under each FD baud-rate configuration</p></li>
 <li><p><strong>If both values are 0</strong>: no action required — TDC is disabled and behavior is unchanged</p></li>
@@ -259,9 +260,9 @@
 </section>
 <hr class="docutils" />
 <section id="v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration">
-<h2><span class="section-number">6.2.2. </span>v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration<a class="headerlink" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">6.3.2. </span>v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration<a class="headerlink" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration" title="Link to this heading"></a></h2>
 <section id="id7">
-<h3><span class="section-number">6.2.2.1. </span>Summary<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.3.2.1. </span>Summary<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
 <p>Version v3.00.00 introduces fundamental architectural changes that shift from direct parameter configuration to centralized resource management:</p>
 <ol class="arabic simple">
 <li><p><strong>Resource Allocator Introduction</strong>: Resource Allocator becomes mandatory for all CAN module configuration</p></li>
@@ -271,13 +272,13 @@
 <p><strong>PREREQUISITE:</strong> Complete <a class="reference internal" href="Migration_Guide_ResourceAllocator.html#module-setup-and-configuration"><span class="std std-ref">Resource Allocator Setup</span></a> before proceeding.</p>
 </section>
 <section id="change-1-resource-allocator-introduction">
-<h3><span class="section-number">6.2.2.2. </span>Change 1: Resource Allocator Introduction<a class="headerlink" href="#change-1-resource-allocator-introduction" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.3.2.2. </span>Change 1: Resource Allocator Introduction<a class="headerlink" href="#change-1-resource-allocator-introduction" title="Link to this heading"></a></h3>
 <section id="id8">
-<h4><span class="section-number">6.2.2.2.1. </span>Description<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.2.2.1. </span>Description<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
 <p>Resource Allocator becomes a mandatory architectural foundation, replacing direct parameter configuration with centralized resource management. This represents a fundamental shift in how CAN controllers are configured and referenced.</p>
 </section>
 <section id="old-vs-new-configuration">
-<h4><span class="section-number">6.2.2.2.2. </span>Old vs New Configuration<a class="headerlink" href="#old-vs-new-configuration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.2.2.2. </span>Old vs New Configuration<a class="headerlink" href="#old-vs-new-configuration" title="Link to this heading"></a></h4>
 <p><strong>Old (v02.00.00):</strong></p>
 <figure class="align-center" id="id24">
 <a class="reference internal image-reference" href="../_images/02_00_can_module_old_config.png"><img alt="Open CAN Controller" src="../_images/02_00_can_module_old_config.png" style="width: 80%;" /></a>
@@ -294,7 +295,7 @@
 </figure>
 </section>
 <section id="id9">
-<h4><span class="section-number">6.2.2.2.3. </span>Migration Actions<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.2.2.3. </span>Migration Actions<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Setup Resource Allocator:</strong> Follow <a class="reference internal" href="Migration_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Setup</span></a></p></li>
 <li><p><strong>Navigate to Context:</strong> Navigate to <strong>ResourceAllocatorGeneral → Context → Can</strong> and add CAN allocator:</p></li>
@@ -341,13 +342,13 @@
 </section>
 </section>
 <section id="change-2-controller-name-updates">
-<h3><span class="section-number">6.2.2.3. </span>Change 2: Controller Name Updates<a class="headerlink" href="#change-2-controller-name-updates" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.3.2.3. </span>Change 2: Controller Name Updates<a class="headerlink" href="#change-2-controller-name-updates" title="Link to this heading"></a></h3>
 <section id="id10">
-<h4><span class="section-number">6.2.2.3.1. </span>Description<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.2.3.1. </span>Description<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
 <p>Controller naming convention changes from numeric identifiers (MCAN1, MCAN2, etc.) to alphabetic identifiers (MCANA, MCANB, etc.) to align with Resource Allocator requirements and improve naming consistency.</p>
 </section>
 <section id="old-vs-new-names">
-<h4><span class="section-number">6.2.2.3.2. </span>Old vs New Names<a class="headerlink" href="#old-vs-new-names" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.2.3.2. </span>Old vs New Names<a class="headerlink" href="#old-vs-new-names" title="Link to this heading"></a></h4>
 <p><strong>Controller Name Mapping:</strong></p>
 <table class="docutils align-default">
 <thead>
@@ -385,19 +386,19 @@
 </table>
 </section>
 <section id="id11">
-<h4><span class="section-number">6.2.2.3.3. </span>Migration Actions<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.2.3.3. </span>Migration Actions<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
 <p><strong>No additional action required.</strong> Controller name updates are automatically handled when following the Resource Allocator setup steps in Change 1. The controller naming convention changes from numeric identifiers (MCAN1, MCAN2) to alphabetic identifiers (MCANA, MCANB) are applied automatically through the Resource Allocator configuration.</p>
 <p>If you have used the old controller names in the application code, please change them to match the new naming convention.</p>
 </section>
 </section>
 <section id="change-3-isr-name-updates">
-<h3><span class="section-number">6.2.2.4. </span>Change 3: ISR Name Updates<a class="headerlink" href="#change-3-isr-name-updates" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.3.2.4. </span>Change 3: ISR Name Updates<a class="headerlink" href="#change-3-isr-name-updates" title="Link to this heading"></a></h3>
 <section id="description-of-change">
-<h4><span class="section-number">6.2.2.4.1. </span>Description of Change<a class="headerlink" href="#description-of-change" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.2.4.1. </span>Description of Change<a class="headerlink" href="#description-of-change" title="Link to this heading"></a></h4>
 <p>Interrupt Service Routine (ISR) names are updated to match the new controller naming pattern, changing from numeric-based naming to alphabetic-based naming for consistency.</p>
 </section>
 <section id="old-vs-new-isr-names">
-<h4><span class="section-number">6.2.2.4.2. </span>Old vs New ISR Names<a class="headerlink" href="#old-vs-new-isr-names" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.2.4.2. </span>Old vs New ISR Names<a class="headerlink" href="#old-vs-new-isr-names" title="Link to this heading"></a></h4>
 <p><strong>ISR Name Mapping:</strong></p>
 <table class="docutils align-default">
 <thead>
@@ -428,7 +429,7 @@
 <p><strong>Naming Pattern:</strong> <code class="docutils literal notranslate"><span class="pre">Can_{Number}_</span></code> → <code class="docutils literal notranslate"><span class="pre">Can_{Letter}_</span></code></p>
 </section>
 <section id="id12">
-<h4><span class="section-number">6.2.2.4.3. </span>Migration Actions<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.2.4.3. </span>Migration Actions<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Update Application Code:</strong> Search and replace ISR references in your application code following the new naming pattern</p></li>
 <li><p><strong>Update Interrupt Vector Table:</strong> Ensure interrupt vector table references use the new ISR names</p></li>
@@ -438,9 +439,9 @@
 </section>
 </section>
 <section id="v02-00-00-i-e-release-v01-03-00-from-v01-01-00-i-e-release-v01-02-00-migration">
-<h2><span class="section-number">6.2.3. </span>v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration<a class="headerlink" href="#v02-00-00-i-e-release-v01-03-00-from-v01-01-00-i-e-release-v01-02-00-migration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">6.3.3. </span>v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration<a class="headerlink" href="#v02-00-00-i-e-release-v01-03-00-from-v01-01-00-i-e-release-v01-02-00-migration" title="Link to this heading"></a></h2>
 <section id="id13">
-<h3><span class="section-number">6.2.3.1. </span>Summary<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.3.3.1. </span>Summary<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
 <p>Version v2.00.00 introduces redefinition of BASIC and FULL hardware object parameters with AUTOSAR-compliant constraints and behavior changes:</p>
 <ol class="arabic simple">
 <li><p><strong>Hardware Object Parameter Redefinition</strong>: BASIC and FULL hardware object parameters are redefined with enforced AUTOSAR-compliant constraints and new memory limitations</p></li>
@@ -448,13 +449,13 @@
 </ol>
 </section>
 <section id="change-1-hardware-object-parameter-redefinition">
-<h3><span class="section-number">6.2.3.2. </span>Change 1: Hardware Object Parameter Redefinition<a class="headerlink" href="#change-1-hardware-object-parameter-redefinition" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.3.3.2. </span>Change 1: Hardware Object Parameter Redefinition<a class="headerlink" href="#change-1-hardware-object-parameter-redefinition" title="Link to this heading"></a></h3>
 <section id="id14">
-<h4><span class="section-number">6.2.3.2.1. </span>Description<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.3.2.1. </span>Description<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
 <p>Version v2.00.00 redefines BASIC and FULL hardware object parameters with enforced AUTOSAR-compliant constraints. This change introduces specific hardware utilization patterns and memory constraints that were not enforced in previous versions.</p>
 </section>
 <section id="old-vs-new-parameter-definitions">
-<h4><span class="section-number">6.2.3.2.2. </span>Old vs New Parameter Definitions<a class="headerlink" href="#old-vs-new-parameter-definitions" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.3.2.2. </span>Old vs New Parameter Definitions<a class="headerlink" href="#old-vs-new-parameter-definitions" title="Link to this heading"></a></h4>
 <p><strong>CanHandleType Parameter Changes:</strong></p>
 <table class="docutils align-default">
 <thead>
@@ -542,7 +543,7 @@
 </div>
 </section>
 <section id="id15">
-<h4><span class="section-number">6.2.3.2.3. </span>Migration Actions<a class="headerlink" href="#id15" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.3.2.3. </span>Migration Actions<a class="headerlink" href="#id15" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Navigate to Hardware Objects:</strong> Navigate to <strong>Can → CanHardwareObject</strong> and add hardware object instances as needed for your application:</p></li>
 </ol>
@@ -688,13 +689,13 @@
 </section>
 </section>
 <section id="change-2-application-code-update">
-<h3><span class="section-number">6.2.3.3. </span>Change 2: Application Code Update<a class="headerlink" href="#change-2-application-code-update" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.3.3.3. </span>Change 2: Application Code Update<a class="headerlink" href="#change-2-application-code-update" title="Link to this heading"></a></h3>
 <section id="id16">
-<h4><span class="section-number">6.2.3.3.1. </span>Description<a class="headerlink" href="#id16" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.3.3.1. </span>Description<a class="headerlink" href="#id16" title="Link to this heading"></a></h4>
 <p>Version v2.00.00 changes the configuration structure name for AUTOSAR TPS_ECUC_08011 compliance, requiring updates to application code that references the CAN configuration structure.</p>
 </section>
 <section id="old-vs-new-configuration-structure">
-<h4><span class="section-number">6.2.3.3.2. </span>Old vs New Configuration Structure<a class="headerlink" href="#old-vs-new-configuration-structure" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.3.3.2. </span>Old vs New Configuration Structure<a class="headerlink" href="#old-vs-new-configuration-structure" title="Link to this heading"></a></h4>
 <p><strong>Configuration Structure Name Mapping:</strong></p>
 <table class="docutils align-default">
 <thead>
@@ -718,7 +719,7 @@
 </div>
 </section>
 <section id="id17">
-<h4><span class="section-number">6.2.3.3.3. </span>Migration Actions<a class="headerlink" href="#id17" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.3.3.3. </span>Migration Actions<a class="headerlink" href="#id17" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Search Application Code:</strong> Find all references to <code class="docutils literal notranslate"><span class="pre">Can_CanConfigSet</span></code> in your application code</p></li>
 <li><p><strong>Replace Structure Name:</strong> Update all references from <code class="docutils literal notranslate"><span class="pre">Can_CanConfigSet</span></code> to <code class="docutils literal notranslate"><span class="pre">Can_Config</span></code></p></li>
@@ -729,22 +730,22 @@
 </section>
 </section>
 <section id="v01-01-00-i-e-release-v01-02-00-from-v01-00-01-i-e-release-v01-01-00-migration">
-<h2><span class="section-number">6.2.4. </span>v01.01.00 (i.e release v01.02.00) from v01.00.01 (i.e release v01.01.00) Migration<a class="headerlink" href="#v01-01-00-i-e-release-v01-02-00-from-v01-00-01-i-e-release-v01-01-00-migration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">6.3.4. </span>v01.01.00 (i.e release v01.02.00) from v01.00.01 (i.e release v01.01.00) Migration<a class="headerlink" href="#v01-01-00-i-e-release-v01-02-00-from-v01-00-01-i-e-release-v01-01-00-migration" title="Link to this heading"></a></h2>
 <section id="id18">
-<h3><span class="section-number">6.2.4.1. </span>Summary<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.3.4.1. </span>Summary<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
 <p>Version v01.01.00 introduces a clock reference parameter update to remove dependency between CAN and OS modules for timeout calculation:</p>
 <ol class="arabic simple">
 <li><p><strong>Clock Reference Parameter Update</strong>: CanOsCounterRef parameter replaced with CanSysClockRef to eliminate CAN-OS module dependency</p></li>
 </ol>
 </section>
 <section id="change-1-clock-reference-parameter-update">
-<h3><span class="section-number">6.2.4.2. </span>Change 1: Clock Reference Parameter Update<a class="headerlink" href="#change-1-clock-reference-parameter-update" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.3.4.2. </span>Change 1: Clock Reference Parameter Update<a class="headerlink" href="#change-1-clock-reference-parameter-update" title="Link to this heading"></a></h3>
 <section id="id19">
-<h4><span class="section-number">6.2.4.2.1. </span>Description<a class="headerlink" href="#id19" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.4.2.1. </span>Description<a class="headerlink" href="#id19" title="Link to this heading"></a></h4>
 <p>The <strong>CanOsCounterRef</strong> parameter used as tick reference to calculate CAN_CFG_TIMEOUT_DURATION is replaced with <strong>CanSysClockRef</strong>. This change removes dependency between CAN and OS modules by referencing the system clock directly from MCU instead of OS counter.</p>
 </section>
 <section id="old-vs-new-clock-configuration">
-<h4><span class="section-number">6.2.4.2.2. </span>Old vs New Clock Configuration<a class="headerlink" href="#old-vs-new-clock-configuration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.4.2.2. </span>Old vs New Clock Configuration<a class="headerlink" href="#old-vs-new-clock-configuration" title="Link to this heading"></a></h4>
 <p><strong>Parameter Name Change:</strong></p>
 <table class="docutils align-default">
 <thead>
@@ -774,7 +775,7 @@
 </figure>
 </section>
 <section id="id20">
-<h4><span class="section-number">6.2.4.2.3. </span>Migration Actions<a class="headerlink" href="#id20" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.3.4.2.3. </span>Migration Actions<a class="headerlink" href="#id20" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Navigate to CAN Configuration:</strong> Open CAN module configuration in EB Tresos</p></li>
 <li><p><strong>Remove OS Counter Dependency:</strong> The CanOsCounterRef parameter is no longer available in the GUI</p></li>
@@ -792,8 +793,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Migration_Guide_ResourceAllocator.html" class="btn btn-neutral float-left" title="6.1. Resource Allocator Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Migration_Guide_Dio.html" class="btn btn-neutral float-right" title="6.3. DIO Module Migration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Migration_Guide_ResourceAllocator.html" class="btn btn-neutral float-left" title="6.2. Resource Allocator Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Migration_Guide_Dio.html" class="btn btn-neutral float-right" title="6.4. DIO Module Migration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

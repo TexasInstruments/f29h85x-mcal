@@ -1,18 +1,6 @@
 # LIN Module Migration
 
-Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
-                                    
-1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
-2. Regenerate all module configurations using the updated plugins
-3. Build against the latest driver source
-
-This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
-
----
-
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
-
----
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
@@ -149,6 +137,7 @@ A new parameter **LinWakeupId** has been added in the LinGeneral container. This
 | **LinWakeupId** | Not available | Added in LinGeneral container |
 
 **Parameter Details:**
+
 - **Purpose:** Specifies the LIN ID used to transmit a header instead of a wakeup signal due to hardware constraints
 - **Default value:** 63 (0x3F)
 - **Valid range:** 0 to 63
@@ -189,7 +178,6 @@ Configure LinWakeupId parameter and observe LinSysClockRef parameter rename in L
 1. **Observe Automatic Rename:** **SysClockRef** has been automatically renamed to **LinSysClockRef** in EB Tresos
 2. **Update External References:** If you have external scripts or tools referencing **SysClockRef**, update them to use **LinSysClockRef**
 3. **Verify Configuration:** No configuration changes required in EB Tresos for this parameter - the rename is handled automatically
-
 
 ## v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration
 

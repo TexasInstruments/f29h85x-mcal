@@ -2224,11 +2224,11 @@ Ppb notification function pointer.</p>
 <td><p>service to set the resolution of the ADC hardware unit.</p></td>
 </tr>
 <tr class="row-even"><td><p>sint16</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-adc-gettemperaturec"><span class="std std-ref">Cdd_Adc_GetTemperatureC</span></a></strong>(<a class="reference internal" href="#typedef-cdd-adc-hwunitinstancetype"><span class="std std-ref">Cdd_Adc_HwUnitInstanceType</span></a> HwUnit, <a class="reference internal" href="#typedef-cdd-adc-valuegrouptype"><span class="std std-ref">Cdd_Adc_ValueGroupType</span></a> TempResult)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-adc-gettemperaturec"><span class="std std-ref">Cdd_Adc_GetTemperatureC</span></a></strong>(<a class="reference internal" href="#typedef-cdd-adc-hwunitinstancetype"><span class="std std-ref">Cdd_Adc_HwUnitInstanceType</span></a> HwUnit, <a class="reference internal" href="#typedef-cdd-adc-valuegrouptype"><span class="std std-ref">Cdd_Adc_ValueGroupType</span></a> TempResult, float32 VoltRef)</p></td>
 <td><p>service to convert the ADC conversion value to Celsius.</p></td>
 </tr>
 <tr class="row-odd"><td><p>sint16</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-adc-gettemperaturek"><span class="std std-ref">Cdd_Adc_GetTemperatureK</span></a></strong>(<a class="reference internal" href="#typedef-cdd-adc-hwunitinstancetype"><span class="std std-ref">Cdd_Adc_HwUnitInstanceType</span></a> HwUnit, <a class="reference internal" href="#typedef-cdd-adc-valuegrouptype"><span class="std std-ref">Cdd_Adc_ValueGroupType</span></a> TempResult)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-adc-gettemperaturek"><span class="std std-ref">Cdd_Adc_GetTemperatureK</span></a></strong>(<a class="reference internal" href="#typedef-cdd-adc-hwunitinstancetype"><span class="std std-ref">Cdd_Adc_HwUnitInstanceType</span></a> HwUnit, <a class="reference internal" href="#typedef-cdd-adc-valuegrouptype"><span class="std std-ref">Cdd_Adc_ValueGroupType</span></a> TempResult, float32 VoltRef)</p></td>
 <td><p>service to convert the ADC conversion value to Kelvin.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
@@ -2856,17 +2856,21 @@ service to set the resolution of the ADC hardware unit.</p>
 <h3><span class="section-number">7.10.4.27. </span>function Cdd_Adc_GetTemperatureC<a class="headerlink" href="#function-cdd-adc-gettemperaturec" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">sint16</span><span class="w"> </span><span class="n">Cdd_Adc_GetTemperatureC</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Cdd_Adc_HwUnitInstanceType</span><span class="w"> </span><span class="n">HwUnit</span><span class="p">,</span>
-<span class="w">    </span><span class="n">Cdd_Adc_ValueGroupType</span><span class="w"> </span><span class="n">TempResult</span>
+<span class="w">    </span><span class="n">Cdd_Adc_ValueGroupType</span><span class="w"> </span><span class="n">TempResult</span><span class="p">,</span>
+<span class="w">    </span><span class="n">float32</span><span class="w"> </span><span class="n">VoltRef</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Brief</strong>:
 service to convert the ADC conversion value to Celsius.</p>
-<p>This service to convert the ADC conversion value to Celsius.</p>
+<p>This service converts the ADC conversion value to Celsius.</p>
 <p><strong>Parameters</strong>:</p>
 <ul class="simple">
 <li><p><strong>HwUnit</strong> ADC hardware unit</p></li>
 <li><p><strong>TempResult</strong> ADC conversion result</p></li>
+<li><p><strong>VoltRef</strong> ADC voltage reference value (float32) provided to the corresponding ganged reference.</p></li>
+<li><p>Internal voltage reference mode: Use 2.5F for 2.5V VREF or 3.3F for 3.3V VREF</p></li>
+<li><p>External voltage reference mode: Provide the actual external voltage value as float</p></li>
 </ul>
 <p><strong>Returns</strong>:</p>
 <ul class="simple">
@@ -2874,6 +2878,11 @@ service to convert the ADC conversion value to Celsius.</p>
 <br></p></li>
 </ul>
 <p><strong>Return</strong>: Returns the values converted to Celsius</p>
+<p><strong>Note</strong>:</p>
+<ul class="simple">
+<li><p>Temperature sensor values in production test are derived with 2.5V reference. The VoltRef argument is used to scale the temperature sensor reading accordingly if the temperature sensor value is read at a different VREF setting.</p></li>
+<li><p>The VoltRef value must exactly match the actual voltage reference being used. Any deviation will result in incorrect temperature calculations.</p></li>
+</ul>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
@@ -2881,17 +2890,21 @@ service to convert the ADC conversion value to Celsius.</p>
 <h3><span class="section-number">7.10.4.28. </span>function Cdd_Adc_GetTemperatureK<a class="headerlink" href="#function-cdd-adc-gettemperaturek" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">sint16</span><span class="w"> </span><span class="n">Cdd_Adc_GetTemperatureK</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Cdd_Adc_HwUnitInstanceType</span><span class="w"> </span><span class="n">HwUnit</span><span class="p">,</span>
-<span class="w">    </span><span class="n">Cdd_Adc_ValueGroupType</span><span class="w"> </span><span class="n">TempResult</span>
+<span class="w">    </span><span class="n">Cdd_Adc_ValueGroupType</span><span class="w"> </span><span class="n">TempResult</span><span class="p">,</span>
+<span class="w">    </span><span class="n">float32</span><span class="w"> </span><span class="n">VoltRef</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Brief</strong>:
 service to convert the ADC conversion value to Kelvin.</p>
-<p>This service to convert the ADC conversion value to Kelvin.</p>
+<p>This service converts the ADC conversion value to Kelvin.</p>
 <p><strong>Parameters</strong>:</p>
 <ul class="simple">
 <li><p><strong>HwUnit</strong> ADC hardware unit</p></li>
 <li><p><strong>TempResult</strong> ADC conversion result</p></li>
+<li><p><strong>VoltRef</strong> ADC voltage reference value (float32) provided to the corresponding ganged reference.</p></li>
+<li><p>Internal voltage reference mode: Use 2.5F for 2.5V VREF or 3.3F for 3.3V VREF</p></li>
+<li><p>External voltage reference mode: Provide the actual external voltage value as float</p></li>
 </ul>
 <p><strong>Returns</strong>:</p>
 <ul class="simple">
@@ -2899,6 +2912,11 @@ service to convert the ADC conversion value to Kelvin.</p>
 <br></p></li>
 </ul>
 <p><strong>Return</strong>: Returns the values converted to Kelvin</p>
+<p><strong>Note</strong>:</p>
+<ul class="simple">
+<li><p>Temperature sensor values in production test are derived with 2.5V reference. The VoltRef argument is used to scale the temperature sensor reading accordingly if the temperature sensor value is read at a different VREF setting.</p></li>
+<li><p>The VoltRef value must exactly match the actual voltage reference being used. Any deviation will result in incorrect temperature calculations.</p></li>
+</ul>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>

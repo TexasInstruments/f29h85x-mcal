@@ -1,16 +1,67 @@
 # CDD ADC Module Migration
 
-Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
-                                    
-1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
-2. Regenerate all module configurations using the updated plugins
-3. Build against the latest driver source
-
-This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
-
----
-
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v04.00.00 (i.e release v26.00.00) from v03.00.01 (i.e release v01.04.01) Migration
+
+### Summary
+
+Version v04.00.00 introduces API enhancements for temperature conversion:
+
+1. **Voltref Parameter Added to Temperature APIs**: Voltref parameter added to [`Cdd_Adc_GetTemperatureC()`](Module_User_Guide_Cdd_Adc.md) and [`Cdd_Adc_GetTemperatureK()`](Module_User_Guide_Cdd_Adc.md) APIs for accurate temperature calculations with different voltage references
+
+### Change 1: Voltref Parameter Added to Temperature APIs
+
+#### Description
+
+The [`Cdd_Adc_GetTemperatureC()`](Module_User_Guide_Cdd_Adc.md) and [`Cdd_Adc_GetTemperatureK()`](Module_User_Guide_Cdd_Adc.md) APIs did not support temperature calculation for different voltage references when using external reference mode, limiting their usability in systems with non-standard voltage references. When ADC is configured with external voltage reference mode using a non-standard voltage (e.g., 3.0V), calling these APIs to convert temperature sensor readings produces incorrect temperature calculations because the API cannot account for the actual external voltage reference value. This results in inaccurate temperature readings that can affect temperature-dependent control algorithms and safety mechanisms. To address this limitation, a new Voltref parameter (float32) has been added to both APIs, enabling accurate temperature calculation by accepting the actual voltage reference value being used (internal values such as 2.5F for 2.5V or 3.3F for 3.3V, or the actual external voltage reference value).
+
+#### Old vs New API Signature
+
+**Old (v03.00.01):**
+
+```c
+Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult)
+Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult)
+```
+
+**New (v04.00.00):**
+
+```c
+Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult, float32 Voltref)
+Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult, float32 Voltref)
+```
+
+#### Migration Actions
+
+1. **Identify Temperature API Usage:** Search your codebase for all calls to [`Cdd_Adc_GetTemperatureC()`](Module_User_Guide_Cdd_Adc.md) and [`Cdd_Adc_GetTemperatureK()`](Module_User_Guide_Cdd_Adc.md)
+
+2. **Determine Voltage Reference:** Identify the voltage reference configuration for your ADC:
+   - Internal 2.5V reference: Use `2.5F`
+   - Internal 3.3V reference: Use `3.3F`
+   - External reference: Use the actual external voltage reference value (e.g., `3.0F` for 3.0V)
+
+3. **Update API Calls:** Add the Voltref parameter to all temperature API calls:
+
+   **Example Migration:**
+
+   ```c
+   // Old code (v03.00.01)
+   float32 tempC = Cdd_Adc_GetTemperatureC(HwUnit,AdcResult);
+   float32 tempK = Cdd_Adc_GetTemperatureK(HwUnit,AdcResult);
+
+   // New code (v04.00.00) - Internal 2.5V reference
+   float32 tempC = Cdd_Adc_GetTemperatureC(HwUnit,AdcResult, 2.5F);
+   float32 tempK = Cdd_Adc_GetTemperatureK(HwUnit,AdcResult, 2.5F);
+
+   // New code (v04.00.00) - External 3.0V reference
+   float32 tempC = Cdd_Adc_GetTemperatureC(HwUnit,AdcResult, 3.0F);
+   float32 tempK = Cdd_Adc_GetTemperatureK(HwUnit,AdcResult, 3.0F);
+   ```
+
+4. **Verify Voltage Reference Value:** Ensure the Voltref parameter exactly matches the actual voltage reference being used in your hardware configuration. Incorrect values will result in inaccurate temperature calculations.
+
+5. **Test Temperature Readings:** After migration, verify temperature readings against known reference temperatures to confirm accuracy with the new voltage reference parameter.
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.01 (i.e release v01.03.00) Migration
 
@@ -194,7 +245,6 @@ Version v03.00.00 introduces enhanced validation that requires symbolic names to
 The Resource Allocator module must be configured before the CDD ADC module to ensure correct instance availability. For more details on Resource Allocator configuration, see the Resource Allocator Module User Guide.
 ```
 
-
 ## v02.00.00 (i.e release v01.02.00) from v01.00.00 (i.e release v01.01.00) Migration
 
 ### Summary
@@ -280,6 +330,7 @@ For `CddAdcPpbChannel` references expecting a channel reference:
 **Generated .xdm File Structure Comparison:**
 
 **Old (v01.00.00 Generated .xdm File):**
+
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Adc" type="AR-PACKAGE">
@@ -290,6 +341,7 @@ For `CddAdcPpbChannel` references expecting a channel reference:
 ```
 
 **New (v02.00.00 Compatible .xdm File):**
+
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Adc" type="AR-PACKAGE">

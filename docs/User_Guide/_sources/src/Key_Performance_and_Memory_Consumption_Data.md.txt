@@ -12,29 +12,29 @@ Performance is also dependent on the overall system architecture and runtime env
 
 |Performance Test|Theoretical value|Measured value|Remarks|
 |------|------|------|-------|
-|Transmission time in polling|NA|142 us|Classic CAN : 8 byte : 1 Mbps|
-|Reception time in polling |NA|140 us|Classic CAN : 8 byte : 1 Mbps|
+|Transmission time in polling|NA|146 us|Classic CAN : 8 byte : 1 Mbps|
+|Reception time in polling |NA|142 us|Classic CAN : 8 byte : 1 Mbps|
 |Transmission time in Interrupt |NA|123 us|Classic CAN : 8 byte : 1 Mbps|
-|Reception time in Interrupt|NA|120 us|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in polling|9010|8232|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in polling|7270|5976|CAN FD : 64 byte : 5 Mbps|
-|Maximum packets Transmission per second in Interrupt|9010|8326|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in Interrupt|7270|5725|CAN FD : 64 byte : 5 Mbps|
+|Reception time in Interrupt|NA|119 us|Classic CAN : 8 byte : 1 Mbps|
+|Maximum packets Transmission per second in polling|9010|7945|Classic CAN : 8 byte : 1 Mbps|
+|Maximum packets Transmission per second in polling|7270|5891|CAN FD : 64 byte : 5 Mbps|
+|Maximum packets Transmission per second in Interrupt|9010|8266|Classic CAN : 8 byte : 1 Mbps|
+|Maximum packets Transmission per second in Interrupt|7270|5724|CAN FD : 64 byte : 5 Mbps|
 
 ### CDD SENT Driver
 
 |Performance Test|Theoretical value|Measured value|Remarks|
 |------|------|------|-------|
 |STANDARD MODE interrupt execution time|NA|2 us|In STANDARD MODE, the total time it takes for the Cdd_Sent module to process sensor data, send the data to the PDU router.|
-|MTP MODE interrupt execution time|NA|2 us|In MTP MODE, the total time it takes for the Cdd_Sent module to process sensor data, send the data to the PDU router.|
-|MTP MODE trigger transmit time|NA|8154 us|In MTP MODE, the total time it takes for the Cdd_Sent module to trigger the sensor, Waiting for the response, process sensor data, send the data to the PDU router.|
+|MTP MODE interrupt execution time|NA|1 us|In MTP MODE, the total time it takes for the Cdd_Sent module to process sensor data, send the data to the PDU router.|
+|MTP MODE trigger transmit time|NA|8064 us|In MTP MODE, the total time it takes for the Cdd_Sent module to trigger the sensor, Waiting for the response, process sensor data, send the data to the PDU router.|
 
 ### LIN Driver
 
 |Performance Test|Theoretical value|Measured value|Remarks|
 |------|------|------|-------|
-|Lin Master Response Performance |845312 us|867680 us|Total time taken to send 8 Bytes of data 128 times ~ 1KB |
-|Lin Slave Response Performance |6874 us|7291 us|Total time taken to receive 8 Bytes of data|
+|Lin Master Response Performance |845312 us|867568 us|Total time taken to send 8 Bytes of data 128 times ~ 1KB |
+|Lin Slave Response Performance |6874 us|7287 us|Total time taken to receive 8 Bytes of data|
 
 ### SPI Driver
 
@@ -42,28 +42,28 @@ Performance is also dependent on the overall system architecture and runtime env
 |------|------|------|-------|
 | Transmit 112000 words with 8 bit data width | 179200 |179208|BaudRate 5MHz, Sync Transmit|
 | Transmit 112000 words with 8 bit data width | 179200 |179208|BaudRate 5MHz, Async Transmit|
-| Transmit 112000 words with 16 bit data width| 358400 |358407|BaudRate 5MHz, Sync Transmit|
+| Transmit 112000 words with 16 bit data width| 358400 |358408|BaudRate 5MHz, Sync Transmit|
 | Transmit 112000 words with 16 bit data width| 358400 |358408|BaudRate 5MHz, Async Transmit|
-| Transmit 112000 words with 8 bit data width | 89600 |89608|BaudRate 10MHz, Sync Transmit|
-| Transmit 112000 words with 8 bit data width | 89600 |89608|BaudRate 10MHz, Async Transmit|
+| Transmit 112000 words with 8 bit data width | 89600 |89607|BaudRate 10MHz, Sync Transmit|
+| Transmit 112000 words with 8 bit data width | 89600 |89607|BaudRate 10MHz, Async Transmit|
 | Transmit 112000 words with 16 bit data width| 179200 |179207|BaudRate 10MHz, Sync Transmit|
-| Transmit 112000 words with 16 bit data width| 179200 |179208|BaudRate 10MHz, Async Transmit|
-| Transmit 112000 words with 8 bit data width| 17920 |24013|BaudRate 50MHz, Sync Transmit|
-| Transmit 112000 words with 8 bit data width| 17920 |29611|BaudRate 50MHz, Async Transmit|
-| Transmit 112000 words with 16 bit data width| 35880 |36530|BaudRate 50MHz, Sync Transmit|
-| Transmit 112000 words with 16 bit data width| 35840 |36113|BaudRate 50MHz, Async Transmit|
+| Transmit 112000 words with 16 bit data width| 179200 |179209|BaudRate 10MHz, Async Transmit|
+| Transmit 112000 words with 8 bit data width| 17920 |23965|BaudRate 50MHz, Sync Transmit|
+| Transmit 112000 words with 8 bit data width| 17920 |29686|BaudRate 50MHz, Async Transmit|
+| Transmit 112000 words with 16 bit data width| 35880 |36463|BaudRate 50MHz, Sync Transmit|
+| Transmit 112000 words with 16 bit data width| 35840 |38379|BaudRate 50MHz, Async Transmit|
 | Transmit 56000 words with 8 bit data width | 89600 |89605|BaudRate 5MHz, Sync Transmit|
-| Transmit 56000 words with 8 bit data width | 89600 |89605|BaudRate 5MHz, Async Transmit|
-| Transmit 56000 words with 16 bit data width| 179200 |179204|BaudRate 5MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width | 89600 |89606|BaudRate 5MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 179200 |179205|BaudRate 5MHz, Sync Transmit|
 | Transmit 56000 words with 16 bit data width| 179200 |179205|BaudRate 5MHz, Async Transmit|
-| Transmit 56000 words with 8 bit data width| 44800 |44804|BaudRate 10MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width| 44800 |44805|BaudRate 10MHz, Sync Transmit|
 | Transmit 56000 words with 8 bit data width| 44800 |44805|BaudRate 10MHz, Async Transmit|
 | Transmit 56000 words with 16 bit data width| 89600 |89605|BaudRate 10MHz, Sync Transmit|
-| Transmit 56000 words with 16 bit data width| 89600 |89605|BaudRate 10MHz, Async Transmit|
-| Transmit 56000 words with 8 bit data width| 8960 |12007|BaudRate 50MHz, Sync Transmit|
-| Transmit 56000 words with 8 bit data width| 8960 |14788|BaudRate 50MHz, Async Transmit|
-| Transmit 56000 words with 16 bit data width| 17920 |17941|BaudRate 50MHz, Sync Transmit|
-| Transmit 56000 words with 16 bit data width| 17920 |19928|BaudRate 50MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 89600 |89606|BaudRate 10MHz, Async Transmit|
+| Transmit 56000 words with 8 bit data width| 8960 |11983|BaudRate 50MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width| 8960 |14863|BaudRate 50MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 17920 |18232|BaudRate 50MHz, Sync Transmit|
+| Transmit 56000 words with 16 bit data width| 17920 |20036|BaudRate 50MHz, Async Transmit|
 
 ### FLS Driver
 
@@ -83,7 +83,7 @@ Please note that in the Fls module, once the erase, program or read job is accep
 
 |Performance Test|Measured value (bytes)|
 |------|------|
-|Data transmitted per second|2380956|
+|Data transmitted per second|2380968|
 
 ```{NOTE}
 Please note that this performance result depends on, when the remote core acknowledges the data. This performance result is measured using a single channel in polling mode.
@@ -96,18 +96,18 @@ Please note that this performance result depends on, when the remote core acknow
 |Performance Test| Theoretical value (max)|Measured value|Remarks|
 |------|------|------|-------|
 |12-bit ADC with SW triggers | 3.84 Msps at 57MHz | 3.836 Msps (99.909760%) With 3.5 ADC Clock Divider : 57.14MHz| |
-|12-bit ADC with HW triggers | 3.84 Msps at 57MHz | 3.829 Msps (99.735458%) ith 3.5 ADC Clock Divider : 57.14MHz | |
-|16-bit ADC with SW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.198814%) ith 3.5 ADC Clock Divider : 57.14MHz | |
-|16-bit ADC with HW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.145332%) ith 3.5 ADC Clock Divider : 57.14MHz | |
+|12-bit ADC with HW triggers | 3.84 Msps at 57MHz | 3.829 Msps (99.735458%) With 3.5 ADC Clock Divider : 57.14MHz | |
+|16-bit ADC with SW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.198814%) With 3.5 ADC Clock Divider : 57.14MHz | |
+|16-bit ADC with HW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.145332%) With 3.5 ADC Clock Divider : 57.14MHz | |
 
 #### CDD ADC with DMA integration
 
 |Performance Test| Theoretical value (max)|Measured value|Remarks|
 |------|------|------|-------|
 |12-bit ADC with SW triggers | 3.84 Msps at 57MHz | 3.836 Msps (99.910042%) With 3.5 ADC Clock Divider : 57.14MHz| |
-|12-bit ADC with HW triggers | 3.84 Msps at 57MHz | 3.829 Msps (99.735458%) ith 3.5 ADC Clock Divider : 57.14MHz | |
-|16-bit ADC with SW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.198814%) ith 3.5 ADC Clock Divider : 57.14MHz | |
-|16-bit ADC with HW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.146255%) ith 3.5 ADC Clock Divider : 57.14MHz | |
+|12-bit ADC with HW triggers | 3.84 Msps at 57MHz | 3.829 Msps (99.735458%) With 3.5 ADC Clock Divider : 57.14MHz | |
+|16-bit ADC with SW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.198814%) With 3.5 ADC Clock Divider : 57.14MHz | |
+|16-bit ADC with HW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.146255%) With 3.5 ADC Clock Divider : 57.14MHz | |
 
 ## Memory Footprints
 
@@ -119,10 +119,10 @@ The memory footprint values represent only the module-specific driver sections f
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Can_Example_Classic_FD   | 15356    | 0    | 3668    | 220    |
- | Can_Example_Icom   | 16924    | 0    | 3996    | 556    |
- | Can_Example_loopback   | 15324    | 0    | 3668    | 220    |
- | Can_Example_Wakeup   | 15356    | 0    | 3668    | 220    |
+| Can_Example_Classic_FD   | 15420    | 0    | 3672    | 220    |
+ | Can_Example_Icom   | 16972    | 0    | 3996    | 556    |
+ | Can_Example_loopback   | 15388    | 0    | 3672    | 220    |
+ | Can_Example_Wakeup   | 15420    | 0    | 3672    | 220    |
  
 ### DIO
 
@@ -193,7 +193,7 @@ The memory footprint values represent only the module-specific driver sections f
 | Cdd_Adc_Example_SwHwConversion   | 10886    | 0    | 149    | 552    |
  | Cdd_Adc_Example_GlbSwTrig   | 12788    | 0    | 237    | 952    |
  | Cdd_Adc_Example_Ppb_TrigRepeater   | 11418    | 0    | 185    | 684    |
- | Cdd_Adc_Example_TempSensor   | 7132    | 0    | 81    | 240    |
+ | Cdd_Adc_Example_TempSensor   | 7148    | 0    | 81    | 240    |
  | Cdd_Adc_Example_DmaTransfer   | 5116    | 0    | 57    | 160    |
  
 ### CDD ECAP
@@ -232,7 +232,7 @@ The memory footprint values represent only the module-specific driver sections f
 | Cdd_Pwm_Example_Chopper   | 38024    | 0    | 46    | 64    |
  | Cdd_Pwm_Example_Cmpss_Trip   | 37542    | 0    | 40    | 16    |
  | Cdd_Pwm_Example_DC_EventFilter   | 37520    | 0    | 40    | 16    |
- | Cdd_Pwm_Example_Deadband   | 38032    | 0    | 48    | 80    |
+ | Cdd_Pwm_Example_Deadband   | 38080    | 0    | 48    | 80    |
  | Cdd_Pwm_Example_DiodeEmulation   | 37952    | 0    | 44    | 48    |
  | Cdd_Pwm_Example_GlobalLoad_And_Link   | 38104    | 0    | 46    | 84    |
  | Cdd_Pwm_Example_Hrpwm   | 37874    | 0    | 42    | 36    |

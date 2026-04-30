@@ -65,21 +65,25 @@
  *  File:       Cdd_Adc_Example_TempSensor.c
  *  Generator:  None
  *
- *  Description:  Cdd_Adc example source file. Channel ID 20 on ADCA and ADCC are both connected to
- *  the temperature sensor internally. The ADC conversion results can be passed to GetTemperatureC
- *  & GetTemperatureC APIs to get the temperature value in Celsius and Kelvin respectively.
+ *  Description:  This example demonstrates reading the internal temperature sensor using the CDD ADC driver.
+ *                Channel ID 20 on ADCA and ADCC are both connected to the temperature sensor internally.
+ *                The ADC conversion results can be passed to GetTemperatureC and GetTemperatureK APIs to
+ *                get the temperature value in Celsius and Kelvin respectively.
  *
- * Steps followed in the example:
- * EcuM_Init()
- * - Initialize clock to 200 MHz using Mcu_Init()
- * - Initialize pins using Port_Init() to see the print statements on the console
- * - Initialize Cdd_Adc driver using Cdd_Adc_Init()
- * - Initialize Gpt driver using Gpt_Init() to use start timer API.
- *      Timer interrupt acts as a hardware trigger source for ADC sample conversion in this example.
- * Verification of Cdd_Adc temperature sensor values
- * Channel ID 20 on ADCA and ADCC are both connected to the temperature sensor internally.
- * The ADC conversion results can be passed to GetTemperatureC & GetTemperatureC APIs to get the
- * temperature value in Celsius and Kelvin respectively.
+ *  Setup required for the example:
+ *  - No external connections required as the temperature sensor is internal.
+ *
+ *  Steps followed in the example:
+ *  EcuM_Init()
+ *  - Initialize clock to 200 MHz using Mcu_Init()
+ *  - Initialize pins using Port_Init() to see the print statements on the console
+ *  - Initialize Cdd_Adc driver using Cdd_Adc_Init()
+ *  - Initialize Gpt driver using Gpt_Init() to use start timer API
+ *  Timer interrupt acts as a hardware trigger source for ADC sample conversion in this example
+ *
+ *  Expected Results:
+ *  - Temperature values in Celsius and Kelvin are printed to the console.
+ *  - The ADC conversion results can be observed in the buffer.
  *
  *********************************************************************************************************************/
 
@@ -105,6 +109,8 @@
  *********************************************************************************************************************/
 #define TIMER_CLK_FREQ_HZ (20000000U) /* Timer clock frequency in Hz */
 #define GPT_TIME_US_1     (10000U)    /* 10 ms */
+
+#define CDD_ADC_VOLTREF (2.5F)
 
 /*********************************************************************************************************************
  * Local Preprocessor #define Macros
@@ -163,10 +169,12 @@ void Cdd_Adc_Group1Notification(void)
         /* Read group results */
         Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_0,
                           &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_0][0]);
-        Cdd_Adc_ADCA_TempC = Cdd_Adc_GetTemperatureC(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_0,
-                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_0][0]);
-        Cdd_Adc_ADCA_TempK = Cdd_Adc_GetTemperatureK(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_0,
-                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_0][0]);
+        Cdd_Adc_ADCA_TempC =
+            Cdd_Adc_GetTemperatureC(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_0,
+                                    Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_0][0], CDD_ADC_VOLTREF);
+        Cdd_Adc_ADCA_TempK =
+            Cdd_Adc_GetTemperatureK(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_0,
+                                    Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_0][0], CDD_ADC_VOLTREF);
     }
 }
 
@@ -177,10 +185,12 @@ void Cdd_Adc_Group2Notification(void)
         /* Read group results */
         Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_1,
                           &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_1][0]);
-        Cdd_Adc_ADCC_TempC = Cdd_Adc_GetTemperatureC(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_1,
-                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_1][0]);
-        Cdd_Adc_ADCC_TempK = Cdd_Adc_GetTemperatureK(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_1,
-                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_1][0]);
+        Cdd_Adc_ADCC_TempC =
+            Cdd_Adc_GetTemperatureC(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_1,
+                                    Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_1][0], CDD_ADC_VOLTREF);
+        Cdd_Adc_ADCC_TempK =
+            Cdd_Adc_GetTemperatureK(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_1,
+                                    Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_1][0], CDD_ADC_VOLTREF);
     }
 }
 

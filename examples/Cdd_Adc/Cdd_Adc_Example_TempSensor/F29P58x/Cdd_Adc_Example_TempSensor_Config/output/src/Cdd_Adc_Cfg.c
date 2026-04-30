@@ -79,11 +79,11 @@
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
-#if ((CDD_ADC_SW_MAJOR_VERSION != (3U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
+#if ((CDD_ADC_SW_MAJOR_VERSION != (4U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
   #error "Version numbers of Cdd_Adc_Cfg.c and Cdd_Adc.h are inconsistent!"
 #endif
 
-#if ( (CDD_ADC_CFG_MAJOR_VERSION != (3U)) \
+#if ( (CDD_ADC_CFG_MAJOR_VERSION != (4U)) \
     ||(CDD_ADC_CFG_MINOR_VERSION != (0U)))
   #error "Version numbers of Cdd_Adc_Cfg.c and Cdd_Adc_Cfg.h are inconsistent!"
 #endif
@@ -229,7 +229,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
         {
             /* HwunitId:CDD_ADCA Group:0 */
             .channel_id = (uint8)(20U),
-            .sample_window = (uint16)(15U),
+            .sample_window = (uint16)(95U),
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
             .extchannelnum = (uint8)(0U),
 #endif
@@ -239,7 +239,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
         {
             /* HwunitId:CDD_ADCC Group:0 */
             .channel_id = (uint8)(20U),
-            .sample_window = (uint16)(15U),
+            .sample_window = (uint16)(95U),
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
             .extchannelnum = (uint8)(0U),
 #endif

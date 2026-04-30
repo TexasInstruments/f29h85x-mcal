@@ -246,7 +246,8 @@ static Std_ReturnType I2c_appPmicTest(void)
                 I2c_writeReadRestart(I2C_APP_PMIC_HW_UNIT, I2C_APP_PMIC_TARGET_ADDR, &wrBuf[0U], &rdBuf[idx], 1U, 1U);
             if (retVal == E_OK)
             {
-                if (rdBuf[idx] != expValues[idx])
+                /* 0x02 offset is revision and could change for different LP board revision */
+                if ((idx != 2U) && (rdBuf[idx] != expValues[idx]))
                 {
                     AppUtils_Printf(
                         "Err: PMIC read 0x%0.2X at offset 0x%0.2X didn't match expected value of 0x%0.2X!!\r\n",

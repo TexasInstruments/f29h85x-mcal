@@ -880,8 +880,8 @@ Ppb notification function pointer.
 | uint16 | **[Cdd_Adc_GetDelayStamp](../Modules/group__CDD__ADC.md#function-cdd_adc_getdelaystamp)**([Cdd_Adc_PpbType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_ppbtype) PpbId)| service to get the delay between the the SOC trigger and the actual start of the SOC acquisition  |
 | void | **[Cdd_Adc_ConfigurePpbNotification](../Modules/group__CDD__ADC.md#function-cdd_adc_configureppbnotification)**([Cdd_Adc_PpbType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_ppbtype) PpbId, boolean Mode)| Enable or disable PPB notification.  |
 | Std_ReturnType | **[Cdd_Adc_SetResolution](../Modules/group__CDD__ADC.md#function-cdd_adc_setresolution)**([Cdd_Adc_HwUnitInstanceType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_hwunitinstancetype) HwUnit, [Cdd_Adc_ResolutionType](../Modules/group__CDD__ADC.md#enum-cdd_adc_resolutiontype) Resolution)| service to set the resolution of the ADC hardware unit.  |
-| sint16 | **[Cdd_Adc_GetTemperatureC](../Modules/group__CDD__ADC.md#function-cdd_adc_gettemperaturec)**([Cdd_Adc_HwUnitInstanceType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_hwunitinstancetype) HwUnit, [Cdd_Adc_ValueGroupType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_valuegrouptype) TempResult)| service to convert the ADC conversion value to Celsius.  |
-| sint16 | **[Cdd_Adc_GetTemperatureK](../Modules/group__CDD__ADC.md#function-cdd_adc_gettemperaturek)**([Cdd_Adc_HwUnitInstanceType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_hwunitinstancetype) HwUnit, [Cdd_Adc_ValueGroupType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_valuegrouptype) TempResult)| service to convert the ADC conversion value to Kelvin.  |
+| sint16 | **[Cdd_Adc_GetTemperatureC](../Modules/group__CDD__ADC.md#function-cdd_adc_gettemperaturec)**([Cdd_Adc_HwUnitInstanceType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_hwunitinstancetype) HwUnit, [Cdd_Adc_ValueGroupType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_valuegrouptype) TempResult, float32 VoltRef)| service to convert the ADC conversion value to Celsius.  |
+| sint16 | **[Cdd_Adc_GetTemperatureK](../Modules/group__CDD__ADC.md#function-cdd_adc_gettemperaturek)**([Cdd_Adc_HwUnitInstanceType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_hwunitinstancetype) HwUnit, [Cdd_Adc_ValueGroupType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_valuegrouptype) TempResult, float32 VoltRef)| service to convert the ADC conversion value to Kelvin.  |
 | void | **[Cdd_Adc_SetInternalTestNode](../Modules/group__CDD__ADC.md#function-cdd_adc_setinternaltestnode)**([Cdd_Adc_InternalTestNodeType](../Modules/group__CDD__ADC.md#enum-cdd_adc_internaltestnodetype) TestNode)| service to set the internal test node  |
 | void | **[Cdd_Adc_UpdateStatusThroughDma](../Modules/group__CDD__ADC.md#function-cdd_adc_updatestatusthroughdma)**([Cdd_Adc_HwUnitType](../Modules/group__CDD__ADC.md#enum-cdd_adc_hwunittype) HwUnitId, [Cdd_Adc_IntNumType](../Modules/group__CDD__ADC.md#enum-cdd_adc_intnumtype) IntNum)| service to update the group status in DMA mode for the specified group  |
 
@@ -1795,7 +1795,8 @@ This service to set the resolution of the specified ADC hardware unit.
 ```
 sint16 Cdd_Adc_GetTemperatureC(
     Cdd_Adc_HwUnitInstanceType HwUnit,
-    Cdd_Adc_ValueGroupType TempResult
+    Cdd_Adc_ValueGroupType TempResult,
+    float32 VoltRef
 )
 ```
 
@@ -1803,7 +1804,7 @@ sint16 Cdd_Adc_GetTemperatureC(
 **Brief**: 
 service to convert the ADC conversion value to Celsius. 
 
-This service to convert the ADC conversion value to Celsius.
+This service converts the ADC conversion value to Celsius.
 
 
 **Parameters**: 
@@ -1812,6 +1813,11 @@ This service to convert the ADC conversion value to Celsius.
 * **HwUnit** ADC hardware unit 
   
 * **TempResult** ADC conversion result 
+  
+* **VoltRef** ADC voltage reference value (float32) provided to the corresponding ganged reference.
+
+* Internal voltage reference mode: Use 2.5F for 2.5V VREF or 3.3F for 3.3V VREF
+* External voltage reference mode: Provide the actual external voltage value as float 
 
 
 **Returns**: 
@@ -1823,6 +1829,12 @@ This service to convert the ADC conversion value to Celsius.
 
 **Return**: Returns the values converted to Celsius 
 
+**Note**: 
+
+  * Temperature sensor values in production test are derived with 2.5V reference. The VoltRef argument is used to scale the temperature sensor reading accordingly if the temperature sensor value is read at a different VREF setting.
+  * The VoltRef value must exactly match the actual voltage reference being used. Any deviation will result in incorrect temperature calculations. 
+
+
 **Precondition**: None 
 
 **Postcondition**: None 
@@ -1832,7 +1844,8 @@ This service to convert the ADC conversion value to Celsius.
 ```
 sint16 Cdd_Adc_GetTemperatureK(
     Cdd_Adc_HwUnitInstanceType HwUnit,
-    Cdd_Adc_ValueGroupType TempResult
+    Cdd_Adc_ValueGroupType TempResult,
+    float32 VoltRef
 )
 ```
 
@@ -1840,7 +1853,7 @@ sint16 Cdd_Adc_GetTemperatureK(
 **Brief**: 
 service to convert the ADC conversion value to Kelvin. 
 
-This service to convert the ADC conversion value to Kelvin.
+This service converts the ADC conversion value to Kelvin.
 
 
 **Parameters**: 
@@ -1849,6 +1862,11 @@ This service to convert the ADC conversion value to Kelvin.
 * **HwUnit** ADC hardware unit 
   
 * **TempResult** ADC conversion result 
+  
+* **VoltRef** ADC voltage reference value (float32) provided to the corresponding ganged reference.
+
+* Internal voltage reference mode: Use 2.5F for 2.5V VREF or 3.3F for 3.3V VREF
+* External voltage reference mode: Provide the actual external voltage value as float 
 
 
 **Returns**: 
@@ -1859,6 +1877,12 @@ This service to convert the ADC conversion value to Kelvin.
 
 
 **Return**: Returns the values converted to Kelvin 
+
+**Note**: 
+
+  * Temperature sensor values in production test are derived with 2.5V reference. The VoltRef argument is used to scale the temperature sensor reading accordingly if the temperature sensor value is read at a different VREF setting.
+  * The VoltRef value must exactly match the actual voltage reference being used. Any deviation will result in incorrect temperature calculations. 
+
 
 **Precondition**: None 
 

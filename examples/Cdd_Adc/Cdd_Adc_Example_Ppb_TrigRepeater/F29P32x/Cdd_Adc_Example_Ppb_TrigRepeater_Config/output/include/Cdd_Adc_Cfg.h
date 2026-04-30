@@ -92,9 +92,9 @@ extern "C" {
 
 /* CDD ADC Driver Configuration SW Version Info */
 
-#define CDD_ADC_CFG_MAJOR_VERSION           (3U)
+#define CDD_ADC_CFG_MAJOR_VERSION           (4U)
 #define CDD_ADC_CFG_MINOR_VERSION           (0U)
-#define CDD_ADC_CFG_PATCH_VERSION           (2U)
+#define CDD_ADC_CFG_PATCH_VERSION           (0U)
 
 /* CDD ADC Build Variant. Pre-compile build Variants */
 

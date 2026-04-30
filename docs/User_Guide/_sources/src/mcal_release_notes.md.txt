@@ -69,7 +69,7 @@ The following devices are supported with this release:
 | Communication Driver | CAN, LIN, SPI |
 | I/O Drivers | DIO, PORT |
 | Memory Drivers | FLS |
-| Complex Device Drivers | ADC, XBAR, SENT, IPC, UART, PWM, ECAP, I2C |
+| Complex Device Drivers | ADC, XBAR, SENT, IPC, UART, PWM, ECAP, I2C, DMA |
 
 - Resource Allocator
 - Reference Code:
@@ -172,6 +172,13 @@ Example:
        - Updated CAN examples to use GPIO 234 and GPIO 235 for CAN TX/RX pins to align with the physically available pinout on the F29H85X-SOM-EVM board
     10. **CDD ADC:**
         - Updated `Cdd_Adc_Example_DmaTransfer` example to use the MCAL Cdd_Dma driver instead of the rtdma library from f29x_sdk
+        - Added `Voltref` parameter to `Cdd_Adc_GetTemperatureC()` and `Cdd_Adc_GetTemperatureK()` APIs to enable accurate temperature calculation across different voltage reference configurations
+        - Updated Temperature sensor example to use the latest `Cdd_Adc_GetTemperatureC()` and `Cdd_Adc_GetTemperatureK()` APIs
+    11. **CDD I2C:**
+        - Added support for I2C target mode operation
+
+- Silicon Errata Impact Analysis:
+  - Completed analysis of F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata (Silicon Revisions B, A, 0) for document version [SPRZ569C – NOVEMBER 2024 – REVISED MARCH 2026](https://www.ti.com/lit/er/sprz569c/sprz569c.pdf); recommended actions for MCAL users are documented in the Silicon Errata Workarounds and Recommendations chapter of each Module User Guide.
 
 - Build System:
   - Updated TI C29 Clang compiler and linker version from 2.0.0.STS to 2.2.0.LTS
@@ -204,7 +211,7 @@ Format: XX.YY.ZZ where:
 | LIN | 03.01.01 |
 | SPI | 03.01.01 |
 | FLS | 03.02.00 |
-| CDD ADC | 03.00.02 |
+| CDD ADC | 04.00.00 |
 | CDD XBAR | 03.01.00 |
 | CDD SENT | 03.01.01 |
 | CDD PWM | 03.01.01 |
@@ -269,6 +276,8 @@ Example:
 | MCAL-36584 | All | S3-Minor | All Modules: BSWModuleEntry incorrectly uses expectedEntry instead of implementedEntry in bswmd.arxml | C29xMCAL_01.00.00 <br>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01 | The bswmd.arxml files for all MCAL modules used a mix of `expectedEntry` and `implementedEntry` attributes for BSWModuleEntry elements. All entries should use `implementedEntry` to correctly reflect the implemented interface, which may cause validation failures in AUTOSAR tooling. | 1. Open the bswmd.arxml file for any MCAL module. <br>2. Inspect the BSWModuleEntry elements. <br>3. Observe that some entries use `expectedEntry` instead of `implementedEntry`. | Replaced all `expectedEntry` attributes with `implementedEntry` in the bswmd.arxml files across all MCAL modules to correctly reflect the implemented BSW module interface. |
 | MCAL-36562 | CDD IPC | S3-Minor | CDD IPC: Incorrect IPC instances reserved when CddIpcReservedInstances is set to 1 | C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01 | When `CddIpcReservedInstances` is set to 1, the wrong IPC instances were being reserved — INST2 was skipped and INST3 was incorrectly included instead, resulting in non-continuous instance numbering. This causes incorrect IPC instances to be available for configuration in EB Tresos. | 1. Open EB Tresos with the CDD IPC plugin. <br>2. Set `CddIpcReservedInstances` to 1. <br>3. Observe the available IPC instances — INST2 is missing and INST3 is incorrectly included. | Corrected the IPC instance reservation logic to ensure continuous and correct instance numbering when `CddIpcReservedInstances` is set to 1. |
 | MCAL-35788 | Mcal_Lib | S2-Major | Mcal_Lib: Symbol redefinition conflict for Mcalib_BromStatus and McalLib_DeviceCalibrationData when used alongside f29x_sdk | C29xMCAL_01.03.00 | When MCAL and f29x_sdk are used together, `Mcalib_BromStatus` and `McalLib_DeviceCalibrationData` are defined as constants in both packages, causing a linker redefinition conflict. If a customer renames these symbols in MCAL to resolve the conflict, incorrect ADC trim values are loaded with no warning given, resulting in degraded MCU and CDD ADC performance. | 1. Use MCAL together with f29x_sdk in the same project. <br>2. Observe linker redefinition errors for `Mcalib_BromStatus` and `McalLib_DeviceCalibrationData`. <br>3. Rename the symbols in MCAL to resolve the conflict. <br>4. Observe that MCU and CDD ADC produce unexpected results due to incorrect trim values being loaded. | Changed `Mcalib_BromStatus` and `McalLib_DeviceCalibrationData` in `Mcal_Lib_BootRom.c` from constant definitions to pointers referencing the reserved memory locations. This eliminates the redefinition conflict when used alongside f29x_sdk while ensuring the correct trim values are always accessed. |
+| MCAL-37849 | Can | S3-Minor | CAN: Non-sequential MCAN instances fail to function when preceding instances are not configured | C29xMCAL_01.04.01 | CAN instances must be configured in sequential order to operate correctly. If earlier MCAN instances (e.g., MCAN A and MCAN B) are not configured, any higher-numbered instance (e.g., MCAN C) will fail to function. This prevents users from selectively enabling only the MCAN instances they need. | 1. Open EB Tresos and create a CAN configuration. <br>2. Configure only MCAN C, leaving MCAN A and MCAN B unconfigured. <br>3. Build and run the application. <br>4. Observe that MCAN C does not function correctly despite being configured. | Updated the CAN driver to allow non-sequential MCAN instance configuration, so that any MCAN instance can be used independently without requiring all preceding instances to be configured. |
+| MCAL-37887 | Cdd_Adc | S3-Minor | CDD ADC: Temperature conversion APIs lack support for different voltage references in external reference mode | C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.02.01 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01 | The `Cdd_Adc_GetTemperatureC()` and `Cdd_Adc_GetTemperatureK()` APIs did not support temperature calculation for different voltage references when using external reference mode, limiting their usability in systems with non-standard voltage references. | 1. Configure ADC with external voltage reference mode using a non-standard voltage (e.g., 3.0V). <br>2. Call `Cdd_Adc_GetTemperatureC()` or `Cdd_Adc_GetTemperatureK()` to convert temperature sensor reading. <br>3. Observe that the temperature calculation is incorrect because the API cannot account for the actual external voltage reference value. | Added new `Voltref` parameter (float32) to `Cdd_Adc_GetTemperatureC()` and `Cdd_Adc_GetTemperatureK()` APIs to enable accurate temperature calculation for different voltage references. The parameter accepts internal voltage reference values (2.5F for 2.5V, 3.3F for 3.3V) or actual external voltage reference values.The Voltref value must exactly match the actual voltage reference being used. <br>**Note:** This is an API change. Existing code must be updated to include the Voltref parameter. Refer to the [Migration Guide](https://software-dl.ti.com/C2000/docs/mcal/F29H85x/26.00.00/src/MigrationGuide_list.html) for detailed steps. |
 
 ## Known Issues And Limitations
 
@@ -420,6 +429,14 @@ Long Term Support releases are production-ready releases that provide the highes
 | Bug Fix / Patch Release | No | Bugs that are prioritized will be fixed in the next release; no backporting to STS releases | Bug fixes on the LTS maintenance branch will be prioritized based on the severity of the bug |
 | Feature Addition | Yes | Yes | New features will be added in an LTS release, but post LTS release, new features will not be backported to the LTS maintenance branch |
 | Production Ready | No | Not recommended for Production | Recommended for Production |
+
+## CI/CD Strategy
+
+F29H85x MCAL is also available on GitHub at [https://github.com/TexasInstruments/f29h85x-mcal](https://github.com/TexasInstruments/f29h85x-mcal). The GitHub repository always reflects the leading and bleeding edge of MCAL development, providing early access to the latest features, fixes, and improvements as they are developed.
+
+> **Disclaimer:** The GitHub repository contains software that is not fully tested and may include bugs, errors, or defects that could cause system instability or unexpected behavior. Always review and validate code before use in any application.
+
+Official releases are published under the [Releases](https://github.com/TexasInstruments/f29h85x-mcal/releases) section of the GitHub repository. These correspond to the versioned releases documented in these release notes and have undergone the quality and testing criteria.
 
 ## Software Bill of Materials
 

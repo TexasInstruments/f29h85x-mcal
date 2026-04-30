@@ -1,0 +1,64 @@
+# Introduction
+
+## Purpose
+
+This guide documents the application-facing changes introduced in each F29H85x MCAL release — specifically, changes that require manual action from the integrator before the new release can replace the previous one. These changes include:
+
+- Modified or renamed public APIs
+- Renamed or restructured EB Tresos configuration parameters and containers
+- Renamed enumerations, configuration structs, or ISR symbols referenced in application or integration code
+- Behavioral changes that alter the runtime effect of an existing configuration
+- New mandatory configuration parameters that have no default and must be explicitly set
+- ResourceAllocator integration changes that affect multiple modules simultaneously
+
+The goal of this guide is to make those transitions explicit, predictable, and actionable for AUTOSAR integrators.
+
+```{Note}
+This guide documents only changes that impact applications built on previous versions — specifically, behavioral changes, API changes, and configuration changes that require manual action. Bug fixes and new feature additions that do not affect existing application behavior are not covered.
+```
+
+## How to Use This Guide
+
+### Organization
+
+This guide is organized by **MCAL module**. Each module has a dedicated migration guide file (for example, [`Migration_Guide_Can.md`](Migration_Guide_Can.md), [`Migration_Guide_Mcu.md`](Migration_Guide_Mcu.md)). Within each module guide, changes are listed in **reverse chronological order** — the most recent module version transition appears first.
+
+```{Note}
+Always consult [Migration_Guide_ResourceAllocator.md](Migration_Guide_ResourceAllocator.md) before applying any module-specific migration steps. ResourceAllocator changes are prerequisites for the dependent module migrations. Applying module-specific changes without first completing the ResourceAllocator migration will result in configuration validation errors or incorrect runtime behavior.
+```
+
+### Upgrading Across Multiple Releases
+
+When upgrading across more than one MCAL release in a single step, apply the migration changes in **chronological order** (oldest to newest), not in the reverse order in which they appear in the guide. For example, if upgrading from release v01.02.00 to v26.00.00 and a module has entries for both the v01.03.00 and v26.00.00 transitions, apply the v01.03.00 changes first, then the v26.00.00 changes.
+
+```{Note}
+Reading the guide entries in reverse chronological order (most recent first) is useful for understanding the current state of the module. However, when applying changes to an existing project, always work in chronological order to avoid applying a later change before its prerequisite earlier change is in place.
+```
+
+## Module Versioning vs. MCAL Release Versioning
+
+MCAL is delivered as a package under a single release version, but each module within the package has its own independent version number following the AUTOSAR versioning. Module versions use the format `XX.YY.ZZ`.
+
+The [Release Notes](mcal_release_notes.md#module-version-number) for each MCAL package release include a complete **Module Version Number** table listing the current version of every module in that release. By comparing that table between two releases, you can identify exactly which modules changed and whether the change was major, minor, or a patch fix.
+
+## Why Not Every Version Appears Here
+
+This guide covers only module version transitions where a change affects the application layer. If a module version transition is absent from this guide, no migration action is required for that upgrade.
+
+```{Note}
+The absence of a module from this guide for a given release does not mean the module is unchanged — it means the changes in that release (if any) do not require manual action from the integrator. Always verify using the Module Version Number table in the Release Notes.
+```
+
+## Mandatory Steps for Every Release Upgrade
+
+The following steps are required for every MCAL release upgrade, regardless of whether this guide lists any application-facing changes for that release. These steps ensure consistency between the EB Tresos configuration, the generated C files, and the driver source.
+
+1. **Replace the EB Tresos plugins for all modules** — not only the modules with documented changes — with the plugins from the new release. Copy the new plugin directories into the EB Tresos `plugins/` directory, replacing the previous versions. Plugin installation is described in the [Getting Started Guide](Getting_Started.md).
+2. **Open the EB Tresos project and resolve all validation errors** introduced by the new plugins before regenerating any code. New plugins may enforce stricter validation rules or introduce new mandatory parameters. All validation errors must be resolved before proceeding to code generation.
+3. **Apply any module-specific migration changes** documented in this guide for the target release. Consult [`Migration_Guide_ResourceAllocator.md`](Migration_Guide_ResourceAllocator.md) first, then apply changes for each affected module in the order described in the relevant module guide.
+4. **Regenerate all module configurations** using the updated plugins. Regenerate the configuration for every module in the project — not only the modules with documented changes — to ensure all generated C files (`*_Cfg.c`, `*_Cfg.h`, `*_PBcfg.c`) are consistent with the new plugin versions.
+5. **Build against the latest driver source files** from the new MCAL SDK. Ensure that all source file paths in the build system reference the new SDK location and that no object files from the previous release are reused.
+
+```{Warning}
+Partial upgrades — updating only some module plugins while leaving others at older versions — are not supported and may result in undefined behavior due to inter-module dependencies, particularly involving ResourceAllocator. All module plugins must be updated to the same MCAL release version simultaneously.
+```

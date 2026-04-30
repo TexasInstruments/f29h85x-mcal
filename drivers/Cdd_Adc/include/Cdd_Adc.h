@@ -93,11 +93,11 @@ extern "C" {
  *********************************************************************************************************************/
 /* Defines for CDD_ADC Driver version used for compatibility checks.*/
 /** \brief Driver Implementation Major Version */
-#define CDD_ADC_SW_MAJOR_VERSION (3U)
+#define CDD_ADC_SW_MAJOR_VERSION (4U)
 /** \brief Driver Implementation Minor Version */
 #define CDD_ADC_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_ADC_SW_PATCH_VERSION (2U)
+#define CDD_ADC_SW_PATCH_VERSION (0U)
 
 /*  Defines for CDD_ADC Driver AUTOSAR version used for compatibility checks. */
 /** \brief AUTOSAR Major version specification implemented by CDD_ADC Driver*/
@@ -459,6 +459,7 @@ typedef struct Cdd_Adc_GroupCfgTag
     uint32                       soc_mask;
     /** \brief  Last SOC number of the group to be assigned to the interrupt */
     uint8                        lastsocnum;
+    /* Design: MCAL-32667 */
     /** \brief  Determines whether DA is enabled for the group or not */
     boolean                      dma_mode;
 } Cdd_Adc_GroupCfgType;
@@ -1067,10 +1068,19 @@ Cdd_Adc_SetResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
 #if (STD_ON == CDD_ADC_TEMPERATURE_SENSOR_ENABLE)
 /** \brief service to convert the ADC conversion value to Celsius.
  *
- * This service to convert the ADC conversion value to Celsius.
+ * This service converts the ADC conversion value to Celsius.
+ *
+ * \note Temperature sensor values in production test are derived with 2.5V reference.
+ *       The VoltRef argument is used to scale the temperature sensor reading accordingly
+ *       if the temperature sensor value is read at a different VREF setting.
  *
  * \param[in] HwUnit  ADC hardware unit
  * \param[in] TempResult  ADC conversion result
+ * \param[in] VoltRef  ADC voltage reference value (float32) provided to the corresponding ganged reference.
+ *                     - Internal voltage reference mode: Use 2.5F for 2.5V VREF or 3.3F for 3.3V VREF
+ *                     - External voltage reference mode: Provide the actual external voltage value as float
+ * \note The VoltRef value must exactly match the actual voltage reference being used.
+ *          Any deviation will result in incorrect temperature calculations.
  * \pre None
  * \post None
  * \return Returns the values converted to Celsius
@@ -1079,14 +1089,23 @@ Cdd_Adc_SetResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
  *********************************************************************************************************************/
 FUNC(sint16, CDD_ADC_CODE)
 Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
-                        VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult);
+                        VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult, VAR(float32, AUTOMATIC) VoltRef);
 
 /** \brief service to convert the ADC conversion value to Kelvin.
  *
- * This service to convert the ADC conversion value to Kelvin.
+ * This service converts the ADC conversion value to Kelvin.
+ *
+ * \note Temperature sensor values in production test are derived with 2.5V reference.
+ *       The VoltRef argument is used to scale the temperature sensor reading accordingly
+ *       if the temperature sensor value is read at a different VREF setting.
  *
  * \param[in] HwUnit  ADC hardware unit
  * \param[in] TempResult  ADC conversion result
+ * \param[in] VoltRef  ADC voltage reference value (float32) provided to the corresponding ganged reference.
+ *                     - Internal voltage reference mode: Use 2.5F for 2.5V VREF or 3.3F for 3.3V VREF
+ *                     - External voltage reference mode: Provide the actual external voltage value as float
+ * \note The VoltRef value must exactly match the actual voltage reference being used.
+ *          Any deviation will result in incorrect temperature calculations.
  * \pre None
  * \post None
  * \return Returns the values converted to Kelvin
@@ -1095,7 +1114,7 @@ Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
  *********************************************************************************************************************/
 FUNC(sint16, CDD_ADC_CODE)
 Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
-                        VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult);
+                        VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult, VAR(float32, AUTOMATIC) VoltRef);
 #endif
 
 /** \brief service to set the internal test node

@@ -92,8 +92,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#release-type-comparison">1.11.5. Release Type Comparison</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#software-bill-of-materials">1.12. Software Bill of Materials</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dependencies">1.13. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ci-cd-strategy">1.12. CI/CD Strategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#software-bill-of-materials">1.13. Software Bill of Materials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">1.14. Dependencies</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">2. Overview of MCAL</a></li>
@@ -234,7 +235,7 @@
 <td><p>FLS</p></td>
 </tr>
 <tr class="row-even"><td><p>Complex Device Drivers</p></td>
-<td><p>ADC, XBAR, SENT, IPC, UART, PWM, ECAP, I2C</p></td>
+<td><p>ADC, XBAR, SENT, IPC, UART, PWM, ECAP, I2C, DMA</p></td>
 </tr>
 </tbody>
 </table>
@@ -393,10 +394,22 @@ Example:
 <li><p><strong>CDD ADC:</strong></p>
 <ul>
 <li><p>Updated <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_Example_DmaTransfer</span></code> example to use the MCAL Cdd_Dma driver instead of the rtdma library from f29x_sdk</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">Voltref</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_GetTemperatureC()</span></code> and <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_GetTemperatureK()</span></code> APIs to enable accurate temperature calculation across different voltage reference configurations</p></li>
+<li><p>Updated Temperature sensor example to use the latest <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_GetTemperatureC()</span></code> and <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_GetTemperatureK()</span></code> APIs</p></li>
+</ul>
+</li>
+<li><p><strong>CDD I2C:</strong></p>
+<ul>
+<li><p>Added support for I2C target mode operation</p></li>
 </ul>
 </li>
 </ol>
 </li>
+</ul>
+</li>
+<li><p>Silicon Errata Impact Analysis:</p>
+<ul>
+<li><p>Completed analysis of F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata (Silicon Revisions B, A, 0) for document version <a class="reference external" href="https://www.ti.com/lit/er/sprz569c/sprz569c.pdf">SPRZ569C – NOVEMBER 2024 – REVISED MARCH 2026</a>; recommended actions for MCAL users are documented in the Silicon Errata Workarounds and Recommendations chapter of each Module User Guide.</p></li>
 </ul>
 </li>
 <li><p>Build System:</p>
@@ -457,7 +470,7 @@ Format: XX.YY.ZZ where:
 <td><p>03.02.00</p></td>
 </tr>
 <tr class="row-odd"><td><p>CDD ADC</p></td>
-<td><p>03.00.02</p></td>
+<td><p>04.00.00</p></td>
 </tr>
 <tr class="row-even"><td><p>CDD XBAR</p></td>
 <td><p>03.01.00</p></td>
@@ -741,6 +754,24 @@ Example:
 <td><p>When MCAL and f29x_sdk are used together, <code class="docutils literal notranslate"><span class="pre">Mcalib_BromStatus</span></code> and <code class="docutils literal notranslate"><span class="pre">McalLib_DeviceCalibrationData</span></code> are defined as constants in both packages, causing a linker redefinition conflict. If a customer renames these symbols in MCAL to resolve the conflict, incorrect ADC trim values are loaded with no warning given, resulting in degraded MCU and CDD ADC performance.</p></td>
 <td><p>1. Use MCAL together with f29x_sdk in the same project. <br>2. Observe linker redefinition errors for <code class="docutils literal notranslate"><span class="pre">Mcalib_BromStatus</span></code> and <code class="docutils literal notranslate"><span class="pre">McalLib_DeviceCalibrationData</span></code>. <br>3. Rename the symbols in MCAL to resolve the conflict. <br>4. Observe that MCU and CDD ADC produce unexpected results due to incorrect trim values being loaded.</p></td>
 <td><p>Changed <code class="docutils literal notranslate"><span class="pre">Mcalib_BromStatus</span></code> and <code class="docutils literal notranslate"><span class="pre">McalLib_DeviceCalibrationData</span></code> in <code class="docutils literal notranslate"><span class="pre">Mcal_Lib_BootRom.c</span></code> from constant definitions to pointers referencing the reserved memory locations. This eliminates the redefinition conflict when used alongside f29x_sdk while ensuring the correct trim values are always accessed.</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL-37849</p></td>
+<td><p>Can</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>CAN: Non-sequential MCAN instances fail to function when preceding instances are not configured</p></td>
+<td><p>C29xMCAL_01.04.01</p></td>
+<td><p>CAN instances must be configured in sequential order to operate correctly. If earlier MCAN instances (e.g., MCAN A and MCAN B) are not configured, any higher-numbered instance (e.g., MCAN C) will fail to function. This prevents users from selectively enabling only the MCAN instances they need.</p></td>
+<td><p>1. Open EB Tresos and create a CAN configuration. <br>2. Configure only MCAN C, leaving MCAN A and MCAN B unconfigured. <br>3. Build and run the application. <br>4. Observe that MCAN C does not function correctly despite being configured.</p></td>
+<td><p>Updated the CAN driver to allow non-sequential MCAN instance configuration, so that any MCAN instance can be used independently without requiring all preceding instances to be configured.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-37887</p></td>
+<td><p>Cdd_Adc</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>CDD ADC: Temperature conversion APIs lack support for different voltage references in external reference mode</p></td>
+<td><p>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.02.01 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01</p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_GetTemperatureC()</span></code> and <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_GetTemperatureK()</span></code> APIs did not support temperature calculation for different voltage references when using external reference mode, limiting their usability in systems with non-standard voltage references.</p></td>
+<td><p>1. Configure ADC with external voltage reference mode using a non-standard voltage (e.g., 3.0V). <br>2. Call <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_GetTemperatureC()</span></code> or <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_GetTemperatureK()</span></code> to convert temperature sensor reading. <br>3. Observe that the temperature calculation is incorrect because the API cannot account for the actual external voltage reference value.</p></td>
+<td><p>Added new <code class="docutils literal notranslate"><span class="pre">Voltref</span></code> parameter (float32) to <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_GetTemperatureC()</span></code> and <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_GetTemperatureK()</span></code> APIs to enable accurate temperature calculation for different voltage references. The parameter accepts internal voltage reference values (2.5F for 2.5V, 3.3F for 3.3V) or actual external voltage reference values.The Voltref value must exactly match the actual voltage reference being used. <br><strong>Note:</strong> This is an API change. Existing code must be updated to include the Voltref parameter. Refer to the <a class="reference external" href="https://software-dl.ti.com/C2000/docs/mcal/F29H85x/26.00.00/src/MigrationGuide_list.html">Migration Guide</a> for detailed steps.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1056,8 +1087,16 @@ Move issues to "Fixed In This Release" section when resolved.
 </table>
 </section>
 </section>
+<section id="ci-cd-strategy">
+<h2><span class="section-number">1.12. </span>CI/CD Strategy<a class="headerlink" href="#ci-cd-strategy" title="Link to this heading"></a></h2>
+<p>F29H85x MCAL is also available on GitHub at <a class="reference external" href="https://github.com/TexasInstruments/f29h85x-mcal">https://github.com/TexasInstruments/f29h85x-mcal</a>. The GitHub repository always reflects the leading and bleeding edge of MCAL development, providing early access to the latest features, fixes, and improvements as they are developed.</p>
+<blockquote>
+<div><p><strong>Disclaimer:</strong> The GitHub repository contains software that is not fully tested and may include bugs, errors, or defects that could cause system instability or unexpected behavior. Always review and validate code before use in any application.</p>
+</div></blockquote>
+<p>Official releases are published under the <a class="reference external" href="https://github.com/TexasInstruments/f29h85x-mcal/releases">Releases</a> section of the GitHub repository. These correspond to the versioned releases documented in these release notes and have undergone the quality and testing criteria.</p>
+</section>
 <section id="software-bill-of-materials">
-<h2><span class="section-number">1.12. </span>Software Bill of Materials<a class="headerlink" href="#software-bill-of-materials" title="Link to this heading"></a></h2>
+<h2><span class="section-number">1.13. </span>Software Bill of Materials<a class="headerlink" href="#software-bill-of-materials" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Component Type</p></th>
@@ -1122,7 +1161,7 @@ Move issues to "Fixed In This Release" section when resolved.
 </table>
 </section>
 <section id="dependencies">
-<h2><span class="section-number">1.13. </span>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h2>
+<h2><span class="section-number">1.14. </span>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h2>
 <p>This release has dependency on the following tools:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.ti.com/tool/CCSTUDIO">CCS</a> v20.05.00 or above version.</p></li>

@@ -847,14 +847,19 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_Timestamp_ISR(Cdd_Ecap_ChannelType Channel)
     baseAddr = Cdd_Ecap_CfgPtr->chCfg[Channel].base_addr;
 
     /* BufferPtr null check */
+    /* TI_COVERAGE_GAP_START [Branch Coverage] This cannot be covered as the pointer
+    will never be null(AUTOSAR requirement) */
     if (Cdd_Ecap_ObjPtr->chObj[Channel].NextTimeStampIndexPtr != NULL)
     {
         Cdd_Ecap_Timestamp_ISRProcess(Channel);
     }
+    /* TI_COVERAGE_GAP_STOP */
 
     Cdd_Ecap_ObjPtr->chObj[Channel].NextTimeStampIndex++;
 
     /* Handling for end of buffer */
+    /* TI_COVERAGE_GAP_START [Branch Coverage/MC-DC Coverage] This cannot be covered as the pointer
+    will never be null(AUTOSAR requirement) */
     if ((Cdd_Ecap_ObjPtr->chObj[Channel].NextTimeStampIndex >= Cdd_Ecap_ObjPtr->chObj[Channel].TimeStampBufferSize) &&
         (Cdd_Ecap_ObjPtr->chObj[Channel].NextTimeStampIndexPtr != NULL_PTR))
     {
@@ -870,6 +875,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_Timestamp_ISR(Cdd_Ecap_ChannelType Channel)
             /* Next timestamp writes over the first item, and continuous capturing timestamps */
             Cdd_Ecap_ObjPtr->chObj[Channel].NextTimeStampIndex = 0U;
         }
+        /* TI_COVERAGE_GAP_STOP */
     }
 
     return;

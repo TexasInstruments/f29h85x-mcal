@@ -498,7 +498,7 @@ typedef struct Can_DriverObjType_s
     /** \brief MaxMbCount in MB list in all controller */
     uint16                maxMbCnt;
     /** \brief CAN Controller ID mapping */
-    uint32                controllerIDMap[KMAX_CONTROLLER];
+    uint8                 controllerIDMap[KMAX_CONTROLLER_PER_DEVICE];
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
     /** \brief Icom Configuration List */
     Can_IcomConfigType IcomConfigurationList[MAX_ICOM_CONFIGURATION];
@@ -517,7 +517,7 @@ typedef struct Can_DriverObjType_s
 /** \brief   Enum to represent the CAN Message RAM type. */
 typedef enum
 {
-    /** \brief MCAN Msg RAM buffersss */
+    /** \brief MCAN Msg RAM buffers */
     CAN_MEM_TYPE_BUF = 0U,
     /** \brief MCAN Msg RAM FIFO/Queue */
     CAN_MEM_TYPE_FIFO0 = 1U,
@@ -624,14 +624,14 @@ typedef struct Can_RxFIFOStatusType_s
 /*
  *Design: MCAL-25951
  */
-/** \brief   Structure for CAN Rx FIFO Status. */
+/** \brief   Structure for CAN Tx FIFO Status. */
 typedef struct Can_TxFIFOStatusType_s
 {
-    /** \brief Rx FIFO Put Index  */
+    /** \brief Tx FIFO Put Index  */
     uint8   putIdx;
-    /** \brief Rx FIFO Full
-        0 = Rx FIFO not full
-        1 = Rx FIFO full */
+    /** \brief Tx FIFO Full
+        0 = Tx FIFO not full
+        1 = Tx FIFO full */
     boolean fifoFull;
 } Can_TxFIFOStatusType;
 

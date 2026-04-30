@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.1. Introduction &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx-design.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6.2. Resource Allocator Module" href="Migration_Guide_ResourceAllocator.html" />
+    <link rel="prev" title="6. Migration Guide" href="MigrationGuide_list.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                26.00.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.00 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">2. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">3. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModuleUserGuide_list.html">5. Module User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="MigrationGuide_list.html">6. Migration Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.1. Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#purpose">6.1.1. Purpose</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-use-this-guide">6.1.2. How to Use This Guide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#organization">6.1.2.1. Organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#upgrading-across-multiple-releases">6.1.2.2. Upgrading Across Multiple Releases</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-versioning-vs-mcal-release-versioning">6.1.3. Module Versioning vs. MCAL Release Versioning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#why-not-every-version-appears-here">6.1.4. Why Not Every Version Appears Here</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mandatory-steps-for-every-release-upgrade">6.1.5. Mandatory Steps for Every Release Upgrade</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_ResourceAllocator.html">6.2. Resource Allocator Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Can.html">6.3. CAN Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Dio.html">6.4. DIO Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Gpt.html">6.5. GPT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Fls.html">6.6. FLS Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Lin.html">6.7. LIN Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Mcu.html">6.8. MCU Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Port.html">6.9. Port Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Spi.html">6.10. SPI Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Wdg.html">6.11. WDG Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Adc.html">6.12. CDD ADC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ecap.html">6.13. CDD ECAP Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_I2c.html">6.14. CDD I2C Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ipc.html">6.15. CDD IPC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Sent.html">6.16. CDD SENT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Pwm.html">6.17. CDD PWM Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Uart.html">6.18. CDD UART Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Xbar.html">6.19. CDD XBAR Module Migration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">7. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">8. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">9. AUTOSAR Integration Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="MigrationGuide_list.html"><span class="section-number">6. </span>Migration Guide</a> &raquo;</li>
+      <li><span class="section-number">6.1. </span>Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction">
+<h1><span class="section-number">6.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
+<section id="purpose">
+<h2><span class="section-number">6.1.1. </span>Purpose<a class="headerlink" href="#purpose" title="Link to this heading"></a></h2>
+<p>This guide documents the application-facing changes introduced in each F29H85x MCAL release — specifically, changes that require manual action from the integrator before the new release can replace the previous one. These changes include:</p>
+<ul class="simple">
+<li><p>Modified or renamed public APIs</p></li>
+<li><p>Renamed or restructured EB Tresos configuration parameters and containers</p></li>
+<li><p>Renamed enumerations, configuration structs, or ISR symbols referenced in application or integration code</p></li>
+<li><p>Behavioral changes that alter the runtime effect of an existing configuration</p></li>
+<li><p>New mandatory configuration parameters that have no default and must be explicitly set</p></li>
+<li><p>ResourceAllocator integration changes that affect multiple modules simultaneously</p></li>
+</ul>
+<p>The goal of this guide is to make those transitions explicit, predictable, and actionable for AUTOSAR integrators.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This guide documents only changes that impact applications built on previous versions — specifically, behavioral changes, API changes, and configuration changes that require manual action. Bug fixes and new feature additions that do not affect existing application behavior are not covered.</p>
+</div>
+</section>
+<section id="how-to-use-this-guide">
+<h2><span class="section-number">6.1.2. </span>How to Use This Guide<a class="headerlink" href="#how-to-use-this-guide" title="Link to this heading"></a></h2>
+<section id="organization">
+<h3><span class="section-number">6.1.2.1. </span>Organization<a class="headerlink" href="#organization" title="Link to this heading"></a></h3>
+<p>This guide is organized by <strong>MCAL module</strong>. Each module has a dedicated migration guide file (for example, <a class="reference internal" href="Migration_Guide_Can.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">Migration_Guide_Can.md</span></code></span></a>, <a class="reference internal" href="Migration_Guide_Mcu.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">Migration_Guide_Mcu.md</span></code></span></a>). Within each module guide, changes are listed in <strong>reverse chronological order</strong> — the most recent module version transition appears first.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Always consult <a class="reference internal" href="Migration_Guide_ResourceAllocator.html"><span class="std std-doc">Migration_Guide_ResourceAllocator.md</span></a> before applying any module-specific migration steps. ResourceAllocator changes are prerequisites for the dependent module migrations. Applying module-specific changes without first completing the ResourceAllocator migration will result in configuration validation errors or incorrect runtime behavior.</p>
+</div>
+</section>
+<section id="upgrading-across-multiple-releases">
+<h3><span class="section-number">6.1.2.2. </span>Upgrading Across Multiple Releases<a class="headerlink" href="#upgrading-across-multiple-releases" title="Link to this heading"></a></h3>
+<p>When upgrading across more than one MCAL release in a single step, apply the migration changes in <strong>chronological order</strong> (oldest to newest), not in the reverse order in which they appear in the guide. For example, if upgrading from release v01.02.00 to v26.00.00 and a module has entries for both the v01.03.00 and v26.00.00 transitions, apply the v01.03.00 changes first, then the v26.00.00 changes.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Reading the guide entries in reverse chronological order (most recent first) is useful for understanding the current state of the module. However, when applying changes to an existing project, always work in chronological order to avoid applying a later change before its prerequisite earlier change is in place.</p>
+</div>
+</section>
+</section>
+<section id="module-versioning-vs-mcal-release-versioning">
+<h2><span class="section-number">6.1.3. </span>Module Versioning vs. MCAL Release Versioning<a class="headerlink" href="#module-versioning-vs-mcal-release-versioning" title="Link to this heading"></a></h2>
+<p>MCAL is delivered as a package under a single release version, but each module within the package has its own independent version number following the AUTOSAR versioning. Module versions use the format <code class="docutils literal notranslate"><span class="pre">XX.YY.ZZ</span></code>.</p>
+<p>The <a class="reference internal" href="mcal_release_notes.html#module-version-number"><span class="std std-ref">Release Notes</span></a> for each MCAL package release include a complete <strong>Module Version Number</strong> table listing the current version of every module in that release. By comparing that table between two releases, you can identify exactly which modules changed and whether the change was major, minor, or a patch fix.</p>
+</section>
+<section id="why-not-every-version-appears-here">
+<h2><span class="section-number">6.1.4. </span>Why Not Every Version Appears Here<a class="headerlink" href="#why-not-every-version-appears-here" title="Link to this heading"></a></h2>
+<p>This guide covers only module version transitions where a change affects the application layer. If a module version transition is absent from this guide, no migration action is required for that upgrade.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The absence of a module from this guide for a given release does not mean the module is unchanged — it means the changes in that release (if any) do not require manual action from the integrator. Always verify using the Module Version Number table in the Release Notes.</p>
+</div>
+</section>
+<section id="mandatory-steps-for-every-release-upgrade">
+<h2><span class="section-number">6.1.5. </span>Mandatory Steps for Every Release Upgrade<a class="headerlink" href="#mandatory-steps-for-every-release-upgrade" title="Link to this heading"></a></h2>
+<p>The following steps are required for every MCAL release upgrade, regardless of whether this guide lists any application-facing changes for that release. These steps ensure consistency between the EB Tresos configuration, the generated C files, and the driver source.</p>
+<ol class="arabic simple">
+<li><p><strong>Replace the EB Tresos plugins for all modules</strong> — not only the modules with documented changes — with the plugins from the new release. Copy the new plugin directories into the EB Tresos <code class="docutils literal notranslate"><span class="pre">plugins/</span></code> directory, replacing the previous versions. Plugin installation is described in the <a class="reference internal" href="Getting_Started.html"><span class="std std-doc">Getting Started Guide</span></a>.</p></li>
+<li><p><strong>Open the EB Tresos project and resolve all validation errors</strong> introduced by the new plugins before regenerating any code. New plugins may enforce stricter validation rules or introduce new mandatory parameters. All validation errors must be resolved before proceeding to code generation.</p></li>
+<li><p><strong>Apply any module-specific migration changes</strong> documented in this guide for the target release. Consult <a class="reference internal" href="Migration_Guide_ResourceAllocator.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">Migration_Guide_ResourceAllocator.md</span></code></span></a> first, then apply changes for each affected module in the order described in the relevant module guide.</p></li>
+<li><p><strong>Regenerate all module configurations</strong> using the updated plugins. Regenerate the configuration for every module in the project — not only the modules with documented changes — to ensure all generated C files (<code class="docutils literal notranslate"><span class="pre">*_Cfg.c</span></code>, <code class="docutils literal notranslate"><span class="pre">*_Cfg.h</span></code>, <code class="docutils literal notranslate"><span class="pre">*_PBcfg.c</span></code>) are consistent with the new plugin versions.</p></li>
+<li><p><strong>Build against the latest driver source files</strong> from the new MCAL SDK. Ensure that all source file paths in the build system reference the new SDK location and that no object files from the previous release are reused.</p></li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Partial upgrades — updating only some module plugins while leaving others at older versions — are not supported and may result in undefined behavior due to inter-module dependencies, particularly involving ResourceAllocator. All module plugins must be updated to the same MCAL release version simultaneously.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="MigrationGuide_list.html" class="btn btn-neutral float-left" title="6. Migration Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Migration_Guide_ResourceAllocator.html" class="btn btn-neutral float-right" title="6.2. Resource Allocator Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2026, Texas Instruments Incorporated.
+        <br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 26.00.00
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

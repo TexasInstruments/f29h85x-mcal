@@ -65,40 +65,45 @@
  *  File:       Cdd_Adc_Example_SwHwConversion.c
  *  Generator:  None
  *
- *  Description:  Cdd_Adc example source file.This example demonstrates simple ADC conversions with software and
- *  hardware triggers.
- *  Delay stamp is also printed which is the number of system clock cycles delay
- *  between the group trigger and the actual start of the group conversion. Delay stamp API can only be called for
- *  PPBs which are linked to the groups that are configured for hardware triggers.
- *  All ADC instances are configured in single-ended mode.
- *  In single-ended mode, the input voltage to the converter is sampled through a single pin (ADCINx), referenced to
- *  VREFLO.
+ *  Description:  This example demonstrates software and hardware triggered conversions with the CDD ADC driver,
+ *                including delay stamp measurement. It showcases single-ended signaling mode operation.
  *
+ *  ADC Signal Modes:
+ *  - Single-ended mode: Input voltage sampled through a single pin (ADCINx), referenced to VREFLO.
  *
- * In this example ADCA,ADCB & ADCD instances are configured in single-ended mode.
+ *  Configuration:
+ *  - ADCA, ADCB & ADCD: Configured for single-ended mode
+ *  - Delay stamp: Measures the number of system clock cycles delay between the group trigger and the
+ *    actual start of the group conversion. Delay stamp API can only be called for PPBs linked to groups
+ *    configured for hardware triggers.
  *
- * Setup required for the example:
- * Since ADCA & ADCB are configured for external voltage reference mode, connect external voltage to VREFHIAB pin and
- * VREFLOAB to GND (Put Switch S3 as per external voltage reference mode and S4 as per internal reference mode).
- * ADCD is configured for 3.3V internal reference voltage mode.
- * Connect desired voltage to ADCAIN0,ADCAIN1 pins to observe conversion results.
- * Connect desired voltage to ADCBIN0,ADCBIN1 pins as input to ADC for the conversion.
- * Connect desired voltage to ADCDIN0,ADCDIN1,ADCDIN2 & ADCDIN3 pins.
+ *  Setup required for the example:
+ *  - ADCA & ADCB are configured for external voltage reference mode:
+ *    * Connect external voltage to VREFHIAB pin and VREFLOAB to GND
+ *    * Put Switch S3 as per external voltage reference mode and S4 as per internal reference mode
+ *  - ADCD is configured for 3.3V internal reference voltage mode.
+ *  - Connect desired voltage to ADCAIN0, ADCAIN1 pins to observe conversion results
+ *  - Connect desired voltage to ADCBIN0, ADCBIN1 pins as input to ADC for conversion
+ *  - Connect desired voltage to ADCDIN0, ADCDIN1, ADCDIN2 & ADCDIN3 pins
  *
- * Steps followed in the example:
- * EcuM_Init()
- * - Initialize clock to 200 MHz using Mcu_Init()
- * - Initialize pins in analog mode with Port_Init()
- * - Initialize Cdd_Adc driver using Cdd_Adc_Init()
- * - Initialize Gpt driver using Gpt_Init() to use start timer API.
- *      Timer interrupt acts as a hardware trigger source for ADC sample conversion in this example.
- * Cdd_Adc_SetupResultBuffer API sets up the result buffer for the specified group. Channel conversion results
- * that are linked to the group will be copied to this buffer.
- * Cdd_Adc_EnableGroupNotification API enables notification for the specified group
- * Wait until all group conversions are complete.
- * Delay stamp is captured for the hardware triggered group
- * Print Group0,Group1 & Group2 channel conversion results
- * The ADC conversion results can be observed in the result buffer.
+ *  Steps followed in the example:
+ *  EcuM_Init()
+ *  - Initialize clock to 200 MHz using Mcu_Init()
+ *  - Initialize pins in analog mode with Port_Init()
+ *  - Initialize Cdd_Adc driver using Cdd_Adc_Init()
+ *  - Initialize Gpt driver using Gpt_Init() to use start timer API
+ *    Timer interrupt acts as a hardware trigger source for ADC sample conversion in this example
+ *
+ *  Execution Flow:
+ *  - Cdd_Adc_SetupResultBuffer API sets up the result buffer for the specified group
+ *  - Cdd_Adc_EnableGroupNotification API enables notification for the specified group
+ *  - Wait until all group conversions are complete
+ *  - Delay stamp is captured for the hardware triggered group
+ *  - Print Group0, Group1 & Group2 channel conversion results
+ *
+ *  Expected Results:
+ *  - ADC conversion results can be observed in the result buffer.
+ *  - Delay stamp values are printed for hardware triggered groups.
  *
  *********************************************************************************************************************/
 

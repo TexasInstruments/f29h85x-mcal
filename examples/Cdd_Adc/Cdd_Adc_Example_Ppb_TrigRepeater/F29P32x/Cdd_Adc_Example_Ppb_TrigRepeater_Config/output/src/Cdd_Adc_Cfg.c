@@ -79,11 +79,11 @@
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
-#if ((CDD_ADC_SW_MAJOR_VERSION != (3U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
+#if ((CDD_ADC_SW_MAJOR_VERSION != (4U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
   #error "Version numbers of Cdd_Adc_Cfg.c and Cdd_Adc.h are inconsistent!"
 #endif
 
-#if ( (CDD_ADC_CFG_MAJOR_VERSION != (3U)) \
+#if ( (CDD_ADC_CFG_MAJOR_VERSION != (4U)) \
     ||(CDD_ADC_CFG_MINOR_VERSION != (0U)))
   #error "Version numbers of Cdd_Adc_Cfg.c and Cdd_Adc_Cfg.h are inconsistent!"
 #endif

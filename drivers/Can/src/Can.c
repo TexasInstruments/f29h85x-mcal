@@ -1216,26 +1216,14 @@ static FUNC(Std_ReturnType, CAN_CODE)
         (void)Det_ReportError((uint16)CAN_MODULE_ID, (uint8)CAN_INSTANCE_ID, (uint8)CAN_SID_WRITE,
                               (uint8)CAN_E_PARAM_HANDLE);
     }
-    /* Check if the data length is incorrect and report a DET error. */
-    /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] The False branch of (CanFDMode == TRUE) at the
-     * third sub-condition is logically unreachable. Due to short-circuit evaluation, the third
-     * sub-condition is only evaluated when (CAN_CLASSIC_PAYLOAD_MAX_BYTES < pduInfor->length) is
-     * True (line above). If CanFDMode == FALSE at that point, the second sub-condition would have
-     * already evaluated to True and short-circuited the entire else-if, preventing the third
-     * sub-condition from being reached. Therefore (CanFDMode == TRUE) can only be evaluated as
-     * True, making the False branch a false positive reported by the coverage tool.
-     */
     else if ((CAN_FD_PAYLOAD_MAX_BYTES < pduInfor->length) ||
              ((CAN_CLASSIC_PAYLOAD_MAX_BYTES < pduInfor->length) &&
-              (Can_DriverObj.canController[msgController].canControllerConfig.CanConfigParam.CanFDMode == FALSE)) ||
-             ((CAN_CLASSIC_PAYLOAD_MAX_BYTES < pduInfor->length) &&
-              (Can_DriverObj.canController[msgController].canControllerConfig.CanConfigParam.CanFDMode == TRUE) &&
-              (CAN_ID_CAN_CONTROLLER_TYPE_MASK != (CAN_ID_CAN_CONTROLLER_TYPE_MASK & pduInfor->id))))
+              ((Can_DriverObj.canController[msgController].canControllerConfig.CanConfigParam.CanFDMode == FALSE) ||
+               (CAN_ID_CAN_CONTROLLER_TYPE_MASK != (CAN_ID_CAN_CONTROLLER_TYPE_MASK & pduInfor->id)))))
     {
         (void)Det_ReportError((uint16)CAN_MODULE_ID, (uint8)CAN_INSTANCE_ID, (uint8)CAN_SID_WRITE,
                               (uint8)CAN_E_PARAM_DATA_LENGTH);
     }
-    /* TI_COVERAGE_GAP_STOP */
     else
     {
         returnVal = E_OK;

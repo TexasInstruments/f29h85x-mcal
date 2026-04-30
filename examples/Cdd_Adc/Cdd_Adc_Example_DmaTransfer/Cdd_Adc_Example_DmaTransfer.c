@@ -65,33 +65,42 @@
  *  File:       Cdd_Adc_Example_DmaTransfer.c
  *  Generator:  None
  *
- *  Description:  This example demonstrates the DMA integration with CDD ADC driver.
+ *  Description:  This example demonstrates DMA integration with the CDD ADC driver for efficient data transfer.
+ *                It showcases hardware-triggered ADC conversions with PWM as the trigger source, where DMA
+ *                automatically transfers conversion results to memory without CPU intervention.
  *
- * Setup required for the example:
- * ADCA is configured for 2.5V internal reference voltage mode.
- * Connect desired voltage to ADCAIN0,ADCAIN1,ADCAIN6,ADCAIN7,ADCAIN28,ADCAIN29,ADCAIN30 & ADCAIN31 pins.
+ *  Configuration:
+ *  - ADCA: Configured for 2.5V internal reference voltage mode
+ *  - PWM: Configured to generate 64KHz frequency waveform as ADC trigger source
+ *  - DMA: Configured to transfer ADC conversion results to result buffer
+ *  - Trigger frequency: 64KHz (one trigger every 15.625µs)
  *
- * Steps followed in the example:
- * EcuM_Init()
- * - Initialize clock to 200 MHz using Mcu_Init()
- * - Initialize pins using Port_Init() to see the print statements on the console
- * - Initialize Cdd_Adc driver using Cdd_Adc_Init()
- * - Initialize Cdd_Pwm driver using Cdd_Pwm_Init()
- * AppUtils_Init() to initailize App Utils
- * Cdd_Dma_Init() to initialize DMA
- * Cdd_Pwm_ConfigureHardware() to initialize PWM and generate 64KHz frequency waveform
- * Call EnableHardwareTrigger API to start the group conversion
- * For every 15.625us a trigger is generated to ADC for conversion.
- * The result buffer is updated by DMA after the group is done and the interrupt is generated.
+ *  Setup required for the example:
+ *  - ADCA is configured for 2.5V internal reference voltage mode.
+ *  - Connect desired voltage to ADCAIN0, ADCAIN1, ADCAIN6, ADCAIN7, ADCAIN28, ADCAIN29, ADCAIN30 & ADCAIN31 pins
  *
- * Continue this for 1second and observe the behaviour.
+ *  Steps followed in the example:
+ *  EcuM_Init()
+ *  - Initialize clock to 200 MHz using Mcu_Init()
+ *  - Initialize pins using Port_Init() to see the print statements on the console
+ *  - Initialize Cdd_Adc driver using Cdd_Adc_Init()
+ *  - Initialize Cdd_Pwm driver using Cdd_Pwm_Init()
  *
- * Call DisableHardwareTrigger to stop further triggers from PWM to ADC.
+ *  Execution Flow:
+ *  - AppUtils_Init() to initialize App Utils
+ *  - Cdd_Dma_Init() to initialize DMA
+ *  - Cdd_Pwm_ConfigureHardware() to initialize PWM and generate 64KHz frequency waveform
+ *  - Call EnableHardwareTrigger API to start the group conversion
+ *  - For every 15.625µs, a trigger is generated to ADC for conversion
+ *  - The result buffer is updated by DMA after the group is done and the interrupt is generated
+ *  - Continue this for 5 seconds and observe the behavior
+ *  - Call DisableHardwareTrigger to stop further triggers from PWM to ADC
+ *  - Wait until group status is IDLE
  *
- * Wait until group status is IDLE
- *
- * Print the success statement after the example is executed successfully.
- * Observe the ADC conversion results in the buffer.
+ *  Expected Results:
+ *  - ADC conversions are triggered at 64KHz frequency.
+ *  - DMA automatically transfers conversion results to the buffer.
+ *  - ADC conversion results can be observed in the buffer.
  *
  *********************************************************************************************************************/
 

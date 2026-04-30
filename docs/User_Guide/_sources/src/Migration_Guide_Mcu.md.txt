@@ -11,7 +11,6 @@ Version v02.02.00 introduces the following changes to the MCU module:
 1. **Automatic CPUSEL/FRAMESEL Register Writes via ResourceAllocator**: `Mcu_Init()` now writes CPUSEL and FRAMESEL peripheral ownership registers from ResourceAllocator configuration
 2. **McuSysClkDiv Recommended Configuration Update (Errata Advisory)**: Configurator now warns when McuSysClkDiv = 1; recommended to use McuSysClkDiv >= 2 to avoid XRSn reset errata
 
-
 ### Change 1: Automatic CPUSEL/FRAMESEL Register Writes via ResourceAllocator
 
 #### Description
@@ -25,7 +24,6 @@ Projects that previously wrote CPUSEL/FRAMESEL registers manually must remove th
 | Behavior | v02.01.01 | v02.02.00 |
 |----------|-----------|-----------|
 | CPUSEL/FRAMESEL register writes | Application responsibility (manual) | Written automatically by `Mcu_Init()` from ResourceAllocator config |
-
 
 ```{WARNING}
 If your application or any BSW module manually writes CPUSEL or FRAMESEL registers, those writes must be removed. Duplicate writes after `Mcu_Init()` may overwrite the generated ownership configuration and cause unexpected peripheral behavior.

@@ -1114,6 +1114,11 @@ Can_ResetDrvObjPriv(P2VAR(Can_DriverObjType, AUTOMATIC, CAN_APPL_DATA) drvObj)
             drvObj->canController[controllerIndx].canSduPtr[mbIndx] = ((uint8)0U);
         }
     }
+    /*Initialize Controller ID Map*/
+    for (controllerIndx = ((uint8)0U); controllerIndx < (uint8)KMAX_CONTROLLER_PER_DEVICE; controllerIndx++)
+    {
+        drvObj->controllerIDMap[controllerIndx] = 0U;
+    }
 }
 
 /*
@@ -1248,11 +1253,8 @@ FUNC(void, CAN_CODE) Can_EccLoadRegister(uint32 baseAddr, uint32 regOffset)
         {
             /* Do Nothing */
         }
-        /* TI_COVERAGE_GAP_START [Branch/MC_DC Coverage] This cannot be covered can't simulate
-         * Hardware IP Errors */
     } while ((uint32)1U !=
              (uint32)MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_ECC_AGGR_VECTOR), MCAN_ECC_AGGR_VECTOR_RD_SVBUS_DONE));
-    /* TI_COVERAGE_GAP_STOP */
 }
 
 /*
@@ -1550,10 +1552,7 @@ Can_HwUnitSleepPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) contr
         {
             /*  Do Nothing */
         }
-        /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] This cannot be covered can't simulate
-         * Hardware IP Errors */
     } while (CAN_CLOCK_STOP_ACK != Can_GetClkStopAckPriv(canInstance));
-    /* TI_COVERAGE_GAP_STOP */
 
     /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] The False branch of (FALSE == timeout) is
      * logically unreachable in tests. The timeout variable is only set to TRUE inside the
@@ -1618,10 +1617,7 @@ Can_HwUnitWakeupPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) cont
         {
             /*  Do Nothing */
         }
-        /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] This cannot be covered can't simulate
-         * Hardware IP Errors */
     } while (CAN_CLOCK_STOP_NO_ACK != Can_GetClkStopAckPriv(canInstance));
-    /* TI_COVERAGE_GAP_STOP */
 
     /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] The False branch of (FALSE == timeout) is
      * logically unreachable in tests. The timeout variable is only set to TRUE inside the
@@ -2236,14 +2232,11 @@ Can_MsgRamConfigPriv(uint32 baseAddr, P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC
 
     txMbNum = ((canFDMsgRamConfig->txBuffNum + canFDMsgRamConfig->txFIFONum) & MAX_UINT8);
 
-    /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] This cannot be covered as check for max config is
-    implemented in plugin*/
     if (((uint8)MCAN_TX_BUFFER_MAX_NUM >= txMbNum) &&
         (((uint8)MCAN_RX_BUFFER_MAX_NUM) >= canFDMsgRamConfig->rxBuffNum) &&
         (((uint8)MCAN_RX_FIFO_0_MAX_NUM) >= canFDMsgRamConfig->configParams.rxFIFO0size) &&
         (((uint8)MCAN_RX_FIFO_1_MAX_NUM) >= canFDMsgRamConfig->configParams.rxFIFO1size))
     {
-        /* TI_COVERAGE_GAP_STOP */
         /* Calculate Start Address for Message RAM sections */
         Can_MsgRamConfigTxRxPriv(canFDMsgRamConfig);
 
@@ -2795,8 +2788,6 @@ FUNC(Std_ReturnType, CAN_CODE)
 Can_IcomSignalOp(P2CONST(Can_IcomSignalConfigType, AUTOMATIC, CAN_CONST) signalData, uint64 sduData)
 {
     VAR(Std_ReturnType, AUTOMATIC) returnVal = E_NOT_OK;
-    /* TI_COVERAGE_GAP_START [Branch/MC-DC] All the Conditions are verified. This is False Positive
-     */
     if (((signalData->CanIcomSignalOperation == AND) &&
          (signalData->CanIcomSignalValue == ((uint64)sduData & signalData->CanIcomSignalMask))) ||
         ((signalData->CanIcomSignalOperation == EQUAL) && (sduData == (uint64)signalData->CanIcomSignalValue)) ||
@@ -2805,10 +2796,8 @@ Can_IcomSignalOp(P2CONST(Can_IcomSignalConfigType, AUTOMATIC, CAN_CONST) signalD
         ((signalData->CanIcomSignalOperation == XOR) &&
          (signalData->CanIcomSignalValue == ((uint64)sduData ^ signalData->CanIcomSignalMask))))
     {
-        /* TI_COVERAGE_GAP_STOP */
         returnVal = E_OK;
     }
-
     else
     {
         /* Do Nothing */;
@@ -3146,11 +3135,8 @@ static FUNC(void, CAN_CODE) Can_WaitForMemoryInitPriv(uint32 baseAddr)
         {
             /* Do Nothing */
         }
-        /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] This cannot be covered can't simulate
-         * Hardware IP Errors */
     } while ((uint32)1U !=
              (uint32)MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_MCANSS_STAT), MCAN_MCANSS_STAT_MEM_INIT_DONE));
-    /* TI_COVERAGE_GAP_STOP */
 }
 
 /*
@@ -3194,12 +3180,8 @@ static FUNC(void, CAN_CODE) Can_SetOpModePriv(uint32 baseAddr, Can_ControllerOpe
             break;
         }
         /* TI_COVERAGE_GAP_STOP */
-
-        /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] This cannot be covered can't simulate
-         * Hardware IP Errors */
     } while ((Can_ControllerOperationMode)cntrMode !=
              (Can_ControllerOperationMode)MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_CCCR), MCAN_CCCR_INIT));
-    /* TI_COVERAGE_GAP_STOP */
 }
 
 /*
@@ -3844,10 +3826,7 @@ static FUNC(void, CAN_CODE) Can_WaitForTxBufCancelReqPriv(uint32 bitPos, uint32 
         {
             /*  Do Nothing */
         }
-        /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] This cannot be covered can't simulate
-         * Hardware IP Errors */
     } while ((uint32)bitPos != ((Can_GetTxBufCancelStatusPriv(baseAddr))&bitPos));
-    /* TI_COVERAGE_GAP_STOP */
 
     return;
 }

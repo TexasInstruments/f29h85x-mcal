@@ -94,7 +94,7 @@
  * - GPIO4 EPWM3A
  * - GPIO5 EPWM3B
  * - GPIO12 EPWM7A
- * - GPIO12 EPWM7B
+ * - GPIO13 EPWM7B
  *
  *********************************************************************************************************************/
 
@@ -132,9 +132,9 @@
 /* Array to store the notification of the PWM instances */
 uint32 Cdd_Pwm_NotificationCount[CDD_PWM_COUNT] = {0};
 
-#if (STD_ON == CDD_ADC_VERSION_INFO_API)
+#if (STD_ON == CDD_PWM_VERSION_INFO_API)
 /*  version info variable */
-Std_VersionInfoType Cdd_Adc_VersionInfo;
+Std_VersionInfoType Cdd_Pwm_VersionInfo;
 #endif
 
 /*********************************************************************************************************************
@@ -309,15 +309,15 @@ int main()
     AppUtils_Printf("Executing Cdd_Pwm_Example_Chopper example\r\n");
 
     /* Get version Info */
-#if (STD_ON == CDD_ADC_VERSION_INFO_API)
-    Cdd_Adc_GetVersionInfo(&Cdd_Adc_VersionInfo);
-    AppUtils_Printf("CDD_ADC MCAL Version Info\n");
+#if (STD_ON == CDD_PWM_VERSION_INFO_API)
+    Cdd_Pwm_GetVersionInfo(&Cdd_Pwm_VersionInfo);
+    AppUtils_Printf("CDD_PWM MCAL Version Info\n");
     AppUtils_Printf("---------------------\n");
-    AppUtils_Printf("Vendor ID           : %d\n", Cdd_Adc_VersionInfo.vendorID);
-    AppUtils_Printf("Module ID           : %d\n", Cdd_Adc_VersionInfo.moduleID);
-    AppUtils_Printf("SW Major Version    : %d\n", Cdd_Adc_VersionInfo.sw_major_version);
-    AppUtils_Printf("SW Minor Version    : %d\n", Cdd_Adc_VersionInfo.sw_minor_version);
-    AppUtils_Printf("SW Patch Version    : %d\n", Cdd_Adc_VersionInfo.sw_patch_version);
+    AppUtils_Printf("Vendor ID           : %d\n", Cdd_Pwm_VersionInfo.vendorID);
+    AppUtils_Printf("Module ID           : %d\n", Cdd_Pwm_VersionInfo.moduleID);
+    AppUtils_Printf("SW Major Version    : %d\n", Cdd_Pwm_VersionInfo.sw_major_version);
+    AppUtils_Printf("SW Minor Version    : %d\n", Cdd_Pwm_VersionInfo.sw_minor_version);
+    AppUtils_Printf("SW Patch Version    : %d\n", Cdd_Pwm_VersionInfo.sw_patch_version);
 #endif
 
     /* Configure EPWM hardware instances */

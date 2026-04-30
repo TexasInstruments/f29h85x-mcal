@@ -82,6 +82,8 @@
  * Header Files
  *********************************************************************************************************************/
 #include "Wdg.h"
+#include "Mcal_Lib_Cpu.h"
+#include "Os.h"
 #include "EcuM.h"
 #include "Platform_Types.h"
 #include "AppUtils.h"
@@ -196,7 +198,7 @@ int main(void)
 
 /* watchdogISR ISR - The interrupt service routine called when the watchdog
                   triggers the wake interrupt signal */
-void Wdg_ApplWdgIsr(void)
+MCAL_LIB_RTINT_ISR(Wdg_ApplWdgIsr)
 {
     Wdg_IsrCount++;
 }

@@ -68,45 +68,48 @@
  *  File:       Cdd_Adc_Example_GlbSwTrig.c
  *  Generator:  None
  *
- *  Description:  Cdd_Adc global software trigger example source file.
- * \note application source is specific to F29P32x devices.
+ *  Description:  This example demonstrates the use of global software trigger functionality in the CDD ADC driver.
+ *                It also demonstrates PPB (Post Processing Block) trip high and trip low limit functionality.
+ *                The group conversion started with StartGlobalSwTrig must be stopped with StopGlobalSwTrig.
+ *                StartGroupConversion cannot be used before StopGlobalSwTrig to start a new group conversion for
+ *                a group that was already started with StartGlobalSwTrig. First stop the global software trigger,
+ *                then start the normal software group conversion.
  *
- * This examples demonstrates how to use global software trigger.
- * It also demonstrates how PPB trip high and trip low limit works.
- * The group conversion started with StartGlobalSwTrig must be stopped with StopGlobalSwTrig.
- * StartGroupConversion can't be used before StopGlobalSwTrig to start a new group conversion for the group
- * which was already started with StartGlobalSwTrig.
- * First stop the global software trigger and then start the normal software group conversion.
+ *  \note Application source is specific to F29P32x devices.
  *
- * Setup required for the example:
- * All ADC instances are configured for 2.5V internal reference voltage mode.
- * Connect GND to ADCAIN1 pin to observe PPB trip interrupts.
- * Connect desired voltage to ADCAIN0 & ADCAIN6 pins.
- * Connect desired voltage to ADCBIN1,ADCBIN2 & ADCBIN3 pins.
- * Connect desired voltage to ADCCIN0,ADCCIN25 & ADCCIN27 pins.
- * When ADCIN1 is connected to the GND, PPB result of the PPB1(linked to ADCIN1) will be less than the configured
- * trip low limit. It sets trip low event flag.
- * PPB result of the PPB2(linked to ADCIN1) will be greater than the configured trip high limit.
- * It sets the trip high event flag.
- * The above events generate PPB event interrupt to the CPU.
- * While executing PPB event ISR, the notifications corresponding to these set event flags will be called.
- * In this application notification count is incremented everytime the notification is called.
+ *  Setup required for the example:
+ *  - All ADC instances are configured for 2.5V internal reference voltage mode.
+ *  - Connect GND to ADCAIN1 pin to observe PPB trip interrupts.
+ *  - Connect desired voltage to ADCAIN0 & ADCAIN6 pins.
+ *  - Connect desired voltage to ADCBIN1, ADCBIN2 & ADCBIN3 pins.
+ *  - Connect desired voltage to ADCCIN0, ADCCIN25 & ADCCIN27 pins.
+ *  - PPB Configuration:
+ *    * When ADCAIN1 is connected to GND, PPB result of PPB1 (linked to ADCIN1) will be less than the
+ *      configured trip low limit, setting the trip low event flag.
+ *    * PPB result of PPB2 (linked to ADCIN1) will be greater than the configured trip high limit,
+ *      setting the trip high event flag.
+ *    * These events generate PPB event interrupts to the CPU.
+ *    * While executing PPB event ISR, the notifications corresponding to these set event flags will be called.
+ *    * In this application, notification count is incremented every time the notification is called.
  *
- * Steps followed in the example:
- * EcuM_Init()
+ *  Steps followed in the example:
+ *  EcuM_Init()
  *  - Initialize clock to 200 MHz using Mcu_Init()
  *  - Initialize pins in analog mode with Port_Init()
  *  - Initialize Cdd_Adc driver using Cdd_Adc_Init()
- * Connect ADCAIN1 to GND to observe PPB trip high & trip low interrupts.
- * Start global software trigger Id 0 conversion
- * Wait until all group conversions are completed and the PPB trip notification count is as expected.
- * Re-trigger the global software conversion
- * Wait until all group conversions are completed and the PPB trip notification count is as expected.
- * Stop the global software conversion with Cdd_Adc_StopGlobalSwTrig API
- * Start software group 1 conversion with Cdd_Adc_StartGroupConversion
- * Wait until the group conversion is complete.
- * Print the execution successful statement.
- * Conversion results can be observed from the buffer.
+ *  - Connect ADCAIN1 to GND to observe PPB trip high & trip low interrupts
+ *  - Start global software trigger Id 0 conversion
+ *  - Wait until all group conversions are completed and the PPB trip notification count is as expected
+ *  - Re-trigger the global software conversion
+ *  - Wait until all group conversions are completed and the PPB trip notification count is as expected
+ *  - Stop the global software conversion with Cdd_Adc_StopGlobalSwTrig API
+ *  - Start software group 1 conversion with Cdd_Adc_StartGroupConversion
+ *  - Wait until the group conversion is complete
+ *
+ *  Expected Results:
+ *  - PPB trip high and trip low notifications are triggered as expected.
+ *  - Group conversions complete successfully.
+ *  - Conversion results can be observed in the buffer.
  *
  *********************************************************************************************************************/
 

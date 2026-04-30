@@ -101,7 +101,11 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
-
+#ifdef ENABLE_CODE_COVERAGE
+#define DELAY_ATTR __attribute__((section(".TI.ramfunc"), noinline, no_profile_instrument_function))
+#else
+#define DELAY_ATTR __attribute__((section(".TI.ramfunc"), noinline))
+#endif
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
@@ -132,8 +136,7 @@ typedef uint64 McalLib_TickType;
  * \retval None
  *
  *********************************************************************************************************************/
-extern __attribute__((section(".TI.ramfunc"), noinline)) FUNC(void, MCAL_LIB_CODE)
-    McalLib_Delay(VAR(uint32, MCAL_LIB_DATA) count);
+extern DELAY_ATTR FUNC(void, MCAL_LIB_CODE) McalLib_Delay(VAR(uint32, MCAL_LIB_DATA) count);
 
 /** \brief Delay function in microseconds.
  *

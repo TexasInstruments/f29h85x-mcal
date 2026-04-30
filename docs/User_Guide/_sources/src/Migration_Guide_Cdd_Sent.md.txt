@@ -1,18 +1,6 @@
 # CDD SENT Module Migration
 
-Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
-                                    
-1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
-2. Regenerate all module configurations using the updated plugins
-3. Build against the latest driver source
-
-This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
-
----
-
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
-
----
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.01 (i.e release v01.03.00) Migration
 
@@ -114,6 +102,7 @@ Version v03.00.00 updates the DEM event parameter reference name for consistency
 | `CDD_E_HARDWARE_ERROR` | `CDD_SENT_E_HARDWARE_ERROR` |
 
 **Parameter Details:**
+
 - **Purpose:** DEM event parameter for hardware error reporting
 - **Change:** Added module-specific prefix for better identification
 - **Usage:** If DEM error reporting is enabled in your configuration
@@ -229,6 +218,7 @@ For any reference parameters expecting reference to a SENT configuration:
 **Generated .xdm File Structure Comparison:**
 
 **Old (v01.00.00 Generated .xdm File):**
+
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Sent" type="AR-PACKAGE">
@@ -239,6 +229,7 @@ For any reference parameters expecting reference to a SENT configuration:
 ```
 
 **New (v02.00.00 Compatible .xdm File):**
+
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Sent" type="AR-PACKAGE">

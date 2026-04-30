@@ -89,4 +89,3 @@ The service ID previously assigned to this function (`CDD_I2C_SID_POLLING_MODE_P
 2. **Replace** each call with `Cdd_I2c_MainFunction()` — this now handles both periodic timeout checking and polling-mode transfer processing for controller mode.
 3. **Remove** any `#if (STD_ON == CDD_I2C_POLLING_MODE)` guards previously wrapping `Cdd_I2c_PollingModeProcessing()` calls — `Cdd_I2c_MainFunction()` is available whenever `CDD_I2C_CONTROLLER_ACTIVE == STD_ON`.
 4. **Verify** no code references `CDD_I2C_SID_POLLING_MODE_PROCESSING` numerically — if so, update to the new service ID assignments.
-

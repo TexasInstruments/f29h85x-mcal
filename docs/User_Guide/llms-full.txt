@@ -69,7 +69,7 @@ The following devices are supported with this release:
 | Communication Driver | CAN, LIN, SPI |
 | I/O Drivers | DIO, PORT |
 | Memory Drivers | FLS |
-| Complex Device Drivers | ADC, XBAR, SENT, IPC, UART, PWM, ECAP, I2C |
+| Complex Device Drivers | ADC, XBAR, SENT, IPC, UART, PWM, ECAP, I2C, DMA |
 
 - Resource Allocator
 - Reference Code:
@@ -172,6 +172,13 @@ Example:
        - Updated CAN examples to use GPIO 234 and GPIO 235 for CAN TX/RX pins to align with the physically available pinout on the F29H85X-SOM-EVM board
     10. **CDD ADC:**
         - Updated `Cdd_Adc_Example_DmaTransfer` example to use the MCAL Cdd_Dma driver instead of the rtdma library from f29x_sdk
+        - Added `Voltref` parameter to `Cdd_Adc_GetTemperatureC()` and `Cdd_Adc_GetTemperatureK()` APIs to enable accurate temperature calculation across different voltage reference configurations
+        - Updated Temperature sensor example to use the latest `Cdd_Adc_GetTemperatureC()` and `Cdd_Adc_GetTemperatureK()` APIs
+    11. **CDD I2C:**
+        - Added support for I2C target mode operation
+
+- Silicon Errata Impact Analysis:
+  - Completed analysis of F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata (Silicon Revisions B, A, 0) for document version [SPRZ569C – NOVEMBER 2024 – REVISED MARCH 2026](https://www.ti.com/lit/er/sprz569c/sprz569c.pdf); recommended actions for MCAL users are documented in the Silicon Errata Workarounds and Recommendations chapter of each Module User Guide.
 
 - Build System:
   - Updated TI C29 Clang compiler and linker version from 2.0.0.STS to 2.2.0.LTS
@@ -204,7 +211,7 @@ Format: XX.YY.ZZ where:
 | LIN | 03.01.01 |
 | SPI | 03.01.01 |
 | FLS | 03.02.00 |
-| CDD ADC | 03.00.02 |
+| CDD ADC | 04.00.00 |
 | CDD XBAR | 03.01.00 |
 | CDD SENT | 03.01.01 |
 | CDD PWM | 03.01.01 |
@@ -269,6 +276,8 @@ Example:
 | MCAL-36584 | All | S3-Minor | All Modules: BSWModuleEntry incorrectly uses expectedEntry instead of implementedEntry in bswmd.arxml | C29xMCAL_01.00.00 <br>C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01 | The bswmd.arxml files for all MCAL modules used a mix of `expectedEntry` and `implementedEntry` attributes for BSWModuleEntry elements. All entries should use `implementedEntry` to correctly reflect the implemented interface, which may cause validation failures in AUTOSAR tooling. | 1. Open the bswmd.arxml file for any MCAL module. <br>2. Inspect the BSWModuleEntry elements. <br>3. Observe that some entries use `expectedEntry` instead of `implementedEntry`. | Replaced all `expectedEntry` attributes with `implementedEntry` in the bswmd.arxml files across all MCAL modules to correctly reflect the implemented BSW module interface. |
 | MCAL-36562 | CDD IPC | S3-Minor | CDD IPC: Incorrect IPC instances reserved when CddIpcReservedInstances is set to 1 | C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01 | When `CddIpcReservedInstances` is set to 1, the wrong IPC instances were being reserved — INST2 was skipped and INST3 was incorrectly included instead, resulting in non-continuous instance numbering. This causes incorrect IPC instances to be available for configuration in EB Tresos. | 1. Open EB Tresos with the CDD IPC plugin. <br>2. Set `CddIpcReservedInstances` to 1. <br>3. Observe the available IPC instances — INST2 is missing and INST3 is incorrectly included. | Corrected the IPC instance reservation logic to ensure continuous and correct instance numbering when `CddIpcReservedInstances` is set to 1. |
 | MCAL-35788 | Mcal_Lib | S2-Major | Mcal_Lib: Symbol redefinition conflict for Mcalib_BromStatus and McalLib_DeviceCalibrationData when used alongside f29x_sdk | C29xMCAL_01.03.00 | When MCAL and f29x_sdk are used together, `Mcalib_BromStatus` and `McalLib_DeviceCalibrationData` are defined as constants in both packages, causing a linker redefinition conflict. If a customer renames these symbols in MCAL to resolve the conflict, incorrect ADC trim values are loaded with no warning given, resulting in degraded MCU and CDD ADC performance. | 1. Use MCAL together with f29x_sdk in the same project. <br>2. Observe linker redefinition errors for `Mcalib_BromStatus` and `McalLib_DeviceCalibrationData`. <br>3. Rename the symbols in MCAL to resolve the conflict. <br>4. Observe that MCU and CDD ADC produce unexpected results due to incorrect trim values being loaded. | Changed `Mcalib_BromStatus` and `McalLib_DeviceCalibrationData` in `Mcal_Lib_BootRom.c` from constant definitions to pointers referencing the reserved memory locations. This eliminates the redefinition conflict when used alongside f29x_sdk while ensuring the correct trim values are always accessed. |
+| MCAL-37849 | Can | S3-Minor | CAN: Non-sequential MCAN instances fail to function when preceding instances are not configured | C29xMCAL_01.04.01 | CAN instances must be configured in sequential order to operate correctly. If earlier MCAN instances (e.g., MCAN A and MCAN B) are not configured, any higher-numbered instance (e.g., MCAN C) will fail to function. This prevents users from selectively enabling only the MCAN instances they need. | 1. Open EB Tresos and create a CAN configuration. <br>2. Configure only MCAN C, leaving MCAN A and MCAN B unconfigured. <br>3. Build and run the application. <br>4. Observe that MCAN C does not function correctly despite being configured. | Updated the CAN driver to allow non-sequential MCAN instance configuration, so that any MCAN instance can be used independently without requiring all preceding instances to be configured. |
+| MCAL-37887 | Cdd_Adc | S3-Minor | CDD ADC: Temperature conversion APIs lack support for different voltage references in external reference mode | C29xMCAL_01.01.00 <br>C29xMCAL_01.02.00 <br>C29xMCAL_01.02.01 <br>C29xMCAL_01.03.00 <br>C29xMCAL_01.04.00 <br>C29xMCAL_01.04.01 | The `Cdd_Adc_GetTemperatureC()` and `Cdd_Adc_GetTemperatureK()` APIs did not support temperature calculation for different voltage references when using external reference mode, limiting their usability in systems with non-standard voltage references. | 1. Configure ADC with external voltage reference mode using a non-standard voltage (e.g., 3.0V). <br>2. Call `Cdd_Adc_GetTemperatureC()` or `Cdd_Adc_GetTemperatureK()` to convert temperature sensor reading. <br>3. Observe that the temperature calculation is incorrect because the API cannot account for the actual external voltage reference value. | Added new `Voltref` parameter (float32) to `Cdd_Adc_GetTemperatureC()` and `Cdd_Adc_GetTemperatureK()` APIs to enable accurate temperature calculation for different voltage references. The parameter accepts internal voltage reference values (2.5F for 2.5V, 3.3F for 3.3V) or actual external voltage reference values.The Voltref value must exactly match the actual voltage reference being used. <br>**Note:** This is an API change. Existing code must be updated to include the Voltref parameter. Refer to the [Migration Guide](https://software-dl.ti.com/C2000/docs/mcal/F29H85x/26.00.00/src/MigrationGuide_list.html) for detailed steps. |
 
 ## Known Issues And Limitations
 
@@ -420,6 +429,14 @@ Long Term Support releases are production-ready releases that provide the highes
 | Bug Fix / Patch Release | No | Bugs that are prioritized will be fixed in the next release; no backporting to STS releases | Bug fixes on the LTS maintenance branch will be prioritized based on the severity of the bug |
 | Feature Addition | Yes | Yes | New features will be added in an LTS release, but post LTS release, new features will not be backported to the LTS maintenance branch |
 | Production Ready | No | Not recommended for Production | Recommended for Production |
+
+## CI/CD Strategy
+
+F29H85x MCAL is also available on GitHub at [https://github.com/TexasInstruments/f29h85x-mcal](https://github.com/TexasInstruments/f29h85x-mcal). The GitHub repository always reflects the leading and bleeding edge of MCAL development, providing early access to the latest features, fixes, and improvements as they are developed.
+
+> **Disclaimer:** The GitHub repository contains software that is not fully tested and may include bugs, errors, or defects that could cause system instability or unexpected behavior. Always review and validate code before use in any application.
+
+Official releases are published under the [Releases](https://github.com/TexasInstruments/f29h85x-mcal/releases) section of the GitHub repository. These correspond to the versioned releases documented in these release notes and have undergone the quality and testing criteria.
 
 ## Software Bill of Materials
 
@@ -687,7 +704,7 @@ Can Driver object type structure.
 |  [Can_MailboxObjType](../Classes/structCan__MailboxObjType.md)[KMAX_MAILBOXES] | canMailbox |  MB array for all controllers.  |
 |  uint8 | canMaxControllerCount |  MaxCount of Controller in Controller List.  |
 |  uint16 | maxMbCnt |  MaxMbCount in MB list in all controller.  |
-|  uint32[KMAX_CONTROLLER] | controllerIDMap |  CAN Controller ID mapping.  |
+|  uint8[KMAX_CONTROLLER_PER_DEVICE] | controllerIDMap |  CAN Controller ID mapping.  |
 |  [Can_IcomConfigType](../Classes/structCan__IcomConfigType.md)[MAX_ICOM_CONFIGURATION] | IcomConfigurationList |  Icom Configuration List.  |
 |  boolean[KMAX_CONTROLLER] | Can_IcomActivation |  Icom Activation.  |
 |  uint8[KMAX_CONTROLLER] | Can_IcomConfigurationId |  Icom Configuration Id.  |
@@ -1247,13 +1264,13 @@ orphan: true
 
 ---
 title: Can_TxFIFOStatusType
-summary: Structure for CAN Rx FIFO Status. 
+summary: Structure for CAN Tx FIFO Status. 
 
 ---
 
 # Can_TxFIFOStatusType
 
-Structure for CAN Rx FIFO Status. 
+Structure for CAN Tx FIFO Status. 
 
 `#include <Can_Priv.h>`
 
@@ -1261,8 +1278,8 @@ Structure for CAN Rx FIFO Status.
 
 |  Member Type   | Member name    | Brief |
 | -------------- | -------------- | ----- |
-|  uint8 | putIdx |  Rx FIFO Put Index  |
-|  boolean | fifoFull |  Rx FIFO Full 0 = Rx FIFO not full 1 = Rx FIFO full.  |
+|  uint8 | putIdx |  Tx FIFO Put Index  |
+|  boolean | fifoFull |  Tx FIFO Full 0 = Tx FIFO not full 1 = Tx FIFO full.  |
 
 
 
@@ -5863,29 +5880,29 @@ Performance is also dependent on the overall system architecture and runtime env
 
 |Performance Test|Theoretical value|Measured value|Remarks|
 |------|------|------|-------|
-|Transmission time in polling|NA|142 us|Classic CAN : 8 byte : 1 Mbps|
-|Reception time in polling |NA|140 us|Classic CAN : 8 byte : 1 Mbps|
+|Transmission time in polling|NA|146 us|Classic CAN : 8 byte : 1 Mbps|
+|Reception time in polling |NA|142 us|Classic CAN : 8 byte : 1 Mbps|
 |Transmission time in Interrupt |NA|123 us|Classic CAN : 8 byte : 1 Mbps|
-|Reception time in Interrupt|NA|120 us|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in polling|9010|8232|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in polling|7270|5976|CAN FD : 64 byte : 5 Mbps|
-|Maximum packets Transmission per second in Interrupt|9010|8326|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in Interrupt|7270|5725|CAN FD : 64 byte : 5 Mbps|
+|Reception time in Interrupt|NA|119 us|Classic CAN : 8 byte : 1 Mbps|
+|Maximum packets Transmission per second in polling|9010|7945|Classic CAN : 8 byte : 1 Mbps|
+|Maximum packets Transmission per second in polling|7270|5891|CAN FD : 64 byte : 5 Mbps|
+|Maximum packets Transmission per second in Interrupt|9010|8266|Classic CAN : 8 byte : 1 Mbps|
+|Maximum packets Transmission per second in Interrupt|7270|5724|CAN FD : 64 byte : 5 Mbps|
 
 ### CDD SENT Driver
 
 |Performance Test|Theoretical value|Measured value|Remarks|
 |------|------|------|-------|
 |STANDARD MODE interrupt execution time|NA|2 us|In STANDARD MODE, the total time it takes for the Cdd_Sent module to process sensor data, send the data to the PDU router.|
-|MTP MODE interrupt execution time|NA|2 us|In MTP MODE, the total time it takes for the Cdd_Sent module to process sensor data, send the data to the PDU router.|
-|MTP MODE trigger transmit time|NA|8154 us|In MTP MODE, the total time it takes for the Cdd_Sent module to trigger the sensor, Waiting for the response, process sensor data, send the data to the PDU router.|
+|MTP MODE interrupt execution time|NA|1 us|In MTP MODE, the total time it takes for the Cdd_Sent module to process sensor data, send the data to the PDU router.|
+|MTP MODE trigger transmit time|NA|8064 us|In MTP MODE, the total time it takes for the Cdd_Sent module to trigger the sensor, Waiting for the response, process sensor data, send the data to the PDU router.|
 
 ### LIN Driver
 
 |Performance Test|Theoretical value|Measured value|Remarks|
 |------|------|------|-------|
-|Lin Master Response Performance |845312 us|867680 us|Total time taken to send 8 Bytes of data 128 times ~ 1KB |
-|Lin Slave Response Performance |6874 us|7291 us|Total time taken to receive 8 Bytes of data|
+|Lin Master Response Performance |845312 us|867568 us|Total time taken to send 8 Bytes of data 128 times ~ 1KB |
+|Lin Slave Response Performance |6874 us|7287 us|Total time taken to receive 8 Bytes of data|
 
 ### SPI Driver
 
@@ -5893,28 +5910,28 @@ Performance is also dependent on the overall system architecture and runtime env
 |------|------|------|-------|
 | Transmit 112000 words with 8 bit data width | 179200 |179208|BaudRate 5MHz, Sync Transmit|
 | Transmit 112000 words with 8 bit data width | 179200 |179208|BaudRate 5MHz, Async Transmit|
-| Transmit 112000 words with 16 bit data width| 358400 |358407|BaudRate 5MHz, Sync Transmit|
+| Transmit 112000 words with 16 bit data width| 358400 |358408|BaudRate 5MHz, Sync Transmit|
 | Transmit 112000 words with 16 bit data width| 358400 |358408|BaudRate 5MHz, Async Transmit|
-| Transmit 112000 words with 8 bit data width | 89600 |89608|BaudRate 10MHz, Sync Transmit|
-| Transmit 112000 words with 8 bit data width | 89600 |89608|BaudRate 10MHz, Async Transmit|
+| Transmit 112000 words with 8 bit data width | 89600 |89607|BaudRate 10MHz, Sync Transmit|
+| Transmit 112000 words with 8 bit data width | 89600 |89607|BaudRate 10MHz, Async Transmit|
 | Transmit 112000 words with 16 bit data width| 179200 |179207|BaudRate 10MHz, Sync Transmit|
-| Transmit 112000 words with 16 bit data width| 179200 |179208|BaudRate 10MHz, Async Transmit|
-| Transmit 112000 words with 8 bit data width| 17920 |24013|BaudRate 50MHz, Sync Transmit|
-| Transmit 112000 words with 8 bit data width| 17920 |29611|BaudRate 50MHz, Async Transmit|
-| Transmit 112000 words with 16 bit data width| 35880 |36530|BaudRate 50MHz, Sync Transmit|
-| Transmit 112000 words with 16 bit data width| 35840 |36113|BaudRate 50MHz, Async Transmit|
+| Transmit 112000 words with 16 bit data width| 179200 |179209|BaudRate 10MHz, Async Transmit|
+| Transmit 112000 words with 8 bit data width| 17920 |23965|BaudRate 50MHz, Sync Transmit|
+| Transmit 112000 words with 8 bit data width| 17920 |29686|BaudRate 50MHz, Async Transmit|
+| Transmit 112000 words with 16 bit data width| 35880 |36463|BaudRate 50MHz, Sync Transmit|
+| Transmit 112000 words with 16 bit data width| 35840 |38379|BaudRate 50MHz, Async Transmit|
 | Transmit 56000 words with 8 bit data width | 89600 |89605|BaudRate 5MHz, Sync Transmit|
-| Transmit 56000 words with 8 bit data width | 89600 |89605|BaudRate 5MHz, Async Transmit|
-| Transmit 56000 words with 16 bit data width| 179200 |179204|BaudRate 5MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width | 89600 |89606|BaudRate 5MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 179200 |179205|BaudRate 5MHz, Sync Transmit|
 | Transmit 56000 words with 16 bit data width| 179200 |179205|BaudRate 5MHz, Async Transmit|
-| Transmit 56000 words with 8 bit data width| 44800 |44804|BaudRate 10MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width| 44800 |44805|BaudRate 10MHz, Sync Transmit|
 | Transmit 56000 words with 8 bit data width| 44800 |44805|BaudRate 10MHz, Async Transmit|
 | Transmit 56000 words with 16 bit data width| 89600 |89605|BaudRate 10MHz, Sync Transmit|
-| Transmit 56000 words with 16 bit data width| 89600 |89605|BaudRate 10MHz, Async Transmit|
-| Transmit 56000 words with 8 bit data width| 8960 |12007|BaudRate 50MHz, Sync Transmit|
-| Transmit 56000 words with 8 bit data width| 8960 |14788|BaudRate 50MHz, Async Transmit|
-| Transmit 56000 words with 16 bit data width| 17920 |17941|BaudRate 50MHz, Sync Transmit|
-| Transmit 56000 words with 16 bit data width| 17920 |19928|BaudRate 50MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 89600 |89606|BaudRate 10MHz, Async Transmit|
+| Transmit 56000 words with 8 bit data width| 8960 |11983|BaudRate 50MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width| 8960 |14863|BaudRate 50MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 17920 |18232|BaudRate 50MHz, Sync Transmit|
+| Transmit 56000 words with 16 bit data width| 17920 |20036|BaudRate 50MHz, Async Transmit|
 
 ### FLS Driver
 
@@ -5934,7 +5951,7 @@ Please note that in the Fls module, once the erase, program or read job is accep
 
 |Performance Test|Measured value (bytes)|
 |------|------|
-|Data transmitted per second|2380956|
+|Data transmitted per second|2380968|
 
 ```{NOTE}
 Please note that this performance result depends on, when the remote core acknowledges the data. This performance result is measured using a single channel in polling mode.
@@ -5947,18 +5964,18 @@ Please note that this performance result depends on, when the remote core acknow
 |Performance Test| Theoretical value (max)|Measured value|Remarks|
 |------|------|------|-------|
 |12-bit ADC with SW triggers | 3.84 Msps at 57MHz | 3.836 Msps (99.909760%) With 3.5 ADC Clock Divider : 57.14MHz| |
-|12-bit ADC with HW triggers | 3.84 Msps at 57MHz | 3.829 Msps (99.735458%) ith 3.5 ADC Clock Divider : 57.14MHz | |
-|16-bit ADC with SW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.198814%) ith 3.5 ADC Clock Divider : 57.14MHz | |
-|16-bit ADC with HW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.145332%) ith 3.5 ADC Clock Divider : 57.14MHz | |
+|12-bit ADC with HW triggers | 3.84 Msps at 57MHz | 3.829 Msps (99.735458%) With 3.5 ADC Clock Divider : 57.14MHz | |
+|16-bit ADC with SW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.198814%) With 3.5 ADC Clock Divider : 57.14MHz | |
+|16-bit ADC with HW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.145332%) With 3.5 ADC Clock Divider : 57.14MHz | |
 
 #### CDD ADC with DMA integration
 
 |Performance Test| Theoretical value (max)|Measured value|Remarks|
 |------|------|------|-------|
 |12-bit ADC with SW triggers | 3.84 Msps at 57MHz | 3.836 Msps (99.910042%) With 3.5 ADC Clock Divider : 57.14MHz| |
-|12-bit ADC with HW triggers | 3.84 Msps at 57MHz | 3.829 Msps (99.735458%) ith 3.5 ADC Clock Divider : 57.14MHz | |
-|16-bit ADC with SW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.198814%) ith 3.5 ADC Clock Divider : 57.14MHz | |
-|16-bit ADC with HW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.146255%) ith 3.5 ADC Clock Divider : 57.14MHz | |
+|12-bit ADC with HW triggers | 3.84 Msps at 57MHz | 3.829 Msps (99.735458%) With 3.5 ADC Clock Divider : 57.14MHz | |
+|16-bit ADC with SW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.198814%) With 3.5 ADC Clock Divider : 57.14MHz | |
+|16-bit ADC with HW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.146255%) With 3.5 ADC Clock Divider : 57.14MHz | |
 
 ## Memory Footprints
 
@@ -5970,10 +5987,10 @@ The memory footprint values represent only the module-specific driver sections f
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Can_Example_Classic_FD   | 15356    | 0    | 3668    | 220    |
- | Can_Example_Icom   | 16924    | 0    | 3996    | 556    |
- | Can_Example_loopback   | 15324    | 0    | 3668    | 220    |
- | Can_Example_Wakeup   | 15356    | 0    | 3668    | 220    |
+| Can_Example_Classic_FD   | 15420    | 0    | 3672    | 220    |
+ | Can_Example_Icom   | 16972    | 0    | 3996    | 556    |
+ | Can_Example_loopback   | 15388    | 0    | 3672    | 220    |
+ | Can_Example_Wakeup   | 15420    | 0    | 3672    | 220    |
  
 ### DIO
 
@@ -6044,7 +6061,7 @@ The memory footprint values represent only the module-specific driver sections f
 | Cdd_Adc_Example_SwHwConversion   | 10886    | 0    | 149    | 552    |
  | Cdd_Adc_Example_GlbSwTrig   | 12788    | 0    | 237    | 952    |
  | Cdd_Adc_Example_Ppb_TrigRepeater   | 11418    | 0    | 185    | 684    |
- | Cdd_Adc_Example_TempSensor   | 7132    | 0    | 81    | 240    |
+ | Cdd_Adc_Example_TempSensor   | 7148    | 0    | 81    | 240    |
  | Cdd_Adc_Example_DmaTransfer   | 5116    | 0    | 57    | 160    |
  
 ### CDD ECAP
@@ -6083,7 +6100,7 @@ The memory footprint values represent only the module-specific driver sections f
 | Cdd_Pwm_Example_Chopper   | 38024    | 0    | 46    | 64    |
  | Cdd_Pwm_Example_Cmpss_Trip   | 37542    | 0    | 40    | 16    |
  | Cdd_Pwm_Example_DC_EventFilter   | 37520    | 0    | 40    | 16    |
- | Cdd_Pwm_Example_Deadband   | 38032    | 0    | 48    | 80    |
+ | Cdd_Pwm_Example_Deadband   | 38080    | 0    | 48    | 80    |
  | Cdd_Pwm_Example_DiodeEmulation   | 37952    | 0    | 44    | 48    |
  | Cdd_Pwm_Example_GlobalLoad_And_Link   | 38104    | 0    | 46    | 84    |
  | Cdd_Pwm_Example_Hrpwm   | 37874    | 0    | 42    | 36    |
@@ -6504,6 +6521,7 @@ Once the exporter run is successful, the generated ARXML file can be used as the
 :maxdepth: 1 
 :caption: Table of Contents 
  
+Migration_Guide_Intro
 Migration_Guide_ResourceAllocator
 Migration_Guide_Can
 Migration_Guide_Dio
@@ -6525,75 +6543,70 @@ Migration_Guide_Cdd_Xbar
 
 ```
 
-# Resource Allocator Module
+# Introduction
 
-**Release Version:** 01.04.00
-**Module Version:** 1.00.00
+## Purpose
 
-The Resource Allocator module is introduced in MCAL release 01.04.00 as a mandatory foundational configuration module. It centralizes hardware resource management and provides device-specific configuration to all MCAL modules. Resource Allocator is not available in earlier versions.
+This guide documents the application-facing changes introduced in each F29H85x MCAL release — specifically, changes that require manual action from the integrator before the new release can replace the previous one. These changes include:
 
-The Resource Allocator is a **configuration-only module** introduced in MCAL release 01.04.00 as the mandatory foundation for hardware resource management.
+- Modified or renamed public APIs
+- Renamed or restructured EB Tresos configuration parameters and containers
+- Renamed enumerations, configuration structs, or ISR symbols referenced in application or integration code
+- Behavioral changes that alter the runtime effect of an existing configuration
+- New mandatory configuration parameters that have no default and must be explicitly set
+- ResourceAllocator integration changes that affect multiple modules simultaneously
 
----
+The goal of this guide is to make those transitions explicit, predictable, and actionable for AUTOSAR integrators.
 
-## Module Setup and Configuration
-
-### Step 1: Add ResourceAllocator Module to Project
-
-1. Open EB Tresos Studio with your project
-2. Right-click on the project in Project Explorer
-3. Select **"Add/Remove Software Modules"**
-4. In the Available Modules list, locate **"ResourceAllocator"**
-5. Select ResourceAllocator and click **"Add"**
-6. Click **"Finish"** to add the module to your project
-
-```{NOTE}
-User shall load the ResourceAllocator module with [recommended configuration for your device variant](https://software-dl.ti.com/C2000/docs/mcal/F29H85x/latest/src/Module_User_Guide_ResourceAllocator.html#selecting-a-recommended-configuration).
+```{Note}
+This guide documents only changes that impact applications built on previous versions — specifically, behavioral changes, API changes, and configuration changes that require manual action. Bug fixes and new feature additions that do not affect existing application behavior are not covered.
 ```
 
-```{figure} Assets/images/migration/resource_allocator/01_01_resource_allocator_add_module.png
-:alt: Add ResourceAllocator module
-:align: center
-:width: 80%
+## How to Use This Guide
 
-Add ResourceAllocator module to project
+### Organization
+
+This guide is organized by **MCAL module**. Each module has a dedicated migration guide file (for example, [`Migration_Guide_Can.md`](Migration_Guide_Can.md), [`Migration_Guide_Mcu.md`](Migration_Guide_Mcu.md)). Within each module guide, changes are listed in **reverse chronological order** — the most recent module version transition appears first.
+
+```{Note}
+Always consult [Migration_Guide_ResourceAllocator.md](Migration_Guide_ResourceAllocator.md) before applying any module-specific migration steps. ResourceAllocator changes are prerequisites for the dependent module migrations. Applying module-specific changes without first completing the ResourceAllocator migration will result in configuration validation errors or incorrect runtime behavior.
 ```
 
-### Step 2: Configure ResourceAllocator General Settings
+### Upgrading Across Multiple Releases
 
-**Navigation Path:** ResourceAllocator → ResourceAllocatorGeneral
+When upgrading across more than one MCAL release in a single step, apply the migration changes in **chronological order** (oldest to newest), not in the reverse order in which they appear in the guide. For example, if upgrading from release v01.02.00 to v26.00.00 and a module has entries for both the v01.03.00 and v26.00.00 transitions, apply the v01.03.00 changes first, then the v26.00.00 changes.
 
-**Device Configuration Parameters:**
-- **Device**: Select your F29H85x device (e.g., F29H859DU_Q1)
-- **Variant**: Select device variant (e.g., F29H859DU6_Q)
-- **Package**: Select appropriate package (e.g., F29H859DU6_Q_144RFS)
-
-```{figure} Assets/images/migration/resource_allocator/01_02_resource_allocator_general_config.png
-:alt: ResourceAllocator General Settings
-:align: center
-:width: 80%
-
-Configure ResourceAllocator device, package, and context settings
+```{Note}
+Reading the guide entries in reverse chronological order (most recent first) is useful for understanding the current state of the module. However, when applying changes to an existing project, always work in chronological order to avoid applying a later change before its prerequisite earlier change is in place.
 ```
 
-### Context Selection
+## Module Versioning vs. MCAL Release Versioning
 
-Execution context defines which CPU core handles MCAL module operations. Context_0 is a user-defined name that can be customized.
+MCAL is delivered as a package under a single release version, but each module within the package has its own independent version number following the AUTOSAR versioning. Module versions use the format `XX.YY.ZZ`.
 
-As AUTOSAR is expected to run on CPU1, only CPU1 can be selected here. In future support will be added to define non-AUTOSAR context.
+The [Release Notes](mcal_release_notes.md#module-version-number) for each MCAL package release include a complete **Module Version Number** table listing the current version of every module in that release. By comparing that table between two releases, you can identify exactly which modules changed and whether the change was major, minor, or a patch fix.
 
-**Configuration:**
-Navigate to **ResourceAllocatorGeneral → Context** and configure **Context_0**.
+## Why Not Every Version Appears Here
 
-```{figure} Assets/images/migration/resource_allocator/01_03_resource_allocator_context.png
-:alt: Context Configuration
-:align: center
-:width: 80%
+This guide covers only module version transitions where a change affects the application layer. If a module version transition is absent from this guide, no migration action is required for that upgrade.
 
-Configure CurrentContext - Context_0 is a user-defined name
+```{Note}
+The absence of a module from this guide for a given release does not mean the module is unchanged — it means the changes in that release (if any) do not require manual action from the integrator. Always verify using the Module Version Number table in the Release Notes.
 ```
 
-All MCAL modules will operate on the configured context.
+## Mandatory Steps for Every Release Upgrade
+
+The following steps are required for every MCAL release upgrade, regardless of whether this guide lists any application-facing changes for that release. These steps ensure consistency between the EB Tresos configuration, the generated C files, and the driver source.
+
+1. **Replace the EB Tresos plugins for all modules** — not only the modules with documented changes — with the plugins from the new release. Copy the new plugin directories into the EB Tresos `plugins/` directory, replacing the previous versions. Plugin installation is described in the [Getting Started Guide](Getting_Started.md).
+2. **Open the EB Tresos project and resolve all validation errors** introduced by the new plugins before regenerating any code. New plugins may enforce stricter validation rules or introduce new mandatory parameters. All validation errors must be resolved before proceeding to code generation.
+3. **Apply any module-specific migration changes** documented in this guide for the target release. Consult [`Migration_Guide_ResourceAllocator.md`](Migration_Guide_ResourceAllocator.md) first, then apply changes for each affected module in the order described in the relevant module guide.
+4. **Regenerate all module configurations** using the updated plugins. Regenerate the configuration for every module in the project — not only the modules with documented changes — to ensure all generated C files (`*_Cfg.c`, `*_Cfg.h`, `*_PBcfg.c`) are consistent with the new plugin versions.
+5. **Build against the latest driver source files** from the new MCAL SDK. Ensure that all source file paths in the build system reference the new SDK location and that no object files from the previous release are reused.
+
+```{Warning}
+Partial upgrades — updating only some module plugins while leaving others at older versions — are not supported and may result in undefined behavior due to inter-module dependencies, particularly involving ResourceAllocator. All module plugins must be updated to the same MCAL release version simultaneously.
+```
 
 
 # CAN Module Migration
@@ -6658,6 +6671,7 @@ AUTOSAR requirement enforces that `CanMainFunctionRWPeriodRef` must be configure
 **New (v04.00.00):**
 
 EB Tresos enforces that `CanMainFunctionRWPeriodRef` must reference a valid `CanMainFunctionPeriod` entry when:
+
 - `CanObjectType = RECEIVE` and the controller's `CanRxProcessing = POLLING` or `MIXED`, or
 - `CanObjectType = TRANSMIT` and the controller's `CanTxProcessing = POLLING` or `MIXED`
 
@@ -6684,7 +6698,7 @@ Validation for CanMainFunctionRWPeriodRef
 
 The FD baud-rate parameters `CanControllerTrcvDelayCompensationOffset` and `CanControllerTrcvDelayCompensationFilter` have always been labeled as nanoseconds in the EB Tresos GUI, but in v03.01.00 the generated code passed the raw config values directly to the hardware register as Minimum Time Quanta (MTQ). This meant users who wanted TDC to function correctly had to enter MTQ values despite the nanosecond label.
 
-In v04.00.00, the code generator now correctly converts these values from nanoseconds to MTQ. 
+In v04.00.00, the code generator now correctly converts these values from nanoseconds to MTQ.
 
 ```{NOTE}
 If both `CanControllerTrcvDelayCompensationOffset` and `CanControllerTrcvDelayCompensationFilter` are `0`, TDC remains disabled and no action is required.
@@ -6932,6 +6946,7 @@ Select BASIC or FULL object type with new constraint definitions
 | **BASIC** | Use FIFO in hardware | Shared FIFO (1 Tx FIFO, 2 Rx FIFOs available) |
 
 **Hardware Limitations:**
+
 - Maximum 1 Tx BASIC object
 - Maximum 2 Rx BASIC objects
 
@@ -6943,6 +6958,7 @@ Select BASIC or FULL object type with new constraint definitions
 | **BASIC** | **> 1** | FIFO depth | Tx FIFO: max 32<br>Rx FIFO: max 64 |
 
 **FIFO Usage Pattern:**
+
 - **TRANSMIT messages:** Use Tx FIFO
 - **RECEIVE messages:** Use Rx FIFO
 - **Multiple objects:** Share combined FIFO depth
@@ -6978,6 +6994,7 @@ Set filter parameters within new limits
 | **Total RAM area** | 1024 words | Combined total | All components together must not exceed 1024 words |
 
 **Message Size Reference:**
+
 - **4 words** if parameter CanFDMode is enabled
 - **18 words** if parameter CanFDMode is disabled
 
@@ -7066,78 +7083,71 @@ v01.01.00: CanSysClockRef parameter references MCU system clock directly
 
 **Benefits:** This change eliminates dependency between CAN and OS modules, provides more direct and reliable timeout calculation based on system clock, and simplifies configuration by using MCU system clock directly.
 
-# DIO Module Migration
+
+# CDD ADC Module Migration
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
-## v01.01.00 (i.e release v26.00.00) from v01.01.00 (i.e release v01.04.01) Migration
+## v04.00.00 (i.e release v26.00.00) from v03.00.01 (i.e release v01.04.01) Migration
 
 ### Summary
 
-Version v01.01.00 updates DIO port identifier macros to comply with AUTOSAR naming guidelines:
+Version v04.00.00 introduces API enhancements for temperature conversion:
 
-1. **Port Identifier Macro Rename**: Generated port identifier macros renamed from `GPIO_PORT_*` to `DIO_PORT_*` for AUTOSAR naming compliance.
+1. **Voltref Parameter Added to Temperature APIs**: Voltref parameter added to [`Cdd_Adc_GetTemperatureC()`](Module_User_Guide_Cdd_Adc.md) and [`Cdd_Adc_GetTemperatureK()`](Module_User_Guide_Cdd_Adc.md) APIs for accurate temperature calculations with different voltage references
 
-### Change 1: Port Identifier Macro Rename
+### Change 1: Voltref Parameter Added to Temperature APIs
 
 #### Description
 
-The generated port identifier macros in `Dio_Cfg.h` previously used a `GPIO_PORT_` prefix. These have been renamed to use the `DIO_PORT_` prefix to comply with AUTOSAR naming conventions (SRS_BSW_00321) and avoid potential conflicts with other module definitions.
+The [`Cdd_Adc_GetTemperatureC()`](Module_User_Guide_Cdd_Adc.md) and [`Cdd_Adc_GetTemperatureK()`](Module_User_Guide_Cdd_Adc.md) APIs did not support temperature calculation for different voltage references when using external reference mode, limiting their usability in systems with non-standard voltage references. When ADC is configured with external voltage reference mode using a non-standard voltage (e.g., 3.0V), calling these APIs to convert temperature sensor readings produces incorrect temperature calculations because the API cannot account for the actual external voltage reference value. This results in inaccurate temperature readings that can affect temperature-dependent control algorithms and safety mechanisms. To address this limitation, a new Voltref parameter (float32) has been added to both APIs, enabling accurate temperature calculation by accepting the actual voltage reference value being used (internal values such as 2.5F for 2.5V or 3.3F for 3.3V, or the actual external voltage reference value).
 
-Any application code that directly references the `GPIO_PORT_*` macros must be updated.
+#### Old vs New API Signature
 
-#### Old vs New Port Identifiers
-
-**Port Identifier Macro Mapping:**
-
-| v01.01.00 and older | v01.01.00 |
-|---------------------|-----------|
-| `GPIO_PORT_A` | `DIO_PORT_A` |
-| `GPIO_PORT_B` | `DIO_PORT_B` |
-| `GPIO_PORT_C` | `DIO_PORT_C` |
-| `GPIO_PORT_D` | `DIO_PORT_D` |
-| `GPIO_PORT_E` | `DIO_PORT_E` |
-| `GPIO_PORT_F` | `DIO_PORT_F` |
-| `GPIO_PORT_G` | `DIO_PORT_G` |
-| `GPIO_PORT_H` | `DIO_PORT_H` |
-
-**Pattern:** `GPIO_PORT_{X}` → `DIO_PORT_{X}` for all port identifiers.`
-
-**Code Example:**
+**Old (v03.00.01):**
 
 ```c
-// v01.01.00 and older
-Dio_WritePort(GPIO_PORT_A, 0xFFFFFFFFU);
+Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult)
+Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult)
+```
 
-// v01.01.00
-Dio_WritePort(DIO_PORT_A, 0xFFFFFFFFU);
+**New (v04.00.00):**
+
+```c
+Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult, float32 Voltref)
+Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult, float32 Voltref)
 ```
 
 #### Migration Actions
 
-1. **Search Application Code:** Find all references to `GPIO_PORT_A` through `GPIO_PORT_H` in your application code.
-2. **Replace Macro Names:** Update all references from `GPIO_PORT_*` to `DIO_PORT_*` (e.g., `GPIO_PORT_A` → `DIO_PORT_A`).
-3. **Regenerate Configuration:** Regenerate DIO configuration to get the updated `Dio_Cfg.h` with new macro names.
-4. **Verify Compilation:** Clean build and verify no compilation errors related to undefined `GPIO_PORT_*` symbols.
+1. **Identify Temperature API Usage:** Search your codebase for all calls to [`Cdd_Adc_GetTemperatureC()`](Module_User_Guide_Cdd_Adc.md) and [`Cdd_Adc_GetTemperatureK()`](Module_User_Guide_Cdd_Adc.md)
 
-```{NOTE}
-The `DioConf_DioPort_*` and `DioConf_DioChannel_*` symbolic name macros are unaffected by this change and do not require updates.
-```
+2. **Determine Voltage Reference:** Identify the voltage reference configuration for your ADC:
+   - Internal 2.5V reference: Use `2.5F`
+   - Internal 3.3V reference: Use `3.3F`
+   - External reference: Use the actual external voltage reference value (e.g., `3.0F` for 3.0V)
 
+3. **Update API Calls:** Add the Voltref parameter to all temperature API calls:
 
-# CDD ADC Module Migration
+   **Example Migration:**
 
-Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
-                                    
-1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
-2. Regenerate all module configurations using the updated plugins
-3. Build against the latest driver source
+   ```c
+   // Old code (v03.00.01)
+   float32 tempC = Cdd_Adc_GetTemperatureC(HwUnit,AdcResult);
+   float32 tempK = Cdd_Adc_GetTemperatureK(HwUnit,AdcResult);
 
-This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
+   // New code (v04.00.00) - Internal 2.5V reference
+   float32 tempC = Cdd_Adc_GetTemperatureC(HwUnit,AdcResult, 2.5F);
+   float32 tempK = Cdd_Adc_GetTemperatureK(HwUnit,AdcResult, 2.5F);
 
----
+   // New code (v04.00.00) - External 3.0V reference
+   float32 tempC = Cdd_Adc_GetTemperatureC(HwUnit,AdcResult, 3.0F);
+   float32 tempK = Cdd_Adc_GetTemperatureK(HwUnit,AdcResult, 3.0F);
+   ```
 
-**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+4. **Verify Voltage Reference Value:** Ensure the Voltref parameter exactly matches the actual voltage reference being used in your hardware configuration. Incorrect values will result in inaccurate temperature calculations.
+
+5. **Test Temperature Readings:** After migration, verify temperature readings against known reference temperatures to confirm accuracy with the new voltage reference parameter.
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.01 (i.e release v01.03.00) Migration
 
@@ -7406,6 +7416,7 @@ For `CddAdcPpbChannel` references expecting a channel reference:
 **Generated .xdm File Structure Comparison:**
 
 **Old (v01.00.00 Generated .xdm File):**
+
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Adc" type="AR-PACKAGE">
@@ -7416,6 +7427,7 @@ For `CddAdcPpbChannel` references expecting a channel reference:
 ```
 
 **New (v02.00.00 Compatible .xdm File):**
+
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Adc" type="AR-PACKAGE">
@@ -7429,21 +7441,10 @@ For `CddAdcPpbChannel` references expecting a channel reference:
 Only the generated .xdm files (created by EB Tresos from your configuration) can be modified. The plugin .xdm files themselves cannot and should not be modified.
 ```
 
+
 # CDD ECAP Module Migration
 
-Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
-                                    
-1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
-2. Regenerate all module configurations using the updated plugins
-3. Build against the latest driver source
-
-This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
-
----
-
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
-
----
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
@@ -7601,6 +7602,7 @@ Version v02.00.00 introduces emulation mode support for debug scenarios through 
 | **CddEcapEmulationMode** | Not available | Added for debug/emulation control |
 
 **Parameter Details:**
+
 - **Purpose:** Controls ECAP behavior during debug/emulation scenarios
 - **Location:** CddEcapChannel container
 - **Configuration:** Required for debug setup compatibility
@@ -7627,6 +7629,7 @@ Version v02.00.00 introduces high-resolution (HR) mode capabilities for finer ca
 | **CddEcapHRConfigApi** | Not available | Added for high-resolution API functions |
 
 **Parameter Details:**
+
 - **CddEcapHREnable:** Enable high-resolution mode for finer capture resolution
 - **CddEcapHRConfigApi:** Enable/disable high-resolution API functions
 - **Usage:** Optional features - only enable if high-resolution capture is needed
@@ -7641,6 +7644,7 @@ Version v02.00.00 introduces high-resolution (HR) mode capabilities for finer ca
 ```{IMPORTANT}
 For users migrating from v1.0.0 to v2.0.0 who do not require High-Resolution Mode features or Emulation Mode support, the default configurations ensure backward compatibility and will not affect your current working setup.
 ```
+
 
 # CDD I2C Module Migration
 
@@ -7735,22 +7739,9 @@ The service ID previously assigned to this function (`CDD_I2C_SID_POLLING_MODE_P
 4. **Verify** no code references `CDD_I2C_SID_POLLING_MODE_PROCESSING` numerically — if so, update to the new service ID assignments.
 
 
-
 # CDD IPC Module Migration
 
-Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
-                                    
-1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
-2. Regenerate all module configurations using the updated plugins
-3. Build against the latest driver source
-
-This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
-
----
-
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
-
----
 
 ## v02.00.00 (i.e release v01.04.00) from v01.00.02 (i.e release v01.03.00) Migration
 
@@ -7844,6 +7835,7 @@ CddIpcTxInstance and CddIpcRxInstance options are automatically filtered based o
 4. **Validate Configuration:** Ensure all selected configurations are compatible with the context-based filtering rules
 
 **Configuration Benefits:**
+
 - Automatic filtering eliminates invalid configuration combinations
 - Context consistency ensured across Resource Allocator and CDD IPC modules
 - Simplified configuration process with reduced manual validation requirements
@@ -7852,21 +7844,10 @@ CddIpcTxInstance and CddIpcRxInstance options are automatically filtered based o
 The Resource Allocator module must be configured before the CDD IPC module to ensure correct context-based filtering. Local core selection is now automatically determined based on the CurrentContext parameter configured in the Resource Allocator.
 ```
 
+
 # CDD PWM Module Migration
 
-Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
-                                    
-1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
-2. Regenerate all module configurations using the updated plugins
-3. Build against the latest driver source
-
-This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
-
----
-
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
-
----
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
@@ -8059,6 +8040,7 @@ Version v02.00.00 renames existing parameters to better reflect their purpose as
 | `CddPwmNotification` | `CddPwmInterruptNotification` |
 
 **Parameter Details:**
+
 - **CddPwmDefaultPeriod:** Period value for initialization, written to TBPRD register
 - **CddPwmDefaultDutyCycle:** Duty cycle value for initialization
 - **CddPwmDefaultDutyCycleInPercentage:** Duty cycle in percentage (0-100%)
@@ -8122,21 +8104,10 @@ Version v02.00.00 introduces Advanced Mode with Trip Zone protection and Xlink s
 For users migrating from v1.0.0 to v2.0.0 who do not require Advanced Mode features, the default configurations ensure backward compatibility and will not affect your current working setup.
 ```
 
+
 # CDD SENT Module Migration
 
-Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
-                                    
-1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
-2. Regenerate all module configurations using the updated plugins
-3. Build against the latest driver source
-
-This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
-
----
-
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
-
----
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.01 (i.e release v01.03.00) Migration
 
@@ -8238,6 +8209,7 @@ Version v03.00.00 updates the DEM event parameter reference name for consistency
 | `CDD_E_HARDWARE_ERROR` | `CDD_SENT_E_HARDWARE_ERROR` |
 
 **Parameter Details:**
+
 - **Purpose:** DEM event parameter for hardware error reporting
 - **Change:** Added module-specific prefix for better identification
 - **Usage:** If DEM error reporting is enabled in your configuration
@@ -8353,6 +8325,7 @@ For any reference parameters expecting reference to a SENT configuration:
 **Generated .xdm File Structure Comparison:**
 
 **Old (v01.00.00 Generated .xdm File):**
+
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Sent" type="AR-PACKAGE">
@@ -8363,6 +8336,7 @@ For any reference parameters expecting reference to a SENT configuration:
 ```
 
 **New (v02.00.00 Compatible .xdm File):**
+
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Sent" type="AR-PACKAGE">
@@ -8376,21 +8350,10 @@ For any reference parameters expecting reference to a SENT configuration:
 Only the generated .xdm files (created by EB Tresos from your configuration) can be modified. The plugin .xdm files themselves cannot and should not be modified.
 ```
 
+
 # CDD UART Module Migration
 
-Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
-                                    
-1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
-2. Regenerate all module configurations using the updated plugins
-3. Build against the latest driver source
-
-This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
-
----
-
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
-
----
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
@@ -8505,6 +8468,7 @@ Version v02.00.00 updates UART instance names for consistency and compatibility 
 | Direct instance name configuration | Plugin-validated instance name selection |
 
 **Migration Requirements:**
+
 - UART instance values must be chosen from the updated plugin options
 - Plugin automatically flags incompatible configurations
 - All UART instances require reconfiguration with new naming conventions
@@ -8548,6 +8512,7 @@ Version v02.00.00 changes clock frequency selection from hardcoded values to MCU
 4. **Validate Clock Settings:** Confirm that all UART clock configurations properly reference the MCU system clock
 
 5. **Test Clock Functionality:** Verify that UART operations work correctly with the new clock frequency configuration
+
 
 # CDD XBAR Module Migration
 
@@ -8672,6 +8637,7 @@ Updated XBAR API parameters and configuration structure
 4. **Validate Configuration:** Confirm that API configurations are compatible with Resource Allocator-managed resources
 
 **Parameter Restructuring Benefits:**
+
 - Enhanced parameter structure for better control
 - Improved integration with Resource Allocator-managed resources
 - Device variant centralization for consistent resource management
@@ -8777,6 +8743,7 @@ For any reference parameters expecting reference to an XBAR configuration:
 **Generated .xdm File Structure Comparison:**
 
 **Old (v01.00.00 Generated .xdm File):**
+
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Xbar" type="AR-PACKAGE">
@@ -8787,6 +8754,7 @@ For any reference parameters expecting reference to an XBAR configuration:
 ```
 
 **New (v02.00.00 Compatible .xdm File):**
+
 ```xml
 <d:lst type="TOP-LEVEL-PACKAGES">
 <d:ctr name="Cdd_Xbar" type="AR-PACKAGE">
@@ -8800,21 +8768,69 @@ For any reference parameters expecting reference to an XBAR configuration:
 Only the generated .xdm files (created by EB Tresos from your configuration) can be modified. The plugin .xdm files themselves cannot and should not be modified.
 ```
 
-# FLS Module Migration
 
-Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
-                                    
-1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
-2. Regenerate all module configurations using the updated plugins
-3. Build against the latest driver source
-
-This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
-
----
+# DIO Module Migration
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
----
+## v01.01.00 (i.e release v26.00.00) from v01.01.00 (i.e release v01.04.01) Migration
+
+### Summary
+
+Version v01.01.00 updates DIO port identifier macros to comply with AUTOSAR naming guidelines:
+
+1. **Port Identifier Macro Rename**: Generated port identifier macros renamed from `GPIO_PORT_*` to `DIO_PORT_*` for AUTOSAR naming compliance.
+
+### Change 1: Port Identifier Macro Rename
+
+#### Description
+
+The generated port identifier macros in `Dio_Cfg.h` previously used a `GPIO_PORT_` prefix. These have been renamed to use the `DIO_PORT_` prefix to comply with AUTOSAR naming conventions (SRS_BSW_00321) and avoid potential conflicts with other module definitions.
+
+Any application code that directly references the `GPIO_PORT_*` macros must be updated.
+
+#### Old vs New Port Identifiers
+
+**Port Identifier Macro Mapping:**
+
+| v01.01.00 and older | v01.01.00 |
+|---------------------|-----------|
+| `GPIO_PORT_A` | `DIO_PORT_A` |
+| `GPIO_PORT_B` | `DIO_PORT_B` |
+| `GPIO_PORT_C` | `DIO_PORT_C` |
+| `GPIO_PORT_D` | `DIO_PORT_D` |
+| `GPIO_PORT_E` | `DIO_PORT_E` |
+| `GPIO_PORT_F` | `DIO_PORT_F` |
+| `GPIO_PORT_G` | `DIO_PORT_G` |
+| `GPIO_PORT_H` | `DIO_PORT_H` |
+
+**Pattern:** `GPIO_PORT_{X}` → `DIO_PORT_{X}` for all port identifiers.`
+
+**Code Example:**
+
+```c
+// v01.01.00 and older
+Dio_WritePort(GPIO_PORT_A, 0xFFFFFFFFU);
+
+// v01.01.00
+Dio_WritePort(DIO_PORT_A, 0xFFFFFFFFU);
+```
+
+#### Migration Actions
+
+1. **Search Application Code:** Find all references to `GPIO_PORT_A` through `GPIO_PORT_H` in your application code.
+2. **Replace Macro Names:** Update all references from `GPIO_PORT_*` to `DIO_PORT_*` (e.g., `GPIO_PORT_A` → `DIO_PORT_A`).
+3. **Regenerate Configuration:** Regenerate DIO configuration to get the updated `Dio_Cfg.h` with new macro names.
+4. **Verify Compilation:** Clean build and verify no compilation errors related to undefined `GPIO_PORT_*` symbols.
+
+```{NOTE}
+The `DioConf_DioPort_*` and `DioConf_DioChannel_*` symbolic name macros are unaffected by this change and do not require updates.
+```
+
+
+# FLS Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
@@ -8941,19 +8957,7 @@ Fls_Init(&Fls_Config);
 
 # GPT Module Migration
 
-Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
-                                    
-1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
-2. Regenerate all module configurations using the updated plugins
-3. Build against the latest driver source
-
-This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
-
----
-
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
-
----
 
 ## v02.00.00 (i.e release v01.03.00) from v01.00.02 (i.e release v01.02.00) Migration
 
@@ -8995,21 +8999,10 @@ Gpt_Init(&Gpt_Config);
 4. **Update Upper Modules:** Update any upper module that references the configuration structures to use the new structure name
 5. **Verify Compilation:** Clean build and verify no compilation errors related to GPT configuration structure
 
+
 # LIN Module Migration
 
-Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
-                                    
-1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
-2. Regenerate all module configurations using the updated plugins
-3. Build against the latest driver source
-
-This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
-
----
-
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
-
----
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
@@ -9146,6 +9139,7 @@ A new parameter **LinWakeupId** has been added in the LinGeneral container. This
 | **LinWakeupId** | Not available | Added in LinGeneral container |
 
 **Parameter Details:**
+
 - **Purpose:** Specifies the LIN ID used to transmit a header instead of a wakeup signal due to hardware constraints
 - **Default value:** 63 (0x3F)
 - **Valid range:** 0 to 63
@@ -9226,6 +9220,7 @@ Lin_Init(&Lin_Config);
 3. **Update Function Calls:** Ensure all LIN initialization calls use the new structure name
 4. **Update Upper Modules:** Update any upper modules that reference the configuration structures to use the new structure name
 5. **Verify Compilation:** Clean build and verify no compilation errors related to LIN configuration structure
+
 
 # MCU Module Migration
 
@@ -9342,6 +9337,7 @@ Mcu_Init(&Mcu_Config*);
 5. **Update Upper Modules:** Update any upper modules that reference the MCU configuration structures to use the new structure names
 6. **Verify Compilation:** Clean build and verify no compilation errors related to MCU configuration structures
 
+
 # Port Module Migration
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
@@ -9444,7 +9440,7 @@ v03.00.00: PortPinPeripheralSignal showing slash-separated signal name (e.g. A0/
 v04.00.00: PortPinPeripheralSignal showing underscore-replaced signal name (e.g. A0_C24_DACA_OUT)
 ```
 
-The code snippet given below can be used to migrate the PORT module changes from v03.00.00 to v04.00.00. 
+The code snippet given below can be used to migrate the PORT module changes from v03.00.00 to v04.00.00.
 
 ```python
 """
@@ -9674,22 +9670,81 @@ Port_Init(&Port_Config);
 5. **Verify Compilation:** Clean build and verify no compilation errors related to Port configuration structure
 
 
+# Resource Allocator Module
+
+**Release Version:** 01.04.00
+**Module Version:** 1.00.00
+
+The Resource Allocator module is introduced in MCAL release 01.04.00 as a mandatory foundational configuration module. It centralizes hardware resource management and provides device-specific configuration to all MCAL modules. Resource Allocator is not available in earlier versions.
+
+The Resource Allocator is a **configuration-only module** introduced in MCAL release 01.04.00 as the mandatory foundation for hardware resource management.
+
+---
+
+## Module Setup and Configuration
+
+### Step 1: Add ResourceAllocator Module to Project
+
+1. Open EB Tresos Studio with your project
+2. Right-click on the project in Project Explorer
+3. Select **"Add/Remove Software Modules"**
+4. In the Available Modules list, locate **"ResourceAllocator"**
+5. Select ResourceAllocator and click **"Add"**
+6. Click **"Finish"** to add the module to your project
+
+```{NOTE}
+User shall load the ResourceAllocator module with [recommended configuration for your device variant](https://software-dl.ti.com/C2000/docs/mcal/F29H85x/latest/src/Module_User_Guide_ResourceAllocator.html#selecting-a-recommended-configuration).
+```
+
+```{figure} Assets/images/migration/resource_allocator/01_01_resource_allocator_add_module.png
+:alt: Add ResourceAllocator module
+:align: center
+:width: 80%
+
+Add ResourceAllocator module to project
+```
+
+### Step 2: Configure ResourceAllocator General Settings
+
+**Navigation Path:** ResourceAllocator → ResourceAllocatorGeneral
+
+**Device Configuration Parameters:**
+
+- **Device**: Select your F29H85x device (e.g., F29H859DU_Q1)
+- **Variant**: Select device variant (e.g., F29H859DU6_Q)
+- **Package**: Select appropriate package (e.g., F29H859DU6_Q_144RFS)
+
+```{figure} Assets/images/migration/resource_allocator/01_02_resource_allocator_general_config.png
+:alt: ResourceAllocator General Settings
+:align: center
+:width: 80%
+
+Configure ResourceAllocator device, package, and context settings
+```
+
+### Context Selection
+
+Execution context defines which CPU core handles MCAL module operations. Context_0 is a user-defined name that can be customized.
+
+As AUTOSAR is expected to run on CPU1, only CPU1 can be selected here. In future support will be added to define non-AUTOSAR context.
+
+**Configuration:**
+Navigate to **ResourceAllocatorGeneral → Context** and configure **Context_0**.
+
+```{figure} Assets/images/migration/resource_allocator/01_03_resource_allocator_context.png
+:alt: Context Configuration
+:align: center
+:width: 80%
+
+Configure CurrentContext - Context_0 is a user-defined name
+```
+
+All MCAL modules will operate on the configured context.
+
 
 # SPI Module Migration
 
-Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
-                                    
-1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
-2. Regenerate all module configurations using the updated plugins
-3. Build against the latest driver source
-
-This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
-
----
-
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
-
----
 
 ## v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration
 
@@ -9933,21 +9988,10 @@ Spi_Init(&Spi_Config);
 4. **Update Upper Modules:** Update any upper modules that reference the configuration structures to use the new structure name
 5. **Verify Compilation:** Clean build and verify no compilation errors related to SPI configuration structure
 
+
 # WDG Module Migration
 
-Not every MCAL release introduces application-facing changes that require manual migration. This guide documents only the releases where such changes occur. However, regardless of whether manual migration is needed, the following steps are mandatory for every release upgrade:
-                                    
-1. Replace the existing EB Tresos plugins with the plugins from the new release for all modules
-2. Regenerate all module configurations using the updated plugins
-3. Build against the latest driver source
-
-This ensures plugin-driver compatibility and keeps the MCAL integration up to date with the latest release
-
----
-
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
-
----
 
 ## v02.00.00 (i.e release v01.03.00) from v01.00.01 (i.e release v01.02.00) Migration
 
@@ -9988,6 +10032,7 @@ Wdg_Init(&Wdg_Config);
 3. **Update Function Calls:** Ensure all WDG initialization calls use the new structure name
 4. **Update Upper Modules:** Update any upper modules that reference the configuration structures to use the new structure name
 5. **Verify Compilation:** Clean build and verify no compilation errors related to WDG configuration structure
+
 
 # Module User Guide 
 
@@ -20691,6 +20736,12 @@ Cdd_Adc Result Safety Checker Block Diagram
 
 * The 1.65V internal reference mode is not supported when the ADC is configured for 16-bit resolution.
 * Temperature sensor sampled in 16-bit mode. It can cause incorrect ADC results.To sample the temperature sensor, the ADC must be in single-ended 12-bit mode.
+
+```{note}
+**Temperature Sensor Sample Window Configuration:**
+- The minimum sample window for the channel linked to the temperature sensor should be configured according to the device datasheet specifications to ensure accurate temperature readings.
+- Refer to the device-specific datasheet for the recommended minimum sample window duration.
+```
 
 #### Device-Variant Specific Limitations
 
@@ -32796,8 +32847,8 @@ Ppb notification function pointer.
 | uint16 | **[Cdd_Adc_GetDelayStamp](../Modules/group__CDD__ADC.md#function-cdd_adc_getdelaystamp)**([Cdd_Adc_PpbType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_ppbtype) PpbId)| service to get the delay between the the SOC trigger and the actual start of the SOC acquisition  |
 | void | **[Cdd_Adc_ConfigurePpbNotification](../Modules/group__CDD__ADC.md#function-cdd_adc_configureppbnotification)**([Cdd_Adc_PpbType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_ppbtype) PpbId, boolean Mode)| Enable or disable PPB notification.  |
 | Std_ReturnType | **[Cdd_Adc_SetResolution](../Modules/group__CDD__ADC.md#function-cdd_adc_setresolution)**([Cdd_Adc_HwUnitInstanceType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_hwunitinstancetype) HwUnit, [Cdd_Adc_ResolutionType](../Modules/group__CDD__ADC.md#enum-cdd_adc_resolutiontype) Resolution)| service to set the resolution of the ADC hardware unit.  |
-| sint16 | **[Cdd_Adc_GetTemperatureC](../Modules/group__CDD__ADC.md#function-cdd_adc_gettemperaturec)**([Cdd_Adc_HwUnitInstanceType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_hwunitinstancetype) HwUnit, [Cdd_Adc_ValueGroupType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_valuegrouptype) TempResult)| service to convert the ADC conversion value to Celsius.  |
-| sint16 | **[Cdd_Adc_GetTemperatureK](../Modules/group__CDD__ADC.md#function-cdd_adc_gettemperaturek)**([Cdd_Adc_HwUnitInstanceType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_hwunitinstancetype) HwUnit, [Cdd_Adc_ValueGroupType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_valuegrouptype) TempResult)| service to convert the ADC conversion value to Kelvin.  |
+| sint16 | **[Cdd_Adc_GetTemperatureC](../Modules/group__CDD__ADC.md#function-cdd_adc_gettemperaturec)**([Cdd_Adc_HwUnitInstanceType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_hwunitinstancetype) HwUnit, [Cdd_Adc_ValueGroupType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_valuegrouptype) TempResult, float32 VoltRef)| service to convert the ADC conversion value to Celsius.  |
+| sint16 | **[Cdd_Adc_GetTemperatureK](../Modules/group__CDD__ADC.md#function-cdd_adc_gettemperaturek)**([Cdd_Adc_HwUnitInstanceType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_hwunitinstancetype) HwUnit, [Cdd_Adc_ValueGroupType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_valuegrouptype) TempResult, float32 VoltRef)| service to convert the ADC conversion value to Kelvin.  |
 | void | **[Cdd_Adc_SetInternalTestNode](../Modules/group__CDD__ADC.md#function-cdd_adc_setinternaltestnode)**([Cdd_Adc_InternalTestNodeType](../Modules/group__CDD__ADC.md#enum-cdd_adc_internaltestnodetype) TestNode)| service to set the internal test node  |
 | void | **[Cdd_Adc_UpdateStatusThroughDma](../Modules/group__CDD__ADC.md#function-cdd_adc_updatestatusthroughdma)**([Cdd_Adc_HwUnitType](../Modules/group__CDD__ADC.md#enum-cdd_adc_hwunittype) HwUnitId, [Cdd_Adc_IntNumType](../Modules/group__CDD__ADC.md#enum-cdd_adc_intnumtype) IntNum)| service to update the group status in DMA mode for the specified group  |
 
@@ -33606,14 +33657,15 @@ This service to set the resolution of the specified ADC hardware unit.
 ```
 sint16 Cdd_Adc_GetTemperatureC(
     Cdd_Adc_HwUnitInstanceType HwUnit,
-    Cdd_Adc_ValueGroupType TempResult
+    Cdd_Adc_ValueGroupType TempResult,
+    float32 VoltRef
 )
 ```
 
 **Brief**: 
 service to convert the ADC conversion value to Celsius. 
 
-This service to convert the ADC conversion value to Celsius.
+This service converts the ADC conversion value to Celsius.
 
 **Parameters**: 
 
@@ -33621,6 +33673,11 @@ This service to convert the ADC conversion value to Celsius.
 * **HwUnit** ADC hardware unit 
   
 * **TempResult** ADC conversion result 
+  
+* **VoltRef** ADC voltage reference value (float32) provided to the corresponding ganged reference.
+
+* Internal voltage reference mode: Use 2.5F for 2.5V VREF or 3.3F for 3.3V VREF
+* External voltage reference mode: Provide the actual external voltage value as float 
 
 **Returns**: 
 
@@ -33629,6 +33686,11 @@ This service to convert the ADC conversion value to Celsius.
 <br> 
 
 **Return**: Returns the values converted to Celsius 
+
+**Note**: 
+
+  * Temperature sensor values in production test are derived with 2.5V reference. The VoltRef argument is used to scale the temperature sensor reading accordingly if the temperature sensor value is read at a different VREF setting.
+  * The VoltRef value must exactly match the actual voltage reference being used. Any deviation will result in incorrect temperature calculations. 
 
 **Precondition**: None 
 
@@ -33639,14 +33701,15 @@ This service to convert the ADC conversion value to Celsius.
 ```
 sint16 Cdd_Adc_GetTemperatureK(
     Cdd_Adc_HwUnitInstanceType HwUnit,
-    Cdd_Adc_ValueGroupType TempResult
+    Cdd_Adc_ValueGroupType TempResult,
+    float32 VoltRef
 )
 ```
 
 **Brief**: 
 service to convert the ADC conversion value to Kelvin. 
 
-This service to convert the ADC conversion value to Kelvin.
+This service converts the ADC conversion value to Kelvin.
 
 **Parameters**: 
 
@@ -33654,6 +33717,11 @@ This service to convert the ADC conversion value to Kelvin.
 * **HwUnit** ADC hardware unit 
   
 * **TempResult** ADC conversion result 
+  
+* **VoltRef** ADC voltage reference value (float32) provided to the corresponding ganged reference.
+
+* Internal voltage reference mode: Use 2.5F for 2.5V VREF or 3.3F for 3.3V VREF
+* External voltage reference mode: Provide the actual external voltage value as float 
 
 **Returns**: 
 
@@ -33662,6 +33730,11 @@ This service to convert the ADC conversion value to Kelvin.
 <br> 
 
 **Return**: Returns the values converted to Kelvin 
+
+**Note**: 
+
+  * Temperature sensor values in production test are derived with 2.5V reference. The VoltRef argument is used to scale the temperature sensor reading accordingly if the temperature sensor value is read at a different VREF setting.
+  * The VoltRef value must exactly match the actual voltage reference being used. Any deviation will result in incorrect temperature calculations. 
 
 **Precondition**: None 
 

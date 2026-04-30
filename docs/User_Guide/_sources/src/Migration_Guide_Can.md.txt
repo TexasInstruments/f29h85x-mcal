@@ -18,7 +18,6 @@ Version v04.00.00 introduces the following changes to the CAN module:
 
 The CanStandardFilterType enum value CAN_FILTER_DISABLED (numeric value 0x03) has been renamed to CAN_SFT_FILTER_DISABLED_EFT_RANGE_NO_XIDAM. The new name accurately reflects the dual behavior of this value: for Standard Frame Type (SFT) filters it disables the filter, and for Extended Frame Type (EFT) range filters it applies the range without the XIDAM mask.
 
-
 #### Old vs New
 
 **Old (v03.10.00):**
@@ -61,6 +60,7 @@ AUTOSAR requirement enforces that `CanMainFunctionRWPeriodRef` must be configure
 **New (v04.00.00):**
 
 EB Tresos enforces that `CanMainFunctionRWPeriodRef` must reference a valid `CanMainFunctionPeriod` entry when:
+
 - `CanObjectType = RECEIVE` and the controller's `CanRxProcessing = POLLING` or `MIXED`, or
 - `CanObjectType = TRANSMIT` and the controller's `CanTxProcessing = POLLING` or `MIXED`
 
@@ -87,7 +87,7 @@ Validation for CanMainFunctionRWPeriodRef
 
 The FD baud-rate parameters `CanControllerTrcvDelayCompensationOffset` and `CanControllerTrcvDelayCompensationFilter` have always been labeled as nanoseconds in the EB Tresos GUI, but in v03.01.00 the generated code passed the raw config values directly to the hardware register as Minimum Time Quanta (MTQ). This meant users who wanted TDC to function correctly had to enter MTQ values despite the nanosecond label.
 
-In v04.00.00, the code generator now correctly converts these values from nanoseconds to MTQ. 
+In v04.00.00, the code generator now correctly converts these values from nanoseconds to MTQ.
 
 ```{NOTE}
 If both `CanControllerTrcvDelayCompensationOffset` and `CanControllerTrcvDelayCompensationFilter` are `0`, TDC remains disabled and no action is required.
@@ -257,8 +257,6 @@ Interrupt Service Routine (ISR) names are updated to match the new controller na
 2. **Update Interrupt Vector Table:** Ensure interrupt vector table references use the new ISR names
 3. **Verify ISR Functionality:** Test interrupt handling after migration to confirm proper operation
 
-
-
 ## v02.00.00 (i.e release v01.03.00) from v01.01.00 (i.e release v01.02.00) Migration
 
 ### Summary
@@ -337,6 +335,7 @@ Select BASIC or FULL object type with new constraint definitions
 | **BASIC** | Use FIFO in hardware | Shared FIFO (1 Tx FIFO, 2 Rx FIFOs available) |
 
 **Hardware Limitations:**
+
 - Maximum 1 Tx BASIC object
 - Maximum 2 Rx BASIC objects
 
@@ -348,6 +347,7 @@ Select BASIC or FULL object type with new constraint definitions
 | **BASIC** | **> 1** | FIFO depth | Tx FIFO: max 32<br>Rx FIFO: max 64 |
 
 **FIFO Usage Pattern:**
+
 - **TRANSMIT messages:** Use Tx FIFO
 - **RECEIVE messages:** Use Rx FIFO
 - **Multiple objects:** Share combined FIFO depth
@@ -383,6 +383,7 @@ Set filter parameters within new limits
 | **Total RAM area** | 1024 words | Combined total | All components together must not exceed 1024 words |
 
 **Message Size Reference:**
+
 - **4 words** if parameter CanFDMode is enabled
 - **18 words** if parameter CanFDMode is disabled
 
@@ -418,7 +419,6 @@ Can_Init(&Can_Config);
 2. **Replace Structure Name:** Update all references from `Can_CanConfigSet` to `Can_Config`
 3. **Update Function Calls:** Ensure all CAN initialization calls use the new structure name
 4. **Verify Compilation:** Clean build and verify no compilation errors related to CAN configuration structure
-
 
 ## v01.01.00 (i.e release v01.02.00) from v01.00.01 (i.e release v01.01.00) Migration
 

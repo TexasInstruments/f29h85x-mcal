@@ -106,6 +106,8 @@
 #include "Platform_Types.h"
 #include "AppUtils.h"
 #include "DeviceSupport.h"
+#include "Mcal_Lib_Cpu.h"
+#include "Os.h"
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
@@ -153,7 +155,7 @@ int main(void)
     Std_ReturnType return_value = E_OK;
 
     EcuM_Init();
-    DeviceSupport_Init(); /* PORT & MCU Initilization to get configuration settings */
+    DeviceSupport_Init(); /* PORT & MCU Initialization to get configuration settings */
     AppUtils_Init(200000000U);
     AppUtils_Printf("Sample Application - STARTS !!!\r\n");
 

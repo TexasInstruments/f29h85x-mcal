@@ -436,6 +436,9 @@ FUNC(Mcu_PllStatusType, MCU_CODE) Mcu_GetPllStatus(void)
     return (pll_status);
 }
 
+/*
+ * Design: MCAL-35338
+ */
 FUNC(uint32, MCU_CODE) Mcu_GetSystemClock(void)
 {
     VAR(uint32, AUTOMATIC) return_value = 0U;
