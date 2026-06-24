@@ -289,10 +289,6 @@ typedef struct Can_MsgRAMConfigParams_s
                 1-32 = Number of Tx Buffers used for Tx FIFO/Queue
                 others = Values greater than 32 are interpreted as 32 */
     uint8  txFIFOSize;
-    /** \brief Tx FIFO/Queue Mode
-                0 = Tx FIFO operation
-                1 = Tx Queue operation */
-    uint32 txBufMode;
     /** \brief Tx Event FIFO Start Address */
     uint32 txEventFIFOStartAddr;
     /** \brief Event FIFO Size

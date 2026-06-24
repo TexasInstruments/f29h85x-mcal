@@ -97,11 +97,11 @@
 #endif
 
 /* vendor specific version information is BCD coded */
-#if ((PORT_SW_MAJOR_VERSION != (4U)) || (PORT_SW_MINOR_VERSION != (0U)))
+#if ((PORT_SW_MAJOR_VERSION != (4U)) || (PORT_SW_MINOR_VERSION != (1U)))
 #error "Version numbers of Port.c and Port.h are inconsistent!"
 #endif
 
-#if ((PORT_CFG_MAJOR_VERSION != (4U)) || (PORT_CFG_MINOR_VERSION != (0U)))
+#if ((PORT_CFG_MAJOR_VERSION != (4U)) || (PORT_CFG_MINOR_VERSION != (1U)))
 #error "Version numbers of Port.c and Port_Cfg.h are inconsistent!"
 #endif
 
@@ -446,6 +446,9 @@ FUNC(void, PORT_CODE) Port_CommitConfiguration(void)
             Port_CommitConfigurationProcess(pinNumber);
         }
 
+        /* Lock ASysCtl CONFIGLOCK registers (AGPIOFILTER and AGPIOCTRL) after per-pin commit loop */
+        Port_Priv_CommitASysCtlConfigLock();
+
 #if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
         /* Update Commit Flag to TRUE */
         Port_CommitDone = TRUE;
@@ -501,6 +504,9 @@ static FUNC(Std_ReturnType, PORT_CODE)
                 /* Do Nothing */
             }
         }
+
+        /* Configure global ASysCtl registers (AGPIOFILTER) after per-pin loop */
+        Port_Priv_ConfigureASysCtl(Port_ConfigObject->Port_ASysCtlConfig);
     }
 
     return returnValue;

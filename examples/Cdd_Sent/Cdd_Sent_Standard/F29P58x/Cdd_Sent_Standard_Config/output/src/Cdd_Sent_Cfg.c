@@ -84,11 +84,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CDD_SENT_SW_MAJOR_VERSION != (3U)) || (CDD_SENT_SW_MINOR_VERSION != (1U)))
+#if ((CDD_SENT_SW_MAJOR_VERSION != (3U)) || (CDD_SENT_SW_MINOR_VERSION != (2U)))
     #error "Version numbers of Cdd_Sent_cfg.c and Cdd_Sent.h are inconsistent!"
 #endif
 
-#if ((CDD_SENT_CFG_MAJOR_VERSION != (3U)) || (CDD_SENT_CFG_MINOR_VERSION != (1U)))
+#if ((CDD_SENT_CFG_MAJOR_VERSION != (3U)) || (CDD_SENT_CFG_MINOR_VERSION != (2U)))
     #error "Version numbers of Cdd_Sent_cfg.c and Cdd_Sent_Cfg.h are inconsistent!"
 #endif
 
@@ -118,11 +118,6 @@
 /* MTP Config structures*/
 
 /* List of MTP Config structures per instance */
-
-CONSTP2CONST(Cdd_Sent_MTPConfigType, CDD_SENT_CONFIG_DATA, CDD_SENT_CONST) CddSentConfig_CddSentController_List[0] =
-{
-
-};
 
 /*
  * Design: MCAL-28708, MCAL-28710, MCAL-28712, MCAL-28713,MCAL-28734,MCAL-28732
@@ -182,7 +177,7 @@ CONST(Cdd_Sent_HWUnitType, CDD_SENT_CONFIG_DATA) CddSentConfig_CddSentController
     .CddSentGlitchFilter   = (uint8 )5U,
     .CddSentMTP  = (boolean )FALSE,
     .CddSentMTPChannelCount = (uint8 )0,
-    .CddSentMTPConfigList = CddSentConfig_CddSentController_List,    
+    .CddSentMTPConfigList = NULL_PTR,    
     .CddSentChannelCount = (uint8 )2,
     .CddSentChannelConfigList = CddSentConfig_CddSentChannelObject_List,
     .CddSentUserCallbackFunction  = (Cdd_Sent_NotifyType) CddSent_Callback,
@@ -193,7 +188,7 @@ CONST(Cdd_Sent_HWUnitType, CDD_SENT_CONFIG_DATA) CddSentConfig_CddSentController
 
 CONST(Cdd_Sent_ConfigType, CDD_SENT_CONFIG_DATA) CddSentConfig_Cdd_SentController_List=
 {
-	.Cdd_Sent_HWUnit[0] = (Cdd_Sent_HWUnitType* )&CddSentConfig_CddSentController_0
+	.Cdd_Sent_HWUnit[0] = (const Cdd_Sent_HWUnitType* )&CddSentConfig_CddSentController_0
 };
 
 

@@ -637,6 +637,12 @@ static CONST(Mcu_ModeConfigType, MCU_CONFIG_DATA) Mcu_ModeConfigurationSet[!"num
  */
 /* Forward declaration of peripheral configuration structure */
 static CONST(Mcu_PeripheralConfigType, MCU_CONFIG_DATA) Mcu_PeripheralConfig;
+[!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/ASysCtl/*)"!]/* Forward declaration of ASysCtl configuration structure */
+static CONST(Mcu_ASysCtlConfigType, MCU_CONFIG_DATA) Mcu_ASysCtlConfig;
+[!ENDIF!][!//
+[!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Context/*/Cdd_Cmpss/*/Cdd_CmpssAllocatedInstance/*)"!]/* Forward declaration of CMPSS ASysCtl configuration structure */
+static CONST(Mcu_CMPSSASysCtlConfigType, MCU_CONFIG_DATA) Mcu_CMPSSASysCtlConfig;
+[!ENDIF!][!//
 
 [!LOOP "McuModuleConfiguration/*"!]CONST(Mcu_ConfigType, MCU_CONFIG_DATA) Mcu_Config_[!"@name"!] =
 {
@@ -659,7 +665,11 @@ static CONST(Mcu_PeripheralConfigType, MCU_CONFIG_DATA) Mcu_PeripheralConfig;
     /* Peripheral Configuration */
     .PeripheralConfig              = &Mcu_PeripheralConfig,
     /* CPU1 Lockstep Enable Configuration */
-    .Mcu_LockstepEnable            = ((boolean) [!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/CPU1_Lockstep) and (as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/CPU1_Lockstep = 'false')"!]FALSE[!ELSE!]TRUE[!ENDIF!])
+    .Mcu_LockstepEnable            = ((boolean) [!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/CPU1_Lockstep) and (as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/CPU1_Lockstep = 'false')"!]FALSE[!ELSE!]TRUE[!ENDIF!]),
+    /* ASysCtl Configuration */
+    .Mcu_ASysCtlConfig             = [!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/ASysCtl/*)"!]&Mcu_ASysCtlConfig[!ELSE!]NULL_PTR[!ENDIF!],
+    /* CMPSS ASysCtl Configuration */
+    .Mcu_CMPSSASysCtlConfig        = [!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Context/*/Cdd_Cmpss/*/Cdd_CmpssAllocatedInstance/*)"!]&Mcu_CMPSSASysCtlConfig[!ELSE!]NULL_PTR[!ENDIF!]
 };
 [!ENDLOOP!]
 [!ENDSELECT!]
@@ -1232,13 +1242,12 @@ static CONST(Mcu_PeripheralRegEntryType, MCU_CONFIG_DATA) Mcu_PeripheralConfigSe
 [!LOOP "as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Cdd_Xbar/*/CddXbarOutputXbarFlag/*"!][!//
 [!VAR "instanceName" = "node:value(./InstanceName)"!][!//
 [!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
-[!VAR "regAddr" = "node:value(./BaseAddr)"!][!//
 [!VAR "regValue" = "num:i($framesel)"!][!//
 [!IF "$firstEntry = 'false'"!],
 [!ENDIF!]
     /* [!"$instanceName"!] Configuration - [!"node:value(./Frame)"!] */
     {
-        .RegAddr = (uint32)[!"$regAddr"!],
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"text:toupper($instanceName)"!]),
         .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
     }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
 [!ENDLOOP!][!//
@@ -1248,13 +1257,12 @@ static CONST(Mcu_PeripheralRegEntryType, MCU_CONFIG_DATA) Mcu_PeripheralConfigSe
 [!LOOP "as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Cdd_Xbar/*/CddXbarInputFlag/*"!][!//
 [!VAR "instanceName" = "node:value(./InstanceName)"!][!//
 [!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
-[!VAR "regAddr" = "node:value(./BaseAddr)"!][!//
 [!VAR "regValue" = "num:i($framesel)"!][!//
 [!IF "$firstEntry = 'false'"!],
 [!ENDIF!]
     /* [!"$instanceName"!] Configuration - [!"node:value(./Frame)"!] */
     {
-        .RegAddr = (uint32)[!"$regAddr"!],
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"text:toupper($instanceName)"!]),
         .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
     }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
 [!ENDLOOP!][!//
@@ -1264,13 +1272,12 @@ static CONST(Mcu_PeripheralRegEntryType, MCU_CONFIG_DATA) Mcu_PeripheralConfigSe
 [!LOOP "as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/DLTFifoRegs/*/DLTFifoRegsAllocatedInstance/*"!][!//
 [!VAR "instanceName" = "node:value(./InstanceName)"!][!//
 [!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
-[!VAR "regAddr" = "node:value(./BaseAddr)"!][!//
 [!VAR "regValue" = "num:i($framesel)"!][!//
 [!IF "$firstEntry = 'false'"!],
 [!ENDIF!]
     /* [!"$instanceName"!] Configuration - [!"node:value(./Frame)"!] */
     {
-        .RegAddr = (uint32)[!"$regAddr"!],
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
         .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
     }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
 [!ENDLOOP!][!//
@@ -1280,13 +1287,12 @@ static CONST(Mcu_PeripheralRegEntryType, MCU_CONFIG_DATA) Mcu_PeripheralConfigSe
 [!LOOP "as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Error_Aggregator/*/Error_AggregatorAllocatedInstance/*"!][!//
 [!VAR "instanceName" = "node:value(./InstanceName)"!][!//
 [!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
-[!VAR "regAddr" = "node:value(./BaseAddr)"!][!//
 [!VAR "regValue" = "num:i($framesel)"!][!//
 [!IF "$firstEntry = 'false'"!],
 [!ENDIF!]
     /* [!"$instanceName"!] Configuration - [!"node:value(./Frame)"!] */
     {
-        .RegAddr = (uint32)[!"$regAddr"!],
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
         .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
     }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
 [!ENDLOOP!][!//
@@ -1296,13 +1302,12 @@ static CONST(Mcu_PeripheralRegEntryType, MCU_CONFIG_DATA) Mcu_PeripheralConfigSe
 [!LOOP "as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/ESM/*/ESMAllocatedInstance/*"!][!//
 [!VAR "instanceName" = "node:value(./InstanceName)"!][!//
 [!VAR "framesel" = "substring(node:value(./Frame), 6)"!][!//
-[!VAR "regAddr" = "node:value(./BaseAddr)"!][!//
 [!VAR "regValue" = "num:i($framesel)"!][!//
 [!IF "$firstEntry = 'false'"!],
 [!ENDIF!]
     /* [!"$instanceName"!] Configuration - [!"node:value(./Frame)"!] */
     {
-        .RegAddr = (uint32)[!"$regAddr"!],
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_[!"$instanceName"!]),
         .RegValue = (uint32)[!"translate(text:toupper(num:inttohex($regValue, 8)), 'X', 'x')"!]U
     }[!VAR "firstEntry" = "'false'"!][!VAR "McuPeripheralConfigCount" = "$McuPeripheralConfigCount + 1"!][!//
 [!ENDLOOP!][!//
@@ -1337,21 +1342,79 @@ static CONST(Mcu_PeripheralConfigType, MCU_CONFIG_DATA) Mcu_PeripheralConfig =
     .PeripheralConfigEntries = Mcu_PeripheralConfigSet,
     .PeripheralConfigCount   = [!"num:i($McuPeripheralConfigCount)"!]U
 };
+[!//
+[!/* ===== ASysCtl Configuration ===== */!][!//
+[!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/ASysCtl/*)"!][!//
+[!SELECT "as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/ASysCtl/*"!][!//
 
-[!ENDSELECT!]
-[!ELSE!]
 /*********************************************************************************************************************
- *  ResourceAllocator module not present - No peripheral configuration generated
+ *  ASysCtl Configuration Structure
+ *
+ *  This structure holds the Analog System Control (ASysCtl) configuration generated from the
+ *  ResourceAllocator plugin. It is consumed by Mcu_Priv_ConfigureASysCtl() during Mcu_Init().
  *********************************************************************************************************************/
-/*********************************************************************************************************************
- *  Peripheral Configuration Structure (Empty - No ResourceAllocator)
- *********************************************************************************************************************/
-static CONST(Mcu_PeripheralConfigType, MCU_CONFIG_DATA) Mcu_PeripheralConfig =
+static CONST(Mcu_ASysCtlConfigType, MCU_CONFIG_DATA) Mcu_ASysCtlConfig =
 {
-    .PeripheralConfigEntries = NULL_PTR,
-    .PeripheralConfigCount   = 0U
+    .TemperatureSensorEnable = (boolean)[!IF "node:value(./TemperatureSensor/TemperatureSensorEnable) = 'true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
+    .AnalogRefABMode         = (uint8)[!IF "node:value(./AnalogReference/AnalogRefABMode) = 'REFERENCE_EXTERNAL'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
+    .AnalogRefABVoltage      = (uint8)[!IF "node:value(./AnalogReference/AnalogRefABVoltage) = 'REFERENCE_2_5V'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
+    .AnalogRefCDEMode        = (uint8)[!IF "node:value(./AnalogReference/AnalogRefCDEMode) = 'REFERENCE_EXTERNAL'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
+    .AnalogRefCDEVoltage     = (uint8)[!IF "node:value(./AnalogReference/AnalogRefCDEVoltage) = 'REFERENCE_2_5V'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
+    .VMONMaskEnable          = (boolean)[!IF "node:value(./VoltageRegulator/VMONMaskEnable) = 'true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
+    .VREGPowerDown           = (boolean)[!IF "node:value(./VoltageRegulator/VREGPowerDown) = 'true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
+    .BORLDisable             = (boolean)[!IF "node:value(./BrownOutReset/BORLDisable) = 'true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
+    .InternalTestNodeSelect  = (Mcu_ASysCtlTestNodeType)[!"node:value(./InternalTestNode/InternalTestNodeSelect)"!]
 };
-[!ENDIF!]
+[!ENDSELECT!][!//
+[!ENDIF!][!//
+[!//
+[!/* ===== CMPSS ASysCtl Configuration ===== */!][!//
+[!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Context/*/Cdd_Cmpss/*/Cdd_CmpssAllocatedInstance/*)"!][!//
+[!VAR "CMPHPMuxSelect"  = "num:i(0)"!][!//
+[!VAR "CMPHPMuxSelect1" = "num:i(0)"!][!//
+[!VAR "CMPLPMuxSelect"  = "num:i(0)"!][!//
+[!VAR "CMPLPMuxSelect1" = "num:i(0)"!][!//
+[!VAR "CMPHNMuxSelect"  = "num:i(0)"!][!//
+[!VAR "CMPLNMuxSelect"  = "num:i(0)"!][!//
+[!LOOP "as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/Context/*/Cdd_Cmpss/*/Cdd_CmpssAllocatedInstance/*"!][!//
+    [!VAR "InstNum" = "num:i(substring-after(node:value(InstanceName), 'CMPSS'))"!][!//
+    [!VAR "HPIdx"   = "num:i(substring-before(substring-after(node:value(CMPSSHPMuxSelect), 'MUX'), '_'))"!][!//
+    [!VAR "LPIdx"   = "num:i(substring-before(substring-after(node:value(CMPSSLPMuxSelect), 'MUX'), '_'))"!][!//
+    [!VAR "HNIdx"   = "num:i(substring-before(substring-after(node:value(CMPSSHNMuxSelect), 'MUX'), '_'))"!][!//
+    [!VAR "LNIdx"   = "num:i(substring-before(substring-after(node:value(CMPSSLNMuxSelect), 'MUX'), '_'))"!][!//
+    [!IF "$InstNum <= 10"!][!//
+        [!VAR "Shift"           = "num:i(($InstNum - 1) * 3)"!][!//
+        [!VAR "CMPHPMuxSelect"  = "num:i($CMPHPMuxSelect  + ($HPIdx * bit:shl(1, $Shift)))"!][!//
+        [!VAR "CMPLPMuxSelect"  = "num:i($CMPLPMuxSelect  + ($LPIdx * bit:shl(1, $Shift)))"!][!//
+    [!ELSE!][!//
+        [!VAR "Shift"           = "num:i(($InstNum - 11) * 3)"!][!//
+        [!VAR "CMPHPMuxSelect1" = "num:i($CMPHPMuxSelect1 + ($HPIdx * bit:shl(1, $Shift)))"!][!//
+        [!VAR "CMPLPMuxSelect1" = "num:i($CMPLPMuxSelect1 + ($LPIdx * bit:shl(1, $Shift)))"!][!//
+    [!ENDIF!][!//
+    [!VAR "CMPHNMuxSelect" = "num:i($CMPHNMuxSelect + ($HNIdx * bit:shl(1, num:i($InstNum - 1))))"!][!//
+    [!VAR "CMPLNMuxSelect" = "num:i($CMPLNMuxSelect + ($LNIdx * bit:shl(1, num:i($InstNum - 1))))"!][!//
+[!ENDLOOP!][!//
+
+/*********************************************************************************************************************
+ *  CMPSS ASysCtl Configuration Structure
+ *
+ *  This structure holds the CMPSS mux select configuration generated from the
+ *  ResourceAllocator plugin. It is consumed by Mcu_Priv_ConfigureCMPSSASysCtl() during Mcu_Init().
+ *********************************************************************************************************************/
+static CONST(Mcu_CMPSSASysCtlConfigType, MCU_CONFIG_DATA) Mcu_CMPSSASysCtlConfig =
+{
+    .CMPHPMuxSelect  = (uint32)[!"num:inttohex($CMPHPMuxSelect)"!]U,
+    .CMPHPMuxSelect1 = (uint32)[!"num:inttohex($CMPHPMuxSelect1)"!]U,
+    .CMPLPMuxSelect  = (uint32)[!"num:inttohex($CMPLPMuxSelect)"!]U,
+    .CMPLPMuxSelect1 = (uint32)[!"num:inttohex($CMPLPMuxSelect1)"!]U,
+    .CMPHNMuxSelect  = (uint32)[!"num:inttohex($CMPHNMuxSelect)"!]U,
+    .CMPLNMuxSelect  = (uint32)[!"num:inttohex($CMPLNMuxSelect)"!]U
+};
+[!ENDIF!][!//
+[!ENDSELECT!][!//
+[!ELSE!][!//
+[!ERROR "ResourceAllocator module is required for Mcu peripheral configuration. Ensure the ResourceAllocator module is included in the project configuration."!]
+[!ENDIF!][!//
 
 /*********************************************************************************************************************
  *  Local Function Prototypes

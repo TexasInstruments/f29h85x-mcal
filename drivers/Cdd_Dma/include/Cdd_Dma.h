@@ -102,7 +102,7 @@ extern "C" {
 /** \brief Driver Implementation Major Version */
 #define CDD_DMA_SW_MAJOR_VERSION (1U)
 /** \brief Driver Implementation Minor Version */
-#define CDD_DMA_SW_MINOR_VERSION (0U)
+#define CDD_DMA_SW_MINOR_VERSION (1U)
 /** \brief Driver Implementation Patch Version */
 #define CDD_DMA_SW_PATCH_VERSION (0U)
 
@@ -134,51 +134,67 @@ extern "C" {
  * Error codes returned by CDD DMA driver
  *********************************************************************************************************************/
 
+/* Design: MCAL-39260 */
 /** \brief API service used without module initialization */
 #define CDD_DMA_E_UNINIT ((uint8)0x0AU)
 
+/* Design: MCAL-39261 */
 /** \brief API called for reinitialization of already initialized DMA driver */
 #define CDD_DMA_E_ALREADY_INITIALIZED ((uint8)0x0BU)
 
+/* Design: MCAL-39275 */
 /** \brief Initialization API failed */
 #define CDD_DMA_E_INIT_FAILED ((uint8)0x0CU)
 
+/* Design: MCAL-39262 */
 /** \brief API service called with invalid parameter pointer */
 #define CDD_DMA_E_PARAM_POINTER ((uint8)0x0DU)
 
-/** \brief API service called with invalid parameter pointer */
+/* Design: MCAL-39263 */
+/** \brief API service called with invalid parameter value */
 #define CDD_DMA_E_PARAM_VALUE ((uint8)0x0EU)
 
+/* Design: MCAL-39264 */
 /** \brief API service called during ongoing process */
 #define CDD_DMA_E_BUSY ((uint8)0x0FU)
 
+/* Design: MCAL-39265 */
 /** \brief API service called to force or clear peripheral event trigger when peripheral event trigger is disabled */
 #define CDD_DMA_E_PERIPHERAL_EVENT_TRIGGER_DISABLED ((uint8)0x10U)
 
+/* Design: MCAL-39270 */
 /** \brief API service called to enable peripheral event trigger when peripheral event trigger is already enabled */
 #define CDD_DMA_E_PERIPHERAL_EVENT_TRIGGER_ENABLED ((uint8)0x11U)
 
+/* Design: MCAL-39271 */
 /** \brief API service called to start a channel when the channel is already running */
 #define CDD_DMA_E_ALREADY_RUNNING ((uint8)0x12U)
 
+/* Design: MCAL-39272 */
 /** \brief API service called to halt a channel when the channel already halted */
 #define CDD_DMA_E_ALREADY_HALTED ((uint8)0x13U)
 
+/* Design: MCAL-39266 */
 /** \brief API service called to modify DMA configurable properties when DMA configurable properties are committed */
 #define CDD_DMA_E_DMACFG_COMMITTED ((uint8)0x14U)
 
+/* Design: MCAL-39267 */
 /** \brief API service called to modify DMA channel properties when DMA channel properties are committed */
 #define CDD_DMA_E_CHCFG_COMMITTED ((uint8)0x15U)
 
+/* Design: MCAL-39268 */
 /** \brief API service called to modify DMA MPU region properties when DMA MPU region properties are committed */
 #define CDD_DMA_E_MPUR_COMMITTED ((uint8)0x16U)
 
+/* Design: MCAL-39269 */
 /** \brief API service called to enable or disable MPU when DMA MPU configuration are committed */
 #define CDD_DMA_E_MPUCFG_COMMITTED ((uint8)0x17U)
 
+/* Design: MCAL-39273 */
 /** \brief API service called to clear error flag when no overflow is detected */
 #define CDD_DMA_E_NO_OVERFLOW ((uint8)0x18U)
 
+/* Design: MCAL-39274 */
 /** \brief API service called to clear peripheral event trigger when no event trigger exists */
 #define CDD_DMA_E_NO_TRIGGER ((uint8)0x19U)
 
@@ -239,6 +255,10 @@ extern "C" {
 #define CDD_DMA_SID_SET_MPUR_COMMIT ((uint8)0x19U)
 /** \brief Cdd_Dma_SetMpuCfgCommit() API Service ID */
 #define CDD_DMA_SID_SET_MPUCFG_COMMIT ((uint8)0x1AU)
+/** \brief Cdd_Dma_GetChannelPriority() API Service ID */
+#define CDD_DMA_SID_GET_CHANNEL_PRIORITY ((uint8)0x1BU)
+/** \brief Cdd_Dma_PeriodicReadback() API Service ID */
+#define CDD_DMA_SID_PERIODIC_READBACK ((uint8)0x1CU)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -247,9 +267,11 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+/* Design: MCAL-39288 */
 /** \brief  Channel notification callback function pointer. */
 typedef void (*Cdd_Dma_NotifyType)(uint8 Channel_Index);
 
+/* Design: MCAL-39306 */
 /** \brief Emulation control type */
 typedef enum
 {
@@ -257,6 +279,7 @@ typedef enum
     CDD_DMA_EMULATION_FREE_RUN /*!< \brief  The DMA continues running during an emulation halt */
 } Cdd_Dma_EmulationModeType;
 
+/* Design: MCAL-39307 */
 /** \brief Channel priority selection type */
 typedef enum
 {
@@ -264,6 +287,7 @@ typedef enum
     CDD_DMA_PRIORITY_SOFTWARE_CONFIG /*!< \brief  Software configurable priority for channels */
 } Cdd_Dma_PriorityType;
 
+/* Design: MCAL-39308 */
 /** \brief DMA instance type */
 typedef enum
 {
@@ -271,6 +295,7 @@ typedef enum
     CDD_DMA2 = 1,
 } Cdd_Dma_InstanceType;
 
+/* Design: MCAL-39276 */
 /** \brief DMA Channel type */
 typedef enum
 {
@@ -286,6 +311,7 @@ typedef enum
     CDD_DMA_CH10 = 9,
 } Cdd_Dma_ChannelType;
 
+/* Design: MCAL-39277 */
 /** \brief DMA MPU Region type */
 typedef enum
 {
@@ -307,6 +333,7 @@ typedef enum
     CDD_DMA_MPUR16 = 15  /*!< \brief  RTDMA MPU Region 16 */
 } Cdd_Dma_MpuRegionType;
 
+/* Design: MCAL-39282 */
 /** \brief Write data size mode bit type */
 typedef enum
 {
@@ -321,6 +348,7 @@ typedef enum
 
 } Cdd_Dma_ChannelWrDataSizeType;
 
+/* Design: MCAL-39283 */
 /** \brief Data size mode bit type */
 typedef enum
 {
@@ -335,6 +363,7 @@ typedef enum
 
 } Cdd_Dma_ChannelDataSizeType;
 
+/* Design: MCAL-39285 */
 /** \brief Continuous mode type */
 typedef enum
 {
@@ -342,6 +371,7 @@ typedef enum
     CDD_DMA_CONTINUOUS_MODE_ENABLED   /*!< \brief  Continuous mode enabled */
 } Cdd_Dma_ContinuousModeEnableType;
 
+/* Design: MCAL-39284 */
 /** \brief Oneshot mode type */
 typedef enum
 {
@@ -349,6 +379,7 @@ typedef enum
     CDD_DMA_ONESHOT_MODE_ENABLED   /*!< \brief  Oneshot mode enabled */
 } Cdd_Dma_OneshotModeEnableType;
 
+/* Design: MCAL-39286 */
 /** \brief Channel interrupt generation enable type */
 typedef enum
 {
@@ -356,6 +387,7 @@ typedef enum
     CDD_DMA_CHANNEL_INTERRUPT_ENABLED   /*!< \brief  Channel interrupt generation mode enabled */
 } Cdd_Dma_ChIntEnableType;
 
+/* Design: MCAL-39287 */
 /** \brief Channel interrupt generation mode type */
 typedef enum
 {
@@ -363,6 +395,7 @@ typedef enum
     CDD_DMA_INT_END_OF_TRANSFER  /*!< \brief  Generate interrupt at end of transfer */
 } Cdd_Dma_ChIntModeType;
 
+/* Design: MCAL-39289 */
 /** \brief Overflow interrupt type */
 typedef enum
 {
@@ -370,6 +403,7 @@ typedef enum
     CDD_DMA_OVERFLOW_INTERRUPT_ENABLED   /*!< \brief  Overflow interrupt enabled */
 } Cdd_Dma_OvrflowIntEnableType;
 
+/* Design: MCAL-39290 */
 /** \brief  Peripheral event trigger enable type */
 typedef enum
 {
@@ -377,6 +411,7 @@ typedef enum
     CDD_DMA_PERI_EVT_TRIG_ENABLED   /*!< \brief  Peripheral event trigger enabled */
 } Cdd_Dma_PeriEvtTrigEnableType;
 
+/* Design: MCAL-39299 */
 /** \brief Overflow status type */
 typedef enum
 {
@@ -385,6 +420,7 @@ typedef enum
                                  was already set */
 } Cdd_Dma_OverflowStatusType;
 
+/* Design: MCAL-39300 */
 /** \brief Run status type */
 typedef enum
 {
@@ -393,6 +429,7 @@ typedef enum
     CDD_DMA_CHANNEL_RUNNING      /*!< \brief  DMA channel is busy */
 } Cdd_Dma_RunStatusType;
 
+/* Design: MCAL-39301 */
 /** \brief Burst status type */
 typedef enum
 {
@@ -400,6 +437,7 @@ typedef enum
     CDD_DMA_BURST_ACTIVITY_ONGOING     /*!< \brief  Burst is in progress */
 } Cdd_Dma_BurstStatusType;
 
+/* Design: MCAL-39302 */
 /** \brief Transfer status type */
 typedef enum
 {
@@ -407,6 +445,7 @@ typedef enum
     CDD_DMA_TRANSFER_ACTIVITY_ONGOING     /*!< \brief  Transfer is in progress */
 } Cdd_Dma_TransferStatusType;
 
+/* Design: MCAL-39303 */
 /** \brief Peripheral event trigger status type */
 typedef enum
 {
@@ -414,6 +453,7 @@ typedef enum
     CDD_DMA_PENDING_EVT_TRIG      /*!< \brief  Peripheral event trigger has arrived */
 } Cdd_Dma_PeriEvtTrigStatusType;
 
+/* Design: MCAL-39298 */
 /** \brief MPU region access type */
 typedef enum
 {
@@ -422,6 +462,8 @@ typedef enum
     CDD_DMA_READ_WRITE_ACCESS /*!< \brief  Both read and write access */
 } Cdd_Dma_MpuRegionAccessType;
 
+/* Design: MCAL-39305 */
+/** \brief Channel priority type */
 typedef enum
 {
     CDD_DMA_CHPRIORITY0, /*!< \brief    Priority 0. */
@@ -430,6 +472,7 @@ typedef enum
     CDD_DMA_CHPRIORITY3  /*!< \brief    Priority 3. */
 } Cdd_Dma_ChannelPriority;
 
+/* Design: MCAL-39304 */
 /** \brief DMA Channel status structure */
 typedef struct
 {
@@ -445,6 +488,7 @@ typedef struct
     Cdd_Dma_OverflowStatusType    OverflowStatus;
 } Cdd_Dma_ChannelStatus;
 
+/* Design: MCAL-39279 */
 /** \brief DMA Channel properties */
 typedef struct Cdd_Dma_ChannelParamsTag
 {
@@ -468,15 +512,17 @@ typedef struct Cdd_Dma_ChannelParamsTag
     Cdd_Dma_PeriEvtTriggerSrcType    PeripheralEventTrigSrc;
 } Cdd_Dma_ChannelParamsType;
 
+/* Design: MCAL-39292 */
 /** \brief Burst and Transfer size parameter */
 typedef struct Cdd_Dma_TransferSizeTag
 {
     /** \brief  DMA channel burst size */
-    uint8  BurstSize;
+    uint16 BurstSize;
     /** \brief  DMA channel transfer size */
-    uint16 TransferSize;
+    uint32 TransferSize;
 } Cdd_Dma_TransferSizeType;
 
+/* Design: MCAL-39293 */
 /** \brief Source burst step and transfer step parameter */
 typedef struct Cdd_Dma_TransferSrcStepTag
 {
@@ -486,6 +532,7 @@ typedef struct Cdd_Dma_TransferSrcStepTag
     sint16 SrcTransferStep;
 } Cdd_Dma_TransferSrcStepType;
 
+/* Design: MCAL-39294 */
 /** \brief Destination burst step and transfer step parameter */
 typedef struct Cdd_Dma_TransferDestStepTag
 {
@@ -495,31 +542,35 @@ typedef struct Cdd_Dma_TransferDestStepTag
     sint16 DestTransferStep;
 } Cdd_Dma_TransferDestStepType;
 
+/* Design: MCAL-39297 */
 /** \brief MPU Region channel mask parameter */
 typedef uint16 Cdd_Dma_MpuChmaskType;
 
+/* Design: MCAL-39295 */
 /** \brief Source wrap size, wrap step and beginning address parameter*/
 typedef struct Cdd_Dma_TransferSrcWrapTag
 {
     /** \brief  DMA channel source wrap size */
-    uint16 SrcWrapSize;
+    uint32 SrcWrapSize;
     /** \brief  DMA channel source wrap step */
     sint16 SrcWrapStep;
     /** \brief  DMA channel source beginning  address */
     uint32 SrcBegAddress;
 } Cdd_Dma_TransferSrcWrapType;
 
+/* Design: MCAL-39296 */
 /** \brief Destination wrap size, wrap step and beginning address parameter */
 typedef struct Cdd_Dma_TransferDestWrapTag
 {
     /** \brief  DMA channel destination wrap size */
-    uint16 DestWrapSize;
+    uint32 DestWrapSize;
     /** \brief  DMA channel destination wrap step */
     sint16 DestWrapStep;
     /** \brief  DMA channel destination beginning  address */
     uint32 DestBegAddress;
 } Cdd_Dma_TransferDestWrapType;
 
+/* Design: MCAL-39280 */
 /** \brief DMA transfer properties */
 typedef struct Cdd_Dma_TransferParamsTag
 {
@@ -539,7 +590,8 @@ typedef struct Cdd_Dma_TransferParamsTag
     Cdd_Dma_TransferDestWrapType DestWrapProperties;
 } Cdd_Dma_TransferParamsType;
 
-/** \brief DMA Channel configuration structure */
+/* Design: MCAL-39281 */
+/** \brief DMA MPU Region configuration structure */
 typedef struct Cdd_Dma_MpuRegionCfgTag
 {
     /** \brief  Dma Mpu Region */
@@ -554,6 +606,7 @@ typedef struct Cdd_Dma_MpuRegionCfgTag
     Cdd_Dma_MpuChmaskType       chmask;
 } Cdd_Dma_MpuRegionCfgType;
 
+/* Design: MCAL-39310 */
 /** \brief CDD DMA config type */
 typedef struct Cdd_Dma_HwInstanceCfgTag
 {
@@ -579,6 +632,7 @@ typedef struct Cdd_Dma_HwInstanceCfgTag
     Cdd_Dma_MpuRegionCfgType  mpucfg[CDD_DMA_MPU_REGION_COUNT];
 } Cdd_Dma_HwInstanceCfgType;
 
+/* Design: MCAL-39311 */
 /** \brief CDD DMA channel config type */
 typedef struct Cdd_Dma_ChannelCfgTag
 {
@@ -594,6 +648,7 @@ typedef struct Cdd_Dma_ChannelCfgTag
     Cdd_Dma_NotifyType   overflowintnotification;
 } Cdd_Dma_ChannelCfgType;
 
+/* Design: MCAL-39278 */
 /** \brief CDD DMA config type */
 typedef struct Cdd_Dma_ConfigTag
 {
@@ -602,6 +657,50 @@ typedef struct Cdd_Dma_ConfigTag
     /** \brief Cdd_Dma Channel Cfg Type */
     Cdd_Dma_ChannelCfgType    chcfg[CDD_DMA_CHANNEL_COUNT];
 } Cdd_Dma_ConfigType;
+
+/* Design: MCAL-39312 */
+/** \brief  CDD_DMA periodic readback type */
+typedef struct Cdd_Dma_PeriodicReadBackDataTag
+{
+    /** \brief Register data for RTDMA_DMACTRL register */
+    uint32 CddDmaDmactrl;
+    /** \brief Register data for RTDMA_SWPRI1 register */
+    uint32 CddDmaSwpri1;
+    /** \brief Register data for RTDMA_SWPRI2 register */
+    uint32 CddDmaSwpri2;
+    /** \brief Register data for RTDMA_MODE register */
+    uint32 CddDmaMode;
+    /** \brief Register data for RTDMA_BURST_SIZE register */
+    uint32 CddDmaBurstSize;
+    /** \brief Register data for RTDMA_SRC_BURST_STEP register */
+    uint32 CddDmaSrcBurstStep;
+    /** \brief Register data for RTDMA_DST_BURST_STEP register */
+    uint32 CddDmaDstBurstStep;
+    /** \brief Register data for RTDMA_TRANSFER_SIZE register */
+    uint32 CddDmaTransferSize;
+    /** \brief Register data for RTDMA_SRC_TRANSFER_STEP register */
+    uint32 CddDmaSrcTransferStep;
+    /** \brief Register data for RTDMA_DST_TRANSFER_STEP register */
+    uint32 CddDmaDstTransferStep;
+    /** \brief Register data for RTDMA_SRC_WRAP_SIZE register */
+    uint32 CddDmaSrcWrapSize;
+    /** \brief Register data for RTDMA_SRC_WRAP_STEP register */
+    uint32 CddDmaSrcWrapStep;
+    /** \brief Register data for RTDMA_DST_WRAP_SIZE register */
+    uint32 CddDmaDstWrapSize;
+    /** \brief Register data for RTDMA_DST_WRAP_STEP register */
+    uint32 CddDmaDstWrapStep;
+    /** \brief Register data for RTDMA_BURST_INTF_CTRL register */
+    uint32 CddDmaBurstIntfCtrl;
+    /** \brief Register data for RTDMA_SRC_BEG_ADDR_SHADOW register */
+    uint32 CddDmaSrcBegAddrShadow;
+    /** \brief Register data for RTDMA_SRC_ADDR_SHADOW register */
+    uint32 CddDmaSrcAddrShadow;
+    /** \brief Register data for RTDMA_DST_BEG_ADDR_SHADOW register */
+    uint32 CddDmaDstBegAddrShadow;
+    /** \brief Register data for RTDMA_DST_ADDR_SHADOW register */
+    uint32 CddDmaDstAddrShadow;
+} Cdd_Dma_PeriodicReadBackDataType;
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
@@ -611,6 +710,7 @@ typedef struct Cdd_Dma_ConfigTag
  *********************************************************************************************************************/
 
 #if (STD_ON == CDD_DMA_GET_VERSION_INFO_API)
+/* Design: MCAL-39133, MCAL-39134 */
 /** \brief Service to provide the version information of Cdd Dma module
  *
  * \param[out] VersionInfoPtr is the pointer to CDD DMA driver version information.
@@ -624,6 +724,7 @@ FUNC(void, CDD_DMA_CODE)
 Cdd_Dma_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_DMA_APPL_DATA) VersionInfoPtr);
 #endif /* CDD_DMA_GET_VERSION_INFO_API */
 
+/* Design: MCAL-39135, MCAL-39136, MCAL-39137, MCAL-39138 */
 /** \brief Service to initialize CDD DMA driver
  *
  * \param[in] ConfigPtr is the NULL pointer for pre compile variant
@@ -634,6 +735,7 @@ Cdd_Dma_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_DMA_APPL_DATA) 
  *********************************************************************************************************************/
 FUNC(void, CDD_DMA_CODE) Cdd_Dma_Init(P2CONST(Cdd_Dma_ConfigType, AUTOMATIC, CDD_DMA_CONFIG_DATA) ConfigPtr);
 
+/* Design: MCAL-39139, MCAL-39140 */
 /** \brief Service to deinitialize CDD DMA driver
  *
  * \pre None
@@ -642,6 +744,7 @@ FUNC(void, CDD_DMA_CODE) Cdd_Dma_Init(P2CONST(Cdd_Dma_ConfigType, AUTOMATIC, CDD
  *********************************************************************************************************************/
 FUNC(void, CDD_DMA_CODE) Cdd_Dma_DeInit(void);
 
+/* Design: MCAL-39141, MCAL-39142, MCAL-39143, MCAL-39144, MCAL-39145 */
 /** \brief Service to set the channel properties of a DMA channel
  *
  * \param[in] ChannelId : Symbolic name of the channel for which the channel properties are configured
@@ -657,6 +760,7 @@ FUNC(Std_ReturnType, CDD_DMA_CODE)
 Cdd_Dma_SetChannelProperties(VAR(uint8, AUTOMATIC) ChannelId,
                              VAR(Cdd_Dma_ChannelParamsType, AUTOMATIC) ChannelProperties);
 
+/* Design: MCAL-39146, MCAL-39147, MCAL-39148, MCAL-39149, MCAL-39150 */
 /** \brief Service to set the transfer properties of a DMA channel
  *
  * \param[in] ChannelId : Symbolic name of the channel for which the transfer properties are configured
@@ -672,6 +776,7 @@ FUNC(Std_ReturnType, CDD_DMA_CODE)
 Cdd_Dma_SetTransferProperties(VAR(uint8, AUTOMATIC) ChannelId,
                               VAR(Cdd_Dma_TransferParamsType, AUTOMATIC) TransferProperties);
 
+/* Design: MCAL-39151, MCAL-39152, MCAL-39153, MCAL-39154, MCAL-39155 */
 /** \brief Service to set the burst size and transfer size of a DMA channel
  *
  * \param[in] ChannelId : Symbolic name of the channel for which the transfer size properties are configured
@@ -684,9 +789,10 @@ Cdd_Dma_SetTransferProperties(VAR(uint8, AUTOMATIC) ChannelId,
  * \retval E_NOT_OK: Failed to set burst size and transfer size
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE)
-Cdd_Dma_SetTransferSize(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint8, AUTOMATIC) BurstSize,
-                        VAR(uint16, AUTOMATIC) TransferSize);
+Cdd_Dma_SetTransferSize(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint16, AUTOMATIC) BurstSize,
+                        VAR(uint32, AUTOMATIC) TransferSize);
 
+/* Design: MCAL-39156, MCAL-39157, MCAL-39158, MCAL-39159, MCAL-39160 */
 /** \brief Service to set the transfer source properties : source burst step, source transfer step of a DMA channel
  *
  * \param[in] ChannelId : Symbolic name of the channel for which the source burst step and source transfer step
@@ -703,6 +809,7 @@ FUNC(Std_ReturnType, CDD_DMA_CODE)
 Cdd_Dma_SetTransferSrcProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(sint16, AUTOMATIC) SrcBurstStep,
                                  VAR(sint16, AUTOMATIC) SrcTransferStep);
 
+/* Design: MCAL-39161, MCAL-39162, MCAL-39163, MCAL-39164, MCAL-39165 */
 /** \brief Service to set the transfer destination properties : destination burst step, destination transfer step of a
  *DMA channel
  *
@@ -720,6 +827,7 @@ FUNC(Std_ReturnType, CDD_DMA_CODE)
 Cdd_Dma_SetTransferDestProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(sint16, AUTOMATIC) DestBurstStep,
                                   VAR(sint16, AUTOMATIC) DestTransferStep);
 
+/* Design: MCAL-39166, MCAL-39167, MCAL-39168, MCAL-39169, MCAL-39170 */
 /** \brief Service to set the transfer source address of a DMA channel
  *
  * \param[in] ChannelId : Symbolic name of the channel for which the source address is configured
@@ -733,6 +841,7 @@ Cdd_Dma_SetTransferDestProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(sint16, A
 FUNC(Std_ReturnType, CDD_DMA_CODE)
 Cdd_Dma_SetTransferSrcAddress(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint32, AUTOMATIC) SrcAddress);
 
+/* Design: MCAL-39171, MCAL-39172, MCAL-39173, MCAL-39174, MCAL-39175 */
 /** \brief Service to set the transfer destination address of a DMA channel
  *
  * \param[in] ChannelId : Symbolic name of the channel for which the destination address is configured
@@ -746,6 +855,7 @@ Cdd_Dma_SetTransferSrcAddress(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint32, AUTOM
 FUNC(Std_ReturnType, CDD_DMA_CODE)
 Cdd_Dma_SetTransferDestAddress(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint32, AUTOMATIC) DestAddress);
 
+/* Design: MCAL-39176, MCAL-39177, MCAL-39178, MCAL-39179, MCAL-39180 */
 /** \brief Service to set the transfer source wrap properties of a DMA channel
  *
  * \param[in] ChannelId : Symbolic name of the channel for which the source wrap properties are configured
@@ -759,9 +869,10 @@ Cdd_Dma_SetTransferDestAddress(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint32, AUTO
  * \retval E_NOT_OK: Failed to set source wrap properties
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE)
-Cdd_Dma_SetTransferWrapSrcProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint16, AUTOMATIC) SrcWrapSize,
+Cdd_Dma_SetTransferWrapSrcProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint32, AUTOMATIC) SrcWrapSize,
                                      VAR(sint16, AUTOMATIC) SrcWrapStep, VAR(uint32, AUTOMATIC) SrcBegAddress);
 
+/* Design: MCAL-39181, MCAL-39182, MCAL-39183, MCAL-39184, MCAL-39185 */
 /** \brief Service to set the transfer destination wrap properties of a DMA channel
  *
  * \param[in] ChannelId : Symbolic name of the channel for which the destination wrap properties are configured
@@ -775,9 +886,10 @@ Cdd_Dma_SetTransferWrapSrcProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint16
  * \retval E_NOT_OK: Failed to set destination wrap properties
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE)
-Cdd_Dma_SetTransferWrapDestProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint16, AUTOMATIC) DestWrapSize,
+Cdd_Dma_SetTransferWrapDestProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint32, AUTOMATIC) DestWrapSize,
                                       VAR(sint16, AUTOMATIC) DestWrapStep, VAR(uint32, AUTOMATIC) DestBegAddress);
 
+/* Design: MCAL-39186, MCAL-39187, MCAL-39188, MCAL-39189, MCAL-39190, MCAL-39191 */
 /** \brief Service to enable peripheral event triggers of a DMA channel
  *
  * \param[in] ChannelId : Symbolic name of the channel for which trigger shall be enabled
@@ -789,6 +901,7 @@ Cdd_Dma_SetTransferWrapDestProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint1
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_EnablePeripheralEventTrigger(VAR(uint8, AUTOMATIC) ChannelId);
 
+/* Design: MCAL-39192, MCAL-39193, MCAL-39194, MCAL-39195, MCAL-39196, MCAL-39197 */
 /** \brief Service to disable peripheral event triggers of a DMA channel
  *
  * \param[in] ChannelId : Symbolic name of the channel for which trigger shall be disabled
@@ -800,6 +913,7 @@ FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_EnablePeripheralEventTrigger(VAR(uint
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_DisablePeripheralEventTrigger(VAR(uint8, AUTOMATIC) ChannelId);
 
+/* Design: MCAL-39198, MCAL-39199, MCAL-39200, MCAL-39201, MCAL-39202 */
 /** \brief Service to set the peripheral event trigger source for a DMA channel
  *
  * \param[in] ChannelId : Symbolic name of the channel for which trigger source shall be set
@@ -814,6 +928,7 @@ FUNC(Std_ReturnType, CDD_DMA_CODE)
 Cdd_Dma_SetPeripheralEventTriggerSource(VAR(uint8, AUTOMATIC) ChannelId,
                                         VAR(Cdd_Dma_PeriEvtTriggerSrcType, AUTOMATIC) PeripheralEventTrigSrc);
 
+/* Design: MCAL-39203, MCAL-39204, MCAL-39205, MCAL-39206 */
 /** \brief Service to start or enable a DMA channel
  *
  * \param[in] ChannelId : Symbolic name of the channel which shall be enabled
@@ -825,6 +940,7 @@ Cdd_Dma_SetPeripheralEventTriggerSource(VAR(uint8, AUTOMATIC) ChannelId,
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_StartChannelTransfer(VAR(uint8, AUTOMATIC) ChannelId);
 
+/* Design: MCAL-39207, MCAL-39208, MCAL-39209, MCAL-39210 */
 /** \brief Service to stop or disable a DMA channel.
  *
  * \param[in] ChannelId : Symbolic name of the channel for which transfer shall be stopped
@@ -836,6 +952,7 @@ FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_StartChannelTransfer(VAR(uint8, AUTOM
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_StopChannelTransfer(VAR(uint8, AUTOMATIC) ChannelId);
 
+/* Design: MCAL-39211, MCAL-39212, MCAL-39213, MCAL-39214, MCAL-39215 */
 /** \brief Service to force the peripheral event trigger for the channel.
  *
  * \param[in] ChannelId : Symbolic name of the DMA channel for which trigger shall be forced
@@ -847,6 +964,7 @@ FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_StopChannelTransfer(VAR(uint8, AUTOMA
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_ForcePeripheralEventTrigger(VAR(uint8, AUTOMATIC) ChannelId);
 
+/* Design: MCAL-39216, MCAL-39217, MCAL-39218, MCAL-39219, MCAL-39220 */
 /** \brief Service to clear the peripheral event trigger for the channel.
  *
  * \param[in] ChannelId : Symbolic name of the channel for which trigger shall be cleared
@@ -858,6 +976,7 @@ FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_ForcePeripheralEventTrigger(VAR(uint8
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_ClearPeripheralEventTrigger(VAR(uint8, AUTOMATIC) ChannelId);
 
+/* Design: MCAL-39221, MCAL-39222, MCAL-39223 */
 /** \brief Service to trigger a soft reset for the channel.
  *
  * \param[in] ChannelId : Symbolic name of the channel for which for which soft trigger shall be triggered
@@ -869,6 +988,7 @@ FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_ClearPeripheralEventTrigger(VAR(uint8
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_TriggerSoftReset(VAR(uint8, AUTOMATIC) ChannelId);
 
+/* Design: MCAL-39224, MCAL-39225, MCAL-39226, MCAL-39227 */
 /** \brief Service to set channel priority.
  *
  * \param[in] ChannelId : Symbolic name of the channel for which priority shall be set
@@ -882,6 +1002,22 @@ FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_TriggerSoftReset(VAR(uint8, AUTOMATIC
 FUNC(Std_ReturnType, CDD_DMA_CODE)
 Cdd_Dma_SetChannelPriority(VAR(uint8, AUTOMATIC) ChannelId, Cdd_Dma_ChannelPriority Priority);
 
+/* Design: MCAL-39252, MCAL-39253, MCAL-39254, MCAL-39255 */
+/** \brief Service to get channel priority.
+ *
+ * \param[in] ChannelId : Symbolic name of the channel for which priority shall be read
+ * \param[out] Priority : Pointer to memory location where the channel priority will be stored
+ * \pre None
+ * \post None
+ * \return Status of reading channel priority
+ * \retval E_OK: Successfully read channel priority
+ * \retval E_NOT_OK: Failed to read channel priority
+ *********************************************************************************************************************/
+FUNC(Std_ReturnType, CDD_DMA_CODE)
+Cdd_Dma_GetChannelPriority(VAR(uint8, AUTOMATIC) ChannelId,
+                           P2VAR(Cdd_Dma_ChannelPriority, AUTOMATIC, CDD_DMA_APPL_DATA) Priority);
+
+/* Design: MCAL-39228, MCAL-39229, MCAL-39230, MCAL-39231 */
 /** \brief Service to get the channel status : peripheral event trigger status, transfer status, burst status, run
  *status and overflow status
  *
@@ -896,6 +1032,7 @@ FUNC(void, CDD_DMA_CODE)
 Cdd_Dma_GetChannelStatus(VAR(uint8, AUTOMATIC) ChannelId,
                          P2VAR(Cdd_Dma_ChannelStatus, AUTOMATIC, CDD_DMA_APPL_DATA) ChannelStatus);
 
+/* Design: MCAL-39232, MCAL-39233, MCAL-39234, MCAL-39235 */
 /** \brief Service to clear the overflow error flag for a DMA channel.
  *
  * \param[in] ChannelId : Symbolic name of the channel for which the overflow error needs to be cleared
@@ -907,6 +1044,7 @@ Cdd_Dma_GetChannelStatus(VAR(uint8, AUTOMATIC) ChannelId,
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_ClearErrorFlag(VAR(uint8, AUTOMATIC) ChannelId);
 
+/* Design: MCAL-39240, MCAL-39241, MCAL-39242, MCAL-39243 */
 /** \brief Service to commit DMA configurable properties such as priority scheme, channel priority and emulation mode
  *for a specific instance.
  *
@@ -919,6 +1057,7 @@ FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_ClearErrorFlag(VAR(uint8, AUTOMATIC) 
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_SetDmaCfgCommit(VAR(uint8, AUTOMATIC) HwInstanceId);
 
+/* Design: MCAL-39236, MCAL-39237, MCAL-39238, MCAL-39239 */
 /** \brief Service to commit DMA channel configurations for a specific channel.
  *
  * \param[in] ChannelId Symbolic name of the DMA channel
@@ -930,6 +1069,7 @@ FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_SetDmaCfgCommit(VAR(uint8, AUTOMATIC)
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_SetChannelCommit(VAR(uint8, AUTOMATIC) ChannelId);
 
+/* Design: MCAL-39248, MCAL-39249, MCAL-39250, MCAL-39251 */
 /** \brief Service to commit Mpu configuration: MPUEN for a specific instance.
  *
  * \param[in] HwInstanceId Symbolic name of the DMA hardware instance
@@ -941,6 +1081,7 @@ FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_SetChannelCommit(VAR(uint8, AUTOMATIC
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_SetMpuCfgCommit(VAR(uint8, AUTOMATIC) HwInstanceId);
 
+/* Design: MCAL-39244, MCAL-39245, MCAL-39246, MCAL-39247 */
 /** \brief Service to commit Mpu Region configurations for a specific MPU region.
  *
  * \param[in] MpuRegionId Symbolic name of the DMA MPU region
@@ -951,6 +1092,21 @@ FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_SetMpuCfgCommit(VAR(uint8, AUTOMATIC)
  * \retval E_NOT_OK: Failed to commit Mpu Region configuration
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_SetMpuRegionCommit(VAR(uint16, AUTOMATIC) MpuRegionId);
+
+/* Design: MCAL-39256, MCAL-39257, MCAL-39258, MCAL-39259 */
+/** \brief Service to read all the statically configured registers for periodic readback
+ *
+ * \param[in] ChannelId Symbolic name of the DMA channel
+ * \param[out] ReadBackRegisterdata Pointer to the read back registers structure
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_DMA_CODE)
+Cdd_Dma_PeriodicReadback(VAR(uint8, AUTOMATIC) ChannelId,
+                         P2VAR(Cdd_Dma_PeriodicReadBackDataType, AUTOMATIC, CDD_DMA_APPL_DATA) ReadBackRegisterdata);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

@@ -89,6 +89,12 @@
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Dma_TI_F29H85x/BSWModuleEntry/Cdd_Dma_SetMpuCfgCommit</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Dma_TI_F29H85x/BSWModuleEntry/Cdd_Dma_GetChannelPriority</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Dma_TI_F29H85x/BSWModuleEntry/Cdd_Dma_PeriodicReadback</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
           </IMPLEMENTED-ENTRYS>
           <MODULE-ID>255</MODULE-ID>
           <BSW-MODULE-DEPENDENCYS>
@@ -498,6 +504,30 @@
                   </CALL-POINTS>
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Dma_TI_F29H85x/BSWModuleEntry/Cdd_Dma_SetMpuCfgCommit</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="c9186dab-faf6-5643-ad23-3db033d1a884">
+                  <SHORT-NAME>Cdd_Dma_GetChannelPriority</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Dma_TI_F29H85x/BSWModuleEntry/Cdd_Dma_GetChannelPriority</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="67556dab-3245-8754-aa12-675033d11124">
+                  <SHORT-NAME>Cdd_Dma_PeriodicReadback</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Dma_TI_F29H85x/BSWModuleEntry/Cdd_Dma_PeriodicReadback</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
               </ENTITYS>
             </BSW-INTERNAL-BEHAVIOR>
           </INTERNAL-BEHAVIORS>
@@ -601,7 +631,7 @@
               </MEMORY-SECTION>
             </MEMORY-SECTIONS>
           </RESOURCE-CONSUMPTION>
-          <SW-VERSION>1.0.0</SW-VERSION>
+          <SW-VERSION>1.1.0</SW-VERSION>
           <VENDOR-ID>44</VENDOR-ID>
           <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
           <BEHAVIOR-REF DEST="BSW-INTERNAL-BEHAVIOR">/Cdd_Dma_TI_F29H85x/Cdd_Dma/Cdd_Dma_Behavior</BEHAVIOR-REF>
@@ -797,7 +827,7 @@
             <BSW-MODULE-ENTRY UUID="3e168424-b6c2-41dc-9966-3d29a3e3fc1c">
               <SHORT-NAME>Cdd_Dma_GetVersionInfo</SHORT-NAME>
               <SERVICE-ID>0</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -827,7 +857,7 @@
             <BSW-MODULE-ENTRY UUID="6b08d495-fd6b-41a4-b46b-d42b7b7c523a">
               <SHORT-NAME>Cdd_Dma_SetChannelProperties</SHORT-NAME>
               <SERVICE-ID>3</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -837,7 +867,7 @@
             <BSW-MODULE-ENTRY UUID="80d77a19-4fcc-457d-b26f-080010df968b">
               <SHORT-NAME>Cdd_Dma_SetTransferProperties</SHORT-NAME>
               <SERVICE-ID>4</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -847,7 +877,7 @@
             <BSW-MODULE-ENTRY UUID="8fedf76d-8901-4b5b-b1e7-6da08c75e682">
               <SHORT-NAME>Cdd_Dma_SetTransferSize</SHORT-NAME>
               <SERVICE-ID>5</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -857,7 +887,7 @@
             <BSW-MODULE-ENTRY UUID="8936dfdf-c094-4c5f-ab76-396e5d693f6d">
               <SHORT-NAME>Cdd_Dma_SetTransferSrcProperties</SHORT-NAME>
               <SERVICE-ID>6</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -867,7 +897,7 @@
             <BSW-MODULE-ENTRY UUID="8edd073c-5834-4ca7-ae7e-479fbf57c147">
               <SHORT-NAME>Cdd_Dma_SetTransferDestProperties</SHORT-NAME>
               <SERVICE-ID>7</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -877,7 +907,7 @@
             <BSW-MODULE-ENTRY UUID="d7fbec07-41dd-427e-8695-e42de35131cb">
               <SHORT-NAME>Cdd_Dma_SetTransferSrcAddress</SHORT-NAME>
               <SERVICE-ID>8</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -887,7 +917,7 @@
             <BSW-MODULE-ENTRY UUID="555a6617-cc95-4932-aebb-9fd87b7df55a">
               <SHORT-NAME>Cdd_Dma_SetTransferDestAddress</SHORT-NAME>
               <SERVICE-ID>9</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -897,7 +927,7 @@
             <BSW-MODULE-ENTRY UUID="0a46feb7-7953-4696-93c2-4c4bea491977">
               <SHORT-NAME>Cdd_Dma_SetTransferWrapSrcProperties</SHORT-NAME>
               <SERVICE-ID>10</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -907,7 +937,7 @@
             <BSW-MODULE-ENTRY UUID="d6dff287-17da-40d3-a454-a4d7d97b58b3">
               <SHORT-NAME>Cdd_Dma_SetTransferWrapDestProperties</SHORT-NAME>
               <SERVICE-ID>11</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -917,7 +947,7 @@
             <BSW-MODULE-ENTRY UUID="e495d021-598a-432a-9f37-0fc6437ae48f">
               <SHORT-NAME>Cdd_Dma_EnablePeripheralEventTrigger</SHORT-NAME>
               <SERVICE-ID>12</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -927,7 +957,7 @@
             <BSW-MODULE-ENTRY UUID="87f7c820-b706-48f5-9436-7873dac98db6">
               <SHORT-NAME>Cdd_Dma_DisablePeripheralEventTrigger</SHORT-NAME>
               <SERVICE-ID>13</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -937,7 +967,7 @@
             <BSW-MODULE-ENTRY UUID="3c5134d6-19f0-41c9-bb50-27472f7800b2">
               <SHORT-NAME>Cdd_Dma_SetPeripheralEventTriggerSource</SHORT-NAME>
               <SERVICE-ID>14</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -947,7 +977,7 @@
             <BSW-MODULE-ENTRY UUID="1c2ef7c4-eb8c-422b-9793-f8ea5e961b8e">
               <SHORT-NAME>Cdd_Dma_StartChannelTransfer</SHORT-NAME>
               <SERVICE-ID>15</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -957,7 +987,7 @@
             <BSW-MODULE-ENTRY UUID="0d9c589e-828e-4e8c-a1cb-c4aff2f2a286">
               <SHORT-NAME>Cdd_Dma_StopChannelTransfer</SHORT-NAME>
               <SERVICE-ID>16</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -967,7 +997,7 @@
             <BSW-MODULE-ENTRY UUID="e72efcbe-0f05-4fba-96a3-dfdb2343a2c5">
               <SHORT-NAME>Cdd_Dma_ForcePeripheralEventTrigger</SHORT-NAME>
               <SERVICE-ID>17</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -977,7 +1007,7 @@
             <BSW-MODULE-ENTRY UUID="d38c4ee0-f224-4707-85d9-54d3fbe42155">
               <SHORT-NAME>Cdd_Dma_ClearPeripheralEventTrigger</SHORT-NAME>
               <SERVICE-ID>18</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -987,7 +1017,7 @@
             <BSW-MODULE-ENTRY UUID="95315dbd-50ba-41f8-a1b7-1b4e7548adbb">
               <SHORT-NAME>Cdd_Dma_TriggerSoftReset</SHORT-NAME>
               <SERVICE-ID>19</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -997,7 +1027,7 @@
             <BSW-MODULE-ENTRY UUID="c1e98893-db63-4cf2-a2cd-17ebdf1b894a">
               <SHORT-NAME>Cdd_Dma_SetChannelPriority</SHORT-NAME>
               <SERVICE-ID>20</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -1007,7 +1037,7 @@
             <BSW-MODULE-ENTRY UUID="613eaecb-08d8-40b1-8ebd-a9a8387dbbb4">
               <SHORT-NAME>Cdd_Dma_GetChannelStatus</SHORT-NAME>
               <SERVICE-ID>21</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -1017,7 +1047,7 @@
             <BSW-MODULE-ENTRY UUID="7734363b-ae9e-49a8-997d-a7ff1faa5451">
               <SHORT-NAME>Cdd_Dma_ClearErrorFlag</SHORT-NAME>
               <SERVICE-ID>22</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
@@ -1058,6 +1088,26 @@
               <SHORT-NAME>Cdd_Dma_SetMpuCfgCommit</SHORT-NAME>
               <SERVICE-ID>26</SERVICE-ID>
               <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="56443906-8812-6644-8b31-04112418a5b2">
+              <SHORT-NAME>Cdd_Dma_GetChannelPriority</SHORT-NAME>
+              <SERVICE-ID>27</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="34123906-8812-7865-8b31-78122418a5b2">
+              <SHORT-NAME>Cdd_Dma_PeriodicReadback</SHORT-NAME>
+              <SERVICE-ID>28</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>

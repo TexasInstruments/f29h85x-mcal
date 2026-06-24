@@ -124,7 +124,7 @@ extern "C" {
 void ISR_Gpt_Ch0Isr(void); 
 MCAL_LIB_INT_ISR(Os_Isr6);
 
-/* Category 1 RTINT ISR function prototype. */
+/* Category 1 ISR function prototype. */
 MCAL_LIB_INT_ISR(Gpt_Ch1Isr); 
 
 

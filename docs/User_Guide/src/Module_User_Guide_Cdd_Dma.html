@@ -49,7 +49,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                26.00.00
+                26.00.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -61,7 +61,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.00 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.01 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">2. Overview of MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">3. MCAL Configurator And EB Tresos User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
@@ -113,17 +113,20 @@
 <li class="toctree-l4"><a class="reference internal" href="#resource-allocator">5.12.8.2. Resource Allocator</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#configuration">5.12.9. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">5.12.9.1. Configuration Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-dma-module">5.12.9.2. Steps To Configure Cdd DMA Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#safety-mechanism">5.12.9. Safety Mechanism</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">5.12.10. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">5.12.10.1. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-dma-module">5.12.10.2. Steps To Configure Cdd DMA Module</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#examples">5.12.10. Examples</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#cdd-dma-example-mem-transfer">5.12.10.1. Cdd_Dma_Example_Mem_Transfer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cdd-dma-example-mem-transfer-mpu">5.12.10.2. Cdd_Dma_Example_Mem_Transfer_Mpu</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#setup-required-to-run-examples">5.12.10.3. Setup Required to Run Examples</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#how-to-run-examples">5.12.10.4. How to Run Examples</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#file-structure">5.12.10.5. File Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">5.12.11. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-dma-example-mem-transfer">5.12.11.1. Cdd_Dma_Example_Mem_Transfer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-dma-example-mem-transfer-mpu">5.12.11.2. Cdd_Dma_Example_Mem_Transfer_Mpu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-dma-example-adc-data-binning">5.12.11.3. Cdd_Dma_Example_Adc_Data_Binning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-dma-example-gpt-ping-pong-buffer">5.12.11.4. Cdd_Dma_Example_Gpt_Ping_Pong_Buffer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup-required-to-run-examples">5.12.11.5. Setup Required to Run Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-run-examples">5.12.11.6. How to Run Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">5.12.11.7. File Structure</a></li>
 </ul>
 </li>
 </ul>
@@ -808,8 +811,45 @@ Interrupt category should be selected in the Cdd_Dma plugin.</p>
 </section>
 </section>
 </section>
+<section id="safety-mechanism">
+<h2><span class="section-number">5.12.9. </span>Safety Mechanism<a class="headerlink" href="#safety-mechanism" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>TI Diagnostic Unique Identifier</p></th>
+<th class="head"><p>Summary</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RTDMA1</p></td>
+<td><p>Periodic Software Read Back of Static Configuration Registers</p></td>
+<td><p>API is provided to read back the static configuration registers</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTDMA2</p></td>
+<td><p>Software readback of written configuration</p></td>
+<td><p>API is provided to read back the configured values after configuration</p></td>
+</tr>
+<tr class="row-even"><td><p>RTDMA3</p></td>
+<td><p>LOCK Mechanism for Control Registers</p></td>
+<td><p>RTDMA control register locking is configurable. When enabled, the driver automatically unlocks the registers before each write operation and re-locks them afterwards, ensuring registers are protected all the time except during intentional updates</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTDMA5</p></td>
+<td><p>Access Protection Mechanism for Memories</p></td>
+<td><p>The MPU is configurable and can be enabled via <code class="docutils literal notranslate"><span class="pre">CddDmaMpuEnable</span></code>. When enabled, it monitors all DMA read/write bus accesses and reports violations to the Error Signaling Module (ESM)</p></td>
+</tr>
+<tr class="row-even"><td><p>RTDMA6</p></td>
+<td><p>DMA Overflow Interrupt</p></td>
+<td><p>The overflow interrupt is configurable during run time and can be enabled per channel. When enabled, an overflow notification callback is also configurable via <code class="docutils literal notranslate"><span class="pre">CddDmaOverflowIntNotification</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>More details of Safety Mechanisms can be found in Safety Manual.</p>
+</div>
+</section>
 <section id="configuration">
-<h2><span class="section-number">5.12.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.12.10. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>The Cdd DMA Driver implementation supports single configuration variants, namely Pre-Compile config. The driver expects generated <strong>Cdd_Dma_Cfg.h</strong> to be present as input file.
 The associated Cdd DMA driver configuration generated source file is <strong>Cdd_Dma_Cfg.c</strong>.</p>
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
@@ -818,12 +858,12 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 <p>Refer section <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#getting-started-with-eb-tresos"><span class="std std-ref">Getting Started with EB Tresos</span></a> of Chapter <strong>MCAL Configuration and EB Tresos</strong> for more information on how to load plugin and generate the configuration files.</p>
 </div>
 <section id="configuration-parameters">
-<h3><span class="section-number">5.12.9.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.12.10.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
 <section id="cdddmageneral">
-<h4><span class="section-number">5.12.9.1.1. </span>CddDmaGeneral<a class="headerlink" href="#cdddmageneral" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.12.10.1.1. </span>CddDmaGeneral<a class="headerlink" href="#cdddmageneral" title="Link to this heading"></a></h4>
 <p>Contains the general configuration parameters of the CDD DMA module.</p>
 <section id="cdddmalockconfigurations">
-<h5><span class="section-number">5.12.9.1.1.1. </span>CddDmaLockConfigurations<a class="headerlink" href="#cdddmalockconfigurations" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.12.10.1.1.1. </span>CddDmaLockConfigurations<a class="headerlink" href="#cdddmalockconfigurations" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -856,7 +896,7 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cdddmadeverrordetect">
-<h5><span class="section-number">5.12.9.1.1.2. </span>CddDmaDevErrorDetect<a class="headerlink" href="#cdddmadeverrordetect" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.12.10.1.1.2. </span>CddDmaDevErrorDetect<a class="headerlink" href="#cdddmadeverrordetect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -889,7 +929,7 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cdddmaversioninfoapi">
-<h5><span class="section-number">5.12.9.1.1.3. </span>CddDmaVersionInfoApi<a class="headerlink" href="#cdddmaversioninfoapi" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.12.10.1.1.3. </span>CddDmaVersionInfoApi<a class="headerlink" href="#cdddmaversioninfoapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -923,14 +963,14 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 </section>
 </section>
 <section id="cdddmaconfig">
-<h4><span class="section-number">5.12.9.1.2. </span>CddDmaConfig<a class="headerlink" href="#cdddmaconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.12.10.1.2. </span>CddDmaConfig<a class="headerlink" href="#cdddmaconfig" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters and sub containers of the Cdd_Dma module.</p>
 <section id="cdddmachannel">
-<h5><span class="section-number">5.12.9.1.2.1. </span>CddDmaChannel<a class="headerlink" href="#cdddmachannel" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.12.10.1.2.1. </span>CddDmaChannel<a class="headerlink" href="#cdddmachannel" title="Link to this heading"></a></h5>
 <p>This container contains the driver configuration for the DMA channel.</p>
 </section>
 <section id="cdddmainstance">
-<h5><span class="section-number">5.12.9.1.2.2. </span>CddDmaInstance<a class="headerlink" href="#cdddmainstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.12.10.1.2.2. </span>CddDmaInstance<a class="headerlink" href="#cdddmainstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -966,7 +1006,7 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="id1">
-<h5><span class="section-number">5.12.9.1.2.3. </span>CddDmaChannel<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.12.10.1.2.3. </span>CddDmaChannel<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1002,7 +1042,7 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cdddmainterruptcategory">
-<h5><span class="section-number">5.12.9.1.2.4. </span>CddDmaInterruptCategory<a class="headerlink" href="#cdddmainterruptcategory" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.12.10.1.2.4. </span>CddDmaInterruptCategory<a class="headerlink" href="#cdddmainterruptcategory" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1038,7 +1078,7 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cdddmachintnotification">
-<h5><span class="section-number">5.12.9.1.2.5. </span>CddDmaChIntNotification<a class="headerlink" href="#cdddmachintnotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.12.10.1.2.5. </span>CddDmaChIntNotification<a class="headerlink" href="#cdddmachintnotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1080,7 +1120,7 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cdddmaoverflowintnotification">
-<h5><span class="section-number">5.12.9.1.2.6. </span>CddDmaOverflowIntNotification<a class="headerlink" href="#cdddmaoverflowintnotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.12.10.1.2.6. </span>CddDmaOverflowIntNotification<a class="headerlink" href="#cdddmaoverflowintnotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1122,7 +1162,7 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 </table>
 </section>
 <section id="cdddmachannelref">
-<h5><span class="section-number">5.12.9.1.2.7. </span>CddDmaChannelRef<a class="headerlink" href="#cdddmachannelref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.12.10.1.2.7. </span>CddDmaChannelRef<a class="headerlink" href="#cdddmachannelref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1154,7 +1194,7 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 </section>
 </section>
 <section id="steps-to-configure-cdd-dma-module">
-<h3><span class="section-number">5.12.9.2. </span>Steps To Configure Cdd DMA Module<a class="headerlink" href="#steps-to-configure-cdd-dma-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.12.10.2. </span>Steps To Configure Cdd DMA Module<a class="headerlink" href="#steps-to-configure-cdd-dma-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool.</p></li>
 <li><p>Ensure DMA channels have been allocated to the CPU context in the Resource Allocator module (see <a class="reference internal" href="#resource-allocator">Resource Allocator</a> section for details on channel allocation).</p></li>
@@ -1183,12 +1223,12 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 </section>
 </section>
 <section id="examples">
-<h2><span class="section-number">5.12.10. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.12.11. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 <p>The example applications demonstrate use of the Cdd_Dma module. The examples are explained below in detail.</p>
 <section id="cdd-dma-example-mem-transfer">
-<h3><span class="section-number">5.12.10.1. </span>Cdd_Dma_Example_Mem_Transfer<a class="headerlink" href="#cdd-dma-example-mem-transfer" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.12.11.1. </span>Cdd_Dma_Example_Mem_Transfer<a class="headerlink" href="#cdd-dma-example-mem-transfer" title="Link to this heading"></a></h3>
 <section id="overview-of-cdd-dma-example-mem-transfer">
-<h4><span class="section-number">5.12.10.1.1. </span>Overview of Cdd_Dma_Example_Mem_Transfer<a class="headerlink" href="#overview-of-cdd-dma-example-mem-transfer" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.12.11.1.1. </span>Overview of Cdd_Dma_Example_Mem_Transfer<a class="headerlink" href="#overview-of-cdd-dma-example-mem-transfer" title="Link to this heading"></a></h4>
 <p>This example demonstrates basic memory-to-memory DMA transfer functionality:</p>
 <ul class="simple">
 <li><p>Initialization</p>
@@ -1235,7 +1275,7 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 </ul>
 </section>
 <section id="sample-log-of-cdd-dma-example-mem-transfer">
-<h4><span class="section-number">5.12.10.1.2. </span>Sample Log of Cdd_Dma_Example_Mem_Transfer<a class="headerlink" href="#sample-log-of-cdd-dma-example-mem-transfer" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.12.11.1.2. </span>Sample Log of Cdd_Dma_Example_Mem_Transfer<a class="headerlink" href="#sample-log-of-cdd-dma-example-mem-transfer" title="Link to this heading"></a></h4>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Executing</span><span class="w"> </span><span class="n">Cdd_Dma_Example_Mem_Transfer</span><span class="w"> </span><span class="n">example</span>
 <span class="o">---------------------------------------------------------------</span>
 <span class="n">CDD</span><span class="w"> </span><span class="n">DMA</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
@@ -1262,9 +1302,9 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 </section>
 </section>
 <section id="cdd-dma-example-mem-transfer-mpu">
-<h3><span class="section-number">5.12.10.2. </span>Cdd_Dma_Example_Mem_Transfer_Mpu<a class="headerlink" href="#cdd-dma-example-mem-transfer-mpu" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.12.11.2. </span>Cdd_Dma_Example_Mem_Transfer_Mpu<a class="headerlink" href="#cdd-dma-example-mem-transfer-mpu" title="Link to this heading"></a></h3>
 <section id="overview-of-cdd-dma-example-mem-transfer-mpu">
-<h4><span class="section-number">5.12.10.2.1. </span>Overview of Cdd_Dma_Example_Mem_Transfer_Mpu<a class="headerlink" href="#overview-of-cdd-dma-example-mem-transfer-mpu" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.12.11.2.1. </span>Overview of Cdd_Dma_Example_Mem_Transfer_Mpu<a class="headerlink" href="#overview-of-cdd-dma-example-mem-transfer-mpu" title="Link to this heading"></a></h4>
 <p>This example demonstrates RTDMA Memory Protection Unit (MPU) functionality by intentionally triggering an MPU violation:</p>
 <ul class="simple">
 <li><p>Initialization</p>
@@ -1333,7 +1373,7 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 </ul>
 </section>
 <section id="sample-log-of-cdd-dma-example-mem-transfer-mpu">
-<h4><span class="section-number">5.12.10.2.2. </span>Sample Log of Cdd_Dma_Example_Mem_Transfer_Mpu<a class="headerlink" href="#sample-log-of-cdd-dma-example-mem-transfer-mpu" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.12.11.2.2. </span>Sample Log of Cdd_Dma_Example_Mem_Transfer_Mpu<a class="headerlink" href="#sample-log-of-cdd-dma-example-mem-transfer-mpu" title="Link to this heading"></a></h4>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Executing</span><span class="w"> </span><span class="n">Cdd_Dma_Example_Mem_Transfer_Mpu</span><span class="w"> </span><span class="n">example</span>
 <span class="o">---------------------------------------------------------------</span>
 <span class="n">CDD</span><span class="w"> </span><span class="n">DMA</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
@@ -1353,23 +1393,263 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 </div>
 </section>
 </section>
+<section id="cdd-dma-example-adc-data-binning">
+<h3><span class="section-number">5.12.11.3. </span>Cdd_Dma_Example_Adc_Data_Binning<a class="headerlink" href="#cdd-dma-example-adc-data-binning" title="Link to this heading"></a></h3>
+<section id="overview-of-cdd-dma-example-adc-data-binning">
+<h4><span class="section-number">5.12.11.3.1. </span>Overview of Cdd_Dma_Example_Adc_Data_Binning<a class="headerlink" href="#overview-of-cdd-dma-example-adc-data-binning" title="Link to this heading"></a></h4>
+<p>This example demonstrates DMA-based data binning with the CDD ADC driver. Data binning is a technique where multiple ADC conversion results for each channel are stored in separate memory locations (bins) for later processing.</p>
+<p>The example uses software-triggered ADC conversions with DMA configured to automatically transfer results into a binned memory structure. Each ADC trigger generates one burst that fills one bin for all channels. The DMA uses burst and transfer stepping to organize data in an interleaved format optimized for per-channel processing.</p>
+<ul class="simple">
+<li><p>Initialization</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EcuM_Init()</span></code> Initializes clock to 200 MHz using <code class="docutils literal notranslate"><span class="pre">Mcu_Init()</span></code></p></li>
+<li><p>Initializes pins using <code class="docutils literal notranslate"><span class="pre">Port_Init()</span></code> to see the print statements on the console</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Adc_Init()</span></code> initializes ADC driver with EB Tresos configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_Init()</span></code> initializes DMA driver with EB Tresos configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Adc_GetVersionInfo()</span></code> retrieves software version information (vendor ID, module ID, SW version)</p></li>
+</ul>
+</li>
+<li><p>DMA Configuration for Data Binning</p>
+<ul>
+<li><p>Configures DMA channel properties using <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_SetChannelProperties()</span></code>:</p>
+<ul>
+<li><p>Peripheral trigger mode (<code class="docutils literal notranslate"><span class="pre">CDD_DMA_TRIGGER_ADCA1</span></code>) - ADC INT1 triggers DMA</p></li>
+<li><p>Continuous mode enabled</p></li>
+<li><p>16-bit data size for read and write operations (ADC results are 16-bit)</p></li>
+<li><p>Channel interrupt enabled at end of transfer (after all 3 bins filled)</p></li>
+</ul>
+</li>
+<li><p>Configures transfer parameters using <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_SetTransferProperties()</span></code>:</p>
+<ul>
+<li><p>Burst size: 10 bytes (5 channels × 2 bytes/channel)</p></li>
+<li><p>Transfer size: 3 bursts (one per bin)</p></li>
+<li><p>Source burst step: +2 bytes (move to next ADC result register)</p></li>
+<li><p>Source transfer step: -8 bytes (wrap back to first ADC result)</p></li>
+<li><p>Destination burst step: +6 bytes (skip 2 bins and move to next channel)</p></li>
+<li><p>Destination transfer step: -22 bytes (wrap back to start and advance to next bin)</p></li>
+<li><p>Source address: ADC result register base address</p></li>
+<li><p>Destination address: Binned buffer array</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Execution Flow</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Configure_Cdd_Dma()</span></code> - Set up DMA for data binning with burst/transfer stepping</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_StartChannelTransfer()</span></code> - Start DMA channel (waits for ADC triggers)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Adc_StartGroupConversion()</span></code> - Trigger first ADC conversion</p></li>
+<li><p>Loop for 3 conversions:</p>
+<ul>
+<li><p>Wait for DMA burst completion using <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_GetChannelStatus()</span></code> (one bin filled)</p></li>
+<li><p>Update ADC status and re-trigger for next bin using <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_UpdateStatusThroughDma()</span></code></p></li>
+</ul>
+</li>
+<li><p>Wait for DMA transfer interrupt (all bins filled) via <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_Dma_notification()</span></code> callback</p></li>
+<li><p>Display binned results organized by channel and bin</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_StopChannelTransfer()</span></code> - Stop DMA channel</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_DeInit()</span></code> and <code class="docutils literal notranslate"><span class="pre">Cdd_Adc_DeInit()</span></code> - Clean up</p></li>
+</ul>
+</li>
+<li><p>Expected Results</p>
+<ul>
+<li><p>3 ADC conversions are triggered by software</p></li>
+<li><p>DMA automatically transfers results into 3 bins per channel</p></li>
+<li><p>Memory layout: [CH0_Bin0, CH0_Bin1, CH0_Bin2, CH1_Bin0, CH1_Bin1, CH1_Bin2, …]</p></li>
+<li><p>Console displays binned conversion results for all 5 channels (CH0-CH4)</p></li>
+<li><p>DMA transfer interrupt confirms all bins are filled</p></li>
+</ul>
+</li>
+<li><p>Setup Required</p>
+<ul>
+<li><p>ADCA is configured for 2.5V internal reference voltage mode</p></li>
+<li><p>Connect desired analog voltages to ADCAIN0, ADCAIN1, ADCAIN6, ADCAIN7, ADCAIN28 pins (corresponding to channels CH0-CH4)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="sample-log-of-cdd-dma-example-adc-data-binning">
+<h4><span class="section-number">5.12.11.3.2. </span>Sample Log of Cdd_Dma_Example_Adc_Data_Binning<a class="headerlink" href="#sample-log-of-cdd-dma-example-adc-data-binning" title="Link to this heading"></a></h4>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Executing</span><span class="w"> </span><span class="n">Cdd_Dma_Example_Adc_Data_Binning</span><span class="w"> </span><span class="n">example</span>
+<span class="n">CDD</span><span class="w"> </span><span class="n">ADC</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="o">---------------------</span>
+<span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">255</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">4</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">ADC</span><span class="w"> </span><span class="n">conversion</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">DMA</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">binning</span><span class="o">:</span>
+<span class="n">Channel</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="w"> </span><span class="mi">4095</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="mi">4095</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">2</span><span class="o">:</span><span class="w"> </span><span class="mi">4095</span>
+<span class="n">Channel</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="w"> </span><span class="mi">744</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="mi">1032</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">2</span><span class="o">:</span><span class="w"> </span><span class="mi">1256</span>
+<span class="n">Channel</span><span class="w"> </span><span class="mi">2</span><span class="o">:</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="w"> </span><span class="mi">2280</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="mi">1766</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">2</span><span class="o">:</span><span class="w"> </span><span class="mi">1428</span>
+<span class="n">Channel</span><span class="w"> </span><span class="mi">3</span><span class="o">:</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="w"> </span><span class="mi">3084</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="mi">2444</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">2</span><span class="o">:</span><span class="w"> </span><span class="mi">1945</span>
+<span class="n">Channel</span><span class="w"> </span><span class="mi">4</span><span class="o">:</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="w"> </span><span class="mi">2592</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="mi">2281</span>
+<span class="w">  </span><span class="n">Bin</span><span class="w"> </span><span class="mi">2</span><span class="o">:</span><span class="w"> </span><span class="mi">1966</span>
+
+<span class="o">===============================================</span>
+
+<span class="n">Cdd_Dma_Example_Adc_Data_Binning</span><span class="w"> </span><span class="n">Example</span><span class="w"> </span><span class="n">executed</span><span class="w"> </span><span class="n">successfully</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="cdd-dma-example-gpt-ping-pong-buffer">
+<h3><span class="section-number">5.12.11.4. </span>Cdd_Dma_Example_Gpt_Ping_Pong_Buffer<a class="headerlink" href="#cdd-dma-example-gpt-ping-pong-buffer" title="Link to this heading"></a></h3>
+<section id="overview-of-cdd-dma-example-gpt-ping-pong-buffer">
+<h4><span class="section-number">5.12.11.4.1. </span>Overview of Cdd_Dma_Example_Gpt_Ping_Pong_Buffer<a class="headerlink" href="#overview-of-cdd-dma-example-gpt-ping-pong-buffer" title="Link to this heading"></a></h4>
+<p>This example demonstrates DMA-based ping-pong buffering using a software-incremented counter as the DMA source and a GPT timer as the trigger source. Ping-pong buffering is a technique where two buffers alternate between data collection and processing, allowing continuous data capture without gaps.</p>
+<p>The example uses GPT timer (CPUTIMER0) as the trigger source with DMA configured to automatically transfer results into alternating ping and pong buffers. When one buffer is being filled by DMA, the other buffer can be processed by the CPU. The DMA destination address is switched in the ISR to implement the ping-pong mechanism.</p>
+<ul class="simple">
+<li><p>Initialization</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EcuM_Init()</span></code> Initializes clock to 200 MHz using <code class="docutils literal notranslate"><span class="pre">Mcu_Init()</span></code>, initializes Port pins and Gpt driver</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AppUtils_Init()</span></code> initializes UART for console output</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_Init()</span></code> initializes DMA driver with EB Tresos configuration</p></li>
+</ul>
+</li>
+<li><p>DMA Configuration for Ping-Pong Buffering</p>
+<ul>
+<li><p>Configures DMA channel properties using <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_SetChannelProperties()</span></code>:</p>
+<ul>
+<li><p>Peripheral trigger mode (<code class="docutils literal notranslate"><span class="pre">CDD_DMA_TRIGGER_TINT0</span></code>) - GPT CPUTIMER0 interrupt triggers DMA</p></li>
+<li><p>Continuous mode enabled</p></li>
+<li><p>8-bit data size for read and write operations</p></li>
+<li><p>Channel interrupt enabled at end of transfer (after buffer is full with 10 samples)</p></li>
+<li><p>Overflow interrupt enabled</p></li>
+</ul>
+</li>
+<li><p>Configures transfer parameters using <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_SetTransferProperties()</span></code>:</p>
+<ul>
+<li><p>Burst size: 1 byte (1 sample of 8-bit)</p></li>
+<li><p>Transfer size: 10 bursts per buffer (10 samples)</p></li>
+<li><p>Source burst step: 0 bytes (always read from same <code class="docutils literal notranslate"><span class="pre">SourceCounter</span></code> address)</p></li>
+<li><p>Source transfer step: 0 bytes</p></li>
+<li><p>Destination burst step: 0 bytes</p></li>
+<li><p>Destination transfer step: 1 byte (8-bit sample size)</p></li>
+<li><p>Source address: <code class="docutils literal notranslate"><span class="pre">SourceCounter</span></code> variable address</p></li>
+<li><p>Destination address: Initially points to Ping buffer</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Execution Flow</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Configure_Cdd_Dma()</span></code> - Set up DMA channel for ping-pong buffering from <code class="docutils literal notranslate"><span class="pre">SourceCounter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_StartChannelTransfer()</span></code> - Start DMA channel (waits for GPT triggers)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Gpt_EnableNotification()</span></code> - Enable GPT channel 0 notification</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Gpt_StartTimer()</span></code> - Start GPT timer with 1 ms period (200 000 ticks at 200 MHz)</p></li>
+<li><p>GPT notification <code class="docutils literal notranslate"><span class="pre">Gpt_Notify_Func_0</span></code> fires at 1 ms intervals:</p>
+<ul>
+<li><p>TINT0 hardware event triggers the DMA burst automatically</p></li>
+<li><p>Increments <code class="docutils literal notranslate"><span class="pre">SourceCounter</span></code> so each DMA capture holds a unique value</p></li>
+<li><p>Stops timer after <code class="docutils literal notranslate"><span class="pre">GPT_DMA_TRIGGER_COUNT</span></code> (20) triggers</p></li>
+</ul>
+</li>
+<li><p>DMA ISR <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_transfer_complete_notification()</span></code>:</p>
+<ul>
+<li><p>Increments <code class="docutils literal notranslate"><span class="pre">DmaBufferFillCount</span></code></p></li>
+<li><p>Switches destination to the alternate buffer</p></li>
+<li><p>Updates DMA destination address using <code class="docutils literal notranslate"><span class="pre">Cdd_Dma_SetTransferDestAddress()</span></code></p></li>
+</ul>
+</li>
+<li><p>Wait until all 20 GPT-triggered DMA captures are issued and both buffers are filled</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_StopChannelTransfer()</span></code> - Stop DMA channel</p></li>
+<li><p>Display captured samples from both Ping and Pong buffers</p></li>
+<li><p>Verify data integrity: Ping buffer expected values 0–9, Pong buffer expected values 10–19</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_DeInit()</span></code> - Clean up</p></li>
+</ul>
+</li>
+<li><p>Expected Results</p>
+<ul>
+<li><p>20 snapshots of <code class="docutils literal notranslate"><span class="pre">SourceCounter</span></code> are captured by DMA into alternating ping and pong buffers (10 samples each)</p></li>
+<li><p>Ping buffer holds values 0–9; Pong buffer holds values 10–19</p></li>
+<li><p>Console displays the captured values from both buffers</p></li>
+<li><p>DMA transfer interrupt confirms buffer switches</p></li>
+</ul>
+</li>
+<li><p>Setup Required</p>
+<ul>
+<li><p>No external hardware connections required.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="sample-log-of-cdd-dma-example-gpt-ping-pong-buffer">
+<h4><span class="section-number">5.12.11.4.2. </span>Sample Log of Cdd_Dma_Example_Gpt_Ping_Pong_Buffer<a class="headerlink" href="#sample-log-of-cdd-dma-example-gpt-ping-pong-buffer" title="Link to this heading"></a></h4>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Executing</span><span class="w"> </span><span class="n">Cdd_Dma_Example_Gpt_Ping_Pong_Buffer</span><span class="w"> </span><span class="n">example</span>
+
+<span class="n">Starting</span><span class="w"> </span><span class="n">ping</span><span class="o">-</span><span class="n">pong</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">capture</span><span class="w"> </span><span class="n">via</span><span class="w"> </span><span class="n">GPT</span><span class="o">-</span><span class="n">triggered</span><span class="w"> </span><span class="n">DMA</span><span class="p">...</span>
+<span class="n">Ping</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Pong</span><span class="w"> </span><span class="n">buffers</span><span class="w"> </span><span class="n">filled</span><span class="o">!</span>
+
+<span class="n">DMA</span><span class="w"> </span><span class="n">ping</span><span class="o">-</span><span class="n">pong</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">capture</span><span class="w"> </span><span class="n">results</span><span class="o">:</span>
+<span class="n">Ping</span><span class="w"> </span><span class="n">Buffer</span><span class="w"> </span><span class="p">(</span><span class="n">expected</span><span class="w"> </span><span class="mf">0..9</span><span class="p">)</span><span class="o">:</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">6</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">7</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">8</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">9</span>
+
+<span class="n">Pong</span><span class="w"> </span><span class="n">Buffer</span><span class="w"> </span><span class="p">(</span><span class="n">expected</span><span class="w"> </span><span class="mf">10..19</span><span class="p">)</span><span class="o">:</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">10</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">11</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">12</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">13</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">14</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">15</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">16</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">17</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">18</span>
+<span class="w">  </span><span class="n">Sample</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mi">19</span>
+
+<span class="o">==================================================================</span>
+
+<span class="n">Cdd_Dma_Example_Gpt_Ping_Pong_Buffer</span><span class="w"> </span><span class="n">Example</span><span class="w"> </span><span class="n">PASSED</span>
+</pre></div>
+</div>
+</section>
+</section>
 <section id="setup-required-to-run-examples">
-<h3><span class="section-number">5.12.10.3. </span>Setup Required to Run Examples<a class="headerlink" href="#setup-required-to-run-examples" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.12.11.5. </span>Setup Required to Run Examples<a class="headerlink" href="#setup-required-to-run-examples" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Connect the hardware and power up</p></li>
 <li><p>Connect UART setup to check the log on serial console</p></li>
 </ul>
 </section>
 <section id="how-to-run-examples">
-<h3><span class="section-number">5.12.10.4. </span>How to Run Examples<a class="headerlink" href="#how-to-run-examples" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.12.11.6. </span>How to Run Examples<a class="headerlink" href="#how-to-run-examples" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p>Open CCS and import the desired example (Cdd_Dma_Example_Mem_Transfer or Cdd_Dma_Example_Mem_Transfer_Mpu)</p></li>
+<li><p>Open CCS and import the desired example:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_Example_Mem_Transfer</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_Example_Mem_Transfer_Mpu</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_Example_Adc_Data_Binning</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cdd_Dma_Example_Gpt_Ping_Pong_Buffer</span></code></p></li>
+</ul>
+</li>
 <li><p>Build project and start debug session</p></li>
 <li><p>Run the application and observe output on serial console</p></li>
 </ul>
 </section>
 <section id="file-structure">
-<h3><span class="section-number">5.12.10.5. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.12.11.7. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />
@@ -1379,6 +1659,84 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
 ┃ ┣ 📂Can<br />
 ┃ ┣ 📂Cdd_Adc<br />
 ┃ ┣ 📂<strong>Cdd_Dma</strong><br />
+┃ ┃ ┣ 📂<strong>Cdd_Dma_Example_Adc_Data_Binning</strong><br />
+┃ ┃ ┃ ┣ 📂Common<br />
+┃ ┃ ┃ ┃ ┗ 📂tresos<br />
+┃ ┃ ┃ ┃   ┗ 📂config<br />
+┃ ┃ ┃ ┃     ┣ 📜<strong>Cdd_Dma.xdm</strong> : <em>Generated EB Tresos config file in .xdm format</em><br />
+┃ ┃ ┃ ┃     ┣ 📜Dem.xdm<br />
+┃ ┃ ┃ ┃     ┣ 📜EcuM.xdm<br />
+┃ ┃ ┃ ┃     ┣ 📜Mcu.xdm<br />
+┃ ┃ ┃ ┃     ┗ 📜Os.xdm<br />
+┃ ┃ ┃ ┣ 📂F29H85x<br />
+┃ ┃ ┃ ┃ ┣ 📂CCS<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Cdd_Dma_Example_Adc_Data_Binning.projectspec</strong><br />
+┃ ┃ ┃ ┃ ┗ 📂Cdd_Dma_Example_Adc_Data_Binning_Config<br />
+┃ ┃ ┃ ┃   ┣ 📂config<br />
+┃ ┃ ┃ ┃   ┃ ┣ 📜Port.xdm<br />
+┃ ┃ ┃ ┃   ┃ ┗ 📜ResourceAllocator.xdm<br />
+┃ ┃ ┃ ┃   ┣ 📂output<br />
+┃ ┃ ┃ ┃   ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜<strong>Cdd_Dma_Cfg.h</strong> : <em>Contains the generated pre-compiler configuration header</em><br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜<strong>Cdd_Dma_Cbk.h</strong> : <em>Contains callback function declarations</em><br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Dem_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Os_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┗ 📜Port_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜<strong>Cdd_Dma_Cfg.c</strong> : <em>Contains the generated pre-compiler configuration source</em><br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Dem_Cfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Mcu_PBcfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Os_Cfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┗ 📜Port_PBcfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┗ 📂swcd<br />
+┃ ┃ ┃ ┃   ┃   ┣ 📜Cdd_Dma_BSWMD.arxml<br />
+┃ ┃ ┃ ┃   ┃   ┣ 📜Mcu_BSWMD.arxml<br />
+┃ ┃ ┃ ┃   ┃   ┗ 📜Port_BSWMD.arxml<br />
+┃ ┃ ┃ ┃   ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┗ 📜<strong>Cdd_Dma_Example_Adc_Data_Binning.c</strong> : <em>Example application for Cdd_Dma data binning</em><br />
+┃ ┃ ┣ 📂<strong>Cdd_Dma_Example_Gpt_Ping_Pong_Buffer</strong><br />
+┃ ┃ ┃ ┣ 📂Common<br />
+┃ ┃ ┃ ┃ ┗ 📂tresos<br />
+┃ ┃ ┃ ┃   ┗ 📂config<br />
+┃ ┃ ┃ ┃     ┣ 📜<strong>Cdd_Dma.xdm</strong> : <em>Generated EB Tresos config file in .xdm format</em><br />
+┃ ┃ ┃ ┃     ┣ 📜Dem.xdm<br />
+┃ ┃ ┃ ┃     ┣ 📜EcuM.xdm<br />
+┃ ┃ ┃ ┃     ┣ 📜Mcu.xdm<br />
+┃ ┃ ┃ ┃     ┗ 📜Os.xdm<br />
+┃ ┃ ┃ ┣ 📂F29H85x<br />
+┃ ┃ ┃ ┃ ┣ 📂CCS<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Cdd_Dma_Example_Gpt_Ping_Pong_Buffer.projectspec</strong><br />
+┃ ┃ ┃ ┃ ┗ 📂Cdd_Dma_Example_Gpt_Ping_Pong_Buffer_Config<br />
+┃ ┃ ┃ ┃   ┣ 📂config<br />
+┃ ┃ ┃ ┃   ┃ ┣ 📜Port.xdm<br />
+┃ ┃ ┃ ┃   ┃ ┗ 📜ResourceAllocator.xdm<br />
+┃ ┃ ┃ ┃   ┣ 📂output<br />
+┃ ┃ ┃ ┃   ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜<strong>Cdd_Dma_Cfg.h</strong> : <em>Contains the generated pre-compiler configuration header</em><br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜<strong>Cdd_Dma_Cbk.h</strong> : <em>Contains callback function declarations</em><br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Dem_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Os_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┗ 📜Port_Cfg.h<br />
+┃ ┃ ┃ ┃   ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜<strong>Cdd_Dma_Cfg.c</strong> : <em>Contains the generated pre-compiler configuration source</em><br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Dem_Cfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Mcu_PBcfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Os_Cfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┃ ┗ 📜Port_PBcfg.c<br />
+┃ ┃ ┃ ┃   ┃ ┗ 📂swcd<br />
+┃ ┃ ┃ ┃   ┃   ┣ 📜Cdd_Dma_BSWMD.arxml<br />
+┃ ┃ ┃ ┃   ┃   ┣ 📜Mcu_BSWMD.arxml<br />
+┃ ┃ ┃ ┃   ┃   ┗ 📜Port_BSWMD.arxml<br />
+┃ ┃ ┃ ┃   ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┗ 📜<strong>Cdd_Dma_Example_Gpt_Ping_Pong_Buffer.c</strong> : <em>Example application for Cdd_Dma ping-pong buffering</em><br />
 ┃ ┃ ┣ 📂<strong>Cdd_Dma_Example_Mem_Transfer</strong><br />
 ┃ ┃ ┃ ┣ 📂Common<br />
 ┃ ┃ ┃ ┃ ┗ 📂tresos<br />
@@ -1512,7 +1870,7 @@ The associated Cdd DMA driver configuration generated source file is <strong>Cdd
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 26.00.00
+       Current Version: 26.00.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

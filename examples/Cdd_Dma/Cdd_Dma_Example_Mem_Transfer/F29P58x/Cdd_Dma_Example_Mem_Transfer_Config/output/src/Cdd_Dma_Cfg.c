@@ -68,6 +68,11 @@
  *  Description:  This file contains generated configuration data
  *********************************************************************************************************************/
 
+/*
+ * Design: MCAL-39320, MCAL-39321, MCAL-39322, MCAL-39323, MCAL-39324, MCAL-39325, MCAL-39326, MCAL-39327, MCAL-39328
+ * Design: MCAL-39329, MCAL-39330, MCAL-39331
+ */
+
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -82,11 +87,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CDD_DMA_SW_MAJOR_VERSION != (1U)) || (CDD_DMA_SW_MINOR_VERSION != (0U)))
+#if ((CDD_DMA_SW_MAJOR_VERSION != (1U)) || (CDD_DMA_SW_MINOR_VERSION != (1U)))
     #error "Version numbers of Cdd_Dma.c and Cdd_Dma.h are inconsistent!"
 #endif
 
-#if ((CDD_DMA_CFG_MAJOR_VERSION != (1U)) || (CDD_DMA_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_DMA_CFG_MAJOR_VERSION != (1U)) || (CDD_DMA_CFG_MINOR_VERSION != (1U)))
     #error "Version numbers of Cdd_Dma_Cfg.c and Cdd_Dma_Cfg.h are inconsistent!"
 #endif
 

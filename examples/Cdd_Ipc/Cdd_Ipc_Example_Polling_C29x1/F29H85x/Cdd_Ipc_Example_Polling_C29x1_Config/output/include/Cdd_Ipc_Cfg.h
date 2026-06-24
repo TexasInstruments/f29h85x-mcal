@@ -100,10 +100,10 @@ extern "C" {
 #define CDD_IPC_CFG_MAJOR_VERSION                (2U)
 
 /** \brief CDD Ipc configuration Minor Version */
-#define CDD_IPC_CFG_MINOR_VERSION                (1U)
+#define CDD_IPC_CFG_MINOR_VERSION                (2U)
 
 /** \brief CDD Ipc configuration Patch Version */
-#define CDD_IPC_CFG_PATCH_VERSION                (1U)
+#define CDD_IPC_CFG_PATCH_VERSION                (0U)
 
 /** \brief Switches the pre compile variant ON or OFF */
 #define CDD_IPC_PRE_COMPILE_VARIANT              STD_ON

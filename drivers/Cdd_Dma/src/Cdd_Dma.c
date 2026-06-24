@@ -90,11 +90,11 @@
 
 /* vendor specific version information check */
 
-#if ((CDD_DMA_SW_MAJOR_VERSION != (1U)) || (CDD_DMA_SW_MINOR_VERSION != (0U)))
+#if ((CDD_DMA_SW_MAJOR_VERSION != (1U)) || (CDD_DMA_SW_MINOR_VERSION != (1U)))
 #error "Version numbers of Cdd_Dma.c and Cdd_Dma.h are not matching!"
 #endif
 
-#if ((CDD_DMA_CFG_MAJOR_VERSION != (1U)) || (CDD_DMA_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_DMA_CFG_MAJOR_VERSION != (1U)) || (CDD_DMA_CFG_MINOR_VERSION != (1U)))
 #error "Version numbers of Cdd_Dma.c and Cdd_Dma_Cfg.h are not matching!"
 #endif
 
@@ -118,6 +118,7 @@
  * Local Object Definitions
  *********************************************************************************************************************/
 
+/* Design: MCAL-39318 */
 /* Cdd_Dma Driver initialization variable */
 #define CDD_DMA_START_SEC_VAR_INIT_BOOLEAN
 #include "Cdd_Dma_MemMap.h"
@@ -127,6 +128,7 @@ static VAR(boolean, CDD_DMA_VAR_INIT) Cdd_Dma_IsInitialized = FALSE;
 #define CDD_DMA_STOP_SEC_VAR_INIT_BOOLEAN
 #include "Cdd_Dma_MemMap.h"
 
+/* Design: MCAL-39319 */
 /* Cdd_Dma configuration pointer to access driver configuration. */
 #define CDD_DMA_START_SEC_VAR_INIT_PTR
 #include "Cdd_Dma_MemMap.h"
@@ -198,6 +200,20 @@ static FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_ValidateForcePeripheralEventTr
  * \retval E_NOT_OK if peripheral event trigger is disabled or no trigger to clear
  *********************************************************************************************************************/
 static FUNC(Std_ReturnType, CDD_DMA_CODE) Cdd_Dma_ValidateClearPeripheralEventTrigger(VAR(uint8, AUTOMATIC) ChannelId);
+
+/** \brief Validates transfer properties parameters
+ *
+ * \param TransferProperties Transfer properties structure
+ * \param ServiceId Service ID of the API
+ * \pre None
+ * \post Reports DET error if validation fails
+ * \return Status of validation check
+ * \retval E_OK if all parameters are within valid range
+ * \retval E_NOT_OK if any parameter is out of valid range
+ *********************************************************************************************************************/
+static FUNC(Std_ReturnType, CDD_DMA_CODE)
+    Cdd_Dma_ValidateTransferProperties(VAR(Cdd_Dma_TransferParamsType, AUTOMATIC) TransferProperties,
+                                       VAR(uint8, AUTOMATIC) ServiceId);
 #endif
 
 /** \brief Configures peripheral event trigger
@@ -402,14 +418,10 @@ Cdd_Dma_SetTransferProperties(VAR(uint8, AUTOMATIC) ChannelId,
     {
         /* DET is already raised by Cdd_Dma_ValidateInitAndChannelId */
     }
-    /* Check if BurstSize, TransferSize, or WrapSize is zero (would cause underflow) */
-    else if ((TransferProperties.TransferSizeProperties.BurstSize == 0U) ||
-             (TransferProperties.TransferSizeProperties.TransferSize == 0U) ||
-             (TransferProperties.SrcWrapProperties.SrcWrapSize == 0U) ||
-             (TransferProperties.DestWrapProperties.DestWrapSize == 0U))
+    /* Validate transfer properties parameters */
+    else if (Cdd_Dma_ValidateTransferProperties(TransferProperties, CDD_DMA_SID_SET_TRANSFER_PROPERTIES) != E_OK)
     {
-        (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, CDD_DMA_SID_SET_TRANSFER_PROPERTIES,
-                              CDD_DMA_E_PARAM_VALUE);
+        /* DET is already raised by Cdd_Dma_ValidateTransferProperties */
     }
     /* Validate channel state (not committed and not busy) */
     else if (Cdd_Dma_ValidateChannelState(ChannelId, CDD_DMA_SID_SET_TRANSFER_PROPERTIES) != E_OK)
@@ -467,8 +479,8 @@ Cdd_Dma_SetTransferProperties(VAR(uint8, AUTOMATIC) ChannelId,
 }
 
 FUNC(Std_ReturnType, CDD_DMA_CODE)
-Cdd_Dma_SetTransferSize(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint8, AUTOMATIC) BurstSize,
-                        VAR(uint16, AUTOMATIC) TransferSize)
+Cdd_Dma_SetTransferSize(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint16, AUTOMATIC) BurstSize,
+                        VAR(uint32, AUTOMATIC) TransferSize)
 {
     VAR(Std_ReturnType, AUTOMATIC) ret_val = E_NOT_OK;
 
@@ -478,8 +490,9 @@ Cdd_Dma_SetTransferSize(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint8, AUTOMATIC) B
     {
         /* DET is already raised by Cdd_Dma_ValidateInitAndChannelId */
     }
-    /* Check if BurstSize or TransferSize is zero (would cause underflow) */
-    else if ((BurstSize == 0U) || (TransferSize == 0U))
+    /* Check if BurstSize or TransferSize is out of valid range */
+    else if ((BurstSize == 0U) || (BurstSize > CDD_DMA_MAX_BURST_SIZE) || (TransferSize == 0U) ||
+             (TransferSize > CDD_DMA_MAX_TRANSFER_SIZE))
     {
         (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, CDD_DMA_SID_SET_TRANSFER_SIZE,
                               CDD_DMA_E_PARAM_VALUE);
@@ -661,7 +674,7 @@ Cdd_Dma_SetTransferDestAddress(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint32, AUTO
 }
 
 FUNC(Std_ReturnType, CDD_DMA_CODE)
-Cdd_Dma_SetTransferWrapSrcProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint16, AUTOMATIC) SrcWrapSize,
+Cdd_Dma_SetTransferWrapSrcProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint32, AUTOMATIC) SrcWrapSize,
                                      VAR(sint16, AUTOMATIC) SrcWrapStep, VAR(uint32, AUTOMATIC) SrcBegAddress)
 {
     VAR(Std_ReturnType, AUTOMATIC) ret_val = E_NOT_OK;
@@ -672,8 +685,8 @@ Cdd_Dma_SetTransferWrapSrcProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint16
     {
         /* Validation failed, error already reported */
     }
-    /* Check if SrcWrapSize is zero (would cause underflow) */
-    else if (SrcWrapSize == 0U)
+    /* Check if SrcWrapSize is out of valid range */
+    else if ((SrcWrapSize == 0U) || (SrcWrapSize > CDD_DMA_MAX_TRANSFER_SIZE))
     {
         (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, CDD_DMA_SID_SET_TRANSFER_WRAP_SRC_PROPERTIES,
                               CDD_DMA_E_PARAM_VALUE);
@@ -706,7 +719,7 @@ Cdd_Dma_SetTransferWrapSrcProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint16
 }
 
 FUNC(Std_ReturnType, CDD_DMA_CODE)
-Cdd_Dma_SetTransferWrapDestProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint16, AUTOMATIC) DestWrapSize,
+Cdd_Dma_SetTransferWrapDestProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint32, AUTOMATIC) DestWrapSize,
                                       VAR(sint16, AUTOMATIC) DestWrapStep, VAR(uint32, AUTOMATIC) DestBegAddress)
 {
     VAR(Std_ReturnType, AUTOMATIC) ret_val = E_NOT_OK;
@@ -717,8 +730,8 @@ Cdd_Dma_SetTransferWrapDestProperties(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint1
     {
         /* Validation failed, error already reported */
     }
-    /* Check if DestWrapSize is zero (would cause underflow) */
-    else if (DestWrapSize == 0U)
+    /* Check if DestWrapSize is out of valid range */
+    else if ((DestWrapSize == 0U) || (DestWrapSize > CDD_DMA_MAX_TRANSFER_SIZE))
     {
         (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, CDD_DMA_SID_SET_TRANSFER_WRAP_DEST_PROPERTIES,
                               CDD_DMA_E_PARAM_VALUE);
@@ -1104,6 +1117,8 @@ Cdd_Dma_ClearErrorFlag(VAR(uint8, AUTOMATIC) ChannelId)
         (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, CDD_DMA_SID_CLEAR_ERROR_FLAG,
                               CDD_DMA_E_NO_OVERFLOW);
     }
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] DMA overflow error cannot be recreated in test environment as
+     * the overflow flag is asserted only by an actual DMA overflow event on the target device */
     else
 #endif
     {
@@ -1113,6 +1128,7 @@ Cdd_Dma_ClearErrorFlag(VAR(uint8, AUTOMATIC) ChannelId)
         SchM_Exit_Cdd_Dma_CDD_DMA_EXCLUSIVE_AREA_0();
         ret_val = E_OK;
     }
+    /* TI_COVERAGE_GAP_STOP */
 
     return ret_val;
 }
@@ -1120,19 +1136,13 @@ FUNC(Std_ReturnType, CDD_DMA_CODE)
 Cdd_Dma_SetChannelPriority(VAR(uint8, AUTOMATIC) ChannelId, Cdd_Dma_ChannelPriority Priority)
 {
     VAR(Std_ReturnType, AUTOMATIC) ret_val = E_NOT_OK;
+    VAR(uint8, AUTOMATIC) hw_inst_idx      = 0U;
 
 #if (STD_ON == CDD_DMA_DEV_ERROR_DETECT)
-    /* Check if driver is initialized */
-    if (Cdd_Dma_IsInitialized == FALSE)
+    /* Validate initialization and channel ID */
+    if (Cdd_Dma_ValidateInitAndChannelId(ChannelId, CDD_DMA_SID_SET_CHANNEL_PRIORITY) != E_OK)
     {
-        (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, CDD_DMA_SID_SET_CHANNEL_PRIORITY,
-                              CDD_DMA_E_UNINIT);
-    }
-    /* Check if ChannelId is valid */
-    else if (ChannelId >= CDD_DMA_CHANNEL_COUNT)
-    {
-        (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, CDD_DMA_SID_SET_CHANNEL_PRIORITY,
-                              CDD_DMA_E_PARAM_VALUE);
+        /* Validation failed, error already reported */
     }
     /* Check if Dma hardware instance configurations are committed */
     else if (Cdd_Dma_IsHwInstanceCommittedForChannel(ChannelId) == TRUE)
@@ -1144,10 +1154,56 @@ Cdd_Dma_SetChannelPriority(VAR(uint8, AUTOMATIC) ChannelId, Cdd_Dma_ChannelPrior
 #endif
     {
         SchM_Enter_Cdd_Dma_CDD_DMA_EXCLUSIVE_AREA_0();
-        /* Update the channel priority*/
-        Cdd_Dma_UpdateChannelPriority(ChannelId, Priority);
+        if (Cdd_Dma_GetHwInstanceIndex(Cdd_Dma_CfgPtr->chcfg[ChannelId].instance, &hw_inst_idx) == E_OK)
+        {
+#if (STD_ON == CDD_DMA_LOCK_CONFIGURATION)
+            /* Unlock Dma configurations */
+            Cdd_Dma_DmaCfgUnlockConfiguration(Cdd_Dma_CfgPtr->hwinstcfg[hw_inst_idx].baseaddress);
+#endif
+            /* Update the channel priority */
+            Cdd_Dma_UpdateChannelPriority(ChannelId, hw_inst_idx, Priority);
+#if (STD_ON == CDD_DMA_LOCK_CONFIGURATION)
+            /* Lock Dma configurations */
+            Cdd_Dma_DmaCfgLockConfiguration(Cdd_Dma_CfgPtr->hwinstcfg[hw_inst_idx].baseaddress);
+#endif
+            ret_val = E_OK;
+        }
         SchM_Exit_Cdd_Dma_CDD_DMA_EXCLUSIVE_AREA_0();
-        ret_val = E_OK;
+    }
+
+    return ret_val;
+}
+
+FUNC(Std_ReturnType, CDD_DMA_CODE)
+Cdd_Dma_GetChannelPriority(VAR(uint8, AUTOMATIC) ChannelId,
+                           P2VAR(Cdd_Dma_ChannelPriority, AUTOMATIC, CDD_DMA_APPL_DATA) Priority)
+{
+    VAR(Std_ReturnType, AUTOMATIC) ret_val = E_NOT_OK;
+    VAR(uint8, AUTOMATIC) hw_inst_idx      = 0U;
+
+#if (STD_ON == CDD_DMA_DEV_ERROR_DETECT)
+    /* Validate initialization and channel ID */
+    if (Cdd_Dma_ValidateInitAndChannelId(ChannelId, CDD_DMA_SID_GET_CHANNEL_PRIORITY) != E_OK)
+    {
+        /* Validation failed, error already reported */
+    }
+    /* Check if Priority pointer is NULL */
+    else if (Priority == NULL_PTR)
+    {
+        (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, CDD_DMA_SID_GET_CHANNEL_PRIORITY,
+                              CDD_DMA_E_PARAM_POINTER);
+    }
+    else
+#endif
+    {
+        SchM_Enter_Cdd_Dma_CDD_DMA_EXCLUSIVE_AREA_0();
+        if (Cdd_Dma_GetHwInstanceIndex(Cdd_Dma_CfgPtr->chcfg[ChannelId].instance, &hw_inst_idx) == E_OK)
+        {
+            /* Read the channel priority */
+            Cdd_Dma_ReadChannelPriority(ChannelId, hw_inst_idx, Priority);
+            ret_val = E_OK;
+        }
+        SchM_Exit_Cdd_Dma_CDD_DMA_EXCLUSIVE_AREA_0();
     }
 
     return ret_val;
@@ -1341,10 +1397,14 @@ static FUNC(Std_ReturnType, CDD_DMA_CODE)
         (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, ServiceId, CDD_DMA_E_CHCFG_COMMITTED);
     }
     /* Check if Channel is busy */
+    /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] Burst-busy-only path cannot be covered.
+     * When a DMA transfer is active, both transfer and burst status flags are set simultaneously
+     * by hardware, so the burst flag is never set without the transfer flag also being set */
     else if ((Cdd_Dma_GetTransferStatusFlag(Cdd_Dma_CfgPtr->chcfg[ChannelId].baseaddress) ==
               CDD_DMA_TRANSFER_ACTIVITY_ONGOING) ||
              (Cdd_Dma_GetBurstStatusFlag(Cdd_Dma_CfgPtr->chcfg[ChannelId].baseaddress) ==
               CDD_DMA_BURST_ACTIVITY_ONGOING))
+    /* TI_COVERAGE_GAP_STOP */
     {
         (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, ServiceId, CDD_DMA_E_BUSY);
     }
@@ -1433,6 +1493,48 @@ static FUNC(boolean, CDD_DMA_CODE)
 
     return is_valid;
 }
+
+static FUNC(Std_ReturnType, CDD_DMA_CODE)
+    Cdd_Dma_ValidateTransferProperties(VAR(Cdd_Dma_TransferParamsType, AUTOMATIC) TransferProperties,
+                                       VAR(uint8, AUTOMATIC) ServiceId)
+{
+    VAR(Std_ReturnType, AUTOMATIC) ret_val = E_OK;
+
+    /* Check if BurstSize is out of valid range */
+    if ((TransferProperties.TransferSizeProperties.BurstSize == 0U) ||
+        (TransferProperties.TransferSizeProperties.BurstSize > CDD_DMA_MAX_BURST_SIZE))
+    {
+        (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, ServiceId, CDD_DMA_E_PARAM_VALUE);
+        ret_val = E_NOT_OK;
+    }
+    /* Check if TransferSize is out of valid range */
+    else if ((TransferProperties.TransferSizeProperties.TransferSize == 0U) ||
+             (TransferProperties.TransferSizeProperties.TransferSize > CDD_DMA_MAX_TRANSFER_SIZE))
+    {
+        (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, ServiceId, CDD_DMA_E_PARAM_VALUE);
+        ret_val = E_NOT_OK;
+    }
+    /* Check if SrcWrapSize is out of valid range */
+    else if ((TransferProperties.SrcWrapProperties.SrcWrapSize == 0U) ||
+             (TransferProperties.SrcWrapProperties.SrcWrapSize > CDD_DMA_MAX_TRANSFER_SIZE))
+    {
+        (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, ServiceId, CDD_DMA_E_PARAM_VALUE);
+        ret_val = E_NOT_OK;
+    }
+    /* Check if DestWrapSize is out of valid range */
+    else if ((TransferProperties.DestWrapProperties.DestWrapSize == 0U) ||
+             (TransferProperties.DestWrapProperties.DestWrapSize > CDD_DMA_MAX_TRANSFER_SIZE))
+    {
+        (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, ServiceId, CDD_DMA_E_PARAM_VALUE);
+        ret_val = E_NOT_OK;
+    }
+    else
+    {
+        /* All validations passed */
+    }
+
+    return ret_val;
+}
 #endif /* STD_ON == CDD_DMA_DEV_ERROR_DETECT */
 
 static FUNC(void, CDD_DMA_CODE)
@@ -1445,6 +1547,36 @@ static FUNC(void, CDD_DMA_CODE)
 
     /* Enable or disable peripheral event trigger */
     Cdd_Dma_SetPeripheralEventTriggerEnable_Priv(BaseAddress, PeripheralEvntTrigEnable);
+}
+
+/*Periodic register readback API for CDD DMA*/
+FUNC(void, CDD_DMA_CODE)
+Cdd_Dma_PeriodicReadback(VAR(uint8, AUTOMATIC) ChannelId,
+                         P2VAR(Cdd_Dma_PeriodicReadBackDataType, AUTOMATIC, CDD_DMA_APPL_DATA) ReadBackRegisterdata)
+{
+#if (STD_ON == CDD_DMA_DEV_ERROR_DETECT)
+    /* Check if driver is initialized */
+    if (Cdd_Dma_IsInitialized == FALSE)
+    {
+        (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, CDD_DMA_SID_PERIODIC_READBACK, CDD_DMA_E_UNINIT);
+    }
+    /* Check if ChannelId is valid */
+    else if (ChannelId >= CDD_DMA_CHANNEL_COUNT)
+    {
+        (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, CDD_DMA_SID_PERIODIC_READBACK,
+                              CDD_DMA_E_PARAM_VALUE);
+    }
+    /* Check if ReadBackRegisterdata pointer is valid */
+    else if (NULL_PTR == ReadBackRegisterdata)
+    {
+        (void)Det_ReportError(CDD_DMA_MODULE_ID, CDD_DMA_INSTANCE_ID, CDD_DMA_SID_PERIODIC_READBACK,
+                              CDD_DMA_E_PARAM_POINTER);
+    }
+    else
+#endif
+    {
+        Cdd_Dma_PeriodicReadbackPrv(ChannelId, ReadBackRegisterdata);
+    }
 }
 
 #define CDD_DMA_STOP_SEC_CODE

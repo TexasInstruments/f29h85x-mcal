@@ -119,25 +119,25 @@ extern "C" {
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
-/* Category 1 RTINT ISR function prototype. */
+/* Category 1 ISR function prototype. */
 MCAL_LIB_INT_ISR(Cdd_Adc_ADCA_Int1Isr); 
 
-/* Category 1 INT ISR function prototype. */
+/* Category 1 RTINT INT ISR function prototype. */
 MCAL_LIB_RTINT_ISR(Cdd_Adc_ADCA_Int2Isr);
 
-/* Category 1 RTINT ISR function prototype. */
+/* Category 1 ISR function prototype. */
 MCAL_LIB_INT_ISR(Cdd_Adc_ADCB_Int1Isr); 
 
-/* Category 1 INT ISR function prototype. */
+/* Category 1 RTINT INT ISR function prototype. */
 MCAL_LIB_RTINT_ISR(Cdd_Adc_ADCB_Int2Isr);
 
-/* Category 1 RTINT ISR function prototype. */
+/* Category 1 ISR function prototype. */
 MCAL_LIB_INT_ISR(Cdd_Adc_ADCC_Int1Isr); 
 
-/* Category 1 INT ISR function prototype. */
+/* Category 1 RTINT INT ISR function prototype. */
 MCAL_LIB_RTINT_ISR(Cdd_Adc_ADCC_Int2Isr);
 
-/* Category 1 INT ISR function prototype. */
+/* Category 1 RTINT INT ISR function prototype. */
 MCAL_LIB_RTINT_ISR(Cdd_Adc_ADCA_PpbEvtIntIsr);
 
 

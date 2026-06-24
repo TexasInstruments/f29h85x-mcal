@@ -49,7 +49,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                26.00.00
+                26.00.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -61,7 +61,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.00 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.01 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">2. Overview of MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">3. MCAL Configurator And EB Tresos User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
@@ -91,17 +91,26 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#non-mcal-peripheral-allocation">5.1.8. Non-MCAL Peripheral Allocation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#configuration">5.1.9. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">5.1.9.1. Configuration Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#asysctl-analog-system-control">5.1.9. ASysCtl (Analog System Control)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#temperaturesensor">5.1.9.1. TemperatureSensor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#analogreference">5.1.9.2. AnalogReference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#voltageregulator">5.1.9.3. VoltageRegulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#brownoutreset">5.1.9.4. BrownOutReset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#internaltestnode">5.1.9.5. InternalTestNode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cmpsscontrol">5.1.9.6. CMPSSControl</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#usage-procedures">5.1.10. Usage Procedures</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-workflow">5.1.10.1. Configuration Workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">5.1.10. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">5.1.10.1. Configuration Parameters</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#examples">5.1.11. Examples</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#example-configuring-for-f29h85x-device">5.1.11.1. Example: Configuring for F29H85x Device</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#example-configuring-for-f29p58x-device">5.1.11.2. Example: Configuring for F29P58x Device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-procedures">5.1.11. Usage Procedures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-workflow">5.1.11.1. Configuration Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">5.1.12. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-configuring-for-f29h85x-device">5.1.12.1. Example: Configuring for F29H85x Device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-configuring-for-f29p58x-device">5.1.12.2. Example: Configuring for F29P58x Device</a></li>
 </ul>
 </li>
 </ul>
@@ -168,29 +177,41 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>AUTOSAR</p></td>
-<td><p>Automotive Open System Architecture</p></td>
+<tr class="row-even"><td><p>ADC</p></td>
+<td><p>Analog-to-Digital Converter</p></td>
 </tr>
 <tr class="row-odd"><td><p>API</p></td>
 <td><p>Application Programming Interface</p></td>
 </tr>
-<tr class="row-even"><td><p>BSW</p></td>
+<tr class="row-even"><td><p>ASysCtl</p></td>
+<td><p>Analog System Control</p></td>
+</tr>
+<tr class="row-odd"><td><p>AUTOSAR</p></td>
+<td><p>Automotive Open System Architecture</p></td>
+</tr>
+<tr class="row-even"><td><p>BORL</p></td>
+<td><p>Brown-Out Reset Level</p></td>
+</tr>
+<tr class="row-odd"><td><p>BSW</p></td>
 <td><p>Basic Software</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCAL</p></td>
+<tr class="row-even"><td><p>CMPSS</p></td>
+<td><p>Comparator Subsystem</p></td>
+</tr>
+<tr class="row-odd"><td><p>EB Tresos</p></td>
+<td><p>Elektrobit Tresos Studio - AUTOSAR Configuration Tool</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL</p></td>
 <td><p>Micro Controller Abstraction Layer</p></td>
 </tr>
-<tr class="row-even"><td><p>MCU</p></td>
+<tr class="row-odd"><td><p>MCU</p></td>
 <td><p>Micro Controller Unit</p></td>
-</tr>
-<tr class="row-odd"><td><p>SoC</p></td>
-<td><p>System on Chip</p></td>
 </tr>
 <tr class="row-even"><td><p>RA</p></td>
 <td><p>Resource Allocator</p></td>
 </tr>
-<tr class="row-odd"><td><p>EB Tresos</p></td>
-<td><p>Elektrobit Tresos Studio - AUTOSAR Configuration Tool</p></td>
+<tr class="row-odd"><td><p>SoC</p></td>
+<td><p>System on Chip</p></td>
 </tr>
 </tbody>
 </table>
@@ -341,10 +362,10 @@
 <li><p>In the <strong>Details of “ResourceAllocator”</strong> panel, locate the <strong>Recommended Configuration</strong> dropdown</p></li>
 <li><p>Select the appropriate configuration for your target device</p></li>
 </ol>
-<figure class="align-center" id="id3">
+<figure class="align-center" id="id8">
 <img alt="Resource Allocator Recommended Configuration" src="../_images/RA_RecommendedConfig.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 5.1 </span><span class="caption-text">Selecting Recommended Configuration in EB Tresos</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 5.1 </span><span class="caption-text">Selecting Recommended Configuration in EB Tresos</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -505,13 +526,45 @@
 </tbody>
 </table>
 </section>
+<section id="asysctl-analog-system-control">
+<h2><span class="section-number">5.1.9. </span>ASysCtl (Analog System Control)<a class="headerlink" href="#asysctl-analog-system-control" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">ASysCtl</span></code> container centralizes all Analog System Control (ASysCtl) hardware configuration for F29x devices. The settings defined here are applied automatically during <a class="reference internal" href="Module_User_Guide_Mcu.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">Mcu_Init()</span></code></span></a> — no additional API calls are required for the startup configuration.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ASysCtl</span></code> container does not allocate a peripheral to a CPU core. It configures analog system control registers that are global to the device.</p>
+</div>
+<section id="temperaturesensor">
+<h3><span class="section-number">5.1.9.1. </span>TemperatureSensor<a class="headerlink" href="#temperaturesensor" title="Link to this heading"></a></h3>
+<p>Controls the on-chip temperature sensor. The sensor must be enabled before performing temperature-based ADC conversions.</p>
+</section>
+<section id="analogreference">
+<h3><span class="section-number">5.1.9.2. </span>AnalogReference<a class="headerlink" href="#analogreference" title="Link to this heading"></a></h3>
+<p>Configures the voltage reference source and level for the ADC modules. Each ADC group (A/B and C/D/E) can independently use either an internal reference or an external reference signal. When the internal reference is selected, the reference voltage level (3.3 V or 2.5 V) is also configurable per group.</p>
+</section>
+<section id="voltageregulator">
+<h3><span class="section-number">5.1.9.3. </span>VoltageRegulator<a class="headerlink" href="#voltageregulator" title="Link to this heading"></a></h3>
+<p>Controls the behavior of the internal analog voltage regulator, including the VMON mask and the option to power down the regulator when an external supply is used.</p>
+</section>
+<section id="brownoutreset">
+<h3><span class="section-number">5.1.9.4. </span>BrownOutReset<a class="headerlink" href="#brownoutreset" title="Link to this heading"></a></h3>
+<p>Configures the Brown-Out Reset Level (BORL) voltage monitor. By default the BORL monitor is enabled and will trigger a reset if the supply voltage drops below the threshold. It can be disabled when the application provides an alternative undervoltage protection mechanism.</p>
+</section>
+<section id="internaltestnode">
+<h3><span class="section-number">5.1.9.5. </span>InternalTestNode<a class="headerlink" href="#internaltestnode" title="Link to this heading"></a></h3>
+<p>Selects the internal signal connected to the analog test bus at startup. The default selection leaves the test bus disconnected. This setting can also be changed at runtime after <a class="reference internal" href="Module_User_Guide_Mcu.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">Mcu_Init()</span></code></span></a> has completed — refer to the Mcu API guide for the available runtime API.</p>
+</section>
+<section id="cmpsscontrol">
+<h3><span class="section-number">5.1.9.6. </span>CMPSSControl<a class="headerlink" href="#cmpsscontrol" title="Link to this heading"></a></h3>
+<p>Each CMPSS instance allocated in the <code class="docutils literal notranslate"><span class="pre">Cdd_Cmpss</span></code> container has a corresponding <code class="docutils literal notranslate"><span class="pre">CMPSSControl</span></code> sub-container that configures the analog input mux for the comparator subsystem. The mux selects determine which device signals are routed to the high-side positive (HP), low-side positive (LP), high-side negative (HN), and low-side negative (LN) comparator inputs. The available signal choices are device- and package-specific and are populated automatically based on the device selected in <code class="docutils literal notranslate"><span class="pre">ResourceAllocatorGeneral</span></code>.</p>
+</section>
+</section>
 <section id="configuration">
-<h2><span class="section-number">5.1.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.1.10. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>The Resource Allocator configuration defines the target device for the MCAL configuration.</p>
 <section id="configuration-parameters">
-<h3><span class="section-number">5.1.9.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.10.1. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
 <section id="resourceallocatorgeneral">
-<h4><span class="section-number">5.1.9.1.1. </span>ResourceAllocatorGeneral<a class="headerlink" href="#resourceallocatorgeneral" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.1.10.1.1. </span>ResourceAllocatorGeneral<a class="headerlink" href="#resourceallocatorgeneral" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -546,7 +599,7 @@
 </tbody>
 </table>
 <section id="context">
-<h5><span class="section-number">5.1.9.1.1.1. </span>Context<a class="headerlink" href="#context" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.1. </span>Context<a class="headerlink" href="#context" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -588,11 +641,11 @@
 </table>
 </section>
 <section id="can">
-<h5><span class="section-number">5.1.9.1.1.2. </span>Can<a class="headerlink" href="#can" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.2. </span>Can<a class="headerlink" href="#can" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Can module.</p>
 </section>
 <section id="canallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.3. </span>CanAllocatedInstance<a class="headerlink" href="#canallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.3. </span>CanAllocatedInstance<a class="headerlink" href="#canallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -637,11 +690,11 @@
 </table>
 </section>
 <section id="spi">
-<h5><span class="section-number">5.1.9.1.1.4. </span>Spi<a class="headerlink" href="#spi" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.4. </span>Spi<a class="headerlink" href="#spi" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Spi module.</p>
 </section>
 <section id="spiallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.5. </span>SpiAllocatedInstance<a class="headerlink" href="#spiallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.5. </span>SpiAllocatedInstance<a class="headerlink" href="#spiallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -686,11 +739,11 @@
 </table>
 </section>
 <section id="lin">
-<h5><span class="section-number">5.1.9.1.1.6. </span>Lin<a class="headerlink" href="#lin" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.6. </span>Lin<a class="headerlink" href="#lin" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Lin module.</p>
 </section>
 <section id="linallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.7. </span>LinAllocatedInstance<a class="headerlink" href="#linallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.7. </span>LinAllocatedInstance<a class="headerlink" href="#linallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -735,11 +788,11 @@
 </table>
 </section>
 <section id="cdd-adc">
-<h5><span class="section-number">5.1.9.1.1.8. </span>Cdd_Adc<a class="headerlink" href="#cdd-adc" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.8. </span>Cdd_Adc<a class="headerlink" href="#cdd-adc" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Cdd_Adc module.</p>
 </section>
 <section id="cdd-adcallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.9. </span>Cdd_AdcAllocatedInstance<a class="headerlink" href="#cdd-adcallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.9. </span>Cdd_AdcAllocatedInstance<a class="headerlink" href="#cdd-adcallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -784,7 +837,7 @@
 </table>
 </section>
 <section id="cddadcsafetycheckerinstance">
-<h5><span class="section-number">5.1.9.1.1.10. </span>CddAdcSafetyCheckerInstance<a class="headerlink" href="#cddadcsafetycheckerinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.10. </span>CddAdcSafetyCheckerInstance<a class="headerlink" href="#cddadcsafetycheckerinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -829,7 +882,7 @@
 </table>
 </section>
 <section id="cddadccheckerinterruptevtinstance">
-<h5><span class="section-number">5.1.9.1.1.11. </span>CddAdcCheckerInterruptEvtInstance<a class="headerlink" href="#cddadccheckerinterruptevtinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.11. </span>CddAdcCheckerInterruptEvtInstance<a class="headerlink" href="#cddadccheckerinterruptevtinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -874,7 +927,7 @@
 </table>
 </section>
 <section id="cddadcglobalsoftwareforce">
-<h5><span class="section-number">5.1.9.1.1.12. </span>CddAdcGlobalSoftwareForce<a class="headerlink" href="#cddadcglobalsoftwareforce" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.12. </span>CddAdcGlobalSoftwareForce<a class="headerlink" href="#cddadcglobalsoftwareforce" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -919,11 +972,11 @@
 </table>
 </section>
 <section id="cdd-ecap">
-<h5><span class="section-number">5.1.9.1.1.13. </span>Cdd_Ecap<a class="headerlink" href="#cdd-ecap" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.13. </span>Cdd_Ecap<a class="headerlink" href="#cdd-ecap" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Cdd_Ecap module.</p>
 </section>
 <section id="cdd-ecapallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.14. </span>Cdd_EcapAllocatedInstance<a class="headerlink" href="#cdd-ecapallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.14. </span>Cdd_EcapAllocatedInstance<a class="headerlink" href="#cdd-ecapallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -968,11 +1021,11 @@
 </table>
 </section>
 <section id="cdd-dma">
-<h5><span class="section-number">5.1.9.1.1.15. </span>Cdd_Dma<a class="headerlink" href="#cdd-dma" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.15. </span>Cdd_Dma<a class="headerlink" href="#cdd-dma" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Cdd_Dma module. This container defines which DMA channels are assigned to this specific CPU context.</p>
 </section>
 <section id="cdddmaallocatedchannel">
-<h5><span class="section-number">5.1.9.1.1.16. </span>CddDmaAllocatedChannel<a class="headerlink" href="#cdddmaallocatedchannel" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.16. </span>CddDmaAllocatedChannel<a class="headerlink" href="#cdddmaallocatedchannel" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1011,11 +1064,11 @@
 </table>
 </section>
 <section id="cdd-i2c">
-<h5><span class="section-number">5.1.9.1.1.17. </span>Cdd_I2c<a class="headerlink" href="#cdd-i2c" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.17. </span>Cdd_I2c<a class="headerlink" href="#cdd-i2c" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Cdd_I2c module.</p>
 </section>
 <section id="cdd-i2callocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.18. </span>Cdd_I2cAllocatedInstance<a class="headerlink" href="#cdd-i2callocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.18. </span>Cdd_I2cAllocatedInstance<a class="headerlink" href="#cdd-i2callocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1060,11 +1113,11 @@
 </table>
 </section>
 <section id="cdd-pwm">
-<h5><span class="section-number">5.1.9.1.1.19. </span>Cdd_Pwm<a class="headerlink" href="#cdd-pwm" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.19. </span>Cdd_Pwm<a class="headerlink" href="#cdd-pwm" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Cdd_Pwm module.</p>
 </section>
 <section id="cdd-pwmallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.20. </span>Cdd_PwmAllocatedInstance<a class="headerlink" href="#cdd-pwmallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.20. </span>Cdd_PwmAllocatedInstance<a class="headerlink" href="#cdd-pwmallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1109,7 +1162,7 @@
 </table>
 </section>
 <section id="cddpwmhrpwmcalinstance">
-<h5><span class="section-number">5.1.9.1.1.21. </span>CddPwmHrpwmCalInstance<a class="headerlink" href="#cddpwmhrpwmcalinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.21. </span>CddPwmHrpwmCalInstance<a class="headerlink" href="#cddpwmhrpwmcalinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1154,11 +1207,11 @@
 </table>
 </section>
 <section id="cdd-sent">
-<h5><span class="section-number">5.1.9.1.1.22. </span>Cdd_Sent<a class="headerlink" href="#cdd-sent" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.22. </span>Cdd_Sent<a class="headerlink" href="#cdd-sent" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Cdd_Sent module.</p>
 </section>
 <section id="cdd-sentallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.23. </span>Cdd_SentAllocatedInstance<a class="headerlink" href="#cdd-sentallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.23. </span>Cdd_SentAllocatedInstance<a class="headerlink" href="#cdd-sentallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1203,11 +1256,11 @@
 </table>
 </section>
 <section id="cdd-uart">
-<h5><span class="section-number">5.1.9.1.1.24. </span>Cdd_Uart<a class="headerlink" href="#cdd-uart" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.24. </span>Cdd_Uart<a class="headerlink" href="#cdd-uart" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Cdd_Uart module.</p>
 </section>
 <section id="cdd-uartallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.25. </span>Cdd_UartAllocatedInstance<a class="headerlink" href="#cdd-uartallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.25. </span>Cdd_UartAllocatedInstance<a class="headerlink" href="#cdd-uartallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1252,11 +1305,11 @@
 </table>
 </section>
 <section id="cdd-cmpss">
-<h5><span class="section-number">5.1.9.1.1.26. </span>Cdd_Cmpss<a class="headerlink" href="#cdd-cmpss" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.26. </span>Cdd_Cmpss<a class="headerlink" href="#cdd-cmpss" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Cdd_Cmpss module.</p>
 </section>
 <section id="cdd-cmpssallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.27. </span>Cdd_CmpssAllocatedInstance<a class="headerlink" href="#cdd-cmpssallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.27. </span>Cdd_CmpssAllocatedInstance<a class="headerlink" href="#cdd-cmpssallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1280,7 +1333,7 @@
 <td><p>false</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Origin</strong></p></td>
-<td><p>Texas Instruments</p></td>
+<td><p>TI_F29H85x</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
 <td><p>false</p></td>
@@ -1292,20 +1345,20 @@
 <td><p>VARIANT-PRE-COMPILE</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
-<td><p>CMPSS1_BASE_FRAME(0U)</p></td>
+<td><p>CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO161</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Range</strong></p></td>
-<td><p>FRAME0<br>FRAME1<br>FRAME2<br>FRAME3</p></td>
+<td><p>CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO161<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO162<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO165<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO173<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO194<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO199<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO206<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_GPIO224<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_GPIO225<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_GPIO230<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_GPIO240<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_GPIO245<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO163<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO164<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO171<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO174<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO175<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO182<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO198<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO207<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO213<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_GPIO241<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_GPIO246<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_GPIO248</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="eqep">
-<h5><span class="section-number">5.1.9.1.1.28. </span>Eqep<a class="headerlink" href="#eqep" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.28. </span>Eqep<a class="headerlink" href="#eqep" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Eqep module.</p>
 </section>
 <section id="eqepallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.29. </span>EqepAllocatedInstance<a class="headerlink" href="#eqepallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.29. </span>EqepAllocatedInstance<a class="headerlink" href="#eqepallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1350,11 +1403,11 @@
 </table>
 </section>
 <section id="sdfm">
-<h5><span class="section-number">5.1.9.1.1.30. </span>Sdfm<a class="headerlink" href="#sdfm" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.30. </span>Sdfm<a class="headerlink" href="#sdfm" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Sdfm module.</p>
 </section>
 <section id="sdfmallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.31. </span>SdfmAllocatedInstance<a class="headerlink" href="#sdfmallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.31. </span>SdfmAllocatedInstance<a class="headerlink" href="#sdfmallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1399,11 +1452,11 @@
 </table>
 </section>
 <section id="pmbus">
-<h5><span class="section-number">5.1.9.1.1.32. </span>Pmbus<a class="headerlink" href="#pmbus" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.32. </span>Pmbus<a class="headerlink" href="#pmbus" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Pmbus module.</p>
 </section>
 <section id="pmbusallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.33. </span>PmbusAllocatedInstance<a class="headerlink" href="#pmbusallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.33. </span>PmbusAllocatedInstance<a class="headerlink" href="#pmbusallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1448,11 +1501,11 @@
 </table>
 </section>
 <section id="dac">
-<h5><span class="section-number">5.1.9.1.1.34. </span>Dac<a class="headerlink" href="#dac" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.34. </span>Dac<a class="headerlink" href="#dac" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Dac module.</p>
 </section>
 <section id="dacallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.35. </span>DacAllocatedInstance<a class="headerlink" href="#dacallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.35. </span>DacAllocatedInstance<a class="headerlink" href="#dacallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1497,11 +1550,11 @@
 </table>
 </section>
 <section id="clb">
-<h5><span class="section-number">5.1.9.1.1.36. </span>Clb<a class="headerlink" href="#clb" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.36. </span>Clb<a class="headerlink" href="#clb" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Clb module.</p>
 </section>
 <section id="clballocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.37. </span>ClbAllocatedInstance<a class="headerlink" href="#clballocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.37. </span>ClbAllocatedInstance<a class="headerlink" href="#clballocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1546,11 +1599,11 @@
 </table>
 </section>
 <section id="fsitx">
-<h5><span class="section-number">5.1.9.1.1.38. </span>FsiTx<a class="headerlink" href="#fsitx" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.38. </span>FsiTx<a class="headerlink" href="#fsitx" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the FsiTx module.</p>
 </section>
 <section id="fsitxallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.39. </span>FsiTxAllocatedInstance<a class="headerlink" href="#fsitxallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.39. </span>FsiTxAllocatedInstance<a class="headerlink" href="#fsitxallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1595,11 +1648,11 @@
 </table>
 </section>
 <section id="fsirx">
-<h5><span class="section-number">5.1.9.1.1.40. </span>FsiRx<a class="headerlink" href="#fsirx" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.40. </span>FsiRx<a class="headerlink" href="#fsirx" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the FsiRx module.</p>
 </section>
 <section id="fsirxallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.41. </span>FsiRxAllocatedInstance<a class="headerlink" href="#fsirxallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.41. </span>FsiRxAllocatedInstance<a class="headerlink" href="#fsirxallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1644,11 +1697,11 @@
 </table>
 </section>
 <section id="dcc">
-<h5><span class="section-number">5.1.9.1.1.42. </span>Dcc<a class="headerlink" href="#dcc" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.42. </span>Dcc<a class="headerlink" href="#dcc" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Dcc module.</p>
 </section>
 <section id="dccallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.43. </span>DccAllocatedInstance<a class="headerlink" href="#dccallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.43. </span>DccAllocatedInstance<a class="headerlink" href="#dccallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1693,11 +1746,11 @@
 </table>
 </section>
 <section id="epg">
-<h5><span class="section-number">5.1.9.1.1.44. </span>Epg<a class="headerlink" href="#epg" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.44. </span>Epg<a class="headerlink" href="#epg" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Epg module.</p>
 </section>
 <section id="epgallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.45. </span>EpgAllocatedInstance<a class="headerlink" href="#epgallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.45. </span>EpgAllocatedInstance<a class="headerlink" href="#epgallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1733,7 +1786,7 @@
 <td><p>VARIANT-PRE-COMPILE</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
-<td><p>EPG1_BASE_FRAME(0U)</p></td>
+<td><p>FRAME0</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Range</strong></p></td>
 <td><p>FRAME0<br>FRAME1<br>FRAME2<br>FRAME3</p></td>
@@ -1742,11 +1795,11 @@
 </table>
 </section>
 <section id="wadi">
-<h5><span class="section-number">5.1.9.1.1.46. </span>Wadi<a class="headerlink" href="#wadi" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.46. </span>Wadi<a class="headerlink" href="#wadi" title="Link to this heading"></a></h5>
 <p>Configuration container for Context specific settings for the Wadi module.</p>
 </section>
 <section id="wadiallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.47. </span>WadiAllocatedInstance<a class="headerlink" href="#wadiallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.47. </span>WadiAllocatedInstance<a class="headerlink" href="#wadiallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1782,7 +1835,7 @@
 <td><p>VARIANT-PRE-COMPILE</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
-<td><p>WADI1_BASE_FRAME(0U)</p></td>
+<td><p>FRAME0</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Range</strong></p></td>
 <td><p>FRAME0<br>FRAME1<br>FRAME2<br>FRAME3</p></td>
@@ -1790,12 +1843,187 @@
 </tbody>
 </table>
 </section>
+<section id="asysctl">
+<h5><span class="section-number">5.1.10.1.1.48. </span>ASysCtl<a class="headerlink" href="#asysctl" title="Link to this heading"></a></h5>
+<p>Configuration container for ASysCtl (Analog System Control) module. Controls analog subsystem initialization including temperature sensor, analog reference, voltage regulator, brown-out reset, internal test node, and CMPSS mux configuration.</p>
+</section>
+<section id="id1">
+<h5><span class="section-number">5.1.10.1.1.49. </span>TemperatureSensor<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>TemperatureSensor</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Configuration for the on-chip temperature sensor (TSNSCTL register).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id2">
+<h5><span class="section-number">5.1.10.1.1.50. </span>AnalogReference<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>AnalogReference</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Configuration for the analog reference control (ANAREFCTL register). Controls ADC reference source and voltage range for ADC-A/B and ADC-C/D/E groups.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>REFERENCE_3_3V</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>REFERENCE_3_3V<br>REFERENCE_2_5V</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id3">
+<h5><span class="section-number">5.1.10.1.1.51. </span>VoltageRegulator<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>VoltageRegulator</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Configuration for the internal voltage regulator (VREGCTL register).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id4">
+<h5><span class="section-number">5.1.10.1.1.52. </span>BrownOutReset<a class="headerlink" href="#id4" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>BrownOutReset</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Configuration for Brown-Out Reset Level (VMONCTL register).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id5">
+<h5><span class="section-number">5.1.10.1.1.53. </span>InternalTestNode<a class="headerlink" href="#id5" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>InternalTestNode</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Configuration for the internal analog test node (INTERNALTESTCTL register). Key-protection sequence is applied automatically.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>MCU_ASYSCTL_TEST_NODE_NO_CONN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>MCU_ASYSCTL_TEST_NODE_NO_CONN<br>MCU_ASYSCTL_TEST_NODE_VDDCORE<br>MCU_ASYSCTL_TEST_NODE_VDDA<br>MCU_ASYSCTL_TEST_NODE_VSSA<br>MCU_ASYSCTL_TEST_NODE_VREFLOA<br>MCU_ASYSCTL_TEST_NODE_VREFLOB<br>MCU_ASYSCTL_TEST_NODE_CDAC1H<br>MCU_ASYSCTL_TEST_NODE_CDAC1L<br>MCU_ASYSCTL_TEST_NODE_CDAC2H<br>MCU_ASYSCTL_TEST_NODE_CDAC2L<br>MCU_ASYSCTL_TEST_NODE_CDAC3H<br>MCU_ASYSCTL_TEST_NODE_CDAC3L<br>MCU_ASYSCTL_TEST_NODE_CDAC4H<br>MCU_ASYSCTL_TEST_NODE_CDAC4L<br>MCU_ASYSCTL_TEST_NODE_CDAC5H<br>MCU_ASYSCTL_TEST_NODE_CDAC5L<br>MCU_ASYSCTL_TEST_NODE_CDAC6H<br>MCU_ASYSCTL_TEST_NODE_CDAC6L<br>MCU_ASYSCTL_TEST_NODE_CDAC7H<br>MCU_ASYSCTL_TEST_NODE_CDAC7L<br>MCU_ASYSCTL_TEST_NODE_CDAC8H<br>MCU_ASYSCTL_TEST_NODE_CDAC8L<br>MCU_ASYSCTL_TEST_NODE_CDAC9H<br>MCU_ASYSCTL_TEST_NODE_CDAC9L<br>MCU_ASYSCTL_TEST_NODE_CDAC10H<br>MCU_ASYSCTL_TEST_NODE_CDAC10L<br>MCU_ASYSCTL_TEST_NODE_CDAC11H<br>MCU_ASYSCTL_TEST_NODE_CDAC11L<br>MCU_ASYSCTL_TEST_NODE_ENZ_CALIB_GAIN_3P3</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="cdd-xbar">
-<h5><span class="section-number">5.1.9.1.1.48. </span>Cdd_Xbar<a class="headerlink" href="#cdd-xbar" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.54. </span>Cdd_Xbar<a class="headerlink" href="#cdd-xbar" title="Link to this heading"></a></h5>
 <p>Configuration container for Cdd_Xbar module.</p>
 </section>
 <section id="cddxbaroutputxbarflag">
-<h5><span class="section-number">5.1.9.1.1.49. </span>CddXbarOutputXbarFlag<a class="headerlink" href="#cddxbaroutputxbarflag" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.55. </span>CddXbarOutputXbarFlag<a class="headerlink" href="#cddxbaroutputxbarflag" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1840,7 +2068,7 @@
 </table>
 </section>
 <section id="cddxbarinputflag">
-<h5><span class="section-number">5.1.9.1.1.50. </span>CddXbarInputFlag<a class="headerlink" href="#cddxbarinputflag" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.56. </span>CddXbarInputFlag<a class="headerlink" href="#cddxbarinputflag" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1884,12 +2112,12 @@
 </tbody>
 </table>
 </section>
-<section id="id1">
-<h5><span class="section-number">5.1.9.1.1.51. </span>Cdd_Dma<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
+<section id="id6">
+<h5><span class="section-number">5.1.10.1.1.57. </span>Cdd_Dma<a class="headerlink" href="#id6" title="Link to this heading"></a></h5>
 <p>Configuration container for the Cdd_Dma module hardware resources. This defines the available RTDMA hardware instances and their channels that can be allocated to different CPU contexts in the system.</p>
 </section>
 <section id="cdddmahwinstance">
-<h5><span class="section-number">5.1.9.1.1.52. </span>CddDmaHwInstance<a class="headerlink" href="#cdddmahwinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.58. </span>CddDmaHwInstance<a class="headerlink" href="#cdddmahwinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1934,7 +2162,7 @@
 </table>
 </section>
 <section id="cdddmampuregion">
-<h5><span class="section-number">5.1.9.1.1.53. </span>CddDmaMpuRegion<a class="headerlink" href="#cdddmampuregion" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.59. </span>CddDmaMpuRegion<a class="headerlink" href="#cdddmampuregion" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1985,7 +2213,7 @@
 </table>
 </section>
 <section id="cdddmachannel">
-<h5><span class="section-number">5.1.9.1.1.54. </span>CddDmaChannel<a class="headerlink" href="#cdddmachannel" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.60. </span>CddDmaChannel<a class="headerlink" href="#cdddmachannel" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2036,11 +2264,11 @@
 </table>
 </section>
 <section id="dltfiforegs">
-<h5><span class="section-number">5.1.9.1.1.55. </span>DLTFifoRegs<a class="headerlink" href="#dltfiforegs" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.61. </span>DLTFifoRegs<a class="headerlink" href="#dltfiforegs" title="Link to this heading"></a></h5>
 <p>Configuration container for DLTFifoRegs module.</p>
 </section>
 <section id="dltfiforegsallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.56. </span>DLTFifoRegsAllocatedInstance<a class="headerlink" href="#dltfiforegsallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.62. </span>DLTFifoRegsAllocatedInstance<a class="headerlink" href="#dltfiforegsallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2076,7 +2304,7 @@
 <td><p>VARIANT-PRE-COMPILE</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
-<td><p>DLTFIFOREGS_BASE_FRAME(0U)</p></td>
+<td><p>FRAME0</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Range</strong></p></td>
 <td><p>FRAME0<br>FRAME1<br>FRAME2<br>FRAME3</p></td>
@@ -2085,11 +2313,11 @@
 </table>
 </section>
 <section id="error-aggregator">
-<h5><span class="section-number">5.1.9.1.1.57. </span>Error_Aggregator<a class="headerlink" href="#error-aggregator" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.63. </span>Error_Aggregator<a class="headerlink" href="#error-aggregator" title="Link to this heading"></a></h5>
 <p>Configuration container for Error_Aggregator module.</p>
 </section>
 <section id="error-aggregatorallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.58. </span>Error_AggregatorAllocatedInstance<a class="headerlink" href="#error-aggregatorallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.64. </span>Error_AggregatorAllocatedInstance<a class="headerlink" href="#error-aggregatorallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2125,7 +2353,7 @@
 <td><p>VARIANT-PRE-COMPILE</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
-<td><p>ERROR_AGGREGATOR_BASE_FRAME(0U)</p></td>
+<td><p>ERRORAGGREGATOR_BASE_FRAME(0U)</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Range</strong></p></td>
 <td><p>FRAME0<br>FRAME1<br>FRAME2<br>FRAME3</p></td>
@@ -2134,11 +2362,11 @@
 </table>
 </section>
 <section id="esm">
-<h5><span class="section-number">5.1.9.1.1.59. </span>ESM<a class="headerlink" href="#esm" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.65. </span>ESM<a class="headerlink" href="#esm" title="Link to this heading"></a></h5>
 <p>Configuration container for ESM module.</p>
 </section>
 <section id="esmallocatedinstance">
-<h5><span class="section-number">5.1.9.1.1.60. </span>ESMAllocatedInstance<a class="headerlink" href="#esmallocatedinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.1.10.1.1.66. </span>ESMAllocatedInstance<a class="headerlink" href="#esmallocatedinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2182,8 +2410,8 @@
 </tbody>
 </table>
 </section>
-<section id="id2">
-<h5><span class="section-number">5.1.9.1.1.61. </span>ESM<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
+<section id="id7">
+<h5><span class="section-number">5.1.10.1.1.67. </span>ESM<a class="headerlink" href="#id7" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2210,7 +2438,7 @@
 <td><p>VARIANT-PRE-COMPILE</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Default-value</strong></p></td>
-<td><p>ESM_BASE_FRAME(0U)</p></td>
+<td><p>FRAME0</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Range</strong></p></td>
 <td><p>FRAME0<br>FRAME1<br>FRAME2<br>FRAME3</p></td>
@@ -2222,11 +2450,11 @@
 </section>
 </section>
 <section id="usage-procedures">
-<h2><span class="section-number">5.1.10. </span>Usage Procedures<a class="headerlink" href="#usage-procedures" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.1.11. </span>Usage Procedures<a class="headerlink" href="#usage-procedures" title="Link to this heading"></a></h2>
 <section id="configuration-workflow">
-<h3><span class="section-number">5.1.10.1. </span>Configuration Workflow<a class="headerlink" href="#configuration-workflow" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.11.1. </span>Configuration Workflow<a class="headerlink" href="#configuration-workflow" title="Link to this heading"></a></h3>
 <section id="step-1-create-eb-tresos-project">
-<h4><span class="section-number">5.1.10.1.1. </span>Step 1: Create EB Tresos Project<a class="headerlink" href="#step-1-create-eb-tresos-project" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.1.11.1.1. </span>Step 1: Create EB Tresos Project<a class="headerlink" href="#step-1-create-eb-tresos-project" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p>Launch EB Tresos Studio</p></li>
 <li><p>Create a new configuration project</p></li>
@@ -2235,7 +2463,7 @@
 </ol>
 </section>
 <section id="step-2-configure-device-settings">
-<h4><span class="section-number">5.1.10.1.2. </span>Step 2: Configure Device Settings<a class="headerlink" href="#step-2-configure-device-settings" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.1.11.1.2. </span>Step 2: Configure Device Settings<a class="headerlink" href="#step-2-configure-device-settings" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p>Open the ResourceAllocator module configuration</p></li>
 <li><p>Navigate to the <code class="docutils literal notranslate"><span class="pre">ResourceAllocatorGeneral</span></code> container</p></li>
@@ -2250,7 +2478,7 @@
 </ol>
 </section>
 <section id="step-3-configure-other-mcal-modules">
-<h4><span class="section-number">5.1.10.1.3. </span>Step 3: Configure Other MCAL Modules<a class="headerlink" href="#step-3-configure-other-mcal-modules" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.1.11.1.3. </span>Step 3: Configure Other MCAL Modules<a class="headerlink" href="#step-3-configure-other-mcal-modules" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p>Add required MCAL modules (CAN, SPI, ADC, etc.)</p></li>
 <li><p>The modules will reference the device configuration from Resource Allocator</p></li>
@@ -2259,7 +2487,7 @@
 </ol>
 </section>
 <section id="step-4-generate-configuration">
-<h4><span class="section-number">5.1.10.1.4. </span>Step 4: Generate Configuration<a class="headerlink" href="#step-4-generate-configuration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">5.1.11.1.4. </span>Step 4: Generate Configuration<a class="headerlink" href="#step-4-generate-configuration" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p>Validate all module configurations</p></li>
 <li><p>Generate the configuration files</p></li>
@@ -2269,9 +2497,9 @@
 </section>
 </section>
 <section id="examples">
-<h2><span class="section-number">5.1.11. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.1.12. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 <section id="example-configuring-for-f29h85x-device">
-<h3><span class="section-number">5.1.11.1. </span>Example: Configuring for F29H85x Device<a class="headerlink" href="#example-configuring-for-f29h85x-device" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.12.1. </span>Example: Configuring for F29H85x Device<a class="headerlink" href="#example-configuring-for-f29h85x-device" title="Link to this heading"></a></h3>
 <p>This example demonstrates configuring the Resource Allocator for an F29H85x device:</p>
 <p><strong>Configuration:</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ResourceAllocatorGeneral
@@ -2288,7 +2516,7 @@
 </ul>
 </section>
 <section id="example-configuring-for-f29p58x-device">
-<h3><span class="section-number">5.1.11.2. </span>Example: Configuring for F29P58x Device<a class="headerlink" href="#example-configuring-for-f29p58x-device" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.12.2. </span>Example: Configuring for F29P58x Device<a class="headerlink" href="#example-configuring-for-f29p58x-device" title="Link to this heading"></a></h3>
 <p>This example demonstrates configuring the Resource Allocator for an F29P58x device:</p>
 <p><strong>Configuration:</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ResourceAllocatorGeneral
@@ -2339,7 +2567,7 @@
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 26.00.00
+       Current Version: 26.00.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

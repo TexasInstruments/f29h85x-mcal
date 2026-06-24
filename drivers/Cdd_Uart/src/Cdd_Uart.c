@@ -90,11 +90,11 @@
 
 /* vendor specific version information check */
 
-#if ((CDD_UART_SW_MAJOR_VERSION != (3U)) || (CDD_UART_SW_MINOR_VERSION != (0U)))
+#if ((CDD_UART_SW_MAJOR_VERSION != (3U)) || (CDD_UART_SW_MINOR_VERSION != (1U)))
 #error "Version numbers of Cdd_Uart.c and Cdd_Uart.h are not matching!"
 #endif
 
-#if ((CDD_UART_CFG_MAJOR_VERSION != (3U)) || (CDD_UART_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_UART_CFG_MAJOR_VERSION != (3U)) || (CDD_UART_CFG_MINOR_VERSION != (1U)))
 #error "Version numbers of Cdd_Uart.c and Cdd_Uart_Cfg.h are not matching!"
 #endif
 
@@ -187,6 +187,9 @@ static FUNC(void, CDD_UART_CODE)
 #include "Cdd_Uart_MemMap.h"
 
 #if (STD_ON == CDD_UART_CFG_GET_VERSION_INFO_API)
+/*
+ * Design: MCAL-38909
+ */
 FUNC(void, CDD_UART_CODE)
 Cdd_Uart_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_UART_APPL_DATA) VersionInfoPtr)
 {
@@ -209,11 +212,14 @@ Cdd_Uart_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_UART_APPL_DATA
 }
 #endif
 
+/*
+ * Design: MCAL-38899,MCAL-38892,MCAL-38893,MCAL-38894,MCAL-38895,MCAL-38890
+ */
 FUNC(void, CDD_UART_CODE)
 Cdd_Uart_Init(P2CONST(Cdd_Uart_ConfigType, AUTOMATIC, CDD_UART_CONFIG_DATA) ConfigPtr)
 {
     uint8                      hwUnitId      = 0U;
-    const Cdd_Uart_ConfigType *UartConfigPtr = ConfigPtr;
+    const Cdd_Uart_ConfigType *UartConfigPtr = NULL_PTR;
     Cdd_Uart_ObjectType       *UartHwUnitObj = NULL_PTR;
 
 #if (STD_ON == CDD_UART_CFG_PRE_COMPILE_VARIANT)
@@ -221,21 +227,19 @@ Cdd_Uart_Init(P2CONST(Cdd_Uart_ConfigType, AUTOMATIC, CDD_UART_CONFIG_DATA) Conf
     {
         UartConfigPtr = &CDD_UART_INIT_CONFIG_PC;
     }
-    else
+#else
+    if (NULL_PTR != ConfigPtr)
     {
-#if (STD_ON == CDD_UART_CFG_DEV_ERROR_DETECT)
-        (void)Det_ReportError(CDD_UART_MODULE_ID, CDD_UART_INSTANCE_ID, CDD_UART_SID_INIT, CDD_UART_E_PARAM_POINTER);
-#endif
+        UartConfigPtr = ConfigPtr;
     }
 #endif
-
-#if (STD_ON == CDD_UART_CFG_DEV_ERROR_DETECT)
     if (NULL_PTR == UartConfigPtr)
     {
+#if (STD_ON == CDD_UART_CFG_DEV_ERROR_DETECT)
         (void)Det_ReportError(CDD_UART_MODULE_ID, CDD_UART_INSTANCE_ID, CDD_UART_SID_INIT, CDD_UART_E_PARAM_POINTER);
+#endif
     }
     else
-#endif
     {
         if (FALSE == Cdd_Uart_IsInitialized)
         {
@@ -272,28 +276,46 @@ Cdd_Uart_Init(P2CONST(Cdd_Uart_ConfigType, AUTOMATIC, CDD_UART_CONFIG_DATA) Conf
     }
 }
 
+/*
+ * Design: MCAL-38900
+ */
 FUNC(void, CDD_UART_CODE) Cdd_Uart_Deinit(void)
 {
     uint8                hwUnitId      = 0U;
     Cdd_Uart_ObjectType *UartHwUnitObj = NULL_PTR;
+    boolean              busyDetected  = FALSE;
 
     /* Check if the UART is already initialized */
     if (TRUE == Cdd_Uart_IsInitialized)
     {
+        /* Pass 1: Check all HW units for busy state before de-initializing any.
+         * This ensures atomicity — either all units are de-initialized or none are,
+         * preventing a partial de-init when some units are busy and others are not. */
         for (hwUnitId = 0U; hwUnitId < CDD_UART_MAX_NUM_HWUNIT; hwUnitId++)
         {
             UartHwUnitObj = &Cdd_Uart_Obj[hwUnitId];
 
-#if (STD_ON == CDD_UART_CFG_DEV_ERROR_DETECT)
             /* Checks if the UART is busy with any ongoing transactions or if the FIFOs are not
              * empty. */
             if ((E_NOT_OK == Cdd_Uart_IsWriteBusy(UartHwUnitObj)) || (E_NOT_OK == Cdd_Uart_IsReadBusy(UartHwUnitObj)))
             {
+#if (STD_ON == CDD_UART_CFG_DEV_ERROR_DETECT)
                 (void)Det_ReportError(CDD_UART_MODULE_ID, CDD_UART_INSTANCE_ID, CDD_UART_SID_DEINIT, CDD_UART_E_BUSY);
-            }
-            else
 #endif
+                busyDetected = TRUE;
+                break;
+            }
+        }
+
+        /* Pass 2: De-initialize all HW units only when no HW unit was busy.
+         * If any unit was busy the driver remains initialized so the application
+         * can cancel the pending transaction and retry Deinit. */
+        if (FALSE == busyDetected)
+        {
+            for (hwUnitId = 0U; hwUnitId < CDD_UART_MAX_NUM_HWUNIT; hwUnitId++)
             {
+                UartHwUnitObj = &Cdd_Uart_Obj[hwUnitId];
+
                 /* Disable the UART interrupts to prevent any interrupts during deinitialization */
                 Cdd_Uart_EnableWriteIntr(UartHwUnitObj, FALSE);
                 Cdd_Uart_EnableReadIntr(UartHwUnitObj, FALSE);
@@ -305,10 +327,9 @@ FUNC(void, CDD_UART_CODE) Cdd_Uart_Deinit(void)
                 /* Deinit the UART HW unit */
                 Cdd_Uart_HwUnitDeinit(UartHwUnitObj);
             }
-        }
 
-        /* Set the UART initialization flag to FALSE */
-        Cdd_Uart_IsInitialized = FALSE;
+            Cdd_Uart_IsInitialized = FALSE;
+        }
     }
     else
     {
@@ -319,6 +340,9 @@ FUNC(void, CDD_UART_CODE) Cdd_Uart_Deinit(void)
     }
 }
 
+/*
+ * Design: MCAL-38897,MCAL-38895,MCAL-38890
+ */
 FUNC(Std_ReturnType, CDD_UART_CODE)
 Cdd_Uart_Write(uint8  HwUnitId, P2CONST(Cdd_Uart_DataBufferType, AUTOMATIC, CDD_UART_APPL_DATA) SrcBufferPtr,
                uint32 Count)
@@ -349,6 +373,9 @@ Cdd_Uart_Write(uint8  HwUnitId, P2CONST(Cdd_Uart_DataBufferType, AUTOMATIC, CDD_
     return ret_value;
 }
 
+/*
+ * Design: MCAL-38898,MCAL-38895,MCAL-38890
+ */
 FUNC(Std_ReturnType, CDD_UART_CODE)
 Cdd_Uart_Read(uint8 HwUnitId, P2VAR(Cdd_Uart_DataBufferType, AUTOMATIC, CDD_UART_APPL_DATA) DestBufferPtr, uint32 Count)
 {
@@ -378,6 +405,9 @@ Cdd_Uart_Read(uint8 HwUnitId, P2VAR(Cdd_Uart_DataBufferType, AUTOMATIC, CDD_UART
     return ret_value;
 }
 
+/*
+ * Design: MCAL-38901,MCAL-38895,MCAL-38890
+ */
 FUNC(Std_ReturnType, CDD_UART_CODE) Cdd_Uart_CancelWrite(uint8 HwUnitId)
 {
     Cdd_Uart_ObjectType *UartHwUnitObj = NULL_PTR;
@@ -397,32 +427,26 @@ FUNC(Std_ReturnType, CDD_UART_CODE) Cdd_Uart_CancelWrite(uint8 HwUnitId)
 #endif
     {
         UartHwUnitObj = &Cdd_Uart_Obj[HwUnitId];
-#if (STD_ON == CDD_UART_CFG_DEV_ERROR_DETECT)
-        if (NULL_PTR == UartHwUnitObj)
-        {
-            (void)Det_ReportError(CDD_UART_MODULE_ID, CDD_UART_INSTANCE_ID, CDD_UART_SID_CANCEL_WRITE,
-                                  CDD_UART_E_PARAM_POINTER);
-        }
-        else
-#endif
-        {
-            SchM_Enter_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_0();
 
-            /* Abort the current write transaction */
-            Cdd_Uart_ConfigWriteTrans(&UartHwUnitObj->Cdd_Uart_WriteTransaction, NULL_PTR, 0U);
+        SchM_Enter_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_0();
 
-            /* Disable Write interrupt */
-            Cdd_Uart_EnableWriteIntr(UartHwUnitObj, FALSE);
+        /* Abort the current write transaction */
+        Cdd_Uart_ConfigWriteTrans(&UartHwUnitObj->Cdd_Uart_WriteTransaction, NULL_PTR, 0U);
 
-            SchM_Exit_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_0();
+        /* Disable Write interrupt */
+        Cdd_Uart_EnableWriteIntr(UartHwUnitObj, FALSE);
 
-            ret_value = E_OK;
-        }
+        SchM_Exit_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_0();
+
+        ret_value = E_OK;
     }
 
     return ret_value;
 }
 
+/*
+ * Design: MCAL-38902,MCAL-38895,MCAL-38890
+ */
 FUNC(Std_ReturnType, CDD_UART_CODE) Cdd_Uart_CancelRead(uint8 HwUnitId)
 {
     Cdd_Uart_ObjectType *UartHwUnitObj = NULL_PTR;
@@ -442,32 +466,26 @@ FUNC(Std_ReturnType, CDD_UART_CODE) Cdd_Uart_CancelRead(uint8 HwUnitId)
 #endif
     {
         UartHwUnitObj = &Cdd_Uart_Obj[HwUnitId];
-#if (STD_ON == CDD_UART_CFG_DEV_ERROR_DETECT)
-        if (NULL_PTR == UartHwUnitObj)
-        {
-            (void)Det_ReportError(CDD_UART_MODULE_ID, CDD_UART_INSTANCE_ID, CDD_UART_SID_CANCEL_READ,
-                                  CDD_UART_E_PARAM_POINTER);
-        }
-        else
-#endif
-        {
-            SchM_Enter_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_1();
 
-            /* Abort the current read transaction */
-            Cdd_Uart_ConfigReadTrans(&UartHwUnitObj->Cdd_Uart_ReadTransaction, NULL_PTR, 0U);
+        SchM_Enter_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_1();
 
-            /* Disable Read interrupt */
-            Cdd_Uart_EnableReadIntr(UartHwUnitObj, FALSE);
+        /* Abort the current read transaction */
+        Cdd_Uart_ConfigReadTrans(&UartHwUnitObj->Cdd_Uart_ReadTransaction, NULL_PTR, 0U);
 
-            SchM_Exit_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_1();
+        /* Disable Read interrupt */
+        Cdd_Uart_EnableReadIntr(UartHwUnitObj, FALSE);
 
-            ret_value = E_OK;
-        }
+        SchM_Exit_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_1();
+
+        ret_value = E_OK;
     }
 
     return ret_value;
 }
 
+/*
+ * Design: MCAL-38903,MCAL-38895,MCAL-38890
+ */
 FUNC(Std_ReturnType, CDD_UART_CODE)
 Cdd_Uart_GetWriteStatus(uint8 HwUnitId, Cdd_Uart_WriteStatusType *WriteStatus)
 {
@@ -509,6 +527,9 @@ Cdd_Uart_GetWriteStatus(uint8 HwUnitId, Cdd_Uart_WriteStatusType *WriteStatus)
     return ret_value;
 }
 
+/*
+ * Design: MCAL-38904,MCAL-38895,MCAL-38890
+ */
 FUNC(Std_ReturnType, CDD_UART_CODE)
 Cdd_Uart_GetReadStatus(uint8 HwUnitId, Cdd_Uart_ReadStatusType *ReadStatus)
 {
@@ -550,6 +571,9 @@ Cdd_Uart_GetReadStatus(uint8 HwUnitId, Cdd_Uart_ReadStatusType *ReadStatus)
     return ret_value;
 }
 
+/*
+ * Design: MCAL-38905,MCAL-38895,MCAL-38890
+ */
 FUNC(void, CDD_UART_CODE) Cdd_Uart_MainFunction_Write(void)
 {
     uint8                hwUnit        = 0U;
@@ -579,6 +603,9 @@ FUNC(void, CDD_UART_CODE) Cdd_Uart_MainFunction_Write(void)
     }
 }
 
+/*
+ * Design: MCAL-38906,MCAL-38895,MCAL-38890
+ */
 FUNC(void, CDD_UART_CODE) Cdd_Uart_Poll_Read(void)
 {
     uint8                hwUnit        = 0U;
@@ -604,6 +631,9 @@ FUNC(void, CDD_UART_CODE) Cdd_Uart_Poll_Read(void)
     }
 }
 
+/*
+ * Design: MCAL-38907,MCAL-38895,MCAL-38890
+ */
 FUNC(Std_ReturnType, CDD_UART_CODE)
 Cdd_Uart_GetErrorStatus(uint8 HwUnitId, uint8 *ErrorStatus)
 {
@@ -639,6 +669,9 @@ Cdd_Uart_GetErrorStatus(uint8 HwUnitId, uint8 *ErrorStatus)
     return retVal;
 }
 
+/*
+ * Design: MCAL-38908,MCAL-38895,MCAL-38890
+ */
 FUNC(void, CDD_UART_CODE) Cdd_Uart_FlushReadFIFO(uint8 HwUnitId)
 {
     Cdd_Uart_ObjectType *UartHwUnitObj = NULL_PTR;
@@ -667,6 +700,9 @@ FUNC(void, CDD_UART_CODE) Cdd_Uart_FlushReadFIFO(uint8 HwUnitId)
  *  Local Functions Definition
  *********************************************************************************************************************/
 
+/*
+ * Design: MCAL-38897
+ */
 static FUNC(Std_ReturnType, CDD_UART_CODE)
     Cdd_Uart_PrivWrite(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_APPL_DATA) UartHwUnitObj,
                        P2CONST(Cdd_Uart_DataBufferType, AUTOMATIC, CDD_UART_APPL_DATA) SrcBufferPtr, uint32 Count)
@@ -706,6 +742,9 @@ static FUNC(Std_ReturnType, CDD_UART_CODE)
     return ret_value;
 }
 
+/*
+ * Design: MCAL-38898
+ */
 static FUNC(Std_ReturnType, CDD_UART_CODE)
     Cdd_Uart_PrivRead(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_APPL_DATA) UartHwUnitObj,
                       P2VAR(Cdd_Uart_DataBufferType, AUTOMATIC, CDD_UART_APPL_DATA) DestBufferPtr, uint32 Count)
@@ -742,6 +781,9 @@ static FUNC(Std_ReturnType, CDD_UART_CODE)
     return ret_value;
 }
 
+/*
+ * Design: MCAL-38906
+ */
 static FUNC(void, CDD_UART_CODE)
     Cdd_Uart_Poll_PrivRead(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_APPL_DATA) UartHwUnitObj)
 {

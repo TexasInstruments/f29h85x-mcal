@@ -103,7 +103,7 @@ extern "C" {
 /** \brief Driver Implementation Major Version. */
 #define MCU_SW_MAJOR_VERSION (2U)
 /** \brief Driver Implementation Minor Version. */
-#define MCU_SW_MINOR_VERSION (2U)
+#define MCU_SW_MINOR_VERSION (3U)
 /** \brief Driver Implementation Patch Version. */
 #define MCU_SW_PATCH_VERSION (0U)
 
@@ -159,6 +159,16 @@ extern "C" {
 #define MCU_SID_GET_RAM_STATE ((uint8)0x0AU)
 /** \brief Service ID for Mcu_GetSystemClock.*/
 #define MCU_SID_GET_SYS_CLOCK ((uint8)0x0BU)
+/** \brief Service ID for Mcu_ASysCtl_SelectInternalTestNode.*/
+#define MCU_SID_ASY_SELECT_INTERNAL_TEST_NODE ((uint8)0x0CU)
+/** \brief Service ID for Mcu_ASysCtl_ConfigADCGlobalSOC.*/
+#define MCU_SID_ASY_CONFIG_ADC_GLOBAL_SOC ((uint8)0x0DU)
+/** \brief Service ID for Mcu_ASysCtl_ForceADCGlobalSOC.*/
+#define MCU_SID_ASY_FORCE_ADC_GLOBAL_SOC ((uint8)0x0EU)
+/** \brief Service ID for Mcu_ASysCtl_CommitLock.*/
+#define MCU_SID_ASYSCTL_COMMIT_LOCK ((uint8)0x0FU)
+/** \brief Service ID for Mcu_SysCtl_ConfigEPWMXLink. */
+#define MCU_SID_SYSCTL_CONFIG_EPWMXLINK ((uint8)0x10U)
 
 /*********************************************************************************************************************
  * MCU Error Codes returned by Driver functions.
@@ -202,6 +212,19 @@ extern "C" {
 /** \brief API invoked without performing Mcu_InitClock. */
 #define MCU_E_UNINIT_CLOCK ((uint8)0x12U)
 #endif
+#ifndef MCU_E_PARAM_TESTNODE
+/** \brief Invalid test node value passed to Mcu_ASysCtl_SelectInternalTestNode. */
+#define MCU_E_PARAM_TESTNODE ((uint8)0x13U)
+#endif
+#ifndef MCU_E_ALREADY_LOCKED
+/** \brief Error code: Mcu_ASysCtl_CommitLock() called with lock bits that are already committed.
+ *
+ * Reported when one or more bits in the LockMask parameter are already set in the
+ * internal committed-lock tracking variable (Mcu_ASysCtlCommitLockStatus).
+ * ASysCtl lock bits are write-once and cannot be re-applied after the first commit.
+ */
+#define MCU_E_ALREADY_LOCKED ((uint8)0x14U)
+#endif
 
 /** \brief Define indicating invalid raw reset value.*/
 #define MCU_ERRORRST_MASK ((Mcu_RawResetType)0xFFFF0000U)
@@ -213,6 +236,29 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+
+/** \brief Bitmask type for ASysCtl LOCK register (ASYSCTL_O_LOCK).
+ *
+ * Values can be OR-combined to lock multiple registers in a single call.
+ * Each bit corresponds to one register lock in the ASYSCTL_O_LOCK register.
+ *
+ * \warning These enum values MUST match the hardware register bit definitions in hw_asysctl.h
+ *          (ASYSCTL_LOCK_*). The implementation relies on direct casting without bit translation
+ *          to minimize cyclomatic complexity and meet HIS metrics requirements.
+ *********************************************************************************************************************/
+typedef enum
+{
+    MCU_ASYSCTL_LOCK_TSNSCTL     = 0x001U, /**< Lock TSNSCTL register (Temperature Sensor Control) */
+    MCU_ASYSCTL_LOCK_ANAREFCTL   = 0x002U, /**< Lock ANAREFCTL register (Analog Reference Control) */
+    MCU_ASYSCTL_LOCK_VMONCTL     = 0x004U, /**< Lock VMONCTL register (Voltage Monitor Control) */
+    MCU_ASYSCTL_LOCK_CMPHPMXSEL  = 0x020U, /**< Lock CMPHPMXSEL register (CMPSS HP positive mux CMP1-CMP10) */
+    MCU_ASYSCTL_LOCK_CMPLPMXSEL  = 0x040U, /**< Lock CMPLPMXSEL register (CMPSS LP positive mux CMP1-CMP10) */
+    MCU_ASYSCTL_LOCK_CMPHNMXSEL  = 0x080U, /**< Lock CMPHNMXSEL register (CMPSS HN negative mux) */
+    MCU_ASYSCTL_LOCK_CMPLNMXSEL  = 0x100U, /**< Lock CMPLNMXSEL register (CMPSS LN negative mux) */
+    MCU_ASYSCTL_LOCK_VREGCTL     = 0x200U, /**< Lock VREGCTL register (Voltage Regulator Control) */
+    MCU_ASYSCTL_LOCK_CMPHPMXSEL1 = 0x800U, /**< Lock CMPHPMXSEL1 register (CMPSS HP positive mux CMP11-CMP12) */
+    MCU_ASYSCTL_LOCK_CMPLPMXSEL1 = 0x1000U /**< Lock CMPLPMXSEL1 register (CMPSS LP positive mux CMP11-CMP12) */
+} Mcu_ASysCtlLockType;
 
 /** \brief This is a status value returned by the function Mcu_GetPllStatus of the MCU module. */
 /*
@@ -316,6 +362,10 @@ typedef struct Mcu_ConfigType_s
     P2CONST(struct Mcu_PeripheralConfigType_s, AUTOMATIC, MCU_APPL_CONST) PeripheralConfig;
     /** \brief CPU1 Lockstep enable configuration */
     boolean Mcu_LockstepEnable;
+    /** \brief ASysCtl (Analog System Control) configuration pointer */
+    P2CONST(Mcu_ASysCtlConfigType, AUTOMATIC, MCU_APPL_CONST) Mcu_ASysCtlConfig;
+    /** \brief CMPSS ASysCtl mux select configuration pointer */
+    P2CONST(Mcu_CMPSSASysCtlConfigType, AUTOMATIC, MCU_APPL_CONST) Mcu_CMPSSASysCtlConfig;
 } Mcu_ConfigType;
 
 /*********************************************************************************************************************
@@ -478,6 +528,111 @@ FUNC(void, MCU_CODE) Mcu_PerformReset(void);
  *
  *********************************************************************************************************************/
 FUNC(void, MCU_CODE) Mcu_SetMode(Mcu_ModeType McuMode);
+
+/** \brief Selects the internal analog test node connected to the analog test bus.
+ *
+ * This API is used to set the internal test node in ASysCtl
+ *
+ * \param[in] TestNode  Test node selection value.
+ * \pre  Mcu_Init() must have been called.
+ * \post INTERNALTESTCTL.TESTSEL reflects the requested node.
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_ASysCtl_SelectInternalTestNode(VAR(Mcu_ASysCtlTestNodeType, AUTOMATIC) TestNode);
+
+/** \brief Configures the ADC Global SOC Force Select register (ADCSOCFRCGBSEL).
+ *
+ *  Writes ADCSOCFRCGBSEL at the given base address with the ADC instance select mask,
+ *  selecting which ADC instances participate in the global software trigger.
+ *
+ * \param[in] BaseAddr   Base address of the ADC global register block
+ * \param[in] AdcSelect  ADC instance selection mask (e.g. ASYSCTL_ADCSOCFRCGBSEL_ADCA, etc.)
+ * \pre  Mcu_Init() must have been called.
+ * \post ADCSOCFRCGBSEL register written with AdcSelect.
+ * \return None
+ * \retval None
+ * \note This API is a general-purpose ASysCtl service and is available unconditionally
+ *       (not gated by a feature-specific compile switch). It is intended to be called by
+ *       any module that requires ADC global SOC instance selection (e.g. Cdd_Adc when
+ *       CDD_ADC_GLBSW_TRIG_API is STD_ON).
+ *
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE)
+Mcu_ASysCtl_ConfigADCGlobalSOC(VAR(uint32, AUTOMATIC) BaseAddr, VAR(uint8, AUTOMATIC) AdcSelect);
+
+/** \brief Forces the ADC Global SOC trigger register (ADCSOCFRCGB).
+ *
+ *  Writes ADCSOCFRCGB at the given base address with the SOC mask to simultaneously
+ *  trigger the selected SOCs across all ADC instances configured via ADCSOCFRCGBSEL.
+ *
+ * \param[in] BaseAddr  Base address of the ADC global register block
+ * \param[in] SocMask   SOC trigger mask (one bit per SOC to trigger)
+ * \pre  Mcu_Init() must have been called.
+ * \post ADCSOCFRCGB register written with SocMask.
+ * \return None
+ * \retval None
+ * \note This API is a general-purpose ASysCtl service and is available unconditionally
+ *       (not gated by a feature-specific compile switch). It is intended to be called by
+ *       any module that requires ADC global SOC force triggering (e.g. Cdd_Adc when
+ *       CDD_ADC_GLBSW_TRIG_API is STD_ON).
+ *
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_ASysCtl_ForceADCGlobalSOC(VAR(uint32, AUTOMATIC) BaseAddr, VAR(uint32, AUTOMATIC) SocMask);
+
+/** \brief Configures the EPWM XLINK feature by writing the EPWMXLINKCFG register.
+ *
+ *  Writes the EPWMXLINKCFG register at DEVCFG_BASE to enable the XLINK feature
+ *  for the specified ePWM instances. Uses read-modify-write to set only the
+ *  requested bits without affecting other instances.
+ *
+ *  The EPWMXLinkMask parameter is a bitwise OR of SYSCTL_EPWMXLINKCFG_EPWMn macros:
+ *    - SYSCTL_EPWMXLINKCFG_EPWM1  (0x00001U) — Enable EPWM1  for XLINK
+ *    - SYSCTL_EPWMXLINKCFG_EPWM2  (0x00002U) — Enable EPWM2  for XLINK
+ *    - ...
+ *    - SYSCTL_EPWMXLINKCFG_EPWM18 (0x20000U) — Enable EPWM18 for XLINK
+ *
+ * \param[in] EPWMXLinkMask  Bitmask of SYSCTL_EPWMXLINKCFG_EPWMn bits to enable
+ *
+ * \pre  Mcu_Init() must have been called.
+ * \post EPWMXLINKCFG register OR-updated with EPWMXLinkMask.
+ * \return None
+ * \retval None
+ * \note This API is intended to be called by Cdd_Pwm when the XLINK feature is
+ *       enabled for an ePWM instance. The register is at DEVCFG_BASE and is
+ *       exclusively writable by CPU1.LINK2.
+ *
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_SysCtl_ConfigEPWMXLink(VAR(uint32, AUTOMATIC) EPWMXLinkMask);
+
+/** \brief Commits (locks) the specified ASysCtl registers.
+ *
+ * This function applies the one-time write-lock to ASysCtl registers
+ * (ASYSCTL_O_LOCK) for the registers specified by LockMask.
+ * Lock bits are irreversible until system reset.
+ *
+ * Values of Mcu_ASysCtlLockType can be OR-combined to lock multiple registers:
+ *   - MCU_ASYSCTL_LOCK_TSNSCTL    — Temperature Sensor Control
+ *   - MCU_ASYSCTL_LOCK_ANAREFCTL  — Analog Reference Control
+ *   - MCU_ASYSCTL_LOCK_VMONCTL    — Voltage Monitor Control
+ *   - MCU_ASYSCTL_LOCK_CMPHPMXSEL — CMPSS HP positive mux (CMP1-CMP10)
+ *   - MCU_ASYSCTL_LOCK_CMPLPMXSEL — CMPSS LP positive mux (CMP1-CMP10)
+ *   - MCU_ASYSCTL_LOCK_CMPHNMXSEL — CMPSS HN negative mux
+ *   - MCU_ASYSCTL_LOCK_CMPLNMXSEL — CMPSS LN negative mux
+ *   - MCU_ASYSCTL_LOCK_VREGCTL    — Voltage Regulator Control
+ *   - MCU_ASYSCTL_LOCK_CMPHPMXSEL1 — CMPSS HP positive mux (CMP11-CMP12)
+ *   - MCU_ASYSCTL_LOCK_CMPLPMXSEL1 — CMPSS LP positive mux (CMP11-CMP12)
+ *
+ * \param[in] LockMask  Bitmask of Mcu_ASysCtlLockType values to lock
+ *
+ * \pre Mcu_Init() must be called before calling this function.
+ * \post Specified ASysCtl registers are locked until next system reset.
+ * \return None
+ * \retval None
+ *
+ ****************************************************************************/
+FUNC(void, MCU_CODE) Mcu_ASysCtl_CommitLock(VAR(Mcu_ASysCtlLockType, AUTOMATIC) LockMask);
 
 #if (STD_ON == MCU_CFG_GET_RAM_STATE_API)
 /** \brief This service provides the actual status of the microcontroller Ram

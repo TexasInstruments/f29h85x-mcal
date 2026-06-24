@@ -142,7 +142,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_[!"@name"!]_PinConfig[[
         .Port_PinQualification = (Port_PinQualificationMode)[!"PortPinQualificationMode"!],
         .Port_PinQualificationPeriod = (uint32)[!"PortPinQualificationPeriod"!]U,
         .Port_CoreSelect = (Port_PinCoreSelect)[!"PortPinCoreSelect"!],
-[!/* Validate PortIsAnalogModeSupported, PortIsAGPIO, PortIsAIO, PortIsGPIO against ECU Resource Allocator */!][!//
+[!/* Validate PortIsPinConfigurable, PortIsAnalogModeSupported, PortIsAGPIO, PortIsAIO, PortIsGPIO against ECU Resource Allocator */!][!//
+[!IF "text:tolower(PortIsPinConfigurable) != text:tolower(ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(PortPhysicalPinId),'PORT_PIN_','')),'.isConfigurable'))))"!][!//
+[!ERROR!]Errors exist. Please run autocalculation.[!ENDERROR!][!//
+[!ENDIF!][!//
 [!IF "text:tolower(PortIsAnalogModeSupported) != text:tolower(ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',text:replace(node:value(PortPhysicalPinId),'PORT_PIN_','')),'.isAnalogModeSupported'))))"!][!//
 [!ERROR!]Errors exist. Please run autocalculation.[!ENDERROR!][!//
 [!ENDIF!][!//
@@ -160,7 +163,12 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_[!"@name"!]_PinConfig[[
                             |([!IF "PortIsAGPIO='true'"!]1[!ELSE!]0[!ENDIF!]UL<<2U)
                             |([!IF "PortIsAIO='true'"!]1[!ELSE!]0[!ENDIF!]UL<<3U)
                             |([!IF "PortIsGPIO='true'"!]1[!ELSE!]0[!ENDIF!]UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) [!"text:toupper(PortEnableWakeUpPinLPM)"!]
+        .Port_EnableWakeupPinLPM = (boolean) [!"text:toupper(PortEnableWakeUpPinLPM)"!],
+        .Port_IOBufferDriveConfig = (boolean) [!"text:toupper(PortIOBufferDriveConfig)"!],
+        .Port_IOBufferModeConfig = (boolean) [!"text:toupper(PortIOBufferModeConfig)"!],
+        .Port_AGPIOBitMask = (uint32)[!IF "text:contains(ecu:list('ResourceAllocator_F29H85x.Port_IoDrvSelIoModeSelGpioNumbers'), string(PortPinId))"!][!//
+[!"concat('ASYSCTL_IODRVSEL_GPIO', PortPinId)"!][!//
+[!ELSE!]0U[!ENDIF!]
     },
     .Port_NumPortMuxModes = (uint32)[!"num:i(count(PortPinMode/*))"!][!VAR "PIN"= "PortPinId"!]U,
     .Port_PinMode =
@@ -179,10 +187,18 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_[!"@name"!]_PinConfig[[
 [!ENDLOOP!]
 
 [!LOOP "PortConfigSet"!]
-const struct Port_ConfigType_s Port_Config = 
+static CONST(Port_ASysCtlConfigType, PORT_CONFIG_DATA) Port_[!"@name"!]_ASysCtlConfig =
+{
+    .Port_AGPIOFilter = (uint8)[!"substring-after(../PortGeneral/PortAGPIOFilter, 'PORT_AGPIO_FILTER_')"!]U
+};
+[!ENDLOOP!]
+
+[!LOOP "PortConfigSet"!]
+const struct Port_ConfigType_s Port_Config =
 {
     .Port_PinConfig = (const Port_PinConfigType *)&Port_[!"@name"!]_PinConfig[0],
-    .Port_NumberOfPortPins = (Port_PinType)[!"num:i($NumOfPortPin)"!]U
+    .Port_NumberOfPortPins = (Port_PinType)[!"num:i($NumOfPortPin)"!]U,
+    .Port_ASysCtlConfig = &Port_[!"@name"!]_ASysCtlConfig
 };
 [!ENDLOOP!]
 [!/* Check each group (0-7, 8-15, 16-23, etc.) for qualification period*/!][!//

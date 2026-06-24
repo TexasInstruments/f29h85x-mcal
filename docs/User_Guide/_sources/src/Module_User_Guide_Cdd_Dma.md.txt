@@ -438,6 +438,20 @@ ResourceAllocatorGeneral
 - CPU2/CPU3 uses SDK RTDMA APIs for their allocated channels
 - This scenario requires `Cdd_Dma_Init()` on CPU1 to properly configure the global hardware settings that are only writable by CPU1
 
+### Safety Mechanism
+
+| TI Diagnostic Unique Identifier | Summary | Description |
+|----------------------------------|---------|-------------|
+| RTDMA1 | Periodic Software Read Back of Static Configuration Registers | API is provided to read back the static configuration registers |
+| RTDMA2 | Software readback of written configuration | API is provided to read back the configured values after configuration |
+| RTDMA3 | LOCK Mechanism for Control Registers | RTDMA control register locking is configurable. When enabled, the driver automatically unlocks the registers before each write operation and re-locks them afterwards, ensuring registers are protected all the time except during intentional updates |
+| RTDMA5 | Access Protection Mechanism for Memories | The MPU is configurable and can be enabled via `CddDmaMpuEnable`. When enabled, it monitors all DMA read/write bus accesses and reports violations to the Error Signaling Module (ESM) |
+| RTDMA6 | DMA Overflow Interrupt | The overflow interrupt is configurable during run time and can be enabled per channel. When enabled, an overflow notification callback is also configurable via `CddDmaOverflowIntNotification` |
+
+```{note}
+More details of Safety Mechanisms can be found in Safety Manual.
+```
+
 ### Configuration
 
 The Cdd DMA Driver implementation supports single configuration variants, namely Pre-Compile config. The driver expects generated **Cdd_Dma_Cfg.h** to be present as input file.
@@ -693,6 +707,128 @@ This example demonstrates RTDMA Memory Protection Unit (MPU) functionality by in
 ```{literalinclude} Assets/text/Cdd_Dma/F29H85x/Cdd_Dma_Example_Mem_Transfer_Mpu.txt
 ```
 
+#### Cdd_Dma_Example_Adc_Data_Binning
+
+##### Overview of Cdd_Dma_Example_Adc_Data_Binning
+
+This example demonstrates DMA-based data binning with the CDD ADC driver. Data binning is a technique where multiple ADC conversion results for each channel are stored in separate memory locations (bins) for later processing.
+
+The example uses software-triggered ADC conversions with DMA configured to automatically transfer results into a binned memory structure. Each ADC trigger generates one burst that fills one bin for all channels. The DMA uses burst and transfer stepping to organize data in an interleaved format optimized for per-channel processing.
+
+- Initialization
+  - `EcuM_Init()` Initializes clock to 200 MHz using `Mcu_Init()`
+  - Initializes pins using `Port_Init()` to see the print statements on the console
+  - `Cdd_Adc_Init()` initializes ADC driver with EB Tresos configuration
+  - `Cdd_Dma_Init()` initializes DMA driver with EB Tresos configuration
+  - `Cdd_Adc_GetVersionInfo()` retrieves software version information (vendor ID, module ID, SW version)
+
+- DMA Configuration for Data Binning
+  - Configures DMA channel properties using `Cdd_Dma_SetChannelProperties()`:
+    - Peripheral trigger mode (`CDD_DMA_TRIGGER_ADCA1`) - ADC INT1 triggers DMA
+    - Continuous mode enabled
+    - 16-bit data size for read and write operations (ADC results are 16-bit)
+    - Channel interrupt enabled at end of transfer (after all 3 bins filled)
+  - Configures transfer parameters using `Cdd_Dma_SetTransferProperties()`:
+    - Burst size: 10 bytes (5 channels × 2 bytes/channel)
+    - Transfer size: 3 bursts (one per bin)
+    - Source burst step: +2 bytes (move to next ADC result register)
+    - Source transfer step: -8 bytes (wrap back to first ADC result)
+    - Destination burst step: +6 bytes (skip 2 bins and move to next channel)
+    - Destination transfer step: -22 bytes (wrap back to start and advance to next bin)
+    - Source address: ADC result register base address
+    - Destination address: Binned buffer array
+
+- Execution Flow
+  - `Configure_Cdd_Dma()` - Set up DMA for data binning with burst/transfer stepping
+  - `Cdd_Dma_StartChannelTransfer()` - Start DMA channel (waits for ADC triggers)
+  - `Cdd_Adc_StartGroupConversion()` - Trigger first ADC conversion
+  - Loop for 3 conversions:
+    - Wait for DMA burst completion using `Cdd_Dma_GetChannelStatus()` (one bin filled)
+    - Update ADC status and re-trigger for next bin using `Cdd_Adc_UpdateStatusThroughDma()`
+  - Wait for DMA transfer interrupt (all bins filled) via `Cdd_Adc_Dma_notification()` callback
+  - Display binned results organized by channel and bin
+  - `Cdd_Dma_StopChannelTransfer()` - Stop DMA channel
+  - `Cdd_Dma_DeInit()` and `Cdd_Adc_DeInit()` - Clean up
+
+- Expected Results
+  - 3 ADC conversions are triggered by software
+  - DMA automatically transfers results into 3 bins per channel
+  - Memory layout: [CH0_Bin0, CH0_Bin1, CH0_Bin2, CH1_Bin0, CH1_Bin1, CH1_Bin2, ...]
+  - Console displays binned conversion results for all 5 channels (CH0-CH4)
+  - DMA transfer interrupt confirms all bins are filled
+
+- Setup Required
+  - ADCA is configured for 2.5V internal reference voltage mode
+  - Connect desired analog voltages to ADCAIN0, ADCAIN1, ADCAIN6, ADCAIN7, ADCAIN28 pins (corresponding to channels CH0-CH4)
+
+##### Sample Log of Cdd_Dma_Example_Adc_Data_Binning
+
+```{literalinclude} Assets/text/Cdd_Dma/F29H85x/Cdd_Dma_Example_Adc_Data_Binning.txt
+```
+
+#### Cdd_Dma_Example_Gpt_Ping_Pong_Buffer
+
+##### Overview of Cdd_Dma_Example_Gpt_Ping_Pong_Buffer
+
+This example demonstrates DMA-based ping-pong buffering using a software-incremented counter as the DMA source and a GPT timer as the trigger source. Ping-pong buffering is a technique where two buffers alternate between data collection and processing, allowing continuous data capture without gaps.
+
+The example uses GPT timer (CPUTIMER0) as the trigger source with DMA configured to automatically transfer results into alternating ping and pong buffers. When one buffer is being filled by DMA, the other buffer can be processed by the CPU. The DMA destination address is switched in the ISR to implement the ping-pong mechanism.
+
+- Initialization
+  - `EcuM_Init()` Initializes clock to 200 MHz using `Mcu_Init()`, initializes Port pins and Gpt driver
+  - `AppUtils_Init()` initializes UART for console output
+  - `Cdd_Dma_Init()` initializes DMA driver with EB Tresos configuration
+
+- DMA Configuration for Ping-Pong Buffering
+  - Configures DMA channel properties using `Cdd_Dma_SetChannelProperties()`:
+    - Peripheral trigger mode (`CDD_DMA_TRIGGER_TINT0`) - GPT CPUTIMER0 interrupt triggers DMA
+    - Continuous mode enabled
+    - 8-bit data size for read and write operations
+    - Channel interrupt enabled at end of transfer (after buffer is full with 10 samples)
+    - Overflow interrupt enabled
+  - Configures transfer parameters using `Cdd_Dma_SetTransferProperties()`:
+    - Burst size: 1 byte (1 sample of 8-bit)
+    - Transfer size: 10 bursts per buffer (10 samples)
+    - Source burst step: 0 bytes (always read from same `SourceCounter` address)
+    - Source transfer step: 0 bytes
+    - Destination burst step: 0 bytes
+    - Destination transfer step: 1 byte (8-bit sample size)
+    - Source address: `SourceCounter` variable address
+    - Destination address: Initially points to Ping buffer
+
+- Execution Flow
+  - `Configure_Cdd_Dma()` - Set up DMA channel for ping-pong buffering from `SourceCounter`
+  - `Cdd_Dma_StartChannelTransfer()` - Start DMA channel (waits for GPT triggers)
+  - `Gpt_EnableNotification()` - Enable GPT channel 0 notification
+  - `Gpt_StartTimer()` - Start GPT timer with 1 ms period (200 000 ticks at 200 MHz)
+  - GPT notification `Gpt_Notify_Func_0` fires at 1 ms intervals:
+    - TINT0 hardware event triggers the DMA burst automatically
+    - Increments `SourceCounter` so each DMA capture holds a unique value
+    - Stops timer after `GPT_DMA_TRIGGER_COUNT` (20) triggers
+  - DMA ISR `Cdd_Dma_transfer_complete_notification()`:
+    - Increments `DmaBufferFillCount`
+    - Switches destination to the alternate buffer
+    - Updates DMA destination address using `Cdd_Dma_SetTransferDestAddress()`
+  - Wait until all 20 GPT-triggered DMA captures are issued and both buffers are filled
+  - `Cdd_Dma_StopChannelTransfer()` - Stop DMA channel
+  - Display captured samples from both Ping and Pong buffers
+  - Verify data integrity: Ping buffer expected values 0–9, Pong buffer expected values 10–19
+  - `Cdd_Dma_DeInit()` - Clean up
+
+- Expected Results
+  - 20 snapshots of `SourceCounter` are captured by DMA into alternating ping and pong buffers (10 samples each)
+  - Ping buffer holds values 0–9; Pong buffer holds values 10–19
+  - Console displays the captured values from both buffers
+  - DMA transfer interrupt confirms buffer switches
+
+- Setup Required
+  - No external hardware connections required.
+
+##### Sample Log of Cdd_Dma_Example_Gpt_Ping_Pong_Buffer
+
+```{literalinclude} Assets/text/Cdd_Dma/F29H85x/Cdd_Dma_Example_Gpt_Ping_Pong_Buffer.txt
+```
+
 #### Setup Required to Run Examples
 
 - Connect the hardware and power up
@@ -700,7 +836,11 @@ This example demonstrates RTDMA Memory Protection Unit (MPU) functionality by in
 
 #### How to Run Examples
 
-- Open CCS and import the desired example (Cdd_Dma_Example_Mem_Transfer or Cdd_Dma_Example_Mem_Transfer_Mpu)
+- Open CCS and import the desired example:
+  - `Cdd_Dma_Example_Mem_Transfer`
+  - `Cdd_Dma_Example_Mem_Transfer_Mpu`
+  - `Cdd_Dma_Example_Adc_Data_Binning`
+  - `Cdd_Dma_Example_Gpt_Ping_Pong_Buffer`
 - Build project and start debug session
 - Run the application and observe output on serial console
 
@@ -715,6 +855,84 @@ This example demonstrates RTDMA Memory Protection Unit (MPU) functionality by in
  ┃ ┣ 📂Can\
  ┃ ┣ 📂Cdd_Adc\
  ┃ ┣ 📂**Cdd_Dma**\
+ ┃ ┃ ┣ 📂**Cdd_Dma_Example_Adc_Data_Binning**\
+ ┃ ┃ ┃ ┣ 📂Common\
+ ┃ ┃ ┃ ┃ ┗ 📂tresos\
+ ┃ ┃ ┃ ┃   ┗ 📂config\
+ ┃ ┃ ┃ ┃     ┣ 📜**Cdd_Dma.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃     ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃     ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃     ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃     ┗ 📜Os.xdm\
+ ┃ ┃ ┃ ┣ 📂F29H85x\
+ ┃ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Dma_Example_Adc_Data_Binning.projectspec**\
+ ┃ ┃ ┃ ┃ ┗ 📂Cdd_Dma_Example_Adc_Data_Binning_Config\
+ ┃ ┃ ┃ ┃   ┣ 📂config\
+ ┃ ┃ ┃ ┃   ┃ ┣ 📜Port.xdm\
+ ┃ ┃ ┃ ┃   ┃ ┗ 📜ResourceAllocator.xdm\
+ ┃ ┃ ┃ ┃   ┣ 📂output\
+ ┃ ┃ ┃ ┃   ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜**Cdd_Dma_Cfg.h** : *Contains the generated pre-compiler configuration header*\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜**Cdd_Dma_Cbk.h** : *Contains callback function declarations*\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃   ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜**Cdd_Dma_Cfg.c** : *Contains the generated pre-compiler configuration source*\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┗ 📜Port_PBcfg.c\
+ ┃ ┃ ┃ ┃   ┃ ┗ 📂swcd\
+ ┃ ┃ ┃ ┃   ┃   ┣ 📜Cdd_Dma_BSWMD.arxml\
+ ┃ ┃ ┃ ┃   ┃   ┣ 📜Mcu_BSWMD.arxml\
+ ┃ ┃ ┃ ┃   ┃   ┗ 📜Port_BSWMD.arxml\
+ ┃ ┃ ┃ ┃   ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┗ 📜**Cdd_Dma_Example_Adc_Data_Binning.c** : *Example application for Cdd_Dma data binning*\
+ ┃ ┃ ┣ 📂**Cdd_Dma_Example_Gpt_Ping_Pong_Buffer**\
+ ┃ ┃ ┃ ┣ 📂Common\
+ ┃ ┃ ┃ ┃ ┗ 📂tresos\
+ ┃ ┃ ┃ ┃   ┗ 📂config\
+ ┃ ┃ ┃ ┃     ┣ 📜**Cdd_Dma.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃     ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃     ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃     ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃     ┗ 📜Os.xdm\
+ ┃ ┃ ┃ ┣ 📂F29H85x\
+ ┃ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Dma_Example_Gpt_Ping_Pong_Buffer.projectspec**\
+ ┃ ┃ ┃ ┃ ┗ 📂Cdd_Dma_Example_Gpt_Ping_Pong_Buffer_Config\
+ ┃ ┃ ┃ ┃   ┣ 📂config\
+ ┃ ┃ ┃ ┃   ┃ ┣ 📜Port.xdm\
+ ┃ ┃ ┃ ┃   ┃ ┗ 📜ResourceAllocator.xdm\
+ ┃ ┃ ┃ ┃   ┣ 📂output\
+ ┃ ┃ ┃ ┃   ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜**Cdd_Dma_Cfg.h** : *Contains the generated pre-compiler configuration header*\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜**Cdd_Dma_Cbk.h** : *Contains callback function declarations*\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃   ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜**Cdd_Dma_Cfg.c** : *Contains the generated pre-compiler configuration source*\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃   ┃ ┃ ┗ 📜Port_PBcfg.c\
+ ┃ ┃ ┃ ┃   ┃ ┗ 📂swcd\
+ ┃ ┃ ┃ ┃   ┃   ┣ 📜Cdd_Dma_BSWMD.arxml\
+ ┃ ┃ ┃ ┃   ┃   ┣ 📜Mcu_BSWMD.arxml\
+ ┃ ┃ ┃ ┃   ┃   ┗ 📜Port_BSWMD.arxml\
+ ┃ ┃ ┃ ┃   ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┗ 📜**Cdd_Dma_Example_Gpt_Ping_Pong_Buffer.c** : *Example application for Cdd_Dma ping-pong buffering*\
  ┃ ┃ ┣ 📂**Cdd_Dma_Example_Mem_Transfer**\
  ┃ ┃ ┃ ┣ 📂Common\
  ┃ ┃ ┃ ┃ ┗ 📂tresos\

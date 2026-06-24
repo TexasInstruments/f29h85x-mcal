@@ -87,11 +87,11 @@
 
 /* vendor specific version information check */
 
-#if ((CDD_ADC_SW_MAJOR_VERSION != (4U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
+#if ((CDD_ADC_SW_MAJOR_VERSION != (5U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Cdd_Adc.c and Cdd_Adc.h are not matching!"
 #endif
 
-#if ((CDD_ADC_CFG_MAJOR_VERSION != (4U)) || (CDD_ADC_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_ADC_CFG_MAJOR_VERSION != (5U)) || (CDD_ADC_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Cdd_Adc.c and Cdd_Adc_Cfg.h are not matching!"
 #endif
 
@@ -1460,31 +1460,6 @@ Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
     return temp_value;
 }
 #endif
-
-/* Design: MCAL-31307,MCAL-31306,MCAL-31305 */
-FUNC(void, CDD_ADC_CODE)
-Cdd_Adc_SetInternalTestNode(VAR(Cdd_Adc_InternalTestNodeType, AUTOMATIC) TestNode)
-{
-#if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
-    if (FALSE == Cdd_Adc_IsInitialized)
-    {
-        /* Report DET error if the driver not initialised */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_INTERNAL_TEST_NODE, CDD_ADC_E_UNINIT);
-    }
-    else if (TestNode >= CDD_ADC_TEST_NODE_MAX)
-    {
-        /* Report DET error if the driver not initialised */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_INTERNAL_TEST_NODE,
-                              CDD_ADC_E_INVALID_ID);
-    }
-    else
-#endif
-    {
-        SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
-        Cdd_Adc_SelectInternalTestNode(TestNode);
-        SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
-    }
-}
 
 /* Design: MCAL-32672,MCAL-31128,MCAL-32668 */
 FUNC(void, CDD_ADC_CODE)

@@ -74,7 +74,6 @@
  *********************************************************************************************************************/
 #include "Cdd_Adc.h"
 #include "hw_memmap.h"
-#include "hw_asysctl.h"
 #include "Mcal_Lib_BootRom.h"
 
 /*********************************************************************************************************************
@@ -211,12 +210,11 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             #if (STD_ON == CDD_ADC_SET_RESOLUTION_API)
             [!NOCODE!][!VAR "update_support" = "'true'"!]
             [!LOOP "(CddAdcGroup/*/CddAdcChannel/*)"!][!IF "((node:value(CddAdcChannelId) = 20) and (text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_AdcTempSensor_Instances'),node:value(../../../../CddAdcHwInstance))))"!][!VAR "update_support" = "'false'"!][!BREAK!][!ENDIF!][!ENDLOOP!][!ENDNOCODE!]
-            .resolution_update = (boolean)([!IF "($update_support = 'true') and (text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_Adc16Bit_Instances'),node:value(CddAdcHwInstance))) and (not((../../CddAdcHwUnitAnalogRefABVoltageMode = 'CDD_ADC_REFERENCE_INTERNAL') and (../../CddAdcHwUnitAnalogRefABVoltage = 'CDD_ADC_REFERENCE_3_3V')))"!]1U[!ELSE!]0U[!ENDIF!]),
+            .resolution_update = (boolean)([!IF "($update_support = 'true') and (text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_Adc16Bit_Instances'),node:value(CddAdcHwInstance))) and (not((node:value(as:modconf('ResourceAllocator')[1]/ResourceAllocatorGeneral/ASysCtl/*[1]/AnalogReference/AnalogRefABMode) = 'REFERENCE_INTERNAL') and (node:value(as:modconf('ResourceAllocator')[1]/ResourceAllocatorGeneral/ASysCtl/*[1]/AnalogReference/AnalogRefABVoltage) = 'REFERENCE_3_3V')))"!]1U[!ELSE!]0U[!ENDIF!]),
             #endif
             .signal_mode = (Cdd_Adc_SignalModeType)[!"CddAdcHwUnitSignalMode"!],
             .socpriority = (Cdd_Adc_SocPriorityType)[!"CddAdcSocPriorityMode"!]U,
-            .voltref = (Cdd_Adc_RefVoltType)[!IF "(CddAdcHwInstance ='CDD_ADCA' or CddAdcHwInstance = 'CDD_ADCB')"!][!"../../CddAdcHwUnitAnalogRefABVoltage"!][!ELSE!][!"../../CddAdcHwUnitAnalogRefCDEVoltage"!][!ENDIF!],
-            .voltrefmode = (Cdd_Adc_RefModeType)[!IF "(CddAdcHwInstance ='CDD_ADCA' or CddAdcHwInstance='CDD_ADCB')"!][!"../../CddAdcHwUnitAnalogRefABVoltageMode"!][!ELSE!][!"../../CddAdcHwUnitAnalogRefCDEVoltageMode"!][!ENDIF!],
+            .voltrefmode = (Cdd_Adc_RefModeType)[!IF "(CddAdcHwInstance ='CDD_ADCA' or CddAdcHwInstance='CDD_ADCB')"!][!IF "node:value(as:modconf('ResourceAllocator')[1]/ResourceAllocatorGeneral/ASysCtl/*[1]/AnalogReference/AnalogRefABMode) = 'REFERENCE_EXTERNAL'"!]CDD_ADC_REFERENCE_EXTERNAL[!ELSE!]CDD_ADC_REFERENCE_INTERNAL[!ENDIF!][!ELSE!][!IF "node:value(as:modconf('ResourceAllocator')[1]/ResourceAllocatorGeneral/ASysCtl/*[1]/AnalogReference/AnalogRefCDEMode) = 'REFERENCE_EXTERNAL'"!]CDD_ADC_REFERENCE_EXTERNAL[!ELSE!]CDD_ADC_REFERENCE_INTERNAL[!ENDIF!][!ENDIF!],
 [!IF "num:i(count(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcPpbConfig/*)) > 0"!]
             .startppbnum = (Cdd_Adc_PpbType)([!"num:i($PpbCount)"!]U),
             .ppbcount = (Cdd_Adc_PpbType)([!"num:i(count(CddAdcPpbConfig/*))"!]U),
@@ -235,8 +233,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .base_addr = (uint32)([!"node:value(node:ref(CddAdcHwInstanceRef)/BaseAddr)"!]),
             [!VAR "AdcNum"!][!CALL "GetAdcNum", "HwUnit" = "CddAdcHwInstance"!][!ENDVAR!]
             .result_baseaddr = (uint32)( ADCARESULT_BASE + (CDD_ADC_RESULTBASEADDR_STEP*[!"num:i($AdcNum)"!]U)),
-            .analogrefsel = (uint16)[!IF "(node:value(CddAdcHwInstance) = 'CDD_ADCA' or node:value(CddAdcHwInstance) = 'CDD_ADCB')"!]ASYSCTL_ANAREFCTL_ANAREFABSEL[!ELSE!]ASYSCTL_ANAREFCTL_ANAREFCDESEL[!ENDIF!],
-            .analogrefvoltsel = (uint16)[!IF "(node:value(CddAdcHwInstance) = 'CDD_ADCA' or node:value(CddAdcHwInstance) = 'CDD_ADCB')"!]ASYSCTL_ANAREFCTL_ANAREFAB_2P5SEL[!ELSE!]ASYSCTL_ANAREFCTL_ANAREFCDE_2P5SEL[!ENDIF!],
             .inltrimaddress = [!IF "(node:value(CddAdcHwInstance) = 'CDD_ADCA')"!]((const uint32 *)&McalLib_DeviceCalibrationData->AdcAInlTrim[0U])[!ELSEIF "(node:value(CddAdcHwInstance) = 'CDD_ADCB')"!]((const uint32 *)&McalLib_DeviceCalibrationData->AdcBInlTrim[0U])[!ELSEIF "(node:value(CddAdcHwInstance) = 'CDD_ADCC')"!]((const uint32 *)&McalLib_DeviceCalibrationData->AdcCInlTrim[0U])[!ELSEIF "(node:value(CddAdcHwInstance) = 'CDD_ADCD')"!]((const uint32 *)&McalLib_DeviceCalibrationData->AdcDInlTrim[0U])[!ELSEIF "(node:value(CddAdcHwInstance) = 'CDD_ADCE')"!]((const uint32 *)&McalLib_DeviceCalibrationData->AdcEInlTrim[0U])[!ELSE!]((const uint32 *)&McalLib_DeviceCalibrationData->AdcAInlTrim[0U])[!ENDIF!],
             .numadc_inltrim = ((uint8)[!IF "(node:value(CddAdcHwInstance) = 'CDD_ADCA' or node:value(CddAdcHwInstance) = 'CDD_ADCB')"!]6U[!ELSE!]3U[!ENDIF!])
         }[!IF "not(node:islast())"!],[!CR!][!ELSE!][!ENDIF!]
@@ -510,7 +506,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
 
     },
 [!ENDIF!]
-    .test_input = (Cdd_Adc_InternalTestNodeType)[!"node:value(CddAdcConfigSet/CddAdcInternalTestInput)"!]
 };
 [!ENDSELECT!]
 

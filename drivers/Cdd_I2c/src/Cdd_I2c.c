@@ -68,6 +68,14 @@
  *  Description:  The I2C driver provides APIs to configure the I2C module
  *********************************************************************************************************************/
 
+/*
+ * Design: MCAL-39650, MCAL-39651, MCAL-39652, MCAL-39653, MCAL-39654, MCAL-39655, MCAL-39656,
+ * Design: MCAL-39657, MCAL-39658, MCAL-39659, MCAL-39660, MCAL-39661, MCAL-39662, MCAL-39663,
+ * Design: MCAL-39664, MCAL-39665, MCAL-39666, MCAL-39667, MCAL-39668, MCAL-39669, MCAL-39670,
+ * Design: MCAL-39671, MCAL-39672, MCAL-39673, MCAL-39674, MCAL-39675, MCAL-39676, MCAL-39677,
+ * Design: MCAL-39678, MCAL-39679, MCAL-39680, MCAL-39681, MCAL-39682, MCAL-39683, MCAL-39684
+ */
+
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -118,10 +126,10 @@
 #endif
 
 /* vendor specific version information check */
-#if ((CDD_I2C_SW_MAJOR_VERSION != (1U)) || (CDD_I2C_SW_MINOR_VERSION != (3U)))
+#if ((CDD_I2C_SW_MAJOR_VERSION != (1U)) || (CDD_I2C_SW_MINOR_VERSION != (4U)))
 #error "Version numbers of Cdd_I2c.c and Cdd_I2c.h are not matching!"
 #endif
-#if ((CDD_I2C_CFG_MAJOR_VERSION != (1U)) || (CDD_I2C_CFG_MINOR_VERSION != (3U)))
+#if ((CDD_I2C_CFG_MAJOR_VERSION != (1U)) || (CDD_I2C_CFG_MINOR_VERSION != (4U)))
 #error "Version numbers of Cdd_I2c.c and Cdd_I2c_Cfg.h are not matching!"
 #endif
 
@@ -168,6 +176,9 @@ Cdd_I2c_DriverObjType Cdd_I2c_DrvObj;
 #define CDD_I2C_START_SEC_CODE
 #include "Cdd_I2c_MemMap.h"
 
+/*
+ * Design: MCAL-39685, MCAL-39680, MCAL-39681, MCAL-39683, MCAL-39678, MCAL-39679, MCAL-39684
+ */
 FUNC(void, CDD_I2C_CODE) Cdd_I2c_Init(const Cdd_I2c_ConfigType *configPtr)
 {
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
@@ -215,6 +226,9 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_Init(const Cdd_I2c_ConfigType *configPtr)
     return;
 }
 
+/*
+ * Design: MCAL-39686, MCAL-39680, MCAL-39683, MCAL-39678
+ */
 FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_DeInit(void)
 {
     Std_ReturnType retVal = E_OK;
@@ -243,6 +257,9 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_DeInit(void)
 }
 
 #if (STD_ON == CDD_I2C_VERSION_INFO_API)
+/*
+ * Design: MCAL-39696, MCAL-39678, MCAL-39683
+ */
 FUNC(void, CDD_I2C_CODE) Cdd_I2c_GetVersionInfo(Std_VersionInfoType *versionInfo)
 {
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
@@ -265,6 +282,9 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_GetVersionInfo(Std_VersionInfoType *versionInfo
 }
 #endif
 
+/*
+ * Design: MCAL-39694, MCAL-39680, MCAL-39683, MCAL-39678, MCAL-39684
+ */
 FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_ResetHwUnit(Cdd_I2c_HwUnitType hwUnitId)
 {
     Std_ReturnType         retVal = E_OK;
@@ -302,6 +322,9 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_ResetHwUnit(Cdd_I2c_HwUnitType hwUnit
 }
 
 #if (STD_ON == CDD_I2C_GET_STATUS_API)
+/*
+ * Design: MCAL-39695, MCAL-39678
+ */
 FUNC(Cdd_I2c_ComponentStatusType, CDD_I2C_CODE) Cdd_I2c_GetStatus(void)
 {
     return Cdd_I2c_DrvState;
@@ -312,6 +335,10 @@ FUNC(Cdd_I2c_ComponentStatusType, CDD_I2C_CODE) Cdd_I2c_GetStatus(void)
  * Controller only APIs
  */
 #if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
+/*
+ * Design: MCAL-39687, MCAL-39673, MCAL-39674, MCAL-39675, MCAL-39676, MCAL-39680, MCAL-39683,
+ * Design: MCAL-39678
+ */
 FUNC(Std_ReturnType, CDD_I2C_CODE)
 Cdd_I2c_SetupEB(Cdd_I2c_ChannelType chId, Cdd_I2c_DataConstPtrType txDataBufferPtr, Cdd_I2c_DataPtrType rxDataBufferPtr,
                 Cdd_I2c_DataLengthType length)
@@ -358,6 +385,10 @@ Cdd_I2c_SetupEB(Cdd_I2c_ChannelType chId, Cdd_I2c_DataConstPtrType txDataBufferP
     return retVal;
 }
 
+/*
+ * Design: MCAL-39688, MCAL-39673, MCAL-39674, MCAL-39675, MCAL-39676, MCAL-39662, MCAL-39680,
+ * Design: MCAL-39683, MCAL-39678
+ */
 FUNC(Std_ReturnType, CDD_I2C_CODE)
 Cdd_I2c_SetupEBDynamic(Cdd_I2c_ChannelType chId, Cdd_I2c_AddressType deviceAddress,
                        Cdd_I2c_DataConstPtrType txDataBufferPtr, Cdd_I2c_DataPtrType rxDataBufferPtr,
@@ -419,6 +450,9 @@ Cdd_I2c_SetupEBDynamic(Cdd_I2c_ChannelType chId, Cdd_I2c_AddressType deviceAddre
     return retVal;
 }
 
+/*
+ * Design: MCAL-39689, MCAL-39667, MCAL-39668, MCAL-39680, MCAL-39683, MCAL-39678
+ */
 FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_AsyncTransmit(Cdd_I2c_SequenceType sequenceId)
 {
     Std_ReturnType retVal = E_OK;
@@ -472,6 +506,9 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_AsyncTransmit(Cdd_I2c_SequenceType se
 }
 
 #if (STD_ON == CDD_I2C_CANCEL_API)
+/*
+ * Design: MCAL-39690, MCAL-39653, MCAL-39667, MCAL-39680, MCAL-39683, MCAL-39678
+ */
 FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_Cancel(Cdd_I2c_SequenceType sequenceId)
 {
     Std_ReturnType retVal = E_OK;
@@ -507,6 +544,9 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_Cancel(Cdd_I2c_SequenceType sequenceI
 }
 #endif
 
+/*
+ * Design: MCAL-39691, MCAL-39655, MCAL-39664, MCAL-39680, MCAL-39683, MCAL-39678
+ */
 FUNC(void, CDD_I2C_CODE) Cdd_I2c_MainFunction(void)
 {
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
@@ -539,6 +579,9 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_MainFunction(void)
     return;
 }
 
+/*
+ * Design: MCAL-39692, MCAL-39667, MCAL-39680, MCAL-39683, MCAL-39678
+ */
 FUNC(Cdd_I2c_SequenceResultType, CDD_I2C_CODE) Cdd_I2c_GetSequenceResult(Cdd_I2c_SequenceType sequenceId)
 {
     Cdd_I2c_SequenceResultType seqResult = CDD_I2C_SEQ_OK;
@@ -568,6 +611,9 @@ FUNC(Cdd_I2c_SequenceResultType, CDD_I2C_CODE) Cdd_I2c_GetSequenceResult(Cdd_I2c
     return seqResult;
 }
 
+/*
+ * Design: MCAL-39693, MCAL-39673, MCAL-39680, MCAL-39683, MCAL-39678
+ */
 FUNC(Cdd_I2c_ChannelResultType, CDD_I2C_CODE) Cdd_I2c_GetResult(Cdd_I2c_ChannelType chId)
 {
     Cdd_I2c_ChannelResultType chResult = CDD_I2C_CH_RESULT_OK;
@@ -602,6 +648,9 @@ FUNC(Cdd_I2c_ChannelResultType, CDD_I2C_CODE) Cdd_I2c_GetResult(Cdd_I2c_ChannelT
 
 #if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
+/*
+ * Design: MCAL-39687, MCAL-39688, MCAL-39683, MCAL-39678
+ */
 static Std_ReturnType Cdd_I2c_SetupEBParamCheck(uint8 apiId, Cdd_I2c_ChannelType chId,
                                                 Cdd_I2c_DataConstPtrType txDataBufferPtr,
                                                 Cdd_I2c_DataPtrType rxDataBufferPtr, Cdd_I2c_DataLengthType length)

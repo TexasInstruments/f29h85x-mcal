@@ -11,6 +11,7 @@ title: Mcu API GUIDE Header file
 
 |  Base type   | Type Name  | Brief |
 | -------------| -----------| ----- |
+|enum| **[Mcu_ASysCtlLockType](../Modules/group__MCU.md#enum-mcu_asysctllocktype)** | Bitmask type for ASysCtl LOCK register (ASYSCTL_O_LOCK).  | 
 |enum| **[Mcu_PllStatusType](../Modules/group__MCU.md#enum-mcu_pllstatustype)** | This is a status value returned by the function Mcu_GetPllStatus of the MCU module.  | 
 |enum| **[Mcu_ResetType](../Modules/group__MCU.md#enum-mcu_resettype)** | This is the type of the reset enumerator containing the subset of reset types.  | 
 |enum| **[Mcu_RamStateType](../Modules/group__MCU.md#enum-mcu_ramstatetype)** | This is a status value returned by the function Mcu_GetRamState of the MCU module.  | 
@@ -29,6 +30,7 @@ title: Mcu API GUIDE Header file
 |enum| **[Mcu_LINClkDivider](../Modules/group__MCU.md#enum-mcu_linclkdivider)** | The following are dividers available for LIN clock.  | 
 |enum| **[Mcu_LINInstance](../Modules/group__MCU.md#enum-mcu_lininstance)** | The following are instances available for LIN module.  | 
 |enum| **[Mcu_LowPowerModeType](../Modules/group__MCU.md#enum-mcu_lowpowermodetype)** | List of low power modes.  | 
+|enum| **[Mcu_ASysCtlTestNodeType](../Modules/group__MCU.md#enum-mcu_asysctltestnodetype)** 
 |typedef uint8  | **[Mcu_ClockType](../Modules/group__MCU.md#typedef-mcu_clocktype)** | This type specifies the identification (ID) for a ClockType status used by Mcu_InitClock.  | 
 |typedef uint32  | **[Mcu_RawResetType](../Modules/group__MCU.md#typedef-mcu_rawresettype)** | This type specifies the identification (ID) for a RAW reset status returned by Mcu_GetResetRawValue.  | 
 |typedef uint8  | **[Mcu_ModeType](../Modules/group__MCU.md#typedef-mcu_modetype)** | This type specifies the identification (ID) for a MCU low power mode used in Mcu_SetMode.  | 
@@ -40,6 +42,33 @@ title: Mcu API GUIDE Header file
 |typedef const [Mcu_LinClkConfigType](../Classes/structMcu__LinClkConfigType.md) *  | **[Mcu_LinClkConfigPtrType](../Modules/group__MCU.md#typedef-mcu_linclkconfigptrtype)** 
 |typedef const [Mcu_ClockConfigType](../Classes/structMcu__ClockConfigType.md) *  | **[Mcu_ClockConfigPtrType](../Modules/group__MCU.md#typedef-mcu_clockconfigptrtype)** 
 |typedef const [Mcu_ModeConfigType](../Classes/structMcu__ModeConfigType.md) *  | **[Mcu_ModeConfigPtrType](../Modules/group__MCU.md#typedef-mcu_modeconfigptrtype)** 
+
+
+
+### enum Mcu_ASysCtlLockType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_ASYSCTL_LOCK_TSNSCTL | 0x001U|  Lock TSNSCTL register (Temperature Sensor Control)  |
+| MCU_ASYSCTL_LOCK_ANAREFCTL | 0x002U|  Lock ANAREFCTL register (Analog Reference Control)  |
+| MCU_ASYSCTL_LOCK_VMONCTL | 0x004U|  Lock VMONCTL register (Voltage Monitor Control)  |
+| MCU_ASYSCTL_LOCK_CMPHPMXSEL | 0x020U|  Lock CMPHPMXSEL register (CMPSS HP positive mux CMP1-CMP10)  |
+| MCU_ASYSCTL_LOCK_CMPLPMXSEL | 0x040U|  Lock CMPLPMXSEL register (CMPSS LP positive mux CMP1-CMP10)  |
+| MCU_ASYSCTL_LOCK_CMPHNMXSEL | 0x080U|  Lock CMPHNMXSEL register (CMPSS HN negative mux)  |
+| MCU_ASYSCTL_LOCK_CMPLNMXSEL | 0x100U|  Lock CMPLNMXSEL register (CMPSS LN negative mux)  |
+| MCU_ASYSCTL_LOCK_VREGCTL | 0x200U|  Lock VREGCTL register (Voltage Regulator Control)  |
+| MCU_ASYSCTL_LOCK_CMPHPMXSEL1 | 0x800U|  Lock CMPHPMXSEL1 register (CMPSS HP positive mux CMP11-CMP12)  |
+| MCU_ASYSCTL_LOCK_CMPLPMXSEL1 | 0x1000U|  Lock CMPLPMXSEL1 register (CMPSS LP positive mux CMP11-CMP12)  |
+
+
+
+
+**Brief**: 
+Bitmask type for ASysCtl LOCK register (ASYSCTL_O_LOCK). 
+
+Values can be OR-combined to lock multiple registers in a single call. Each bit corresponds to one register lock in the ASYSCTL_O_LOCK register.
+
+
+**Warning**: These enum values MUST match the hardware register bit definitions in hw_asysctl.h (ASYSCTL_LOCK_*). The implementation relies on direct casting without bit translation to minimize cyclomatic complexity and meet HIS metrics requirements. 
 
 
 
@@ -349,6 +378,45 @@ List of low power modes.
 
 
 
+### enum Mcu_ASysCtlTestNodeType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_ASYSCTL_TEST_NODE_NO_CONN | 0U|  No test node connected (reset default)  |
+| MCU_ASYSCTL_TEST_NODE_VDDCORE | 1U|  VDDCORE supply rail  |
+| MCU_ASYSCTL_TEST_NODE_VDDA | 2U|  VDDA analog supply  |
+| MCU_ASYSCTL_TEST_NODE_VSSA | 3U|  VSSA analog ground  |
+| MCU_ASYSCTL_TEST_NODE_VREFLOA | 4U|  VREFLO for ADC-A  |
+| MCU_ASYSCTL_TEST_NODE_VREFLOB | 5U|  VREFLO for ADC-B  |
+| MCU_ASYSCTL_TEST_NODE_CDAC1H | 7U|  CDAC1 high output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC1L | 8U|  CDAC1 low output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC2H | 9U|  CDAC2 high output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC2L | 10U|  CDAC2 low output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC3H | 11U|  CDAC3 high output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC3L | 12U|  CDAC3 low output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC4H | 13U|  CDAC4 high output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC4L | 14U|  CDAC4 low output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC5H | 15U|  CDAC5 high output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC5L | 16U|  CDAC5 low output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC6H | 17U|  CDAC6 high output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC6L | 18U|  CDAC6 low output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC7H | 19U|  CDAC7 high output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC7L | 20U|  CDAC7 low output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC8H | 21U|  CDAC8 high output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC8L | 22U|  CDAC8 low output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC9H | 23U|  CDAC9 high output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC9L | 24U|  CDAC9 low output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC10H | 25U|  CDAC10 high output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC10L | 26U|  CDAC10 low output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC11H | 27U|  CDAC11 high output  |
+| MCU_ASYSCTL_TEST_NODE_CDAC11L | 28U|  CDAC11 low output  |
+| MCU_ASYSCTL_TEST_NODE_ENZ_CALIB_GAIN_3P3 | 29U|  Enable calibration gain 3.3V  |
+| MCU_ASYSCTL_TEST_NODE_MAX | |  Sentinel — not a valid node  |
+
+
+
+
+
+
 ### typedef Mcu_ClockType
 ```
 typedef uint8 Mcu_ClockType;
@@ -466,6 +534,8 @@ typedef const Mcu_ModeConfigType* Mcu_ModeConfigPtrType;
 | **[Mcu_ModeConfigType](../Classes/structMcu__ModeConfigType.md)** | Structure for Mcu low power mode configuration type.  |
 | **[Mcu_PeripheralRegEntryType](../Classes/structMcu__PeripheralRegEntryType.md)** | Single peripheral configuration register entry.  |
 | **[Mcu_PeripheralConfigType](../Classes/structMcu__PeripheralConfigType.md)** | Peripheral configuration type containing register entries.  |
+| **[Mcu_ASysCtlConfigType](../Classes/structMcu__ASysCtlConfigType.md)** |  |
+| **[Mcu_CMPSSASysCtlConfigType](../Classes/structMcu__CMPSSASysCtlConfigType.md)** |  |
 
 
 
@@ -495,6 +565,11 @@ typedef const Mcu_ModeConfigType* Mcu_ModeConfigPtrType;
 | MCU_SID_GET_VERSION_INFO   | Service ID for Mcu_GetVersionInfo.  |
 | MCU_SID_GET_RAM_STATE   | Service ID for Mcu_GetRamState.  |
 | MCU_SID_GET_SYS_CLOCK   | Service ID for Mcu_GetSystemClock.  |
+| MCU_SID_ASY_SELECT_INTERNAL_TEST_NODE   | Service ID for Mcu_ASysCtl_SelectInternalTestNode.  |
+| MCU_SID_ASY_CONFIG_ADC_GLOBAL_SOC   | Service ID for Mcu_ASysCtl_ConfigADCGlobalSOC.  |
+| MCU_SID_ASY_FORCE_ADC_GLOBAL_SOC   | Service ID for Mcu_ASysCtl_ForceADCGlobalSOC.  |
+| MCU_SID_ASYSCTL_COMMIT_LOCK   | Service ID for Mcu_ASysCtl_CommitLock.  |
+| MCU_SID_SYSCTL_CONFIG_EPWMXLINK   | Service ID for Mcu_SysCtl_ConfigEPWMXLink.  |
 | MCU_E_PARAM_CONFIG   | Mcu_Init config param invalid.  |
 | MCU_E_PARAM_CLOCK   | Mcu_InitClock clockid param invalid.  |
 | MCU_E_PARAM_MODE   | Mcu_SetMode modeid param invalid.  |
@@ -504,6 +579,8 @@ typedef const Mcu_ModeConfigType* Mcu_ModeConfigPtrType;
 | MCU_E_PARAM_POINTER   | NULL_PTR passed to MCU driver APIs.  |
 | MCU_E_INIT_FAILED   | Mcu Initialization failed.  |
 | MCU_E_UNINIT_CLOCK   | API invoked without performing Mcu_InitClock.  |
+| MCU_E_PARAM_TESTNODE   | Invalid test node value passed to Mcu_ASysCtl_SelectInternalTestNode.  |
+| MCU_E_ALREADY_LOCKED   | Error code: Mcu_ASysCtl_CommitLock() called with lock bits that are already committed.  |
 | MCU_ERRORRST_MASK   | Define indicating invalid raw reset value.  |
 
 ## Functions
@@ -520,6 +597,11 @@ typedef const Mcu_ModeConfigType* Mcu_ModeConfigPtrType;
 | [Mcu_RawResetType](../Modules/group__MCU.md#typedef-mcu_rawresettype) | **[Mcu_GetResetRawValue](../Modules/group__MCU.md#function-mcu_getresetrawvalue)**(void )| The service reads the raw reset value from the hardware register.  |
 | void | **[Mcu_PerformReset](../Modules/group__MCU.md#function-mcu_performreset)**(void )| The service performs a microcontroller reset.  |
 | void | **[Mcu_SetMode](../Modules/group__MCU.md#function-mcu_setmode)**([Mcu_ModeType](../Modules/group__MCU.md#typedef-mcu_modetype) McuMode)| The service activates low power modes.  |
+| void | **[Mcu_ASysCtl_SelectInternalTestNode](../Modules/group__MCU.md#function-mcu_asysctl_selectinternaltestnode)**([Mcu_ASysCtlTestNodeType](../Modules/group__MCU.md#enum-mcu_asysctltestnodetype) TestNode)| Selects the internal analog test node connected to the analog test bus.  |
+| void | **[Mcu_ASysCtl_ConfigADCGlobalSOC](../Modules/group__MCU.md#function-mcu_asysctl_configadcglobalsoc)**(uint32 BaseAddr, uint8 AdcSelect)| Configures the ADC Global SOC Force Select register (ADCSOCFRCGBSEL).  |
+| void | **[Mcu_ASysCtl_ForceADCGlobalSOC](../Modules/group__MCU.md#function-mcu_asysctl_forceadcglobalsoc)**(uint32 BaseAddr, uint32 SocMask)| Forces the ADC Global SOC trigger register (ADCSOCFRCGB).  |
+| void | **[Mcu_SysCtl_ConfigEPWMXLink](../Modules/group__MCU.md#function-mcu_sysctl_configepwmxlink)**(uint32 EPWMXLinkMask)| Configures the EPWM XLINK feature by writing the EPWMXLINKCFG register.  |
+| void | **[Mcu_ASysCtl_CommitLock](../Modules/group__MCU.md#function-mcu_asysctl_commitlock)**([Mcu_ASysCtlLockType](../Modules/group__MCU.md#enum-mcu_asysctllocktype) LockMask)| Commits (locks) the specified ASysCtl registers.  |
 | [Mcu_RamStateType](../Modules/group__MCU.md#enum-mcu_ramstatetype) | **[Mcu_GetRamState](../Modules/group__MCU.md#function-mcu_getramstate)**(void )| This service provides the actual status of the microcontroller Ram.  |
 
 
@@ -848,6 +930,208 @@ This API is used to activate the low power modes IDLE & STANDBY
 **Precondition**: None 
 
 **Postcondition**: None 
+
+### function Mcu_ASysCtl_SelectInternalTestNode
+
+```
+void Mcu_ASysCtl_SelectInternalTestNode(
+    Mcu_ASysCtlTestNodeType TestNode
+)
+```
+
+
+**Brief**: 
+Selects the internal analog test node connected to the analog test bus. 
+
+This API is used to set the internal test node in ASysCtl
+
+
+**Parameters**: 
+
+  
+* **TestNode** Test node selection value. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: Mcu_Init() must have been called. 
+
+**Postcondition**: INTERNALTESTCTL.TESTSEL reflects the requested node. 
+
+### function Mcu_ASysCtl_ConfigADCGlobalSOC
+
+```
+void Mcu_ASysCtl_ConfigADCGlobalSOC(
+    uint32 BaseAddr,
+    uint8 AdcSelect
+)
+```
+
+
+**Brief**: 
+Configures the ADC Global SOC Force Select register (ADCSOCFRCGBSEL). 
+
+Writes ADCSOCFRCGBSEL at the given base address with the ADC instance select mask, selecting which ADC instances participate in the global software trigger.
+
+
+**Parameters**: 
+
+  
+* **BaseAddr** Base address of the ADC global register block 
+  
+* **AdcSelect** ADC instance selection mask (e.g. ASYSCTL_ADCSOCFRCGBSEL_ADCA, etc.) 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Note**: This API is a general-purpose ASysCtl service and is available unconditionally (not gated by a feature-specific compile switch). It is intended to be called by any module that requires ADC global SOC instance selection (e.g. Cdd_Adc when CDD_ADC_GLBSW_TRIG_API is STD_ON). 
+
+**Precondition**: Mcu_Init() must have been called. 
+
+**Postcondition**: ADCSOCFRCGBSEL register written with AdcSelect. 
+
+### function Mcu_ASysCtl_ForceADCGlobalSOC
+
+```
+void Mcu_ASysCtl_ForceADCGlobalSOC(
+    uint32 BaseAddr,
+    uint32 SocMask
+)
+```
+
+
+**Brief**: 
+Forces the ADC Global SOC trigger register (ADCSOCFRCGB). 
+
+Writes ADCSOCFRCGB at the given base address with the SOC mask to simultaneously trigger the selected SOCs across all ADC instances configured via ADCSOCFRCGBSEL.
+
+
+**Parameters**: 
+
+  
+* **BaseAddr** Base address of the ADC global register block 
+  
+* **SocMask** SOC trigger mask (one bit per SOC to trigger) 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Note**: This API is a general-purpose ASysCtl service and is available unconditionally (not gated by a feature-specific compile switch). It is intended to be called by any module that requires ADC global SOC force triggering (e.g. Cdd_Adc when CDD_ADC_GLBSW_TRIG_API is STD_ON). 
+
+**Precondition**: Mcu_Init() must have been called. 
+
+**Postcondition**: ADCSOCFRCGB register written with SocMask. 
+
+### function Mcu_SysCtl_ConfigEPWMXLink
+
+```
+void Mcu_SysCtl_ConfigEPWMXLink(
+    uint32 EPWMXLinkMask
+)
+```
+
+
+**Brief**: 
+Configures the EPWM XLINK feature by writing the EPWMXLINKCFG register. 
+
+Writes the EPWMXLINKCFG register at DEVCFG_BASE to enable the XLINK feature for the specified ePWM instances. Uses read-modify-write to set only the requested bits without affecting other instances.
+
+The EPWMXLinkMask parameter is a bitwise OR of SYSCTL_EPWMXLINKCFG_EPWMn macros:
+
+* SYSCTL_EPWMXLINKCFG_EPWM1 (0x00001U) — Enable EPWM1 for XLINK
+* SYSCTL_EPWMXLINKCFG_EPWM2 (0x00002U) — Enable EPWM2 for XLINK
+* ...
+* SYSCTL_EPWMXLINKCFG_EPWM18 (0x20000U) — Enable EPWM18 for XLINK
+
+
+**Parameters**: 
+
+  
+* **EPWMXLinkMask** Bitmask of SYSCTL_EPWMXLINKCFG_EPWMn bits to enable
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Note**: This API is intended to be called by Cdd_Pwm when the XLINK feature is enabled for an ePWM instance. The register is at DEVCFG_BASE and is exclusively writable by CPU1.LINK2. 
+
+**Precondition**: Mcu_Init() must have been called. 
+
+**Postcondition**: EPWMXLINKCFG register OR-updated with EPWMXLinkMask. 
+
+### function Mcu_ASysCtl_CommitLock
+
+```
+void Mcu_ASysCtl_CommitLock(
+    Mcu_ASysCtlLockType LockMask
+)
+```
+
+
+**Brief**: 
+Commits (locks) the specified ASysCtl registers. 
+
+This function applies the one-time write-lock to ASysCtl registers (ASYSCTL_O_LOCK) for the registers specified by LockMask. Lock bits are irreversible until system reset.
+
+Values of Mcu_ASysCtlLockType can be OR-combined to lock multiple registers:
+
+* MCU_ASYSCTL_LOCK_TSNSCTL — Temperature Sensor Control
+* MCU_ASYSCTL_LOCK_ANAREFCTL — Analog Reference Control
+* MCU_ASYSCTL_LOCK_VMONCTL — Voltage Monitor Control
+* MCU_ASYSCTL_LOCK_CMPHPMXSEL — CMPSS HP positive mux (CMP1-CMP10)
+* MCU_ASYSCTL_LOCK_CMPLPMXSEL — CMPSS LP positive mux (CMP1-CMP10)
+* MCU_ASYSCTL_LOCK_CMPHNMXSEL — CMPSS HN negative mux
+* MCU_ASYSCTL_LOCK_CMPLNMXSEL — CMPSS LN negative mux
+* MCU_ASYSCTL_LOCK_VREGCTL — Voltage Regulator Control
+* MCU_ASYSCTL_LOCK_CMPHPMXSEL1 — CMPSS HP positive mux (CMP11-CMP12)
+* MCU_ASYSCTL_LOCK_CMPLPMXSEL1 — CMPSS LP positive mux (CMP11-CMP12)
+
+
+**Parameters**: 
+
+  
+* **LockMask** Bitmask of Mcu_ASysCtlLockType values to lock
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: Mcu_Init() must be called before calling this function. 
+
+**Postcondition**: Specified ASysCtl registers are locked until next system reset. 
 
 ### function Mcu_GetRamState
 

@@ -83,11 +83,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CDD_XBAR_SW_MAJOR_VERSION != (3U)) || (CDD_XBAR_SW_MINOR_VERSION != (1U)))
+#if ((CDD_XBAR_SW_MAJOR_VERSION != (3U)) || (CDD_XBAR_SW_MINOR_VERSION != (2U)))
     #error "Version numbers of Cdd_Xbar.c and Cdd_Xbar.h are inconsistent!"
 #endif
 
-#if ((CDD_XBAR_CFG_MAJOR_VERSION != (3U)) || (CDD_XBAR_CFG_MINOR_VERSION != (1U)))
+#if ((CDD_XBAR_CFG_MAJOR_VERSION != (3U)) || (CDD_XBAR_CFG_MINOR_VERSION != (2U)))
     #error "Version numbers of Cdd_Xbar_Cfg.c and Cdd_Xbar_Cfg.h are inconsistent!"
 #endif
 
@@ -132,7 +132,7 @@ CONST(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config =
     {
         {
             .inputSelect = CDD_XBAR_INPUT7,   /* Design: MCAL-25720 */
-            .inputLine = 0U,    /* EPWM1 */  /* Design: MCAL-25721 */
+            .inputLine = 1U,    /* GPIO1 */  /* Design: MCAL-25721 */
             .externalIntEnable = FALSE,
             .externalIntNum = CDD_XBAR_XINT_DISABLED,
             .externalIntrEdge = CDD_XBAR_INT_TYPE_DISABLED,

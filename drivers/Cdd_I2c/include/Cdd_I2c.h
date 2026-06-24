@@ -98,7 +98,7 @@ extern "C" {
 /** \brief Driver Implementation Major Version */
 #define CDD_I2C_SW_MAJOR_VERSION (1U)
 /** \brief Driver Implementation Minor Version */
-#define CDD_I2C_SW_MINOR_VERSION (3U)
+#define CDD_I2C_SW_MINOR_VERSION (4U)
 /** \brief Driver Implementation Patch Version */
 #define CDD_I2C_SW_PATCH_VERSION (0U)
 
@@ -466,7 +466,7 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_AsyncTransmit(Cdd_I2c_SequenceType se
 /** \brief Cancel a transmission
  *
  * A request that is already in transmission progress, is cancelled
- * by finishing the current sequence. This is done to achieve a stable
+ * by finishing the current channel transfer. This is done to achieve a stable
  * state with no undefined data. A queued transmission request is cancelled
  * at once.
  *
@@ -486,9 +486,11 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_AsyncTransmit(Cdd_I2c_SequenceType se
 FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_Cancel(Cdd_I2c_SequenceType sequenceId);
 #endif
 
-/** \brief Makes a target channel available for processing requests (addressing).
- * When called, the target channel becomes available for starting incoming or
- * outgoing transfers.
+/** \brief Cyclic main function for polling mode operation.
+ * Iterates over all configured HW units; for each non-interrupt-mode HW unit
+ * with an active channel, calls Cdd_I2c_ProcessEvents() to advance the
+ * transfer state machine. Must be called periodically by the OS scheduler
+ * when any HW unit is configured in polling mode.
  *
  * Note: This API is applicable only for controller mode.
  *
@@ -496,8 +498,8 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_Cancel(Cdd_I2c_SequenceType sequenceI
  * Sync/Async - Asynchronous
  * Reentrancy - Reentrant
  *
- * \pre None
- * \post None
+ * \pre Driver must be initialized (CDD_I2C_IDLE or CDD_I2C_BUSY state)
+ * \post Pending transfer events are processed for all polling-mode HW units
  * \return None
  *********************************************************************************************************************/
 FUNC(void, CDD_I2C_CODE) Cdd_I2c_MainFunction(void);

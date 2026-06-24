@@ -1,0 +1,154 @@
+project(Cdd_Dma_Example_Gpt_Ping_Pong_Buffer LANGUAGES C ASM)
+
+if(NOT TARGET hw_include)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/hw_include/
+                     ${CMAKE_BINARY_DIR}/hw_include)
+endif()
+
+if(NOT TARGET MemMap)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/MemMap/
+                     ${CMAKE_BINARY_DIR}/MemMap)
+endif()
+
+if(NOT TARGET Mcal_Lib)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Mcal_Lib/
+                     ${CMAKE_BINARY_DIR}/Mcal_Lib)
+endif()
+
+if(NOT TARGET AUTOSAR_Types)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/AUTOSAR_Types/
+                     ${CMAKE_BINARY_DIR}/AUTOSAR_Types)
+endif()
+
+if(NOT TARGET Mcu)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Mcu/
+                     ${CMAKE_BINARY_DIR}/Mcu)
+endif()
+
+if(NOT TARGET SchM_Mcu)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Mcu/
+                     ${CMAKE_BINARY_DIR}/SchM_Mcu)
+endif()
+
+if(NOT TARGET Port)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Port
+                     ${CMAKE_BINARY_DIR}/Port)
+endif()
+
+if(NOT TARGET Cdd_Dma)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Cdd_Dma
+                     ${CMAKE_BINARY_DIR}/Cdd_Dma)
+endif()
+
+if(NOT TARGET Gpt)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Gpt/
+                     ${CMAKE_BINARY_DIR}/Gpt)
+endif()
+
+if(NOT TARGET Det)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/Det/
+                     ${CMAKE_BINARY_DIR}/Det)
+endif()
+
+if(NOT TARGET Dem)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/Dem/
+                     ${CMAKE_BINARY_DIR}/Dem)
+endif()
+
+if(NOT TARGET EcuM)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/EcuM/
+                     ${CMAKE_BINARY_DIR}/EcuM)
+endif()
+
+if(NOT TARGET Os)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/Os/
+                     ${CMAKE_BINARY_DIR}/Os)
+endif()
+
+if(NOT TARGET SchM_Gpt)
+    add_subdirectory(
+        ${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Gpt/
+        ${CMAKE_BINARY_DIR}/Cdd_Dma/Cdd_Dma_Example_Gpt_Ping_Pong_Buffer/SchM_Gpt
+    )
+endif()
+
+if(NOT TARGET SchM_Port)
+    add_subdirectory(
+        ${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Port/
+        ${CMAKE_BINARY_DIR}/Cdd_Dma/Cdd_Dma_Example_Gpt_Ping_Pong_Buffer/SchM_Port
+    )
+endif()
+
+if(NOT TARGET SchM_Cdd_Dma)
+    add_subdirectory(
+        ${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Cdd_Dma/
+        ${CMAKE_BINARY_DIR}/Cdd_Dma/Cdd_Dma_Example_Gpt_Ping_Pong_Buffer/SchM_Cdd_Dma
+    )
+endif()
+
+if(NOT TARGET Cdd_Dma_Example_Gpt_Ping_Pong_Buffer_Config)
+    add_subdirectory(
+        ${CMAKE_CURRENT_SOURCE_DIR}/${BUILD_DEVICE}/Cdd_Dma_Example_Gpt_Ping_Pong_Buffer_Config/
+    )
+endif()
+
+if(NOT TARGET DeviceSupport)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/examples/DeviceSupport
+                     ${CMAKE_BINARY_DIR}/DeviceSupport)
+endif()
+
+if(NOT TARGET AppUtils)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/examples/AppUtils
+                     ${CMAKE_BINARY_DIR}/AppUtils)
+endif()
+
+add_link_options(-Wl,--stack_size=0x1000)
+add_link_options(
+    -Wl,--xml_link_info=${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_linkInfo.xml
+)
+add_link_options(-Wl,-m=${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.map)
+
+select_linker_file("DEFAULT" "cpu1")
+
+# This command is used to move the .out file
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
+    ${PROJECT_ROOT_DIRECTORY}/build/assets/examples/${PROJECT_NAME}/)
+
+add_executable(${PROJECT_NAME} Cdd_Dma_Example_Gpt_Ping_Pong_Buffer.c)
+
+target_link_libraries(
+    ${PROJECT_NAME}
+    PRIVATE Cdd_Dma_Example_Gpt_Ping_Pong_Buffer_Config
+            DeviceSupport
+            AppUtils
+            Mcu
+            Port
+            Cdd_Dma
+            SchM_Port
+            SchM_Mcu
+            SchM_Cdd_Dma
+            Gpt
+            hw_include
+            AUTOSAR_Types
+            Det
+            Dem
+            Mcal_Lib
+            MemMap
+            EcuM
+            Os
+            SchM_Gpt)
+
+# This command is used to move the .xml and .map files
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND
+        ${CMAKE_COMMAND} -E copy
+        "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_linkInfo.xml"
+        "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.map"
+        ${PROJECT_ROOT_DIRECTORY}/build/assets/examples/${PROJECT_NAME}/)
+
+if(BUILD_CONFIGURATION MATCHES "FLASH")
+    signing(${PROJECT_NAME}
+            ${PROJECT_ROOT_DIRECTORY}/build/assets/examples/${PROJECT_NAME})
+endif()

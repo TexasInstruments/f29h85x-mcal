@@ -47,7 +47,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                26.00.00
+                26.00.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -59,7 +59,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.00 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.01 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Overview_of_MCAL.html">2. Overview of MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../MCAL_Configuration_and_EB_Tresos.html">3. MCAL Configurator And EB Tresos User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
@@ -141,7 +141,7 @@ summary: FLS Driver Object, global information used by module.</p>
 </tr>
 <tr class="row-odd"><td><p>MemIf_StatusType</p></td>
 <td><p>status</p></td>
-<td><p>The maximum number of bytes to write in one cycle of the flash driver’s job processing function in normal mode. Using Fls Info Structure instead of this for now.</p></td>
+<td><p>Array of sector configuration entries describing the flash layout.</p></td>
 </tr>
 <tr class="row-even"><td><p>MemIf_JobResultType</p></td>
 <td><p>jobResultType</p></td>
@@ -165,75 +165,71 @@ summary: FLS Driver Object, global information used by module.</p>
 </tr>
 <tr class="row-odd"><td><p>MemIf_ModeType</p></td>
 <td><p>mode</p></td>
-<td><p></p></td>
+<td><p>Data transfer length for the current job.</p></td>
 </tr>
 <tr class="row-even"><td><p>uint32</p></td>
 <td><p>jobChunkSize</p></td>
 <td><p>Module mode setup for current job - SLOW for now.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../Modules/group__FLS.html#typedef-fls-lengthtype"><span class="std std-ref">Fls_LengthType</span></a></p></td>
-<td><p>transferred</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../Modules/group__FLS.html#enum-fls-erasetype"><span class="std std-ref">Fls_EraseType</span></a></p></td>
+<td><p>typeoferase</p></td>
 <td><p>Length of Data to be transfer in current call cycle.</p></td>
 </tr>
 <tr class="row-even"><td><p>uint32</p></td>
-<td><p>postBlankCheckFlashaddr</p></td>
-<td><p>Flash Post Blank Check Address.</p></td>
-</tr>
-<tr class="row-odd"><td><p>uint32</p></td>
-<td><p>prevFlashaddr</p></td>
-<td><p>Flash Previous Address.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../Modules/group__FLS.html#enum-fls-erasetype"><span class="std std-ref">Fls_EraseType</span></a></p></td>
-<td><p>typeoferase</p></td>
-<td><p>Size of Data has been transferred.</p></td>
-</tr>
-<tr class="row-odd"><td><p>uint32</p></td>
 <td><p>writePostFapiFsmBusy</p></td>
 <td><p>To select the type of erase (sector erase/ block erase/ bulk erase)</p></td>
 </tr>
-<tr class="row-even"><td><p>uint32</p></td>
+<tr class="row-odd"><td><p>uint32</p></td>
 <td><p>writeChunkComplete</p></td>
 <td><p>Set to 1 while the write FSM is in POSTCHECK and the FSM is still busy (not yet done); 0 otherwise. Reset to 0 when a new write job is accepted.</p></td>
 </tr>
-<tr class="row-odd"><td><p>uint32</p></td>
+<tr class="row-even"><td><p>uint32</p></td>
 <td><p>erasePostFapiFsmDone</p></td>
 <td><p>Set to 1 when POSTCHECK STATUS_CHECK confirms the programming command completed successfully for the current chunk; gates the write-verify compare in Fls_Process_JobWrite. Reset to 0 at the start of each Fls_F29AsyncWrite call and when a new write job is accepted.</p></td>
 </tr>
-<tr class="row-even"><td><p>volatile uint8</p></td>
+<tr class="row-odd"><td><p>volatile uint8</p></td>
 <td><p>sectorEraseStage</p></td>
 <td><p>Set to 1 once the erase FSM status check confirms the sector/bank erase completed successfully; gates the post-erase blank check. Reset to 0 at the start of each erase sub-function call and when a new erase job is accepted.</p></td>
 </tr>
-<tr class="row-odd"><td><p>volatile uint16</p></td>
+<tr class="row-even"><td><p>volatile uint16</p></td>
 <td><p>sectorErasePreCheck</p></td>
 <td><p>Sector erase FSM stage variable. Reset to FLS_S_EDEFAULT when a new erase job is accepted; sectorErasePreCheck and sectorErasePostCheck are reset directly in Fls_Erase() rather than via the EDEFAULT detection in Fls_F29AsyncSectorErase.</p></td>
 </tr>
-<tr class="row-even"><td><p>volatile uint16</p></td>
+<tr class="row-odd"><td><p>volatile uint16</p></td>
 <td><p>sectorErasePostCheck</p></td>
 <td><p>Sector erase pre-check sub-state FSM counter. Reset to FLS_ERASE_FSM_READY_CHECK when a new erase job is accepted.</p></td>
 </tr>
-<tr class="row-odd"><td><p>volatile uint8</p></td>
+<tr class="row-even"><td><p>volatile uint8</p></td>
 <td><p>bankEraseStage</p></td>
 <td><p>Sector erase post-check sub-state FSM counter. Reset to FLS_ERASE_FSM_READY_CHECK when a new erase job is accepted.</p></td>
 </tr>
-<tr class="row-even"><td><p>volatile uint16</p></td>
+<tr class="row-odd"><td><p>volatile uint16</p></td>
 <td><p>bankErasePreCheck</p></td>
 <td><p>Bank erase FSM stage variable. Reset to FLS_S_EDEFAULT when a new erase job is accepted; bankErasePreCheck and bankErasePostCheck are reset directly in Fls_Erase() rather than via the EDEFAULT detection in Fls_F29AsyncBankErase.</p></td>
 </tr>
-<tr class="row-odd"><td><p>volatile uint16</p></td>
+<tr class="row-even"><td><p>volatile uint16</p></td>
 <td><p>bankErasePostCheck</p></td>
 <td><p>Bank erase pre-check sub-state FSM counter. Reset to FLS_ERASE_FSM_READY_CHECK when a new erase job is accepted.</p></td>
 </tr>
-<tr class="row-even"><td><p>volatile uint8</p></td>
+<tr class="row-odd"><td><p>volatile uint8</p></td>
 <td><p>flashWriteStage</p></td>
 <td><p>Bank erase post-check sub-state FSM counter. Reset to FLS_ERASE_FSM_READY_CHECK when a new erase job is accepted.</p></td>
 </tr>
-<tr class="row-odd"><td><p>volatile uint16</p></td>
+<tr class="row-even"><td><p>volatile uint16</p></td>
 <td><p>writePreCheck</p></td>
 <td><p>Write FSM stage variable. Reset to FLS_S_WDEFAULT when a new write job is accepted; writePreCheck and writePostCheck are reset directly in Fls_Write() rather than via the WDEFAULT detection in Fls_F29AsyncWrite.</p></td>
 </tr>
-<tr class="row-even"><td><p>volatile uint16</p></td>
+<tr class="row-odd"><td><p>volatile uint16</p></td>
 <td><p>writePostCheck</p></td>
 <td><p>Write pre-check sub-state FSM counter. Reset to FLS_WRITE_FSM_READY_CHECK when a new write job is accepted.</p></td>
+</tr>
+<tr class="row-even"><td><p>uint32</p></td>
+<td><p>cmdWeProtAMask</p></td>
+<td><p>Write post-check sub-state FSM counter. Reset to FLS_WRITE_FSM_READY_CHECK when a new write job is accepted.</p></td>
+</tr>
+<tr class="row-odd"><td><p>uint32</p></td>
+<td><p>cmdWeProtBMask</p></td>
+<td><p>Write/erase protection mask for flash sectors 0-31 (CMDWEPROTA), captured at init.</p></td>
 </tr>
 </tbody>
 </table>
@@ -265,7 +261,7 @@ summary: FLS Driver Object, global information used by module.</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 26.00.00
+       Current Version: 26.00.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

@@ -49,7 +49,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                26.00.00
+                26.00.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -61,7 +61,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.00 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.01 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Overview_of_MCAL.html">2. Overview of MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../MCAL_Configuration_and_EB_Tresos.html">3. MCAL Configurator And EB Tresos User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
@@ -1011,7 +1011,7 @@ Target error notification callback - called on bus error conditions.</p>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-i2c-mainfunction"><span class="std std-ref">Cdd_I2c_MainFunction</span></a></strong>(void )</p></td>
-<td><p>Makes a target channel available for processing requests (addressing). When called, the target channel becomes available for starting incoming or outgoing transfers.</p></td>
+<td><p>Cyclic main function for polling mode operation. Iterates over all configured HW units; for each non-interrupt-mode HW unit with an active channel, calls Cdd_I2c_ProcessEvents() to advance the transfer state machine. Must be called periodically by the OS scheduler when any HW unit is configured in polling mode.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#enum-cdd-i2c-sequenceresulttype"><span class="std std-ref">Cdd_I2c_SequenceResultType</span></a></p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-i2c-getsequenceresult"><span class="std std-ref">Cdd_I2c_GetSequenceResult</span></a></strong>(<a class="reference internal" href="#typedef-cdd-i2c-sequencetype"><span class="std std-ref">Cdd_I2c_SequenceType</span></a> sequenceId)</p></td>
@@ -1218,7 +1218,7 @@ The service conducts an asynchronous data transmission according to the paramete
 </div>
 <p><strong>Brief</strong>:
 Cancel a transmission.</p>
-<p>A request that is already in transmission progress, is cancelled by finishing the current sequence. This is done to achieve a stable state with no undefined data. A queued transmission request is cancelled at once.</p>
+<p>A request that is already in transmission progress, is cancelled by finishing the current channel transfer. This is done to achieve a stable state with no undefined data. A queued transmission request is cancelled at once.</p>
 <p>Note: This API is applicable only for controller mode.</p>
 <p>Service ID[hex] - CDD_I2C_SID_CANCEL Sync/Async - Synchronous Reentrancy - Non Reentrant</p>
 <p><strong>Parameters</strong>:</p>
@@ -1244,12 +1244,12 @@ Cancel a transmission.</p>
 </pre></div>
 </div>
 <p><strong>Brief</strong>:
-Makes a target channel available for processing requests (addressing). When called, the target channel becomes available for starting incoming or outgoing transfers.</p>
+Cyclic main function for polling mode operation. Iterates over all configured HW units; for each non-interrupt-mode HW unit with an active channel, calls Cdd_I2c_ProcessEvents() to advance the transfer state machine. Must be called periodically by the OS scheduler when any HW unit is configured in polling mode.</p>
 <p>Note: This API is applicable only for controller mode.</p>
 <p>Service ID[hex] - CDD_I2C_SID_MAIN_FUNCTION Sync/Async - Asynchronous Reentrancy - Reentrant</p>
 <p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
+<p><strong>Precondition</strong>: Driver must be initialized (CDD_I2C_IDLE or CDD_I2C_BUSY state)</p>
+<p><strong>Postcondition</strong>: Pending transfer events are processed for all polling-mode HW units</p>
 </section>
 <section id="function-cdd-i2c-getsequenceresult">
 <h3><span class="section-number">7.13.4.9. </span>function Cdd_I2c_GetSequenceResult<a class="headerlink" href="#function-cdd-i2c-getsequenceresult" title="Link to this heading"></a></h3>
@@ -1483,7 +1483,7 @@ Submit RX buffer - call before Start or in RX Notification callback to provide a
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 26.00.00
+       Current Version: 26.00.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

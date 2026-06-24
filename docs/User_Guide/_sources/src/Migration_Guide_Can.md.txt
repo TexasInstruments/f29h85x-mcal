@@ -2,6 +2,55 @@
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
+## v04.01.00 (i.e release v26.00.01) from v04.00.00 (i.e release v26.00.00) Migration
+
+### Summary
+
+Version v04.01.00 (release v26.00.01) introduces the following change to the CAN module:
+
+1. **`CanMultiplexedTransmission` Config**: The Tx buffer ordering mode is now correctly driven by the `CanMultiplexedTransmission` configuration parameter.
+
+### Change 1: Tx Buffer Mode Now Respects `CanMultiplexedTransmission` Config
+
+#### Description
+
+The `CanMultiplexedTransmission` parameter in `CanGeneral` controls the Tx buffer ordering mode:
+
+- `CanMultiplexedTransmission = true` → Queue mode: priority-order transmission
+- `CanMultiplexedTransmission = false` → FIFO mode: first-in, first-out transmission
+
+```{NOTE}
+Per AUTOSAR, `CanMultiplexedTransmission` is a global parameter in `CanGeneral` and applies to **all CAN controller instances**. There is no per-controller override.
+```
+
+```{figure} Assets/images/migration/can_module/06_01_can_multiplexed_transmission_param.png
+:alt: CanMultiplexedTransmission parameter in EB Tresos
+:align: center
+:width: 80%
+
+`CanMultiplexedTransmission` parameter location under **Can → General**
+```
+
+In earlier versions, the driver unconditionally initialized every controller to operate in Queue mode regardless of the `CanMultiplexedTransmission` setting. Starting with this release, the driver evaluates the `CanMultiplexedTransmission` parameter and programs the controller accordingly.
+
+Users who configured `CanMultiplexedTransmission = false` expecting FIFO-ordered transmission were silently running in Queue mode. After upgrading, these controllers will operate in FIFO mode as configured, which changes the hardware Tx arbitration behaviour.
+
+#### Old vs New
+
+| `CanMultiplexedTransmission` | v26.00.00 | v26.00.01 |
+|------------------------------|-----------|-----------|
+| `false` | Queue mode (config ignored) | FIFO mode (config respected) |
+| `true` | Queue mode | Queue mode (no change) |
+
+#### Migration Actions
+
+1. **Check your `CanMultiplexedTransmission` setting**: In EB Tresos, open **Can → General** and locate the `CanMultiplexedTransmission` parameter.
+2. **If `CanMultiplexedTransmission = true`**: No action required — Queue mode was active before and remains active.
+3. **If `CanMultiplexedTransmission = false`**: The hardware will now operate in FIFO mode. Review any application logic that depends on Tx message transmission order (e.g., priority-based frame scheduling, latency assumptions). Confirm that FIFO ordering matches the intended design.
+4. **Rebuild**: After verifying configuration intent, rebuild the project.
+
+---
+
 ## v04.00.00 (i.e release v26.00.00) from v03.01.00 (i.e release v01.04.01) Migration
 
 ### Summary

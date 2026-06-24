@@ -1276,10 +1276,11 @@ static FUNC(void, SPI_CODE) Spi_ConfigChannel(P2CONST(Spi_HwUnitObjType, AUTOMAT
         chObj->curTxBufPtr = (volatile const uint8 *)&chObj->txIb[0U];
         chObj->curRxBufPtr = (volatile uint8 *)&chObj->rxIb[0U];
     }
-    /* TI_COVERAGE_GAP_START [Branch Coverage] Default check added as MISRA required */
+    /* TI_COVERAGE_GAP_START [Branch Coverage, Statement Coverage] Default check added as MISRA
+-       required. channelBufType can only be SPI_IB or SPI_EB in valid configurations */
     else
     {
-        /* channelBufType can only be SPI_IB or SPI_EB in valid configurations */
+        /* do nothing */
     }
     /* TI_COVERAGE_GAP_STOP */
 #elif (SPI_CHANNEL_BUFFERS == SPI_EB)
@@ -1304,11 +1305,6 @@ static FUNC(void, SPI_CODE) Spi_ConfigChannel(P2CONST(Spi_HwUnitObjType, AUTOMAT
     /* Set word-length in bits */
     McalLib_RegMFWriteRaw16(baseAddr + SPI_O_CCR, SPI_CCR_SPICHAR_M, SPI_CCR_SPICHAR_S,
                             (uint16)chObj->chCfg->dataWidth - 1U);
-
-    /* Dummy read of SPI_O_CCR to introduce a delay after updating the SPICHAR field,
-     * ensuring the hardware register update takes effect before subsequent operations. */
-    (void)McalLib_RegReadRaw16(baseAddr + SPI_O_CCR);
-    /*ToDo : Analyze the impact of changing channel configuration */
 
     return;
 }
@@ -1396,6 +1392,10 @@ static FUNC(void, SPI_CODE) Spi_StartNextChannel(P2CONST(Spi_HwUnitObjType, AUTO
     /*clear all interrupt flags*/
     Spi_ClearAllInterruptFlags(baseAddr);
 
+    /*Reset the SPI transmit and receive channels*/
+    McalLib_RegBitClear16(hwUnitObj->baseAddr + SPI_O_FFTX, SPI_FFTX_SPIRST);
+    McalLib_RegBitSet16(hwUnitObj->baseAddr + SPI_O_FFTX, SPI_FFTX_SPIRST);
+
     /*Reset TxFIFO*/
     McalLib_RegBitClear16(hwUnitObj->baseAddr + SPI_O_FFTX, SPI_FFTX_TXFIFO);
     McalLib_RegBitSet16(hwUnitObj->baseAddr + SPI_O_FFTX, SPI_FFTX_TXFIFO);
@@ -1466,14 +1466,7 @@ static FUNC(void, SPI_CODE) Spi_ScheduleAllJobsSyncTransmit(P2VAR(Spi_DriverObjT
         jobObj = &(Spi_DrvObj->jobObj[jobId]);
         /* Queue the job to the hardware queue */
         jobObj->seqObj = seqObj;
-        /* TI_COVERAGE_GAP_START [Branch Coverage] As for loop will exit before numJobsPending
-           reaching 0, this condition will never become false. This condition added to resolve
-           MISCRA issue */
-        if (seqObj->numJobsPending > 0U)
-        {
-            /* TI_COVERAGE_GAP_STOP */
-            Spi_ScheduleAllJobsSyncTransmitPriv(seqObj, jobObj);
-        }
+        Spi_ScheduleAllJobsSyncTransmitPriv(seqObj, jobObj);
     }
 
     return;
@@ -2097,13 +2090,9 @@ Spi_PrivProcessTxEvent(VAR(uint32, AUTOMATIC) baseAddr, P2VAR(Spi_ChannelObjType
     if (chObj->numWordsTxRx > chObj->curTxWords)
     {
         txFifoStatus = (uint8)((txIntrStatus & SPI_FFTX_TXFFST_M) >> SPI_FFTX_TXFFST_S);
-        /* TI_COVERAGE_GAP_START [Branch Coverage] fifo status cannot be greater than
-           (SPI_FIFO_TX_FIFO_DEPTH - 1U), this condition added to resolve MISCRA issue */
-        if ((SPI_FIFO_TX_FIFO_DEPTH - 1U) > txFifoStatus)
-        {
-            /* TI_COVERAGE_GAP_STOP */
-            availableTxFIFO = (uint16)(SPI_FIFO_TX_FIFO_DEPTH - 1U) - txFifoStatus;
-        }
+
+        availableTxFIFO = (uint16)(SPI_FIFO_TX_FIFO_DEPTH - 1U) - txFifoStatus;
+
         numWordsToWrite = ((uint32)chObj->numWordsTxRx - chObj->curTxWords);
         /* If remaining no of words is greater than available FIFO, Limit words to available size */
         if (numWordsToWrite > availableTxFIFO)
@@ -2220,16 +2209,6 @@ static FUNC(Spi_JobResultType, SPI_CODE)
     baseAddr = hwUnitObj->baseAddr;
 
     intrStatus = McalLib_RegReadRaw16(baseAddr + SPI_O_STS);
-    /* TI_COVERAGE_GAP_START [Branch Coverage/Line Coverage] SPI receiver overrun error path
-       in non-FIFO synchronous mode. The SPI_STS_OVERRUN_FLAG is set by hardware when the
-       receive buffer is not read before the next word arrives. In the DEM-disabled
-       configuration (SPI_E_HARDWARE_ERROR == SPI_DEM_NO_EVENT, Spi_test12), this branch
-       cannot be exercised because the test uses zero-length EB channels where no data
-       transfer occurs, and in non-zero transfer scenarios the CPU polling loop reads the
-       receive buffer faster than the SPI clock period, making a hardware overrun physically
-       impossible in a standard loopback environment. This branch is covered in all
-       DEM-enabled configurations (Spi_test3, Spi_test5, Spi_test6, Spi_test9). Hardware
-       fault injection would be required to cover this instantiation. */
     if (SPI_STS_OVERRUN_FLAG == (intrStatus & SPI_STS_OVERRUN_FLAG))
     {
         /* since there is an overrun in the trasmission
@@ -2243,7 +2222,6 @@ static FUNC(Spi_JobResultType, SPI_CODE)
         /* clear OVERRUN_FLAG */
         McalLib_RegBitSet16(baseAddr + SPI_O_STS, SPI_STS_OVERRUN_FLAG);
     }
-    /* TI_COVERAGE_GAP_STOP */
     else
     {
         if ((intrStatus & SPI_STS_INT_FLAG) == SPI_STS_INT_FLAG)
@@ -2283,14 +2261,6 @@ static FUNC(Spi_JobResultType, SPI_CODE)
     /* Get interrupt status */
     txIntrStatus = McalLib_RegReadRaw16(baseAddr + SPI_O_FFTX);
     rxIntrStatus = McalLib_RegReadRaw16(baseAddr + SPI_O_FFRX);
-    /* TI_COVERAGE_GAP_START [Branch Coverage/Line Coverage] SPI RX FIFO overflow error path.
-       The SPI_FFRX_RXFFOVF flag is set by hardware when the RX FIFO overflows. In the
-       DEM-disabled configuration (SPI_E_HARDWARE_ERROR == SPI_DEM_NO_EVENT, Spi_test12),
-       this branch cannot be exercised because the test uses zero-length EB channels where
-       no data transfer occurs, and in non-zero transfer scenarios the CPU polling rate
-       prevents FIFO overflow in a standard loopback environment. This branch is covered
-       in all DEM-enabled configurations (Spi_test3, Spi_test5, Spi_test6, Spi_test9).
-       Hardware fault injection would be required to cover this instantiation. */
     if ((rxIntrStatus & SPI_FFRX_RXFFOVF) == SPI_FFRX_RXFFOVF)
     {
         /* since there is an overrun in the trasmission
@@ -2304,7 +2274,6 @@ static FUNC(Spi_JobResultType, SPI_CODE)
         /* clear Rx FF over flow */
         McalLib_RegBitSet16(baseAddr + SPI_O_FFRX, SPI_FFRX_RXFFOVFCLR);
     }
-    /* TI_COVERAGE_GAP_STOP */
     else if ((rxIntrStatus & SPI_FFRX_RXFFINT) == SPI_FFRX_RXFFINT)
     {
 #if (SPI_E_HARDWARE_ERROR != SPI_DEM_NO_EVENT)
@@ -2421,16 +2390,6 @@ static FUNC(Spi_JobResultType, SPI_CODE)
     baseAddr = hwUnitObj->baseAddr;
 
     intrStatus = McalLib_RegReadRaw16(baseAddr + SPI_O_STS);
-    /* TI_COVERAGE_GAP_START [Branch Coverage/Line Coverage] SPI receiver overrun error path
-       in non-FIFO interrupt (async) mode. The SPI_STS_OVERRUN_FLAG is set by hardware when
-       the receive buffer is not read before the next word arrives. In the DEM-disabled
-       configuration (SPI_E_HARDWARE_ERROR == SPI_DEM_NO_EVENT, Spi_test12), this branch
-       cannot be exercised because the test uses zero-length EB channels where no data
-       transfer occurs, and in non-zero transfer scenarios the interrupt handler processes
-       the receive buffer before the next word arrives, making a hardware overrun physically
-       impossible in a standard loopback environment. This branch is covered in all
-       DEM-enabled configurations (Spi_test3, Spi_test5, Spi_test6, Spi_test9). Hardware
-       fault injection would be required to cover this instantiation. */
     if (SPI_STS_OVERRUN_FLAG == (intrStatus & SPI_STS_OVERRUN_FLAG))
     {
         /* since there is an overrun in the trasmission
@@ -2444,7 +2403,6 @@ static FUNC(Spi_JobResultType, SPI_CODE)
         /* clear OVERRUN_FLAG */
         McalLib_RegBitSet16(baseAddr + SPI_O_STS, SPI_STS_OVERRUN_FLAG);
     }
-    /* TI_COVERAGE_GAP_STOP */
     else
     {
         if ((intrStatus & SPI_STS_INT_FLAG) == SPI_STS_INT_FLAG)

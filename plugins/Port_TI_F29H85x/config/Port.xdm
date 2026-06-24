@@ -569,18 +569,44 @@
                             </v:var>
 							  
 							<v:var name="PortEnableWakeUpPinLPM" type="BOOLEAN">
-                                   <a:a name="DESC" value="EN: Use/Don't use the GPIO Pin as a wakeup source for the low power modes - standby/halt."/>
-                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                                   <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
-                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                                   </a:a>
-                                   <a:a name="ORIGIN" value="Texas Instruments"/>
-                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                   <a:a name="UUID" 
-                                        value="1634acef-8598-430e-b102-a982073d79fe"/>
-								   <a:da name="EDITABLE" type="XPath" expr="(((../PortPinId)&gt;=0 and (../PortPinId)&lt;=63) and (text:contains(node:value(../PortPinPeripheral),'GPIO')))"/>
-                                   <a:da name="DEFAULT" value="false"/>
-                            </v:var>
+                    <a:a name="DESC" value="EN: Use/Don't use the GPIO Pin as a wakeup source for the low power modes - standby/halt."/>
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
+                    <a:a name="ORIGIN" value="Texas Instruments"/>
+                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                    <a:a name="UUID"
+                        value="1634acef-8598-430e-b102-a982073d79fe"/>
+                    <a:da name="EDITABLE" type="XPath" expr="(((../PortPinId)&gt;=0 and (../PortPinId)&lt;=63) and (text:contains(node:value(../PortPinPeripheral),'GPIO')))"/>
+                    <a:da name="DEFAULT" value="false"/>
+              </v:var>
+	
+              <v:var name="PortIOBufferDriveConfig" type="BOOLEAN">
+                  <a:a name="DESC" value="EN: Selects the IO buffer drive strength for AGPIO-capable pins via the IODRVSEL register bit. TRUE = high-drive strength. FALSE = normal drive strength. Only applicable to AGPIO pins."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                      <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" value="b1c2d3e4-f5a6-7890-bcde-f01234567891"/>
+                  <a:da name="EDITABLE" type="XPath" expr="text:contains(ecu:list('ResourceAllocator_F29H85x.Port_IoDrvSelIoModeSelGpioNumbers'), string(../PortPinId))"/>
+                   <a:da name="DEFAULT" value="false"/>
+               </v:var>
+
+               <v:var name="PortIOBufferModeConfig" type="BOOLEAN">
+                   <a:a name="DESC" value="EN: Selects the IO buffer voltage mode for AGPIO-capable pins via the IOMODESEL register bit. TRUE = 1.35 V mode. FALSE = 3.3 V mode. Only applicable to AGPIO pins."/>
+                   <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                       <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                       <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                   </a:a>
+                   <a:a name="ORIGIN" value="Texas Instruments"/>
+                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                   <a:a name="UUID" value="c2d3e4f5-a6b7-8901-cdef-012345678902"/>
+                   <a:da name="EDITABLE" type="XPath" expr="text:contains(ecu:list('ResourceAllocator_F29H85x.Port_IoDrvSelIoModeSelGpioNumbers'), string(../PortPinId))"/>
+                  <a:da name="DEFAULT" value="false"/>
+              </v:var>
 						
                         <v:lst name="PortPinMode">
                             <a:da name="MIN" value="1"/>
@@ -711,8 +737,36 @@
 				   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
 				   <a:a name="UUID" value="94080f0a-7809-4a12-b951-5dd6d335aee6"/>
 				   <a:da name="DEFAULT" value="false"/>
-                </v:var>
-              </v:ctr>
+                    </v:var>
+	
+                    <v:var name="PortAGPIOFilter" type="ENUMERATION">
+                        <a:a name="DESC"><a:v><![CDATA[
+                        <html>
+                            <h3>AGPIOFILTER - Analog GPIO input filter selection (global, applies to all AGPIO pins):</h3>
+                            <ul>
+                                <li><b>PORT_AGPIO_FILTER_0 (00):</b> Filter bypass configuration (min ACQPS = 90ns)</li>
+                                <li><b>PORT_AGPIO_FILTER_1 (01):</b> 333 Ohm filter setting (min ACQPS = 125ns)</li>
+                                <li><b>PORT_AGPIO_FILTER_2 (10):</b> 500 Ohm filter setting (min ACQPS = 160ns)</li>
+                                <li><b>PORT_AGPIO_FILTER_3 (11):</b> 1 kOhm filter setting (min ACQPS = 230ns)</li>
+                            </ul>
+                        </html>
+                        ]]></a:v></a:a>
+                        <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                        </a:a>
+                        <a:a name="ORIGIN" value="Texas Instruments"/>
+                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                        <a:a name="UUID" value="a3f1c2d4-5e6b-7890-abcd-ef1234567890"/>
+                        <a:da name="RANGE">
+                            <a:v>PORT_AGPIO_FILTER_0</a:v>
+                            <a:v>PORT_AGPIO_FILTER_1</a:v>
+                            <a:v>PORT_AGPIO_FILTER_2</a:v>
+                            <a:v>PORT_AGPIO_FILTER_3</a:v>
+                        </a:da>
+                        <a:da name="DEFAULT" value="PORT_AGPIO_FILTER_0"/>
+                    </v:var>
+                  </v:ctr>
               <d:ref type="REFINED_MODULE_DEF" 
                      value="ASPath:/AUTOSAR/EcucDefs/Port"/>
             </v:ctr>

@@ -93,7 +93,7 @@ extern "C" {
 /* CDD DMA Driver Configuration SW Version Info */
 
 #define CDD_DMA_CFG_MAJOR_VERSION           (1U)
-#define CDD_DMA_CFG_MINOR_VERSION           (0U)
+#define CDD_DMA_CFG_MINOR_VERSION           (1U)
 #define CDD_DMA_CFG_PATCH_VERSION           (0U)
 
 /* CDD DMA Build Variant. Pre-compile build Variant */
@@ -123,16 +123,25 @@ extern "C" {
  /** \brief Macro to define the number of MPU regions configured */
 #define CDD_DMA_MPU_REGION_COUNT         0U
 
+/** \brief Maximum value for DMA burst size */
+#define CDD_DMA_MAX_BURST_SIZE (256U)
+
+/** \brief Maximum value for DMA transfer size and wrap size */
+#define CDD_DMA_MAX_TRANSFER_SIZE (65536U)
+
+/* Design: MCAL-39315 */
 /*****************************************************************************
  * \brief Symbolic names of the DMA instances
  *****************************************************************************/
 #define Cdd_DmaConf_CddDmaHwInstance_CddDmaHwInstance_0          0U	         /*~ASR~*/
 
+/* Design: MCAL-39313 */
 /*****************************************************************************
  * \brief Symbolic names of the DMA channels
  *****************************************************************************/ 
 #define Cdd_DmaConf_CddDmaChannel_CddDmaChannel_0          0U	         /*~ASR~*/
 
+/* Design: MCAL-39314 */
 /*****************************************************************************
  * \brief Symbolic names of the DMA MPU regions
  *****************************************************************************/
@@ -151,6 +160,7 @@ extern "C" {
 /* Forward declaration of Cdd_Dma configuration structure */
 struct Cdd_Dma_ConfigTag;
 
+/* Design: MCAL-39291 */
 /** \brief Peripheral event trigger source select type */
 typedef enum
 {

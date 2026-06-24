@@ -94,6 +94,9 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
+/*
+ * Design: MCAL-38932
+ */
 /** \brief UART fifo depth */
 #define CDD_UART_FIFO_DEPTH (16U)
 /*********************************************************************************************************************
@@ -104,6 +107,9 @@ extern "C" {
  * Exported Object Declarations
  *********************************************************************************************************************/
 
+/*
+ * Design: MCAL-38928
+ */
 /** \brief Typedef for the Write Transaction */
 typedef struct Cdd_Uart_WriteTransactionTag
 {
@@ -115,6 +121,9 @@ typedef struct Cdd_Uart_WriteTransactionTag
     uint32                         Cdd_Uart_CurrWriteCount;
 } Cdd_Uart_WriteTransactionType;
 
+/*
+ * Design: MCAL-38929
+ */
 /** \brief Typedef for the Read Transaction */
 typedef struct Cdd_Uart_ReadTransactionTag
 {
@@ -126,6 +135,9 @@ typedef struct Cdd_Uart_ReadTransactionTag
     uint32                   Cdd_Uart_CurrReadCount;
 } Cdd_Uart_ReadTransactionType;
 
+/*
+ * Design: MCAL-38930
+ */
 /**
  *  \brief UART driver object
  */

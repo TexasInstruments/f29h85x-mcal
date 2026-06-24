@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>6.13. CDD ECAP Module Migration &mdash; Documentation for F29H85x</title>
+  <title>6.14. CDD ECAP Module Migration &mdash; Documentation for F29H85x</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.14. CDD I2C Module Migration" href="Migration_Guide_Cdd_I2c.html" />
-    <link rel="prev" title="6.12. CDD ADC Module Migration" href="Migration_Guide_Cdd_Adc.html" /> 
+    <link rel="next" title="6.15. CDD I2C Module Migration" href="Migration_Guide_Cdd_I2c.html" />
+    <link rel="prev" title="6.13. CDD DMA Module Migration" href="Migration_Guide_Cdd_Dma.html" /> 
 </head>
 
 <body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
@@ -49,7 +49,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                26.00.00
+                26.00.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -61,7 +61,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.00 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.01 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">2. Overview of MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">3. MCAL Configurator And EB Tresos User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
@@ -79,27 +79,28 @@
 <li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Spi.html">6.10. SPI Module Migration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Wdg.html">6.11. WDG Module Migration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Adc.html">6.12. CDD ADC Module Migration</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">6.13. CDD ECAP Module Migration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration">6.13.1. v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#summary">6.13.1.1. Summary</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-1-resource-allocator-introduction-and-channel-configuration-updates">6.13.1.2. Change 1: Resource Allocator Introduction and Channel Configuration Updates</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-2-duty-cycle-removed-from-signal-measurement-property-use-cdd-ecap-getdutycyclevalues-instead">6.13.1.3. Change 2: Duty Cycle Removed from Signal Measurement Property — Use <code class="docutils literal notranslate"><span class="pre">Cdd_Ecap_GetDutyCycleValues()</span></code> Instead</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Dma.html">6.13. CDD DMA Module Migration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.14. CDD ECAP Module Migration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration">6.14.1. v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#summary">6.14.1.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-resource-allocator-introduction-and-channel-configuration-updates">6.14.1.2. Change 1: Resource Allocator Introduction and Channel Configuration Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-duty-cycle-removed-from-signal-measurement-property-use-cdd-ecap-getdutycyclevalues-instead">6.14.1.3. Change 2: Duty Cycle Removed from Signal Measurement Property — Use <code class="docutils literal notranslate"><span class="pre">Cdd_Ecap_GetDutyCycleValues()</span></code> Instead</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#v02-00-00-i-e-release-v01-03-00-from-v01-00-00-i-e-release-v01-02-00-migration">6.13.2. v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id3">6.13.2.1. Summary</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-1-emulation-mode-support">6.13.2.2. Change 1: Emulation Mode Support</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-2-high-resolution-mode-features">6.13.2.3. Change 2: High-Resolution Mode Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#v02-00-00-i-e-release-v01-03-00-from-v01-00-00-i-e-release-v01-02-00-migration">6.14.2. v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">6.14.2.1. Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-1-emulation-mode-support">6.14.2.2. Change 1: Emulation Mode Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-2-high-resolution-mode-features">6.14.2.3. Change 2: High-Resolution Mode Features</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_I2c.html">6.14. CDD I2C Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ipc.html">6.15. CDD IPC Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Sent.html">6.16. CDD SENT Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Pwm.html">6.17. CDD PWM Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Uart.html">6.18. CDD UART Module Migration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Xbar.html">6.19. CDD XBAR Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_I2c.html">6.15. CDD I2C Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Ipc.html">6.16. CDD IPC Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Sent.html">6.17. CDD SENT Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Pwm.html">6.18. CDD PWM Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Uart.html">6.19. CDD UART Module Migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Migration_Guide_Cdd_Xbar.html">6.20. CDD XBAR Module Migration</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">7. API guide</a></li>
@@ -122,7 +123,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="MigrationGuide_list.html"><span class="section-number">6. </span>Migration Guide</a> &raquo;</li>
-      <li><span class="section-number">6.13. </span>CDD ECAP Module Migration</li>
+      <li><span class="section-number">6.14. </span>CDD ECAP Module Migration</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -132,12 +133,12 @@
            <div itemprop="articleBody">
              
   <section id="cdd-ecap-module-migration">
-<h1><span class="section-number">6.13. </span>CDD ECAP Module Migration<a class="headerlink" href="#cdd-ecap-module-migration" title="Link to this heading"></a></h1>
+<h1><span class="section-number">6.14. </span>CDD ECAP Module Migration<a class="headerlink" href="#cdd-ecap-module-migration" title="Link to this heading"></a></h1>
 <p><strong>Migration Approach:</strong> Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.</p>
 <section id="v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration">
-<h2><span class="section-number">6.13.1. </span>v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration<a class="headerlink" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">6.14.1. </span>v03.00.00 (i.e release v01.04.00) from v02.00.00 (i.e release v01.03.00) Migration<a class="headerlink" href="#v03-00-00-i-e-release-v01-04-00-from-v02-00-00-i-e-release-v01-03-00-migration" title="Link to this heading"></a></h2>
 <section id="summary">
-<h3><span class="section-number">6.13.1.1. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.14.1.1. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h3>
 <p>Version v03.00.00 introduces <strong>Resource Allocator as a mandatory architectural foundation</strong> and replaces duty cycle measurement from the signal measurement API with a dedicated API:</p>
 <ol class="arabic simple">
 <li><p><strong>Resource Allocator Introduction and Channel Configuration Updates</strong>: Resource Allocator becomes mandatory with CDD ECAP channel configurations updated to reference Resource Allocator instances</p></li>
@@ -146,19 +147,19 @@
 <p><strong>PREREQUISITE:</strong> Complete <a class="reference internal" href="Migration_Guide_ResourceAllocator.html#module-setup-and-configuration"><span class="std std-ref">Resource Allocator Setup</span></a> before proceeding.</p>
 </section>
 <section id="change-1-resource-allocator-introduction-and-channel-configuration-updates">
-<h3><span class="section-number">6.13.1.2. </span>Change 1: Resource Allocator Introduction and Channel Configuration Updates<a class="headerlink" href="#change-1-resource-allocator-introduction-and-channel-configuration-updates" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.14.1.2. </span>Change 1: Resource Allocator Introduction and Channel Configuration Updates<a class="headerlink" href="#change-1-resource-allocator-introduction-and-channel-configuration-updates" title="Link to this heading"></a></h3>
 <section id="description">
-<h4><span class="section-number">6.13.1.2.1. </span>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.14.1.2.1. </span>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h4>
 <p>Resource Allocator becomes a mandatory architectural foundation for the CDD ECAP module, with CDD ECAP channel configurations updated to reference Resource Allocator instances. This represents a fundamental shift from direct parameter configuration to centralized resource management, where CDD ECAP instances are allocated through Resource Allocator and then referenced by channel configurations.</p>
 </section>
 <section id="old-vs-new-configuration">
-<h4><span class="section-number">6.13.1.2.2. </span>Old vs New Configuration<a class="headerlink" href="#old-vs-new-configuration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.14.1.2.2. </span>Old vs New Configuration<a class="headerlink" href="#old-vs-new-configuration" title="Link to this heading"></a></h4>
 <p><strong>Old (v02.00.00):</strong>
 Direct parameter selection was used without Resource Allocator dependency.</p>
 <figure class="align-center" id="id9">
 <a class="reference internal image-reference" href="../_images/02_01_cdd_ecap_module_old_config.png"><img alt="Old CDD ECAP Config" src="../_images/02_01_cdd_ecap_module_old_config.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 6.55 </span><span class="caption-text">v02.00.00: Direct ECAP channel parameter selection</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 6.57 </span><span class="caption-text">v02.00.00: Direct ECAP channel parameter selection</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p><strong>New (v03.00.00):</strong>
@@ -166,12 +167,12 @@ CDD ECAP channel configurations now reference instances allocated through Resour
 <figure class="align-center" id="id10">
 <a class="reference internal image-reference" href="../_images/02_03_cdd_ecap_module_select_instance.png"><img alt="Select CDD ECAP Instance" src="../_images/02_03_cdd_ecap_module_select_instance.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 6.56 </span><span class="caption-text">v03.00.00: Update CddEcapChannelRef to reference the corresponding Resource Allocator’s Cdd_EcapAllocatedInstance</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 6.58 </span><span class="caption-text">v03.00.00: Update CddEcapChannelRef to reference the corresponding Resource Allocator’s Cdd_EcapAllocatedInstance</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="migration-actions">
-<h4><span class="section-number">6.13.1.2.3. </span>Migration Actions<a class="headerlink" href="#migration-actions" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.14.1.2.3. </span>Migration Actions<a class="headerlink" href="#migration-actions" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Setup Resource Allocator:</strong> Follow <a class="reference internal" href="Migration_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Setup</span></a></p></li>
 <li><p><strong>Navigate to Context:</strong> Navigate to <strong>ResourceAllocatorGeneral → Context → Cdd_Ecap</strong> and add CDD ECAP allocator:</p></li>
@@ -179,7 +180,7 @@ CDD ECAP channel configurations now reference instances allocated through Resour
 <figure class="align-center" id="id11">
 <a class="reference internal image-reference" href="../_images/01_01_cdd_ecap_module_add_allocator.png"><img alt="Add CDD ECAP Allocator" src="../_images/01_01_cdd_ecap_module_add_allocator.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 6.57 </span><span class="caption-text">Navigate to Context and add CDD ECAP allocator</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 6.59 </span><span class="caption-text">Navigate to Context and add CDD ECAP allocator</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <ol class="arabic simple" start="3">
@@ -188,7 +189,7 @@ CDD ECAP channel configurations now reference instances allocated through Resour
 <figure class="align-center" id="id12">
 <a class="reference internal image-reference" href="../_images/01_02_cdd_ecap_module_add_instance.png"><img alt="Add CDD ECAP Instance" src="../_images/01_02_cdd_ecap_module_add_instance.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 6.58 </span><span class="caption-text">Add Cdd_EcapAllocatedInstance entries for each ECAP instance your application requires</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 6.60 </span><span class="caption-text">Add Cdd_EcapAllocatedInstance entries for each ECAP instance your application requires</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <ol class="arabic simple" start="4">
@@ -197,7 +198,7 @@ CDD ECAP channel configurations now reference instances allocated through Resour
 <figure class="align-center" id="id13">
 <a class="reference internal image-reference" href="../_images/01_03_cdd_ecap_module_select_instance.png"><img alt="Configure CDD ECAP Instance" src="../_images/01_03_cdd_ecap_module_select_instance.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 6.59 </span><span class="caption-text">Set the appropriate InstanceName (e.g., ECAP1, ECAP2, etc.)</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 6.61 </span><span class="caption-text">Set the appropriate InstanceName (e.g., ECAP1, ECAP2, etc.)</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <ol class="arabic simple" start="5">
@@ -214,15 +215,15 @@ CDD ECAP channel configurations now reference instances allocated through Resour
 </section>
 </section>
 <section id="change-2-duty-cycle-removed-from-signal-measurement-property-use-cdd-ecap-getdutycyclevalues-instead">
-<h3><span class="section-number">6.13.1.3. </span>Change 2: Duty Cycle Removed from Signal Measurement Property — Use <code class="docutils literal notranslate"><span class="pre">Cdd_Ecap_GetDutyCycleValues()</span></code> Instead<a class="headerlink" href="#change-2-duty-cycle-removed-from-signal-measurement-property-use-cdd-ecap-getdutycyclevalues-instead" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.14.1.3. </span>Change 2: Duty Cycle Removed from Signal Measurement Property — Use <code class="docutils literal notranslate"><span class="pre">Cdd_Ecap_GetDutyCycleValues()</span></code> Instead<a class="headerlink" href="#change-2-duty-cycle-removed-from-signal-measurement-property-use-cdd-ecap-getdutycyclevalues-instead" title="Link to this heading"></a></h3>
 <section id="id1">
-<h4><span class="section-number">6.13.1.3.1. </span>Description<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.14.1.3.1. </span>Description<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">CDD_ECAP_DUTY_CYCLE</span></code> has been removed from the <code class="docutils literal notranslate"><span class="pre">Cdd_Ecap_SignalMeasurementPropertyType</span></code> enum, which is used as input to <code class="docutils literal notranslate"><span class="pre">Cdd_Ecap_GetTimeElapsed()</span></code>. Duty cycle is not an AUTOSAR-defined signal measurement property.</p>
 <p>A dedicated API <code class="docutils literal notranslate"><span class="pre">Cdd_Ecap_GetDutyCycleValues()</span></code> has been added to calculate duty cycle. It returns a <code class="docutils literal notranslate"><span class="pre">Cdd_Ecap_DutyCycleType</span></code> struct containing <code class="docutils literal notranslate"><span class="pre">ActiveTime</span></code> and <code class="docutils literal notranslate"><span class="pre">PeriodTime</span></code>, from which the duty cycle can be derived.</p>
 <p>Any application code that passed <code class="docutils literal notranslate"><span class="pre">CDD_ECAP_DUTY_CYCLE</span></code> to <code class="docutils literal notranslate"><span class="pre">Cdd_Ecap_GetTimeElapsed()</span></code> must be updated to use the new API.</p>
 </section>
 <section id="old-vs-new">
-<h4><span class="section-number">6.13.1.3.2. </span>Old vs New<a class="headerlink" href="#old-vs-new" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.14.1.3.2. </span>Old vs New<a class="headerlink" href="#old-vs-new" title="Link to this heading"></a></h4>
 <p><strong><code class="docutils literal notranslate"><span class="pre">Cdd_Ecap_SignalMeasurementPropertyType</span></code> enum:</strong></p>
 <table class="docutils align-default">
 <thead>
@@ -258,7 +259,7 @@ CDD ECAP channel configurations now reference instances allocated through Resour
 </div>
 </section>
 <section id="id2">
-<h4><span class="section-number">6.13.1.3.3. </span>Migration Actions<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.14.1.3.3. </span>Migration Actions<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Search Application Code:</strong> Find all uses of <code class="docutils literal notranslate"><span class="pre">CDD_ECAP_DUTY_CYCLE</span></code> passed to <code class="docutils literal notranslate"><span class="pre">Cdd_Ecap_GetTimeElapsed()</span></code>.</p></li>
 <li><p><strong>Enable New API:</strong> Set <code class="docutils literal notranslate"><span class="pre">CDD_ECAP_GET_DUTY_CYCLE_VALUES_API</span></code> to <code class="docutils literal notranslate"><span class="pre">STD_ON</span></code> in your ECAP plugin configuration.</p></li>
@@ -270,9 +271,9 @@ CDD ECAP channel configurations now reference instances allocated through Resour
 </section>
 <hr class="docutils" />
 <section id="v02-00-00-i-e-release-v01-03-00-from-v01-00-00-i-e-release-v01-02-00-migration">
-<h2><span class="section-number">6.13.2. </span>v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration<a class="headerlink" href="#v02-00-00-i-e-release-v01-03-00-from-v01-00-00-i-e-release-v01-02-00-migration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">6.14.2. </span>v02.00.00 (i.e release v01.03.00) from v01.00.00 (i.e release v01.02.00) Migration<a class="headerlink" href="#v02-00-00-i-e-release-v01-03-00-from-v01-00-00-i-e-release-v01-02-00-migration" title="Link to this heading"></a></h2>
 <section id="id3">
-<h3><span class="section-number">6.13.2.1. </span>Summary<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.14.2.1. </span>Summary<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
 <p>Version v02.00.00 introduces new parameters for enhanced functionality and high-resolution capture capabilities while maintaining backward compatibility for basic ECAP operations:</p>
 <ol class="arabic simple">
 <li><p><strong>Emulation Mode Support</strong>: CddEcapEmulationMode parameter added for debug scenarios</p></li>
@@ -280,13 +281,13 @@ CDD ECAP channel configurations now reference instances allocated through Resour
 </ol>
 </section>
 <section id="change-1-emulation-mode-support">
-<h3><span class="section-number">6.13.2.2. </span>Change 1: Emulation Mode Support<a class="headerlink" href="#change-1-emulation-mode-support" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.14.2.2. </span>Change 1: Emulation Mode Support<a class="headerlink" href="#change-1-emulation-mode-support" title="Link to this heading"></a></h3>
 <section id="id4">
-<h4><span class="section-number">6.13.2.2.1. </span>Description<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.14.2.2.1. </span>Description<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
 <p>Version v02.00.00 introduces emulation mode support for debug scenarios through the new CddEcapEmulationMode parameter. This parameter controls ECAP behavior during debug and emulation operations.</p>
 </section>
 <section id="old-vs-new-parameter-configuration">
-<h4><span class="section-number">6.13.2.2.2. </span>Old vs New Parameter Configuration<a class="headerlink" href="#old-vs-new-parameter-configuration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.14.2.2.2. </span>Old vs New Parameter Configuration<a class="headerlink" href="#old-vs-new-parameter-configuration" title="Link to this heading"></a></h4>
 <p><strong>New Parameter Added:</strong></p>
 <table class="docutils align-default">
 <thead>
@@ -310,7 +311,7 @@ CDD ECAP channel configurations now reference instances allocated through Resour
 </ul>
 </section>
 <section id="id5">
-<h4><span class="section-number">6.13.2.2.3. </span>Migration Actions<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.14.2.2.3. </span>Migration Actions<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Navigate to CddEcapChannel:</strong> Open CddEcapChannel container in EB Tresos</p></li>
 <li><p><strong>Configure Emulation Mode:</strong> Set the <strong>CddEcapEmulationMode</strong> parameter as required for your debug setup</p></li>
@@ -319,13 +320,13 @@ CDD ECAP channel configurations now reference instances allocated through Resour
 </section>
 </section>
 <section id="change-2-high-resolution-mode-features">
-<h3><span class="section-number">6.13.2.3. </span>Change 2: High-Resolution Mode Features<a class="headerlink" href="#change-2-high-resolution-mode-features" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.14.2.3. </span>Change 2: High-Resolution Mode Features<a class="headerlink" href="#change-2-high-resolution-mode-features" title="Link to this heading"></a></h3>
 <section id="id6">
-<h4><span class="section-number">6.13.2.3.1. </span>Description<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.14.2.3.1. </span>Description<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
 <p>Version v02.00.00 introduces high-resolution (HR) mode capabilities for finer capture resolution through two new parameters: CddEcapHREnable and CddEcapHRConfigApi. These features are optional and provide enhanced capture precision when required.</p>
 </section>
 <section id="id7">
-<h4><span class="section-number">6.13.2.3.2. </span>Old vs New Parameter Configuration<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.14.2.3.2. </span>Old vs New Parameter Configuration<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
 <p><strong>New Parameters Added:</strong></p>
 <table class="docutils align-default">
 <thead>
@@ -353,7 +354,7 @@ CDD ECAP channel configurations now reference instances allocated through Resour
 </ul>
 </section>
 <section id="id8">
-<h4><span class="section-number">6.13.2.3.3. </span>Migration Actions<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<h4><span class="section-number">6.14.2.3.3. </span>Migration Actions<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
 <ol class="arabic simple">
 <li><p><strong>Evaluate HR Requirements:</strong> Determine if your application requires high-resolution capture functionality</p></li>
 <li><p><strong>Enable HR Mode (Optional):</strong> If finer capture resolution is needed, enable <strong>CddEcapHREnable</strong> parameter</p></li>
@@ -373,8 +374,8 @@ CDD ECAP channel configurations now reference instances allocated through Resour
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Migration_Guide_Cdd_Adc.html" class="btn btn-neutral float-left" title="6.12. CDD ADC Module Migration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Migration_Guide_Cdd_I2c.html" class="btn btn-neutral float-right" title="6.14. CDD I2C Module Migration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Migration_Guide_Cdd_Dma.html" class="btn btn-neutral float-left" title="6.13. CDD DMA Module Migration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Migration_Guide_Cdd_I2c.html" class="btn btn-neutral float-right" title="6.15. CDD I2C Module Migration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -397,7 +398,7 @@ CDD ECAP channel configurations now reference instances allocated through Resour
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 26.00.00
+       Current Version: 26.00.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

@@ -88,34 +88,52 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
-/** The retVal definitions */
-#define E_COMPARE_MISMATCH    (2U)
+/** \brief Job result: flash compare found a data mismatch */
+#define E_COMPARE_MISMATCH (2U)
+/** \brief Job result: blank check found a non-erased word */
 #define E_BLANKCHECK_MISMATCH (3U)
 
-/** FLS Stage of Erase. */
-#define FLS_S_EDEFAULT        (0U)
-#define FLS_S_ERASE_PRECHECK  (1U)
-#define FLS_DO_SECTOR_UNLOCK  (2U)
-#define FLS_DO_ERASE_JOB      (3U)
+/** \brief Erase FSM stage: default/idle, no erase job active */
+#define FLS_S_EDEFAULT (0U)
+/** \brief Erase FSM stage: waiting for flash FSM ready before issuing erase command */
+#define FLS_S_ERASE_PRECHECK (1U)
+/** \brief Erase/write FSM stage: configuring CMDWEPROTA/B sector-unlock registers */
+#define FLS_DO_SECTOR_UNLOCK (2U)
+/** \brief Erase FSM stage: erase command issued, waiting for FSM completion */
+#define FLS_DO_ERASE_JOB (3U)
+/** \brief Erase FSM stage: erase done, running post-erase blank check */
 #define FLS_S_ERASE_POSTCHECK (4U)
 
-#define FLS_ERASE_FSM_READY_CHECK  (0U) /** fsm ready ?*/
-#define FLS_ERASE_FSM_ISSUE_CMD    (1U)
-#define FLS_ERASE_FSM_STATUS_CHECK (2U) /** fsm  status*/
-#define FLS_STATUS_CLEAR_CHECK     (3U) /** clear status cmd */
-#define FLS_ERASE_CMD_CHECK        (4U)
+/** \brief Erase FSM sub-state: check flash FSM is ready before issuing command */
+#define FLS_ERASE_FSM_READY_CHECK (0U)
+/** \brief Erase FSM sub-state: issue the erase command to the flash FSM */
+#define FLS_ERASE_FSM_ISSUE_CMD (1U)
+/** \brief Erase FSM sub-state: poll flash FSM status for command completion */
+#define FLS_ERASE_FSM_STATUS_CHECK (2U)
+/** \brief Erase FSM sub-state: clear flash FSM status register after completion */
+#define FLS_STATUS_CLEAR_CHECK (3U)
+/** \brief Erase FSM sub-state: verify erase command result */
+#define FLS_ERASE_CMD_CHECK (4U)
 
-#define FLS_WRITE_FSM_READY_CHECK  (0U) /** fsm ready ?*/
-#define FLS_WRITE_FSM_ISSUE_CMD    (1U)
-#define FLS_WRITE_FSM_STATUS_CHECK (2U) /** fsm  status*/
-#define FLS_WRITE_CMD_CHECK        (4U)
+/** \brief Write FSM sub-state: check flash FSM is ready before issuing command */
+#define FLS_WRITE_FSM_READY_CHECK (0U)
+/** \brief Write FSM sub-state: issue the programming command to the flash FSM */
+#define FLS_WRITE_FSM_ISSUE_CMD (1U)
+/** \brief Write FSM sub-state: poll flash FSM status for command completion */
+#define FLS_WRITE_FSM_STATUS_CHECK (2U)
+/** \brief Write FSM sub-state: verify programming command result */
+#define FLS_WRITE_CMD_CHECK (4U)
 
-/** FLS Stage of Write */
-#define FLS_S_WDEFAULT        (0U)
-#define FLS_S_WRITE_PRECHECK  (1U)
-#define FLS_DO_WRITE_JOB      (3U)
+/** \brief Write FSM stage: default/idle, no write job active */
+#define FLS_S_WDEFAULT (0U)
+/** \brief Write FSM stage: pre-write blank check, waiting for flash FSM ready */
+#define FLS_S_WRITE_PRECHECK (1U)
+/** \brief Write FSM stage: programming command issued, waiting for FSM completion */
+#define FLS_DO_WRITE_JOB (3U)
+/** \brief Write FSM stage: write done, running post-write verify compare */
 #define FLS_S_WRITE_POSTCHECK (4U)
 
+/** \brief Divisor to convert a frequency value in Hz to MHz */
 #define FLS_CONV_TO_MHZ (1000000U)
 
 /*********************************************************************************************************************
@@ -160,9 +178,7 @@ typedef struct
     /** \brief The maximum number of bytes to write in one cycle of the
      *      flash driver's job processing function in normal mode. */
     Fls_SectorType         sectorList[FLS_NUMBER_OF_SECTOR_CFG];
-    /** \brief The maximum number of bytes to write in one cycle of the flash driver's job
-     *       processing function in normal mode. Using Fls Info Structure instead of this for now.
-     */
+    /** \brief Array of sector configuration entries describing the flash layout. */
     MemIf_StatusType       status;
     /** \brief Current Module Status update variable */
     MemIf_JobResultType    jobResultType;
@@ -174,17 +190,11 @@ typedef struct
     uint8                 *ramAddr;
     /** \brief Ram Address pointer for the current job */
     Fls_LengthType         length;
-    /**  Data transfer length for the current job */
+    /** \brief Data transfer length for the current job */
     MemIf_ModeType         mode;
     /** \brief Module mode setup for current job - SLOW for now */
     uint32                 jobChunkSize;
     /** \brief Length of Data to be transfer in current call cycle */
-    Fls_LengthType         transferred;
-    /** \brief Flash Post Blank Check Address*/
-    uint32                 postBlankCheckFlashaddr;
-    /** \brief Flash Previous Address*/
-    uint32                 prevFlashaddr;
-    /** \brief Size of Data has been transferred */
     Fls_EraseType          typeoferase;
     /** \brief To select the type of erase (sector erase/ block erase/ bulk erase) */
     uint32                 writePostFapiFsmBusy;
@@ -233,6 +243,10 @@ typedef struct
     McalLib_TickType jobStartCount;
     /** \brief Counter value captured when the job was accepted, for cumulative timeout tracking */
 #endif
+    uint32 cmdWeProtAMask;
+    /** \brief Write/erase protection mask for flash sectors 0-31 (CMDWEPROTA), captured at init */
+    uint32 cmdWeProtBMask;
+    /** \brief Write/erase protection mask for flash sectors 32-255 (CMDWEPROTB), captured at init */
 } Fls_DriverObjType;
 
 /** \brief ENUM for Internal State type names */
@@ -265,7 +279,7 @@ extern Fls_DriverObjType Fls_DrvObj;
  * \return None
  *
  *********************************************************************************************************************/
-extern void Fls_processJobs(Fls_JobType job);
+extern void Fls_processJob(Fls_JobType job);
 
 /** \brief Reset driver parameters during initialize time
  * \param[in] drvObj Input configuration parameters

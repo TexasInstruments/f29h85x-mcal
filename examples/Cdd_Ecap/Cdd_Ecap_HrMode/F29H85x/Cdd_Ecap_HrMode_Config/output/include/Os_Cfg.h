@@ -119,10 +119,10 @@ extern "C" {
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
-/* Category 1 RTINT ISR function prototype. */
+/* Category 1 ISR function prototype. */
 MCAL_LIB_INT_ISR(Cdd_Ecap_ch4Notify); 
 
-/* Category 1 RTINT ISR function prototype. */
+/* Category 1 ISR function prototype. */
 MCAL_LIB_INT_ISR(Cdd_Ecap_HR_ch4Notify); 
 
 

@@ -68,6 +68,12 @@
  *  Description:  This file contains the private implementation of I2C MCAL
  *********************************************************************************************************************/
 
+/*
+ * Design: MCAL-39680, MCAL-39681, MCAL-39682, MCAL-39683, MCAL-39684, MCAL-39685, MCAL-39686,
+ * Design: MCAL-39689, MCAL-39690, MCAL-39691, MCAL-39692, MCAL-39693, MCAL-39694, MCAL-39707,
+ * Design: MCAL-39708, MCAL-39710, MCAL-39711, MCAL-39712, MCAL-39713, MCAL-39714
+ */
+
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -135,6 +141,9 @@ static Std_ReturnType Cdd_I2c_CheckHwConfig(const Cdd_I2c_ConfigType *configPtr)
 #define CDD_I2C_START_SEC_CODE
 #include "Cdd_I2c_MemMap.h"
 
+/*
+ * Design: MCAL-39710, MCAL-39711, MCAL-39712, MCAL-39713, MCAL-39714, MCAL-39680
+ */
 void Cdd_I2c_InitDrvObj(Cdd_I2c_DriverObjType *drvObj)
 {
     for (uint32 hwIdx = 0U; hwIdx < CDD_I2C_MAX_HW_UNIT; hwIdx++)
@@ -201,6 +210,9 @@ void Cdd_I2c_InitDrvObj(Cdd_I2c_DriverObjType *drvObj)
     return;
 }
 
+/*
+ * Design: MCAL-39686, MCAL-39680
+ */
 void Cdd_I2c_DeInitDrvObj(Cdd_I2c_DriverObjType *drvObj)
 {
     for (uint32 hwIdx = 0U; hwIdx < CDD_I2C_MAX_HW_UNIT; hwIdx++)
@@ -212,6 +224,9 @@ void Cdd_I2c_DeInitDrvObj(Cdd_I2c_DriverObjType *drvObj)
     return;
 }
 
+/*
+ * Design: MCAL-39685, MCAL-39681, MCAL-39680, MCAL-39671
+ */
 void Cdd_I2c_CopyConfig(Cdd_I2c_DriverObjType *drvObj, const Cdd_I2c_ConfigType *configPtr)
 {
     drvObj->maxHwUnit = CDD_I2C_MAX_HW_UNIT;
@@ -278,6 +293,9 @@ void Cdd_I2c_CopyConfig(Cdd_I2c_DriverObjType *drvObj, const Cdd_I2c_ConfigType 
     return;
 }
 
+/*
+ * Design: MCAL-39694, MCAL-39684, MCAL-39680, MCAL-39683
+ */
 Std_ReturnType Cdd_I2c_ResetHwUnitPriv(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_HwUnitObjType *hwUnitObj)
 {
     Std_ReturnType                  retVal = E_OK;
@@ -296,17 +314,27 @@ Std_ReturnType Cdd_I2c_ResetHwUnitPriv(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_Hw
 
 #if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
     /* Check and disable any active channels in process */
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] Requires a HW unit reset to occur while
+     * a channel is actively transferring (curChObj != NULL_PTR). This can only happen if
+     * Cdd_I2c_ResetHwUnit() is called mid-transfer, which requires precise timing that cannot
+     * be reproduced deterministically through the normal API in the test environment. */
     if (NULL_PTR != hwUnitObj->curChObj)
     {
         chObj        = hwUnitObj->curChObj;
         chObj->state = CDD_I2C_STATE_COMPLETE;
         Cdd_I2c_ProcessChCompletion(drvObj, chObj, hwUnitObj, CDD_I2C_CH_RESULT_HW_UNIT_RESET, FALSE);
     }
+    /* TI_COVERAGE_GAP_STOP */
 
     /* Clear all queued channels and notify their sequences */
     do
     {
         headNode = Cdd_I2c_UtilsGetHeadNode(&hwUnitObj->llobj);
+        /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] Requires a HW unit reset to occur
+         * while a second sequence is queued in the linked list (headNode != NULL_PTR). This
+         * requires Cdd_I2c_ResetHwUnit() to be called at the exact moment a second sequence
+         * is waiting, which cannot be reproduced deterministically through the normal API in
+         * the test environment. */
         if (headNode != NULL_PTR)
         {
             chObj = (Cdd_I2c_ChObjType *)headNode->params.data;
@@ -314,7 +342,14 @@ Std_ReturnType Cdd_I2c_ResetHwUnitPriv(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_Hw
             chObj->state = CDD_I2C_STATE_COMPLETE;
             Cdd_I2c_ProcessChCompletion(drvObj, chObj, hwUnitObj, CDD_I2C_CH_RESULT_HW_UNIT_RESET, FALSE);
         }
-    } while (headNode != NULL_PTR);
+        /* TI_COVERAGE_GAP_STOP */
+    }
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] True branch of the do-while condition
+     * (headNode != NULL_PTR after first iteration) requires more than one sequence to be queued
+     * in the linked list at the time of HW unit reset. This cannot be reproduced deterministically
+     * through the normal API in the test environment. */
+    while (headNode != NULL_PTR);
+    /* TI_COVERAGE_GAP_STOP */
 #endif /* CDD_I2C_CONTROLLER_ACTIVE */
 
     /* Re-init HW so that we can continue with a fresh transaction */
@@ -333,6 +368,9 @@ Std_ReturnType Cdd_I2c_ResetHwUnitPriv(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_Hw
 }
 
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
+/*
+ * Design: MCAL-39685, MCAL-39683, MCAL-39656, MCAL-39667
+ */
 Std_ReturnType Cdd_I2c_CheckConfig(const Cdd_I2c_ConfigType *configPtr)
 {
     Std_ReturnType retVal = E_OK;
@@ -358,11 +396,17 @@ Std_ReturnType Cdd_I2c_CheckConfig(const Cdd_I2c_ConfigType *configPtr)
 }
 #endif
 
+/*
+ * Design: MCAL-39684, MCAL-39681
+ */
 uint32 Cdd_I2c_GetHwUnitBaseAddr(Cdd_I2c_HwUnitType hwUnitId)
 {
     return (Cdd_I2c_HwUnitBaseAddr[hwUnitId]);
 }
 
+/*
+ * Design: MCAL-39684, MCAL-39680
+ */
 Cdd_I2c_HwUnitObjType *Cdd_I2c_GetHwUnitObj(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_HwUnitType hwUnitId)
 {
     Cdd_I2c_HwUnitObjType *hwUnitObj = (Cdd_I2c_HwUnitObjType *)NULL_PTR;
@@ -384,6 +428,10 @@ Cdd_I2c_HwUnitObjType *Cdd_I2c_GetHwUnitObj(Cdd_I2c_DriverObjType *drvObj, Cdd_I
  * Controller only APIs
  */
 #if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
+/*
+ * Design: MCAL-39689, MCAL-39667, MCAL-39668, MCAL-39669, MCAL-39670, MCAL-39671, MCAL-39672,
+ * Design: MCAL-39680
+ */
 Std_ReturnType Cdd_I2c_StartSeqAsync(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqObjType *seqObj)
 {
     Std_ReturnType retVal = E_OK;
@@ -409,6 +457,9 @@ Std_ReturnType Cdd_I2c_StartSeqAsync(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqO
     return retVal;
 }
 
+/*
+ * Design: MCAL-39690, MCAL-39653, MCAL-39667, MCAL-39680, MCAL-39683
+ */
 Std_ReturnType Cdd_I2c_CancelSeq(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqObjType *seqObj)
 {
     Std_ReturnType     retVal      = E_OK;
@@ -426,6 +477,11 @@ Std_ReturnType Cdd_I2c_CancelSeq(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqObjTy
         hwUnitObj = chObj->hwUnitObj;
 
         /* Check if the channel is in progress */
+        /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] Requires cancel to be called while
+         * another sequence is actively transferring on the same HW unit (chObj != curChObj).
+         * This means the sequence being cancelled is queued but not yet active. Achieving this
+         * precise timing (cancel while a different sequence is mid-transfer) is non-deterministic
+         * and cannot be reproduced reliably through the normal API in the test environment. */
         if (chObj == hwUnitObj->curChObj)
         {
             /* Stop the on going transfer */
@@ -442,11 +498,16 @@ Std_ReturnType Cdd_I2c_CancelSeq(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqObjTy
             chObj->chResult = CDD_I2C_CH_RESULT_OK;
             chObj->state    = CDD_I2C_STATE_COMPLETE;
         }
+        /* TI_COVERAGE_GAP_STOP */
     }
 
     /*
      * Check if any active channel was cancelled and if not the sequence was never started!!
      */
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] Requires cancel to be called on a
+     * sequence that is queued but not yet active (activeChObj == NULL_PTR after the loop).
+     * Same timing constraint as above: requires another sequence to be actively transferring
+     * when cancel is called, which cannot be reproduced reliably through the normal API. */
     if (activeChObj == NULL_PTR)
     {
         Cdd_I2c_SequenceErrorNotification errorNotify = (Cdd_I2c_SequenceErrorNotification)NULL_PTR;
@@ -463,10 +524,14 @@ Std_ReturnType Cdd_I2c_CancelSeq(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqObjTy
             errorNotify(seqObj->seqErrorCode);
         }
     }
+    /* TI_COVERAGE_GAP_STOP */
 
     return retVal;
 }
 
+/*
+ * Design: MCAL-39708, MCAL-39684, MCAL-39680, MCAL-39683
+ */
 void Cdd_I2c_ProcessIsr(Cdd_I2c_HwUnitType hwUnitId)
 {
     if (CDD_I2C_UNINIT == Cdd_I2c_DrvState)
@@ -494,6 +559,9 @@ void Cdd_I2c_ProcessIsr(Cdd_I2c_HwUnitType hwUnitId)
     return;
 }
 
+/*
+ * Design: MCAL-39707, MCAL-39691, MCAL-39692, MCAL-39693, MCAL-39680
+ */
 void Cdd_I2c_ProcessEvents(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_HwUnitObjType *hwUnitObj)
 {
     Cdd_I2c_ChannelResultType chResult;
@@ -535,6 +603,9 @@ void Cdd_I2c_ProcessEvents(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_HwUnitObjType 
  *  Local Functions Definition
  *********************************************************************************************************************/
 
+/*
+ * Design: MCAL-39695, MCAL-39680
+ */
 static void Cdd_I2c_CheckAndSetDrvState(Cdd_I2c_DriverObjType *drvObj)
 {
     uint32 isSomeHwBusy = (uint32)FALSE;
@@ -558,6 +629,9 @@ static void Cdd_I2c_CheckAndSetDrvState(Cdd_I2c_DriverObjType *drvObj)
 }
 
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
+/*
+ * Design: MCAL-39685, MCAL-39656, MCAL-39657, MCAL-39683
+ */
 static Std_ReturnType Cdd_I2c_CheckHwConfig(const Cdd_I2c_ConfigType *configPtr)
 {
     Std_ReturnType retVal = E_OK;
@@ -579,6 +653,9 @@ static Std_ReturnType Cdd_I2c_CheckHwConfig(const Cdd_I2c_ConfigType *configPtr)
 #endif
 
 #if (CDD_I2C_CONTROLLER_ACTIVE == STD_ON)
+/*
+ * Design: MCAL-39689, MCAL-39680, MCAL-39712
+ */
 static void Cdd_I2c_CheckAndScheduleHw(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_HwUnitObjType *hwUnitObj)
 {
     Cdd_I2c_UtilsNode *headNodeObj;
@@ -611,6 +688,9 @@ static void Cdd_I2c_CheckAndScheduleHw(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_Hw
     return;
 }
 
+/*
+ * Design: MCAL-39689, MCAL-39667, MCAL-39668, MCAL-39671, MCAL-39672, MCAL-39680, MCAL-39714
+ */
 static Std_ReturnType Cdd_I2c_QueueCh(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_SeqObjType *seqObj)
 {
     Std_ReturnType retVal;
@@ -667,6 +747,9 @@ static Std_ReturnType Cdd_I2c_QueueCh(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_Seq
     return retVal;
 }
 
+/*
+ * Design: MCAL-39689, MCAL-39667, MCAL-39673, MCAL-39680
+ */
 static Std_ReturnType Cdd_I2c_StartSeqCheck(Cdd_I2c_DriverObjType *drvObj, const Cdd_I2c_SeqObjType *seqObj)
 {
     Std_ReturnType      retVal = (Std_ReturnType)E_OK;
@@ -688,6 +771,9 @@ static Std_ReturnType Cdd_I2c_StartSeqCheck(Cdd_I2c_DriverObjType *drvObj, const
     return retVal;
 }
 
+/*
+ * Design: MCAL-39689, MCAL-39673, MCAL-39674, MCAL-39713
+ */
 static Std_ReturnType Cdd_I2c_StartChCheck(const Cdd_I2c_ChObjType *chObj)
 {
     Std_ReturnType retVal = (Std_ReturnType)E_OK;
@@ -711,6 +797,9 @@ static Std_ReturnType Cdd_I2c_StartChCheck(const Cdd_I2c_ChObjType *chObj)
     return retVal;
 }
 
+/*
+ * Design: MCAL-39689, MCAL-39704, MCAL-39705, MCAL-39713, MCAL-39680
+ */
 static void Cdd_I2c_ScheduleCh(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_ChannelResultType chResult;
@@ -759,6 +848,9 @@ static void Cdd_I2c_ScheduleCh(Cdd_I2c_ChObjType *chObj)
     return;
 }
 
+/*
+ * Design: MCAL-39707, MCAL-39714, MCAL-39678, MCAL-39683
+ */
 static void Cdd_I2c_SetSeqErrorCode(Cdd_I2c_SeqObjType *seqObj, Cdd_I2c_ChannelResultType chResult)
 {
     /* Fail the sequence if channel fails */
@@ -774,20 +866,29 @@ static void Cdd_I2c_SetSeqErrorCode(Cdd_I2c_SeqObjType *seqObj, Cdd_I2c_ChannelR
     {
         seqObj->seqErrorCode = CDD_I2C_E_NACK_RECEIVED;
     }
-    /* TI_COVERAGE_GAP_START Arbitration loss error cannot be recreated in test environment */
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] Arbitration loss error cannot be recreated in test environment
+     */
     if (CDD_I2C_CH_RESULT_ARBFAIL == chResult)
     {
         seqObj->seqErrorCode = CDD_I2C_E_ARBITRATION_FAILURE;
     }
     /* TI_COVERAGE_GAP_STOP */
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] True branch requires a HW unit reset to
+     * occur during an active transfer (chResult == CDD_I2C_CH_RESULT_HW_UNIT_RESET). This
+     * requires Cdd_I2c_ResetHwUnit() to be called mid-transfer, which cannot be reproduced
+     * deterministically through the normal API in the test environment. */
     if (CDD_I2C_CH_RESULT_HW_UNIT_RESET == chResult)
     {
         seqObj->seqErrorCode = CDD_I2C_E_HW_UNIT_RESET;
     }
+    /* TI_COVERAGE_GAP_STOP */
 
     return;
 }
 
+/*
+ * Design: MCAL-39707, MCAL-39714, MCAL-39678, MCAL-39683
+ */
 static void Cdd_I2c_SetSeqResult(Cdd_I2c_SeqObjType *seqObj)
 {
     seqObj->seqResult = CDD_I2C_SEQ_OK;
@@ -804,7 +905,8 @@ static void Cdd_I2c_SetSeqResult(Cdd_I2c_SeqObjType *seqObj)
     {
         seqObj->seqResult = CDD_I2C_SEQ_NACK;
     }
-    /* TI_COVERAGE_GAP_START Arbitration loss error cannot be recreated in test environment */
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] Arbitration loss error cannot be recreated in test environment
+     */
     if (CDD_I2C_E_ARBITRATION_FAILURE == seqObj->seqErrorCode)
     {
         seqObj->seqResult = CDD_I2C_SEQ_ARB;
@@ -816,14 +918,22 @@ static void Cdd_I2c_SetSeqResult(Cdd_I2c_SeqObjType *seqObj)
         seqObj->seqErrorCode       = CDD_I2C_E_CANCELLED;
         seqObj->isCancelInProgress = FALSE;
     }
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] True branch requires a HW unit reset to
+     * have occurred during an active transfer (seqErrorCode == CDD_I2C_E_HW_UNIT_RESET). This
+     * requires Cdd_I2c_ResetHwUnit() to be called mid-transfer, which cannot be reproduced
+     * deterministically through the normal API in the test environment. */
     if (CDD_I2C_E_HW_UNIT_RESET == seqObj->seqErrorCode)
     {
         seqObj->seqResult = CDD_I2C_SEQ_HW_UNIT_RESET;
     }
+    /* TI_COVERAGE_GAP_STOP */
 
     return;
 }
 
+/*
+ * Design: MCAL-39707, MCAL-39692, MCAL-39693, MCAL-39669, MCAL-39670, MCAL-39714, MCAL-39680
+ */
 static void Cdd_I2c_ProcessChCompletion(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_ChObjType *chObj,
                                         Cdd_I2c_HwUnitObjType *hwUnitObj, Cdd_I2c_ChannelResultType chResult,
                                         boolean doSchedule)
@@ -876,6 +986,9 @@ static void Cdd_I2c_ProcessChCompletion(Cdd_I2c_DriverObjType *drvObj, Cdd_I2c_C
 }
 
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
+/*
+ * Design: MCAL-39685, MCAL-39667, MCAL-39672, MCAL-39683
+ */
 static Std_ReturnType Cdd_I2c_CheckSeqConfig(const Cdd_I2c_SequenceConfigType *seqCfg)
 {
     Std_ReturnType retVal = E_OK;

@@ -110,7 +110,7 @@ extern "C" {
 /** \brief Fls configuration Major Version */
 #define FLS_CFG_MAJOR_VERSION           (3U)
 /** \brief Fls configuration Minor Version */
-#define FLS_CFG_MINOR_VERSION           (2U)
+#define FLS_CFG_MINOR_VERSION           (3U)
 /** \brief Fls configuration Patch Version */
 #define FLS_CFG_PATCH_VERSION           (0U)
 /* @} */
@@ -150,7 +150,7 @@ extern "C" {
 /*
  * Design: MCAL-31051
  */
-#define FLS_BASE_ADDRESS                (281018368UL)
+#define FLS_BASE_ADDRESS                (281018368U)
 
 /** \brief Total amount of flash memory in bytes */
 /*

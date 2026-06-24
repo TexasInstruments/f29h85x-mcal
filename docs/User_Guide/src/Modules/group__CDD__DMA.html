@@ -49,7 +49,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                26.00.00
+                26.00.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -61,7 +61,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.00 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.01 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Overview_of_MCAL.html">2. Overview of MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../MCAL_Configuration_and_EB_Tresos.html">3. MCAL Configurator And EB Tresos User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
@@ -129,12 +129,14 @@
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-clearperipheraleventtrigger">7.11.4.19. function Cdd_Dma_ClearPeripheralEventTrigger</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-triggersoftreset">7.11.4.20. function Cdd_Dma_TriggerSoftReset</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setchannelpriority">7.11.4.21. function Cdd_Dma_SetChannelPriority</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-getchannelstatus">7.11.4.22. function Cdd_Dma_GetChannelStatus</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-clearerrorflag">7.11.4.23. function Cdd_Dma_ClearErrorFlag</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setdmacfgcommit">7.11.4.24. function Cdd_Dma_SetDmaCfgCommit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setchannelcommit">7.11.4.25. function Cdd_Dma_SetChannelCommit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setmpucfgcommit">7.11.4.26. function Cdd_Dma_SetMpuCfgCommit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setmpuregioncommit">7.11.4.27. function Cdd_Dma_SetMpuRegionCommit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-getchannelpriority">7.11.4.22. function Cdd_Dma_GetChannelPriority</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-getchannelstatus">7.11.4.23. function Cdd_Dma_GetChannelStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-clearerrorflag">7.11.4.24. function Cdd_Dma_ClearErrorFlag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setdmacfgcommit">7.11.4.25. function Cdd_Dma_SetDmaCfgCommit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setchannelcommit">7.11.4.26. function Cdd_Dma_SetChannelCommit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setmpucfgcommit">7.11.4.27. function Cdd_Dma_SetMpuCfgCommit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-setmpuregioncommit">7.11.4.28. function Cdd_Dma_SetMpuRegionCommit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-dma-periodicreadback">7.11.4.29. function Cdd_Dma_PeriodicReadback</a></li>
 </ul>
 </li>
 </ul>
@@ -266,7 +268,7 @@
 </tr>
 <tr class="row-odd"><td><p>enum</p></td>
 <td><p><strong><a class="reference internal" href="#enum-cdd-dma-channelpriority"><span class="std std-ref">Cdd_Dma_ChannelPriority</span></a></strong></p></td>
-<td><p></p></td>
+<td><p>Channel priority type.</p></td>
 </tr>
 <tr class="row-even"><td><p>enum</p></td>
 <td><p><strong><a class="reference internal" href="#enum-cdd-dma-perievttriggersrctype"><span class="std std-ref">Cdd_Dma_PeriEvtTriggerSrcType</span></a></strong></p></td>
@@ -849,6 +851,8 @@ MPU region access type.</p>
 </tr>
 </tbody>
 </table>
+<p><strong>Brief</strong>:
+Channel priority type.</p>
 </section>
 <section id="enum-cdd-dma-perievttriggersrctype">
 <h3><span class="section-number">7.11.1.21. </span>enum Cdd_Dma_PeriEvtTriggerSrcType<a class="headerlink" href="#enum-cdd-dma-perievttriggersrctype" title="Link to this heading"></a></h3>
@@ -1716,7 +1720,7 @@ MPU Region channel mask parameter.</p>
 <td><p>DMA transfer properties.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__MpuRegionCfgType.html"><span class="std std-doc">Cdd_Dma_MpuRegionCfgType</span></a></strong></p></td>
-<td><p>DMA Channel configuration structure.</p></td>
+<td><p>DMA MPU Region configuration structure.</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__HwInstanceCfgType.html"><span class="std std-doc">Cdd_Dma_HwInstanceCfgType</span></a></strong></p></td>
 <td><p>CDD DMA config type.</p></td>
@@ -1726,6 +1730,9 @@ MPU Region channel mask parameter.</p>
 </tr>
 <tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__ConfigType.html"><span class="std std-doc">Cdd_Dma_ConfigType</span></a></strong></p></td>
 <td><p>CDD DMA config type.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Dma__PeriodicReadBackDataType.html"><span class="std std-doc">Cdd_Dma_PeriodicReadBackDataType</span></a></strong></p></td>
+<td><p>CDD_DMA periodic readback type.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1779,7 +1786,7 @@ MPU Region channel mask parameter.</p>
 <td><p>API service called with invalid parameter pointer.</p></td>
 </tr>
 <tr class="row-odd"><td><p>CDD_DMA_E_PARAM_VALUE</p></td>
-<td><p>API service called with invalid parameter pointer.</p></td>
+<td><p>API service called with invalid parameter value.</p></td>
 </tr>
 <tr class="row-even"><td><p>CDD_DMA_E_BUSY</p></td>
 <td><p>API service called during ongoing process.</p></td>
@@ -1895,6 +1902,12 @@ MPU Region channel mask parameter.</p>
 <tr class="row-odd"><td><p>CDD_DMA_SID_SET_MPUCFG_COMMIT</p></td>
 <td><p>Cdd_Dma_SetMpuCfgCommit() API Service ID.</p></td>
 </tr>
+<tr class="row-even"><td><p>CDD_DMA_SID_GET_CHANNEL_PRIORITY</p></td>
+<td><p>Cdd_Dma_GetChannelPriority() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_DMA_SID_PERIODIC_READBACK</p></td>
+<td><p>Cdd_Dma_PeriodicReadback() API Service ID.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -1929,7 +1942,7 @@ MPU Region channel mask parameter.</p>
 <td><p>Service to set the transfer properties of a DMA channel.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-dma-settransfersize"><span class="std std-ref">Cdd_Dma_SetTransferSize</span></a></strong>(uint8 ChannelId, uint8 BurstSize, uint16 TransferSize)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-settransfersize"><span class="std std-ref">Cdd_Dma_SetTransferSize</span></a></strong>(uint8 ChannelId, uint16 BurstSize, uint32 TransferSize)</p></td>
 <td><p>Service to set the burst size and transfer size of a DMA channel.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
@@ -1949,11 +1962,11 @@ MPU Region channel mask parameter.</p>
 <td><p>Service to set the transfer destination address of a DMA channel.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-dma-settransferwrapsrcproperties"><span class="std std-ref">Cdd_Dma_SetTransferWrapSrcProperties</span></a></strong>(uint8 ChannelId, uint16 SrcWrapSize, sint16 SrcWrapStep, uint32 SrcBegAddress)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-settransferwrapsrcproperties"><span class="std std-ref">Cdd_Dma_SetTransferWrapSrcProperties</span></a></strong>(uint8 ChannelId, uint32 SrcWrapSize, sint16 SrcWrapStep, uint32 SrcBegAddress)</p></td>
 <td><p>Service to set the transfer source wrap properties of a DMA channel.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-dma-settransferwrapdestproperties"><span class="std std-ref">Cdd_Dma_SetTransferWrapDestProperties</span></a></strong>(uint8 ChannelId, uint16 DestWrapSize, sint16 DestWrapStep, uint32 DestBegAddress)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-settransferwrapdestproperties"><span class="std std-ref">Cdd_Dma_SetTransferWrapDestProperties</span></a></strong>(uint8 ChannelId, uint32 DestWrapSize, sint16 DestWrapStep, uint32 DestBegAddress)</p></td>
 <td><p>Service to set the transfer destination wrap properties of a DMA channel.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
@@ -1992,29 +2005,37 @@ MPU Region channel mask parameter.</p>
 <td><p><strong><a class="reference internal" href="#function-cdd-dma-setchannelpriority"><span class="std std-ref">Cdd_Dma_SetChannelPriority</span></a></strong>(uint8 ChannelId, <a class="reference internal" href="#enum-cdd-dma-channelpriority"><span class="std std-ref">Cdd_Dma_ChannelPriority</span></a> Priority)</p></td>
 <td><p>Service to set channel priority.</p></td>
 </tr>
-<tr class="row-odd"><td><p>void</p></td>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-getchannelpriority"><span class="std std-ref">Cdd_Dma_GetChannelPriority</span></a></strong>(uint8 ChannelId, <a class="reference internal" href="#enum-cdd-dma-channelpriority"><span class="std std-ref">Cdd_Dma_ChannelPriority</span></a> * Priority)</p></td>
+<td><p>Service to get channel priority.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-dma-getchannelstatus"><span class="std std-ref">Cdd_Dma_GetChannelStatus</span></a></strong>(uint8 ChannelId, <a class="reference internal" href="../Classes/structCdd__Dma__ChannelStatus.html"><span class="std std-doc">Cdd_Dma_ChannelStatus</span></a> * ChannelStatus)</p></td>
 <td><p>Service to get the channel status : peripheral event trigger status, transfer status, burst status, run status and overflow status.</p></td>
 </tr>
-<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-dma-clearerrorflag"><span class="std std-ref">Cdd_Dma_ClearErrorFlag</span></a></strong>(uint8 ChannelId)</p></td>
 <td><p>Service to clear the overflow error flag for a DMA channel.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-dma-setdmacfgcommit"><span class="std std-ref">Cdd_Dma_SetDmaCfgCommit</span></a></strong>(uint8 HwInstanceId)</p></td>
 <td><p>Service to commit DMA configurable properties such as priority scheme, channel priority and emulation mode for a specific instance.</p></td>
 </tr>
-<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-dma-setchannelcommit"><span class="std std-ref">Cdd_Dma_SetChannelCommit</span></a></strong>(uint8 ChannelId)</p></td>
 <td><p>Service to commit DMA channel configurations for a specific channel.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-dma-setmpucfgcommit"><span class="std std-ref">Cdd_Dma_SetMpuCfgCommit</span></a></strong>(uint8 HwInstanceId)</p></td>
 <td><p>Service to commit Mpu configuration: MPUEN for a specific instance.</p></td>
 </tr>
-<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-dma-setmpuregioncommit"><span class="std std-ref">Cdd_Dma_SetMpuRegionCommit</span></a></strong>(uint16 MpuRegionId)</p></td>
 <td><p>Service to commit Mpu Region configurations for a specific MPU region.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-dma-periodicreadback"><span class="std std-ref">Cdd_Dma_PeriodicReadback</span></a></strong>(uint8 ChannelId, <a class="reference internal" href="../Classes/structCdd__Dma__PeriodicReadBackDataType.html"><span class="std std-doc">Cdd_Dma_PeriodicReadBackDataType</span></a> * ReadBackRegisterdata)</p></td>
+<td><p>Service to read all the statically configured registers for periodic readback.</p></td>
 </tr>
 </tbody>
 </table>
@@ -2126,8 +2147,8 @@ Service to set the transfer properties of a DMA channel.</p>
 <h3><span class="section-number">7.11.4.6. </span>function Cdd_Dma_SetTransferSize<a class="headerlink" href="#function-cdd-dma-settransfersize" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetTransferSize</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">BurstSize</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">TransferSize</span>
+<span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">BurstSize</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">TransferSize</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -2262,7 +2283,7 @@ Service to set the transfer destination address of a DMA channel.</p>
 <h3><span class="section-number">7.11.4.11. </span>function Cdd_Dma_SetTransferWrapSrcProperties<a class="headerlink" href="#function-cdd-dma-settransferwrapsrcproperties" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetTransferWrapSrcProperties</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">SrcWrapSize</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">SrcWrapSize</span><span class="p">,</span>
 <span class="w">    </span><span class="n">sint16</span><span class="w"> </span><span class="n">SrcWrapStep</span><span class="p">,</span>
 <span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">SrcBegAddress</span>
 <span class="p">)</span>
@@ -2292,7 +2313,7 @@ Service to set the transfer source wrap properties of a DMA channel.</p>
 <h3><span class="section-number">7.11.4.12. </span>function Cdd_Dma_SetTransferWrapDestProperties<a class="headerlink" href="#function-cdd-dma-settransferwrapdestproperties" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetTransferWrapDestProperties</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">DestWrapSize</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">DestWrapSize</span><span class="p">,</span>
 <span class="w">    </span><span class="n">sint16</span><span class="w"> </span><span class="n">DestWrapStep</span><span class="p">,</span>
 <span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">DestBegAddress</span>
 <span class="p">)</span>
@@ -2538,8 +2559,34 @@ Service to set channel priority.</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
+<section id="function-cdd-dma-getchannelpriority">
+<h3><span class="section-number">7.11.4.22. </span>function Cdd_Dma_GetChannelPriority<a class="headerlink" href="#function-cdd-dma-getchannelpriority" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_GetChannelPriority</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_Dma_ChannelPriority</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Priority</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to get channel priority.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> : Symbolic name of the channel for which priority shall be read</p></li>
+<li><p><strong>Priority</strong> : Pointer to memory location where the channel priority will be stored</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Successfully read channel priority
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Failed to read channel priority
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Status of reading channel priority</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
 <section id="function-cdd-dma-getchannelstatus">
-<h3><span class="section-number">7.11.4.22. </span>function Cdd_Dma_GetChannelStatus<a class="headerlink" href="#function-cdd-dma-getchannelstatus" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.11.4.23. </span>function Cdd_Dma_GetChannelStatus<a class="headerlink" href="#function-cdd-dma-getchannelstatus" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Dma_GetChannelStatus</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Cdd_Dma_ChannelStatus</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ChannelStatus</span>
@@ -2558,7 +2605,7 @@ Service to get the channel status : peripheral event trigger status, transfer st
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-dma-clearerrorflag">
-<h3><span class="section-number">7.11.4.23. </span>function Cdd_Dma_ClearErrorFlag<a class="headerlink" href="#function-cdd-dma-clearerrorflag" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.11.4.24. </span>function Cdd_Dma_ClearErrorFlag<a class="headerlink" href="#function-cdd-dma-clearerrorflag" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_ClearErrorFlag</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span>
 <span class="p">)</span>
@@ -2582,7 +2629,7 @@ Service to clear the overflow error flag for a DMA channel.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-dma-setdmacfgcommit">
-<h3><span class="section-number">7.11.4.24. </span>function Cdd_Dma_SetDmaCfgCommit<a class="headerlink" href="#function-cdd-dma-setdmacfgcommit" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.11.4.25. </span>function Cdd_Dma_SetDmaCfgCommit<a class="headerlink" href="#function-cdd-dma-setdmacfgcommit" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetDmaCfgCommit</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">HwInstanceId</span>
 <span class="p">)</span>
@@ -2606,7 +2653,7 @@ Service to commit DMA configurable properties such as priority scheme, channel p
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-dma-setchannelcommit">
-<h3><span class="section-number">7.11.4.25. </span>function Cdd_Dma_SetChannelCommit<a class="headerlink" href="#function-cdd-dma-setchannelcommit" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.11.4.26. </span>function Cdd_Dma_SetChannelCommit<a class="headerlink" href="#function-cdd-dma-setchannelcommit" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetChannelCommit</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span>
 <span class="p">)</span>
@@ -2630,7 +2677,7 @@ Service to commit DMA channel configurations for a specific channel.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-dma-setmpucfgcommit">
-<h3><span class="section-number">7.11.4.26. </span>function Cdd_Dma_SetMpuCfgCommit<a class="headerlink" href="#function-cdd-dma-setmpucfgcommit" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.11.4.27. </span>function Cdd_Dma_SetMpuCfgCommit<a class="headerlink" href="#function-cdd-dma-setmpucfgcommit" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetMpuCfgCommit</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">HwInstanceId</span>
 <span class="p">)</span>
@@ -2654,7 +2701,7 @@ Service to commit Mpu configuration: MPUEN for a specific instance.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-dma-setmpuregioncommit">
-<h3><span class="section-number">7.11.4.27. </span>function Cdd_Dma_SetMpuRegionCommit<a class="headerlink" href="#function-cdd-dma-setmpuregioncommit" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.11.4.28. </span>function Cdd_Dma_SetMpuRegionCommit<a class="headerlink" href="#function-cdd-dma-setmpuregioncommit" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Dma_SetMpuRegionCommit</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">MpuRegionId</span>
 <span class="p">)</span>
@@ -2674,6 +2721,30 @@ Service to commit Mpu Region configurations for a specific MPU region.</p>
 <br></p></li>
 </ul>
 <p><strong>Return</strong>: Status of commiting Mpu Region configuration</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-dma-periodicreadback">
+<h3><span class="section-number">7.11.4.29. </span>function Cdd_Dma_PeriodicReadback<a class="headerlink" href="#function-cdd-dma-periodicreadback" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Dma_PeriodicReadback</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_Dma_PeriodicReadBackDataType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ReadBackRegisterdata</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to read all the statically configured registers for periodic readback.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ChannelId</strong> Symbolic name of the DMA channel</p></li>
+<li><p><strong>ReadBackRegisterdata</strong> Pointer to the read back registers structure</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
@@ -2708,7 +2779,7 @@ Service to commit Mpu Region configurations for a specific MPU region.</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 26.00.00
+       Current Version: 26.00.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

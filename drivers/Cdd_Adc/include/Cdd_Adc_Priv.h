@@ -80,7 +80,6 @@ extern "C" {
  *********************************************************************************************************************/
 #include "Cdd_Adc.h"
 #include "hw_adc.h"
-#include "hw_asysctl.h"
 #include "hw_types.h"
 #include "Mcal_Lib.h"
 #include "Os.h"
@@ -307,19 +306,6 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_DrvObjInit(void);
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitInit(void);
-
-/** \brief Sets the internal test node for all the ADC hardware units
- *
- * This private function sets the internal test mode. This is common for all the ADC hardware units
- *
- * \param[in]  TestNode test node source
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- *********************************************************************************************************************/
-FUNC(void, CDD_ADC_CODE) Cdd_Adc_SelectInternalTestNode(Cdd_Adc_InternalTestNodeType TestNode);
 
 #if (STD_ON == CDD_ADC_DEINIT_API)
 /** \brief De-initializes the Adc driver

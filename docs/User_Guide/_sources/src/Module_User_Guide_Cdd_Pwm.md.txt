@@ -538,18 +538,35 @@ Development errors are reported to the DET using the service Det_ReportError(), 
 |API called with invalid event source|CDD_PWM_E_INVALID_EVENT_SRC|0x19U|
 |API called with invalid shadow set|CDD_PWM_E_INVALID_SHDSET|0x1AU|
 
+### Safety Mechanism
+
+|TI Diagnostic Unique Identifier| Summary | Description |
+|------------|-----------------|----------------|
+|PWM6|Lock Mechanism for Control Registers| Critical ePWM control registers are protected using a lock mechanism. Once the LOCK register bits are set, write access is blocked until a reset occurs |
+|PWM16|Fault Avoidance using Minimum Dead Band Logic| Minimum Dead Band logic can be configured to guarantee a minimum inactive gap between the active pulse phases of PWM channels, preventing crossover faults caused by faults in the preceding digital logic |
+|PWM17|Fault Avoidance using Illegal Combo Logic| Illegal Combination Logic can be configured to guarantee safe PWM output values for illegal input signal combinations, making the PWM system immune to faults that could result in undesirable outputs |
+|PWM18|Diode Emulation Mode Monitoring| Diode Emulation mode monitoring can be configured to generate a TRIP event if the ePWM module remains in Diode Emulation mode longer than the configured threshold, protecting against faults in the Diode Emulation logic |
+
+```{note}
+The above safety mechanism (features) are available only when the PWM driver is configured in Advanced mode.
+```
+
+```{note}
+More details of Safety Mechanisms can be found in Safety Manual.
+```
+
 ### Silicon errata workarounds and recommendation
 
-For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata](https://www.ti.com/lit/er/sprz569c/sprz569c.pdf).
+For detailed silicon errata, please check the latest Errata at [https://www.ti.com/product/F29H859TU-Q1](https://www.ti.com/product/F29H859TU-Q1).
 
-| Advisory | Workaround in MCAL driver | Recommended actions for user |
-|----------|--------------------------|-------------------------------|
-| ePWM: An ePWM Glitch can Occur if a Trip Remains Active at the End of the Blanking Window | No workaround is implemented in the CDD PWM driver. | Extend or reduce the blanking window to avoid any undesired trip action. |
-| ePWM: ePWM TZFRC and TZCLR Events may be Missed When PERCLKDIVSEL.EPWMCLKDIV = 1 | No workaround is implemented in the CDD PWM driver. | 1. Configure EPWMCLK = PLLSYSCLK (`PERCLKDIVSEL.EPWMCLKDIV = 0`), or<br>2. Use PWMXBAR → Digital Compare → Trip Zone path as an alternative:<br>   a. Configure both trip zone actions for Digital Compare Output A Event 1/2 Action On EPWMxA and Digital Compare Output B Event 1/2 Action On EPWMxB.<br>      • `EPWM_setTripZoneAction()`<br>   b. Configure the input signals for TRIPIN1-15 or the ORed Combinational logic of TRIPIN1-15.<br>      • `EPWM_selectDigitalCompareTripInput()`<br>   c. Configure the Digital Compare condition for DCAEVT1/2 and DCBEVT1/2.<br>      • `EPWM_setTripZoneDigitalCompareEventCondition()`<br>   d. Configure the PWMXBAR Input to the Digital Compare Submodule to reserved.<br>      • `XBAR_selectEpwmXbarInputSource()` |
-| ePWM: ESM Source for Trip Zone is not Supported | No workaround is implemented in the CDD PWM driver. | Use the error source to generate an NMI interrupt from the respective ESM CPU instance. Within the NMI interrupt, issue a software write using `Cdd_Pwm_ForceTripZoneEvent()` to force a trip on the PWM output. |
-| ePWM: ePWM One-Shot/CBC Trip Event DCxEVTy.force Does Not Set the Trip Condition | No workaround is implemented in the CDD PWM driver. | For devices with `DCxCTL.EVT1/2FRCSYNCSEL` and `DCxCTL.EVT1/2LATSEL`, use Async Path (`DCxCTL.EVT1/2FRCSYNCSEL = 1` and `DCxCTL.EVT1/2LATSEL = 1`) or Sync Path (`DCxCTL.EVT1/2FRCSYNCSEL = 0`). |
-| ePWM: For ePWMs Using Global Load in One-Shot Load Mode, Global Load of Registers may get Delayed When a Write to the GLDCTL2.OSHTLD Register Occurs Within 3 TBCLKs of the Global Load Event | No workaround is implemented in the CDD PWM driver. | Any writes to the `GLDCTL2.OSHTLD` register bit must be a minimum of 3 TBCLK cycles before the configured global load event. |
-| HRPWM: HRPWM High-Resolution Period Shadow to Active Loading Occurs Every ZERO Event, Even if Shadow to Active Load for Period is Set to Only Load on SYNC | No workaround is implemented in the CDD PWM driver. | When using high-resolution period, the sync event is ignored, and shadow-to-active loading occurs every ZERO event. If high-resolution period is disabled, the sync event is not ignored, and shadow-to-active loading occurs on a sync event. |
+| Advisory | Revisions Affected | Workaround in MCAL driver | Recommended actions for user |
+|----------|--------------------|--------------------------|-------------------------------|
+| ePWM: An ePWM Glitch can Occur if a Trip Remains Active at the End of the Blanking Window | 0, A, B, C | No workaround is implemented in the CDD PWM driver. | Extend or reduce the blanking window to avoid any undesired trip action. |
+| ePWM: ePWM TZFRC and TZCLR Events may be Missed When PERCLKDIVSEL.EPWMCLKDIV = 1 | 0, A, B, C | No workaround is implemented in the CDD PWM driver. | 1. Configure EPWMCLK = PLLSYSCLK (`PERCLKDIVSEL.EPWMCLKDIV = 0`), or<br>2. Use PWMXBAR → Digital Compare → Trip Zone path as an alternative:<br>   a. Configure both trip zone actions for Digital Compare Output A Event 1/2 Action On EPWMxA and Digital Compare Output B Event 1/2 Action On EPWMxB.<br>      • `EPWM_setTripZoneAction()`<br>   b. Configure the input signals for TRIPIN1-15 or the ORed Combinational logic of TRIPIN1-15.<br>      • `EPWM_selectDigitalCompareTripInput()`<br>   c. Configure the Digital Compare condition for DCAEVT1/2 and DCBEVT1/2.<br>      • `EPWM_setTripZoneDigitalCompareEventCondition()`<br>   d. Configure the PWMXBAR Input to the Digital Compare Submodule to reserved.<br>      • `XBAR_selectEpwmXbarInputSource()` |
+| ePWM: ESM Source for Trip Zone is not Supported | 0, A, B, C | No workaround is implemented in the CDD PWM driver. | Use the error source to generate an NMI interrupt from the respective ESM CPU instance. Within the NMI interrupt, issue a software write using `Cdd_Pwm_ForceTripZoneEvent()` to force a trip on the PWM output. |
+| ePWM: ePWM One-Shot/CBC Trip Event DCxEVTy.force Does Not Set the Trip Condition | 0, A, B, C | No workaround is implemented in the CDD PWM driver. | For devices with `DCxCTL.EVT1/2FRCSYNCSEL` and `DCxCTL.EVT1/2LATSEL`, use Async Path (`DCxCTL.EVT1/2FRCSYNCSEL = 1` and `DCxCTL.EVT1/2LATSEL = 1`) or Sync Path (`DCxCTL.EVT1/2FRCSYNCSEL = 0`). |
+| ePWM: For ePWMs Using Global Load in One-Shot Load Mode, Global Load of Registers may get Delayed When a Write to the GLDCTL2.OSHTLD Register Occurs Within 3 TBCLKs of the Global Load Event | 0, A, B, C | No workaround is implemented in the CDD PWM driver. | Any writes to the `GLDCTL2.OSHTLD` register bit must be a minimum of 3 TBCLK cycles before the configured global load event. |
+| HRPWM: HRPWM High-Resolution Period Shadow to Active Loading Occurs Every ZERO Event, Even if Shadow to Active Load for Period is Set to Only Load on SYNC | 0, A, B, C | No workaround is implemented in the CDD PWM driver. | When using high-resolution period, the sync event is ignored, and shadow-to-active loading occurs every ZERO event. If high-resolution period is disabled, the sync event is not ignored, and shadow-to-active loading occurs on a sync event. |
 
 ### Used resources
 

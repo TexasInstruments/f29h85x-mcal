@@ -89,11 +89,11 @@
 /*********************************************************************************************************************
  * AUTOSAR version information check.
  *********************************************************************************************************************/
-#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (2U)))
+#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (3U)))
     #error "Version numbers of Mcu_cfg.c and Mcu.h are inconsistent!"
 #endif
 
-#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (2U)))
+#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (3U)))
     #error "Version numbers of Mcu_cfg.c and Mcu_Cfg.h are inconsistent!"
 #endif
 
@@ -1554,7 +1554,11 @@ CONST(Mcu_ConfigType, MCU_CONFIG_DATA) Mcu_Config_Mcu_ModuleConfiguration_0 =
     /* Peripheral Configuration */
     .PeripheralConfig              = &Mcu_PeripheralConfig,
     /* CPU1 Lockstep Enable Configuration */
-    .Mcu_LockstepEnable            = ((boolean) TRUE)
+    .Mcu_LockstepEnable            = ((boolean) TRUE),
+    /* ASysCtl Configuration */
+    .Mcu_ASysCtlConfig             = NULL_PTR,
+    /* CMPSS ASysCtl Configuration */
+    .Mcu_CMPSSASysCtlConfig        = NULL_PTR
 };
 
 
@@ -1624,7 +1628,7 @@ static CONST(Mcu_PeripheralRegEntryType, MCU_CONFIG_DATA) Mcu_PeripheralConfigSe
 
     /* INPUTXBARFlags Configuration - FRAME0 */
     {
-        .RegAddr = (uint32)XBAR_BASE_FRAME(0U),
+        .RegAddr = (uint32)(DEVCFG_BASE + SYSCTL_O_INPUTXBARFLAGS),
         .RegValue = (uint32)0x00000000U
     }};
 
@@ -1640,9 +1644,6 @@ static CONST(Mcu_PeripheralConfigType, MCU_CONFIG_DATA) Mcu_PeripheralConfig =
     .PeripheralConfigEntries = Mcu_PeripheralConfigSet,
     .PeripheralConfigCount   = 8U
 };
-
-
-
 
 /*********************************************************************************************************************
  *  Local Function Prototypes

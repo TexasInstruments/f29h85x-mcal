@@ -92,7 +92,7 @@ extern "C" {
 
 /* CDD ADC Driver Configuration SW Version Info */
 
-#define CDD_ADC_CFG_MAJOR_VERSION           (4U)
+#define CDD_ADC_CFG_MAJOR_VERSION           (5U)
 #define CDD_ADC_CFG_MINOR_VERSION           (0U)
 #define CDD_ADC_CFG_PATCH_VERSION           (0U)
 
@@ -143,9 +143,6 @@ extern "C" {
 
 /* Limit check enable Api macro */
 #define CDD_ADC_ENABLE_PPB_API             (STD_OFF)
-
-/* Temperature Sesnor enable/disable macro */
-#define CDD_ADC_LOCK_TEMPERATURE_SENSOR     (STD_OFF)
 
 
 /* Macro to enable open/shorts detection */
@@ -476,41 +473,6 @@ typedef enum
     /* Occurs at the end of the voltage conversion */
     CDD_ADC_PULSE_END_OF_CONV    = 0x04U
 }Cdd_Adc_EocPulseType;
-
-/** \brief Defines supported internal nodes that can be connected to ADC */
-typedef enum
-{
-    CDD_ADC_TEST_NODE_NO_CONN            = 0U,
-    CDD_ADC_TEST_NODE_VDDCORE            = 1U,
-    CDD_ADC_TEST_NODE_VDDA               = 2U,
-    CDD_ADC_TEST_NODE_VSSA               = 3U,
-    CDD_ADC_TEST_NODE_VREFLOA            = 4U,
-    CDD_ADC_TEST_NODE_VREFLOB            = 5U,
-    CDD_ADC_TEST_NODE_CDAC1H             = 7U,
-    CDD_ADC_TEST_NODE_CDAC1L             = 8U,
-    CDD_ADC_TEST_NODE_CDAC2H             = 9U,
-    CDD_ADC_TEST_NODE_CDAC2L             = 10U,
-    CDD_ADC_TEST_NODE_CDAC3H             = 11U,
-    CDD_ADC_TEST_NODE_CDAC3L             = 12U,
-    CDD_ADC_TEST_NODE_CDAC4H             = 13U,
-    CDD_ADC_TEST_NODE_CDAC4L             = 14U,
-    CDD_ADC_TEST_NODE_CDAC5H             = 15U,
-    CDD_ADC_TEST_NODE_CDAC5L             = 16U,
-    CDD_ADC_TEST_NODE_CDAC6H             = 17U,
-    CDD_ADC_TEST_NODE_CDAC6L             = 18U,
-    CDD_ADC_TEST_NODE_CDAC7H             = 19U,
-    CDD_ADC_TEST_NODE_CDAC7L             = 20U,
-    CDD_ADC_TEST_NODE_CDAC8H             = 21U,
-    CDD_ADC_TEST_NODE_CDAC8L             = 22U,
-    CDD_ADC_TEST_NODE_CDAC9H             = 23U,
-    CDD_ADC_TEST_NODE_CDAC9L             = 24U,
-    CDD_ADC_TEST_NODE_CDAC10H            = 25U,
-    CDD_ADC_TEST_NODE_CDAC10L            = 26U,
-    CDD_ADC_TEST_NODE_CDAC11H            = 27U,
-    CDD_ADC_TEST_NODE_CDAC11L            = 28U,
-    CDD_ADC_TEST_NODE_ENZ_CALIB_GAIN_3P3 = 29U,
-    CDD_ADC_TEST_NODE_MAX           /* Added to check the valid input to the Cdd_Adc_SetInternalTestNode API */
-}Cdd_Adc_InternalTestNodeType;
 
 #if(STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)
 /** \brief Specifies open/short circuit modes */

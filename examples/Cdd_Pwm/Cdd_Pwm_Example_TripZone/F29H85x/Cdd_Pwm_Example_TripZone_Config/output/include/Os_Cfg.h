@@ -119,7 +119,7 @@ extern "C" {
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
-/* Category 1 INT ISR function prototype. */
+/* Category 1 RTINT INT ISR function prototype. */
 MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm1_TzIntIsr);
 
 
@@ -127,7 +127,7 @@ MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm1_TzIntIsr);
 void ISR_Cdd_Pwm_Epwm2_TzIntIsr(void); 
 MCAL_LIB_INT_ISR(Os_Isr39);
 
-/* Category 1 RTINT ISR function prototype. */
+/* Category 1 ISR function prototype. */
 MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm3_TzIntIsr); 
 
 

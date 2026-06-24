@@ -109,6 +109,18 @@ Please note that this performance result depends on, when the remote core acknow
 |16-bit ADC with SW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.198814%) With 3.5 ADC Clock Divider : 57.14MHz | |
 |16-bit ADC with HW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.146255%) With 3.5 ADC Clock Divider : 57.14MHz | |
 
+### CDD DMA Driver
+
+|Performance Test|Theoretical value|Measured value|Remarks|
+|------|------|------|-------|
+|Time taken to transfer 16KB data at max throughput using 8-bit data size|164.170 us|164.555 us|16KB transfer, 8-bit word size, 200 MHz|
+|Time taken to transfer 16KB data at max throughput using 16-bit data size|82.250 us|82.640 us|16KB transfer, 16-bit word size, 200 MHz|
+|Time taken to transfer 16KB data at max throughput using 32-bit data size|41.290 us|41.675 us|16KB transfer, 32-bit word size, 200 MHz|
+|Time taken to transfer 16KB data at max throughput using 64-bit data size|20.810 us|21.215 us|16KB transfer, 64-bit word size, 200 MHz|
+|Time taken to transfer 16KB data using burst size 256 and transfer size 64 with 32-bit data size|41.290 us|41.675 us|16KB transfer, 32-bit word size, burst=256, transfer=64, 200 MHz|
+|Time taken to transfer 16KB data using burst size 128 and transfer size 128 with 32-bit data size|41.610 us|42.005 us|16KB transfer, 32-bit word size, burst=128, transfer=128, 200 MHz|
+|Time taken to transfer 16KB data using burst size 64 and transfer size 256 with 32-bit data size|42.250 us|42.650 us|16KB transfer, 32-bit word size, burst=64, transfer=256, 200 MHz|
+
 ## Memory Footprints
 
 ```{NOTE}
@@ -119,10 +131,10 @@ The memory footprint values represent only the module-specific driver sections f
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Can_Example_Classic_FD   | 15420    | 0    | 3672    | 220    |
- | Can_Example_Icom   | 16972    | 0    | 3996    | 556    |
- | Can_Example_loopback   | 15388    | 0    | 3672    | 220    |
- | Can_Example_Wakeup   | 15420    | 0    | 3672    | 220    |
+| Can_Example_Classic_FD   | 15484    | 0    | 3668    | 220    |
+ | Can_Example_Icom   | 17052    | 0    | 3996    | 556    |
+ | Can_Example_loopback   | 15452    | 0    | 3668    | 220    |
+ | Can_Example_Wakeup   | 15484    | 0    | 3668    | 220    |
  
 ### DIO
 
@@ -134,7 +146,7 @@ The memory footprint values represent only the module-specific driver sections f
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Fls_App_Example   | 6956    | 0    | 200    | 96    |
+| Fls_App_Example   | 6898    | 0    | 168    | 76    |
  
 ### GPT
 
@@ -150,32 +162,32 @@ The memory footprint values represent only the module-specific driver sections f
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Lin_Example_Init_Sleep_Wakeup   | 4616    | 0    | 28    | 32    |
- | Lin_Example_SendData   | 4616    | 0    | 28    | 32    |
- | Lin_Example_Sleep_Wakeup_Interrupt   | 4616    | 0    | 28    | 32    |
+| Lin_Example_Init_Sleep_Wakeup   | 4568    | 0    | 28    | 32    |
+ | Lin_Example_SendData   | 4568    | 0    | 28    | 32    |
+ | Lin_Example_Sleep_Wakeup_Interrupt   | 4568    | 0    | 28    | 32    |
  
 ### MCU
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Mcu_Example_Clock   | 7438    | 0    | 30    | 928    |
- | Mcu_Example_PowerMode   | 7438    | 0    | 30    | 928    |
- | Mcu_Example_Ram   | 7438    | 0    | 30    | 940    |
- | Mcu_Example_Reset   | 7438    | 0    | 30    | 928    |
+| Mcu_Example_Clock   | 8320    | 0    | 34    | 936    |
+ | Mcu_Example_PowerMode   | 8320    | 0    | 34    | 936    |
+ | Mcu_Example_Ram   | 8320    | 0    | 34    | 948    |
+ | Mcu_Example_Reset   | 8320    | 0    | 34    | 936    |
  
 ### PORT
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Port_Example_Init   | 2906    | 0    | 6    | 456    |
+| Port_Example_Init   | 3098    | 0    | 6    | 496    |
  
 ### SPI
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Spi_Example_Sync_AsyncTransfer   | 12756    | 0    | 948    | 260    |
- | Spi_Example_AsyncTransfer_Interrupt   | 12802    | 0    | 836    | 284    |
- | Spi_Example_SyncTransfer   | 12438    | 0    | 676    | 164    |
+| Spi_Example_Sync_AsyncTransfer   | 12724    | 0    | 948    | 260    |
+ | Spi_Example_AsyncTransfer_Interrupt   | 12770    | 0    | 836    | 284    |
+ | Spi_Example_SyncTransfer   | 12406    | 0    | 676    | 164    |
  | Spi_Example_External_Loopback   | 12916    | 0    | 424    | 104    |
  
 ### WDG
@@ -190,11 +202,11 @@ The memory footprint values represent only the module-specific driver sections f
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Cdd_Adc_Example_SwHwConversion   | 10886    | 0    | 149    | 552    |
- | Cdd_Adc_Example_GlbSwTrig   | 12788    | 0    | 237    | 952    |
- | Cdd_Adc_Example_Ppb_TrigRepeater   | 11418    | 0    | 185    | 684    |
- | Cdd_Adc_Example_TempSensor   | 7148    | 0    | 81    | 240    |
- | Cdd_Adc_Example_DmaTransfer   | 5116    | 0    | 57    | 160    |
+| Cdd_Adc_Example_SwHwConversion   | 10612    | 0    | 149    | 524    |
+ | Cdd_Adc_Example_GlbSwTrig   | 12508    | 0    | 237    | 908    |
+ | Cdd_Adc_Example_Ppb_TrigRepeater   | 11090    | 0    | 185    | 664    |
+ | Cdd_Adc_Example_TempSensor   | 6774    | 0    | 81    | 220    |
+ | Cdd_Adc_Example_DmaTransfer   | 4776    | 0    | 57    | 148    |
  
 ### CDD ECAP
 
@@ -207,8 +219,10 @@ The memory footprint values represent only the module-specific driver sections f
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Cdd_Dma_Example_Mem_Transfer   | 8320    | 0    | 29    | 56    |
- | Cdd_Dma_Example_Mem_Transfer_Mpu   | 8310    | 0    | 29    | 76    |
+| Cdd_Dma_Example_Adc_Data_Binning   | 8522    | 0    | 29    | 56    |
+ | Cdd_Dma_Example_Gpt_Ping_Pong_Buffer   | 8522    | 0    | 29    | 56    |
+ | Cdd_Dma_Example_Mem_Transfer   | 9228    | 0    | 29    | 56    |
+ | Cdd_Dma_Example_Mem_Transfer_Mpu   | 9218    | 0    | 29    | 76    |
  
 ### CDD I2C
 
@@ -229,33 +243,33 @@ The memory footprint values represent only the module-specific driver sections f
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Cdd_Pwm_Example_Chopper   | 38024    | 0    | 46    | 64    |
- | Cdd_Pwm_Example_Cmpss_Trip   | 37542    | 0    | 40    | 16    |
- | Cdd_Pwm_Example_DC_EventFilter   | 37520    | 0    | 40    | 16    |
- | Cdd_Pwm_Example_Deadband   | 38080    | 0    | 48    | 80    |
- | Cdd_Pwm_Example_DiodeEmulation   | 37952    | 0    | 44    | 48    |
- | Cdd_Pwm_Example_GlobalLoad_And_Link   | 38104    | 0    | 46    | 84    |
- | Cdd_Pwm_Example_Hrpwm   | 37874    | 0    | 42    | 36    |
- | Cdd_Pwm_Example_TripZone   | 38128    | 0    | 44    | 48    |
+| Cdd_Pwm_Example_Chopper   | 38008    | 0    | 46    | 64    |
+ | Cdd_Pwm_Example_Cmpss_Trip   | 37526    | 0    | 40    | 16    |
+ | Cdd_Pwm_Example_DC_EventFilter   | 37504    | 0    | 40    | 16    |
+ | Cdd_Pwm_Example_Deadband   | 38064    | 0    | 48    | 80    |
+ | Cdd_Pwm_Example_DiodeEmulation   | 37936    | 0    | 44    | 48    |
+ | Cdd_Pwm_Example_GlobalLoad_And_Link   | 38136    | 0    | 46    | 84    |
+ | Cdd_Pwm_Example_Hrpwm   | 37858    | 0    | 42    | 36    |
+ | Cdd_Pwm_Example_TripZone   | 38112    | 0    | 44    | 48    |
  | Cdd_Pwm_Example_UpCountMode   | 5286    | 0    | 177    | 160    |
- | Cdd_Pwm_Example_XCmp_MultipleEdges   | 37952    | 0    | 44    | 48    |
+ | Cdd_Pwm_Example_XCmp_MultipleEdges   | 37936    | 0    | 44    | 48    |
  
 ### CDD SENT
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Cdd_Sent_Standard   | 4800    | 0    | 81    | 144    |
- | Cdd_Sent_MtpMode   | 4674    | 0    | 81    | 188    |
- | Cdd_Sent_Mtp_ExternalTrigger_Source   | 4912    | 0    | 81    | 188    |
+| Cdd_Sent_Standard   | 4824    | 0    | 81    | 144    |
+ | Cdd_Sent_MtpMode   | 4698    | 0    | 81    | 188    |
+ | Cdd_Sent_Mtp_ExternalTrigger_Source   | 4952    | 0    | 81    | 188    |
  
 ### CDD UART
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Cdd_Uart_Example_Loopback   | 4930    | 0    | 37    | 64    |
- | Cdd_Uart_Example_Read_Interrupt   | 4930    | 0    | 37    | 64    |
- | Cdd_Uart_Example_Write_Interrupt   | 4930    | 0    | 37    | 64    |
- | Cdd_Uart_Example_Write_Polling   | 4716    | 0    | 37    | 64    |
+| Cdd_Uart_Example_Loopback   | 4914    | 0    | 37    | 64    |
+ | Cdd_Uart_Example_Read_Interrupt   | 4914    | 0    | 37    | 64    |
+ | Cdd_Uart_Example_Write_Interrupt   | 4914    | 0    | 37    | 64    |
+ | Cdd_Uart_Example_Write_Polling   | 4700    | 0    | 37    | 64    |
  
 ### CDD XBAR
 

@@ -88,7 +88,8 @@ extern "C" {
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
- 
+#include "hw_asysctl.h"
+
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
@@ -300,8 +301,34 @@ typedef struct
     /** \brief Enable pin as LPM */
     boolean Port_EnableWakeupPinLPM;
 
+    /** \brief IO buffer drive strength selection for AGPIO pins (IODRVSEL bit).
+     *         TRUE = high-drive, FALSE = normal-drive. */
+    boolean Port_IOBufferDriveConfig;
+
+    /** \brief IO buffer mode selection for AGPIO pins (IOMODESEL bit).
+     *         TRUE = 1.8 V mode, FALSE = 3.3 V mode. */
+    boolean Port_IOBufferModeConfig;
+
+    /** \brief Pre-computed ASYSCTL IODRVSEL/IOMODESEL bit mask for this pin.
+     *         Set to the matching ASYSCTL_IODRVSEL_GPIOxx constant by EB Tresos;
+     *         0 if the pin is not AGPIO-capable. */
+    uint32 Port_AGPIOBitMask;
+
 } Port_ControllerSpecificType;
 
+/** \brief ASysCtl global configuration for Port driver.
+ *
+ * Holds the global ASysCtl settings applied once during Port_Init().
+ */
+/*
+ * Design: MCAL-22345
+ */
+typedef struct Port_ASysCtlConfigType_s
+{
+    /** \brief AGPIOFILTER 2-bit filter selection (0–3) applied to all AGPIO pins */
+    uint8 Port_AGPIOFilter;
+
+} Port_ASysCtlConfigType;
 
 /*********************************************************************************************************************
  * Exported Object Declarations

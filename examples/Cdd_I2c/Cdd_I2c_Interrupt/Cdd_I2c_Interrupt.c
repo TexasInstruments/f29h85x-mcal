@@ -67,7 +67,24 @@
  ------------------------------------------------------------------------------------------------------------------
  *  File:       Cdd_I2c_Interrupt.c
  *
- * Description: TBD
+ * Description:  This file contains an example for the CDD I2C driver operating in interrupt mode,
+ *  using two I2C hardware units (I2CA and I2CB) with 4 sequences and 6 channels per unit.
+ *  The example communicates with a PMIC device (target address: 0x60) on I2CB and
+ *  demonstrates the following transfer types:
+ *               1. Initialize the Cdd_I2c module.
+ *               2. Perform a Write-only transfer (Seq 0): write a register offset to the target device.
+ *               3. Perform a Read-only transfer (Seq 1): read data from the target device.
+ *               4. Perform a Write+Read transfer with STOP (Seq 2): write a register offset then
+ *                  read back the register value with a STOP condition between transfers.
+ *               5. Perform a Write+Read transfer with RESTART/NOSTOP (Seq 3): write a register
+ *                  offset then read back the register value using a repeated START (no STOP).
+ *               6. In each transfer, poll Cdd_I2c_GetSequenceResult() to wait for completion;
+ *                  transfer progress is driven by hardware interrupts (no Cdd_I2c_MainFunction()
+ *                  call required). Sequence-end notification is delivered via callback.
+ *               7. Verify the sequence result, sequence-end notification flag, and channel result.
+ *               8. Read PMIC registers at offsets 0x01, 0x02, 0x03, 0x04 and validate against
+ *                  expected values (0xAE, <revision>, 0x01, 0x00) over 100 iterations.
+ *               9. De-initialize the Cdd_I2c module.
  *
  *********************************************************************************************************************/
 

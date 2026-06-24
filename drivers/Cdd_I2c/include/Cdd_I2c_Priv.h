@@ -108,6 +108,9 @@ extern "C" {
  *********************************************************************************************************************/
 
 /*
+ * Design: MCAL-39715
+ */
+/*
  * \brief I2C driver transfer stages - used in polling mode
  */
 typedef enum
@@ -122,6 +125,9 @@ typedef enum
     CDD_I2C_STATE_COMPLETE
 } Cdd_I2c_StateType;
 
+/*
+ * Design: MCAL-39716
+ */
 /**
  * \brief Target mode state machine states
  */
@@ -138,6 +144,9 @@ typedef enum
 /** \brief Pre-declaration for HW unit object */
 typedef struct Cdd_I2c_HwUnitObjType_t Cdd_I2c_HwUnitObjType;
 
+/*
+ * Design: MCAL-39714
+ */
 /**
  *  \brief I2C Sequence object structure.
  */
@@ -160,6 +169,9 @@ typedef struct
     /**< Set to TRUE when user cancels a sequence */
 } Cdd_I2c_SeqObjType;
 
+/*
+ * Design: MCAL-39713
+ */
 /**
  *  \brief I2C Channel object structure.
  */
@@ -208,6 +220,9 @@ typedef struct
     /**< Set to TRUE when user cancels a sequence - this is set for all channels in a sequence */
 } Cdd_I2c_ChObjType;
 
+/*
+ * Design: MCAL-39712
+ */
 /**
  *  \brief I2C Hardware unit object structure.
  */
@@ -250,6 +265,9 @@ struct Cdd_I2c_HwUnitObjType_t
     boolean                  txUnderflow;
 };
 
+/*
+ * Design: MCAL-39711
+ */
 /**
  *  \brief I2C driver object structure.
  */
@@ -282,6 +300,10 @@ extern Cdd_I2c_DriverObjType       Cdd_I2c_DrvObj;
  *  Exported Function Prototypes
  *********************************************************************************************************************/
 
+/*
+ * Design: MCAL-39710, MCAL-39686, MCAL-39685, MCAL-39694, MCAL-39684, MCAL-39689, MCAL-39690,
+ * Design: MCAL-39708, MCAL-39707, MCAL-39709
+ */
 void           Cdd_I2c_InitDrvObj(Cdd_I2c_DriverObjType *drvObj);
 void           Cdd_I2c_DeInitDrvObj(Cdd_I2c_DriverObjType *drvObj);
 void           Cdd_I2c_CopyConfig(Cdd_I2c_DriverObjType *drvObj, const Cdd_I2c_ConfigType *configPtr);

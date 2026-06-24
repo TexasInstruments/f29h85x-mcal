@@ -112,14 +112,6 @@
 /*********************************************************************************************************************
  *  External Functions Definition
  *********************************************************************************************************************/
-/* This function is defined outside of MCAL_LIB_START_SEC_CODE/MCAL_LIB_STOP_SEC_CODE because
-    it is intended to be stored in TI.ramfunc section. */
-DELAY_ATTR FUNC(void, MCAL_LIB_CODE) McalLib_Delay(VAR(uint32, MCAL_LIB_DATA) count)
-{
-    __asm volatile(
-        "    MV A0, D0           \n"
-        "    DECB A0, #1, 0x0    \n");
-}
 
 #define MCAL_LIB_START_SEC_CODE
 #include "Mcal_Lib_MemMap.h"

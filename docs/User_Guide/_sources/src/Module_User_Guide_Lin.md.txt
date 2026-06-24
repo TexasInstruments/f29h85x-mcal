@@ -227,11 +227,11 @@ More details of Safety Mechanisms can be found in Safety Manual.
 
 ### Silicon errata workarounds and recommendation
 
-For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata](https://www.ti.com/lit/er/sprz569c/sprz569c.pdf).
+For detailed silicon errata, please check the latest Errata at [https://www.ti.com/product/F29H859TU-Q1](https://www.ti.com/product/F29H859TU-Q1).
 
-| Advisory | Workaround in MCAL driver | Recommended actions for user |
-|----------|--------------------------|-------------------------------|
-| LIN Unable to Wake Up Using 0xF0 Wake-Up Key | Transmitting the standard 0xF0 wake-up signal causes the LIN hardware to enter an undefined state. The driver works around this by transmitting an unused LIN header frame as the wake-up signal instead, which is compliant with the LIN 2.1 specification. | Configure the wake-up frame ID via the `LinWakeupId` parameter under `LinGeneral` in EB Tresos. It is recommended to use ID `0x3F`, which is an unused reserved ID in the LIN network, to avoid conflicts with active communication frames. |
+| Advisory | Revisions Affected | Workaround in MCAL driver | Recommended actions for user |
+|----------|--------------------|--------------------------|-------------------------------|
+| LIN Unable to Wake Up Using 0xF0 Wake-Up Key | 0, A, B, C | Transmitting the standard 0xF0 wake-up signal causes the LIN hardware to enter an undefined state. The driver works around this by transmitting an unused LIN header frame as the wake-up signal instead, which is compliant with the LIN 2.1 specification. | Configure the wake-up frame ID via the `LinWakeupId` parameter under `LinGeneral` in EB Tresos. It is recommended to use ID `0x3F`, which is an unused reserved ID in the LIN network, to avoid conflicts with active communication frames. |
 
 ### Used resources
 

@@ -96,9 +96,9 @@ extern "C" {
 /** \brief Driver Implementation Major Version */
 #define CDD_UART_SW_MAJOR_VERSION (3U)
 /** \brief Driver Implementation Minor Version */
-#define CDD_UART_SW_MINOR_VERSION (0U)
+#define CDD_UART_SW_MINOR_VERSION (1U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_UART_SW_PATCH_VERSION (2U)
+#define CDD_UART_SW_PATCH_VERSION (0U)
 
 /*  Defines for CDD_UART Driver AUTOSAR version used for compatibility checks. */
 /** \brief AUTOSAR Major version specification implemented by CDD_UART Driver*/
@@ -241,6 +241,9 @@ typedef enum
 /** \brief Typedef for the data buffer elements*/
 typedef uint8 Cdd_Uart_DataBufferType;
 
+/*
+ * Design: MCAL-38931
+ */
 /**
  *  CDD UART Config type
  *

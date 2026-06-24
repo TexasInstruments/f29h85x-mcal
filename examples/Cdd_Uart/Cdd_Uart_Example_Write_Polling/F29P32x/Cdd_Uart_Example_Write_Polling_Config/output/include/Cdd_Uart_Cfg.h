@@ -81,6 +81,10 @@ extern "C" {
  * Header Files
  *********************************************************************************************************************/
 
+/*
+ * Design: MCAL-38856,MCAL-38857,MCAL-38858,MCAL-38859,MCAL-38860,MCAL-38861,MCAL-38889,MCAL-38890,
+ * Design: MCAL-38891,MCAL-38892,MCAL-38893,MCAL-38894,MCAL-38895,MCAL-38896
+ */
 #include "hw_memmap.h"
 #include "hw_uart.h"
 #include "Cdd_Uart_Cbk.h"
@@ -96,8 +100,8 @@ extern "C" {
 
 /* CDD UART Driver Configuration SW Version Info */
 #define CDD_UART_CFG_MAJOR_VERSION           (3U)
-#define CDD_UART_CFG_MINOR_VERSION           (0U)
-#define CDD_UART_CFG_PATCH_VERSION           (2U)
+#define CDD_UART_CFG_MINOR_VERSION           (1U)
+#define CDD_UART_CFG_PATCH_VERSION           (0U)
 
 /** \brief Maximum UART HW Instances on Board */
 #define CDD_UART_MAX_NUM_HWUNIT                     (uint8)(1U)
@@ -117,9 +121,6 @@ extern "C" {
 /** \brief Defines symbolic names for the CddUart HW unit ID's (CddUartHWUnitId) */
 #define CddUartConf_CddUartConfigSet_CddUartConfig_0 (0U) /*~ASR~*/
 
-/** \brief CddUart ConfigSet Instance interrupt definition */
-#define CDD_UARTB_ENABLE
-#define CDD_UARTB_ISR_CAT2
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 /*********************************************************************************************************************

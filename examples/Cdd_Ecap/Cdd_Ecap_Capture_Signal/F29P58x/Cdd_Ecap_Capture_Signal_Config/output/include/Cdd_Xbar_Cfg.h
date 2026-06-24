@@ -96,7 +96,7 @@ extern "C" {
 /** \brief CDD XBar configuration Major Version */
 #define CDD_XBAR_CFG_MAJOR_VERSION                (3U)
 /** \brief CDD XBar configuration Minor Version */
-#define CDD_XBAR_CFG_MINOR_VERSION                (1U)
+#define CDD_XBAR_CFG_MINOR_VERSION                (2U)
 /** \brief CDD XBar configuration Patch Version */
 #define CDD_XBAR_CFG_PATCH_VERSION                (0U)
 

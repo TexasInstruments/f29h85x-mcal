@@ -89,12 +89,12 @@
 #endif
 
 /* AUTOSAR version information check has to match definition in header file */
-#if ((FLS_SW_MAJOR_VERSION != (3U)) || (FLS_SW_MINOR_VERSION != (2U)))
+#if ((FLS_SW_MAJOR_VERSION != (3U)) || (FLS_SW_MINOR_VERSION != (3U)))
 #error "Fls: Software Version Numbers are inconsistent!!"
 #endif
 
 /* AUTOSAR version information check has to match definition in FLS_Cfg.h file */
-#if ((FLS_CFG_MAJOR_VERSION != (3U)) || (FLS_CFG_MINOR_VERSION != (2U)))
+#if ((FLS_CFG_MAJOR_VERSION != (3U)) || (FLS_CFG_MINOR_VERSION != (3U)))
 #error "Version numbers of Fls.c and Fls_Cfg.h are inconsistent!"
 #endif
 /*********************************************************************************************************************
@@ -112,14 +112,6 @@
 /*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
-#define FLS_START_SEC_VAR_NO_INIT_32
-#include "Fls_MemMap.h"
-
-extern VAR(uint32, FLS_VAR_NO_INIT_32) Fls_CMD_WE_Protection_A_Mask; /* protection for the first 32 sectors */
-extern VAR(uint32, FLS_VAR_NO_INIT_32) Fls_CMD_WE_Protection_B_Mask; /* protection for the 32 – 256 sectors */
-
-#define FLS_STOP_SEC_VAR_NO_INIT_32
-#include "Fls_MemMap.h"
 
 #define FLS_START_SEC_VAR_NO_INIT_UNSPECIFIED
 #include "Fls_MemMap.h"
@@ -260,8 +252,8 @@ FUNC(void, FLS_CODE) Fls_Init(P2CONST(Fls_ConfigType, AUTOMATIC, FLS_CONFIG_DATA
 
         Fls_Update_WaitStates(waitStates);
 
-        Fls_CMD_WE_Protection_A_Mask = FLS_CMDWEPROTA;
-        Fls_CMD_WE_Protection_B_Mask = FLS_CMDWEPROTB;
+        Fls_DrvObj.cmdWeProtAMask = FLS_CMDWEPROTA;
+        Fls_DrvObj.cmdWeProtBMask = FLS_CMDWEPROTB;
 
         /*
          * Initialize the Flash API by providing the Flash register base address
@@ -272,7 +264,11 @@ FUNC(void, FLS_CODE) Fls_Init(P2CONST(Fls_ConfigType, AUTOMATIC, FLS_CONFIG_DATA
          * changed.
          **/
         oReturnCheck = Fls_SSU_claimFlashSemaphore();
+        /* TI_COVERAGE_GAP_START [Branch Coverage] Semaphore claim by other CPU/LINK:
+         * Fls_SSU_claimFlashSemaphore() returns E_NOT_OK only if another CPU or LINK holds the
+         * flash semaphore. This condition cannot occur in a single-CPU validation environment. */
         if (oReturnCheck == E_OK)
+        /* TI_COVERAGE_GAP_STOP */
         {
             CPU_SYS_CLOCK_MHZ = FLS_CPU_CLOCK_FREQ / FLS_CONV_TO_MHZ;
             oReturnCheck      = Fls_Fapi_initializeAPI(CPU_SYS_CLOCK_MHZ);
@@ -318,7 +314,7 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_Erase(Fls_AddressType TargetAddress, Fls_Leng
       sectors can be erased.
     */
     VAR(Fls_AddressType, AUTOMATIC)
-    eraseStartAddress = (TargetAddress & 0xFFFFFU) + (FLS_BASE_ADDRESS & FLS_BASE_ADDRESS_REQ);
+    eraseStartAddress = (TargetAddress & 0xFFFFFU) + FLS_BASE_ADDRESS;
 
 #if (STD_ON == FLS_DEV_ERROR_DETECT)
     /* SWS_Fls_00065*/
@@ -397,10 +393,9 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_Erase(Fls_AddressType TargetAddress, Fls_Leng
             Fls_DrvObj.erasePostFapiFsmDone = 0U;
 
             /*  [ SWS_Fls_00221 ] */
-            Fls_DrvObj.flashAddr   = eraseStartAddress;
-            Fls_DrvObj.ramAddr     = NULL_PTR;
-            Fls_DrvObj.length      = Length;
-            Fls_DrvObj.transferred = (Fls_LengthType)0;
+            Fls_DrvObj.flashAddr = eraseStartAddress;
+            Fls_DrvObj.ramAddr   = NULL_PTR;
+            Fls_DrvObj.length    = Length;
 
             if (Fls_DrvObj.typeoferase == FLS_SECTOR_ERASE)
             {
@@ -442,7 +437,7 @@ Fls_Read(Fls_AddressType SourceAddress, P2VAR(uint8, AUTOMATIC, FLS_APPL_DATA) T
       FlsBaseAddress + SourceAddress of size Length to the buffer pointed to by TargetAddressPtr
     */
     VAR(Fls_AddressType, AUTOMATIC)
-    ReadStartAddress = (SourceAddress & 0xFFFFFU) + (FLS_BASE_ADDRESS & FLS_BASE_ADDRESS_REQ);
+    ReadStartAddress = (SourceAddress & 0xFFFFFU) + FLS_BASE_ADDRESS;
 #if (STD_ON == FLS_DEV_ERROR_DETECT)
     /* SWS_Fls_00099*/
     /* If development error detection for the module Fls is enabled: the function Fls_Read shall
@@ -521,9 +516,8 @@ Fls_Read(Fls_AddressType SourceAddress, P2VAR(uint8, AUTOMATIC, FLS_APPL_DATA) T
             Fls_DrvObj.flashAddr = ReadStartAddress;
 
             /*  "Reason - The source address needs to stored, for functionality operation. " */
-            Fls_DrvObj.ramAddr     = (uint8 *)TargetAddressPtr;
-            Fls_DrvObj.length      = Length;
-            Fls_DrvObj.transferred = (Fls_LengthType)0U;
+            Fls_DrvObj.ramAddr = (uint8 *)TargetAddressPtr;
+            Fls_DrvObj.length  = Length;
 
             Fls_DrvObj.jobChunkSize = Fls_DrvObj.FlsMaxReadNormalMode;
         }
@@ -559,7 +553,7 @@ Fls_Write(Fls_AddressType TargetAddress, P2VAR(const uint8, AUTOMATIC, FLS_APPL_
     /* TargetAddress = TargetAddress & 0xFFFFF; */
 
     VAR(Fls_AddressType, AUTOMATIC)
-    writeStartAddress = (TargetAddress & 0xFFFFFU) + (FLS_BASE_ADDRESS & FLS_BASE_ADDRESS_REQ);
+    writeStartAddress = (TargetAddress & 0xFFFFFU) + FLS_BASE_ADDRESS;
 
 #if (STD_ON == FLS_DEV_ERROR_DETECT)
     /* SWS_Fls_00066*/
@@ -658,10 +652,9 @@ Fls_Write(Fls_AddressType TargetAddress, P2VAR(const uint8, AUTOMATIC, FLS_APPL_
             Fls_DrvObj.writePostCheck       = FLS_WRITE_FSM_READY_CHECK;
 
             /* SWS_Fls_00226*/
-            Fls_DrvObj.flashAddr   = writeStartAddress;
-            Fls_DrvObj.ramAddr     = (uint8 *)SourceAddressPtr;
-            Fls_DrvObj.length      = Length;
-            Fls_DrvObj.transferred = (Fls_LengthType)0;
+            Fls_DrvObj.flashAddr = writeStartAddress;
+            Fls_DrvObj.ramAddr   = (uint8 *)SourceAddressPtr;
+            Fls_DrvObj.length    = Length;
 
             Fls_DrvObj.jobChunkSize = Fls_DrvObj.FlsMaxWriteNormalMode;
         }
@@ -699,7 +692,7 @@ Fls_Compare(Fls_AddressType SourceAddress, P2VAR(const uint8, AUTOMATIC, FLS_APP
     /* SourceAddress = SourceAddress & 0xFFFFF; */
 
     VAR(Fls_AddressType, AUTOMATIC)
-    compareStartAddress = (SourceAddress & 0xFFFFFU) + (FLS_BASE_ADDRESS & FLS_BASE_ADDRESS_REQ);
+    compareStartAddress = (SourceAddress & 0xFFFFFU) + FLS_BASE_ADDRESS;
 
 #if (STD_ON == FLS_DEV_ERROR_DETECT)
 
@@ -780,10 +773,9 @@ Fls_Compare(Fls_AddressType SourceAddress, P2VAR(const uint8, AUTOMATIC, FLS_APP
              *starting from FlsBaseAddress + SourceAddress of size Length with the buffer
              *pointed to by TargetAddressPtr
              */
-            Fls_DrvObj.flashAddr   = compareStartAddress;
-            Fls_DrvObj.ramAddr     = (uint8 *)TargetAddressPtr;
-            Fls_DrvObj.length      = Length;
-            Fls_DrvObj.transferred = (Fls_LengthType)0U;
+            Fls_DrvObj.flashAddr = compareStartAddress;
+            Fls_DrvObj.ramAddr   = (uint8 *)TargetAddressPtr;
+            Fls_DrvObj.length    = Length;
 
             Fls_DrvObj.jobChunkSize = Fls_DrvObj.FlsMaxReadNormalMode;
         }
@@ -820,7 +812,7 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_BlankCheck(Fls_AddressType TargetAddress, Fls
     /* TargetAddress = TargetAddress & 0xFFFFF; */
 
     VAR(Fls_AddressType, AUTOMATIC)
-    BlankCheckStartAddress = (TargetAddress & 0xFFFFFU) + (FLS_BASE_ADDRESS & FLS_BASE_ADDRESS_REQ);
+    BlankCheckStartAddress = (TargetAddress & 0xFFFFFU) + FLS_BASE_ADDRESS;
 
 #if (STD_ON == FLS_DEV_ERROR_DETECT)
 
@@ -899,10 +891,9 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_BlankCheck(Fls_AddressType TargetAddress, Fls
               continuous flash memory area starting from FlsBaseAddress + TargetAddress of
               size Length is eras
             */
-            Fls_DrvObj.flashAddr   = BlankCheckStartAddress;
-            Fls_DrvObj.ramAddr     = NULL_PTR;
-            Fls_DrvObj.length      = Length;
-            Fls_DrvObj.transferred = (Fls_LengthType)0U;
+            Fls_DrvObj.flashAddr = BlankCheckStartAddress;
+            Fls_DrvObj.ramAddr   = NULL_PTR;
+            Fls_DrvObj.length    = Length;
 
             Fls_DrvObj.jobChunkSize = Fls_DrvObj.FlsMaxReadNormalMode;
         }
@@ -1021,7 +1012,7 @@ FUNC(void, FLS_CODE) Fls_MainFunction(void)
         {
             if (Fls_DrvObj.jobType != FLS_JOB_NONE)
             {
-                Fls_processJobs(Fls_DrvObj.jobType);
+                Fls_processJob(Fls_DrvObj.jobType);
             }
         }
         /* SWS_Fls_00147*/
@@ -1070,10 +1061,9 @@ FUNC(void, FLS_CODE) Fls_Cancel(void)
 #endif /*  #if (STD_ON == FLS_DEV_ERROR_DETECT) */
     {
         /*  Reset internal job processing variables (like address, length and data pointer) */
-        Fls_DrvObj.flashAddr   = 0U;
-        Fls_DrvObj.ramAddr     = NULL_PTR;
-        Fls_DrvObj.length      = 0U;
-        Fls_DrvObj.transferred = (Fls_LengthType)0U;
+        Fls_DrvObj.flashAddr = 0U;
+        Fls_DrvObj.ramAddr   = NULL_PTR;
+        Fls_DrvObj.length    = 0U;
 
         /* SWS_Fls_00336*/
         /* The function Fls_Cancel shall set the FLS module state to MEMIF_IDLE*/
@@ -1111,6 +1101,7 @@ FUNC(void, FLS_CODE) Fls_Cancel(void)
  *  application itself.
  *  Implementation of this function is done to allow user to select one or more
  *  erase types based on the requirement.
+ *  Design: MCAL-30925,
  */
 FUNC(uint32, FLS_CODE) Fls_SetEraseType(Fls_EraseType erasetype)
 {
@@ -1160,9 +1151,11 @@ FUNC(void, FLS_CODE) Fls_SetMode(MemIf_ModeType Mode)
 static Std_ReturnType Fls_CheckValidAddress(Fls_AddressType SourceAddress)
 {
     VAR(Std_ReturnType, AUTOMATIC) retVal     = (Std_ReturnType)E_NOT_OK;
-    VAR(Fls_AddressType, AUTOMATIC) startAddr = (FLS_BASE_ADDRESS & FLS_BASE_ADDRESS_REQ);
+    VAR(Fls_AddressType, AUTOMATIC) startAddr = FLS_BASE_ADDRESS;
 
-    if ((SourceAddress == startAddr) || (SourceAddress < (startAddr + (Fls_AddressType)FLS_TOTAL_SIZE)))
+    /* Lower bound check is omitted: all callers construct SourceAddress as
+     * (offset & 0xFFFFF) + FLS_BASE_ADDRESS, guaranteeing SourceAddress >= startAddr. */
+    if (SourceAddress < (startAddr + (Fls_AddressType)FLS_TOTAL_SIZE))
     {
         retVal = E_OK;
     }
@@ -1175,6 +1168,7 @@ static Std_ReturnType Fls_CheckValidAddress(Fls_AddressType SourceAddress)
 
 /*
  * Checks sector alignment for a valid address
+ * Design: MCAL-30938, MCAL-30939,
  */
 static Std_ReturnType Fls_CheckSectorAlignment(Fls_AddressType SourceAddress)
 {
@@ -1193,13 +1187,16 @@ static Std_ReturnType Fls_CheckSectorAlignment(Fls_AddressType SourceAddress)
 }
 
 /*
- * Check if address for write/blank-check/compare is aligned with maximum operatable size  (main and
- * non-main range)
+ * Check if address for write/blank-check is aligned to the configured write granularity
+ * (FlsMaxWriteNormalMode, either 8 or 16 bytes). Applied to both the start address and the
+ * end address (start + length), so it implicitly enforces that length is also a multiple of
+ * the write granularity.
+ * Design: MCAL-30950, MCAL-30951,
  */
 static Std_ReturnType Fls_CheckWrtAddressAlignment(Fls_AddressType SourceAddress)
 {
     VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType)E_NOT_OK;
-    if ((SourceAddress % FLS_WRITE_ADDRESS_ALIGNMENT) == (uint32)0U) /* aligned to 8 bytes*/
+    if ((SourceAddress % Fls_DrvObj.FlsMaxWriteNormalMode) == (uint32)0U)
     {
         retVal = E_OK;
     }

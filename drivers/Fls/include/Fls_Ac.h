@@ -161,13 +161,6 @@ extern "C" {
     __asm(" NOP #8");          \
     __asm(" NOP #4");
 
-/**  FMC memory map defines */
-// #if defined (_F29H85x_)
-/** \brief Flash read interface base address*/
-#define FLS_FLASH_READINTERFACE_BASE ((uint32)0x301D0000U)
-/** \brief Flash command  interface base address*/
-#define FLS_FLASH_FAPI_FLASHNW_FC1_BASE ((uint32)0x30100000U)
-// #endif
 /**  \brief  flash prefetch enable */
 #define FLS_FLASH_PREFETCH_ENABLE (0x1U)
 /**  \brief  flash prefetch disable */
@@ -328,14 +321,6 @@ typedef struct Fls_FlashStatusWordTag
     uint32 au32StatusWord[4];
 } Fls_FlashStatusWordType;
 
-/** \brief Enumeration to identify if read is for single or multiple value */
-typedef enum Fls_FapiRegionValueTag
-{
-    FLS_FAPI_SINGLEVALUE      = 0U, /*!< \brief Read single value */
-    FLS_FAPI_MULTIPLEVALUE    = 1U, /*!< \brief Read multiple value */
-    FLS_FAPI_MULTIPLEVALUEECC = 2U  /*!< \brief Read multiple ecc value */
-} Fls_FapiRegionValueType;
-
 /** \brief Enumeration of FRI register addresses for use with Flash_configFRI() */
 typedef enum Fls_FlashFRITag
 {
@@ -456,27 +441,6 @@ extern FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_initializeAPI(uint32 u32HclkFrequ
  *********************************************************************************************************************/
 extern FUNC(Std_ReturnType, FLS_CODE)
     Fls_Fapi_doBlankCheck(const uint32 *pu32StartAddress, uint32 u32Length, Fls_FlashStatusWordType *poFlashStatusWord);
-
-/** \brief Verifies region specified against provided data
- * \param[in] pu32StartAddress Const pointer to start address for region to verify
- * \param[in] u32Length Length of region in 32-bit words to verify
- * \param[in] pu32CheckValueBuffer Const pointer to address of buffer to verify region against. Data buffer should be
- *128-bit aligned.
- * \param[out] poFlashStatusWord Returns the status of the operation if result is not
- *Fapi_Status_Success au32StatusWord[0] Address of first verify failure location au32StatusWord[1]
- *Data read at first verify failure location au32StatusWord[2] Value of compare data
- *             au32StatusWord[3] NA
- * \pre None
- * \post None
- * \return returns success or failure status
- * \retval Fapi_Status_Success: Success
- * \retval Fapi_Error_Fail: region specified is not blank
- * \retval Fapi_Error_InvalidAddress:  User provided an invalid address
- *
- *********************************************************************************************************************/
-extern FUNC(Std_ReturnType, FLS_CODE)
-    Fls_Fapi_doVerify(const uint32 *pu32StartAddress, uint32 u32Length, const uint32 *pu32CheckValueBuffer,
-                      Fls_FlashStatusWordType *poFlashStatusWord);
 
 /** \brief Verifies region specified against provided data
  * \param[in] pu8StartAddress Const pointer to start address for region to verify

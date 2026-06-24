@@ -89,11 +89,11 @@
 /*********************************************************************************************************************
  * AUTOSAR version information check.
  *********************************************************************************************************************/
-#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (2U)))
+#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (3U)))
     #error "Version numbers of Mcu_cfg.c and Mcu.h are inconsistent!"
 #endif
 
-#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (2U)))
+#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (3U)))
     #error "Version numbers of Mcu_cfg.c and Mcu_Cfg.h are inconsistent!"
 #endif
 
@@ -1532,6 +1532,8 @@ static CONST(Mcu_ModeConfigType, MCU_CONFIG_DATA) Mcu_ModeConfigurationSet0[2] =
  */
 /* Forward declaration of peripheral configuration structure */
 static CONST(Mcu_PeripheralConfigType, MCU_CONFIG_DATA) Mcu_PeripheralConfig;
+/* Forward declaration of ASysCtl configuration structure */
+static CONST(Mcu_ASysCtlConfigType, MCU_CONFIG_DATA) Mcu_ASysCtlConfig;
 
 CONST(Mcu_ConfigType, MCU_CONFIG_DATA) Mcu_Config_Mcu_ModuleConfiguration_0 =
 {
@@ -1554,7 +1556,11 @@ CONST(Mcu_ConfigType, MCU_CONFIG_DATA) Mcu_Config_Mcu_ModuleConfiguration_0 =
     /* Peripheral Configuration */
     .PeripheralConfig              = &Mcu_PeripheralConfig,
     /* CPU1 Lockstep Enable Configuration */
-    .Mcu_LockstepEnable            = ((boolean) TRUE)
+    .Mcu_LockstepEnable            = ((boolean) TRUE),
+    /* ASysCtl Configuration */
+    .Mcu_ASysCtlConfig             = &Mcu_ASysCtlConfig,
+    /* CMPSS ASysCtl Configuration */
+    .Mcu_CMPSSASysCtlConfig        = NULL_PTR
 };
 
 
@@ -1629,8 +1635,24 @@ static CONST(Mcu_PeripheralConfigType, MCU_CONFIG_DATA) Mcu_PeripheralConfig =
     .PeripheralConfigCount   = 6U
 };
 
-
-
+/*********************************************************************************************************************
+ *  ASysCtl Configuration Structure
+ *
+ *  This structure holds the Analog System Control (ASysCtl) configuration generated from the
+ *  ResourceAllocator plugin. It is consumed by Mcu_Priv_ConfigureASysCtl() during Mcu_Init().
+ *********************************************************************************************************************/
+static CONST(Mcu_ASysCtlConfigType, MCU_CONFIG_DATA) Mcu_ASysCtlConfig =
+{
+    .TemperatureSensorEnable = (boolean)FALSE,
+    .AnalogRefABMode         = (uint8)FALSE,
+    .AnalogRefABVoltage      = (uint8)TRUE,
+    .AnalogRefCDEMode        = (uint8)FALSE,
+    .AnalogRefCDEVoltage     = (uint8)TRUE,
+    .VMONMaskEnable          = (boolean)FALSE,
+    .VREGPowerDown           = (boolean)FALSE,
+    .BORLDisable             = (boolean)FALSE,
+    .InternalTestNodeSelect  = (Mcu_ASysCtlTestNodeType)MCU_ASYSCTL_TEST_NODE_NO_CONN
+};
 
 /*********************************************************************************************************************
  *  Local Function Prototypes

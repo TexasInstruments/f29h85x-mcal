@@ -100,9 +100,9 @@ extern "C" {
 /** \brief Driver Implementation Major Version */
 #define CDD_IPC_SW_MAJOR_VERSION (2U)
 /** \brief Driver Implementation Minor Version */
-#define CDD_IPC_SW_MINOR_VERSION (1U)
+#define CDD_IPC_SW_MINOR_VERSION (2U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_IPC_SW_PATCH_VERSION (1U)
+#define CDD_IPC_SW_PATCH_VERSION (0U)
 
 /*  Defines for CDD_IPC Driver AUTOSAR version used for compatibility checks. */
 /** \brief AUTOSAR Major version specification implemented by CDD_IPC Driver*/

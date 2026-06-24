@@ -2,6 +2,86 @@
 
 **Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
 
+## v05.00.00 (i.e release v26.00.01) from v04.00.00 (i.e release v26.00.00) Migration
+
+### Summary
+
+Version v05.00.00 introduces the following changes to the CDD ADC module:
+
+1. **ASysCtl configuration parameters moved to ResourceAllocator**: Temperature sensor, analog reference voltage, and internal test node parameters have been removed from the ADC plugin and are now configured centrally in the ResourceAllocator `ASysCtl` container
+2. **`Cdd_Adc_SetInternalTestNode()` replaced by `Mcu_ASysCtl_SelectInternalTestNode()`**: The internal test node runtime API has moved from the ADC module to the MCU module
+
+### Change 1: ASysCtl configuration parameters moved to ResourceAllocator
+
+#### Description
+
+Configuration parameters that control analog system control (ASysCtl) hardware — temperature sensor enable, analog reference voltage selection, and internal test node selection — have been removed from the ADC plugin and the generated `Cdd_Adc_HwUnitCfgType` struct, and are now configured centrally in the ResourceAllocator plugin under `ResourceAllocatorGeneral → ASysCtl`. All ASysCtl register writes are now performed by `Mcu_Init()` from the generated `Mcu_ASysCtlConfigType` structure.
+
+This affects two layers:
+- **EB Tresos configuration**: parameters removed from `CddAdcConfigSet` and `CddAdcHwUnit` containers
+- **Generated C code**: struct fields `voltref`, `analogrefsel`, and `analogrefvoltsel` removed from `Cdd_Adc_HwUnitCfgType`; macros `CDD_ADC_TEMPERATURE_SENSOR_ENABLE` and `CDD_ADC_LOCK_TEMPERATURE_SENSOR` removed from `Cdd_Adc_Cfg.h`
+
+#### Old vs New
+
+**EB Tresos configuration parameters:**
+
+| Old Parameter [ADC plugin] | Old location | New Parameter [ResourceAllocator Plugin] | New location |
+|---------------------------|--------------|------------------------------------------|--------------|
+| `CddAdcEnableTemperatureSensor` | `CddAdcConfigSet` | `TemperatureSensorEnable` | `ASysCtl/TemperatureSensor` |
+| `CddAdcInternalTestInput` | `CddAdcConfigSet` | `InternalTestNodeSelect` | `ASysCtl/InternalTestNode` |
+| `CddAdcHwUnitAnalogRefABVoltageMode` | `CddAdcHwUnit` | `AnalogRefABMode` | `ASysCtl/AnalogReference` |
+| `CddAdcHwUnitAnalogRefABVoltage` | `CddAdcHwUnit` | `AnalogRefABVoltage` | `ASysCtl/AnalogReference` |
+| `CddAdcHwUnitAnalogRefCDEVoltageMode` | `CddAdcHwUnit` | `AnalogRefCDEMode` | `ASysCtl/AnalogReference` |
+| `CddAdcHwUnitAnalogRefCDEVoltage` | `CddAdcHwUnit` | `AnalogRefCDEVoltage` | `ASysCtl/AnalogReference` |
+
+```{NOTE}
+`CddAdcLockTemperatureSensor` has been removed and is not replaced by a configuration parameter. Temperature sensor locking is now a runtime operation performed via `Mcu_ASysCtl_CommitLock()` in the MCU module.
+```
+
+```{figure} Assets/images/migration/resource_allocator/01_04_resource_allocator_asysctl_container.png
+:alt: ASysCtl container in ResourceAllocator
+:align: center
+:width: 80%
+
+New ASysCtl container under ResourceAllocatorGeneral showing TemperatureSensor, AnalogReference, and InternalTestNode sub-containers
+```
+
+#### Migration Actions
+
+1. **Note your existing ADC ASysCtl settings:** Before migrating, record the values of `CddAdcEnableTemperatureSensor`, `CddAdcInternalTestInput`, and the four `CddAdcHwUnitAnalogRef*` parameters from your ADC plugin
+2. **Open ResourceAllocator in EB Tresos:** Navigate to `ResourceAllocatorGeneral → ASysCtl`
+3. **Add an `ASysCtl` instance** if one does not already exist
+4. **Configure `TemperatureSensor`:** Set `TemperatureSensorEnable` to match your previous `CddAdcEnableTemperatureSensor` value
+5. **Configure `AnalogReference`:** Set `AnalogRefABMode` and `AnalogRefABVoltage` to match the previous `CddAdcHwUnitAnalogRefABVoltageMode` and `CddAdcHwUnitAnalogRefABVoltage` values; repeat for `AnalogRefCDEMode` and `AnalogRefCDEVoltage`
+6. **Configure `InternalTestNode`:** Set `InternalTestNodeSelect` to match your previous `CddAdcInternalTestInput` value, using the new `MCU_ASYSCTL_TEST_NODE_*` enum literals in place of the old `CDD_ADC_TEST_NODE_*` literals
+7. **Regenerate the project:** Regenerate the MCU plugin output (`Mcu_Cfg.c` and `Mcu_Cfg.h`) so that the new `Mcu_ASysCtlConfigType` struct and `Mcu_ASysCtlTestNodeType` enum are available before building
+
+---
+
+### Change 2: `Cdd_Adc_SetInternalTestNode()` replaced by `Mcu_ASysCtl_SelectInternalTestNode()`
+
+#### Description
+
+The runtime API for selecting the internal analog test node has moved from the ADC module to the MCU module. `Cdd_Adc_SetInternalTestNode()` has been removed and replaced by `Mcu_ASysCtl_SelectInternalTestNode()`. The enum type used for the test node selection has also changed from `Cdd_Adc_InternalTestNodeType` (generated in `Cdd_Adc_Cfg.h`) to `Mcu_ASysCtlTestNodeType` (generated in `Mcu_Cfg.h`), and the enum literal prefix has changed from `CDD_ADC_TEST_NODE_` to `MCU_ASYSCTL_TEST_NODE_`.
+
+#### Old vs New
+
+| Aspect | v04.00.00 (v26.00.00) | v05.00.00 (v26.00.01) |
+|--------|--------------------------|------------------------|
+| API | `Cdd_Adc_SetInternalTestNode(TestNode)` | `Mcu_ASysCtl_SelectInternalTestNode(TestNode)` |
+| Header | `Cdd_Adc.h` | `Mcu.h` |
+| Enum type | `Cdd_Adc_InternalTestNodeType` | `Mcu_ASysCtlTestNodeType` |
+| Enum prefix | `CDD_ADC_TEST_NODE_*` | `MCU_ASYSCTL_TEST_NODE_*` |
+
+#### Migration Actions
+
+1. **Find all calls to `Cdd_Adc_SetInternalTestNode()`** in your application code
+2. **Replace each call** with `Mcu_ASysCtl_SelectInternalTestNode()`, keeping the same argument value
+3. **Update enum literals:** Replace `CDD_ADC_TEST_NODE_*` literals with the corresponding `MCU_ASYSCTL_TEST_NODE_*` literals (the names after the prefix are identical, e.g. `CDD_ADC_TEST_NODE_VDDCORE` → `MCU_ASYSCTL_TEST_NODE_VDDCORE`)
+4. **Update includes:** Ensure `Mcu.h` is included in any file that calls `Mcu_ASysCtl_SelectInternalTestNode()`; `Cdd_Adc.h` no longer exposes this API
+
+---
+
 ## v04.00.00 (i.e release v26.00.00) from v03.00.01 (i.e release v01.04.01) Migration
 
 ### Summary

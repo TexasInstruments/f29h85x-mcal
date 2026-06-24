@@ -114,13 +114,7 @@ static FUNC(uint32, FLS_CODE) Fls_Fapi_flushPipeline(void);
 
 static FUNC(Std_ReturnType, FLS_CODE)
     Fls_Fapi_loopRegionForValue(const uint32 *pu32StartAddress, uint32 u32Length,
-                                Fls_FlashStatusWordType *poFlashStatusWord, const uint32 *pu32CheckValue,
-                                Fls_FapiRegionValueType oRegionValue);
-
-static FUNC(Std_ReturnType, FLS_CODE)
-    Fls_Fapi_checkRegionForValue(const uint32 *pu32StartAddress, uint32 u32Length,
-                                 Fls_FlashStatusWordType *poFlashStatusWord, const uint32 *pu32CheckValue,
-                                 Fls_FapiRegionValueType oRegionValue);
+                                Fls_FlashStatusWordType *poFlashStatusWord, const uint32 *pu32CheckValue);
 
 static FUNC(void, FLS_CODE) Fls_F29WriteTrims(uint32 reg_offset, uint32 mask, uint32 shift, uint32 value);
 static FUNC(void, FLS_CODE) Fls_F29SetWaitstates(uint16 waitstates);
@@ -142,6 +136,7 @@ static FUNC(void, FLS_CODE) Fls_F29ConfigFRI(Fls_FlashFRIType friID, uint32 conf
 /*
  *   This is the primary function to initialize the API for first use or when the user changes
  * active Flash Wrappers or System Frequency
+ *   Design: MCAL-30912, MCAL-30923,
  */
 FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_initializeAPI(uint32 u32HclkFrequency)
 {
@@ -155,58 +150,50 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_initializeAPI(uint32 u32HclkFrequency)
     /* Add 200Mhz clock range for final code, 100Mhz is for QT setup */
     if ((u32HclkFrequency <= 200U) && (u32HclkFrequency > 100U))
     {
-        Fls_Write_32(FLS_FLASH_READINTERFACE_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M,
-                     FLS_FLASH_FLCLKCTL_KDIV_S, 4U);
-        Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
+        Fls_Write_32(FLS_FRI1_CTL_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M, FLS_FLASH_FLCLKCTL_KDIV_S, 4U);
+        Fls_Write_32(FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
                      FLS_FLASH_NW_CFGCMD_WAITSTATE_S, 2U);
     }
     else if ((u32HclkFrequency <= 100U) && (u32HclkFrequency > 90U))
     {
-        Fls_Write_32(FLS_FLASH_READINTERFACE_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M,
-                     FLS_FLASH_FLCLKCTL_KDIV_S, 2U);
-        Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
+        Fls_Write_32(FLS_FRI1_CTL_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M, FLS_FLASH_FLCLKCTL_KDIV_S, 2U);
+        Fls_Write_32(FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
                      FLS_FLASH_NW_CFGCMD_WAITSTATE_S, 2U);
     }
     else if ((u32HclkFrequency <= 90U) && (u32HclkFrequency > 80U))
     {
-        Fls_Write_32(FLS_FLASH_READINTERFACE_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M,
-                     FLS_FLASH_FLCLKCTL_KDIV_S, 2U);
-        Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
+        Fls_Write_32(FLS_FRI1_CTL_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M, FLS_FLASH_FLCLKCTL_KDIV_S, 2U);
+        Fls_Write_32(FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
                      FLS_FLASH_NW_CFGCMD_WAITSTATE_S, 1U);
     }
     else if ((u32HclkFrequency <= 80U) && (u32HclkFrequency > 60U))
     {
-        Fls_Write_32(FLS_FLASH_READINTERFACE_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M,
-                     FLS_FLASH_FLCLKCTL_KDIV_S, 1U);
-        Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
+        Fls_Write_32(FLS_FRI1_CTL_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M, FLS_FLASH_FLCLKCTL_KDIV_S, 1U);
+        Fls_Write_32(FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
                      FLS_FLASH_NW_CFGCMD_WAITSTATE_S, 2U);
     }
     else if ((u32HclkFrequency <= 60U) && (u32HclkFrequency > 40U))
     {
-        Fls_Write_32(FLS_FLASH_READINTERFACE_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M,
-                     FLS_FLASH_FLCLKCTL_KDIV_S, 1U);
-        Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
+        Fls_Write_32(FLS_FRI1_CTL_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M, FLS_FLASH_FLCLKCTL_KDIV_S, 1U);
+        Fls_Write_32(FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
                      FLS_FLASH_NW_CFGCMD_WAITSTATE_S, 1U);
     }
     else if ((u32HclkFrequency <= 40U) && (u32HclkFrequency > 30U))
     {
-        Fls_Write_32(FLS_FLASH_READINTERFACE_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M,
-                     FLS_FLASH_FLCLKCTL_KDIV_S, 0U);
-        Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
+        Fls_Write_32(FLS_FRI1_CTL_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M, FLS_FLASH_FLCLKCTL_KDIV_S, 0U);
+        Fls_Write_32(FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
                      FLS_FLASH_NW_CFGCMD_WAITSTATE_S, 1U);
     }
     else if ((u32HclkFrequency <= 30U) && (u32HclkFrequency > 20U))
     {
-        Fls_Write_32(FLS_FLASH_READINTERFACE_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M,
-                     FLS_FLASH_FLCLKCTL_KDIV_S, 0U);
-        Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
+        Fls_Write_32(FLS_FRI1_CTL_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M, FLS_FLASH_FLCLKCTL_KDIV_S, 0U);
+        Fls_Write_32(FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
                      FLS_FLASH_NW_CFGCMD_WAITSTATE_S, 1U);
     }
-    else if ((u32HclkFrequency <= 15U) && (u32HclkFrequency > 10U))
+    else if ((u32HclkFrequency <= 20U) && (u32HclkFrequency > 10U))
     {
-        Fls_Write_32(FLS_FLASH_READINTERFACE_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M,
-                     FLS_FLASH_FLCLKCTL_KDIV_S, 0U);
-        Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
+        Fls_Write_32(FLS_FRI1_CTL_BASE, FLS_FLASH_O_FLCLKCTL, FLS_FLASH_FLCLKCTL_KDIV_M, FLS_FLASH_FLCLKCTL_KDIV_S, 0U);
+        Fls_Write_32(FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CFGCMD, FLS_FLASH_NW_CFGCMD_WAITSTATE_M,
                      FLS_FLASH_NW_CFGCMD_WAITSTATE_S, 0U);
     }
     else
@@ -238,22 +225,22 @@ Fls_Fapi_issueProgrammingCommand(const uint32 *pu32StartAddress, const uint8 *pu
     /* Proceed to setting up address and data registers for program operation */
 
     /* Enable AUTOCALC_EN for AutoEccGeneration feature */
-    (void)Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CMDCTL, FLS_FLASH_NW_CMDCTL_ECCGENOVR,
+    (void)Fls_Write_32(FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CMDCTL, FLS_FLASH_NW_CMDCTL_ECCGENOVR,
                        FLS_FLASH_NW_CMDCTL_ECCGENOVR_S, 0U);
 
     /* Enable DATAVEREN to catch 0->1 program request */
-    (void)Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CMDCTL, FLS_FLASH_NW_CMDCTL_DATAVEREN,
+    (void)Fls_Write_32(FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CMDCTL, FLS_FLASH_NW_CMDCTL_DATAVEREN,
                        FLS_FLASH_NW_CMDCTL_DATAVEREN_S, 1U);
 
     /* Configure for 1x128 word program: Command is program (1), Size is ONEWORD (0) */
-    HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDTYPE) = FLS_FLASH_NW_CMDTYPE_PROG_ONEWD;
+    HWREG(FLS_FLASH_FLC1_CMD_REGS_BASE + FLS_FLASH_NW_O_CMDTYPE) = FLS_FLASH_NW_CMDTYPE_PROG_ONEWD;
 
     /* Configure the address for program */
-    HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDADDR) =
+    HWREG(FLS_FLASH_FLC1_CMD_REGS_BASE + FLS_FLASH_NW_O_CMDADDR) =
         (uint32)((uint32)pu32StartAddress & (uint32)0xFFFFFFF0U);
 
     /* Configure data index */
-    HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDDATAINDEX) =
+    HWREG(FLS_FLASH_FLC1_CMD_REGS_BASE + FLS_FLASH_NW_O_CMDDATAINDEX) =
         (((uint32)pu32StartAddress >> 4U) & 0x3U); /* 256KB Bank(Data Flash) */
 
     /* If not  ECC only mode, load data into the data registers */
@@ -262,7 +249,7 @@ Fls_Fapi_issueProgrammingCommand(const uint32 *pu32StartAddress, const uint8 *pu
     u32StopCondition = u32StartCondition + (u32DataBufferSizeInBytes - (uint32)1U);
 
     /* Write each byte to the FWPWrite registers */
-    HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDBYTEN) = 0U;
+    HWREG(FLS_FLASH_FLC1_CMD_REGS_BASE + FLS_FLASH_NW_O_CMDBYTEN) = 0U;
 
     /* u32Index tracks the byte offset within the 128-bit flash word (0-15). When FlsMaxWriteNormalMode
      * is 8, a write to the upper half of a 128-bit word has u32StartCondition=8, so u32Index runs
@@ -281,41 +268,42 @@ Fls_Fapi_issueProgrammingCommand(const uint32 *pu32StartAddress, const uint8 *pu
         if (((u32Index == 0U) || (u32Index == 4U)))
         {
             /*enable Ecc data byte for programming data 0 to 7 bytes (0-63 bits)*/
-            (void)Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CMDBYTEN,
-                               FLS_FLASH_NW_CMDBYTEN_ECC0VAL_M, FLS_FLASH_NW_CMDBYTEN_ECC0VAL_S, 1U);
+            (void)Fls_Write_32(FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CMDBYTEN, FLS_FLASH_NW_CMDBYTEN_ECC0VAL_M,
+                               FLS_FLASH_NW_CMDBYTEN_ECC0VAL_S, 1U);
         }
         else
         {
             /*enable Ecc data byte for programming data 8 -15 byte (64-127 bits)*/
-            (void)Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CMDBYTEN,
-                               FLS_FLASH_NW_CMDBYTEN_ECC1VAL_M, FLS_FLASH_NW_CMDBYTEN_ECC1VAL_S, 1U);
+            (void)Fls_Write_32(FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CMDBYTEN, FLS_FLASH_NW_CMDBYTEN_ECC1VAL_M,
+                               FLS_FLASH_NW_CMDBYTEN_ECC1VAL_S, 1U);
         }
 
         /* Copy data buffer to  CMDATA0 - CMDDATA3 (128-bits) */
-        HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDDATA0 + (u32Index)) = u32CopyDataBuffer;
+        HWREG(FLS_FLASH_FLC1_CMD_REGS_BASE + FLS_FLASH_NW_O_CMDDATA0 + (u32Index)) = u32CopyDataBuffer;
 
         /*enable 32-bits for programming data sequentially(1 bit corresponds to 1 byte)*/
-        HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDBYTEN) |= (((uint32)0xF) << (u32Index));
+        HWREG(FLS_FLASH_FLC1_CMD_REGS_BASE + FLS_FLASH_NW_O_CMDBYTEN) |= (((uint32)0xF) << (u32Index));
     }
     /* Issue the Program command to the FSM */
     Fls_Fapi_issueFsmCommand();
 
     /* Disable AUTOCALC */
-    (void)Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CMDCTL, FLS_FLASH_NW_CMDCTL_ECCGENOVR,
+    (void)Fls_Write_32(FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CMDCTL, FLS_FLASH_NW_CMDCTL_ECCGENOVR,
                        FLS_FLASH_NW_CMDCTL_ECCGENOVR_S, 1U);
 }
 /*
  *   Issues a command to the Flash State Machine for operations that require
  *   a valid address to operate to correctly.
+ *   Design: MCAL-30912, MCAL-30913,
  */
 FUNC(void, FLS_CODE)
 Fls_Fapi_issueAsyncCommandWithAddress(const uint32 *pu32StartAddress)
 {
     /*  Configure for sector erase: Command is erase (2), Size is sector (4) */
-    HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDTYPE) = FLS_FLASH_NW_CMDTYPE_SECTOR_ERASE;
+    HWREG(FLS_FLASH_FLC1_CMD_REGS_BASE + FLS_FLASH_NW_O_CMDTYPE) = FLS_FLASH_NW_CMDTYPE_SECTOR_ERASE;
 
     /* Configure the address for sector erase */
-    HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDADDR) = (uint32)pu32StartAddress;
+    HWREG(FLS_FLASH_FLC1_CMD_REGS_BASE + FLS_FLASH_NW_O_CMDADDR) = (uint32)pu32StartAddress;
 
     /* Issue the specified command to the FSM */
     Fls_Fapi_issueFsmCommand();
@@ -323,6 +311,7 @@ Fls_Fapi_issueAsyncCommandWithAddress(const uint32 *pu32StartAddress)
 
 /*
  *   Issues bank erase command to the Flash State Machine for the given bank address
+ *   Design: MCAL-30912, MCAL-30913,
  */
 FUNC(void, FLS_CODE) Fls_Fapi_issueBankEraseCommand(const uint32 *pu32StartAddress)
 {
@@ -333,15 +322,13 @@ FUNC(void, FLS_CODE) Fls_Fapi_issueBankEraseCommand(const uint32 *pu32StartAddre
 
     /* Configure for sector erase: Command is erase (2), Size is Bank (5)*/
 
-    Fls_Write_32((uint32)FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CMDTYPE, FLS_FLASH_NW_CMDTYPE_VAL_M,
+    Fls_Write_32((uint32)FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CMDTYPE, FLS_FLASH_NW_CMDTYPE_VAL_M,
                  FLS_FLASH_NW_CMDTYPE_VAL_S, (uint32)FLS_FLASH_NW_CMDTYPE_BANK_ERASE);
 
-    Fls_Write_32((uint32)FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CMDADDR, FLS_FLASH_NW_CMDADDR_VAL_M,
+    Fls_Write_32((uint32)FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CMDADDR, FLS_FLASH_NW_CMDADDR_VAL_M,
                  FLS_FLASH_NW_CMDADDR_VAL_S, (uint32)pu32StartAddress);
-    /* configure CMDWEPROTNM register to protect non-main region sectors 0 from erase
-     *  and do the read back for register
-     */
-    Fls_Write_32((uint32)FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CMDWEPROTNM, FLS_FLASH_NW_CMDWEPROTNM_VAL_M,
+    /* configure CMDWEPROTNM register to protect non-main region sectors 0 from erase */
+    Fls_Write_32((uint32)FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CMDWEPROTNM, FLS_FLASH_NW_CMDWEPROTNM_VAL_M,
                  FLS_FLASH_NW_CMDWEPROTNM_VAL_S, 1U);
 
     /* Issue the specified command to the FSM */
@@ -351,13 +338,14 @@ FUNC(void, FLS_CODE) Fls_Fapi_issueBankEraseCommand(const uint32 *pu32StartAddre
 /*
  *   Issues a command to the Flash State Machine for operations that do not
  *   require a valid address to operate to correctly.
+ *   Design: MCAL-30912, MCAL-30913,
  */
 FUNC(void, FLS_CODE) Fls_Fapi_issueAsyncCommand(void)
 {
     /* Issue the command only if the command is valid    */
 
-    /* Configure for CLEAR STATUS and read back FLS_FLASH_O_CMDTYPE*/
-    Fls_Write_32(FLS_FLASH_FAPI_FLASHNW_FC1_BASE, FLS_FLASH_NW_O_CMDTYPE, FLS_FLASH_NW_CMDTYPE_CMD_M,
+    /* Configure for CLEAR STATUS */
+    Fls_Write_32(FLS_FLASH_FLC1_CMD_REGS_BASE, FLS_FLASH_NW_O_CMDTYPE, FLS_FLASH_NW_CMDTYPE_CMD_M,
                  FLS_FLASH_NW_CMDTYPE_CMD_S, 0x5U);
     // /* Issue the specified command to the FSM */
 
@@ -367,6 +355,7 @@ FUNC(void, FLS_CODE) Fls_Fapi_issueAsyncCommand(void)
 
 /*
  *  Function to flush the pipeline
+ *  Design: MCAL-30913, MCAL-30914,
  */
 static FUNC(uint32, FLS_CODE) Fls_Fapi_flushPipeline(void)
 {
@@ -382,40 +371,27 @@ static FUNC(uint32, FLS_CODE) Fls_Fapi_flushPipeline(void)
 
 /*
  *   Loops the specified region for the looking for the specified check value.
+ *   Design: MCAL-31023, MCAL-31025,
  */
 static FUNC(Std_ReturnType, FLS_CODE)
     Fls_Fapi_loopRegionForValue(const uint32 *pu32StartAddress, uint32 u32Length,
-                                Fls_FlashStatusWordType *poFlashStatusWord, const uint32 *pu32CheckValue,
-                                Fls_FapiRegionValueType oRegionValue)
+                                Fls_FlashStatusWordType *poFlashStatusWord, const uint32 *pu32CheckValue)
 {
     VAR(volatile Std_ReturnType, AUTOMATIC) oErrorReturn         = E_OK;
     VAR(uint32, AUTOMATIC) u32CurrentLength                      = u32Length;
     P2CONST(uint32, AUTOMATIC, FLS_APPL_DATA) pu32CurrentAddress = pu32StartAddress;
-    VAR(uint32, AUTOMATIC) u32ExpectedVal                        = (uint32)0U;
     VAR(uint32, AUTOMATIC) index                                 = (uint32)0U;
 
-    /* step through each flash location */
-    /* while( u32CurrentLength-- > 0U) */ /* Misra C overflow */
     for (index = 0; index < u32CurrentLength; index++)
     {
-        /* For single value mode, always use index 0; for multi-value, advance through buffer */
-        if (oRegionValue == FLS_FAPI_SINGLEVALUE)
-        {
-            u32ExpectedVal = pu32CheckValue[0U];
-        }
-        else
-        {
-            u32ExpectedVal = pu32CheckValue[index];
-        }
-
-        if (*pu32CurrentAddress != u32ExpectedVal)
+        if (*pu32CurrentAddress != pu32CheckValue[0U])
         {
             /* save address of first failure */
             poFlashStatusWord->au32StatusWord[0] = (uint32)(pu32CurrentAddress);
             /* save actual data */
             poFlashStatusWord->au32StatusWord[1] = *pu32CurrentAddress;
             /* save expected data */
-            poFlashStatusWord->au32StatusWord[2] = u32ExpectedVal;
+            poFlashStatusWord->au32StatusWord[2] = pu32CheckValue[0U];
 
             oErrorReturn = E_NOT_OK;
             break;
@@ -429,33 +405,12 @@ static FUNC(Std_ReturnType, FLS_CODE)
 }
 
 /*
- *   Loops the specified region looking for the specified check value
- */
-static FUNC(Std_ReturnType, FLS_CODE)
-    Fls_Fapi_checkRegionForValue(const uint32 *pu32StartAddress, uint32 u32Length,
-                                 Fls_FlashStatusWordType *poFlashStatusWord, const uint32 *pu32CheckValue,
-                                 Fls_FapiRegionValueType oRegionValue)
-{
-    VAR(Std_ReturnType, AUTOMATIC) oErrorReturn = E_OK;
-
-    (void)Fls_Fapi_flushPipeline();
-    if (Fls_Fapi_loopRegionForValue(pu32StartAddress, u32Length, poFlashStatusWord, pu32CheckValue, oRegionValue) !=
-        E_OK)
-    {
-        /* save read mode */
-        poFlashStatusWord->au32StatusWord[3] = 0U;
-        oErrorReturn                         = E_NOT_OK;
-    }
-    return (oErrorReturn);
-}
-
-/*
  *   Loops the specified region for the looking for the specified check value.
+ *   Design: MCAL-31023, MCAL-31025,
  */
 static FUNC(Std_ReturnType, FLS_CODE)
     Fls_Fapi_loopRegionForValueByByte(const uint8 *pu8StartAddress, uint32 u32ByteCount,
-                                      Fls_FlashStatusWordType *poFlashStatusWord, const uint8 *pu8CheckValue,
-                                      Fls_FapiRegionValueType oRegionValue)
+                                      Fls_FlashStatusWordType *poFlashStatusWord, const uint8 *pu8CheckValue)
 {
     VAR(Std_ReturnType, AUTOMATIC) oErrorReturn                   = E_OK;
     P2CONST(uint8, AUTOMATIC, FLS_APPL_DATA) pu8CurrentCheckValue = pu8CheckValue;
@@ -476,11 +431,8 @@ static FUNC(Std_ReturnType, FLS_CODE)
             oErrorReturn = E_NOT_OK;
             break;
         }
-        /* Increment the check buffer if not checking for a single value */
-        if (oRegionValue != FLS_FAPI_SINGLEVALUE)
-        {
-            pu8CurrentCheckValue++;
-        }
+
+        pu8CurrentCheckValue++;
 
         /* increment address */
         pu8CurrentAddress++;
@@ -490,18 +442,17 @@ static FUNC(Std_ReturnType, FLS_CODE)
 
 /*
  *   Loops the specified region for the looking for the specified check value by byte.
+ *   Design: MCAL-31023, MCAL-31025,
  */
 static FUNC(Std_ReturnType, FLS_CODE)
     Fls_Fapi_checkRegionForValueByByte(const uint8 *pu8StartAddress, uint32 u32ByteCount,
-                                       Fls_FlashStatusWordType *poFlashStatusWord, const uint8 *pu8CheckValue,
-                                       Fls_FapiRegionValueType oRegionValue)
+                                       Fls_FlashStatusWordType *poFlashStatusWord, const uint8 *pu8CheckValue)
 {
     VAR(Std_ReturnType, AUTOMATIC) oErrorReturn = E_OK;
 
     /* Verify only if the address is valid */
     (void)Fls_Fapi_flushPipeline();
-    if (Fls_Fapi_loopRegionForValueByByte(pu8StartAddress, u32ByteCount, poFlashStatusWord, pu8CheckValue,
-                                          oRegionValue) != E_OK)
+    if (Fls_Fapi_loopRegionForValueByByte(pu8StartAddress, u32ByteCount, poFlashStatusWord, pu8CheckValue) != E_OK)
     {
         /* save read mode */
         poFlashStatusWord->au32StatusWord[3] = 0U;
@@ -511,29 +462,20 @@ static FUNC(Std_ReturnType, FLS_CODE)
     return (oErrorReturn);
 }
 
+/*
+ *   Verifies a flash region byte-by-byte against a reference buffer.
+ *   Design: MCAL-30897, MCAL-31023, MCAL-31025,
+ */
 FUNC(Std_ReturnType, FLS_CODE)
 Fls_Fapi_doVerifyByByte(const uint8 *pu8StartAddress, uint32 u32ByteCount, const uint8 *pu8CheckValueBuffer,
                         Fls_FlashStatusWordType *poFlashStatusWord)
 {
-    return (Fls_Fapi_checkRegionForValueByByte(pu8StartAddress, u32ByteCount, poFlashStatusWord, pu8CheckValueBuffer,
-                                               FLS_FAPI_MULTIPLEVALUEECC));
-}
-
-/**
- *   This is the function to do a data verify on flash memory
- */
-FUNC(Std_ReturnType, FLS_CODE)
-Fls_Fapi_doVerify(const uint32 *pu32StartAddress, uint32 u32Length, const uint32 *pu32CheckValueBuffer,
-                  Fls_FlashStatusWordType *poFlashStatusWord)
-{
-    VAR(Std_ReturnType, AUTOMATIC) oErrorReturn = E_OK;
-    oErrorReturn = Fls_Fapi_checkRegionForValue(pu32StartAddress, u32Length, poFlashStatusWord, pu32CheckValueBuffer,
-                                                FLS_FAPI_MULTIPLEVALUEECC);
-    return (oErrorReturn);
+    return (Fls_Fapi_checkRegionForValueByByte(pu8StartAddress, u32ByteCount, poFlashStatusWord, pu8CheckValueBuffer));
 }
 
 /*
  *   This is the function to do a blank check on flash addresses
+ *   Design: MCAL-31000, MCAL-31006, MCAL-31023,
  */
 FUNC(Std_ReturnType, FLS_CODE)
 Fls_Fapi_doBlankCheck(const uint32 *pu32StartAddress, uint32 u32Length, Fls_FlashStatusWordType *poFlashStatusWord)
@@ -543,8 +485,7 @@ Fls_Fapi_doBlankCheck(const uint32 *pu32StartAddress, uint32 u32Length, Fls_Flas
 
     /* Do blank check if the address is valid */
     (void)Fls_Fapi_flushPipeline();
-    if (Fls_Fapi_loopRegionForValue(pu32StartAddress, u32Length, poFlashStatusWord, &u32CheckValue,
-                                    FLS_FAPI_SINGLEVALUE) != E_OK)
+    if (Fls_Fapi_loopRegionForValue(pu32StartAddress, u32Length, poFlashStatusWord, &u32CheckValue) != E_OK)
     {
         /* save read mode */
         poFlashStatusWord->au32StatusWord[3] = 0U; /*Normal read mode*/
@@ -555,19 +496,21 @@ Fls_Fapi_doBlankCheck(const uint32 *pu32StartAddress, uint32 u32Length, Fls_Flas
 
 /*
  *   Used to get the status bits of the FSM.
+ *   Design: MCAL-30905, MCAL-30906, MCAL-30907, MCAL-30908, MCAL-30909,
  */
 FUNC(Fls_FapiFlashStatus, FLS_CODE) Fls_Fapi_getFsmStatus(void)
 {
-    return (HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_STATCMD));
+    return (HWREG(FLS_FLASH_FLC1_CMD_REGS_BASE + FLS_FLASH_NW_O_STATCMD));
 }
 
 /*
  *   Issues a command to the Flash State Machine.
+ *   Design: MCAL-30912, MCAL-30913,
  */
 static FUNC(void, FLS_CODE) Fls_Fapi_issueFsmCommand(void)
 {
     /* Issue the command only if the command is valid */
-    HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_CMDEXEC) = 0x1U;
+    HWREG(FLS_FLASH_FLC1_CMD_REGS_BASE + FLS_FLASH_NW_O_CMDEXEC) = 0x1U;
 }
 
 /*
@@ -576,17 +519,18 @@ static FUNC(void, FLS_CODE) Fls_Fapi_issueFsmCommand(void)
  */
 FUNC(void, FLS_CODE) Fls_Fapi_setupBankSectorEnable(uint32 reg_address, uint32 value)
 {
-    HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + reg_address) = value;
+    HWREG(FLS_FLASH_FLC1_CMD_REGS_BASE + reg_address) = value;
 }
 
 /*
  *   Used to check if FSM is busy
+ *   Design: MCAL-30905, MCAL-30913,
  */
 FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_checkFsmForReady(void)
 {
     VAR(volatile Std_ReturnType, AUTOMATIC) oStatusReturn = E_NOT_OK;
 
-    if ((HWREG(FLS_FLASH_FAPI_FLASHNW_FC1_BASE + FLS_FLASH_NW_O_STATCMD) & FLS_FLASH_NW_STATCMD_CMDINPROGRESS) == 0U)
+    if ((HWREG(FLS_FLASH_FLC1_CMD_REGS_BASE + FLS_FLASH_NW_O_STATCMD) & FLS_FLASH_NW_STATCMD_CMDINPROGRESS) == 0U)
     {
         oStatusReturn = E_OK;
     }
@@ -596,6 +540,7 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_checkFsmForReady(void)
 
 /*
  *   Used to write 32-bit data
+ *   Design: MCAL-30897, MCAL-30912,
  */
 static FUNC(void, FLS_CODE) Fls_Write_32(uint32 ctrlBase, uint32 reg_offset, uint32 mask, uint32 shift, uint32 value)
 {
@@ -605,6 +550,9 @@ static FUNC(void, FLS_CODE) Fls_Write_32(uint32 ctrlBase, uint32 reg_offset, uin
     HWREG(ctrlBase + reg_offset) |= ((uint32)value << shift);
 }
 
+/*
+ *   Design: MCAL-30923, MCAL-30925,
+ */
 static FUNC(void, FLS_CODE) Fls_F29SetWaitstates(uint16 waitstates)
 {
     /* waitstates is 4 bits wide */
@@ -615,6 +563,9 @@ static FUNC(void, FLS_CODE) Fls_F29SetWaitstates(uint16 waitstates)
         ((uint32)waitstates << FLS_FRI_FRDCNTL_RWAIT_S);
 }
 
+/*
+ *   Design: MCAL-30923, MCAL-30925,
+ */
 static FUNC(void, FLS_CODE) Fls_F29WriteTrims(uint32 reg_offset, uint32 mask, uint32 shift, uint32 value)
 {
     /* Set the requested bits to the value.*/
@@ -623,12 +574,18 @@ static FUNC(void, FLS_CODE) Fls_F29WriteTrims(uint32 reg_offset, uint32 mask, ui
     HWREG(FLS_ANALOGSUBSYS_BASE + reg_offset) |= ((uint32)value << shift);
 }
 
+/*
+ *   Design: MCAL-30923, MCAL-30925,
+ */
 static FUNC(void, FLS_CODE) Fls_F29ConfigFRI(Fls_FlashFRIType friID, uint32 configFlags)
 {
     /* Set the FRI options. */
     HWREG(FLS_FRI1_CTL_BASE + FLS_FRI_O_1_INTF_CTRL + ((uint32)friID * (uint32)FLS_FRI_REG_STEP)) = configFlags;
 }
 
+/*
+ *   Design: MCAL-30923, MCAL-30925,
+ */
 FUNC(void, FLS_CODE) Fls_Update_WaitStates(uint16 waitstates)
 {
     /* Disable data cache, code cache, prefetch, and data preread before changing wait states*/
@@ -657,6 +614,7 @@ FUNC(void, FLS_CODE) Fls_Update_WaitStates(uint16 waitstates)
 /* Claim Flash Semaphore
  * \brief return true if the semaphore is successfully assigned, false if semaphore is already
  * assigned to a different CPU or LINK .
+ * Design: MCAL-30925,
  */
 FUNC(Std_ReturnType, FLS_CODE) Fls_SSU_claimFlashSemaphore(void)
 {
@@ -669,7 +627,12 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_SSU_claimFlashSemaphore(void)
     }
 
     /* Check if the semaphore is assigned to the current CPU and LINK */
+    /* TI_COVERAGE_GAP_START [Branch Coverage] Semaphore claim by other CPU/LINK: The
+     * FLSEMSTAT_MATCH bit is not set only when the SSU semaphore is not assigned to the current
+     * CPU/LINK, requiring a hardware fault or multi-CPU semaphore conflict. Not present in TI
+     * validation tests. */
     if ((HWREG(FLS_SSUGEN_BASE + FLS_SSU_O_FLSEMSTAT) & FLS_SSU_FLSEMSTAT_MATCH) != 0U)
+    /* TI_COVERAGE_GAP_STOP */
     {
         status = E_OK;
     }
@@ -680,7 +643,7 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_SSU_claimFlashSemaphore(void)
  *
  * \return true if the semaphore is successfully released, false if semaphore was not already
  * assigned to the current CPU or LINK
- *
+ * Design: MCAL-30925,
  */
 FUNC(void, FLS_CODE) Fls_SSU_releaseFlashSemaphore(void)
 {

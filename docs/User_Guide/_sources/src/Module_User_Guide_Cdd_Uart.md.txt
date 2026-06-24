@@ -178,15 +178,24 @@ None
 
 ### Safety Mechanism
 
-None
+|TI Diagnostic Unique Identifier| Summary | Description |
+|----|-----|-------|
+|UART6|Parity in Message|Parity error is notified to the user via the configured error callback (Cdd_Uart_ErrorCb). The error status can also be retrieved by calling Cdd_Uart_GetErrorStatus().|
+|UART7|Overrun Error Detection|Overrun error is notified to the user via the configured error callback (Cdd_Uart_ErrorCb). The error status can also be retrieved by calling Cdd_Uart_GetErrorStatus().|
+|UART8|Break Error Detection|Break error is notified to the user via the configured error callback (Cdd_Uart_ErrorCb). The error status can also be retrieved by calling Cdd_Uart_GetErrorStatus().|
+|UART9|Frame Error Detection|Frame error is notified to the user via the configured error callback (Cdd_Uart_ErrorCb). The error status can also be retrieved by calling Cdd_Uart_GetErrorStatus().|
+
+```{note}
+More details of Safety Mechanisms can be found in Safety Manual.
+```
 
 ### Silicon errata workarounds and recommendation
 
-For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata](https://www.ti.com/lit/er/sprz569c/sprz569c.pdf).
+For detailed silicon errata, please check the latest Errata at [https://www.ti.com/product/F29H859TU-Q1](https://www.ti.com/product/F29H859TU-Q1).
 
-| Advisory | Workaround in MCAL driver | Recommended actions for user |
-|----------|--------------------------|-------------------------------|
-| UART FIFO Gets Cleared on Continuous Debugger Reads | No workaround is implemented in the UART driver. The FIFO drain is triggered by debugger memory access and cannot be intercepted or prevented at the driver level. | Do not keep the memory browser open during UART data transfers, as continuous debugger reads of UART registers will drain the receive FIFO and cause data loss. |
+| Advisory | Revisions Affected | Workaround in MCAL driver | Recommended actions for user |
+|----------|--------------------|--------------------------|-------------------------------|
+| UART FIFO Gets Cleared on Continuous Debugger Reads | 0, A, B, C | No workaround is implemented in the UART driver. The FIFO drain is triggered by debugger memory access and cannot be intercepted or prevented at the driver level. | Do not keep the memory browser open during UART data transfers, as continuous debugger reads of UART registers will drain the receive FIFO and cause data loss. |
 
 ### Used resources
 

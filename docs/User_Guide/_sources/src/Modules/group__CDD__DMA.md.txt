@@ -30,7 +30,7 @@ title: Cdd_Dma API GUIDE Header file
 |enum| **[Cdd_Dma_TransferStatusType](../Modules/group__CDD__DMA.md#enum-cdd_dma_transferstatustype)** | Transfer status type.  | 
 |enum| **[Cdd_Dma_PeriEvtTrigStatusType](../Modules/group__CDD__DMA.md#enum-cdd_dma_perievttrigstatustype)** | Peripheral event trigger status type.  | 
 |enum| **[Cdd_Dma_MpuRegionAccessType](../Modules/group__CDD__DMA.md#enum-cdd_dma_mpuregionaccesstype)** | MPU region access type.  | 
-|enum| **[Cdd_Dma_ChannelPriority](../Modules/group__CDD__DMA.md#enum-cdd_dma_channelpriority)** 
+|enum| **[Cdd_Dma_ChannelPriority](../Modules/group__CDD__DMA.md#enum-cdd_dma_channelpriority)** | Channel priority type.  | 
 |enum| **[Cdd_Dma_PeriEvtTriggerSrcType](../Modules/group__CDD__DMA.md#enum-cdd_dma_perievttriggersrctype)** | Peripheral event trigger source select type.  | 
 |typedef void(*)(uint8 Channel_Index)  | **[Cdd_Dma_NotifyType](../Modules/group__CDD__DMA.md#typedef-cdd_dma_notifytype)** | Channel notification callback function pointer.  | 
 |typedef uint16  | **[Cdd_Dma_MpuChmaskType](../Modules/group__CDD__DMA.md#typedef-cdd_dma_mpuchmasktype)** | MPU Region channel mask parameter.  | 
@@ -349,6 +349,9 @@ MPU region access type.
 
 
 
+**Brief**: 
+Channel priority type. 
+
 
 
 ### enum Cdd_Dma_PeriEvtTriggerSrcType
@@ -597,10 +600,11 @@ MPU Region channel mask parameter.
 | **[Cdd_Dma_TransferSrcWrapType](../Classes/structCdd__Dma__TransferSrcWrapType.md)** | Source wrap size, wrap step and beginning address parameter.  |
 | **[Cdd_Dma_TransferDestWrapType](../Classes/structCdd__Dma__TransferDestWrapType.md)** | Destination wrap size, wrap step and beginning address parameter.  |
 | **[Cdd_Dma_TransferParamsType](../Classes/structCdd__Dma__TransferParamsType.md)** | DMA transfer properties.  |
-| **[Cdd_Dma_MpuRegionCfgType](../Classes/structCdd__Dma__MpuRegionCfgType.md)** | DMA Channel configuration structure.  |
+| **[Cdd_Dma_MpuRegionCfgType](../Classes/structCdd__Dma__MpuRegionCfgType.md)** | DMA MPU Region configuration structure.  |
 | **[Cdd_Dma_HwInstanceCfgType](../Classes/structCdd__Dma__HwInstanceCfgType.md)** | CDD DMA config type.  |
 | **[Cdd_Dma_ChannelCfgType](../Classes/structCdd__Dma__ChannelCfgType.md)** | CDD DMA channel config type.  |
 | **[Cdd_Dma_ConfigType](../Classes/structCdd__Dma__ConfigType.md)** | CDD DMA config type.  |
+| **[Cdd_Dma_PeriodicReadBackDataType](../Classes/structCdd__Dma__PeriodicReadBackDataType.md)** | CDD_DMA periodic readback type.  |
 
 
 
@@ -622,7 +626,7 @@ MPU Region channel mask parameter.
 | CDD_DMA_E_ALREADY_INITIALIZED   | API called for reinitialization of already initialized DMA driver.  |
 | CDD_DMA_E_INIT_FAILED   | Initialization API failed.  |
 | CDD_DMA_E_PARAM_POINTER   | API service called with invalid parameter pointer.  |
-| CDD_DMA_E_PARAM_VALUE   | API service called with invalid parameter pointer.  |
+| CDD_DMA_E_PARAM_VALUE   | API service called with invalid parameter value.  |
 | CDD_DMA_E_BUSY   | API service called during ongoing process.  |
 | CDD_DMA_E_PERIPHERAL_EVENT_TRIGGER_DISABLED   | API service called to force or clear peripheral event trigger when peripheral event trigger is disabled.  |
 | CDD_DMA_E_PERIPHERAL_EVENT_TRIGGER_ENABLED   | API service called to enable peripheral event trigger when peripheral event trigger is already enabled.  |
@@ -661,6 +665,8 @@ MPU Region channel mask parameter.
 | CDD_DMA_SID_SET_DMACFG_COMMIT   | Cdd_Dma_SetDmaCfgCommit() API Service ID.  |
 | CDD_DMA_SID_SET_MPUR_COMMIT   | Cdd_Dma_SetMpuRegionCommit() API Service ID.  |
 | CDD_DMA_SID_SET_MPUCFG_COMMIT   | Cdd_Dma_SetMpuCfgCommit() API Service ID.  |
+| CDD_DMA_SID_GET_CHANNEL_PRIORITY   | Cdd_Dma_GetChannelPriority() API Service ID.  |
+| CDD_DMA_SID_PERIODIC_READBACK   | Cdd_Dma_PeriodicReadback() API Service ID.  |
 
 ## Functions
 
@@ -671,13 +677,13 @@ MPU Region channel mask parameter.
 | void | **[Cdd_Dma_DeInit](../Modules/group__CDD__DMA.md#function-cdd_dma_deinit)**(void )| Service to deinitialize CDD DMA driver.  |
 | Std_ReturnType | **[Cdd_Dma_SetChannelProperties](../Modules/group__CDD__DMA.md#function-cdd_dma_setchannelproperties)**(uint8 ChannelId, [Cdd_Dma_ChannelParamsType](../Classes/structCdd__Dma__ChannelParamsType.md) ChannelProperties)| Service to set the channel properties of a DMA channel.  |
 | Std_ReturnType | **[Cdd_Dma_SetTransferProperties](../Modules/group__CDD__DMA.md#function-cdd_dma_settransferproperties)**(uint8 ChannelId, [Cdd_Dma_TransferParamsType](../Classes/structCdd__Dma__TransferParamsType.md) TransferProperties)| Service to set the transfer properties of a DMA channel.  |
-| Std_ReturnType | **[Cdd_Dma_SetTransferSize](../Modules/group__CDD__DMA.md#function-cdd_dma_settransfersize)**(uint8 ChannelId, uint8 BurstSize, uint16 TransferSize)| Service to set the burst size and transfer size of a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetTransferSize](../Modules/group__CDD__DMA.md#function-cdd_dma_settransfersize)**(uint8 ChannelId, uint16 BurstSize, uint32 TransferSize)| Service to set the burst size and transfer size of a DMA channel.  |
 | Std_ReturnType | **[Cdd_Dma_SetTransferSrcProperties](../Modules/group__CDD__DMA.md#function-cdd_dma_settransfersrcproperties)**(uint8 ChannelId, sint16 SrcBurstStep, sint16 SrcTransferStep)| Service to set the transfer source properties : source burst step, source transfer step of a DMA channel.  |
 | Std_ReturnType | **[Cdd_Dma_SetTransferDestProperties](../Modules/group__CDD__DMA.md#function-cdd_dma_settransferdestproperties)**(uint8 ChannelId, sint16 DestBurstStep, sint16 DestTransferStep)| Service to set the transfer destination properties : destination burst step, destination transfer step of a DMA channel.  |
 | Std_ReturnType | **[Cdd_Dma_SetTransferSrcAddress](../Modules/group__CDD__DMA.md#function-cdd_dma_settransfersrcaddress)**(uint8 ChannelId, uint32 SrcAddress)| Service to set the transfer source address of a DMA channel.  |
 | Std_ReturnType | **[Cdd_Dma_SetTransferDestAddress](../Modules/group__CDD__DMA.md#function-cdd_dma_settransferdestaddress)**(uint8 ChannelId, uint32 DestAddress)| Service to set the transfer destination address of a DMA channel.  |
-| Std_ReturnType | **[Cdd_Dma_SetTransferWrapSrcProperties](../Modules/group__CDD__DMA.md#function-cdd_dma_settransferwrapsrcproperties)**(uint8 ChannelId, uint16 SrcWrapSize, sint16 SrcWrapStep, uint32 SrcBegAddress)| Service to set the transfer source wrap properties of a DMA channel.  |
-| Std_ReturnType | **[Cdd_Dma_SetTransferWrapDestProperties](../Modules/group__CDD__DMA.md#function-cdd_dma_settransferwrapdestproperties)**(uint8 ChannelId, uint16 DestWrapSize, sint16 DestWrapStep, uint32 DestBegAddress)| Service to set the transfer destination wrap properties of a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetTransferWrapSrcProperties](../Modules/group__CDD__DMA.md#function-cdd_dma_settransferwrapsrcproperties)**(uint8 ChannelId, uint32 SrcWrapSize, sint16 SrcWrapStep, uint32 SrcBegAddress)| Service to set the transfer source wrap properties of a DMA channel.  |
+| Std_ReturnType | **[Cdd_Dma_SetTransferWrapDestProperties](../Modules/group__CDD__DMA.md#function-cdd_dma_settransferwrapdestproperties)**(uint8 ChannelId, uint32 DestWrapSize, sint16 DestWrapStep, uint32 DestBegAddress)| Service to set the transfer destination wrap properties of a DMA channel.  |
 | Std_ReturnType | **[Cdd_Dma_EnablePeripheralEventTrigger](../Modules/group__CDD__DMA.md#function-cdd_dma_enableperipheraleventtrigger)**(uint8 ChannelId)| Service to enable peripheral event triggers of a DMA channel.  |
 | Std_ReturnType | **[Cdd_Dma_DisablePeripheralEventTrigger](../Modules/group__CDD__DMA.md#function-cdd_dma_disableperipheraleventtrigger)**(uint8 ChannelId)| Service to disable peripheral event triggers of a DMA channel.  |
 | Std_ReturnType | **[Cdd_Dma_SetPeripheralEventTriggerSource](../Modules/group__CDD__DMA.md#function-cdd_dma_setperipheraleventtriggersource)**(uint8 ChannelId, [Cdd_Dma_PeriEvtTriggerSrcType](../Modules/group__CDD__DMA.md#enum-cdd_dma_perievttriggersrctype) PeripheralEventTrigSrc)| Service to set the peripheral event trigger source for a DMA channel.  |
@@ -687,12 +693,14 @@ MPU Region channel mask parameter.
 | Std_ReturnType | **[Cdd_Dma_ClearPeripheralEventTrigger](../Modules/group__CDD__DMA.md#function-cdd_dma_clearperipheraleventtrigger)**(uint8 ChannelId)| Service to clear the peripheral event trigger for the channel.  |
 | Std_ReturnType | **[Cdd_Dma_TriggerSoftReset](../Modules/group__CDD__DMA.md#function-cdd_dma_triggersoftreset)**(uint8 ChannelId)| Service to trigger a soft reset for the channel.  |
 | Std_ReturnType | **[Cdd_Dma_SetChannelPriority](../Modules/group__CDD__DMA.md#function-cdd_dma_setchannelpriority)**(uint8 ChannelId, [Cdd_Dma_ChannelPriority](../Modules/group__CDD__DMA.md#enum-cdd_dma_channelpriority) Priority)| Service to set channel priority.  |
+| Std_ReturnType | **[Cdd_Dma_GetChannelPriority](../Modules/group__CDD__DMA.md#function-cdd_dma_getchannelpriority)**(uint8 ChannelId, [Cdd_Dma_ChannelPriority](../Modules/group__CDD__DMA.md#enum-cdd_dma_channelpriority) * Priority)| Service to get channel priority.  |
 | void | **[Cdd_Dma_GetChannelStatus](../Modules/group__CDD__DMA.md#function-cdd_dma_getchannelstatus)**(uint8 ChannelId, [Cdd_Dma_ChannelStatus](../Classes/structCdd__Dma__ChannelStatus.md) * ChannelStatus)| Service to get the channel status : peripheral event trigger status, transfer status, burst status, run status and overflow status.  |
 | Std_ReturnType | **[Cdd_Dma_ClearErrorFlag](../Modules/group__CDD__DMA.md#function-cdd_dma_clearerrorflag)**(uint8 ChannelId)| Service to clear the overflow error flag for a DMA channel.  |
 | Std_ReturnType | **[Cdd_Dma_SetDmaCfgCommit](../Modules/group__CDD__DMA.md#function-cdd_dma_setdmacfgcommit)**(uint8 HwInstanceId)| Service to commit DMA configurable properties such as priority scheme, channel priority and emulation mode for a specific instance.  |
 | Std_ReturnType | **[Cdd_Dma_SetChannelCommit](../Modules/group__CDD__DMA.md#function-cdd_dma_setchannelcommit)**(uint8 ChannelId)| Service to commit DMA channel configurations for a specific channel.  |
 | Std_ReturnType | **[Cdd_Dma_SetMpuCfgCommit](../Modules/group__CDD__DMA.md#function-cdd_dma_setmpucfgcommit)**(uint8 HwInstanceId)| Service to commit Mpu configuration: MPUEN for a specific instance.  |
 | Std_ReturnType | **[Cdd_Dma_SetMpuRegionCommit](../Modules/group__CDD__DMA.md#function-cdd_dma_setmpuregioncommit)**(uint16 MpuRegionId)| Service to commit Mpu Region configurations for a specific MPU region.  |
+| void | **[Cdd_Dma_PeriodicReadback](../Modules/group__CDD__DMA.md#function-cdd_dma_periodicreadback)**(uint8 ChannelId, [Cdd_Dma_PeriodicReadBackDataType](../Classes/structCdd__Dma__PeriodicReadBackDataType.md) * ReadBackRegisterdata)| Service to read all the statically configured registers for periodic readback.  |
 
 
 
@@ -848,8 +856,8 @@ Service to set the transfer properties of a DMA channel.
 ```
 Std_ReturnType Cdd_Dma_SetTransferSize(
     uint8 ChannelId,
-    uint8 BurstSize,
-    uint16 TransferSize
+    uint16 BurstSize,
+    uint32 TransferSize
 )
 ```
 
@@ -1042,7 +1050,7 @@ Service to set the transfer destination address of a DMA channel.
 ```
 Std_ReturnType Cdd_Dma_SetTransferWrapSrcProperties(
     uint8 ChannelId,
-    uint16 SrcWrapSize,
+    uint32 SrcWrapSize,
     sint16 SrcWrapStep,
     uint32 SrcBegAddress
 )
@@ -1085,7 +1093,7 @@ Service to set the transfer source wrap properties of a DMA channel.
 ```
 Std_ReturnType Cdd_Dma_SetTransferWrapDestProperties(
     uint8 ChannelId,
-    uint16 DestWrapSize,
+    uint32 DestWrapSize,
     sint16 DestWrapStep,
     uint32 DestBegAddress
 )
@@ -1435,6 +1443,43 @@ Service to set channel priority.
 
 **Postcondition**: None 
 
+### function Cdd_Dma_GetChannelPriority
+
+```
+Std_ReturnType Cdd_Dma_GetChannelPriority(
+    uint8 ChannelId,
+    Cdd_Dma_ChannelPriority * Priority
+)
+```
+
+
+**Brief**: 
+Service to get channel priority. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the channel for which priority shall be read 
+  
+* **Priority** : Pointer to memory location where the channel priority will be stored 
+
+
+**Returns**: 
+
+  
+* **E_OK** Successfully read channel priority 
+<br> 
+  
+* **E_NOT_OK** Failed to read channel priority 
+<br> 
+
+
+**Return**: Status of reading channel priority 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
 ### function Cdd_Dma_GetChannelStatus
 
 ```
@@ -1627,6 +1672,40 @@ Service to commit Mpu Region configurations for a specific MPU region.
 
 
 **Return**: Status of commiting Mpu Region configuration 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Dma_PeriodicReadback
+
+```
+void Cdd_Dma_PeriodicReadback(
+    uint8 ChannelId,
+    Cdd_Dma_PeriodicReadBackDataType * ReadBackRegisterdata
+)
+```
+
+
+**Brief**: 
+Service to read all the statically configured registers for periodic readback. 
+
+**Parameters**: 
+
+  
+* **ChannelId** Symbolic name of the DMA channel 
+  
+* **ReadBackRegisterdata** Pointer to the read back registers structure 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
 
 **Precondition**: None 
 

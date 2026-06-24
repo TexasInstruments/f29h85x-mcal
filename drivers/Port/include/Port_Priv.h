@@ -83,7 +83,6 @@ extern "C" {
 #include "hw_asysctl.h"
 #include "hw_sysctl.h"
 #include "Mcal_Lib_Cpu.h"
-#include "Port.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -190,6 +189,23 @@ extern "C" {
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
+
+/** \brief Configures the ASysCtl AGPIOFILTER register.
+ *
+ * This function writes the global AGPIOFILTER value from the supplied
+ * configuration structure to the ANALOGSUBSYS AGPIOFILTER register.
+ * It is called once from Port_InitInternal() after the per-pin loop.
+ *
+ * \param[in] ASysCtlConfigPtr  Pointer to the ASysCtl configuration structure.
+ *                              Must not be NULL_PTR.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, PORT_CODE)
+Port_Priv_ConfigureASysCtl(P2CONST(Port_ASysCtlConfigType, AUTOMATIC, PORT_CONFIG_DATA) ASysCtlConfigPtr);
 
 /** \brief Sets the pad/pull configuration for the specified pin.
  *
@@ -366,6 +382,21 @@ Port_UnlockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA
  *
  ****************************************************************************/
 FUNC(void, PORT_CODE) Port_CommitConfigurationProcess(Port_PinType pinNumber);
+
+/** \brief Writes the ASysCtl CONFIGLOCK register to lock AGPIOFILTER and AGPIOCTRL registers.
+ *
+ * This function applies the one-time write-lock to the ASYSCTL_O_CONFIGLOCK register,
+ * locking both AGPIOFILTER and all AGPIOCTRL registers.
+ * Lock bits are irreversible until system reset.
+ * Called from Port_CommitConfiguration() after the per-pin commit loop.
+ *
+ * \pre None
+ * \post ASYSCTL_O_CONFIGLOCK bits for AGPIOFILTER and AGPIOCTRL are set.
+ * \return None
+ * \retval None
+ *
+ ****************************************************************************/
+FUNC(void, PORT_CODE) Port_Priv_CommitASysCtlConfigLock(void);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

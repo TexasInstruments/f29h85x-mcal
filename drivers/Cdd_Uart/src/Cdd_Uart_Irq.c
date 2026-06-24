@@ -72,12 +72,11 @@
  * Header Files
  *********************************************************************************************************************/
 /*
- *Design: MCAL-xxxxx
+ * Design: MCAL-38927,MCAL-38896
  */
 #include "Cdd_Uart.h"
 #include "Cdd_Uart_Priv.h"
 #include "Mcal_Lib_Cpu.h"
-#include "Cdd_Uart.h"
 #include "Os.h"
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -114,11 +113,6 @@
 /*********************************************************************************************************************
  * External Functions Definition
  *********************************************************************************************************************/
-
-/*********************************************************************************************************************
- *  Local Functions Definition
- *********************************************************************************************************************/
-
 #define CDD_UART_START_SEC_ISR_CODE
 #include "Cdd_Uart_MemMap.h"
 
@@ -127,8 +121,10 @@
 MCAL_LIB_RTINT_ISR(Cdd_Uart_A_ISR)
 #elif defined(CDD_UARTA_ISR_CAT1_INT)
 MCAL_LIB_INT_ISR(Cdd_Uart_A_ISR)
-#else
+#elif defined(CDD_UARTA_ISR_CAT2)
 ISR(Cdd_Uart_A_ISR)
+#else
+#error "Invalid Cdd_Uart interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -141,8 +137,10 @@ ISR(Cdd_Uart_A_ISR)
 MCAL_LIB_RTINT_ISR(Cdd_Uart_B_ISR)
 #elif defined(CDD_UARTB_ISR_CAT1_INT)
 MCAL_LIB_INT_ISR(Cdd_Uart_B_ISR)
-#else
+#elif defined(CDD_UARTB_ISR_CAT2)
 ISR(Cdd_Uart_B_ISR)
+#else
+#error "Invalid Cdd_Uart interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -155,8 +153,10 @@ ISR(Cdd_Uart_B_ISR)
 MCAL_LIB_RTINT_ISR(Cdd_Uart_C_ISR)
 #elif defined(CDD_UARTC_ISR_CAT1_INT)
 MCAL_LIB_INT_ISR(Cdd_Uart_C_ISR)
-#else
+#elif defined(CDD_UARTC_ISR_CAT2)
 ISR(Cdd_Uart_C_ISR)
+#else
+#error "Invalid Cdd_Uart interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -169,8 +169,10 @@ ISR(Cdd_Uart_C_ISR)
 MCAL_LIB_RTINT_ISR(Cdd_Uart_D_ISR)
 #elif defined(CDD_UARTD_ISR_CAT1_INT)
 MCAL_LIB_INT_ISR(Cdd_Uart_D_ISR)
-#else
+#elif defined(CDD_UARTD_ISR_CAT2)
 ISR(Cdd_Uart_D_ISR)
+#else
+#error "Invalid Cdd_Uart interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -183,8 +185,10 @@ ISR(Cdd_Uart_D_ISR)
 MCAL_LIB_RTINT_ISR(Cdd_Uart_E_ISR)
 #elif defined(CDD_UARTE_ISR_CAT1_INT)
 MCAL_LIB_INT_ISR(Cdd_Uart_E_ISR)
-#else
+#elif defined(CDD_UARTE_ISR_CAT2)
 ISR(Cdd_Uart_E_ISR)
+#else
+#error "Invalid Cdd_Uart interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -197,14 +201,20 @@ ISR(Cdd_Uart_E_ISR)
 MCAL_LIB_RTINT_ISR(Cdd_Uart_F_ISR)
 #elif defined(CDD_UARTF_ISR_CAT1_INT)
 MCAL_LIB_INT_ISR(Cdd_Uart_F_ISR)
-#else
+#elif defined(CDD_UARTF_ISR_CAT2)
 ISR(Cdd_Uart_F_ISR)
+#else
+#error "Invalid Cdd_Uart interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
     Cdd_Uart_ProcessISR(CDD_UART_INSTANCE_UARTF);
 }
 #endif
+
+/*********************************************************************************************************************
+ *  Local Functions Definition
+ *********************************************************************************************************************/
 
 #define CDD_UART_STOP_SEC_ISR_CODE
 #include "Cdd_Uart_MemMap.h"

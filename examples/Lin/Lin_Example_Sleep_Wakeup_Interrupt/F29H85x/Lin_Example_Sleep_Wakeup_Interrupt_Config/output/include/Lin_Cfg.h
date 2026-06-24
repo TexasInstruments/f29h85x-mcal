@@ -108,7 +108,7 @@ extern "C" {
 /** \brief Lin configuration Minor Version. */
 #define LIN_CFG_MINOR_VERSION    (1U)
 /** \brief Lin configuration Patch Version. */
-#define LIN_CFG_PATCH_VERSION    (1U)
+#define LIN_CFG_PATCH_VERSION    (2U)
 
 
 /*****************************************************************************

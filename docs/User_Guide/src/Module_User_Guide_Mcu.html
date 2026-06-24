@@ -49,7 +49,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                26.00.00
+                26.00.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -61,7 +61,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.00 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.01 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">2. Overview of MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">3. MCAL Configurator And EB Tresos User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
@@ -204,6 +204,24 @@
 <tr class="row-odd"><td><p>I/O</p></td>
 <td><p>Input/Output</p></td>
 </tr>
+<tr class="row-even"><td><p>ASysCtl</p></td>
+<td><p>Analog System Control</p></td>
+</tr>
+<tr class="row-odd"><td><p>ADC</p></td>
+<td><p>Analog-to-Digital Converter</p></td>
+</tr>
+<tr class="row-even"><td><p>CMPSS</p></td>
+<td><p>Comparator Subsystem</p></td>
+</tr>
+<tr class="row-odd"><td><p>SOC</p></td>
+<td><p>Start-of-Conversion</p></td>
+</tr>
+<tr class="row-even"><td><p>POR</p></td>
+<td><p>Power-On Reset</p></td>
+</tr>
+<tr class="row-odd"><td><p>BOR</p></td>
+<td><p>Brown-Out Reset</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -248,6 +266,9 @@ The MCU functionality is realized through the CLOCK IP available on the device. 
 <li><p>Provides a service to get the reset reason from hardware.</p></li>
 <li><p>Support of External clock output (XCLKOUT) feature to observe a clock directly for debug and testing purposes</p></li>
 <li><p>Provides a service to get the system clock used by the hardware.</p></li>
+<li><p>Initialization of Analog System Control (ASysCtl) registers: temperature sensor, analog reference, voltage regulator, brown-out reset monitor, and internal test node.</p></li>
+<li><p>Initialization of CMPSS analog input mux registers (CMPHPMXSEL, CMPLPMXSEL, CMPHNMXSEL, CMPLNMXSEL).</p></li>
+<li><p>Runtime control of the internal analog test bus node selection, and ASysCtl register write-lock.</p></li>
 </ul>
 </section>
 <section id="hardware-features">
@@ -440,6 +461,29 @@ derived from the CPU SYSCLK or PLLSYSCLK.</p>
 </div>
 </section>
 </section>
+<section id="analog-system-control-asysctl">
+<h4><span class="section-number">5.7.4.1.6. </span>Analog System Control (ASysCtl)<a class="headerlink" href="#analog-system-control-asysctl" title="Link to this heading"></a></h4>
+<p>The MCU driver owns all Analog System Control (ASysCtl) hardware initialization and runtime control. ASysCtl is a set of system-level analog controls that govern:</p>
+<ul class="simple">
+<li><p><strong>Temperature sensor enable</strong> — enables the on-chip temperature sensor used by ADC calibration.</p></li>
+<li><p><strong>Analog reference control</strong> — selects the internal or external analog voltage reference and voltage level.</p></li>
+<li><p><strong>Voltage regulator control</strong> — configures the internal analog voltage regulator.</p></li>
+<li><p><strong>Voltage monitor / brown-out reset</strong> — enables the supply voltage monitor and brown-out reset threshold.</p></li>
+<li><p><strong>Internal test node selection</strong> — connects an internal analog node to the analog test bus for diagnostic or calibration purposes.</p></li>
+<li><p><strong>CMPSS analog input mux</strong> — routes analog signals to the positive and negative inputs of each CMPSS comparator.</p></li>
+</ul>
+<p>Refer to the device Technical Reference Manual (TRM) for register-level details.</p>
+<p>All of these settings are initialized during <code class="docutils literal notranslate"><span class="pre">Mcu_Init()</span></code> from the <code class="docutils literal notranslate"><span class="pre">ASysCtl</span></code> and <code class="docutils literal notranslate"><span class="pre">CMPSSControl</span></code> containers in the ResourceAllocator configuration. If neither container is present (for example, in existing projects that have not yet added the ASysCtl configuration), <code class="docutils literal notranslate"><span class="pre">Mcu_Init()</span></code> behavior is unchanged — the initialization is NULL-pointer guarded.</p>
+<p>At runtime, selected ASysCtl settings can be reconfigured or locked via the dedicated APIs. Refer to the API guide for more information.</p>
+<section id="asysctl-write-lock">
+<h5><span class="section-number">5.7.4.1.6.1. </span>ASysCtl Write-Lock<a class="headerlink" href="#asysctl-write-lock" title="Link to this heading"></a></h5>
+<p>Several ASysCtl settings support a one-time hardware write-lock. Once a lock bit is committed it cannot be cleared until the next system reset. The <code class="docutils literal notranslate"><span class="pre">Mcu_ASysCtl_CommitLock()</span></code> API applies this lock.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>ASysCtl lock bits are irreversible until system reset. Ensure the desired register values are correct before calling <code class="docutils literal notranslate"><span class="pre">Mcu_ASysCtl_CommitLock()</span></code>.</p>
+</div>
+</section>
+</section>
 </section>
 <section id="not-supported-features">
 <h3><span class="section-number">5.7.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
@@ -560,6 +604,14 @@ when enabled. The driver interface contains the MACRO declaration of the error c
 <td><p>MCU_E_UNINIT_CLOCK</p></td>
 <td><p>0x12</p></td>
 </tr>
+<tr class="row-even"><td><p>Invalid test node value passed to <code class="docutils literal notranslate"><span class="pre">Mcu_ASysCtl_SelectInternalTestNode()</span></code></p></td>
+<td><p>MCU_E_PARAM_TESTNODE</p></td>
+<td><p>0x13</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Mcu_ASysCtl_CommitLock()</span></code> called with lock bits already committed</p></td>
+<td><p>MCU_E_ALREADY_LOCKED</p></td>
+<td><p>0x14</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -603,22 +655,30 @@ when enabled. The driver interface contains the MACRO declaration of the error c
 </section>
 <section id="silicon-errata-workarounds-and-recommendation">
 <h2><span class="section-number">5.7.8. </span>Silicon errata workarounds and recommendation<a class="headerlink" href="#silicon-errata-workarounds-and-recommendation" title="Link to this heading"></a></h2>
-<p>For detailed silicon errata, refer to the <a class="reference external" href="https://www.ti.com/lit/er/sprz569c/sprz569c.pdf">F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata</a>.</p>
+<p>For detailed silicon errata, please check the latest Errata at <a class="reference external" href="https://www.ti.com/product/F29H859TU-Q1">https://www.ti.com/product/F29H859TU-Q1</a>.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Advisory</p></th>
+<th class="head"><p>Revisions Affected</p></th>
 <th class="head"><p>Workaround in MCAL driver</p></th>
 <th class="head"><p>Recommended actions for user</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>System: Issuing device reset (XRSn) can cause unexpected fault if SYSCLKDIVSEL.PLLSYSCLKDIV = 0</p></td>
+<td><p>0, A, B, C</p></td>
 <td><p>No workaround is implemented in the Mcu driver. The configurator tool provides a warning whenever the user configures SYSCLKDIVSEL.PLLSYSCLKDIV = 0 (divide by 1)</p></td>
-<td><p>Avoid configuring SYSCLKDIVSEL.PLLSYSCLKDIV = 0 (divide by 1); use 1 (divide by 2) or a higher divider value instead.</p></td>
+<td><p>Avoid configuring SYSCLKDIVSEL.PLLSYSCLKDIV = 0 (divide by 1); use 1 (divide by 2) or a higher divider value instead</p></td>
 </tr>
 <tr class="row-odd"><td><p>MCD: Missing Clock Detect should be disabled when the PLL is enabled (PLLCLKEN = 1)</p></td>
+<td><p>0, A, B, C</p></td>
 <td><p>The Mcu driver implements the workaround by disabling MCD (MCDCR.MCLKOFF = 1) before enabling the PLL.</p></td>
 <td><p>No additional user action is required when PLL is enabled through the Mcu driver</p></td>
+</tr>
+<tr class="row-even"><td><p>System: Internal device reset could cause the device to be stuck in the reset loop</p></td>
+<td><p>0, A</p></td>
+<td><p>No workaround is implemented in the MCU driver.  Need to power cycle the device in this error condition</p></td>
+<td><p>Recommendation is to switch application to use die Rev C</p></td>
 </tr>
 </tbody>
 </table>
@@ -699,7 +759,11 @@ For MCU Module, data consistency and exclusive access to critical sections are r
 </section>
 <section id="multi-core-and-resource-allocator">
 <h3><span class="section-number">5.7.10.2. </span>Multi-core and Resource allocator<a class="headerlink" href="#multi-core-and-resource-allocator" title="Link to this heading"></a></h3>
-<p>The MCU module is not managed by the Resource Allocator. The MCU driver handles system-level resources such as Clock configuration and Low Power Mode, which can only be performed from CPU1. These system-level resources are not represented in the Resource Allocator configuration. No Resource Allocator instance allocation is needed for the MCU module.</p>
+<p>The MCU module handles system-level resources such as Clock configuration and Low Power Mode, which can only be performed from CPU1. In addition, the MCU driver reads the <strong>ASysCtl</strong> and <strong>CMPSSControl</strong> containers from the ResourceAllocator configuration to initialize analog system control registers during <code class="docutils literal notranslate"><span class="pre">Mcu_Init()</span></code>. No per-instance Resource Allocator allocation is required for the MCU module itself.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For details on configuring the <code class="docutils literal notranslate"><span class="pre">ASysCtl</span></code> and <code class="docutils literal notranslate"><span class="pre">CMPSSControl</span></code> containers, refer to the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">ResourceAllocator User Guide</span></a>.</p>
+</div>
 </section>
 </section>
 <section id="configuration">
@@ -3754,7 +3818,7 @@ The associated Mcu driver configuration generated source files are <strong>Mcu_C
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 26.00.00
+       Current Version: 26.00.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

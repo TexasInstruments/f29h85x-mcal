@@ -154,6 +154,7 @@ CONST(Cdd_Sent_MTPConfigType, CDD_SENT_CONFIG_DATA) [!"../../../../@name"!]_[!".
 [!VAR "NumChannels" = "num:i(count(CddSentConfig/CddSentController/*/CddSentExternalDeviceConfig/*))"!][!//
 /* List of MTP Config structures per instance */
 [!LOOP "CddSentConfig"!][!LOOP "CddSentController/*"!][!//
+[!IF "CddSentMTP ='true'"!][!//
 
 CONSTP2CONST(Cdd_Sent_MTPConfigType, CDD_SENT_CONFIG_DATA, CDD_SENT_CONST) [!"../../@name"!]_CddSentController_List[[!"$NumChannels"!]] =
 {
@@ -161,6 +162,7 @@ CONSTP2CONST(Cdd_Sent_MTPConfigType, CDD_SENT_CONFIG_DATA, CDD_SENT_CONST) [!"..
     [[!"@index"!]] = &[!"../../../../@name"!]_[!"../../@name"!]_[!"@name"!],
 [!ENDLOOP!]
 };
+[!ENDIF!][!//
 [!ENDLOOP!][!ENDLOOP!][!//
 
 /*
@@ -228,7 +230,11 @@ CONST(Cdd_Sent_HWUnitType, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
     .CddSentGlitchFilter   = (uint8 )[!"CddSentGlitchFilter"!]U,
     .CddSentMTP  = (boolean )[!IF "CddSentMTP  ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
     .CddSentMTPChannelCount = (uint8 )[!"num:i(count(CddSentExternalDeviceConfig/*))"!],
+[!IF "CddSentMTP ='true'"!][!//
     .CddSentMTPConfigList = [!"../../@name"!]_CddSentController_List,[!//
+[!ELSE!][!//
+    .CddSentMTPConfigList = NULL_PTR,[!//
+[!ENDIF!][!//
     [!IF "CddSentMTP !='false'"!]
     .CddSentGlobalWaitTime   = (uint16 )[!"CddSentGlobalWaitTime"!]U,[!//
     [!ENDIF!]
@@ -245,7 +251,7 @@ CONST(Cdd_Sent_HWUnitType, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 CONST(Cdd_Sent_ConfigType, CDD_SENT_CONFIG_DATA) [!"@name"!]_Cdd_SentController_List=
 {
 [!LOOP "CddSentController/*"!][!//
-	.Cdd_Sent_HWUnit[[!"@index"!]] = (Cdd_Sent_HWUnitType* )&[!"../../@name"!]_[!"@name"!][!IF "not(node:islast())"!],[!CR!][!ENDIF!][!ENDLOOP!]
+	.Cdd_Sent_HWUnit[[!"@index"!]] = (const Cdd_Sent_HWUnitType* )&[!"../../@name"!]_[!"@name"!][!IF "not(node:islast())"!],[!CR!][!ENDIF!][!ENDLOOP!]
 };
 [!ENDLOOP!][!//
 

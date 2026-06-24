@@ -375,18 +375,6 @@ FUNC(Lin_StatusType, LIN_CODE) Lin_FetchTxStatus(uint32 base);
  *********************************************************************************************************************/
 FUNC(Lin_StatusType, LIN_CODE) Lin_FetchRxStatus(uint32 base);
 
-/** \brief Lin_SendWakeupSignal - This API will send wakeup signal on Lin bus.
- *
- * \param[in] base      Base address of Lin Instance.
- * \pre None
- * \post None
- * \return returnValue
- * \retval E_OK : Wakeup request  has been accepted
- * \retval E_NOT_OK : Wakeup request has not been accepted
- *
- *********************************************************************************************************************/
-FUNC(void, LIN_CODE) Lin_SendWakeupSignal(uint32 base);
-
 /** \brief Lin_SendGoToSleepSignal - This API will send go to sleep signal on Lin bus.
  *
  * \param[in] base      Base address of Lin Instance.

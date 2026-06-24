@@ -183,7 +183,7 @@ extern "C" {
 /** \brief Driver Implementation Minor Version */
 #define CDD_PWM_SW_MINOR_VERSION (1U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_PWM_SW_PATCH_VERSION (1U)
+#define CDD_PWM_SW_PATCH_VERSION (2U)
 
 /*  Defines for CDD_PWM Driver AUTOSAR version used for compatibility checks. */
 /** \brief AUTOSAR Major version specification implemented by CDD_PWM Driver*/

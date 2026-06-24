@@ -79,6 +79,7 @@ F29P32x Device Variant Limitations: On F29P32x devices, the following features a
 
 See [Device-Variant Specific Limitations](#device-variant-specific-limitations) for details.
 ```
+
 * External channel mux option to expand available ADC channels.
 * 32 configurable SOCs.
 * 32 individually addressable result registers.
@@ -95,6 +96,7 @@ compare match, or both)
 ```{note}
 **Trigger Source Availability:** The trigger source list in the configuration tool contains a superset of all triggers available across all device variants. Before configuring a trigger source, verify its availability for your specific device variant by consulting the device datasheet.
 ```
+
 * Four flexible PIPE interrupts
 * Configurable interrupt placement
 * Four post-processing blocks(PPB), each with:
@@ -109,7 +111,6 @@ compare match, or both)
   * Two's complement function
   * Cycle by cycle enable function
 * Result safety checkers to compare SOC results on same ADC or multiple ADC instances
-
 
 ```{figure} Assets/images/Cdd_Adc_Block_Diagram.png
 :alt: Cdd_Adc Block diagram
@@ -252,13 +253,25 @@ Development errors are reported to the DET using the service Det_ReportError(), 
 |API called when safety checker is BUSY|CDD_ADC_E_CHECKER_BUSY|0x20U|
 |Cdd_Adc_SetResolution API called on a hardware unit whose resolution is same as the requested resolution|CDD_ADC_E_ALREADY_SET|0x21U|
 
+### Safety Mechanism
+
+|TI Diagnostic Unique Identifier| Summary | Description |
+|------------|-----------------|----------------|
+|ADC8|ADC Input Signal Integrity Check| ADC input signal integrity is verified using the Post Processing Block (PPB), which performs plausibility checks by comparing converted results against configurable high and low threshold values |
+|ADC11|Disabling Unused Sources of SOC Inputs to ADC| Only the required SOC trigger sources are configured to prevent faults from unused peripherals from cascading into ADC conversions |
+|ADC13|Hardware Redundancy with ADC Safety Checker| Hardware redundancy of ADC can be checked using the ADC safety checker units, which automatically compare results from multiple ADC instances and generate an ESM event if the delta exceeds the configured tolerance |
+
+```{note}
+More details of Safety Mechanisms can be found in Safety Manual.
+```
+
 ### Silicon errata workarounds and recommendation
 
-For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata](https://www.ti.com/lit/er/sprz569c/sprz569c.pdf).
+For detailed silicon errata, please check the latest Errata at [https://www.ti.com/product/F29H859TU-Q1](https://www.ti.com/product/F29H859TU-Q1).
 
-| Advisory | Workaround in MCAL driver | Recommended actions for user |
-|----------|--------------------------|-------------------------------|
-| ADC: Interrupts may stop if INTxCONT (Continue-to-Interrupt Mode) is not set | 1. Use Continue-to-Interrupt Mode to prevent the ADCINTFLG from blocking additional ADC interrupts (enable `CddAdcContinueToInterruptMode` for the specified interrupt in EB Tresos to use ContinueToInterrupt mode). <br>2. Check for an overflow condition(ADCINTOVF flag status) in the ISR when clearing the ADCINTFLG: check ADCINTOVF immediately after writing to ADCINTFLGCLR; if it is set, clear ADCINTOVF and write ADCINTFLGCLR a second time to ensure the ADCINTFLG is cleared. The ADCINTOVF register will be set, indicating an ADC conversion interrupt was lost.| Ensure there is always sufficient time to service the ADC ISR and clear the ADCINTFLG before the next ADC interrupt occurs to avoid this condition.|
+| Advisory | Revisions Affected | Workaround in MCAL driver | Recommended actions for user |
+|----------|--------------------|--------------------------|-------------------------------|
+| ADC: Interrupts may stop if INTxCONT (Continue-to-Interrupt Mode) is not set | 0, A, B, C | 1. Use Continue-to-Interrupt Mode to prevent the ADCINTFLG from blocking additional ADC interrupts (enable `CddAdcContinueToInterruptMode` for the specified interrupt in EB Tresos to use ContinueToInterrupt mode). <br>2. Check for an overflow condition(ADCINTOVF flag status) in the ISR when clearing the ADCINTFLG: check ADCINTOVF immediately after writing to ADCINTFLGCLR; if it is set, clear ADCINTOVF and write ADCINTFLGCLR a second time to ensure the ADCINTFLG is cleared. The ADCINTOVF register will be set, indicating an ADC conversion interrupt was lost.| Ensure there is always sufficient time to service the ADC ISR and clear the ADCINTFLG before the next ADC interrupt occurs to avoid this condition.|
 
 ### Used resources
 
@@ -385,11 +398,15 @@ For CDD_ADC Module, data consistency and exclusive access to critical sections a
 
 | Exclusive Area Functions used | CDD_ADC Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
 |-------|-------|-------|-------|
-|CDD_ADC_EXCLUSIVE_AREA_0| Cdd_Adc_StartGroupConversion<br>Cdd_Adc_StopGroupConversion<br>Cdd_Adc_ReadGroup<br>Cdd_Adc_EnableHardwareTrigger<br>Cdd_Adc_DisableHardwareTrigger <br>Cdd_Adc_EnableGroupNotification<br>Cdd_Adc_DisableGroupNotification<br>Cdd_Adc_GetGroupStatus<br>Cdd_Adc_GetStreamLastPointer<br>Cdd_Adc_SetupResultBuffer<br>Cdd_Adc_StartResultChecker<br>Cdd_Adc_StopResultChecker<br>Cdd_Adc_ClearCheckerEvt<br>Cdd_Adc_StartGlobalSwTrig<br>Cdd_Adc_StopGlobalSwTrig<br>Cdd_Adc_SetResolution<br>Cdd_Adc_ReadPpbValue<br>Cdd_Adc_ReadPartialPpbValue<br>Cdd_Adc_ReadPpb<br>Cdd_Adc_ClearPpbEvt<br>Cdd_Adc_GetDelayStamp<br>Cdd_Adc_GetTemperatureC<br>Cdd_Adc_GetTemperatureK<br>Cdd_Adc_SetInternalTestNode| To protect against multiple access for shared resources | **OS_RESOURCE** : If the CDD ADC APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br>**None**: If CDD ADC APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed. |
+|CDD_ADC_EXCLUSIVE_AREA_0| Cdd_Adc_StartGroupConversion<br>Cdd_Adc_StopGroupConversion<br>Cdd_Adc_ReadGroup<br>Cdd_Adc_EnableHardwareTrigger<br>Cdd_Adc_DisableHardwareTrigger <br>Cdd_Adc_EnableGroupNotification<br>Cdd_Adc_DisableGroupNotification<br>Cdd_Adc_GetGroupStatus<br>Cdd_Adc_GetStreamLastPointer<br>Cdd_Adc_SetupResultBuffer<br>Cdd_Adc_StartResultChecker<br>Cdd_Adc_StopResultChecker<br>Cdd_Adc_ClearCheckerEvt<br>Cdd_Adc_StartGlobalSwTrig<br>Cdd_Adc_StopGlobalSwTrig<br>Cdd_Adc_SetResolution<br>Cdd_Adc_ReadPpbValue<br>Cdd_Adc_ReadPartialPpbValue<br>Cdd_Adc_ReadPpb<br>Cdd_Adc_ClearPpbEvt<br>Cdd_Adc_GetDelayStamp<br>Cdd_Adc_GetTemperatureC<br>Cdd_Adc_GetTemperatureK| To protect against multiple access for shared resources | **OS_RESOURCE** : If the CDD ADC APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br>**None**: If CDD ADC APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed. |
 
 ##### MCU
 
-MCU Module is required for the ADC clock initialization.
+MCU Module is required for the ADC clock initialization. The Mcu driver also provides the following ASysCtl-related functionality used in conjunction with the Cdd_Adc driver:
+
+* **Internal test node selection**: The ADC internal test node can be configured statically via the ResourceAllocator `ASysCtl` container in EB Tresos, or selected at runtime using `Mcu_ASysCtl_SelectInternalTestNode()`. Refer to the Mcu API guide for details.
+* **Analog reference configuration**: The ADC analog reference voltage is configured via the ResourceAllocator `ASysCtl` → `AnalogReference` container in EB Tresos, applied during `Mcu_Init()`. Refer to the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details.
+* **Temperature sensor control**: The ADC temperature sensor is enabled and disabled via the ResourceAllocator `ASysCtl` → `TemperatureSensor` container in EB Tresos, applied during `Mcu_Init()`. Refer to the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details.
 
 ##### Port
 
@@ -405,10 +422,10 @@ The ADC module uses the Resource Allocator to allocate ADC peripheral instances 
 
 The ADC Context container supports four types of allocations:
 
-- **`Cdd_AdcAllocatedInstance`**: Allocates an ADC hardware instance. **InstanceName** uses the `CDD_` prefix (e.g. `CDD_ADCA`).
-- **`CddAdcSafetyCheckerInstance`**: Allocates an ADC safety checker instance (e.g. `ADCSAFETYCHECK1`).
-- **`CddAdcCheckerInterruptEvtInstance`**: Allocates an ADC safety checker interrupt event instance (e.g. `ADCSAFETYCHECKINTEVT1`).
-- **`CddAdcGlobalSoftwareForce`**: Allocates the ADC global software force registers (max 1, shared across all CPUs).
+* **`Cdd_AdcAllocatedInstance`**: Allocates an ADC hardware instance. **InstanceName** uses the `CDD_` prefix (e.g. `CDD_ADCA`).
+* **`CddAdcSafetyCheckerInstance`**: Allocates an ADC safety checker instance (e.g. `ADCSAFETYCHECK1`).
+* **`CddAdcCheckerInterruptEvtInstance`**: Allocates an ADC safety checker interrupt event instance (e.g. `ADCSAFETYCHECKINTEVT1`).
+* **`CddAdcGlobalSoftwareForce`**: Allocates the ADC global software force registers (max 1, shared across all CPUs).
 
 Each allocation supports **Frame** (`FRAME0`–`FRAME3`), **DebugHaltEnabled**, and **StandbyModeEnabled** parameters. The **BaseAddr** is auto-calculated based on the selected instance and frame.
 
@@ -452,102 +469,12 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files. If edited manually the driver may behavior might deviate from the expected behavior.
 
-
 #### Configuration Parameters
 
 
 
 ##### CddAdcConfigSet
 This container contains the configuration parameters and sub containers of the Cdd Adc module.
-
-###### CddAdcEnableTemperatureSensor
-
-| Item ||
-|--------|---------------|
-| **Name** | CddAdcEnableTemperatureSensor |
-| **Description** | Enables/Disables the temperature sensor. |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | false |
-
-###### CddAdcLockTemperatureSensor
-
-| Item ||
-|--------|---------------|
-| **Name** | CddAdcLockTemperatureSensor |
-| **Description** | Locks the temperature sensor configuration register When enabled .This is editable only when the temperature sensor is enabled. |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | false |
-
-###### CddAdcInternalTestInput
-
-| Item ||
-|--------|---------------|
-| **Name** | CddAdcInternalTestInput |
-| **Description** | Selects the input source for the internal test nodes for the ADC hardware unit. |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | CDD_ADC_TEST_NODE_NO_CONN |
-| **Range** | CDD_ADC_TEST_NODE_NO_CONN<br>CDD_ADC_TEST_NODE_VDDCORE<br>CDD_ADC_TEST_NODE_VDDA<br>CDD_ADC_TEST_NODE_VSSA<br>CDD_ADC_TEST_NODE_VREFLOA<br>CDD_ADC_TEST_NODE_VREFLOB<br>CDD_ADC_TEST_NODE_CDAC1H<br>CDD_ADC_TEST_NODE_CDAC1L<br>CDD_ADC_TEST_NODE_CDAC2H<br>CDD_ADC_TEST_NODE_CDAC2L<br>CDD_ADC_TEST_NODE_CDAC3H<br>CDD_ADC_TEST_NODE_CDAC3L<br>CDD_ADC_TEST_NODE_CDAC4H<br>CDD_ADC_TEST_NODE_CDAC4L<br>CDD_ADC_TEST_NODE_CDAC5H<br>CDD_ADC_TEST_NODE_CDAC5L<br>CDD_ADC_TEST_NODE_CDAC6H<br>CDD_ADC_TEST_NODE_CDAC6L<br>CDD_ADC_TEST_NODE_CDAC7H<br>CDD_ADC_TEST_NODE_CDAC7L<br>CDD_ADC_TEST_NODE_CDAC8H<br>CDD_ADC_TEST_NODE_CDAC8L<br>CDD_ADC_TEST_NODE_CDAC9H<br>CDD_ADC_TEST_NODE_CDAC9L<br>CDD_ADC_TEST_NODE_CDAC10H<br>CDD_ADC_TEST_NODE_CDAC10L<br>CDD_ADC_TEST_NODE_CDAC11H<br>CDD_ADC_TEST_NODE_CDAC11L<br>CDD_ADC_TEST_NODE_ENZ_CALIB_GAIN_3P3 |
-
-###### CddAdcHwUnitAnalogRefABVoltageMode
-
-| Item ||
-|--------|---------------|
-| **Name** | CddAdcHwUnitAnalogRefABVoltageMode |
-| **Description** | This parameter defines the voltage reference mode for ADC A and B hardware instances. |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | CDD_ADC_REFERENCE_INTERNAL |
-| **Range** | CDD_ADC_REFERENCE_INTERNAL<br>CDD_ADC_REFERENCE_EXTERNAL |
-
-###### CddAdcHwUnitAnalogRefABVoltage
-
-| Item ||
-|--------|---------------|
-| **Name** | CddAdcHwUnitAnalogRefABVoltage |
-| **Description** | This parameter defines the reference voltage for A and B instances of the ADC. This paramter is applicable only when the voltage reference mode is INTERNAL. |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | CDD_ADC_REFERENCE_2_5V |
-| **Range** | CDD_ADC_REFERENCE_3_3V<br>CDD_ADC_REFERENCE_2_5V |
-
-###### CddAdcHwUnitAnalogRefCDEVoltageMode
-
-| Item ||
-|--------|---------------|
-| **Name** | CddAdcHwUnitAnalogRefCDEVoltageMode |
-| **Description** | This parameter defines the voltage reference mode for C,D and E instances of the ADC. |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | CDD_ADC_REFERENCE_INTERNAL |
-| **Range** | CDD_ADC_REFERENCE_INTERNAL<br>CDD_ADC_REFERENCE_EXTERNAL |
-
-###### CddAdcHwUnitAnalogRefCDEVoltage
-
-| Item ||
-|--------|---------------|
-| **Name** | CddAdcHwUnitAnalogRefCDEVoltage |
-| **Description** | This parameter defines the reference voltage for C,D and E instances of the ADC.This paramter is applicable only when the voltage reference mode is INTERNAL. |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | CDD_ADC_REFERENCE_3_3V |
-| **Range** | CDD_ADC_REFERENCE_3_3V<br>CDD_ADC_REFERENCE_2_5V |
 
 ###### CddAdcHwUnit
 This container contains the driver configuration (parameters) for the ADC Hardware Unit
@@ -2171,8 +2098,9 @@ This example demonstrates software and hardware triggered ADC conversions and ex
 The example also captures the delay stamp, which represents the number of system clock cycles between the group trigger and the actual start of conversion. The delay stamp API can only be called for PPBs linked to hardware-triggered groups.
 
 ADC supports two signal modes:
-- **Single-ended mode:** The input voltage to the converter is sampled through a single pin (ADCINx), referenced to VREFLO.
-- **Differential signaling mode:** The input voltage to the converter is sampled through a pair of input pins — a positive input (ADCINxP) and a negative input (ADCINxN). The actual input voltage is the difference between the two (ADCINxP − ADCINxN).
+
+* **Single-ended mode:** The input voltage to the converter is sampled through a single pin (ADCINx), referenced to VREFLO.
+* **Differential signaling mode:** The input voltage to the converter is sampled through a pair of input pins — a positive input (ADCINxP) and a negative input (ADCINxN). The actual input voltage is the difference between the two (ADCINxP − ADCINxN).
 
 ```{note}
 On F29P32x devices, differential signal conversion mode and 16-bit resolution are not supported. See [Device-Variant Specific Limitations](#device-variant-specific-limitations) for details.

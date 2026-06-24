@@ -36,7 +36,6 @@ title: Cdd_Adc API GUIDE Header file
 |enum| **[Cdd_Adc_CheckerEventType](../Modules/group__CDD__ADC.md#enum-cdd_adc_checkereventtype)** | Defines supported events that can be generated from an interrupt event instance.  | 
 |enum| **[Cdd_Adc_IntSocTriggerType](../Modules/group__CDD__ADC.md#enum-cdd_adc_intsoctriggertype)** | Defines interrupt trigger sources to SOCs.  | 
 |enum| **[Cdd_Adc_EocPulseType](../Modules/group__CDD__ADC.md#enum-cdd_adc_eocpulsetype)** | Defines End-Of-Conversion interrupt pulse modes.  | 
-|enum| **[Cdd_Adc_InternalTestNodeType](../Modules/group__CDD__ADC.md#enum-cdd_adc_internaltestnodetype)** | Defines supported internal nodes that can be connected to ADC.  | 
 |enum| **[Cdd_Adc_OsDetectModeType](../Modules/group__CDD__ADC.md#enum-cdd_adc_osdetectmodetype)** | Specifies open/short circuit modes.  | 
 |typedef uint8  | **[Cdd_Adc_GroupType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_grouptype)** | Numeric ID of an ADC channel group.  | 
 |typedef uint8  | **[Cdd_Adc_PpbType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_ppbtype)** | Numeric ID of the PPB unit.  | 
@@ -525,48 +524,6 @@ Defines End-Of-Conversion interrupt pulse modes.
 
 
 
-### enum Cdd_Adc_InternalTestNodeType
-| Enumerator | Value | Description |
-| ---------- | ----- | ----------- |
-| CDD_ADC_TEST_NODE_NO_CONN | 0U|   |
-| CDD_ADC_TEST_NODE_VDDCORE | 1U|   |
-| CDD_ADC_TEST_NODE_VDDA | 2U|   |
-| CDD_ADC_TEST_NODE_VSSA | 3U|   |
-| CDD_ADC_TEST_NODE_VREFLOA | 4U|   |
-| CDD_ADC_TEST_NODE_VREFLOB | 5U|   |
-| CDD_ADC_TEST_NODE_CDAC1H | 7U|   |
-| CDD_ADC_TEST_NODE_CDAC1L | 8U|   |
-| CDD_ADC_TEST_NODE_CDAC2H | 9U|   |
-| CDD_ADC_TEST_NODE_CDAC2L | 10U|   |
-| CDD_ADC_TEST_NODE_CDAC3H | 11U|   |
-| CDD_ADC_TEST_NODE_CDAC3L | 12U|   |
-| CDD_ADC_TEST_NODE_CDAC4H | 13U|   |
-| CDD_ADC_TEST_NODE_CDAC4L | 14U|   |
-| CDD_ADC_TEST_NODE_CDAC5H | 15U|   |
-| CDD_ADC_TEST_NODE_CDAC5L | 16U|   |
-| CDD_ADC_TEST_NODE_CDAC6H | 17U|   |
-| CDD_ADC_TEST_NODE_CDAC6L | 18U|   |
-| CDD_ADC_TEST_NODE_CDAC7H | 19U|   |
-| CDD_ADC_TEST_NODE_CDAC7L | 20U|   |
-| CDD_ADC_TEST_NODE_CDAC8H | 21U|   |
-| CDD_ADC_TEST_NODE_CDAC8L | 22U|   |
-| CDD_ADC_TEST_NODE_CDAC9H | 23U|   |
-| CDD_ADC_TEST_NODE_CDAC9L | 24U|   |
-| CDD_ADC_TEST_NODE_CDAC10H | 25U|   |
-| CDD_ADC_TEST_NODE_CDAC10L | 26U|   |
-| CDD_ADC_TEST_NODE_CDAC11H | 27U|   |
-| CDD_ADC_TEST_NODE_CDAC11L | 28U|   |
-| CDD_ADC_TEST_NODE_ENZ_CALIB_GAIN_3P3 | 29U|   |
-| CDD_ADC_TEST_NODE_MAX | |   |
-
-
-
-
-**Brief**: 
-Defines supported internal nodes that can be connected to ADC. 
-
-
-
 ### enum Cdd_Adc_OsDetectModeType
 | Enumerator | Value | Description |
 | ---------- | ----- | ----------- |
@@ -788,7 +745,6 @@ Ppb notification function pointer.
 | CDD_ADC_SID_GET_DELAY_STAMP   | Cdd_Adc_GetDelayStamp() service ID.  |
 | CDD_ADC_SID_GET_TEMPERATURE_C   | Cdd_Adc_GetTemperatureC() service ID.  |
 | CDD_ADC_SID_GET_TEMPERATURE_K   | Cdd_Adc_GetTemperatureK() service ID.  |
-| CDD_ADC_SID_INTERNAL_TEST_NODE   | Cdd_Adc_SetInternalTestNode() service ID.  |
 | CDD_ADC_SID_UPDATE_STATUS_THROUGH_DMA   | Cdd_Adc_UpdateStatus() service ID.  |
 | CDD_ADC_SID_CONFIGURE_PPB_NOTIFICATION   | Cdd_Adc_ConfigurePpbNotification() API Service ID.  |
 | CDD_ADC_CFG_MAJOR_VERSION   |  |
@@ -809,7 +765,6 @@ Ppb notification function pointer.
 | CDD_ADC_HW_CNT   |  |
 | CDD_ADC_HW_TRIGGER_API   |  |
 | CDD_ADC_ENABLE_PPB_API   |  |
-| CDD_ADC_LOCK_TEMPERATURE_SENSOR   |  |
 | CDD_ADC_OPEN_SHORT_DETECTION   |  |
 | CDD_ADC_PPB_CNT   |  |
 | CDD_ADC_READ_GROUP_API   |  |
@@ -882,7 +837,6 @@ Ppb notification function pointer.
 | Std_ReturnType | **[Cdd_Adc_SetResolution](../Modules/group__CDD__ADC.md#function-cdd_adc_setresolution)**([Cdd_Adc_HwUnitInstanceType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_hwunitinstancetype) HwUnit, [Cdd_Adc_ResolutionType](../Modules/group__CDD__ADC.md#enum-cdd_adc_resolutiontype) Resolution)| service to set the resolution of the ADC hardware unit.  |
 | sint16 | **[Cdd_Adc_GetTemperatureC](../Modules/group__CDD__ADC.md#function-cdd_adc_gettemperaturec)**([Cdd_Adc_HwUnitInstanceType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_hwunitinstancetype) HwUnit, [Cdd_Adc_ValueGroupType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_valuegrouptype) TempResult, float32 VoltRef)| service to convert the ADC conversion value to Celsius.  |
 | sint16 | **[Cdd_Adc_GetTemperatureK](../Modules/group__CDD__ADC.md#function-cdd_adc_gettemperaturek)**([Cdd_Adc_HwUnitInstanceType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_hwunitinstancetype) HwUnit, [Cdd_Adc_ValueGroupType](../Modules/group__CDD__ADC.md#typedef-cdd_adc_valuegrouptype) TempResult, float32 VoltRef)| service to convert the ADC conversion value to Kelvin.  |
-| void | **[Cdd_Adc_SetInternalTestNode](../Modules/group__CDD__ADC.md#function-cdd_adc_setinternaltestnode)**([Cdd_Adc_InternalTestNodeType](../Modules/group__CDD__ADC.md#enum-cdd_adc_internaltestnodetype) TestNode)| service to set the internal test node  |
 | void | **[Cdd_Adc_UpdateStatusThroughDma](../Modules/group__CDD__ADC.md#function-cdd_adc_updatestatusthroughdma)**([Cdd_Adc_HwUnitType](../Modules/group__CDD__ADC.md#enum-cdd_adc_hwunittype) HwUnitId, [Cdd_Adc_IntNumType](../Modules/group__CDD__ADC.md#enum-cdd_adc_intnumtype) IntNum)| service to update the group status in DMA mode for the specified group  |
 
 
@@ -1883,40 +1837,6 @@ This service converts the ADC conversion value to Kelvin.
   * Temperature sensor values in production test are derived with 2.5V reference. The VoltRef argument is used to scale the temperature sensor reading accordingly if the temperature sensor value is read at a different VREF setting.
   * The VoltRef value must exactly match the actual voltage reference being used. Any deviation will result in incorrect temperature calculations. 
 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Adc_SetInternalTestNode
-
-```
-void Cdd_Adc_SetInternalTestNode(
-    Cdd_Adc_InternalTestNodeType TestNode
-)
-```
-
-
-**Brief**: 
-service to set the internal test node 
-
-This service to set the internal test node for all the hardware units
-
-
-**Parameters**: 
-
-  
-* **TestNode** Internal test node 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
 
 **Precondition**: None 
 

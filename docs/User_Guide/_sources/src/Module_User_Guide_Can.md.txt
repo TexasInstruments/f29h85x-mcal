@@ -192,11 +192,11 @@ More details of Safety Mechanisms can be found in Safety Manual.
 
 ### Silicon errata workarounds and recommendation
 
-For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata](https://www.ti.com/lit/er/sprz569c/sprz569c.pdf).
+For detailed silicon errata, please check the latest Errata at [https://www.ti.com/product/F29H859TU-Q1](https://www.ti.com/product/F29H859TU-Q1).
 
-| Advisory | Workaround in MCAL driver | Recommended actions for user |
-|----------|--------------------------|-------------------------------|
-| Message Order Inversion When Transmitting From Dedicated Tx Buffers Configured With Same Message ID | No workaround is implemented in the CAN driver. The message ID configuration and transmission request scheduling are runtime-dynamic and cannot be controlled at the driver level to enforce ordering. | Use Tx FIFO mode instead of dedicated Tx Buffers when transmitting multiple messages with the same Message ID. The Tx FIFO ensures messages are transmitted in the order they are requested, preventing message order inversion. To configure Tx FIFO, set the `CanHandleType` parameter to `BASIC` for the hardware transmit object and specify the desired FIFO depth via the `CanHwObjectCount` parameter in EB Tresos configuration. |
+| Advisory | Revisions Affected | Workaround in MCAL driver | Recommended actions for user |
+|----------|--------------------|--------------------------|-------------------------------|
+| Message Order Inversion When Transmitting From Dedicated Tx Buffers Configured With Same Message ID | 0, A, B, C | No workaround is implemented in the CAN driver. The message ID configuration and transmission request scheduling are runtime-dynamic and cannot be controlled at the driver level to enforce ordering. | Use Tx FIFO mode instead of dedicated Tx Buffers when transmitting multiple messages with the same Message ID. The Tx FIFO ensures messages are transmitted in the order they are requested, preventing message order inversion. To configure Tx FIFO, set the `CanHandleType` parameter to `BASIC` for the hardware transmit object and specify the desired FIFO depth via the `CanHwObjectCount` parameter in EB Tresos configuration. |
 
 ### Used resources
 

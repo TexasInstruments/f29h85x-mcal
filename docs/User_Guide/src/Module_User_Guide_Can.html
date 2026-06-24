@@ -49,7 +49,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                26.00.00
+                26.00.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -61,7 +61,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.00 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.01 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">2. Overview of MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">3. MCAL Configurator And EB Tresos User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
@@ -497,16 +497,18 @@ The driver expects user of this module has programmed required clock source.</p>
 </section>
 <section id="silicon-errata-workarounds-and-recommendation">
 <h2><span class="section-number">5.2.8. </span>Silicon errata workarounds and recommendation<a class="headerlink" href="#silicon-errata-workarounds-and-recommendation" title="Link to this heading"></a></h2>
-<p>For detailed silicon errata, refer to the <a class="reference external" href="https://www.ti.com/lit/er/sprz569c/sprz569c.pdf">F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata</a>.</p>
+<p>For detailed silicon errata, please check the latest Errata at <a class="reference external" href="https://www.ti.com/product/F29H859TU-Q1">https://www.ti.com/product/F29H859TU-Q1</a>.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Advisory</p></th>
+<th class="head"><p>Revisions Affected</p></th>
 <th class="head"><p>Workaround in MCAL driver</p></th>
 <th class="head"><p>Recommended actions for user</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Message Order Inversion When Transmitting From Dedicated Tx Buffers Configured With Same Message ID</p></td>
+<td><p>0, A, B, C</p></td>
 <td><p>No workaround is implemented in the CAN driver. The message ID configuration and transmission request scheduling are runtime-dynamic and cannot be controlled at the driver level to enforce ordering.</p></td>
 <td><p>Use Tx FIFO mode instead of dedicated Tx Buffers when transmitting multiple messages with the same Message ID. The Tx FIFO ensures messages are transmitted in the order they are requested, preventing message order inversion. To configure Tx FIFO, set the <code class="docutils literal notranslate"><span class="pre">CanHandleType</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">BASIC</span></code> for the hardware transmit object and specify the desired FIFO depth via the <code class="docutils literal notranslate"><span class="pre">CanHwObjectCount</span></code> parameter in EB Tresos configuration.</p></td>
 </tr>
@@ -5254,7 +5256,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 26.00.00
+       Current Version: 26.00.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

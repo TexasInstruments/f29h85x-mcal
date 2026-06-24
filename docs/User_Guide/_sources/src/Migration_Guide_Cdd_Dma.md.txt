@@ -1,0 +1,72 @@
+# CDD DMA Module Migration
+
+**Migration Approach:** Follow sequential migration for clear understanding of changes at each version. Each migration is organized by individual changes with description, old vs new comparison, and migration actions.
+
+## v01.01.00 (i.e release v26.00.01) from v01.00.00 (i.e release v26.00.00) Migration
+
+### Summary
+
+Version v01.01.00 introduces the following changes to the CDD DMA module:
+
+1. **`Cdd_Dma_SetTransferSize` parameter type widening**: `BurstSize` widened from `uint8` to `uint16` and `TransferSize` from `uint16` to `uint32`, also widening the corresponding fields in `Cdd_Dma_TransferSizeType`
+2. **Wrap size parameter type widening**: `SrcWrapSize` and `DestWrapSize` widened from `uint16` to `uint32` in `Cdd_Dma_SetTransferWrapSrcProperties`, `Cdd_Dma_SetTransferWrapDestProperties`, and the corresponding `Cdd_Dma_TransferSrcWrapType` / `Cdd_Dma_TransferDestWrapType` struct fields
+
+### Change 1: `Cdd_Dma_SetTransferSize` parameter type widening
+
+#### Description
+
+The `BurstSize` parameter of `Cdd_Dma_SetTransferSize` has been widened from `uint8` to `uint16`, and `TransferSize` from `uint16` to `uint32`. The same widening applies to the corresponding fields `BurstSize` and `TransferSize` in `Cdd_Dma_TransferSizeType`, which is embedded in `Cdd_Dma_TransferParamsType`.
+
+The driver subtracts 1 from each API value before writing to the hardware register. With the old `uint8` type for `BurstSize`, the maximum user input was 255, causing the hardware to receive 254 — leaving the hardware maximum register value of 255 unreachable. The new `uint16` type allows the user to input 256, which the driver writes as 255 to the hardware. The same logic applies to `TransferSize`: widening from `uint16` to `uint32` allows input 65536, which the driver writes as 65535.
+
+All values previously valid under `uint8`/`uint16` continue to produce identical runtime behavior. The struct layout of `Cdd_Dma_TransferSizeType` and `Cdd_Dma_TransferParamsType` is larger due to the wider fields, requiring regeneration of the plugin-generated files.
+
+#### Old vs New
+
+| Symbol | v01.00.00 | v01.01.00 |
+|--------|-----------|-----------|
+| `Cdd_Dma_SetTransferSize` — `BurstSize` parameter type | `uint8` | `uint16` |
+| `Cdd_Dma_SetTransferSize` — `TransferSize` parameter type | `uint16` | `uint32` |
+| `Cdd_Dma_TransferSizeType.BurstSize` field type | `uint8` | `uint16` |
+| `Cdd_Dma_TransferSizeType.TransferSize` field type | `uint16` | `uint32` |
+
+```{note}
+Existing calls that pass values within the old type range (BurstSize ≤ 255, TransferSize ≤ 65535) continue to compile and behave identically. No runtime change occurs for those values.
+```
+
+#### Migration Actions
+
+1. **Update application variable types:** In application code that calls `Cdd_Dma_SetTransferSize` directly, update any `uint8` variables holding `BurstSize` to `uint16`, and any `uint16` variables holding `TransferSize` to `uint32`, to match the new parameter types.
+2. **Update `Cdd_Dma_TransferSizeType` initializers:** If application code directly initializes a `Cdd_Dma_TransferSizeType` struct, update `uint8` literals or variables assigned to `BurstSize` to use `uint16`, and `uint16` literals or variables assigned to `TransferSize` to use `uint32`.
+3. **Regenerate plugin output:** Open EB Tresos and regenerate `Cdd_Dma_Cfg.c` and `Cdd_Dma_Cfg.h` using the updated plugin to reflect the new struct layout.
+4. **Rebuild the project:** Recompile all translation units that include `Cdd_Dma.h` or `Cdd_Dma_Cfg.h` to pick up the new struct sizes.
+
+### Change 2: Wrap size parameter type widening
+
+#### Description
+
+The `SrcWrapSize` parameter of `Cdd_Dma_SetTransferWrapSrcProperties` and the `DestWrapSize` parameter of `Cdd_Dma_SetTransferWrapDestProperties` have each been widened from `uint16` to `uint32`. The same widening applies to `Cdd_Dma_TransferSrcWrapType.SrcWrapSize` and `Cdd_Dma_TransferDestWrapType.DestWrapSize`, which are embedded in `Cdd_Dma_TransferParamsType`.
+
+As with Change 1, the driver subtracts 1 from the wrap size before writing to the hardware register. Widening from `uint16` to `uint32` allows the user to input 65536, causing the driver to write the hardware maximum value of 65535 — previously unreachable with a `uint16` input.
+
+All values previously valid under `uint16` continue to produce identical runtime behavior. The struct layout of `Cdd_Dma_TransferSrcWrapType`, `Cdd_Dma_TransferDestWrapType`, and `Cdd_Dma_TransferParamsType` is larger, requiring regeneration of the plugin-generated files.
+
+#### Old vs New
+
+| Symbol | v01.00.00 | v01.01.00 |
+|--------|-----------|-----------|
+| `Cdd_Dma_SetTransferWrapSrcProperties` — `SrcWrapSize` parameter type | `uint16` | `uint32` |
+| `Cdd_Dma_SetTransferWrapDestProperties` — `DestWrapSize` parameter type | `uint16` | `uint32` |
+| `Cdd_Dma_TransferSrcWrapType.SrcWrapSize` field type | `uint16` | `uint32` |
+| `Cdd_Dma_TransferDestWrapType.DestWrapSize` field type | `uint16` | `uint32` |
+
+```{note}
+Existing calls that pass wrap size values within the old `uint16` range (≤ 65535) continue to compile and behave identically. No runtime change occurs for those values.
+```
+
+#### Migration Actions
+
+1. **Update application variable types:** In application code that calls `Cdd_Dma_SetTransferWrapSrcProperties` or `Cdd_Dma_SetTransferWrapDestProperties` directly, update any `uint16` variables holding the wrap size to `uint32` to match the new parameter types.
+2. **Update wrap struct initializers:** If application code directly initializes `Cdd_Dma_TransferSrcWrapType` or `Cdd_Dma_TransferDestWrapType` structs, update `uint16` literals or variables assigned to `SrcWrapSize` or `DestWrapSize` to use `uint32`.
+3. **Regenerate plugin output:** Open EB Tresos and regenerate `Cdd_Dma_Cfg.c` and `Cdd_Dma_Cfg.h` using the updated plugin to reflect the new struct layout.
+4. **Rebuild the project:** Recompile all translation units that include `Cdd_Dma.h` or `Cdd_Dma_Cfg.h` to pick up the new struct sizes.

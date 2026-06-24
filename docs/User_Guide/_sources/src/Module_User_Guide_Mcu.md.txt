@@ -14,6 +14,12 @@
 |HW |Hardware|
 |SW |Software|
 |I/O|Input/Output|
+|ASysCtl|Analog System Control|
+|ADC|Analog-to-Digital Converter|
+|CMPSS|Comparator Subsystem|
+|SOC|Start-of-Conversion|
+|POR|Power-On Reset|
+|BOR|Brown-Out Reset|
 
 ### Introduction
 
@@ -46,6 +52,9 @@ The MCU driver provides services for basic micro-controller initialization, redu
 * Provides a service to get the reset reason from hardware.
 * Support of External clock output (XCLKOUT) feature to observe a clock directly for debug and testing purposes
 * Provides a service to get the system clock used by the hardware.
+* Initialization of Analog System Control (ASysCtl) registers: temperature sensor, analog reference, voltage regulator, brown-out reset monitor, and internal test node.
+* Initialization of CMPSS analog input mux registers (CMPHPMXSEL, CMPLPMXSEL, CMPHNMXSEL, CMPLNMXSEL).
+* Runtime control of the internal analog test bus node selection, and ASysCtl register write-lock.
 
 ### Hardware Features
 
@@ -235,6 +244,31 @@ In addition to lockstep configuration, the MCU module configures peripheral cloc
 For CPUSEL and FRAMESEL configuration details, refer to the [ResourceAllocator User Guide](Module_User_Guide_ResourceAllocator.md#frame-selection-framesel).
 ```
 
+##### Analog System Control (ASysCtl)
+
+The MCU driver owns all Analog System Control (ASysCtl) hardware initialization and runtime control. ASysCtl is a set of system-level analog controls that govern:
+
+* **Temperature sensor enable** — enables the on-chip temperature sensor used by ADC calibration.
+* **Analog reference control** — selects the internal or external analog voltage reference and voltage level.
+* **Voltage regulator control** — configures the internal analog voltage regulator.
+* **Voltage monitor / brown-out reset** — enables the supply voltage monitor and brown-out reset threshold.
+* **Internal test node selection** — connects an internal analog node to the analog test bus for diagnostic or calibration purposes.
+* **CMPSS analog input mux** — routes analog signals to the positive and negative inputs of each CMPSS comparator.
+
+Refer to the device Technical Reference Manual (TRM) for register-level details.
+
+All of these settings are initialized during `Mcu_Init()` from the `ASysCtl` and `CMPSSControl` containers in the ResourceAllocator configuration. If neither container is present (for example, in existing projects that have not yet added the ASysCtl configuration), `Mcu_Init()` behavior is unchanged — the initialization is NULL-pointer guarded.
+
+At runtime, selected ASysCtl settings can be reconfigured or locked via the dedicated APIs. Refer to the API guide for more information.
+
+###### ASysCtl Write-Lock
+
+Several ASysCtl settings support a one-time hardware write-lock. Once a lock bit is committed it cannot be cleared until the next system reset. The `Mcu_ASysCtl_CommitLock()` API applies this lock.
+
+```{warning}
+ASysCtl lock bits are irreversible until system reset. Ensure the desired register values are correct before calling `Mcu_ASysCtl_CommitLock()`.
+```
+
 #### Not supported Features
 
 None
@@ -317,13 +351,15 @@ when enabled. The driver interface contains the MACRO declaration of the error c
 |Type of Error|Related Error code|Value (Hex)|
 |----|-----|-------|
 |API parameter checking: Mcu_init service called with invalid config parameter|MCU_E_PARAM_CONFIG|0x0A|
-|API parameter checking: McuInitClock service called with invalid ClockSetting parameter|MCU_E_PARAM_CLOCK|0x0B|  
+|API parameter checking: McuInitClock service called with invalid ClockSetting parameter|MCU_E_PARAM_CLOCK|0x0B|
 |API parameter checking: Mcu_SetMode service called with invalid McuMode parameter|MCU_E_PARAM_MODE|0x0C|
 |API parameter checking: Mcu_InitRamSection service called with invalid Ram Section parameter|MCU_E_PARAM_RAMSECTION|0x0D|
 |Mcu_DistributePllClock service checks PLL lock status|MCU_E_PLL_NOT_LOCKED|0x0E|
 |API invoked without performing Mcu_init|MCU_E_UNINIT|0x0F|
 |API called with a NULL_PTR|MCU_E_PARAM_POINTER|0x10|
 |API called without performing Mcu_InitClock|MCU_E_UNINIT_CLOCK|0x12|
+|Invalid test node value passed to `Mcu_ASysCtl_SelectInternalTestNode()`|MCU_E_PARAM_TESTNODE|0x13|
+|`Mcu_ASysCtl_CommitLock()` called with lock bits already committed|MCU_E_ALREADY_LOCKED|0x14|
 
 ### Safety Mechanism
 
@@ -341,12 +377,13 @@ More details of Safety Mechanisms can be found in Safety Manual.
 
 ### Silicon errata workarounds and recommendation
 
-For detailed silicon errata, refer to the [F29H85x, F29P58x, and F29P32x Real-Time MCUs Silicon Errata](https://www.ti.com/lit/er/sprz569c/sprz569c.pdf).
+For detailed silicon errata, please check the latest Errata at [https://www.ti.com/product/F29H859TU-Q1](https://www.ti.com/product/F29H859TU-Q1).
 
-| Advisory | Workaround in MCAL driver | Recommended actions for user |
-|----------|--------------------------|-------------------------------|
-| System: Issuing device reset (XRSn) can cause unexpected fault if SYSCLKDIVSEL.PLLSYSCLKDIV = 0 | No workaround is implemented in the Mcu driver. The configurator tool provides a warning whenever the user configures SYSCLKDIVSEL.PLLSYSCLKDIV = 0 (divide by 1) | Avoid configuring SYSCLKDIVSEL.PLLSYSCLKDIV = 0 (divide by 1); use 1 (divide by 2) or a higher divider value instead. |
-| MCD: Missing Clock Detect should be disabled when the PLL is enabled (PLLCLKEN = 1) | The Mcu driver implements the workaround by disabling MCD (MCDCR.MCLKOFF = 1) before enabling the PLL. | No additional user action is required when PLL is enabled through the Mcu driver |
+| Advisory | Revisions Affected | Workaround in MCAL driver | Recommended actions for user |
+|----------|--------------------|--------------------------|-------------------------------|
+| System: Issuing device reset (XRSn) can cause unexpected fault if SYSCLKDIVSEL.PLLSYSCLKDIV = 0 | 0, A, B, C | No workaround is implemented in the Mcu driver. The configurator tool provides a warning whenever the user configures SYSCLKDIVSEL.PLLSYSCLKDIV = 0 (divide by 1) | Avoid configuring SYSCLKDIVSEL.PLLSYSCLKDIV = 0 (divide by 1); use 1 (divide by 2) or a higher divider value instead |
+| MCD: Missing Clock Detect should be disabled when the PLL is enabled (PLLCLKEN = 1) | 0, A, B, C | The Mcu driver implements the workaround by disabling MCD (MCDCR.MCLKOFF = 1) before enabling the PLL. | No additional user action is required when PLL is enabled through the Mcu driver |
+| System: Internal device reset could cause the device to be stuck in the reset loop | 0, A |No workaround is implemented in the MCU driver.  Need to power cycle the device in this error condition |  Recommendation is to switch application to use die Rev C |
 
 ### Used resources
 
@@ -399,7 +436,11 @@ For MCU Module, data consistency and exclusive access to critical sections are r
 
 #### Multi-core and Resource allocator
 
-The MCU module is not managed by the Resource Allocator. The MCU driver handles system-level resources such as Clock configuration and Low Power Mode, which can only be performed from CPU1. These system-level resources are not represented in the Resource Allocator configuration. No Resource Allocator instance allocation is needed for the MCU module.
+The MCU module handles system-level resources such as Clock configuration and Low Power Mode, which can only be performed from CPU1. In addition, the MCU driver reads the **ASysCtl** and **CMPSSControl** containers from the ResourceAllocator configuration to initialize analog system control registers during `Mcu_Init()`. No per-instance Resource Allocator allocation is required for the MCU module itself.
+
+```{seealso}
+For details on configuring the `ASysCtl` and `CMPSSControl` containers, refer to the [ResourceAllocator User Guide](Module_User_Guide_ResourceAllocator.md).
+```
 
 ### Configuration
 
@@ -408,7 +449,6 @@ The associated Mcu driver configuration generated source files are **Mcu_Cfg.c**
 **Mcu_PBcfg.c**
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
-
 
 #### Configuration Parameters
 

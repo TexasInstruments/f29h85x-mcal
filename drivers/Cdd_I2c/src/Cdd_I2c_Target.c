@@ -354,7 +354,7 @@ static void Cdd_I2c_ProcessTargetEvents(Cdd_I2c_HwUnitObjType *hwUnitObj)
     /* Note: NULL check is added first to get better code coverage */
     if (hwUnitObj->hwUnitCfg->targetErrorNotification != NULL_PTR)
     {
-        /* TI_COVERAGE_GAP_START Target Nack error cannot be recreated in test environment */
+        /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] Target Nack error cannot be recreated in test environment */
         if (intCode == CDD_I2C_ISRC_INTCODE_NACK)
         {
             hwUnitObj->hwUnitCfg->targetErrorNotification(hwUnitObj->hwUnitCfg->hwUnitId, CDD_I2C_TARGET_EVENT_NACK);

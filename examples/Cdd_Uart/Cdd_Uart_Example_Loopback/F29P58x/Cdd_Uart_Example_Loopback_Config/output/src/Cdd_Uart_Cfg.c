@@ -73,6 +73,13 @@
  * Header Files
  *********************************************************************************************************************/
 
+/*
+ * Design: MCAL-38856,MCAL-38857,MCAL-38858,MCAL-38859,MCAL-38860,MCAL-38861,MCAL-38862,MCAL-38863,
+ * Design: MCAL-38864,MCAL-38865,MCAL-38866,MCAL-38867,MCAL-38868,MCAL-38869,MCAL-38870,MCAL-38871,
+ * Design: MCAL-38872,MCAL-38873,MCAL-38874,MCAL-38875,MCAL-38876,MCAL-38877,MCAL-38878,MCAL-38879,
+ * Design: MCAL-38880,MCAL-38881,MCAL-38882,MCAL-38883,MCAL-38884,MCAL-38885,MCAL-38886,MCAL-38887,
+ * Design: MCAL-38888,MCAL-38889,MCAL-38893,MCAL-38894
+ */
 #include "Cdd_Uart.h"
 
 /*********************************************************************************************************************
@@ -83,11 +90,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CDD_UART_SW_MAJOR_VERSION != (3U)) || (CDD_UART_SW_MINOR_VERSION != (0U)))
+#if ((CDD_UART_SW_MAJOR_VERSION != (3U)) || (CDD_UART_SW_MINOR_VERSION != (1U)))
     #error "Version numbers of Cdd_Uart_Cfg.c and Cdd_Uart.h are inconsistent!"
 #endif
 
-#if ((CDD_UART_CFG_MAJOR_VERSION != (3U)) || (CDD_UART_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_UART_CFG_MAJOR_VERSION != (3U)) || (CDD_UART_CFG_MINOR_VERSION != (1U)))
     #error "Version numbers of Cdd_Uart_Cfg.c and Cdd_Uart_Cfg.h are inconsistent!"
 #endif
 

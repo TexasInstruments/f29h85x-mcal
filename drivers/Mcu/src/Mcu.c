@@ -101,11 +101,11 @@
 #endif
 
 /* vendor specific version information is BCD coded */
-#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (2U)))
+#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (3U)))
 #error "Version numbers of Mcu.c and Mcu.h are inconsistent!"
 #endif
 
-#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (2U)))
+#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (3U)))
 #error "Version numbers of Mcu.c and Mcu_Cfg.h are inconsistent!"
 #endif
 
@@ -156,6 +156,12 @@ static VAR(Mcu_CalClkValueType, MCU_VAR_NO_INIT) Mcu_calClock;
 #endif
 /* Selected system clock value */
 static VAR(uint32, MCU_VAR_NO_INIT) Mcu_sysClock = 0;
+
+#if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
+/* ASysCtl commit-lock status bitmask — tracks which Mcu_ASysCtlLockType bits have already
+ * been committed. Used to detect duplicate lock calls on the same register. */
+static VAR(uint32, MCU_VAR_INIT) Mcu_ASysCtlCommitLockStatus = 0U;
+#endif /* MCU_CFG_DEV_ERROR_DETECT */
 
 #define MCU_STOP_SEC_VAR_INIT_32
 #include "Mcu_MemMap.h"
@@ -249,6 +255,12 @@ FUNC(void, MCU_CODE) Mcu_Init(P2CONST(Mcu_ConfigType, MCU_CONFIG_DATA, MCU_CONFI
 
         /* Configure CPU1 Lockstep */
         Mcu_Priv_ConfigureLockstep(config_ptr->Mcu_LockstepEnable);
+
+        /* Configure ASysCtl (Analog System Control) registers */
+        Mcu_Priv_ConfigureASysCtl(config_ptr->Mcu_ASysCtlConfig);
+
+        /* Configure CMPSS ASysCtl mux select registers */
+        Mcu_Priv_ConfigureCMPSSASysCtl(config_ptr->Mcu_CMPSSASysCtlConfig);
 
 #if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
         /* Set Init Done flag */
@@ -591,6 +603,121 @@ FUNC(Mcu_RamStateType, MCU_CODE) Mcu_GetRamState(void)
     return (ram_state_type);
 }
 #endif /*MCU_CFG_GET_RAM_STATE_API*/
+
+/*
+ * Design: MCAL-21820
+ */
+FUNC(void, MCU_CODE) Mcu_ASysCtl_SelectInternalTestNode(VAR(Mcu_ASysCtlTestNodeType, AUTOMATIC) TestNode)
+{
+#if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
+    if ((boolean)FALSE == Mcu_InitDone)
+    {
+        /* API is being called before calling Mcu_Init */
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_ASY_SELECT_INTERNAL_TEST_NODE, MCU_E_UNINIT);
+    }
+    else if (TestNode >= (Mcu_ASysCtlTestNodeType)MCU_ASYSCTL_TEST_NODE_MAX)
+    {
+        /* API is being called with an invalid test node parameter */
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_ASY_SELECT_INTERNAL_TEST_NODE,
+                              MCU_E_PARAM_TESTNODE);
+    }
+    else
+#endif /* MCU_CFG_DEV_ERROR_DETECT */
+    {
+        Mcu_Priv_SelectInternalTestNode(TestNode);
+    }
+}
+
+/*
+ * Design: MCAL-21820
+ */
+FUNC(void, MCU_CODE)
+Mcu_ASysCtl_ConfigADCGlobalSOC(VAR(uint32, AUTOMATIC) BaseAddr, VAR(uint8, AUTOMATIC) AdcSelect)
+{
+#if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
+    if ((boolean)FALSE == Mcu_InitDone)
+    {
+        /* API is being called before calling Mcu_Init */
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_ASY_CONFIG_ADC_GLOBAL_SOC, MCU_E_UNINIT);
+    }
+    else if ((uint32)0U == BaseAddr)
+    {
+        /* API is being called with a NULL base address */
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_ASY_CONFIG_ADC_GLOBAL_SOC, MCU_E_PARAM_POINTER);
+    }
+    else
+#endif /* MCU_CFG_DEV_ERROR_DETECT */
+    {
+        Mcu_Priv_ConfigADCGlobalSOC(BaseAddr, AdcSelect);
+    }
+}
+
+/*
+ * Design: MCAL-21820
+ */
+FUNC(void, MCU_CODE) Mcu_ASysCtl_ForceADCGlobalSOC(VAR(uint32, AUTOMATIC) BaseAddr, VAR(uint32, AUTOMATIC) SocMask)
+{
+#if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
+    if ((boolean)FALSE == Mcu_InitDone)
+    {
+        /* API is being called before calling Mcu_Init */
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_ASY_FORCE_ADC_GLOBAL_SOC, MCU_E_UNINIT);
+    }
+    else if ((uint32)0U == BaseAddr)
+    {
+        /* API is being called with a NULL base address */
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_ASY_FORCE_ADC_GLOBAL_SOC, MCU_E_PARAM_POINTER);
+    }
+    else
+#endif /* MCU_CFG_DEV_ERROR_DETECT */
+    {
+        Mcu_Priv_ForceADCGlobalSOC(BaseAddr, SocMask);
+    }
+}
+
+/*
+ * Design: MCAL-21820
+ */
+FUNC(void, MCU_CODE) Mcu_ASysCtl_CommitLock(VAR(Mcu_ASysCtlLockType, AUTOMATIC) LockMask)
+{
+#if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
+    if ((boolean)FALSE == Mcu_InitDone)
+    {
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_ASYSCTL_COMMIT_LOCK, MCU_E_UNINIT);
+    }
+    else if (0U != ((uint32)LockMask & Mcu_ASysCtlCommitLockStatus))
+    {
+        /* One or more requested lock bits have already been committed — report error */
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_ASYSCTL_COMMIT_LOCK, MCU_E_ALREADY_LOCKED);
+    }
+    else
+#endif /* STD_ON == MCU_CFG_DEV_ERROR_DETECT */
+    {
+        Mcu_Priv_CommitASysCtlLock(LockMask);
+#if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
+        /* Record which bits have now been locked */
+        Mcu_ASysCtlCommitLockStatus |= (uint32)LockMask;
+#endif /* MCU_CFG_DEV_ERROR_DETECT */
+    }
+}
+
+/*
+ * Design: MCAL-21820
+ */
+FUNC(void, MCU_CODE) Mcu_SysCtl_ConfigEPWMXLink(VAR(uint32, AUTOMATIC) EPWMXLinkMask)
+{
+#if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
+    if ((boolean)FALSE == Mcu_InitDone)
+    {
+        /* API is being called before calling Mcu_Init */
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_SYSCTL_CONFIG_EPWMXLINK, MCU_E_UNINIT);
+    }
+    else
+#endif /* MCU_CFG_DEV_ERROR_DETECT */
+    {
+        Mcu_Priv_ConfigEPWMXLink(EPWMXLinkMask);
+    }
+}
 
 /*********************************************************************************************************************
  *  Local Functions Definition

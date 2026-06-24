@@ -4,16 +4,17 @@
 
 |Abbreviation/Term|Explanation|
 |------|------|
-|AUTOSAR|Automotive Open System Architecture|
-|RTE|Runtime Environment|
-|BSW|Basic Software|
-|GPIO|General Purpose Input Output|
-|MCAL|Micro Controller Abstraction Layer|
 |API|Application Programming Interface|
+|ASysCtl|Analog System Control|
+|AUTOSAR|Automotive Open System Architecture|
+|BSW|Basic Software|
 |DET|Default Error Tracer|
-|HW |Hardware|
-|SW |Software|
+|GPIO|General Purpose Input Output|
+|HW|Hardware|
 |I/O|Input/Output|
+|MCAL|Micro Controller Abstraction Layer|
+|RTE|Runtime Environment|
+|SW|Software|
 
 ### Introduction
 
@@ -87,6 +88,14 @@ Some GPIOs are multiplexed with analog pins and only have digital input function
 
 Some GPIOs are multiplexed with analog pins and have digital input and output functionality. These are also referred to as AGPIOs. Unlike AIOs, AGPIOs have full input and output capability. By default, the AGPIOs are not connected and must be configured.
 
+The Port driver provides additional configuration for AGPIO-capable pins through the following controls:
+
+* **IO buffer drive strength** — Selects normal or high-drive strength per AGPIO pin
+* **IO buffer voltage mode** — Selects 3.3V or 1.35V IO buffer voltage per AGPIO pin
+* **Analog GPIO input filter** — Selects the input filter resistance applied globally to all AGPIO pins
+
+These settings are applied during `Port_Init()`. Once `Port_CommitConfiguration()` is called, the analog GPIO input filter and analog GPIO control settings are permanently locked for the remainder of the power cycle. Refer to the device Technical Reference Manual (TRM) for register-level details.
+
 ##### Input Qualification
 
 The input qualification scheme has been designed to be very flexible. Input qualification can be configured by user using the configurator tool. In the case of a GPIO input pin, the qualification can be specified as only synchronized to SYSCLKOUT or qualification by a sampling window. For pins that are configured as peripheral inputs, the input can also be asynchronous in addition to synchronized to SYSCLKOUT or qualified by a sampling window. The remainder of this section describes the options available.
@@ -118,8 +127,6 @@ Port Driver needs to be initialized as per the available pin package. Refer Devi
 ```{NOTE}
 Refer Device Data Sheet for details about reserved/non-configurable pins for the respective  pin package.
 ```
-
-* Lock Configuration and Lock Commit configuration as not supported for the module
 
 #### Non compliance
 
@@ -578,6 +585,32 @@ Configuration of the individual port pins.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
+###### PortIOBufferDriveConfig
+
+| Item ||
+|--------|---------------|
+| **Name** | PortIOBufferDriveConfig |
+| **Description** | Selects the IO buffer drive strength for AGPIO-capable pins via the IODRVSEL register bit. TRUE = high-drive strength. FALSE = normal drive strength. Only applicable to AGPIO pins. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### PortIOBufferModeConfig
+
+| Item ||
+|--------|---------------|
+| **Name** | PortIOBufferModeConfig |
+| **Description** | Selects the IO buffer voltage mode for AGPIO-capable pins via the IOMODESEL register bit. TRUE = 1.35 V mode. FALSE = 3.3 V mode. Only applicable to AGPIO pins. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
 ###### PortPinMode
 
 | Item ||
@@ -675,6 +708,20 @@ Module wide configuration parameters of the PORT driver.
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
+
+###### PortAGPIOFilter
+
+| Item ||
+|--------|---------------|
+| **Name** | PortAGPIOFilter |
+| **Description** | <html><br>                            <h3>AGPIOFILTER - Analog GPIO input filter selection (global, applies to all AGPIO pins):</h3><br>                            <ul><br>                                <li><b>PORT_AGPIO_FILTER_0 (00):</b> Filter bypass configuration (min ACQPS = 90ns)</li><br>                                <li><b>PORT_AGPIO_FILTER_1 (01):</b> 333 Ohm filter setting (min ACQPS = 125ns)</li><br>                                <li><b>PORT_AGPIO_FILTER_2 (10):</b> 500 Ohm filter setting (min ACQPS = 160ns)</li><br>                                <li><b>PORT_AGPIO_FILTER_3 (11):</b> 1 kOhm filter setting (min ACQPS = 230ns)</li><br>                            </ul><br>                        </html> |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | PORT_AGPIO_FILTER_0 |
+| **Range** | PORT_AGPIO_FILTER_0<br>PORT_AGPIO_FILTER_1<br>PORT_AGPIO_FILTER_2<br>PORT_AGPIO_FILTER_3 |
 Refer [AUTOSAR_SWS_PortDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_PortDriver.pdf) for more configuration parameters details
 
 ```{NOTE}

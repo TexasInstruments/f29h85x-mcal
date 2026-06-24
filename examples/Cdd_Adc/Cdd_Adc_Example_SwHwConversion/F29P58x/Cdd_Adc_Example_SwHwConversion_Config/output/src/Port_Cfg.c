@@ -81,7 +81,7 @@
  /*
  *Design: MCAL-22408
  */
- 
+
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -95,11 +95,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((PORT_SW_MAJOR_VERSION != (4U)) || (PORT_SW_MINOR_VERSION != (0U)))
+#if ((PORT_SW_MAJOR_VERSION != (4U)) || (PORT_SW_MINOR_VERSION != (1U)))
    #error "Version numbers of Port_Cfg.c and Port.h are inconsistent!"
 #endif
 
-#if ((PORT_CFG_MAJOR_VERSION != (4U)) || (PORT_CFG_MINOR_VERSION != (0U)))
+#if ((PORT_CFG_MAJOR_VERSION != (4U)) || (PORT_CFG_MINOR_VERSION != (1U)))
    #error "Version numbers of Port_Cfg.c and Port_Cfg.h are inconsistent!"
 #endif
 
@@ -124,7 +124,7 @@
 
 static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig[15] =
 {
- 
+   
    {
     /* .Port_PhysicalPinId = R1U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)160U,
@@ -145,7 +145,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(0UL<<2U)
                             |(1UL<<3U)
                             |(0UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -159,7 +162,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
- 
+   
    {
     /* .Port_PhysicalPinId = P1U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)161U,
@@ -180,7 +183,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(0UL<<2U)
                             |(1UL<<3U)
                             |(0UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -194,7 +200,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
- 
+   
    {
     /* .Port_PhysicalPinId = L5U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)224U,
@@ -215,7 +221,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(1UL<<2U)
                             |(0UL<<3U)
                             |(0UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -229,7 +238,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
- 
+   
    {
     /* .Port_PhysicalPinId = K5U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)225U,
@@ -250,7 +259,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(1UL<<2U)
                             |(0UL<<3U)
                             |(0UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -264,7 +276,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
- 
+   
    {
     /* .Port_PhysicalPinId = P2U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)170U,
@@ -285,7 +297,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(0UL<<2U)
                             |(1UL<<3U)
                             |(0UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -299,7 +314,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
- 
+   
    {
     /* .Port_PhysicalPinId = N3U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)171U,
@@ -320,7 +335,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(0UL<<2U)
                             |(1UL<<3U)
                             |(0UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -334,7 +352,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
- 
+   
    {
     /* .Port_PhysicalPinId = C16U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)42U,
@@ -355,7 +373,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(0UL<<2U)
                             |(0UL<<3U)
                             |(1UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -369,7 +390,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
- 
+   
    {
     /* .Port_PhysicalPinId = C15U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)43U,
@@ -390,7 +411,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(0UL<<2U)
                             |(0UL<<3U)
                             |(1UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -404,7 +428,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
- 
+   
    {
     /* .Port_PhysicalPinId = L4U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)172U,
@@ -425,7 +449,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(0UL<<2U)
                             |(1UL<<3U)
                             |(0UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -439,7 +466,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
- 
+   
    {
     /* .Port_PhysicalPinId = R3U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)192U,
@@ -460,7 +487,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(0UL<<2U)
                             |(1UL<<3U)
                             |(0UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -474,7 +504,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
- 
+   
    {
     /* .Port_PhysicalPinId = T3U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)193U,
@@ -495,7 +525,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(0UL<<2U)
                             |(1UL<<3U)
                             |(0UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -509,7 +542,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
- 
+   
    {
     /* .Port_PhysicalPinId = R5U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)194U,
@@ -530,7 +563,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(0UL<<2U)
                             |(1UL<<3U)
                             |(0UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -544,7 +580,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
- 
+   
    {
     /* .Port_PhysicalPinId = R6U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)195U,
@@ -565,7 +601,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(0UL<<2U)
                             |(1UL<<3U)
                             |(0UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -579,7 +618,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
- 
+   
    {
     /* .Port_PhysicalPinId = N6U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)196U,
@@ -600,7 +639,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(0UL<<2U)
                             |(1UL<<3U)
                             |(0UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -614,7 +656,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
- 
+   
    {
     /* .Port_PhysicalPinId = L3U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)173U,
@@ -635,7 +677,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
                             |(0UL<<2U)
                             |(1UL<<3U)
                             |(0UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
+        .Port_EnableWakeupPinLPM = (boolean) FALSE,
+        .Port_IOBufferDriveConfig = (boolean) FALSE,
+        .Port_IOBufferModeConfig = (boolean) FALSE,
+        .Port_AGPIOBitMask = (uint32)0U
     },
     .Port_NumPortMuxModes = (uint32)1U,
     .Port_PinMode =
@@ -654,10 +699,18 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
 
 
 
-const struct Port_ConfigType_s Port_Config = 
+static CONST(Port_ASysCtlConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_ASysCtlConfig =
+{
+    .Port_AGPIOFilter = (uint8)0U
+};
+
+
+
+const struct Port_ConfigType_s Port_Config =
 {
     .Port_PinConfig = (const Port_PinConfigType *)&Port_PortConfigSet_PinConfig[0],
-    .Port_NumberOfPortPins = (Port_PinType)15U
+    .Port_NumberOfPortPins = (Port_PinType)15U,
+    .Port_ASysCtlConfig = &Port_PortConfigSet_ASysCtlConfig
 };
 
 

@@ -1,0 +1,251 @@
+/*********************************************************************************************************************
+ *  COPYRIGHT
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  \verbatim
+ *
+ *   TEXAS INSTRUMENTS TEXT FILE LICENSE
+ *
+ *   Copyright (c) 2025 Texas Instruments Incorporated
+ *
+ *   All rights reserved not granted herein.
+ *
+ *   Limited License.
+ *
+ *   Texas Instruments Incorporated grants a world-wide, royalty-free, non-exclusive
+ *   license under copyrights and patents it now or hereafter owns or controls to
+ *   make, have made, use, import, offer to sell and sell ("Utilize") this software
+ *   subject to the terms herein. With respect to the foregoing patent license,
+ *   such license is granted solely to the extent that any such patent is necessary
+ *   to Utilize the software alone. The patent license shall not apply to any
+ *   combinations which include this software, other than combinations with devices
+ *   manufactured by or for TI ("TI Devices"). No hardware patent is licensed hereunder.
+ *
+ *   Redistributions must preserve existing copyright notices and reproduce this license
+ *   (including the above copyright notice and the disclaimer and (if applicable) source
+ *   code license limitations below) in the documentation and/or other materials provided
+ *   with the distribution.
+ *
+ *   Redistribution and use in binary form, without modification, are permitted provided
+ *   that the following conditions are met:
+ *
+ *   * No reverse engineering, decompilation, or disassembly of this software is
+ *     permitted with respect to any software provided in binary form.
+ *   * Any redistribution and use are licensed by TI for use only with TI Devices.
+ *   * Nothing shall obligate TI to provide you with source code for the software
+ *     licensed and provided to you in object code.
+ *
+ *   If software source code is provided to you, modification and redistribution of the
+ *   source code are permitted provided that the following conditions are met:
+ *
+ *   * Any redistribution and use of the source code, including any resulting derivative
+ *     works, are licensed by TI for use only with TI Devices.
+ *   * Any redistribution and use of any object code compiled from the source code
+ *     and any resulting derivative works, are licensed by TI for use only with TI Devices.
+ *
+ *   Neither the name of Texas Instruments Incorporated nor the names of its suppliers
+ *   may be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ *   DISCLAIMER.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY TI AND TI'S LICENSORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ *   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TI AND TI'S
+ *   LICENSORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *   GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *  \endverbatim
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  FILE DESCRIPTION
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  File:       Cdd_Adc_Cfg.c
+ *  Generator:  Elektrobit Tresos
+ *
+ *  Description:  Cdd_Adc configuration source file
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Header Files
+ *********************************************************************************************************************/
+#include "Cdd_Adc.h"
+#include "hw_memmap.h"
+#include "Mcal_Lib_BootRom.h"
+
+/*********************************************************************************************************************
+ * Version Check (if required)
+ *********************************************************************************************************************/
+#if ((CDD_ADC_SW_MAJOR_VERSION != (5U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
+  #error "Version numbers of Cdd_Adc_Cfg.c and Cdd_Adc.h are inconsistent!"
+#endif
+
+#if ( (CDD_ADC_CFG_MAJOR_VERSION != (5U)) \
+    ||(CDD_ADC_CFG_MINOR_VERSION != (0U)))
+  #error "Version numbers of Cdd_Adc_Cfg.c and Cdd_Adc_Cfg.h are inconsistent!"
+#endif
+
+/*********************************************************************************************************************
+ * Local Preprocessor #define Constants
+ *********************************************************************************************************************/
+
+#define CDD_ADC_RESULTBASEADDR_STEP       (ADCBRESULT_BASE - ADCARESULT_BASE)
+
+/*********************************************************************************************************************
+ * Local Preprocessor #define Macros
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Local Type Declarations
+ *********************************************************************************************************************/
+
+ /*********************************************************************************************************************
+ * Exported Object Definitions
+ *********************************************************************************************************************/
+/** \brief Cdd Adc Driver configuration */
+
+#define CDD_ADC_START_SEC_CONFIG_DATA_UNSPECIFIED
+#include "Cdd_Adc_MemMap.h"
+
+CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
+{
+    .hwunitcfg =
+    {
+        [0] =
+        {
+            .hwunit_id = (Cdd_Adc_HwUnitType)CDD_ADCA,
+            .prescale = (Cdd_Adc_PrescaleType)CDD_ADC_CLK_DIV_3_5,
+            .resolution = (Cdd_Adc_ResolutionType)CDD_ADC_RESOLUTION_12BIT,
+            #if (STD_ON == CDD_ADC_SET_RESOLUTION_API)
+            .resolution_update = (boolean)(0U),
+            #endif
+            .signal_mode = (Cdd_Adc_SignalModeType)CDD_ADC_MODE_SINGLE_ENDED,
+            .socpriority = (Cdd_Adc_SocPriorityType)0U,
+            .voltrefmode = (Cdd_Adc_RefModeType)CDD_ADC_REFERENCE_INTERNAL,
+            .intpulsemode = (Cdd_Adc_EocPulseType)CDD_ADC_PULSE_END_OF_CONV,
+            .intoffset = (uint16)0U,
+#if(STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)
+            .osdetectmode = ((Cdd_Adc_OsDetectModeType)CDD_ADC_OSDETECT_MODE_DISABLED),
+#endif
+#if(STD_ON == CDD_ADC_EXTCHSEL_CAPABILITY)
+            .extchnsel = (boolean)(0U),
+            .extmuxpreselect = (boolean)(0U),
+#endif
+            .startgroupnum = (Cdd_Adc_GroupType)(0U),
+            .lastgroupnum = (Cdd_Adc_GroupType)(0U),
+            .base_addr = (uint32)(ADCA_BASE_FRAME(0U)),
+            .result_baseaddr = (uint32)( ADCARESULT_BASE + (CDD_ADC_RESULTBASEADDR_STEP*0U)),
+            .inltrimaddress =((const uint32 *)&McalLib_DeviceCalibrationData->AdcAInlTrim[0U]),
+            .numadc_inltrim = ((uint8)6U)
+        }
+    },
+    .groupcfg  =
+    {
+        [0] =
+        {
+            /* HwunitId: CDD_ADCA */
+            .hwunit_index = (uint8)(0U),
+            .grp_int = (Cdd_Adc_IntNumType)CDD_ADC_INT1,
+            .continuetoint = (boolean)(0U),
+            .intsocsel = (Cdd_Adc_IntSocTriggerType)CDD_ADC_INT_SOC_TRIGGER_NONE,
+#if(STD_ON == CDD_ADC_GRP_NOTIF_CAPABILITY_API)
+            .groupend_notification = (Cdd_Adc_GroupEndNotifyType)NULL_PTR,
+#endif
+            .stream_numsamples = (Cdd_Adc_StreamNumSampleType)(3U),
+            .trigger_src = (Cdd_Adc_TriggerType)(CDD_ADC_TRIGGER_SW_ONLY),
+            .conversion_mode = (Cdd_Adc_GroupConvModeType)CDD_ADC_CONV_MODE_CONTINUOUS,
+            .trigsrc_type = (Cdd_Adc_TriggerSrcType)CDD_ADC_TRIGG_SRC_SW,
+            .access_mode = (Cdd_Adc_GroupAccessModeType)CDD_ADC_ACCESS_MODE_STREAMING,
+            .streambuffermode = (Cdd_Adc_StreamBufferModeType)CDD_ADC_STREAM_BUFFER_LINEAR,
+            .startchannelnum = (uint8)(0U),
+            .channelcount = (uint8)(5U),
+            .soc_mask =  (uint32)(31U),
+            .lastsocnum = (uint8)(4U),
+            .dma_mode = ((boolean)(1U))
+        }
+    },
+
+    .channelcfg =
+    {
+        [0] =
+        {
+            /* HwunitId:CDD_ADCA Group:0 */
+            .channel_id = (uint8)(0U),
+            .sample_window = (uint16)(15U),
+#if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
+            .extchannelnum = (uint8)(0U),
+#endif
+            .soc_num =  (uint8)(0U)
+        },
+        [1] =
+        {
+            /* HwunitId:CDD_ADCA Group:0 */
+            .channel_id = (uint8)(1U),
+            .sample_window = (uint16)(15U),
+#if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
+            .extchannelnum = (uint8)(0U),
+#endif
+            .soc_num =  (uint8)(1U)
+        },
+        [2] =
+        {
+            /* HwunitId:CDD_ADCA Group:0 */
+            .channel_id = (uint8)(30U),
+            .sample_window = (uint16)(15U),
+#if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
+            .extchannelnum = (uint8)(0U),
+#endif
+            .soc_num =  (uint8)(2U)
+        },
+        [3] =
+        {
+            /* HwunitId:CDD_ADCA Group:0 */
+            .channel_id = (uint8)(31U),
+            .sample_window = (uint16)(15U),
+#if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
+            .extchannelnum = (uint8)(0U),
+#endif
+            .soc_num =  (uint8)(3U)
+        },
+        [4] =
+        {
+            /* HwunitId:CDD_ADCA Group:0 */
+            .channel_id = (uint8)(6U),
+            .sample_window = (uint16)(15U),
+#if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
+            .extchannelnum = (uint8)(0U),
+#endif
+            .soc_num =  (uint8)(4U)
+        }
+    },
+};
+
+
+#define CDD_ADC_STOP_SEC_CONFIG_DATA_UNSPECIFIED
+#include "Cdd_Adc_MemMap.h"
+
+/*********************************************************************************************************************
+ * Local Object Definitions
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ *  Local Function Prototypes
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ *  Local Inline Function Definitions and Function-Like Macros
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ *  External Functions Definition
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ *  Local Functions Definition
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ *  End of File: Cdd_Adc_Cfg.c
+ *********************************************************************************************************************/

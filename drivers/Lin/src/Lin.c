@@ -292,14 +292,12 @@ Lin_Init(P2CONST(Lin_ConfigType, AUTOMATIC, LIN_CONFIG_DATA) Config)
             Lin_Module_State = LIN_INIT;
 #endif
         }
-        /* TI_COVERAGE_GAP_START [Line Gap] in LIN_E_INVALID_POINTER, False Positive */
         else
         {
 #if (STD_ON == LIN_DEV_ERROR_DETECT)
             (void)Det_ReportError(LIN_MODULE_ID, LIN_INSTANCE_ID, LIN_SID_INIT, LIN_E_INVALID_POINTER);
 #endif
         }
-        /* TI_COVERAGE_GAP_STOP*/
     }
 }
 

@@ -119,7 +119,7 @@ extern "C" {
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
-/* Category 1 INT ISR function prototype. */
+/* Category 1 RTINT INT ISR function prototype. */
 MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm1_TzIntIsr);
 
 

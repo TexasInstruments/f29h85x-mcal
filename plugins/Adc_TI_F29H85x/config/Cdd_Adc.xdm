@@ -52,113 +52,6 @@
                           value="EN: This container contains the configuration parameters and sub containers of the Cdd Adc module."/>
                     <a:a name="UUID"
                          value="55bf3bc0-94a9-4889-b34c-f80af2c7d556"/>
-                    <v:var name="CddAdcEnableTemperatureSensor" type="BOOLEAN">
-                      <a:a name="DESC"
-                            value="EN: Enables/Disables the temperature sensor."/>
-                      <a:a name="IMPLEMENTATIONCONFIGCLASS"
-                        type="IMPLEMENTATIONCONFIGCLASS">
-                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                      </a:a>
-                      <a:a name="ORIGIN" value="Texas Instruments"/>
-                      <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="UUID"
-                           value="ec2711be-2211-4269-ac07-b48382eac33b"/>
-                      <a:da name="DEFAULT" value="false"/>
-                    </v:var>
-                    <v:var name="CddAdcLockTemperatureSensor" type="BOOLEAN">
-                      <a:a name="DESC"
-                            value="EN: Locks the temperature sensor configuration register When enabled .This is editable only when the temperature sensor is enabled."/>
-                      <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                      </a:a>
-                      <a:a name="ORIGIN" value="Texas Instruments"/>
-                      <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="UUID"
-                           value="8190cb4e-49bd-40ff-9866-6a01a05580e2"/>
-                      <a:da name="DEFAULT" value="false"/>
-                      <a:da name="EDITABLE" type="XPath" expr="(../CddAdcEnableTemperatureSensor)"/>
-                      <a:da name="INVALID" type="XPath" expr="not(. = 'true' and ../CddAdcEnableTemperatureSensor = 'false')" false="This parameter is only enabled only when the temperature sensor is enabled."/>
-                    </v:var>
-                    <v:var name="CddAdcInternalTestInput" type="ENUMERATION">
-                      <a:a name="DESC"
-                            value="EN: Selects the input source for the internal test nodes for the ADC hardware unit."/>
-                      <a:a name="IMPLEMENTATIONCONFIGCLASS"
-                        type="IMPLEMENTATIONCONFIGCLASS">
-                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                      </a:a>
-                      <a:a name="ORIGIN" value="Texas Instruments"/>
-                      <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="UUID"
-                           value="7f3be298-e27e-4e53-ab7c-257c8f8a1c68"/>
-                      <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcInternalTestInput')&quot;,'CDD_ADC_TEST_NODE_NO_CONN')"/>
-                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcInternalTestInput')[1]&quot;,'CDD_ADC_TEST_NODE_NO_CONN')"/>
-                    </v:var>
-                    <v:var name="CddAdcHwUnitAnalogRefABVoltageMode" type="ENUMERATION">
-                      <a:a name="DESC"
-                            value="EN: This parameter defines the voltage reference mode for ADC A and B hardware instances."/>
-                      <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                      </a:a>
-                      <a:a name="ORIGIN" value="Texas Instruments"/>
-                      <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="UUID"
-                           value="d7c09360-b312-43a3-88f9-3409b6a01474"/>
-                      <a:da name="RANGE">
-                          <a:v>CDD_ADC_REFERENCE_INTERNAL</a:v>
-                          <a:v>CDD_ADC_REFERENCE_EXTERNAL</a:v>
-                      </a:da>
-                      <a:da name="DEFAULT" value="CDD_ADC_REFERENCE_INTERNAL"/>
-                    </v:var>
-                    <v:var name="CddAdcHwUnitAnalogRefABVoltage" type="ENUMERATION">
-                      <a:a name="DESC"
-                            value="EN:This parameter defines the reference voltage for A and B instances of the ADC. This paramter is applicable only when the voltage reference mode is INTERNAL."/>
-                      <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                      </a:a>
-                      <a:a name="ORIGIN" value="Texas Instruments"/>
-                      <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="UUID"
-                           value="9879253a-6d57-4127-90d0-ba2f0a1a8302"/>
-                      <a:da name="RANGE">
-                          <a:v>CDD_ADC_REFERENCE_3_3V</a:v>
-                          <a:v>CDD_ADC_REFERENCE_2_5V</a:v>
-                      </a:da>
-                      <a:da name="DEFAULT" value="CDD_ADC_REFERENCE_2_5V"/>
-                      <a:da name="EDITABLE" type="XPath" expr="(../CddAdcHwUnitAnalogRefABVoltageMode = 'CDD_ADC_REFERENCE_INTERNAL')"/>
-                    </v:var>
-                    <v:var name="CddAdcHwUnitAnalogRefCDEVoltageMode" type="ENUMERATION">
-                      <a:a name="DESC"
-                            value="EN: This parameter defines the voltage reference mode for C,D and E instances of the ADC."/>
-                      <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                      </a:a>
-                      <a:a name="ORIGIN" value="Texas Instruments"/>
-                      <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="UUID"
-                           value="0e0fc054-e6bd-4c3c-8a45-5e3bd982972f"/>
-                      <a:da name="RANGE">
-                          <a:v>CDD_ADC_REFERENCE_INTERNAL</a:v>
-                          <a:v>CDD_ADC_REFERENCE_EXTERNAL</a:v>
-                      </a:da>
-                      <a:da name="DEFAULT" value="CDD_ADC_REFERENCE_INTERNAL"/>
-                    </v:var>
-                    <v:var name="CddAdcHwUnitAnalogRefCDEVoltage" type="ENUMERATION">
-                      <a:a name="DESC"
-                            value="EN:This parameter defines the reference voltage for C,D and E instances of the ADC.This paramter is applicable only when the voltage reference mode is INTERNAL."/>
-                      <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                      </a:a>
-                      <a:a name="ORIGIN" value="Texas Instruments"/>
-                      <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="UUID"
-                           value="64d37daf-7d71-4d02-864f-2f7074d61db4"/>
-                      <a:da name="RANGE">
-                          <a:v>CDD_ADC_REFERENCE_3_3V</a:v>
-                          <a:v>CDD_ADC_REFERENCE_2_5V</a:v>
-                      </a:da>
-                      <a:da name="DEFAULT" value="CDD_ADC_REFERENCE_3_3V"/>
-                      <a:da name="EDITABLE" type="XPath" expr="(../CddAdcHwUnitAnalogRefCDEVoltageMode = 'CDD_ADC_REFERENCE_INTERNAL')"/>
-                    </v:var>
                     <v:lst name="CddAdcHwUnit" type="MAP">
                       <a:da name="MIN" value="1"/>
                       <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('ResourceAllocator_F29H85x.Cdd_AdcHwInstances')&quot;,num:i(5))"/>
@@ -259,7 +152,7 @@
                           <a:da name="EDITABLE" type="XPath" expr="text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_Adc16Bit_Instances'),node:value(../CddAdcHwInstance))"/>
                           <a:da name="DEFAULT" value="CDD_ADC_RESOLUTION_12BIT"/>
                           <a:da name="INVALID" type="XPath">
-                            <a:tst expr="not(node:value(../../../CddAdcHwUnitAnalogRefABVoltage) = 'CDD_ADC_REFERENCE_3_3V' and  node:value(../../../CddAdcHwUnitAnalogRefABVoltageMode) = 'CDD_ADC_REFERENCE_INTERNAL' and node:value(.) = 'CDD_ADC_RESOLUTION_16BIT')"
+                            <a:tst expr="not(node:value(as:modconf('ResourceAllocator')[1]/ResourceAllocatorGeneral/ASysCtl/*[1]/AnalogReference/AnalogRefABVoltage) = 'REFERENCE_3_3V' and  node:value(as:modconf('ResourceAllocator')[1]/ResourceAllocatorGeneral/ASysCtl/*[1]/AnalogReference/AnalogRefABMode) = 'REFERENCE_INTERNAL' and node:value(.) = 'CDD_ADC_RESOLUTION_16BIT')"
                                   false="1.65V internal reference mode is not supported when the ADC is configured for 16-bit resolution mode."/>
                             <a:tst expr="not((text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_Adc12Bit_Instances'),node:value(../CddAdcHwInstance))) and (. = 'CDD_ADC_RESOLUTION_16BIT'))" false="16-bit resolution is not supported for ADCC,ADCD and ADCE hardware instances"/>
                           </a:da>
@@ -713,8 +606,8 @@
                                     </mt:range>
                                     <mt:xpath expr="not(../../../../../CddAdcHwUnitResolution = 'CDD_ADC_RESOLUTION_16BIT' and (num:i(node:value(.)) = num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcTempSensorChannel'))))"
                                       false="Channel Id 20 is reserved for temperature sensor in F29H85x device. When enabling temperature sensor the ADC hardware unit shouldn't be in 16-bit mode. Being in 16-bit mode might produce incorrect conversion results."/>
-                                    <mt:xpath expr="node:when((text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_AdcTempSensor_Instances'),node:value(../../../../../CddAdcHwInstance)) and (num:i(node:value(.)) = num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcTempSensorChannel')))),(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcEnableTemperatureSensor),'true')"
-                                    false="When temperature sensor is used CddAdcEnableTemperatureSensor should be set to true." />
+                                    <mt:xpath expr="node:when((text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_AdcTempSensor_Instances'),node:value(../../../../../CddAdcHwInstance)) and (num:i(node:value(.)) = num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcTempSensorChannel')))),(as:modconf('ResourceAllocator')[1]/ResourceAllocatorGeneral/ASysCtl/*[1]/TemperatureSensor/TemperatureSensorEnable),'true')"
+                                    false="When temperature sensor is used TemperatureSensorEnable in ResourceAllocator should be set to true." />
                                   </a:da>
                                   <a:da name="DEFAULT" value="0"/>
                                 </v:var>

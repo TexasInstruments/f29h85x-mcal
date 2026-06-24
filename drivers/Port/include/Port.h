@@ -111,7 +111,7 @@ extern "C" {
 /** \brief Driver Implementation Major Version. */
 #define PORT_SW_MAJOR_VERSION (4U)
 /** \brief Driver Implementation Minor Version. */
-#define PORT_SW_MINOR_VERSION (0U)
+#define PORT_SW_MINOR_VERSION (1U)
 /**  \brief Driver Implementation Patch Version. */
 #define PORT_SW_PATCH_VERSION (0U)
 
@@ -307,6 +307,8 @@ typedef struct Port_ConfigType_s
     P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) Port_PinConfig;
     /** \brief Number of port pins individually configured. */
     Port_PinType Port_NumberOfPortPins;
+    /** \brief Pointer to ASysCtl global configuration (AGPIOFILTER). */
+    P2CONST(Port_ASysCtlConfigType, AUTOMATIC, PORT_CONFIG_DATA) Port_ASysCtlConfig;
 
 } Port_ConfigType;
 

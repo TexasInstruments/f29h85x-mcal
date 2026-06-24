@@ -102,7 +102,7 @@ extern "C" {
 /** \brief Driver Implementation Major Version */
 #define FLS_SW_MAJOR_VERSION (3U)
 /** \brief Driver Implementation Minor Version */
-#define FLS_SW_MINOR_VERSION (2U)
+#define FLS_SW_MINOR_VERSION (3U)
 /** \brief Driver Implementation Patch Version */
 #define FLS_SW_PATCH_VERSION (0U)
 
@@ -131,12 +131,6 @@ typedef uint32 Fls_AddressType;
 /** \brief Type of length type */
 typedef uint32 Fls_LengthType;
 
-/** the address in Fls_xx API is offset. The absolute addr
- *  = offset + FLS_BASE_ADDRESS & FLS_BASE_ADDRESS_REQ
- * The SectorStartAddress of sectorList in Fls_Cfg.c is absolute address
- */
-#define FLS_BASE_ADDRESS_REQ ((uint32)0x1FFFFFFFU) /*or 0x0*/
-/** \brief Flash base address requirement */
 #define FLS_WRITE_ADDRESS_ALIGNMENT ((uint8)8U)
 /** \brief Flash write address alignment */
 
@@ -268,8 +262,6 @@ typedef struct
 {
     Fls_LengthType  numberOfSectors;
     /** \brief Number of total Sectors in the Flash Device */
-    Fls_LengthType  sectorPageSize;
-    /** \brief Page size of the Flash Device */
     Fls_LengthType  sectorSize;
     /** \brief Size of each sector in the Flash Device */
     Fls_AddressType sectorStartAddress;

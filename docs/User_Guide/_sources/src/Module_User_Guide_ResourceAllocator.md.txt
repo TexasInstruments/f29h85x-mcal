@@ -4,14 +4,18 @@
 
 |Abbreviation/Term|Explanation|
 |------|------|
-|AUTOSAR|Automotive Open System Architecture|
+|ADC|Analog-to-Digital Converter|
 |API|Application Programming Interface|
+|ASysCtl|Analog System Control|
+|AUTOSAR|Automotive Open System Architecture|
+|BORL|Brown-Out Reset Level|
 |BSW|Basic Software|
+|CMPSS|Comparator Subsystem|
+|EB Tresos|Elektrobit Tresos Studio - AUTOSAR Configuration Tool|
 |MCAL|Micro Controller Abstraction Layer|
 |MCU|Micro Controller Unit|
-|SoC|System on Chip|
 |RA|Resource Allocator|
-|EB Tresos|Elektrobit Tresos Studio - AUTOSAR Configuration Tool|
+|SoC|System on Chip|
 
 ### Introduction
 
@@ -223,6 +227,38 @@ Each of these containers follows the same parameter pattern as MCAL-supported pe
 | BaseAddr | Auto-calculated base address macro from `hw_memmap.h` (read-only; set by Auto-Calc) |
 | DebugHaltEnabled | (where present) Controls DBGHALT signal activation when CPU enters HALT mode |
 | StandbyModeEnabled | (where present) Controls peripheral clock gating when CPU enters STANDBY mode |
+
+### ASysCtl (Analog System Control)
+
+The `ASysCtl` container centralizes all Analog System Control (ASysCtl) hardware configuration for F29x devices. The settings defined here are applied automatically during [`Mcu_Init()`](Module_User_Guide_Mcu.md) — no additional API calls are required for the startup configuration.
+
+```{Note}
+The `ASysCtl` container does not allocate a peripheral to a CPU core. It configures analog system control registers that are global to the device.
+```
+
+#### TemperatureSensor
+
+Controls the on-chip temperature sensor. The sensor must be enabled before performing temperature-based ADC conversions.
+
+#### AnalogReference
+
+Configures the voltage reference source and level for the ADC modules. Each ADC group (A/B and C/D/E) can independently use either an internal reference or an external reference signal. When the internal reference is selected, the reference voltage level (3.3 V or 2.5 V) is also configurable per group.
+
+#### VoltageRegulator
+
+Controls the behavior of the internal analog voltage regulator, including the VMON mask and the option to power down the regulator when an external supply is used.
+
+#### BrownOutReset
+
+Configures the Brown-Out Reset Level (BORL) voltage monitor. By default the BORL monitor is enabled and will trigger a reset if the supply voltage drops below the threshold. It can be disabled when the application provides an alternative undervoltage protection mechanism.
+
+#### InternalTestNode
+
+Selects the internal signal connected to the analog test bus at startup. The default selection leaves the test bus disconnected. This setting can also be changed at runtime after [`Mcu_Init()`](Module_User_Guide_Mcu.md) has completed — refer to the Mcu API guide for the available runtime API.
+
+#### CMPSSControl
+
+Each CMPSS instance allocated in the `Cdd_Cmpss` container has a corresponding `CMPSSControl` sub-container that configures the analog input mux for the comparator subsystem. The mux selects determine which device signals are routed to the high-side positive (HP), low-side positive (LP), high-side negative (HN), and low-side negative (LN) comparator inputs. The available signal choices are device- and package-specific and are populated automatically based on the device selected in `ResourceAllocatorGeneral`.
 
 ### Configuration
 
@@ -524,12 +560,12 @@ Configuration container for Context specific settings for the Cdd_Cmpss module.
 | **Multiplicity-Configuration-Class** | -- |
 | Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Post-build-variant-multiplicity** | false |
-| **Origin** | Texas Instruments |
+| **Origin** | TI_F29H85x |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | CMPSS1_BASE_FRAME(0U) |
-| **Range** | FRAME0<br>FRAME1<br>FRAME2<br>FRAME3 |
+| **Default-value** | CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO161 |
+| **Range** | CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO161<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO162<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO165<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO173<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO194<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO199<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_AIO206<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_GPIO224<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_GPIO225<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_GPIO230<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_GPIO240<br>CMPSS_NEG_INPUT_SIGNAL_MUX0_GPIO245<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO163<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO164<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO171<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO174<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO175<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO182<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO198<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO207<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_AIO213<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_GPIO241<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_GPIO246<br>CMPSS_NEG_INPUT_SIGNAL_MUX1_GPIO248 |
 
 ###### Eqep
 Configuration container for Context specific settings for the Eqep module.
@@ -699,7 +735,7 @@ Configuration container for Context specific settings for the Epg module.
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | EPG1_BASE_FRAME(0U) |
+| **Default-value** | FRAME0 |
 | **Range** | FRAME0<br>FRAME1<br>FRAME2<br>FRAME3 |
 
 ###### Wadi
@@ -718,8 +754,73 @@ Configuration container for Context specific settings for the Wadi module.
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | WADI1_BASE_FRAME(0U) |
+| **Default-value** | FRAME0 |
 | **Range** | FRAME0<br>FRAME1<br>FRAME2<br>FRAME3 |
+
+###### ASysCtl
+Configuration container for ASysCtl (Analog System Control) module. Controls analog subsystem initialization including temperature sensor, analog reference, voltage regulator, brown-out reset, internal test node, and CMPSS mux configuration.
+
+###### TemperatureSensor
+
+| Item ||
+|--------|---------------|
+| **Name** | TemperatureSensor |
+| **Description** | Configuration for the on-chip temperature sensor (TSNSCTL register). |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### AnalogReference
+
+| Item ||
+|--------|---------------|
+| **Name** | AnalogReference |
+| **Description** | Configuration for the analog reference control (ANAREFCTL register). Controls ADC reference source and voltage range for ADC-A/B and ADC-C/D/E groups. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | REFERENCE_3_3V |
+| **Range** | REFERENCE_3_3V<br>REFERENCE_2_5V |
+
+###### VoltageRegulator
+
+| Item ||
+|--------|---------------|
+| **Name** | VoltageRegulator |
+| **Description** | Configuration for the internal voltage regulator (VREGCTL register). |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### BrownOutReset
+
+| Item ||
+|--------|---------------|
+| **Name** | BrownOutReset |
+| **Description** | Configuration for Brown-Out Reset Level (VMONCTL register). |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### InternalTestNode
+
+| Item ||
+|--------|---------------|
+| **Name** | InternalTestNode |
+| **Description** | Configuration for the internal analog test node (INTERNALTESTCTL register). Key-protection sequence is applied automatically. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_ASYSCTL_TEST_NODE_NO_CONN |
+| **Range** | MCU_ASYSCTL_TEST_NODE_NO_CONN<br>MCU_ASYSCTL_TEST_NODE_VDDCORE<br>MCU_ASYSCTL_TEST_NODE_VDDA<br>MCU_ASYSCTL_TEST_NODE_VSSA<br>MCU_ASYSCTL_TEST_NODE_VREFLOA<br>MCU_ASYSCTL_TEST_NODE_VREFLOB<br>MCU_ASYSCTL_TEST_NODE_CDAC1H<br>MCU_ASYSCTL_TEST_NODE_CDAC1L<br>MCU_ASYSCTL_TEST_NODE_CDAC2H<br>MCU_ASYSCTL_TEST_NODE_CDAC2L<br>MCU_ASYSCTL_TEST_NODE_CDAC3H<br>MCU_ASYSCTL_TEST_NODE_CDAC3L<br>MCU_ASYSCTL_TEST_NODE_CDAC4H<br>MCU_ASYSCTL_TEST_NODE_CDAC4L<br>MCU_ASYSCTL_TEST_NODE_CDAC5H<br>MCU_ASYSCTL_TEST_NODE_CDAC5L<br>MCU_ASYSCTL_TEST_NODE_CDAC6H<br>MCU_ASYSCTL_TEST_NODE_CDAC6L<br>MCU_ASYSCTL_TEST_NODE_CDAC7H<br>MCU_ASYSCTL_TEST_NODE_CDAC7L<br>MCU_ASYSCTL_TEST_NODE_CDAC8H<br>MCU_ASYSCTL_TEST_NODE_CDAC8L<br>MCU_ASYSCTL_TEST_NODE_CDAC9H<br>MCU_ASYSCTL_TEST_NODE_CDAC9L<br>MCU_ASYSCTL_TEST_NODE_CDAC10H<br>MCU_ASYSCTL_TEST_NODE_CDAC10L<br>MCU_ASYSCTL_TEST_NODE_CDAC11H<br>MCU_ASYSCTL_TEST_NODE_CDAC11L<br>MCU_ASYSCTL_TEST_NODE_ENZ_CALIB_GAIN_3P3 |
 
 ###### Cdd_Xbar
 Configuration container for Cdd_Xbar module.
@@ -827,7 +928,7 @@ Configuration container for DLTFifoRegs module.
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | DLTFIFOREGS_BASE_FRAME(0U) |
+| **Default-value** | FRAME0 |
 | **Range** | FRAME0<br>FRAME1<br>FRAME2<br>FRAME3 |
 
 ###### Error_Aggregator
@@ -846,7 +947,7 @@ Configuration container for Error_Aggregator module.
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | ERROR_AGGREGATOR_BASE_FRAME(0U) |
+| **Default-value** | ERRORAGGREGATOR_BASE_FRAME(0U) |
 | **Range** | FRAME0<br>FRAME1<br>FRAME2<br>FRAME3 |
 
 ###### ESM
@@ -878,7 +979,7 @@ Configuration container for ESM module.
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | ESM_BASE_FRAME(0U) |
+| **Default-value** | FRAME0 |
 | **Range** | FRAME0<br>FRAME1<br>FRAME2<br>FRAME3 |
 ### Usage Procedures
 

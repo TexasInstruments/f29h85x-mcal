@@ -107,9 +107,9 @@ extern "C" {
 /** \brief Driver Implementation Major Version. */
 #define CDD_SENT_SW_MAJOR_VERSION (3U)
 /** \brief Driver Implementation Minor Version. */
-#define CDD_SENT_SW_MINOR_VERSION (1U)
+#define CDD_SENT_SW_MINOR_VERSION (2U)
 /** \brief Driver Implementation Patch Version. */
-#define CDD_SENT_SW_PATCH_VERSION (1U)
+#define CDD_SENT_SW_PATCH_VERSION (0U)
 
 /** \brief AUTOSAR major version specification implemented by Cdd_Sent Driver. */
 #define CDD_SENT_AR_RELEASE_MAJOR_VERSION (4U)
@@ -596,7 +596,7 @@ typedef struct Cdd_Sent_HWUnitType_s
 typedef struct Cdd_Sent_ConfigType_s
 {
     /** \brief  SENT HW unit ID */
-    Cdd_Sent_HWUnitType *Cdd_Sent_HWUnit[SENT_MAX_HW_UNITS];
+    const Cdd_Sent_HWUnitType *Cdd_Sent_HWUnit[SENT_MAX_HW_UNITS];
 
 } Cdd_Sent_ConfigType;
 

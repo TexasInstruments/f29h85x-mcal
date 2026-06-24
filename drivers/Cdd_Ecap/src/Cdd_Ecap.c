@@ -87,11 +87,11 @@
 
 /* vendor specific version information check */
 
-#if ((CDD_ECAP_SW_MAJOR_VERSION != (3U)) || (CDD_ECAP_SW_MINOR_VERSION != (1U)))
+#if ((CDD_ECAP_SW_MAJOR_VERSION != (3U)) || (CDD_ECAP_SW_MINOR_VERSION != (2U)))
 #error "Cdd_Ecap: Cdd_Ecap.c and Cdd_Ecap.h are not matching!!"
 #endif
 
-#if ((CDD_ECAP_CFG_MAJOR_VERSION != (3U)) || (CDD_ECAP_CFG_MINOR_VERSION != (1U)))
+#if ((CDD_ECAP_CFG_MAJOR_VERSION != (3U)) || (CDD_ECAP_CFG_MINOR_VERSION != (2U)))
 #error "Cdd_Ecap: Cdd_Ecap.c and Cdd_Ecap_Cfg.h are not matching!!"
 #endif
 

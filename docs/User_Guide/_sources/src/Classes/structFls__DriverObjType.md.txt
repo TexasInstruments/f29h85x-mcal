@@ -28,18 +28,15 @@ FLS Driver Object, global information used by module.
 |  uint32 | FlsMaxReadNormalMode |  The maximum number of bytes to write in one cycle of the flash driver's job processing function in Fast mode.  |
 |  uint32 | FlsMaxWriteNormalMode |  The maximum number of bytes to read or compare in one cycle of the flash driver's job processing function in normal mode.  |
 |  [Fls_SectorType](../Classes/structFls__SectorType.md)[FLS_NUMBER_OF_SECTOR_CFG] | sectorList |  The maximum number of bytes to write in one cycle of the flash driver's job processing function in normal mode.  |
-|  MemIf_StatusType | status |  The maximum number of bytes to write in one cycle of the flash driver's job processing function in normal mode. Using Fls Info Structure instead of this for now.  |
+|  MemIf_StatusType | status |  Array of sector configuration entries describing the flash layout.  |
 |  MemIf_JobResultType | jobResultType |  Current Module Status update variable.  |
 |  Fls_JobType | jobType |  Current Job Result update variable.  |
 |  [Fls_AddressType](../Modules/group__FLS.md#typedef-fls_addresstype) | flashAddr |  Current running job type.  |
 |  uint8 * | ramAddr |  Flash Address for the current job.  |
 |  [Fls_LengthType](../Modules/group__FLS.md#typedef-fls_lengthtype) | length |  Ram Address pointer for the current job.  |
-|  MemIf_ModeType | mode |  |
+|  MemIf_ModeType | mode |  Data transfer length for the current job.  |
 |  uint32 | jobChunkSize |  Module mode setup for current job - SLOW for now.  |
-|  [Fls_LengthType](../Modules/group__FLS.md#typedef-fls_lengthtype) | transferred |  Length of Data to be transfer in current call cycle.  |
-|  uint32 | postBlankCheckFlashaddr |  Flash Post Blank Check Address.  |
-|  uint32 | prevFlashaddr |  Flash Previous Address.  |
-|  [Fls_EraseType](../Modules/group__FLS.md#enum-fls_erasetype) | typeoferase |  Size of Data has been transferred.  |
+|  [Fls_EraseType](../Modules/group__FLS.md#enum-fls_erasetype) | typeoferase |  Length of Data to be transfer in current call cycle.  |
 |  uint32 | writePostFapiFsmBusy |  To select the type of erase (sector erase/ block erase/ bulk erase)  |
 |  uint32 | writeChunkComplete |  Set to 1 while the write FSM is in POSTCHECK and the FSM is still busy (not yet done); 0 otherwise. Reset to 0 when a new write job is accepted.  |
 |  uint32 | erasePostFapiFsmDone |  Set to 1 when POSTCHECK STATUS_CHECK confirms the programming command completed successfully for the current chunk; gates the write-verify compare in Fls_Process_JobWrite. Reset to 0 at the start of each Fls_F29AsyncWrite call and when a new write job is accepted.  |
@@ -52,5 +49,7 @@ FLS Driver Object, global information used by module.
 |  volatile uint8 | flashWriteStage |  Bank erase post-check sub-state FSM counter. Reset to FLS_ERASE_FSM_READY_CHECK when a new erase job is accepted.  |
 |  volatile uint16 | writePreCheck |  Write FSM stage variable. Reset to FLS_S_WDEFAULT when a new write job is accepted; writePreCheck and writePostCheck are reset directly in Fls_Write() rather than via the WDEFAULT detection in Fls_F29AsyncWrite.  |
 |  volatile uint16 | writePostCheck |  Write pre-check sub-state FSM counter. Reset to FLS_WRITE_FSM_READY_CHECK when a new write job is accepted.  |
+|  uint32 | cmdWeProtAMask |  Write post-check sub-state FSM counter. Reset to FLS_WRITE_FSM_READY_CHECK when a new write job is accepted.  |
+|  uint32 | cmdWeProtBMask |  Write/erase protection mask for flash sectors 0-31 (CMDWEPROTA), captured at init.  |
 
 

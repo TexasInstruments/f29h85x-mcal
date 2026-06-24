@@ -88,6 +88,14 @@
 /*********************************************************************************************************************
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
+/* Mask of all RINTFLAG error bits that must be cleared unconditionally to prevent hardware lockup */
+#define CDD_SENT_ERROR_MASK                                                                                         \
+    (SENT_RINTFLAG_GLBL | SENT_RINTFLAG_RSLOW_CRCERR | SENT_RINTFLAG_RSLOW_FORMATERR | SENT_RINTFLAG_RFAST_S1CRCE | \
+     SENT_RINTFLAG_RFAST_S2CRCE | SENT_RINTFLAG_RFAST_S3CRCE | SENT_RINTFLAG_RFAST_S4CRCE |                         \
+     SENT_RINTFLAG_RFAST_S1FRME | SENT_RINTFLAG_RFAST_S2FRME | SENT_RINTFLAG_RFAST_S3FRME |                         \
+     SENT_RINTFLAG_RFAST_S4FRME | SENT_RINTFLAG_RTIMEOUT_ERR_M | SENT_RINTFLAG_RFAST_SYNCERR25 |                    \
+     SENT_RINTFLAG_RFAST_SYNCERR | SENT_RINTFLAG_FREQDRIFT_ERR | SENT_RINTFLAG_RFIFO_OVFERR |                       \
+     SENT_RINTFLAG_RFIFO_UNDFERR | SENT_RINTFLAG_OVFTRIG_ERR_M)
 
 /*********************************************************************************************************************
  * Local Preprocessor #define Macros
@@ -149,7 +157,7 @@ static FUNC(void, CDD_SENT_CODE) Cdd_Sent_EnableSentReceiverPriv(void);
  *
  *********************************************************************************************************************/
 static FUNC(void, CDD_SENT_CODE)
-    Cdd_Sent_ProcessIsrFastInterrupts(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object,
+    Cdd_Sent_ProcessIsrFastInterrupts(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object,
                                       const CddSent_ValueType instance_index, uint32 Interrupt_Status_Register);
 
 /** \brief Cdd_Sent_ProcessIsrSlowInterrupts : Process the Slow Channel Interrupts when
@@ -163,7 +171,7 @@ static FUNC(void, CDD_SENT_CODE)
  *
  *********************************************************************************************************************/
 static FUNC(void, CDD_SENT_CODE)
-    Cdd_Sent_ProcessIsrSlowInterrupts(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object);
+    Cdd_Sent_ProcessIsrSlowInterrupts(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object);
 
 /** \brief Cdd_Sent_ProcessIsrCallCddSentUserErrorCallbackFunction : Calls
  *CddSentUserErrorCallbackFunction.
@@ -176,7 +184,7 @@ static FUNC(void, CDD_SENT_CODE)
  *
  *********************************************************************************************************************/
 static FUNC(void, CDD_SENT_CODE)
-    Cdd_Sent_ProcessIsrCallCddSentUserErrorCallbackFunction(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA)
+    Cdd_Sent_ProcessIsrCallCddSentUserErrorCallbackFunction(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA)
                                                                 Sent_Instance_Object);
 
 /** \brief Cdd_Sent_SetHandleIdPriv : Set the Handle Id for all Channels of Sent HW Unit whose
@@ -193,7 +201,8 @@ static FUNC(void, CDD_SENT_CODE)
  *********************************************************************************************************************/
 static FUNC(void, CDD_SENT_CODE)
     Cdd_Sent_SetHandleIdPriv(P2VAR(Cdd_Sent_DriverObjType, AUTOMATIC, CDD_SENT_APPL_DATA) Cdd_Sent_DriverObj,
-                             P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Hw_Unit, uint32 loop_count);
+                             P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Hw_Unit,
+                             uint32 loop_count);
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
@@ -216,7 +225,7 @@ Cdd_Sent_HwInitPrv(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_CONST) Confi
 {
     VAR(uint32, AUTOMATIC) BaseAddress = ConfigPtr->CddSentBaseAddress;
 
-    VAR(uint32, AUTOMATIC) DataNibblesCount = ConfigPtr->CddSentDataNibblesCount;
+    VAR(uint32, AUTOMATIC) DataNibblesCount = (uint32)ConfigPtr->CddSentDataNibblesCount;
 
     /* Disable SENT receiver */
     Cdd_Sent_disableSentReceiver(BaseAddress);
@@ -453,8 +462,12 @@ Cdd_Sent_MTPInitPrv(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_CONST) Conf
                     Cdd_Sent_enableInterrupt(ConfigPtr->CddSentBaseAddress, SENT_REINT_RFAST_S4DV_E);
                     break;
 
+                /* TI_COVERAGE_GAP_START [Branch Coverage/ Statement Coverage] The default branch is unreachable. The
+                 * switch value is derived from an enum set by the configurator and cannot take an
+                 * invalid value. */
                 default:
                     break;
+                    /* TI_COVERAGE_GAP_STOP */
             }
         }
         else
@@ -468,14 +481,14 @@ Cdd_Sent_MTPInitPrv(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_CONST) Conf
  *Design: MCAL-28675
  */
 FUNC(void, CDD_SENT_CODE)
-Cdd_Sent_TriggerPrv(uint8 Instance_Id, Cdd_SentTriggerSource Trigger_Source, uint8 Channel_Id,
+Cdd_Sent_TriggerPrv(Cdd_SentInstance Instance_Id, Cdd_SentTriggerSource Trigger_Source, Cdd_SentSensorType Channel_Id,
                     P2CONST(PduInfoType, AUTOMATIC, CDD_SENT_CONST) PduInfoPtr)
 {
     VAR(CddSent_ValueType, AUTOMATIC) instance_index = CDD_SENT_MAX_32BIT_VAL;
     VAR(uint32, AUTOMATIC) triggerOffset;
     (void)Cdd_Sent_GetChIdxPriv(Cdd_Sent_DrvObjPtr, Instance_Id, &instance_index);
-    Cdd_Sent_HWUnitType *Sent_Hw_Sentance = Cdd_Sent_DrvObjPtr->CddSent_CfgPtr->Cdd_Sent_HWUnit[instance_index];
-    triggerOffset                         = (SENT_MTP_SWTR_STEP * (uint32)Channel_Id) + SENT_O_BC_TRIGSEL;
+    const Cdd_Sent_HWUnitType *Sent_Hw_Sentance = Cdd_Sent_DrvObjPtr->CddSent_CfgPtr->Cdd_Sent_HWUnit[instance_index];
+    triggerOffset                               = (SENT_MTP_SWTR_STEP * (uint32)Channel_Id) + SENT_O_BC_TRIGSEL;
     if (0U == *PduInfoPtr->SduDataPtr)
     {
         HWREG(Sent_Hw_Sentance->CddSentBaseAddress + triggerOffset) &= ~(uint32)(0x3F);
@@ -534,44 +547,47 @@ void Cdd_Sent_ProcessISR(Cdd_SentInstance SentInstance)
 
     (void)Cdd_Sent_GetChIdxPriv(Cdd_Sent_DrvObjPtr, SentInstance, &instance_index);
 
-    if (SENT_MAX_HW_UNITS > instance_index)
+    const Cdd_Sent_HWUnitType *Sent_Instance_Object =
+        Cdd_Sent_DrvObjPtr->CddSent_CfgPtr->Cdd_Sent_HWUnit[instance_index];
+    uint32 Interrupt_Status_Register = HWREG(Sent_Instance_Object->CddSentBaseAddress + SENT_O_RINTFLAG);
+    uint32 Interrupt_Enable_Register = HWREG(Sent_Instance_Object->CddSentBaseAddress + SENT_O_REINT);
+    uint32 Enable_Fast_Interrupts    = (SENT_REINT_RFIFO_TRIGGER_E | SENT_REINT_RFAST_S1DV_E | SENT_REINT_RFAST_S2DV_E |
+                                     SENT_REINT_RFAST_S3DV_E | SENT_REINT_RFAST_S4DV_E) &
+                                    Interrupt_Enable_Register;
+    uint32 Enable_Slow_Interrupts = SENT_REINT_RSLOW_DV_E & Interrupt_Enable_Register;
+    if ((Enable_Fast_Interrupts & Interrupt_Status_Register) != 0x0U)
     {
-        Cdd_Sent_HWUnitType *Sent_Instance_Object = Cdd_Sent_DrvObjPtr->CddSent_CfgPtr->Cdd_Sent_HWUnit[instance_index];
-        uint32               Interrupt_Status_Register = HWREG(Sent_Instance_Object->CddSentBaseAddress + 0x40U);
-        uint32               Interrupt_Enable_Register = HWREG(Sent_Instance_Object->CddSentBaseAddress + 0x44U);
-        uint32               Enable_Fast_Interrupts    = (SENT_REINT_RFIFO_TRIGGER_E | SENT_REINT_RFAST_S1DV_E |
-                                         SENT_REINT_RFAST_S2DV_E | SENT_REINT_RFAST_S3DV_E | SENT_REINT_RFAST_S4DV_E) &
-                                        Interrupt_Enable_Register;
-        uint32 Enable_Slow_Interrupts = SENT_REINT_RSLOW_DV_E & Interrupt_Enable_Register;
-
-        if ((Enable_Fast_Interrupts & Interrupt_Status_Register) != 0x0U)
-        {
-            Cdd_Sent_ProcessIsrFastInterrupts(Sent_Instance_Object, instance_index, Interrupt_Status_Register);
+        Cdd_Sent_ProcessIsrFastInterrupts(Sent_Instance_Object, instance_index, Interrupt_Status_Register);
 #ifdef CDD_SENT_E_HARDWARE_ERROR
-            (void)Dem_SetEventStatus(CDD_SENT_E_HARDWARE_ERROR, DEM_EVENT_STATUS_PASSED);
+        (void)Dem_SetEventStatus(CDD_SENT_E_HARDWARE_ERROR, DEM_EVENT_STATUS_PASSED);
 #endif
-        }
-
-        else if ((Enable_Slow_Interrupts & Interrupt_Status_Register) != 0x0U)
-        {
-            Cdd_Sent_ProcessIsrSlowInterrupts(Sent_Instance_Object);
-        }
-        else
-        {
-#ifdef CDD_SENT_E_HARDWARE_ERROR
-            (void)Dem_SetEventStatus(CDD_SENT_E_HARDWARE_ERROR, DEM_EVENT_STATUS_FAILED);
-#endif
-            Cdd_Sent_ProcessIsrCallCddSentUserErrorCallbackFunction(Sent_Instance_Object);
-        }
-        Cdd_Sent_clearInterruptFlag(Sent_Instance_Object->CddSentBaseAddress, (0xFFFFFFFFU));
     }
+
+    if ((Enable_Slow_Interrupts & Interrupt_Status_Register) != 0x0U)
+    {
+        Cdd_Sent_ProcessIsrSlowInterrupts(Sent_Instance_Object);
+#ifdef CDD_SENT_E_HARDWARE_ERROR
+        (void)Dem_SetEventStatus(CDD_SENT_E_HARDWARE_ERROR, DEM_EVENT_STATUS_PASSED);
+#endif
+    }
+
+    if (((Enable_Fast_Interrupts & Interrupt_Status_Register) == 0x0U) &&
+        ((Enable_Slow_Interrupts & Interrupt_Status_Register) == 0x0U))
+    {
+#ifdef CDD_SENT_E_HARDWARE_ERROR
+        (void)Dem_SetEventStatus(CDD_SENT_E_HARDWARE_ERROR, DEM_EVENT_STATUS_FAILED);
+#endif
+        Cdd_Sent_ProcessIsrCallCddSentUserErrorCallbackFunction(Sent_Instance_Object);
+    }
+    Cdd_Sent_clearInterruptFlag(Sent_Instance_Object->CddSentBaseAddress,
+                                Interrupt_Status_Register & (Interrupt_Enable_Register | CDD_SENT_ERROR_MASK));
 }
 
 /*
  *Design: MCAL-28752
  */
 LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE)
-    Cdd_Sent_getMessageID(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object)
+    Cdd_Sent_getMessageID(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object)
 {
     VAR(uint32, AUTOMATIC) Sent_Base      = Sent_Instance_Object->CddSentBaseAddress;
     VAR(uint32, AUTOMATIC) Slow_Data_Base = HWREG(Sent_Base + SENT_O_RSDATA);
@@ -583,7 +599,7 @@ LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE)
  *Design: MCAL-28753
  */
 LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE)
-    Cdd_Sent_getSlowData(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object)
+    Cdd_Sent_getSlowData(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object)
 {
     VAR(uint32, AUTOMATIC) Sent_Base      = Sent_Instance_Object->CddSentBaseAddress;
     VAR(uint32, AUTOMATIC) Slow_Data_Base = HWREG(Sent_Base + SENT_O_RSDATA);
@@ -856,8 +872,7 @@ Cdd_Sent_disableInterrupt(uint32 base, uint32 intFlags)
  *Design: MCAL-28775
  */
 LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
-    Cdd_Sent_setDataSortingFormat(uint32 base, Cdd_Sent_DataNumber dataNumber, Cdd_SentNibbleNumber nibbleNum,
-                                  Cdd_SentNibble nibble)
+    Cdd_Sent_setDataSortingFormat(uint32 base, Cdd_Sent_DataNumber dataNumber, uint32 nibbleNum, uint32 nibble)
 {
     VAR(uint32, AUTOMATIC) dataOffset;
     VAR(uint32, AUTOMATIC) shiftVal;
@@ -893,7 +908,7 @@ Cdd_Sent_InitPriv(P2VAR(Cdd_Sent_DriverObjType, AUTOMATIC, CDD_SENT_APPL_DATA) C
     for (uint32 loop_count = ((uint32)0U); loop_count < ((uint32)SENT_CFG_NO_OF_HW_UNITS); loop_count++)
     {
         /* Initialize the CDD_SENT channel. */
-        Cdd_Sent_HWUnitType *Sent_Hw_Unit = Cdd_Sent_DriverObj->CddSent_CfgPtr->Cdd_Sent_HWUnit[loop_count];
+        const Cdd_Sent_HWUnitType *Sent_Hw_Unit = Cdd_Sent_DriverObj->CddSent_CfgPtr->Cdd_Sent_HWUnit[loop_count];
         (void)Cdd_Sent_HwInitPrv(Sent_Hw_Unit);
         Cdd_Sent_DriverObj->CddSent_Lut_Channel_Index[Sent_Hw_Unit->CddSentInstance] = loop_count;
         Cdd_Sent_SetHandleIdPriv(Cdd_Sent_DriverObj, Sent_Hw_Unit, loop_count);
@@ -913,8 +928,8 @@ FUNC(Std_ReturnType, CDD_SENT_CODE)
 Cdd_Sent_TransmitPriv(P2CONST(PduInfoType, AUTOMATIC, CDD_SENT_CONST) PduInfoPtr, PduIdType TxPduId)
 {
     VAR(Std_ReturnType, AUTOMATIC) Status = E_NOT_OK;
-    VAR(uint8, AUTOMATIC) Instance_Id;
-    VAR(uint8, AUTOMATIC) Channel_Id;
+    VAR(Cdd_SentInstance, AUTOMATIC) Instance_Id;
+    VAR(Cdd_SentSensorType, AUTOMATIC) Channel_Id;
     VAR(uint8, AUTOMATIC) loop_count;
     VAR(uint8, AUTOMATIC) Sensor_Count = (uint8)0U;
     VAR(Cdd_SentTriggerSource, AUTOMATIC) Trigger_Source;
@@ -966,14 +981,15 @@ static FUNC(void, CDD_SENT_CODE)
         McalLib_RegBitSet32(BaseAddress + SENT_O_RCFG, SENT_RCFG_RX_CRCENB);
 
         /* Configuring CRC Type */
-        McalLib_RegMFWriteRaw32((BaseAddress + SENT_O_RCFG), SENT_RCFG_RX_CRCTYPE, 0, ConfigPtr->CddSentCRCType);
+        McalLib_RegMFWriteRaw32((BaseAddress + SENT_O_RCFG), SENT_RCFG_RX_CRCTYPE, 0,
+                                (uint32)ConfigPtr->CddSentCRCType);
 
         /* Configuring CRC width */
         McalLib_RegMFWriteRaw32((BaseAddress + SENT_O_RCFG), SENT_RCFG_CRC_WIDTH_M, SENT_RCFG_CRC_WIDTH_S,
-                                ConfigPtr->CddSentCRCWidth);
+                                (uint32)ConfigPtr->CddSentCRCWidth);
         /* Configuring CRC status*/
         McalLib_RegMFWriteRaw32((BaseAddress + SENT_O_RCFG), SENT_RCFG_RX_CRC_WITH_STATUS, 0,
-                                ConfigPtr->CddSentCRCWithStatus);
+                                (uint32)ConfigPtr->CddSentCRCWithStatus);
     }
     /* Configuring the Pause pulse based on the configuration. */
     if (CDD_SENT_CRC_NONE == ConfigPtr->CddSentCRCType)
@@ -1012,7 +1028,7 @@ static FUNC(void, CDD_SENT_CODE) Cdd_Sent_EnableSentReceiverPriv(void)
  *Design: MCAL-28832
  */
 static FUNC(void, CDD_SENT_CODE)
-    Cdd_Sent_ProcessIsrFastInterrupts(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object,
+    Cdd_Sent_ProcessIsrFastInterrupts(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object,
                                       const CddSent_ValueType instance_index, uint32 Interrupt_Status_Register)
 {
     VAR(PduInfoType, AUTOMATIC) Info;
@@ -1020,7 +1036,7 @@ static FUNC(void, CDD_SENT_CODE)
     VAR(uint32, AUTOMATIC) Offset_MTP;
     VAR(uint32, AUTOMATIC) Channel_id = 0U;
     VAR(uint32, AUTOMATIC)
-    FIFOTriggerLevel = HWREG(Sent_Instance_Object->CddSentBaseAddress + 0x34U) >> SENT_RCFG2_RFIFO_TRIGLEV_S;
+    FIFOTriggerLevel = HWREG(Sent_Instance_Object->CddSentBaseAddress + SENT_O_RCFG2) >> SENT_RCFG2_RFIFO_TRIGLEV_S;
     VAR(Cdd_Sent_Data_Buffer, AUTOMATIC)
     Fast_Buffer_Object = Sent_Instance_Object->CddSent_Buffer_Data;
     if (Sent_Instance_Object->CddSentMTP == TRUE)
@@ -1066,7 +1082,7 @@ static FUNC(void, CDD_SENT_CODE)
 
         /* This parameter is a Pdu identifier used by PduR */
 
-        PduR_Cdd_Sent_RxIndication(id, &Info);
+        (void)PduR_Cdd_Sent_RxIndication(id, &Info);
 #endif
 
         if (Sent_Instance_Object->CddSentUserCallbackFunction != NULL_PTR)
@@ -1103,7 +1119,7 @@ static FUNC(void, CDD_SENT_CODE)
 
             /* This parameter is a Pdu identifier used by PduR */
 
-            PduR_Cdd_Sent_RxIndication(id, &Info);
+            (void)PduR_Cdd_Sent_RxIndication(id, &Info);
 #endif
 
             if (Sent_Instance_Object->CddSentUserCallbackFunction != NULL_PTR)
@@ -1124,7 +1140,7 @@ static FUNC(void, CDD_SENT_CODE)
  *Design: MCAL-28833
  */
 static FUNC(void, CDD_SENT_CODE)
-    Cdd_Sent_ProcessIsrSlowInterrupts(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object)
+    Cdd_Sent_ProcessIsrSlowInterrupts(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object)
 {
     VAR(PduInfoType, AUTOMATIC) Info;
     VAR(PduIdType, AUTOMATIC) id = 0;
@@ -1139,19 +1155,19 @@ static FUNC(void, CDD_SENT_CODE)
             Slow_Buffer_Object.Data_Buffer[0] = Cdd_Sent_getSlowData(Sent_Instance_Object);
             Info.SduDataPtr                   = (uint8 *)&Slow_Buffer_Object.Data_Buffer;
             Info.MetaDataPtr                  = NULL_PTR;
-            Info.SduLength                    = 2;
+            Info.SduLength                    = (PduLengthType)2U;
 
 #if (STD_ON == CDD_SENT_INTEGRATION_WITH_ASR_COMSTACK_ENABLE)
-            id = Sent_Instance_Object->CddSentChannelConfigList[Channel_count]->CddSentPduID;
+            id = (PduIdType)Sent_Instance_Object->CddSentChannelConfigList[Channel_count]->CddSentPduID;
 
             /* This parameter is a Pdu identifier used by PduR */
 
-            PduR_Cdd_Sent_RxIndication(id, &Info);
+            (void)PduR_Cdd_Sent_RxIndication(id, &Info);
 #endif
 
             if (Sent_Instance_Object->CddSentUserCallbackFunction != NULL_PTR)
             {
-                id = Sent_Instance_Object->CddSentChannelConfigList[Channel_count]->CddSentPduID;
+                id = (PduIdType)Sent_Instance_Object->CddSentChannelConfigList[Channel_count]->CddSentPduID;
 
                 /* When Cdd Sent is integrated with Autosar Com stack, this parameter is a Pdu
                 identifier When Cdd Sent is not integrated with Autosar Com stack, this parameter is
@@ -1177,7 +1193,7 @@ static FUNC(void, CDD_SENT_CODE)
  *Design: MCAL-28834
  */
 static FUNC(void, CDD_SENT_CODE)
-    Cdd_Sent_ProcessIsrCallCddSentUserErrorCallbackFunction(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA)
+    Cdd_Sent_ProcessIsrCallCddSentUserErrorCallbackFunction(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA)
                                                                 Sent_Instance_Object)
 {
     if (Sent_Instance_Object->CddSentUserErrorCallbackFunction != NULL_PTR)
@@ -1191,7 +1207,8 @@ static FUNC(void, CDD_SENT_CODE)
  */
 static FUNC(void, CDD_SENT_CODE)
     Cdd_Sent_SetHandleIdPriv(P2VAR(Cdd_Sent_DriverObjType, AUTOMATIC, CDD_SENT_APPL_DATA) Cdd_Sent_DriverObj,
-                             P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Hw_Unit, uint32 loop_count)
+                             P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Hw_Unit,
+                             uint32 loop_count)
 {
     for (uint32 Channel_count = 0U; Channel_count < Sent_Hw_Unit->CddSentChannelCount; Channel_count++)
     {
@@ -1202,27 +1219,31 @@ static FUNC(void, CDD_SENT_CODE)
                     CDD_SENT_CHANNEL_STANDARD_SENSOR_FAST_CHANNEL)
                 {
                     Cdd_Sent_DriverObj->CddSent_Fast_Channel_PduID[loop_count][0U] =
-                        Sent_Hw_Unit->CddSentChannelConfigList[Channel_count]->CddSentPduID;
+                        (uint16)Sent_Hw_Unit->CddSentChannelConfigList[Channel_count]->CddSentPduID;
                 }
                 break;
             case CDD_SENT_CHANNEL_SENSOR_1:
                 Cdd_Sent_DriverObj->CddSent_Fast_Channel_PduID[loop_count][0U] =
-                    Sent_Hw_Unit->CddSentChannelConfigList[Channel_count]->CddSentPduID;
+                    (uint16)Sent_Hw_Unit->CddSentChannelConfigList[Channel_count]->CddSentPduID;
                 break;
             case CDD_SENT_CHANNEL_SENSOR_2:
                 Cdd_Sent_DriverObj->CddSent_Fast_Channel_PduID[loop_count][1U] =
-                    Sent_Hw_Unit->CddSentChannelConfigList[Channel_count]->CddSentPduID;
+                    (uint16)Sent_Hw_Unit->CddSentChannelConfigList[Channel_count]->CddSentPduID;
                 break;
             case CDD_SENT_CHANNEL_SENSOR_3:
                 Cdd_Sent_DriverObj->CddSent_Fast_Channel_PduID[loop_count][2U] =
-                    Sent_Hw_Unit->CddSentChannelConfigList[Channel_count]->CddSentPduID;
+                    (uint16)Sent_Hw_Unit->CddSentChannelConfigList[Channel_count]->CddSentPduID;
                 break;
             case CDD_SENT_CHANNEL_SENSOR_4:
                 Cdd_Sent_DriverObj->CddSent_Fast_Channel_PduID[loop_count][3U] =
-                    Sent_Hw_Unit->CddSentChannelConfigList[Channel_count]->CddSentPduID;
+                    (uint16)Sent_Hw_Unit->CddSentChannelConfigList[Channel_count]->CddSentPduID;
                 break;
+            /* TI_COVERAGE_GAP_START [Branch Coverage/ Statement Coverage] The default branch is unreachable. The
+             * switch value is derived from an enum set by the configurator and cannot take an
+             * invalid value. */
             default:
                 break;
+                /* TI_COVERAGE_GAP_STOP */
         }
     }
 }

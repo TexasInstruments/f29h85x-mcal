@@ -68,6 +68,11 @@
  *  Description:  This file contains the private implementation of I2C HW functions
  *********************************************************************************************************************/
 
+/*
+ * Design: MCAL-39701, MCAL-39702, MCAL-39703, MCAL-39704, MCAL-39705, MCAL-39706, MCAL-39658,
+ * Design: MCAL-39659, MCAL-39660, MCAL-39661, MCAL-39662, MCAL-39663, MCAL-39664, MCAL-39665
+ */
+
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -158,6 +163,9 @@ static void Cdd_I2c_HwSetSlaveAddress(uint32 baseAddr, Cdd_I2c_AddressType devic
 #define CDD_I2C_START_SEC_CODE
 #include "Cdd_I2c_MemMap.h"
 
+/*
+ * Design: MCAL-39701, MCAL-39658, MCAL-39659, MCAL-39660, MCAL-39661, MCAL-39663
+ */
 void Cdd_I2c_HwInit(uint32 baseAddr, uint32 baudRate, uint32 hwUnitFrequency, uint32 sysClk,
                     Cdd_I2c_AddressType ownAddress, uint8 mode)
 {
@@ -175,6 +183,9 @@ void Cdd_I2c_HwInit(uint32 baseAddr, uint32 baudRate, uint32 hwUnitFrequency, ui
     return;
 }
 
+/*
+ * Design: MCAL-39702, MCAL-39686
+ */
 void Cdd_I2c_HwDeInit(uint32 baseAddr)
 {
     Cdd_I2c_HwDisableAllIntr(baseAddr);
@@ -184,6 +195,9 @@ void Cdd_I2c_HwDeInit(uint32 baseAddr)
     return;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39664, MCAL-39713
+ */
 Cdd_I2c_ChannelResultType Cdd_I2c_HwTxPolling(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_ChannelResultType chResult;
@@ -197,14 +211,22 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwTxPolling(Cdd_I2c_ChObjType *chObj)
     }
     else
     {
+        /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] False branch (doBusyCheck=FALSE) is
+         * taken for non-first channels in a NOSTOP sequence. This requires a NOSTOP sequence
+         * with more than one channel to be configured and executed, which is not covered in the
+         * current polled-mode test configurations. */
         /* Start with setup state directly */
         chObj->state = CDD_I2C_STATE_SETUP;
+        /* TI_COVERAGE_GAP_STOP */
     }
     chResult = Cdd_I2c_HwTxPollingContinue(chObj);
 
     return chResult;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39691, MCAL-39713, MCAL-39715
+ */
 Cdd_I2c_ChannelResultType Cdd_I2c_HwTxPollingContinue(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_ChannelResultType chResult = chObj->chResult;
@@ -214,11 +236,18 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwTxPollingContinue(Cdd_I2c_ChObjType *chObj)
      */
     if (TRUE == chObj->isCancelInProgress)
     {
+        /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] Requires cancel to race with state=SETUP
+         * in polled mode: Cdd_I2c_HwTxPolling() sets state=SETUP then immediately calls
+         * Cdd_I2c_HwTxPollingContinue() synchronously, so isCancelInProgress cannot be TRUE at
+         * this point in a normal polled transfer. This path is only reachable if cancel is called
+         * from a concurrent context between the two calls, which cannot be reproduced in the
+         * single-threaded polled test environment. */
         if (chObj->state <= CDD_I2C_STATE_SETUP)
         {
             chResult     = CDD_I2C_CH_RESULT_OK;
             chObj->state = CDD_I2C_STATE_COMPLETE;
         }
+        /* TI_COVERAGE_GAP_STOP */
     }
 
     if (CDD_I2C_STATE_WAIT_FOR_BUS_FREE == chObj->state)
@@ -264,6 +293,9 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwTxPollingContinue(Cdd_I2c_ChObjType *chObj)
     return chResult;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39664, MCAL-39713
+ */
 Cdd_I2c_ChannelResultType Cdd_I2c_HwRxPolling(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_ChannelResultType chResult;
@@ -285,6 +317,9 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwRxPolling(Cdd_I2c_ChObjType *chObj)
     return chResult;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39691, MCAL-39713, MCAL-39715
+ */
 Cdd_I2c_ChannelResultType Cdd_I2c_HwRxPollingContinue(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_ChannelResultType chResult = chObj->chResult;
@@ -292,6 +327,12 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwRxPollingContinue(Cdd_I2c_ChObjType *chObj)
     /*
      * If not started yet and is cancelled, just return
      */
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] Requires cancel to race with state=SETUP
+     * in polled mode: Cdd_I2c_HwRxPolling() sets state=SETUP then immediately calls
+     * Cdd_I2c_HwRxPollingContinue() synchronously, so isCancelInProgress cannot be TRUE at
+     * this point in a normal polled transfer. This path is only reachable if cancel is called
+     * from a concurrent context between the two calls, which cannot be reproduced in the
+     * single-threaded polled test environment. */
     if (TRUE == chObj->isCancelInProgress)
     {
         if (chObj->state <= CDD_I2C_STATE_SETUP)
@@ -300,6 +341,7 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwRxPollingContinue(Cdd_I2c_ChObjType *chObj)
             chObj->state = CDD_I2C_STATE_COMPLETE;
         }
     }
+    /* TI_COVERAGE_GAP_STOP */
 
     if (CDD_I2C_STATE_WAIT_FOR_BUS_FREE == chObj->state)
     {
@@ -320,6 +362,10 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwRxPollingContinue(Cdd_I2c_ChObjType *chObj)
     if (CDD_I2C_STATE_DATA_TRANSFER == chObj->state)
     {
         /* Incase of cancel, wait for a RX event to exit the transfer gracefully */
+        /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] Requires cancel to be called while
+         * the RX channel is already in DATA_TRANSFER state in polled mode. This precise timing
+         * (cancel mid-transfer in polled mode) cannot be reproduced reliably in the test
+         * environment. */
         if (TRUE == chObj->isCancelInProgress)
         {
             Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
@@ -333,6 +379,7 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwRxPollingContinue(Cdd_I2c_ChObjType *chObj)
                 Cdd_I2c_HwStop(baseAddr);
             }
         }
+        /* TI_COVERAGE_GAP_STOP */
         else
         {
             /* Read the remaining bytes */
@@ -348,6 +395,9 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwRxPollingContinue(Cdd_I2c_ChObjType *chObj)
     return chResult;
 }
 
+/*
+ * Design: MCAL-39705, MCAL-39664, MCAL-39713, MCAL-39715
+ */
 Cdd_I2c_ChannelResultType Cdd_I2c_HwTxIntr(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_ChannelResultType chResult = CDD_I2C_CH_RESULT_OK;
@@ -358,6 +408,9 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwTxIntr(Cdd_I2c_ChObjType *chObj)
     return chResult;
 }
 
+/*
+ * Design: MCAL-39705, MCAL-39664, MCAL-39713, MCAL-39715
+ */
 Cdd_I2c_ChannelResultType Cdd_I2c_HwRxIntr(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_ChannelResultType chResult = CDD_I2C_CH_RESULT_OK;
@@ -368,6 +421,9 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwRxIntr(Cdd_I2c_ChObjType *chObj)
     return chResult;
 }
 
+/*
+ * Design: MCAL-39706, MCAL-39664, MCAL-39713, MCAL-39715, MCAL-39678
+ */
 Cdd_I2c_ChannelResultType Cdd_I2c_HwTxRxIntrContinue(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
@@ -426,16 +482,25 @@ Cdd_I2c_ChannelResultType Cdd_I2c_HwTxRxIntrContinue(Cdd_I2c_ChObjType *chObj)
     return chResult;
 }
 
+/*
+ * Design: MCAL-39701, MCAL-39702, MCAL-39694, MCAL-39697, MCAL-39698
+ */
 void Cdd_I2c_HwDisableAllIntr(uint32 baseAddr)
 {
     Cdd_I2c_HwDisableIntr(baseAddr, CDD_I2C_HW_INTR_ENABLE_MASK_ALL);
 }
 
+/*
+ * Design: MCAL-39701, MCAL-39702, MCAL-39694
+ */
 void Cdd_I2c_HwClearAllStatus(uint32 baseAddr)
 {
     Cdd_I2c_HwClearIntr(baseAddr, CDD_I2C_HW_INTR_STATUS_MASK_ALL);
 }
 
+/*
+ * Design: MCAL-39703, MCAL-39701, MCAL-39663
+ */
 void Cdd_I2c_HwSetMode(uint32 baseAddr, uint16 ctrlMask, uint16 ctrlCmds)
 {
     uint16 regVal;
@@ -446,11 +511,17 @@ void Cdd_I2c_HwSetMode(uint32 baseAddr, uint16 ctrlMask, uint16 ctrlCmds)
     HWREGH(baseAddr + I2C_O_MDR)  = regVal;
 }
 
+/*
+ * Design: MCAL-39703, MCAL-39713
+ */
 void Cdd_I2c_HwSetDataCount(uint32 baseAddr, uint16 length)
 {
     HWREGH(baseAddr + I2C_O_CNT) = length;
 }
 
+/*
+ * Design: MCAL-39701
+ */
 void Cdd_I2c_DisableFifo(uint32 baseAddr)
 {
     uint16 regVal;
@@ -464,6 +535,9 @@ void Cdd_I2c_DisableFifo(uint32 baseAddr)
     HWREGH(baseAddr + I2C_O_FFRX)  = regVal;
 }
 
+/*
+ * Design: MCAL-39701
+ */
 void Cdd_I2c_SetExtCompatibilityMode(uint32 baseAddr, uint8 extCompMode)
 {
     uint16 regVal;
@@ -474,16 +548,25 @@ void Cdd_I2c_SetExtCompatibilityMode(uint32 baseAddr, uint8 extCompMode)
     HWREGH(baseAddr + I2C_O_EMDR)  = regVal;
 }
 
+/*
+ * Design: MCAL-39709, MCAL-39706
+ */
 uint16 Cdd_I2c_HwGetIntCode(uint32 baseAddr)
 {
     return HWREGH(baseAddr + I2C_O_ISRC) & I2C_ISRC_INTCODE_M;
 }
 
+/*
+ * Design: MCAL-39703, MCAL-39704, MCAL-39706
+ */
 void Cdd_I2c_HwWriteData(uint32 baseAddr, uint8 data)
 {
     HWREGH(baseAddr + I2C_O_DXR) = (uint8)data;
 }
 
+/*
+ * Design: MCAL-39703, MCAL-39704, MCAL-39706
+ */
 uint8 Cdd_I2c_HwReadData(uint32 baseAddr)
 {
     return (uint8)HWREGH(baseAddr + I2C_O_DRR);
@@ -493,6 +576,10 @@ uint8 Cdd_I2c_HwReadData(uint32 baseAddr)
  *  Local Functions Definition
  *********************************************************************************************************************/
 
+/*
+ * Design: MCAL-39703, MCAL-39704, MCAL-39705, MCAL-39658, MCAL-39662, MCAL-39663, MCAL-39664,
+ * Design: MCAL-39713
+ */
 static void Cdd_I2c_HwSetup(Cdd_I2c_ChObjType *chObj, boolean isIntrMode)
 {
     Cdd_I2c_HwUnitObjType *hwUnitObj = chObj->hwUnitObj;
@@ -543,6 +630,9 @@ static void Cdd_I2c_HwSetup(Cdd_I2c_ChObjType *chObj, boolean isIntrMode)
     return;
 }
 
+/*
+ * Design: MCAL-39701, MCAL-39658, MCAL-39659, MCAL-39660, MCAL-39663
+ */
 static void Cdd_I2c_HwSetupClk(uint32 baseAddr, uint32 baudRate, uint32 hwUnitFrequency, uint32 sysClk, uint8 mode)
 {
     uint16 preScaler;
@@ -585,6 +675,9 @@ static void Cdd_I2c_HwSetupClk(uint32 baseAddr, uint32 baudRate, uint32 hwUnitFr
     return;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39715
+ */
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForBusFree(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
@@ -593,7 +686,8 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForBusFree(Cdd_I2c_ChObjTy
     uint16                    intrStatus;
 
     intrStatus = Cdd_I2c_HwGetIntrStatus(baseAddr);
-    /* TI_COVERAGE_GAP_START Bus busy cannot be recreated in test environment as we don't have multi-master setup */
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] Bus busy cannot be recreated in test environment as we don't
+     * have multi-master setup */
     if ((intrStatus & I2C_STR_BB) != I2C_STR_BB)
     {
         /* Bus is free - Move to next state */
@@ -604,6 +698,9 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForBusFree(Cdd_I2c_ChObjTy
     return chResult;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39715
+ */
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForBusBusy(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
@@ -621,6 +718,9 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForBusBusy(Cdd_I2c_ChObjTy
     return chResult;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39715, MCAL-39713
+ */
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoTransferTxPolling(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
@@ -657,6 +757,9 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoTransferTxPolling(Cdd_I2c_ChOb
     return chResult;
 }
 
+/*
+ * Design: MCAL-39706, MCAL-39705, MCAL-39715, MCAL-39713
+ */
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoTransferTxIntr(Cdd_I2c_ChObjType *chObj, uint16 intrStatus)
 {
     Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
@@ -666,7 +769,15 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoTransferTxIntr(Cdd_I2c_ChObjTy
     /* Check for access ready condition */
     if ((intrStatus & I2C_IER_ARDY) != 0U)
     {
+        /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap]
+         * False branch (curLength < length) cannot be recreated in the test environment.
+         * I2C_STR_ARDY (I2C_O_STR[2]) is set by hardware only after the last byte of a
+         * transfer is acknowledged by the target. At that point curLength always equals
+         * length because XRDY interrupts have already incremented it for every byte sent.
+         * A scenario where ARDY fires with curLength < length would require the target to
+         * assert ARDY mid-transfer, which is not possible with a standard I2C target device. */
         if (chObj->curLength == chObj->length)
+        /* TI_COVERAGE_GAP_STOP */
         {
             Cdd_I2c_HwDisableIntr(baseAddr, I2C_IER_ARDY);
             Cdd_I2c_HwClearIntr(baseAddr, I2C_STR_ARDY);
@@ -706,6 +817,9 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoTransferTxIntr(Cdd_I2c_ChObjTy
     return chResult;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39715, MCAL-39713
+ */
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoTransferRxPolling(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
@@ -749,25 +863,49 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoTransferRxPolling(Cdd_I2c_ChOb
         }
         else
         {
+            /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] False branch (isStopRequired=FALSE)
+             * is taken for non-last channels in a NOSTOP sequence where no stop condition is
+             * generated between channels. This requires a NOSTOP sequence with more than one
+             * channel to be configured and executed in polled mode, which is not covered in the
+             * current polled-mode test configurations. */
             Cdd_I2c_HwClearAllStatus(baseAddr);
             /* Use any error code that is already detected */
             chResult     = chObj->chErrorCode;
             chObj->state = CDD_I2C_STATE_COMPLETE;
+            /* TI_COVERAGE_GAP_STOP */
         }
     }
 
     return chResult;
 }
 
+/*
+ * Design: MCAL-39706, MCAL-39705, MCAL-39715, MCAL-39713
+ */
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoTransferRxIntr(Cdd_I2c_ChObjType *chObj, uint16 intrStatus)
 {
     Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
     uint32                    baseAddr  = hwUnitObj->baseAddr;
     Cdd_I2c_ChannelResultType chResult  = CDD_I2C_CH_RESULT_PENDING;
 
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] False branch (I2C_STR_RRDY not set) is
+     * a spurious-interrupt defensive path entered when Cdd_I2c_HwStateDoTransferRxIntr() is
+     * called but no byte is ready in the receive register. On a well-behaved I2C bus the RRDY
+     * interrupt is only raised when a byte is available, so this branch cannot be reproduced
+     * in the test environment. */
     if ((intrStatus & I2C_STR_RRDY) != 0U)
+    /* TI_COVERAGE_GAP_STOP */
     {
+        /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap]
+         * False branch (curLength >= length) cannot be recreated in the test environment.
+         * I2C_STR_RRDY (I2C_O_STR[3]) is set by hardware each time a new byte is placed in
+         * the receive shift register. The driver reads and clears it on every RRDY interrupt,
+         * incrementing curLength until it equals length, at which point RRDY is disabled.
+         * A scenario where RRDY fires with curLength >= length would require the target to
+         * send an extra byte after the expected count, which cannot be reproduced in the
+         * test environment without a real I2C bus and a misbehaving target device. */
         if (chObj->curLength < chObj->length)
+        /* TI_COVERAGE_GAP_STOP */
         {
             /* Read the data */
             *chObj->curRxBufPtr = Cdd_I2c_HwReadData(baseAddr);
@@ -797,6 +935,9 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoTransferRxIntr(Cdd_I2c_ChObjTy
     return chResult;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39715, MCAL-39713
+ */
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForAccessReady(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
@@ -826,6 +967,9 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForAccessReady(Cdd_I2c_ChO
     return chResult;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39706, MCAL-39715, MCAL-39713
+ */
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForStop(Cdd_I2c_ChObjType *chObj)
 {
     Cdd_I2c_HwUnitObjType    *hwUnitObj = chObj->hwUnitObj;
@@ -844,6 +988,9 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwStateDoWaitForStop(Cdd_I2c_ChObjType 
     return chResult;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39706
+ */
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForTxReady(uint32 baseAddr)
 {
     Cdd_I2c_ChannelResultType chResult = CDD_I2C_CH_RESULT_PENDING;
@@ -864,6 +1011,9 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForTxReady(uint32 baseAddr)
     return chResult;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39706
+ */
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForRxReady(uint32 baseAddr)
 {
     Cdd_I2c_ChannelResultType chResult = CDD_I2C_CH_RESULT_PENDING;
@@ -884,6 +1034,9 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForRxReady(uint32 baseAddr)
     return chResult;
 }
 
+/*
+ * Design: MCAL-39704
+ */
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForAccessReady(uint32 baseAddr)
 {
     Cdd_I2c_ChannelResultType chResult = CDD_I2C_CH_RESULT_PENDING;
@@ -898,6 +1051,9 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForAccessReady(uint32 baseAddr)
     return chResult;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39706
+ */
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForStop(uint32 baseAddr)
 {
     Cdd_I2c_ChannelResultType chResult = CDD_I2C_CH_RESULT_PENDING;
@@ -925,11 +1081,15 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwCheckForStop(uint32 baseAddr)
     return chResult;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39706, MCAL-39678
+ */
 static Cdd_I2c_ChannelResultType Cdd_I2c_HwGetErrorCode(uint16 intrStatus, boolean checkStopStatus)
 {
     Cdd_I2c_ChannelResultType chErrorCode = CDD_I2C_CH_RESULT_OK;
 
-    /* TI_COVERAGE_GAP_START Arbitration loss error cannot be recreated in test environment */
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] Arbitration loss error cannot be recreated in test environment
+     */
     if ((intrStatus & I2C_STR_ARBL) != 0U)
     {
         chErrorCode = CDD_I2C_CH_RESULT_ARBFAIL;
@@ -939,7 +1099,7 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwGetErrorCode(uint16 intrStatus, boole
     {
         chErrorCode = CDD_I2C_CH_RESULT_NACKFAIL;
     }
-    /* TI_COVERAGE_GAP_START Address zero error cannot be recreated in test environment */
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] Address zero error cannot be recreated in test environment */
     if ((intrStatus & I2C_STR_AD0) != 0U)
     {
         chErrorCode = CDD_I2C_CH_RESULT_NOT_OK;
@@ -950,7 +1110,7 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwGetErrorCode(uint16 intrStatus, boole
      * the transfer end */
     if (TRUE == checkStopStatus)
     {
-        /* TI_COVERAGE_GAP_START Bus fail error cannot be recreated in test environment */
+        /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] Bus fail error cannot be recreated in test environment */
         if ((intrStatus & I2C_STR_SCD) != 0U)
         {
             chErrorCode = CDD_I2C_CH_RESULT_BUSFAIL;
@@ -961,11 +1121,17 @@ static Cdd_I2c_ChannelResultType Cdd_I2c_HwGetErrorCode(uint16 intrStatus, boole
     return chErrorCode;
 }
 
+/*
+ * Design: MCAL-39701, MCAL-39702
+ */
 static void Cdd_I2c_HwReset(uint32 baseAddr)
 {
     Cdd_I2c_HwSetMode(baseAddr, I2C_MDR_IRS, 0U);
 }
 
+/*
+ * Design: MCAL-39701, MCAL-39663
+ */
 static void Cdd_I2c_HwEnableModule(uint32 baseAddr, uint8 mode)
 {
     uint16 regVal;
@@ -979,11 +1145,17 @@ static void Cdd_I2c_HwEnableModule(uint32 baseAddr, uint8 mode)
     HWREGH(baseAddr + I2C_O_MDR)  = regVal;
 }
 
+/*
+ * Design: MCAL-39704, MCAL-39706, MCAL-39690
+ */
 static void Cdd_I2c_HwStop(uint32 baseAddr)
 {
     Cdd_I2c_HwSetMode(baseAddr, I2C_MDR_STP, I2C_MDR_STP);
 }
 
+/*
+ * Design: MCAL-39703, MCAL-39705, MCAL-39697, MCAL-39664
+ */
 void Cdd_I2c_HwEnableIntr(uint32 baseAddr, uint16 mask)
 {
     uint16 regVal;
@@ -993,6 +1165,9 @@ void Cdd_I2c_HwEnableIntr(uint32 baseAddr, uint16 mask)
     HWREGH(baseAddr + I2C_O_IER)  = regVal;
 }
 
+/*
+ * Design: MCAL-39706, MCAL-39704, MCAL-39698, MCAL-39664
+ */
 void Cdd_I2c_HwDisableIntr(uint32 baseAddr, uint16 mask)
 {
     uint16 regVal;
@@ -1002,6 +1177,9 @@ void Cdd_I2c_HwDisableIntr(uint32 baseAddr, uint16 mask)
     HWREGH(baseAddr + I2C_O_IER)  = regVal;
 }
 
+/*
+ * Design: MCAL-39706, MCAL-39704
+ */
 static void Cdd_I2c_HwClearIntr(uint32 baseAddr, uint16 mask)
 {
     /* STR needs to read before clearing without this restart is not working */
@@ -1012,16 +1190,25 @@ static void Cdd_I2c_HwClearIntr(uint32 baseAddr, uint16 mask)
     HWREGH(baseAddr + I2C_O_STR) = mask;
 }
 
+/*
+ * Design: MCAL-39706, MCAL-39704
+ */
 static uint16 Cdd_I2c_HwGetIntrStatus(uint32 baseAddr)
 {
     return HWREGH(baseAddr + I2C_O_STR);
 }
 
+/*
+ * Design: MCAL-39701, MCAL-39661
+ */
 static void Cdd_I2c_HwSetOwnAddress(uint32 baseAddr, uint16 ownAddress)
 {
     HWREGH(baseAddr + I2C_O_OAR) = ownAddress;
 }
 
+/*
+ * Design: MCAL-39703, MCAL-39675, MCAL-39676
+ */
 static void Cdd_I2c_HwSetSlaveAddress(uint32 baseAddr, Cdd_I2c_AddressType deviceAddress)
 {
     HWREGH(baseAddr + I2C_O_TAR) = deviceAddress;

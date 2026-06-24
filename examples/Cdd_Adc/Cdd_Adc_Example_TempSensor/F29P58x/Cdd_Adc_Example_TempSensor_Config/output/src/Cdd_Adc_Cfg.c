@@ -73,17 +73,16 @@
  *********************************************************************************************************************/
 #include "Cdd_Adc.h"
 #include "hw_memmap.h"
-#include "hw_asysctl.h"
 #include "Mcal_Lib_BootRom.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
-#if ((CDD_ADC_SW_MAJOR_VERSION != (4U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
+#if ((CDD_ADC_SW_MAJOR_VERSION != (5U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
   #error "Version numbers of Cdd_Adc_Cfg.c and Cdd_Adc.h are inconsistent!"
 #endif
 
-#if ( (CDD_ADC_CFG_MAJOR_VERSION != (4U)) \
+#if ( (CDD_ADC_CFG_MAJOR_VERSION != (5U)) \
     ||(CDD_ADC_CFG_MINOR_VERSION != (0U)))
   #error "Version numbers of Cdd_Adc_Cfg.c and Cdd_Adc_Cfg.h are inconsistent!"
 #endif
@@ -124,7 +123,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             #endif
             .signal_mode = (Cdd_Adc_SignalModeType)CDD_ADC_MODE_SINGLE_ENDED,
             .socpriority = (Cdd_Adc_SocPriorityType)0U,
-            .voltref = (Cdd_Adc_RefVoltType)CDD_ADC_REFERENCE_2_5V,
             .voltrefmode = (Cdd_Adc_RefModeType)CDD_ADC_REFERENCE_INTERNAL,
             .intpulsemode = (Cdd_Adc_EocPulseType)CDD_ADC_PULSE_END_OF_CONV,
             .intoffset = (uint16)0U,
@@ -139,8 +137,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .lastgroupnum = (Cdd_Adc_GroupType)(0U),
             .base_addr = (uint32)(ADCA_BASE_FRAME(0U)),
             .result_baseaddr = (uint32)( ADCARESULT_BASE + (CDD_ADC_RESULTBASEADDR_STEP*0U)),
-            .analogrefsel = (uint16)ASYSCTL_ANAREFCTL_ANAREFABSEL,
-            .analogrefvoltsel = (uint16)ASYSCTL_ANAREFCTL_ANAREFAB_2P5SEL,
             .inltrimaddress =((const uint32 *)&McalLib_DeviceCalibrationData->AdcAInlTrim[0U]),
             .numadc_inltrim = ((uint8)6U)
         },
@@ -154,7 +150,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             #endif
             .signal_mode = (Cdd_Adc_SignalModeType)CDD_ADC_MODE_SINGLE_ENDED,
             .socpriority = (Cdd_Adc_SocPriorityType)0U,
-            .voltref = (Cdd_Adc_RefVoltType)CDD_ADC_REFERENCE_2_5V,
             .voltrefmode = (Cdd_Adc_RefModeType)CDD_ADC_REFERENCE_INTERNAL,
             .intpulsemode = (Cdd_Adc_EocPulseType)CDD_ADC_PULSE_END_OF_CONV,
             .intoffset = (uint16)0U,
@@ -169,8 +164,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .lastgroupnum = (Cdd_Adc_GroupType)(1U),
             .base_addr = (uint32)(ADCC_BASE_FRAME(0U)),
             .result_baseaddr = (uint32)( ADCARESULT_BASE + (CDD_ADC_RESULTBASEADDR_STEP*2U)),
-            .analogrefsel = (uint16)ASYSCTL_ANAREFCTL_ANAREFCDESEL,
-            .analogrefvoltsel = (uint16)ASYSCTL_ANAREFCTL_ANAREFCDE_2P5SEL,
             .inltrimaddress =((const uint32 *)&McalLib_DeviceCalibrationData->AdcCInlTrim[0U]),
             .numadc_inltrim = ((uint8)3U)
         }
@@ -246,7 +239,6 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .soc_num =  (uint8)(0U)
         }
     },
-    .test_input = (Cdd_Adc_InternalTestNodeType)CDD_ADC_TEST_NODE_NO_CONN
 };
 
 

@@ -161,7 +161,7 @@ extern "C" {
 /*
  * Design: MCAL-31051
  */
-#define FLS_BASE_ADDRESS                ([!"FlsGeneral/FlsBaseAddress "!]UL)
+#define FLS_BASE_ADDRESS                ([!"FlsGeneral/FlsBaseAddress "!]U)
 
 /** \brief Total amount of flash memory in bytes */
 /*

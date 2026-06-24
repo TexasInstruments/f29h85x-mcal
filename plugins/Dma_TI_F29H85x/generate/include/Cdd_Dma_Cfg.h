@@ -134,6 +134,13 @@ extern "C" {
 /** \brief Macro to define the number of MPU regions configured */
 #define CDD_DMA_MPU_REGION_COUNT         [!"num:max(text:split($maxinput))"!]U
 
+/** \brief Maximum value for DMA burst size */
+#define CDD_DMA_MAX_BURST_SIZE (256U)
+
+/** \brief Maximum value for DMA transfer size and wrap size */
+#define CDD_DMA_MAX_TRANSFER_SIZE (65536U)
+
+/* Design: MCAL-39315 */
 /*****************************************************************************
  * \brief Symbolic names of the DMA instances
  *****************************************************************************/
@@ -143,6 +150,7 @@ extern "C" {
 [!VAR "idx" = "$idx + 1"!][!//
 [!ENDLOOP!][!//
 
+/* Design: MCAL-39313 */
 /*****************************************************************************
  * \brief Symbolic names of the DMA channels
  *****************************************************************************/ 
@@ -152,6 +160,7 @@ extern "C" {
 [!VAR "idx" = "$idx + 1"!][!//
 [!ENDLOOP!][!//
 
+/* Design: MCAL-39314 */
 /*****************************************************************************
  * \brief Symbolic names of the DMA MPU regions
  *****************************************************************************/
@@ -189,6 +198,7 @@ extern "C" {
 /* Forward declaration of Cdd_Dma configuration structure */
 struct Cdd_Dma_ConfigTag;
 
+/* Design: MCAL-39291 */
 /** \brief Peripheral event trigger source select type */
 typedef enum
 {

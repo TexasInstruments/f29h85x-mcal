@@ -233,6 +233,9 @@ void CddEcap_DemoSignalMeasurementMode()
         ++i;  // Increment the loop counter
     }
 
+    /*Stop the signal*/
+    Cdd_Ecap_StopSignalMeasurement(CddEcapConf_CddEcapChannel_CddEcapChannel_0);
+
     // Print the high time and period
     AppUtils_Printf("High time of the signal is: %d\r\n", highTime);
     AppUtils_Printf("Period of the signal is: %d\r\n", periodTime);

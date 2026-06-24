@@ -83,11 +83,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CDD_XBAR_SW_MAJOR_VERSION != (3U)) || (CDD_XBAR_SW_MINOR_VERSION != (1U)))
+#if ((CDD_XBAR_SW_MAJOR_VERSION != (3U)) || (CDD_XBAR_SW_MINOR_VERSION != (2U)))
     #error "Version numbers of Cdd_Xbar.c and Cdd_Xbar.h are inconsistent!"
 #endif
 
-#if ((CDD_XBAR_CFG_MAJOR_VERSION != (3U)) || (CDD_XBAR_CFG_MINOR_VERSION != (1U)))
+#if ((CDD_XBAR_CFG_MAJOR_VERSION != (3U)) || (CDD_XBAR_CFG_MINOR_VERSION != (2U)))
     #error "Version numbers of Cdd_Xbar_Cfg.c and Cdd_Xbar_Cfg.h are inconsistent!"
 #endif
 

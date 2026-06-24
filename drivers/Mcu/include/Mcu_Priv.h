@@ -82,6 +82,7 @@ extern "C" {
 #include "hw_memmap.h"
 #include "hw_types.h"
 #include "hw_sysctl.h"
+#include "hw_asysctl.h"
 #include "Mcal_Lib_Cpu.h"
 #include "Mcal_Lib.h"
 #include "Mcal_Lib_BootRom.h"
@@ -418,12 +419,122 @@ Mcu_Priv_ConfigurePeripherals(P2CONST(Mcu_PeripheralConfigType, AUTOMATIC, MCU_A
  *********************************************************************************************************************/
 FUNC(void, MCU_CODE) Mcu_Priv_ConfigureLockstep(boolean LockstepEnable);
 
+/** \brief Configures Analog System Control (ASysCtl) registers during Mcu_Init()
+ *
+ *  Writes the following registers in order:
+ *    1. ANAREFCTL  — analog reference source and voltage selection
+ *    2. VREGCTL    — VMON mask enable and VREG power-down
+ *    3. VMONCTL    — Brown-Out Reset Level disable
+ *    4. TSNSCTL    — temperature sensor enable/disable
+ *    5. INTERNALTESTCTL — internal test node selection via Mcu_Priv_SelectInternalTestNode()
+ *
+ * \param[in] ASysCtlConfig  Pointer to the ASysCtl configuration structure.
+ *                           If NULL_PTR, function returns without action.
+ * \pre  None
+ * \post ASysCtl registers written per configuration.
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE)
+Mcu_Priv_ConfigureASysCtl(P2CONST(Mcu_ASysCtlConfigType, AUTOMATIC, MCU_APPL_CONST) ASysCtlConfig);
+
+/** \brief Configures CMPSS ASysCtl mux select registers during Mcu_Init()
+ *
+ *  Writes the following registers in order:
+ *    1. CMPHPMXSEL  — HP positive mux for CMP1–CMP10
+ *    2. CMPHPMXSEL1 — HP positive mux for CMP11–CMP12
+ *    3. CMPLPMXSEL  — LP positive mux for CMP1–CMP10
+ *    4. CMPLPMXSEL1 — LP positive mux for CMP11–CMP12
+ *    5. CMPHNMXSEL  — HN negative mux for CMP1–CMP12
+ *    6. CMPLNMXSEL  — LN negative mux for CMP1–CMP12
+ *
+ * \param[in] CMPSSASysCtlConfig  Pointer to the CMPSS ASysCtl configuration structure.
+ *                                If NULL_PTR, function returns without action.
+ * \pre  None
+ * \post CMPSS ASysCtl mux select registers written per configuration.
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE)
+Mcu_Priv_ConfigureCMPSSASysCtl(P2CONST(Mcu_CMPSSASysCtlConfigType, AUTOMATIC, MCU_APPL_CONST) CMPSSASysCtlConfig);
+
+/** \brief Selects the internal test node connected to the analog test bus
+ *
+ *  Writes INTERNALTESTCTL.TESTSEL (bits [5:0]) with the requested node value.
+ *  The KEY field (bits [31:16]) must be written simultaneously with the value
+ *  0xA5A5 to enable the write, per hardware requirement.
+ *
+ *  This function is called by Mcu_Priv_ConfigureASysCtl() at init time and
+ *  will also be called by the runtime public API Mcu_ASysCtl_SelectInternalTestNode().
+ *
+ * \param[in] TestNode  Test node selection value (TESTSEL bits [5:0]).
+ *                      Use 0U to disconnect (no test node).
+ * \pre  None
+ * \post INTERNALTESTCTL.TESTSEL reflects the requested node.
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_Priv_SelectInternalTestNode(Mcu_ASysCtlTestNodeType TestNode);
+
+/** \brief Configures the ADC Global SOC Force Select register (ADCSOCFRCGBSEL)
+ *
+ *  Writes ADCSOCFRCGBSEL with the ADC instance select mask, selecting which ADC
+ *  instances participate in the global software trigger.
+ *
+ * \param[in] BaseAddr   Base address of the ADC global register block (e.g. ADCGLOBAL_BASE)
+ * \param[in] AdcSelect  ADC instance selection mask (e.g. ASYSCTL_ADCSOCFRCGBSEL_ADCA, etc.)
+ * \pre  None
+ * \post ADCSOCFRCGBSEL register written with AdcSelect.
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE)
+Mcu_Priv_ConfigADCGlobalSOC(VAR(uint32, AUTOMATIC) BaseAddr, VAR(uint8, AUTOMATIC) AdcSelect);
+
+/** \brief Forces the ADC Global SOC trigger register (ADCSOCFRCGB)
+ *
+ *  Writes ADCSOCFRCGB with the SOC mask to simultaneously trigger the selected
+ *  SOCs across all ADC instances configured via ADCSOCFRCGBSEL.
+ *
+ * \param[in] BaseAddr  Base address of the ADC global register block (e.g. ADCGLOBAL_BASE)
+ * \param[in] SocMask   SOC trigger mask (bits [31:0] — one bit per SOC to trigger)
+ * \pre  None
+ * \post ADCSOCFRCGB register written with SocMask.
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_Priv_ForceADCGlobalSOC(VAR(uint32, AUTOMATIC) BaseAddr, VAR(uint32, AUTOMATIC) SocMask);
+
+/** \brief Private helper: translates Mcu_ASysCtlLockType to hardware bits and writes ASYSCTL_O_LOCK.
+ *
+ * \param[in] LockMask  AUTOSAR lock mask (Mcu_ASysCtlLockType)
+ */
+FUNC(void, MCU_CODE) Mcu_Priv_CommitASysCtlLock(VAR(Mcu_ASysCtlLockType, AUTOMATIC) LockMask);
+
+/** \brief Configures the EPWM XLINK feature by writing the EPWMXLINKCFG register.
+ *
+ *  Writes DEVCFG_BASE + SYSCTL_O_EPWMXLINKCFG using read-modify-write to enable
+ *  the XLINK feature for the specified ePWM instances.
+ *
+ * \param[in] EPWMXLinkMask  Bitmask of SYSCTL_EPWMXLINKCFG_EPWMn bits to enable
+ * \pre  None
+ * \post EPWMXLINKCFG register OR-updated with EPWMXLinkMask.
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_Priv_ConfigEPWMXLink(VAR(uint32, AUTOMATIC) EPWMXLinkMask);
+
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
 
 #ifdef __cplusplus
-extern "C"
 }
 #endif
 

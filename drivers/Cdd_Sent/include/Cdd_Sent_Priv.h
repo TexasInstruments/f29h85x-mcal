@@ -218,7 +218,7 @@ Cdd_Sent_GetChIdxPriv(const Cdd_Sent_DriverObjType* CddSentDrvObj, Cdd_SentInsta
  *********************************************************************************************************************/
 
 FUNC(void, CDD_SENT_CODE)
-Cdd_Sent_TriggerPrv(uint8 Instance_Id, Cdd_SentTriggerSource Trigger_Source, uint8 Channel_Id,
+Cdd_Sent_TriggerPrv(Cdd_SentInstance Instance_Id, Cdd_SentTriggerSource Trigger_Source, Cdd_SentSensorType Channel_Id,
                     P2CONST(PduInfoType, AUTOMATIC, CDD_SENT_CONST) PduInfoPtr);
 
 /** \brief Cdd_Sent_ProcessISR: Invoked by the respective Sent channel ISR.
@@ -247,7 +247,7 @@ void Cdd_Sent_ProcessISR(Cdd_SentInstance SentInstance);
  *
  *********************************************************************************************************************/
 LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE)
-    Cdd_Sent_getMessageID(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object);
+    Cdd_Sent_getMessageID(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object);
 
 /** \brief Get slow data.
  *
@@ -261,7 +261,7 @@ LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE)
  *
  *********************************************************************************************************************/
 LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE)
-    Cdd_Sent_getSlowData(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object);
+    Cdd_Sent_getSlowData(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object);
 
 /** \brief Enable MTP Channel.
  *
@@ -580,8 +580,7 @@ Cdd_Sent_disableInterrupt(uint32 base, uint32 intFlags);
  *
  *********************************************************************************************************************/
 LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
-    Cdd_Sent_setDataSortingFormat(uint32 base, Cdd_Sent_DataNumber dataNumber, Cdd_SentNibbleNumber nibbleNum,
-                                  Cdd_SentNibble nibble);
+    Cdd_Sent_setDataSortingFormat(uint32 base, Cdd_Sent_DataNumber dataNumber, uint32 nibbleNum, uint32 nibble);
 
 /** \brief Trigger software trigger request.
  *

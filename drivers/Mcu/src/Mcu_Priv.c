@@ -371,6 +371,55 @@ static FUNC(Mcu_ResetType, MCU_CODE) Mcu_ConvertFirstGroup(Mcu_RawResetType RawR
  *********************************************************************************************************************/
 static FUNC(Mcu_ResetType, MCU_CODE) Mcu_ConvertSecondGroup(Mcu_RawResetType RawResetType);
 
+/** \brief Configures ANAREFCTL — analog reference source and voltage selection.
+ *
+ * \param[in] AnalogRefABMode    ADC-A/B reference source  (FALSE=internal, TRUE=external)
+ * \param[in] AnalogRefCDEMode   ADC-C/D/E reference source (FALSE=internal, TRUE=external)
+ * \param[in] AnalogRefABVoltage ADC-A/B internal ref voltage (FALSE=3.3V range, TRUE=2.5V range)
+ * \param[in] AnalogRefCDEVoltage ADC-C/D/E internal ref voltage (FALSE=3.3V range, TRUE=2.5V range)
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+static FUNC(void, MCU_CODE) Mcu_ConfigureAnaRefCtl(boolean AnalogRefABMode, boolean AnalogRefCDEMode,
+                                                   boolean AnalogRefABVoltage, boolean AnalogRefCDEVoltage);
+
+/** \brief Configures VREGCTL — VMON mask enable and VREG power-down.
+ *
+ * \param[in] VMONMaskEnable VMON mask enable (TRUE=enabled)
+ * \param[in] VREGPowerDown  VREG power-down (TRUE=powered down)
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+static FUNC(void, MCU_CODE) Mcu_ConfigureVRegCtl(boolean VMONMaskEnable, boolean VREGPowerDown);
+
+/** \brief Configures VMONCTL — Brown-Out Reset Level disable.
+ *
+ * \param[in] BORLDisable FALSE=BORL enabled (reset default), TRUE=BORL disabled
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+static FUNC(void, MCU_CODE) Mcu_ConfigureVMonCtl(boolean BORLDisable);
+
+/** \brief Configures TSNSCTL — temperature sensor enable/disable.
+ *
+ * \param[in] TemperatureSensorEnable TRUE=temperature sensor enabled
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+static FUNC(void, MCU_CODE) Mcu_ConfigureTsnsCtl(boolean TemperatureSensorEnable);
+
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
@@ -519,8 +568,7 @@ Mcu_Priv_ConfigurePeripherals(P2CONST(Mcu_PeripheralConfigType, AUTOMATIC, MCU_A
     VAR(uint32, AUTOMATIC) periph_idx                                                 = 0U;
     P2CONST(Mcu_PeripheralRegEntryType, AUTOMATIC, MCU_APPL_CONST) config_entries_ptr = NULL_PTR;
 
-    if ((PeripheralConfig != NULL_PTR) && (PeripheralConfig->PeripheralConfigEntries != NULL_PTR) &&
-        (PeripheralConfig->PeripheralConfigCount > 0U))
+    if (PeripheralConfig->PeripheralConfigCount > 0U)
     {
         config_entries_ptr = PeripheralConfig->PeripheralConfigEntries;
 
@@ -543,6 +591,115 @@ FUNC(void, MCU_CODE) Mcu_Priv_ConfigureLockstep(boolean LockstepEnable)
     else
     {
         HWREG(DEVCFG_BASE + SYSCTL_O_LSEN) &= ~SYSCTL_LSEN_ENABLE;
+    }
+}
+
+/*
+ * Design: MCAL-21820
+ */
+FUNC(void, MCU_CODE) Mcu_Priv_SelectInternalTestNode(Mcu_ASysCtlTestNodeType TestNode)
+{
+    /* Write TESTSEL bits [5:0] together with KEY field [31:16] = 0xA5A5 in a single write,
+     * as required by the hardware to enable the write to TESTSEL. */
+    HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_INTERNALTESTCTL) =
+        ((uint32)0xA5A5UL << ASYSCTL_INTERNALTESTCTL_KEY_S) | ((uint32)TestNode & ASYSCTL_INTERNALTESTCTL_TESTSEL_M);
+}
+
+/*
+ * Design: MCAL-21820
+ */
+FUNC(void, MCU_CODE)
+Mcu_Priv_ConfigADCGlobalSOC(VAR(uint32, AUTOMATIC) BaseAddr, VAR(uint8, AUTOMATIC) AdcSelect)
+{
+    /* Write ADCSOCFRCGBSEL to select which ADC instances participate in the global software
+     * trigger. This register holds only the ADC instance select bits (ADCA-ADCE); the SOC
+     * trigger mask belongs in the separate ADCSOCFRCGB register (see Mcu_Priv_ForceADCGlobalSOC). */
+    HWREG(BaseAddr + ASYSCTL_O_ADCSOCFRCGBSEL) = (uint32)AdcSelect;
+}
+
+/*
+ * Design: MCAL-21820
+ */
+FUNC(void, MCU_CODE) Mcu_Priv_ForceADCGlobalSOC(VAR(uint32, AUTOMATIC) BaseAddr, VAR(uint32, AUTOMATIC) SocMask)
+{
+    /* Write ADCSOCFRCGB to simultaneously trigger the selected SOCs across all ADC instances
+     * configured via ADCSOCFRCGBSEL. */
+    HWREG(BaseAddr + ASYSCTL_O_ADCSOCFRCGB) = (uint32)SocMask;
+}
+
+/*
+ * Design: MCAL-21820
+ */
+FUNC(void, MCU_CODE) Mcu_Priv_CommitASysCtlLock(VAR(Mcu_ASysCtlLockType, AUTOMATIC) LockMask)
+{
+    /* The Mcu_ASysCtlLockType enum values are defined to match the hardware register bit positions
+     * exactly (see hw_asysctl.h ASYSCTL_LOCK_* defines), so no bit translation is required.
+     * Cast directly and OR into the lock register. */
+    if (0U != (uint32)LockMask)
+    {
+        HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_LOCK) |= (uint32)LockMask;
+    }
+}
+
+/*
+ * Design: MCAL-21820
+ */
+FUNC(void, MCU_CODE) Mcu_Priv_ConfigEPWMXLink(VAR(uint32, AUTOMATIC) EPWMXLinkMask)
+{
+    /* Enable XLINK for the specified ePWM instances.
+     * Read-modify-write to preserve existing XLINK configuration for other instances. */
+    HWREG(DEVCFG_BASE + SYSCTL_O_EPWMXLINKCFG) |= EPWMXLinkMask;
+}
+
+/*
+ * Design: MCAL-21820
+ */
+FUNC(void, MCU_CODE)
+Mcu_Priv_ConfigureASysCtl(P2CONST(Mcu_ASysCtlConfigType, AUTOMATIC, MCU_APPL_CONST) ASysCtlConfig)
+{
+    if (NULL_PTR == ASysCtlConfig)
+    {
+        /* Nothing to configure */
+    }
+    else
+    {
+        /* Step 1: Configure ANAREFCTL — analog reference source and voltage selection. */
+        Mcu_ConfigureAnaRefCtl(ASysCtlConfig->AnalogRefABMode, ASysCtlConfig->AnalogRefCDEMode,
+                               ASysCtlConfig->AnalogRefABVoltage, ASysCtlConfig->AnalogRefCDEVoltage);
+
+        /* Step 2: Configure VREGCTL — VMON mask enable and VREG power-down. */
+        Mcu_ConfigureVRegCtl(ASysCtlConfig->VMONMaskEnable, ASysCtlConfig->VREGPowerDown);
+
+        /* Step 3: Configure VMONCTL — Brown-Out Reset Level disable. */
+        Mcu_ConfigureVMonCtl(ASysCtlConfig->BORLDisable);
+
+        /* Step 4: Configure TSNSCTL — temperature sensor enable/disable. */
+        Mcu_ConfigureTsnsCtl(ASysCtlConfig->TemperatureSensorEnable);
+
+        /* Step 5: Configure INTERNALTESTCTL — internal test node selection. */
+        Mcu_Priv_SelectInternalTestNode(ASysCtlConfig->InternalTestNodeSelect);
+    }
+}
+
+/*
+ * Design: MCAL-21820
+ */
+FUNC(void, MCU_CODE)
+Mcu_Priv_ConfigureCMPSSASysCtl(P2CONST(Mcu_CMPSSASysCtlConfigType, AUTOMATIC, MCU_APPL_CONST) CMPSSASysCtlConfig)
+{
+    if (NULL_PTR == CMPSSASysCtlConfig)
+    {
+        /* Nothing to configure */
+    }
+    else
+    {
+        /* Write mux select registers — must be written before lock bits are applied */
+        HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_CMPHPMXSEL)  = CMPSSASysCtlConfig->CMPHPMuxSelect;
+        HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_CMPHPMXSEL1) = CMPSSASysCtlConfig->CMPHPMuxSelect1;
+        HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_CMPLPMXSEL)  = CMPSSASysCtlConfig->CMPLPMuxSelect;
+        HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_CMPLPMXSEL1) = CMPSSASysCtlConfig->CMPLPMuxSelect1;
+        HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_CMPHNMXSEL)  = CMPSSASysCtlConfig->CMPHNMuxSelect;
+        HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_CMPLNMXSEL)  = CMPSSASysCtlConfig->CMPLNMuxSelect;
     }
 }
 
@@ -1022,6 +1179,125 @@ FUNC(void, MCU_CODE) Mcu_LockCpuSysRegisters(void)
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
+
+static FUNC(void, MCU_CODE) Mcu_ConfigureAnaRefCtl(boolean AnalogRefABMode, boolean AnalogRefCDEMode,
+                                                   boolean AnalogRefABVoltage, boolean AnalogRefCDEVoltage)
+{
+    /* Configure ANAREFCTL — analog reference source and voltage selection.
+     * Build the register value from the four independent bit fields:
+     *   bit 0  (ANAREFABSEL)     : ADC-A/B reference source   (FALSE=internal, TRUE=external)
+     *   bit 1  (ANAREFCDESEL)    : ADC-C/D/E reference source  (FALSE=internal, TRUE=external)
+     *   bit 8  (ANAREFAB_2P5SEL) : ADC-A/B internal ref voltage (FALSE=3.3V range, TRUE=2.5V range)
+     *   bit 9  (ANAREFCDE_2P5SEL): ADC-C/D/E internal ref voltage (FALSE=3.3V range, TRUE=2.5V range)
+     *
+     * Note: If switching between internal and external reference modes, the user must allow
+     * adequate time for the external capacitor to charge to the new voltage before using
+     * the ADC or buffered DAC.
+     */
+    VAR(uint32, AUTOMATIC) regVal = HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_ANAREFCTL);
+
+    if ((boolean)TRUE == AnalogRefABMode)
+    {
+        regVal |= ASYSCTL_ANAREFCTL_ANAREFABSEL;
+    }
+    else
+    {
+        regVal &= ~(uint32)ASYSCTL_ANAREFCTL_ANAREFABSEL;
+    }
+
+    if ((boolean)TRUE == AnalogRefCDEMode)
+    {
+        regVal |= ASYSCTL_ANAREFCTL_ANAREFCDESEL;
+    }
+    else
+    {
+        regVal &= ~(uint32)ASYSCTL_ANAREFCTL_ANAREFCDESEL;
+    }
+
+    if ((boolean)TRUE == AnalogRefABVoltage)
+    {
+        regVal |= ASYSCTL_ANAREFCTL_ANAREFAB_2P5SEL;
+    }
+    else
+    {
+        regVal &= ~(uint32)ASYSCTL_ANAREFCTL_ANAREFAB_2P5SEL;
+    }
+
+    if ((boolean)TRUE == AnalogRefCDEVoltage)
+    {
+        regVal |= ASYSCTL_ANAREFCTL_ANAREFCDE_2P5SEL;
+    }
+    else
+    {
+        regVal &= ~(uint32)ASYSCTL_ANAREFCTL_ANAREFCDE_2P5SEL;
+    }
+
+    HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_ANAREFCTL) = regVal;
+}
+
+static FUNC(void, MCU_CODE) Mcu_ConfigureVRegCtl(boolean VMONMaskEnable, boolean VREGPowerDown)
+{
+    /* Configure VREGCTL — VMON mask enable and VREG power-down.
+     *   bit 15 (ENMASK)    : VMON mask enable
+     *   bit 0  (PWRDNVREG) : VREG power-down
+     */
+    VAR(uint32, AUTOMATIC) regVal = HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_VREGCTL);
+
+    if ((boolean)TRUE == VMONMaskEnable)
+    {
+        regVal |= ASYSCTL_VREGCTL_ENMASK;
+    }
+    else
+    {
+        regVal &= ~(uint32)ASYSCTL_VREGCTL_ENMASK;
+    }
+
+    if ((boolean)TRUE == VREGPowerDown)
+    {
+        regVal |= ASYSCTL_VREGCTL_PWRDNVREG;
+    }
+    else
+    {
+        regVal &= ~(uint32)ASYSCTL_VREGCTL_PWRDNVREG;
+    }
+
+    HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_VREGCTL) = regVal;
+}
+
+static FUNC(void, MCU_CODE) Mcu_ConfigureVMonCtl(boolean BORLDisable)
+{
+    /* Configure VMONCTL — Brown-Out Reset Level disable.
+     *   bit 8 (BORLVMONDIS) : FALSE=BORL enabled (reset default), TRUE=BORL disabled
+     */
+    VAR(uint32, AUTOMATIC) regVal = HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_VMONCTL);
+
+    if ((boolean)TRUE == BORLDisable)
+    {
+        regVal |= ASYSCTL_VMONCTL_BORLVMONDIS;
+    }
+    else
+    {
+        regVal &= ~(uint32)ASYSCTL_VMONCTL_BORLVMONDIS;
+    }
+
+    HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_VMONCTL) = regVal;
+}
+
+static FUNC(void, MCU_CODE) Mcu_ConfigureTsnsCtl(boolean TemperatureSensorEnable)
+{
+    /* Configure TSNSCTL — temperature sensor enable/disable.
+     *   bit 0 (ENABLE) : TRUE=temperature sensor enabled
+     */
+    if ((boolean)TRUE == TemperatureSensorEnable)
+    {
+        HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_TSNSCTL) |= ASYSCTL_TSNSCTL_ENABLE;
+    }
+    else
+    {
+        HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_TSNSCTL) &= ~(uint32)ASYSCTL_TSNSCTL_ENABLE;
+    }
+}
+
 /*
  * Design: MCAL-28523
  */
@@ -1064,14 +1340,11 @@ static FUNC(Mcu_ResetType, MCU_CODE) Mcu_ConvertSecondGroup(Mcu_RawResetType Raw
     {
         reset_reason = MCU_EXTERNAL_RESET;
     }
-    /* TI_COVERAGE_GAP_START [Branch Gap] ESM_NMI_WATCHDOG_RESET reason is not supported. Unable to
-     * reproduce condition */
     /* NMI Watchdog reset */
     else if ((uint32)SYSCTL_RESC_NMIWDRSN == ((uint32)SYSCTL_RESC_NMIWDRSN & RawResetType))
     {
         reset_reason = MCU_ESM_NMI_WATCHDOG_RESET;
     }
-    /* TI_COVERAGE_GAP_STOP*/
 
     /* ESM reset */
     else if ((uint32)SYSCTL_RESC_ESMRESET == ((uint32)SYSCTL_RESC_ESMRESET & RawResetType))
@@ -1308,7 +1581,11 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTAL(void)
 
     /* If a missing clock failure was detected, try waiting for the X1 counter
     to saturate again. Consider modifying this code to add a 10ms timeout */
-    /* TI_COVERAGE_GAP_START [Branch Gap] unable to simulate mcddetect in test */
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement GAP/MC-DC Gap] Unable to simulate mcddetect in test. The `while`
+     * loop condition evaluates Mcu_IsMCDClockFailureDetected(), which reads the `MCLKSTS` status bit of the
+     * `SYSCTL_O_MCDCR` hardware register. A Missing Clock Detection (MCD) failure can only be triggered by a genuine
+     * crystal oscillator failure, which  cannot be safely reproduced in the HIL test environment without physical
+     * hardware modification. */
     while (((boolean)TRUE == (boolean)Mcu_IsMCDClockFailureDetected()) && (loop_count < (uint16)4U))
     /* TI_COVERAGE_GAP_STOP*/
     {
@@ -1328,7 +1605,10 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTAL(void)
         loop_count++;
     }
 
-    /* TI_COVERAGE_GAP_START [Branch Gap] unable to simulate mcddetect in test */
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement GAP] Unable to simulate mcddetect in test. The `if` block is the
+     * final persistent-failure guard: if the crystal still fails to start after four recovery attempts,
+     * `MCAL_LIB_EMUSTOP0` halts execution. This condition requires a physically defective or absent crystal oscillator
+     * and cannot be simulated in the test environment. */
     if ((boolean)TRUE == (boolean)Mcu_IsMCDClockFailureDetected())
     {
         /* If code is stuck here, it means crystal has not started.
@@ -1370,7 +1650,11 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTALSingleEnded(void)
 
     /* If a missing clock failure was detected, try waiting for the X1 counter
     to saturate again. Consider modifying this code to add a 10ms timeout */
-    /* TI_COVERAGE_GAP_START [Branch Gap] unable to simulate mcddetect in test */
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement GAP/MC-DC Gap] Unable to simulate mcddetect in test.
+     * The `while` loop condition evaluates Mcu_IsMCDClockFailureDetected(), which reads the `MCLKSTS`
+     * status bit of the `SYSCTL_O_MCDCR` hardware register. A Missing Clock Detection (MCD) failure can
+     * only be triggered by a genuine crystal oscillator failure, which cannot be safely reproduced in the
+     * HIL test environment without physical hardware modification. */
     while (((boolean)TRUE == (boolean)Mcu_IsMCDClockFailureDetected()) && (loop_count < (uint16)4U))
     /* TI_COVERAGE_GAP_STOP*/
     {
@@ -1388,7 +1672,10 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTALSingleEnded(void)
         loop_count++;
     }
 
-    /* TI_COVERAGE_GAP_START [Branch Gap] unable to simulate mcddetect in test */
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement GAP]  Unable to simulate mcddetect in test. The `if` block is the
+     * final persistent-failure guard: if the crystal still fails to start after four recovery attempts,
+     * `MCAL_LIB_EMUSTOP0` halts execution. This condition requires a physically defective or absent crystal oscillator
+     *  and cannot be simulated in the test environment.  */
     if ((boolean)TRUE == (boolean)Mcu_IsMCDClockFailureDetected())
     {
         /* If code is stuck here, it means crystal has not started.

@@ -1601,6 +1601,110 @@
                                           false="Frame and Base address should match. Please run AutoCalc."/>
                                 </a:da>
                               </v:var>
+
+                              <v:var name="CMPSSHPMuxSelect" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: HP positive input mux select for this CMPSS instance.
+              Selects the input signal for the comparator HP positive input.
+              Written to CMPHPMXSEL (CMP1-CMP10) or CMPHPMXSEL1 (CMP11-CMP12)
+              register during Mcu_Init() via Mcu_Priv_ConfigureCMPSSASysCtl().
+              Value format: CMPSS_INPUT_SIGNAL_MUX&lt;index&gt;_&lt;SignalName&gt;."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="TI_F29H85x"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="c7d8e9f0-a1b2-3456-cdef-012345678901"/>
+                                <a:da name="DEFAULT" type="XPath"
+                                      expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.ASysCtlCMPSSHPMuxInput.',node:value(../InstanceName)))[1]&quot;,ecu:list('ResourceAllocator_F29H85x.ASysCtlCMPSSHPMuxInput_All')[1])"/>
+                                <a:da name="RANGE" type="XPath"
+                                      expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.ASysCtlCMPSSHPMuxInput.',node:value(../InstanceName)))&quot;,ecu:list('ResourceAllocator_F29H85x.ASysCtlCMPSSHPMuxInput_All'))"/>
+                                <a:da name="INVALID" type="Multi">
+                                  <mt:xpath expr="not(contains(node:value(.), '_AIO')) or contains(string(ecu:list('ResourceAllocator_F29H85x_AIO.MuxModeSignal')), concat('AIO', substring-after(node:value(.), '_AIO')))"
+                                            false="The selected HP mux input signal requires an AIO pin that is not available in the selected package."/>
+                                  <mt:xpath expr="not(contains(node:value(.), '_GPIO')) or contains(string(ecu:list('ResourceAllocator_F29H85x_GPIO.MuxModeSignal')), concat('GPIO', substring-after(node:value(.), '_GPIO')))"
+                                            false="The selected HP mux input signal requires a GPIO pin that is not available in the selected package."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="CMPSSLPMuxSelect" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: LP positive input mux select for this CMPSS instance.
+              Selects the input signal for the comparator LP positive input.
+              Written to CMPLPMXSEL (CMP1-CMP10) or CMPLPMXSEL1 (CMP11-CMP12)
+              register during Mcu_Init() via Mcu_Priv_ConfigureCMPSSASysCtl().
+              Value format: CMPSS_INPUT_SIGNAL_MUX&lt;index&gt;_&lt;SignalName&gt;."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="TI_F29H85x"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="d8e9f0a1-b2c3-4567-def0-123456789012"/>
+                                <a:da name="DEFAULT" type="XPath"
+                                      expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.ASysCtlCMPSSLPMuxInput.',node:value(../InstanceName)))[1]&quot;,ecu:list('ResourceAllocator_F29H85x.ASysCtlCMPSSLPMuxInput_All')[1])"/>
+                                <a:da name="RANGE" type="XPath"
+                                      expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.ASysCtlCMPSSLPMuxInput.',node:value(../InstanceName)))&quot;,ecu:list('ResourceAllocator_F29H85x.ASysCtlCMPSSLPMuxInput_All'))"/>
+                                <a:da name="INVALID" type="Multi">
+                                  <mt:xpath expr="not(contains(node:value(.), '_AIO')) or contains(string(ecu:list('ResourceAllocator_F29H85x_AIO.MuxModeSignal')), concat('AIO', substring-after(node:value(.), '_AIO')))"
+                                            false="The selected LP mux input signal requires an AIO pin that is not available in the selected package."/>
+                                  <mt:xpath expr="not(contains(node:value(.), '_GPIO')) or contains(string(ecu:list('ResourceAllocator_F29H85x_GPIO.MuxModeSignal')), concat('GPIO', substring-after(node:value(.), '_GPIO')))"
+                                            false="The selected LP mux input signal requires a GPIO pin that is not available in the selected package."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="CMPSSHNMuxSelect" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: HN negative input mux select for this CMPSS instance.
+              Selects the input signal for the comparator HN negative input.
+              Written to CMPHNMXSEL register during Mcu_Init() via
+              Mcu_Priv_ConfigureCMPSSASysCtl().
+              Value format: CMPSS_NEG_INPUT_SIGNAL_MUX&lt;index&gt;_&lt;SignalName&gt;."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="TI_F29H85x"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="e9f0a1b2-c3d4-5678-ef01-234567890123"/>
+                                <a:da name="DEFAULT" type="XPath"
+                                      expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.ASysCtlCMPSSHNMuxInput.',node:value(../InstanceName)))[1]&quot;,ecu:list('ResourceAllocator_F29H85x.ASysCtlCMPSSHNMuxInput_All')[1])"/>
+                                <a:da name="RANGE" type="XPath"
+                                      expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.ASysCtlCMPSSHNMuxInput.',node:value(../InstanceName)))&quot;,ecu:list('ResourceAllocator_F29H85x.ASysCtlCMPSSHNMuxInput_All'))"/>
+                                <a:da name="INVALID" type="Multi">
+                                  <mt:xpath expr="not(contains(node:value(.), '_AIO')) or contains(string(ecu:list('ResourceAllocator_F29H85x_AIO.MuxModeSignal')), concat('AIO', substring-after(node:value(.), '_AIO')))"
+                                            false="The selected HN mux input signal requires an AIO pin that is not available in the selected package."/>
+                                  <mt:xpath expr="not(contains(node:value(.), '_GPIO')) or contains(string(ecu:list('ResourceAllocator_F29H85x_GPIO.MuxModeSignal')), concat('GPIO', substring-after(node:value(.), '_GPIO')))"
+                                            false="The selected HN mux input signal requires a GPIO pin that is not available in the selected package."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="CMPSSLNMuxSelect" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: LN negative input mux select for this CMPSS instance.
+              Selects the input signal for the comparator LN negative input.
+              Written to CMPLNMXSEL register during Mcu_Init() via
+              Mcu_Priv_ConfigureCMPSSASysCtl().
+              Value format: CMPSS_NEG_INPUT_SIGNAL_MUX&lt;index&gt;_&lt;SignalName&gt;."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="TI_F29H85x"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="f0a1b2c3-d4e5-6789-f012-345678901234"/>
+                                <a:da name="DEFAULT" type="XPath"
+                                      expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.ASysCtlCMPSSLNMuxInput.',node:value(../InstanceName)))[1]&quot;,ecu:list('ResourceAllocator_F29H85x.ASysCtlCMPSSLNMuxInput_All')[1])"/>
+                                <a:da name="RANGE" type="XPath"
+                                      expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.ASysCtlCMPSSLNMuxInput.',node:value(../InstanceName)))&quot;,ecu:list('ResourceAllocator_F29H85x.ASysCtlCMPSSLNMuxInput_All'))"/>
+                                <a:da name="INVALID" type="Multi">
+                                  <mt:xpath expr="not(contains(node:value(.), '_AIO')) or contains(string(ecu:list('ResourceAllocator_F29H85x_AIO.MuxModeSignal')), concat('AIO', substring-after(node:value(.), '_AIO')))"
+                                            false="The selected LN mux input signal requires an AIO pin that is not available in the selected package."/>
+                                  <mt:xpath expr="not(contains(node:value(.), '_GPIO')) or contains(string(ecu:list('ResourceAllocator_F29H85x_GPIO.MuxModeSignal')), concat('GPIO', substring-after(node:value(.), '_GPIO')))"
+                                            false="The selected LN mux input signal requires a GPIO pin that is not available in the selected package."/>
+                                </a:da>
+                              </v:var>
                             </v:ctr>
                           </v:lst>
                         </v:ctr>
@@ -2676,21 +2780,6 @@
                                 <a:da name="DEFAULT" value="FRAME0"/>
                               </v:var>
                               
-                              <v:var name="BaseAddr" type="STRING">
-                                <a:a name="DESC" value="EN: Base address of the Epg instance. This field represents the macro as defined in hw_memmap.h"/>
-                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                                </a:a>
-                                <a:a name="ORIGIN" value="Texas Instruments"/>
-                                <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="UUID" value="f0a1b2c3-d4e5-6780-fabc-012345678901"/>
-                                <a:a name="EDITABLE" value="false"/>
-                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'EPG1_BASE_FRAME(0U)')"/>
-                                <a:da name="INVALID" type="XPath">
-                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
-                                          false="Frame and Base address should match. Please run AutoCalc."/>
-                                </a:da>
-                              </v:var>
                             </v:ctr>
                           </v:lst>
                         </v:ctr>
@@ -2785,26 +2874,233 @@
                                 <a:da name="DEFAULT" value="FRAME0"/>
                               </v:var>
                               
-                              <v:var name="BaseAddr" type="STRING">
-                                <a:a name="DESC" value="EN: Base address of the Wadi instance. This field represents the macro as defined in hw_memmap.h"/>
-                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                                </a:a>
-                                <a:a name="ORIGIN" value="Texas Instruments"/>
-                                <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="UUID" value="e5f6a7b8-c9d0-1236-efab-567890123456"/>
-                                <a:a name="EDITABLE" value="false"/>
-                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'WADI1_BASE_FRAME(0U)')"/>
-                                <a:da name="INVALID" type="XPath">
-                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
-                                          false="Frame and Base address should match. Please run AutoCalc."/>
-                                </a:da>
-                              </v:var>
                             </v:ctr>
                           </v:lst>
                         </v:ctr>
                       </v:lst>
                       
+                    </v:ctr>
+                  </v:lst>
+                  <v:lst name="ASysCtl" type="MAP">
+                    <a:a name="EDITABLE" type="XPath" expr="node:value(../Mode) = 'SETUP'"/>
+                    <a:da name="MIN" value="0"/>
+                    <a:da name="MAX" value="1"/>
+
+                    <v:ctr name="ASysCtl" type="IDENTIFIABLE">
+                      <a:a name="EDITABLE" type="XPath" expr="node:value(../../Mode) = 'SETUP'"/>
+                      <a:a name="DESC" value="EN: Configuration container for ASysCtl (Analog System Control) module. Controls analog subsystem initialization including temperature sensor, analog reference, voltage regulator, brown-out reset, internal test node, and CMPSS mux configuration."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="UUID" value="a1b2c3d4-e5f6-7890-abcd-ef1234567060"/>
+
+                      <!-- ===== TemperatureSensor sub-container ===== -->
+                      <v:ctr name="TemperatureSensor" type="IDENTIFIABLE">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:a name="DESC" value="EN: Configuration for the on-chip temperature sensor (TSNSCTL register)."/>
+                        <a:a name="UUID" value="b2c3d4e5-f6a7-8901-bcde-f01234567061"/>
+
+                        <v:var name="TemperatureSensorEnable" type="BOOLEAN">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Enables the on-chip temperature sensor. When enabled, the sensor monitors die temperature and provides readings that can be used by the ADC for temperature measurement. When disabled, the sensor is powered off to save power. Must be enabled before Adc can perform temperature measurements."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" value="c3d4e5f6-a7b8-9012-cdef-012345678062"/>
+                          <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+
+                      </v:ctr>
+
+                      <!-- ===== AnalogReference sub-container ===== -->
+                      <v:ctr name="AnalogReference" type="IDENTIFIABLE">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:a name="DESC" value="EN: Configuration for the analog reference control (ANAREFCTL register). Controls ADC reference source and voltage range for ADC-A/B and ADC-C/D/E groups."/>
+                        <a:a name="UUID" value="e5f6a7b8-c9d0-1234-efab-234567890064"/>
+
+                        <v:var name="AnalogRefABMode" type="ENUMERATION">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC"><a:v><![CDATA[
+                          <html>
+                            <h3>Selects the voltage reference source for ADC modules A and B:</h3>
+                            <ul>
+                            <li><b>INTERNAL:</b> Uses the on-chip bandgap reference for stable, self-contained operation. No external reference pin connection required.</li>
+                            <li><b>EXTERNAL:</b> Allows connection of a precision external reference voltage on the VREFHI pin for higher accuracy measurements. AnalogRefABVoltage setting has no effect in this mode.</li>
+                            </ul>
+                          </html>
+                          ]]></a:v></a:a>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" value="f6a7b8c9-d0e1-2345-fabc-345678901065"/>
+                          <a:da name="RANGE">
+                            <a:v>REFERENCE_INTERNAL</a:v>
+                            <a:v>REFERENCE_EXTERNAL</a:v>
+                          </a:da>
+                          <a:da name="DEFAULT" value="REFERENCE_INTERNAL"/>
+                        </v:var>
+
+                        <v:var name="AnalogRefABVoltage" type="ENUMERATION">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP' and node:value(../AnalogRefABMode) != 'EXTERNAL'"/>
+                          <a:a name="DESC"><a:v><![CDATA[
+                          <html>
+                            <h3>Selects the internal reference voltage level for ADC modules A and B:</h3>
+                            <ul>
+                            <li><b>REFERENCE_3_3V:</b> Selects the 1.65V internal reference, suitable for use with a 3.3V analog supply.</li>
+                            <li><b>REFERENCE_2_5V:</b> Selects the 2.5V internal reference, suitable for use with a 2.5V analog supply.</li>
+                            </ul>
+                            <p>Only applicable when AnalogRefABMode is set to INTERNAL. Has no effect when external reference is selected.</p>
+                          </html>
+                          ]]></a:v></a:a>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" value="a7b8c9d0-e1f2-3456-abcd-456789012066"/>
+                          <a:da name="RANGE">
+                            <a:v>REFERENCE_3_3V</a:v>
+                            <a:v>REFERENCE_2_5V</a:v>
+                          </a:da>
+                          <a:da name="DEFAULT" value="REFERENCE_3_3V"/>
+                        </v:var>
+
+                        <v:var name="AnalogRefCDEMode" type="ENUMERATION">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC"><a:v><![CDATA[
+                          <html>
+                            <h3>Selects the voltage reference source for ADC modules C, D, and E:</h3>
+                            <ul>
+                            <li><b>REFERENCE_INTERNAL:</b> Uses the on-chip bandgap reference for stable, self-contained operation. No external reference pin connection required.</li>
+                            <li><b>REFERENCE_EXTERNAL:</b> Allows connection of a precision external reference voltage on the VREFHI pin for higher accuracy measurements. AnalogRefCDEVoltage setting has no effect in this mode.</li>
+                            </ul>
+                          </html>
+                          ]]></a:v></a:a>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" value="b8c9d0e1-f2a3-4567-bcde-567890123067"/>
+                          <a:da name="RANGE">
+                            <a:v>REFERENCE_INTERNAL</a:v>
+                            <a:v>REFERENCE_EXTERNAL</a:v>
+                          </a:da>
+                          <a:da name="DEFAULT" value="REFERENCE_INTERNAL"/>
+                        </v:var>
+
+                        <v:var name="AnalogRefCDEVoltage" type="ENUMERATION">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP' and node:value(../AnalogRefCDEMode) != 'EXTERNAL'"/>
+                          <a:a name="DESC"><a:v><![CDATA[
+                          <html>
+                            <h3>Selects the internal reference voltage level for ADC modules C, D, and E:</h3>
+                            <ul>
+                            <li><b>REFERENCE_3_3V:</b> Selects the 1.65V internal reference, suitable for use with a 3.3V analog supply.</li>
+                            <li><b>REFERENCE_2_5V:</b> Selects the 2.5V internal reference, suitable for use with a 2.5V analog supply.</li>
+                            </ul>
+                            <p>Only applicable when AnalogRefCDEMode is set to INTERNAL. Has no effect when external reference is selected.</p>
+                          </html>
+                          ]]></a:v></a:a>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" value="c9d0e1f2-a3b4-5678-cdef-678901234068"/>
+                          <a:da name="RANGE">
+                            <a:v>REFERENCE_3_3V</a:v>
+                            <a:v>REFERENCE_2_5V</a:v>
+                          </a:da>
+                          <a:da name="DEFAULT" value="REFERENCE_3_3V"/>
+                        </v:var>
+
+                      </v:ctr>
+
+                      <!-- ===== VoltageRegulator sub-container ===== -->
+                      <v:ctr name="VoltageRegulator" type="IDENTIFIABLE">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:a name="DESC" value="EN: Configuration for the internal voltage regulator (VREGCTL register)."/>
+                        <a:a name="UUID" value="e1f2a3b4-c5d6-7890-efab-890123456070"/>
+
+                        <v:var name="VMONMaskEnable" type="BOOLEAN">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Enables the VMON function mask on a TRIM load. When true, masks the generation of POR/BOR for a fixed duration whenever TRIM bits are changed, preventing spurious resets during TRIM operations. When false, POR/BOR generation is not masked on a TRIM load."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" value="f2a3b4c5-d6e7-8901-fabc-901234567071"/>
+                          <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+
+                        <v:var name="VREGPowerDown" type="BOOLEAN">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Powers down the internal voltage regulator that provides the Core VDD supply for the device. When false (default), the internal regulator is enabled and regulates the Core VDD voltage. When true, the internal regulator is powered down and an external Core VDD supply must be provided. On devices where VREGENZ is not bonded out, this parameter must be used to disable the internal VREG when an external supply is used."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" value="a3b4c5d6-e7f8-9012-abcd-012345678072"/>
+                          <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+
+                      </v:ctr>
+
+                      <!-- ===== BrownOutReset sub-container ===== -->
+                      <v:ctr name="BrownOutReset" type="IDENTIFIABLE">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:a name="DESC" value="EN: Configuration for Brown-Out Reset Level (VMONCTL register)."/>
+                        <a:a name="UUID" value="c5d6e7f8-a9b0-1234-cdef-234567890074"/>
+
+                        <v:var name="BORLDisable" type="BOOLEAN">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Disables the brown-out reset level circuit that monitors the supply voltage. When false (default), the brown-out reset circuit is active and triggers a reset if the supply voltage drops below the brown-out threshold, preventing unpredictable behavior during power supply fluctuations. When true, the brown-out reset level monitor is disabled."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" value="d6e7f8a9-b0c1-2345-defa-345678901075"/>
+                          <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+
+                      </v:ctr>
+
+                      <!-- ===== InternalTestNode sub-container ===== -->
+                      <v:ctr name="InternalTestNode" type="IDENTIFIABLE">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:a name="DESC" value="EN: Configuration for the internal analog test node (INTERNALTESTCTL register). Key-protection sequence is applied automatically."/>
+                        <a:a name="UUID" value="f8a9b0c1-d2e3-4567-fabc-567890123077"/>
+
+                        <v:var name="InternalTestNodeSelect" type="ENUMERATION">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Selects which internal analog signal is routed to the analog test node for diagnostic purposes. Allows internal signals such as temperature sensor output, voltage references, and regulator outputs to be measured via the ADC for system verification and calibration. The selected signal is connected during Mcu_Init() and can be changed at runtime via Mcu_ASysCtl_SelectInternalTestNode()."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" value="a9b0c1d2-e3f4-5678-abcd-678901234078"/>
+                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.ASysCtlInternalTestInput')&quot;,'MCU_ASYSCTL_TEST_NODE_NO_CONN')"/>
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.ASysCtlInternalTestInput')[1]&quot;,'MCU_ASYSCTL_TEST_NODE_NO_CONN')"/>
+                        </v:var>
+                      </v:ctr>
+
                     </v:ctr>
                   </v:lst>
                   <v:lst name="Cdd_Xbar" type="MAP">
@@ -3297,21 +3593,6 @@
                             <a:da name="DEFAULT" value="FRAME0"/>
                           </v:var>
                           
-                          <v:var name="BaseAddr" type="STRING">
-                            <a:a name="DESC" value="EN: Base address of the DLTFifoRegs instance. This field represents the macro as defined in hw_memmap.h"/>
-                            <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                            </a:a>
-                            <a:a name="ORIGIN" value="Texas Instruments"/>
-                            <a:a name="SCOPE" value="LOCAL"/>
-                            <a:a name="UUID" value="d0e1f2a3-b4c5-6781-defa-012345678901"/>
-                            <a:a name="EDITABLE" value="false"/>
-                            <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'DLTFIFOREGS_BASE_FRAME(0U)')"/>
-                            <a:da name="INVALID" type="XPath">
-                                <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
-                                      false="Frame and Base address should match. Please run AutoCalc."/>
-                            </a:da>
-                          </v:var>
                         </v:ctr>
                       </v:lst>
                     </v:ctr>
@@ -3384,7 +3665,7 @@
                             <a:a name="SCOPE" value="LOCAL"/>
                             <a:a name="UUID" value="c5d6e7f8-a9b0-1236-cdef-567890123456"/>
                             <a:a name="EDITABLE" value="false"/>
-                            <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'ERROR_AGGREGATOR_BASE_FRAME(0U)')"/>
+                            <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(translate(node:value(../InstanceName),'_',''),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'ERRORAGGREGATOR_BASE_FRAME(0U)')"/>
                             <a:da name="INVALID" type="XPath">
                                 <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
                                       false="Frame and Base address should match. Please run AutoCalc."/>
@@ -3453,21 +3734,6 @@
                             <a:da name="DEFAULT" value="FRAME0"/>
                           </v:var>
                           
-                          <v:var name="BaseAddr" type="STRING">
-                            <a:a name="DESC" value="EN: Base address of the ESM instance. This field represents the macro as defined in hw_memmap.h"/>
-                            <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                            </a:a>
-                            <a:a name="ORIGIN" value="Texas Instruments"/>
-                            <a:a name="SCOPE" value="LOCAL"/>
-                            <a:a name="UUID" value="b0c1d2e3-f4a5-6781-bcde-012345678901"/>
-                            <a:a name="EDITABLE" value="false"/>
-                            <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'ESM_BASE_FRAME(0U)')"/>
-                            <a:da name="INVALID" type="XPath">
-                                <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
-                                      false="Frame and Base address should match. Please run AutoCalc."/>
-                            </a:da>
-                          </v:var>
                         </v:ctr>
                       </v:lst>
                     </v:ctr>

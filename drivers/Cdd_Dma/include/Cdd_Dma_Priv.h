@@ -97,7 +97,7 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
-
+/* Design: MCAL-39309 */
 /** \brief DMA Driver Object Structure */
 typedef struct Cdd_Dma_DriverObjTag
 {
@@ -117,6 +117,7 @@ typedef struct Cdd_Dma_DriverObjTag
 
 /*********************************************************************************************************************
  *  Exported Function Prototypes
+ *  Design: MCAL-39317
  *********************************************************************************************************************/
 /** \brief Initialize the driver object with channel lookup table and set configuration pointer
  *
@@ -241,7 +242,7 @@ Cdd_Dma_SetPeripheralEventTriggerSource_Priv(uint32 Base, Cdd_Dma_PeriEvtTrigger
  * \post None
  * \return None
  *********************************************************************************************************************/
-FUNC(void, CDD_DMA_CODE) Cdd_Dma_SetTransferSize_Priv(uint32 Base, uint8 BurstSize, uint16 TransferSize);
+FUNC(void, CDD_DMA_CODE) Cdd_Dma_SetTransferSize_Priv(uint32 Base, uint16 BurstSize, uint32 TransferSize);
 
 /** \brief Sets the transfer source step for DMA channel
  *
@@ -296,7 +297,7 @@ FUNC(void, CDD_DMA_CODE) Cdd_Dma_SetTransferDestAddress_Priv(uint32 Base, uint32
  * \return None
  *********************************************************************************************************************/
 FUNC(void, CDD_DMA_CODE)
-Cdd_Dma_SetTransferWrapSrc(uint32 Base, uint16 SrcWrapSize, sint16 SrcWrapStep, uint32 SrcBegAddress);
+Cdd_Dma_SetTransferWrapSrc(uint32 Base, uint32 SrcWrapSize, sint16 SrcWrapStep, uint32 SrcBegAddress);
 
 /** \brief Sets the transfer destination wrap properties for DMA channel
  *
@@ -309,7 +310,7 @@ Cdd_Dma_SetTransferWrapSrc(uint32 Base, uint16 SrcWrapSize, sint16 SrcWrapStep, 
  * \return None
  *********************************************************************************************************************/
 FUNC(void, CDD_DMA_CODE)
-Cdd_Dma_SetTransferWrapDest(uint32 Base, uint16 DestWrapSize, sint16 DestWrapStep, uint32 DestBegAddress);
+Cdd_Dma_SetTransferWrapDest(uint32 Base, uint32 DestWrapSize, sint16 DestWrapStep, uint32 DestBegAddress);
 
 /** \brief Starts a DMA channel transfer
  *
@@ -427,22 +428,46 @@ FUNC(void, CDD_DMA_CODE) Cdd_Dma_ClearErrorFlag_Priv(uint32 Base);
  * - Channels 9-10 use SWPRI2 register (4 bits per channel)
  *
  * \param[in]  ChannelId Symbolic name of the channel for which priority shall be set
+ * \param[in]  HwInstIdx Hardware instance index in the configuration structure
  * \param[in]  Priority  Priority value to set
  * \pre None
  * \post None
  * \return None
  *********************************************************************************************************************/
 FUNC(void, CDD_DMA_CODE)
-Cdd_Dma_UpdateChannelPriority(VAR(uint8, AUTOMATIC) ChannelId, Cdd_Dma_ChannelPriority Priority);
+Cdd_Dma_UpdateChannelPriority(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint8, AUTOMATIC) HwInstIdx,
+                              Cdd_Dma_ChannelPriority Priority);
+
+/** \brief Reads channel priority from SWPRI1 or SWPRI2 register
+ *
+ * This function reads the priority for a specific DMA channel from the appropriate SWPRI register.
+ * - Channels 1-8 use SWPRI1 register (4 bits per channel)
+ * - Channels 9-10 use SWPRI2 register (4 bits per channel)
+ *
+ * \param[in]  ChannelId Symbolic name of the channel for which priority shall be read
+ * \param[in]  HwInstIdx Hardware instance index in the configuration structure
+ * \param[out] Priority  Pointer to memory location where the channel priority will be stored
+ * \pre None
+ * \post None
+ * \return None
+ *********************************************************************************************************************/
+FUNC(void, CDD_DMA_CODE)
+Cdd_Dma_ReadChannelPriority(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint8, AUTOMATIC) HwInstIdx,
+                            P2VAR(Cdd_Dma_ChannelPriority, AUTOMATIC, CDD_DMA_APPL_DATA) Priority);
 
 /** \brief Finds the hardware instance index for a given DMA instance
  *
- * \param[in]  instance DMA instance type
+ * \param[in]  Instance   DMA instance type
+ * \param[out] IndexPtr   Pointer to variable where the hardware instance index will be stored
  * \pre None
  * \post None
- * \return Hardware instance index
+ * \return Status of finding hardware instance index
+ * \retval E_OK: Successfully found hardware instance index
+ * \retval E_NOT_OK: Hardware instance not found
  *********************************************************************************************************************/
-FUNC(uint8, CDD_DMA_CODE) Cdd_Dma_GetHwInstanceIndex(VAR(Cdd_Dma_InstanceType, AUTOMATIC) instance);
+FUNC(Std_ReturnType, CDD_DMA_CODE)
+Cdd_Dma_GetHwInstanceIndex(VAR(Cdd_Dma_InstanceType, AUTOMATIC) Instance,
+                           P2VAR(uint8, AUTOMATIC, CDD_DMA_APPL_DATA) IndexPtr);
 
 /** \brief Checks if DMA hardware instance configuration is committed for a given channel
  *
@@ -493,6 +518,18 @@ FUNC(void, CDD_DMA_CODE) Cdd_Dma_SetMpuCfgCommit_Priv(VAR(uint8, AUTOMATIC) HwIn
 FUNC(void, CDD_DMA_CODE)
 Cdd_Dma_SetMpuRegionCommit_Priv(VAR(uint8, AUTOMATIC) HwInstanceId, VAR(uint8, AUTOMATIC) MpuRegionIdx);
 
+/** \brief Periodic readback of DMA channel registers
+ *
+ * \param[in] ChannelId Channel identifier
+ * \param[out] ReadBackRegisterdata Pointer to the read back registers structure
+ * \pre None
+ * \post None
+ * \return None
+ *********************************************************************************************************************/
+FUNC(void, CDD_DMA_CODE)
+Cdd_Dma_PeriodicReadbackPrv(VAR(uint8, AUTOMATIC) ChannelId,
+                            P2VAR(Cdd_Dma_PeriodicReadBackDataType, AUTOMATIC, CDD_DMA_APPL_DATA) ReadBackRegisterdata);
+
 /** \brief ISR function called by a specific interrupt
  *
  * This ISR call the notification function if enabled for the channel
@@ -508,6 +545,23 @@ Cdd_Dma_SetMpuRegionCommit_Priv(VAR(uint8, AUTOMATIC) HwInstanceId, VAR(uint8, A
 FUNC(void, CDD_DMA_CODE) Cdd_Dma_ProcessIsr(Cdd_Dma_InstanceType InstanceId, Cdd_Dma_ChannelType ChannelId);
 
 #if (STD_ON == CDD_DMA_LOCK_CONFIGURATION)
+/** \brief Locks DMA instance configurations
+ *
+ * \param[in]  Base Base address of the DMA instance
+ * \pre None
+ * \post None
+ * \return None
+ *********************************************************************************************************************/
+FUNC(void, CDD_DMA_CODE) Cdd_Dma_DmaCfgLockConfiguration(uint32 Base);
+
+/** \brief Unlocks DMA instance configurations
+ *
+ * \param[in]  Base Base address of the DMA instance
+ * \pre None
+ * \post None
+ * \return None
+ *********************************************************************************************************************/
+FUNC(void, CDD_DMA_CODE) Cdd_Dma_DmaCfgUnlockConfiguration(uint32 Base);
 /** \brief Locks DMA Channel configurations
  *
  * \param[in]  Base Base address of the DMA Channel

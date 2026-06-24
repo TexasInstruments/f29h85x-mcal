@@ -95,10 +95,6 @@
  *          enables the User and Previledge mode Writes */
 #define LIN_IO_DFT_KEY (0xAU)
 
-/** \brief  LIN/SCI Wakeup signal is sent by sending an
- *          byte with value 0xF0 */
-#define LIN_WAKEUP_KEY (0xF0U)
-
 /** \brief  LIN/SCI Go To Sleep signal is sent by sending
  * commander request frame with identifier 0x3C (60),
  * with the first data field as 0x00 */
@@ -131,7 +127,6 @@
 #define SCIGCR1_LOOPBACK_SHIFT     (16U)
 
 /* SCIGCR2 */
-#define SCIGCR2_GENWU_SHIFT     (8U)
 #define SCIGCR2_POWERDOWN_SHIFT (0U)
 #define SCIGCR2_CC_SHIFT        (17U)
 
@@ -544,10 +539,14 @@ Lin_GetStatusInternalProcess(uint8 Channel, P2VAR(uint8 *, AUTOMATIC, LIN_APPL_D
         Lin_Channel_Status[Channel].linChannelNetworkStatus = LIN_CHANNEL_SLEEP;
         return_value                                        = LIN_CH_SLEEP;
     }
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] else (Do Nothing) branch in Lin_GetStatusInternalProcess
+     * is unreachable in S/W tests; the channel network status is always one of OPERATIONAL,
+     * SLEEP, or SLEEP_PENDING. No other state value is reachable through the driver API */
     else
     {
         /* Do Nothing */
     }
+    /* TI_COVERAGE_GAP_STOP */
 
     return return_value;
 }
@@ -858,11 +857,8 @@ FUNC(Lin_StatusType, LIN_CODE) Lin_FetchRxStatus(uint32 base)
     {
         return_value = LIN_RX_NO_RESPONSE;
     }
-    /* TI_COVERAGE_GAP_START [MC/DC Gap] in RX status, Overrun, Parity, and Frame error can't be
-     * reproduced by S/W*/
     else if (((reg_val & LIN_SCIFLR_CE) == LIN_SCIFLR_CE) || ((reg_val & LIN_SCIFLR_OE) == LIN_SCIFLR_OE) ||
              ((reg_val & LIN_SCIFLR_PE) == LIN_SCIFLR_PE) || ((reg_val & LIN_SCIFLR_FE) == LIN_SCIFLR_FE))
-    /* TI_COVERAGE_GAP_STOP*/
     {
         return_value = LIN_RX_ERROR;
     }
@@ -879,18 +875,6 @@ FUNC(Lin_StatusType, LIN_CODE) Lin_FetchRxStatus(uint32 base)
     McalLib_RegWriteRaw32((base + LIN_O_SCIFLR), reg_val);
 
     return return_value;
-}
-
-/*
- * Design : MCAL-25679
- */
-FUNC(void, LIN_CODE) Lin_SendWakeupSignal(uint32 base)
-{
-    /* Set key in Byte 0 (MSB) of transmit buffer 0 register */
-    McalLib_RegMFWriteRaw32((base + LIN_O_TD0), LIN_TD0_TD0_M, LIN_TD0_TD0_S, (uint16)LIN_WAKEUP_KEY);
-
-    /* Transmit TDO for wakeup */
-    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR2), LIN_SCIGCR2_GENWU, SCIGCR2_GENWU_SHIFT, (uint32)TRUE);
 }
 
 /*
@@ -923,17 +907,18 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_SendGoToSleepSignal(uint32 base)
      */
     Lin_SetFrameLength(base, 0x8U);
 
-    /* Set key in Byte 0 (MSB) of transmit buffer 0 register
-     * For Go to Sleep Command, the first Byte should be 0 and remaining byte Should be 0xFF
-     */
-    McalLib_RegWriteRaw32((base + LIN_O_TD1), (uint32)LIN_GOTOSLEEP_TD1KEY);
-    McalLib_RegWriteRaw32((base + LIN_O_TD0), (uint32)LIN_GOTOSLEEP_TD0KEY);
     /*
      * Set the message ID as 60 OR 0x3C to initiate a header transmission.
      * This causes the ID to be written to the bus followed by the
      * data in the transmit buffers.
      */
     Lin_SetIDByte(base, 0x3CU);
+
+    /* Set key in Byte 0 (MSB) of transmit buffer 0 register
+     * For Go to Sleep Command, the first Byte should be 0 and remaining byte Should be 0xFF
+     */
+    McalLib_RegWriteRaw32((base + LIN_O_TD1), (uint32)LIN_GOTOSLEEP_TD1KEY);
+    McalLib_RegWriteRaw32((base + LIN_O_TD0), (uint32)LIN_GOTOSLEEP_TD0KEY);
 
 #ifdef LIN_TIMEOUT_DURATION
     while (timeout_duration > 0U)
@@ -1295,8 +1280,12 @@ static FUNC(void, LIN_CODE) Lin_SetLoopbackMode(uint32 base, Lin_LoopbackModeTyp
 
             break;
 
+        /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] default case in Lin_SetLoopbackMode is unreachable;
+         * Lin_LoopbackModeType enum has exactly 3 values (DISABLED, INTERNAL, EXTERNAL) and all
+         * callers pass a validated enum value. No out-of-range value can reach this path */
         default:
             break;
+            /* TI_COVERAGE_GAP_STOP */
     }
 }
 

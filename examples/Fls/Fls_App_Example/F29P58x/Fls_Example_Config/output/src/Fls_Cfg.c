@@ -79,12 +79,12 @@
  * AUTOSAR version information check has to match definition in header file.
  *********************************************************************************************************************/
  #if ((FLS_SW_MAJOR_VERSION != (3U)) ||\
-    (FLS_SW_MINOR_VERSION != (2U)))
+    (FLS_SW_MINOR_VERSION != (3U)))
     #error "Version numbers of Fls_Cfg.c and Fls.h are inconsistent!"
 #endif
 
  #if ((FLS_CFG_MAJOR_VERSION != (3U)) ||\
-    (FLS_CFG_MINOR_VERSION != (2U)))
+    (FLS_CFG_MINOR_VERSION != (3U)))
     #error "Version numbers of Fls_Cfg.c and Fls_Cfg.h are inconsistent!"
 #endif
 
@@ -125,7 +125,7 @@ CONST(struct Fls_ConfigType_s, FLS_CONFIG_DATA) Fls_Config =
     .Fls_JobEndNotification = (Fls_JobEndNotifyType)Fee_JobEndNotification,
     .Fls_JobErrorNotification = (Fls_JobErrorNotifyType)Fee_JobErrorNotification,
     .FlsMaxReadNormalMode = 16U,
-    .FlsMaxWriteNormalMode = 16U, /* 8 byts or 16 bytes */
+    .FlsMaxWriteNormalMode = 8U, /* 8 byts or 16 bytes */
     .sectorList =
     {
             [0] =

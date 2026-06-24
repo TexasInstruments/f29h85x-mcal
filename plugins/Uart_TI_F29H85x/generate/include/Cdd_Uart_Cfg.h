@@ -81,6 +81,10 @@ extern "C" {
  * Header Files
  *********************************************************************************************************************/
 
+/*
+ * Design: MCAL-38856,MCAL-38857,MCAL-38858,MCAL-38859,MCAL-38860,MCAL-38861,MCAL-38889,MCAL-38890,
+ * Design: MCAL-38891,MCAL-38892,MCAL-38893,MCAL-38894,MCAL-38895,MCAL-38896
+ */
 #include "hw_memmap.h"
 #include "hw_uart.h"
 #include "Cdd_Uart_Cbk.h"
@@ -121,8 +125,10 @@ extern "C" {
 #define CddUartConf_CddUartConfigSet_[!"@name"!] ([!"(node:value(CddUartHWUnitId))"!]U) /*~ASR~*/
 [!ENDLOOP!][!//
 
+[!IF "node:exists(CddUartConfigSet/CddUartConfig/*[CddUartProcessingMode = 'CDD_UART_MODE_INTERRUPT'])"!][!//
 /** \brief CddUart ConfigSet Instance interrupt definition */
 [!LOOP "CddUartConfigSet/CddUartConfig/*"!][!//
+[!IF "CddUartProcessingMode = 'CDD_UART_MODE_INTERRUPT'"!][!//
 #define CDD_[!"(node:ref(CddUartInstance)/InstanceName)"!]_ENABLE
 [!IF "CddUartInteruptType = 'CDD_UART_ISR_CAT1_RTINT'"!][!//
 #define CDD_[!"(node:ref(CddUartInstance)/InstanceName)"!]_ISR_CAT1_RTINT
@@ -131,7 +137,9 @@ extern "C" {
 [!ELSE!][!//
 #define CDD_[!"(node:ref(CddUartInstance)/InstanceName)"!]_ISR_CAT2
 [!ENDIF!][!//
+[!ENDIF!][!//
 [!ENDLOOP!][!//
+[!ENDIF!][!//
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 /*********************************************************************************************************************

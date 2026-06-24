@@ -217,24 +217,6 @@ LOCAL_INLINE FUNC(void, CDD_DMA_CODE) Cdd_Dma_MpuEnable(uint32 Base);
 LOCAL_INLINE FUNC(void, CDD_DMA_CODE) Cdd_Dma_MpuDisable(uint32 Base);
 
 #if (STD_ON == CDD_DMA_LOCK_CONFIGURATION)
-/** \brief Locks DMA instance configurations
- *
- * \param[in]  Base Base address of the DMA instance
- * \pre None
- * \post None
- * \return None
- *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_DMA_CODE) Cdd_Dma_DmaCfgLockConfiguration(uint32 Base);
-
-/** \brief Unlocks DMA instance configurations
- *
- * \param[in]  Base Base address of the DMA instance
- * \pre None
- * \post None
- * \return None
- *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_DMA_CODE) Cdd_Dma_DmaCfgUnlockConfiguration(uint32 Base);
-
 /** \brief Locks DMA MPU instance configurations
  *
  * \param[in]  Base Base address of the DMA MPU instance
@@ -502,7 +484,7 @@ Cdd_Dma_SetPeripheralEventTriggerSource_Priv(uint32 Base, Cdd_Dma_PeriEvtTrigger
                                  ((uint32)PeripheralEventTrigSrc & RTDMA_MODE_PERINTSEL_M);
 }
 
-FUNC(void, CDD_DMA_CODE) Cdd_Dma_SetTransferSize_Priv(uint32 Base, uint8 BurstSize, uint16 TransferSize)
+FUNC(void, CDD_DMA_CODE) Cdd_Dma_SetTransferSize_Priv(uint32 Base, uint16 BurstSize, uint32 TransferSize)
 {
     /* Set burst size (size - 1 as per hardware requirement) */
     HWREGB(Base + RTDMA_O_BURST_SIZE) = (uint8)(BurstSize - 1U);
@@ -542,7 +524,7 @@ FUNC(void, CDD_DMA_CODE) Cdd_Dma_SetTransferDestAddress_Priv(uint32 Base, uint32
 }
 
 FUNC(void, CDD_DMA_CODE)
-Cdd_Dma_SetTransferWrapSrc(uint32 Base, uint16 SrcWrapSize, sint16 SrcWrapStep, uint32 SrcBegAddress)
+Cdd_Dma_SetTransferWrapSrc(uint32 Base, uint32 SrcWrapSize, sint16 SrcWrapStep, uint32 SrcBegAddress)
 {
     /* Set source wrap size (size - 1 as per hardware requirement) */
     HWREGH(Base + RTDMA_O_SRC_WRAP_SIZE) = (uint16)(SrcWrapSize - 1U);
@@ -555,7 +537,7 @@ Cdd_Dma_SetTransferWrapSrc(uint32 Base, uint16 SrcWrapSize, sint16 SrcWrapStep, 
 }
 
 FUNC(void, CDD_DMA_CODE)
-Cdd_Dma_SetTransferWrapDest(uint32 Base, uint16 DestWrapSize, sint16 DestWrapStep, uint32 DestBegAddress)
+Cdd_Dma_SetTransferWrapDest(uint32 Base, uint32 DestWrapSize, sint16 DestWrapStep, uint32 DestBegAddress)
 {
     /* Set destination wrap size (size - 1 as per hardware requirement) */
     HWREGH(Base + RTDMA_O_DST_WRAP_SIZE) = (uint16)(DestWrapSize - 1U);
@@ -598,6 +580,15 @@ FUNC(void, CDD_DMA_CODE) Cdd_Dma_TriggerSoftReset_Priv(uint32 Base)
     MCAL_LIB_NOP;
 }
 #if (STD_ON == CDD_DMA_LOCK_CONFIGURATION)
+FUNC(void, CDD_DMA_CODE) Cdd_Dma_DmaCfgLockConfiguration(uint32 Base)
+{
+    HWREG(Base + RTDMA_O_DMACFG_LOCK) |= RTDMA_DMACFG_LOCK_LOCK;
+}
+
+FUNC(void, CDD_DMA_CODE) Cdd_Dma_DmaCfgUnlockConfiguration(uint32 Base)
+{
+    HWREG(Base + RTDMA_O_DMACFG_LOCK) &= ~(RTDMA_DMACFG_LOCK_LOCK);
+}
 FUNC(void, CDD_DMA_CODE) Cdd_Dma_ChConfigLockConfiguration(uint32 Base)
 {
     /* Lock the DMA channel configuration */
@@ -635,22 +626,25 @@ FUNC(boolean, CDD_DMA_CODE) Cdd_Dma_IsPeripheralEventTriggerEnabled(uint32 Base)
     return enabled;
 }
 
-FUNC(uint8, CDD_DMA_CODE) Cdd_Dma_GetHwInstanceIndex(VAR(Cdd_Dma_InstanceType, AUTOMATIC) instance)
+FUNC(Std_ReturnType, CDD_DMA_CODE)
+Cdd_Dma_GetHwInstanceIndex(VAR(Cdd_Dma_InstanceType, AUTOMATIC) Instance,
+                           P2VAR(uint8, AUTOMATIC, CDD_DMA_APPL_DATA) IndexPtr)
 {
     VAR(uint8, AUTOMATIC) hwunit_idx;
-    VAR(uint8, AUTOMATIC) result = 0U;
+    VAR(Std_ReturnType, AUTOMATIC) ret_val = E_NOT_OK;
 
     /* Find the hardware instance configuration by matching the instance field */
     for (hwunit_idx = 0U; hwunit_idx < CDD_DMA_HW_INSTANCE_COUNT; hwunit_idx++)
     {
-        if (Cdd_Dma_ConfigPtr->hwinstcfg[hwunit_idx].instance == instance)
+        if (Cdd_Dma_ConfigPtr->hwinstcfg[hwunit_idx].instance == Instance)
         {
-            result = hwunit_idx;
+            *IndexPtr = hwunit_idx;
+            ret_val   = E_OK;
             break;
         }
     }
 
-    return result;
+    return ret_val;
 }
 
 FUNC(boolean, CDD_DMA_CODE) Cdd_Dma_IsHwInstanceCommittedForChannel(VAR(uint8, AUTOMATIC) ChannelId)
@@ -663,34 +657,30 @@ FUNC(boolean, CDD_DMA_CODE) Cdd_Dma_IsHwInstanceCommittedForChannel(VAR(uint8, A
     instance = Cdd_Dma_ConfigPtr->chcfg[ChannelId].instance;
 
     /* Find the hardware instance index */
-    hwunit_idx = Cdd_Dma_GetHwInstanceIndex(instance);
-
-    /* Check if Dma hardware instance configurations are committed */
-    is_committed = Cdd_Dma_CheckConfigurationCommit(Cdd_Dma_ConfigPtr->hwinstcfg[hwunit_idx].baseaddress);
+    if (Cdd_Dma_GetHwInstanceIndex(instance, &hwunit_idx) == E_OK)
+    {
+        /* Check if Dma hardware instance configurations are committed */
+        is_committed = Cdd_Dma_CheckConfigurationCommit(Cdd_Dma_ConfigPtr->hwinstcfg[hwunit_idx].baseaddress);
+    }
 
     return is_committed;
 }
 
 FUNC(void, CDD_DMA_CODE)
-Cdd_Dma_UpdateChannelPriority(VAR(uint8, AUTOMATIC) ChannelId, Cdd_Dma_ChannelPriority Priority)
+Cdd_Dma_UpdateChannelPriority(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint8, AUTOMATIC) HwInstIdx,
+                              Cdd_Dma_ChannelPriority Priority)
 {
-    VAR(Cdd_Dma_InstanceType, AUTOMATIC) instance;
     VAR(Cdd_Dma_ChannelType, AUTOMATIC) channel;
     VAR(uint32, AUTOMATIC) base_address;
-    VAR(uint8, AUTOMATIC) hwunit_idx;
     VAR(uint32, AUTOMATIC) swpri_reg_value;
     VAR(uint8, AUTOMATIC) priority_shift;
     VAR(uint32, AUTOMATIC) priority_mask;
 
-    /* Get instance and channel from configuration */
-    instance = Cdd_Dma_ConfigPtr->chcfg[ChannelId].instance;
-    channel  = Cdd_Dma_ConfigPtr->chcfg[ChannelId].channel;
-
-    /* Find the hardware instance index */
-    hwunit_idx = Cdd_Dma_GetHwInstanceIndex(instance);
+    /* Get channel from configuration */
+    channel = Cdd_Dma_ConfigPtr->chcfg[ChannelId].channel;
 
     /* Get the DMA instance base address */
-    base_address = Cdd_Dma_ConfigPtr->hwinstcfg[hwunit_idx].baseaddress;
+    base_address = Cdd_Dma_ConfigPtr->hwinstcfg[HwInstIdx].baseaddress;
 
     /* Update priority based on channel number */
     if (channel <= CDD_DMA_CH8)
@@ -724,6 +714,51 @@ Cdd_Dma_UpdateChannelPriority(VAR(uint8, AUTOMATIC) ChannelId, Cdd_Dma_ChannelPr
 
         /* Write back to SWPRI2 register */
         Cdd_Dma_SetPriority2(base_address, swpri_reg_value);
+    }
+}
+
+FUNC(void, CDD_DMA_CODE)
+Cdd_Dma_ReadChannelPriority(VAR(uint8, AUTOMATIC) ChannelId, VAR(uint8, AUTOMATIC) HwInstIdx,
+                            P2VAR(Cdd_Dma_ChannelPriority, AUTOMATIC, CDD_DMA_APPL_DATA) Priority)
+{
+    VAR(Cdd_Dma_ChannelType, AUTOMATIC) channel;
+    VAR(uint32, AUTOMATIC) base_address;
+    VAR(uint32, AUTOMATIC) swpri_reg_value;
+    VAR(uint8, AUTOMATIC) priority_shift;
+    VAR(uint32, AUTOMATIC) priority_mask;
+
+    /* Get channel from configuration */
+    channel = Cdd_Dma_ConfigPtr->chcfg[ChannelId].channel;
+
+    /* Get the DMA instance base address */
+    base_address = Cdd_Dma_ConfigPtr->hwinstcfg[HwInstIdx].baseaddress;
+
+    /* Read priority based on channel number */
+    if (channel <= CDD_DMA_CH8)
+    {
+        /* Channels 1-8: Read from SWPRI1 register */
+        /* Each channel uses 4 bits, CDD_DMA_CH1 (0) starts at bit 0 */
+        priority_shift = ((uint8)channel) * 4U;
+        priority_mask  = (uint32)0x0FU << priority_shift;
+
+        /* Read current SWPRI1 value */
+        swpri_reg_value = HWREG(base_address + RTDMA_O_SWPRI1);
+
+        /* Extract priority bits */
+        *Priority = (Cdd_Dma_ChannelPriority)((swpri_reg_value & priority_mask) >> priority_shift);
+    }
+    else
+    {
+        /* Channels 9-10: Read from SWPRI2 register */
+        /* CDD_DMA_CH9 (8) starts at bit 0, CDD_DMA_CH10 (9) at bit 4 */
+        priority_shift = ((uint8)channel - 8U) * 4U;
+        priority_mask  = (uint32)0x0FU << priority_shift;
+
+        /* Read current SWPRI2 value */
+        swpri_reg_value = HWREG(base_address + RTDMA_O_SWPRI2);
+
+        /* Extract priority bits */
+        *Priority = (Cdd_Dma_ChannelPriority)((swpri_reg_value & priority_mask) >> priority_shift);
     }
 }
 
@@ -800,10 +835,13 @@ FUNC(Cdd_Dma_OverflowStatusType, CDD_DMA_CODE) Cdd_Dma_GetOverflowStatusFlag(uin
     VAR(Cdd_Dma_OverflowStatusType, AUTOMATIC) status;
 
     /* Read the overflow flag from CONTROL register */
+    /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] DMA overflow error cannot be recreated in test environment as
+     * the overflow flag is asserted only by an actual DMA overflow event on the target device */
     if ((HWREG(Base + RTDMA_O_CONTROL) & RTDMA_CONTROL_OVRFLG) != 0U)
     {
         status = CDD_DMA_OVERFLOW_DETECTED;
     }
+    /* TI_COVERAGE_GAP_STOP */
     else
     {
         status = CDD_DMA_OVERFLOW_NOT_DETECTED;
@@ -812,11 +850,14 @@ FUNC(Cdd_Dma_OverflowStatusType, CDD_DMA_CODE) Cdd_Dma_GetOverflowStatusFlag(uin
     return status;
 }
 
+/* TI_COVERAGE_GAP_START [Statement Gap] DMA overflow error cannot be recreated in test environment as the
+ * overflow flag is asserted only by an actual DMA overflow event on the target device */
 FUNC(void, CDD_DMA_CODE) Cdd_Dma_ClearErrorFlag_Priv(uint32 Base)
 {
     /* Set the error clear bit to clear error conditions */
     HWREG(Base + RTDMA_O_CONTROL) |= RTDMA_CONTROL_ERRCLR;
 }
+/* TI_COVERAGE_GAP_STOP */
 
 FUNC(boolean, CDD_DMA_CODE) Cdd_Dma_CheckChannelConfigCommit(uint32 Base)
 {
@@ -872,6 +913,8 @@ Cdd_Dma_ProcessIsr(Cdd_Dma_InstanceType InstanceId, Cdd_Dma_ChannelType ChannelI
         /* Check if overflow flag is set */
         overflow_status = Cdd_Dma_GetOverflowStatusFlag(Cdd_Dma_ConfigPtr->chcfg[ch_idx].baseaddress);
 
+        /* TI_COVERAGE_GAP_START [Branch Gap/Statement Gap] DMA overflow error cannot be recreated in test environment
+         * as the overflow flag is asserted only by an actual DMA overflow event on the target device */
         if (CDD_DMA_OVERFLOW_DETECTED == overflow_status)
         {
             /* Call the overflow interrupt notification callback if configured */
@@ -880,6 +923,7 @@ Cdd_Dma_ProcessIsr(Cdd_Dma_InstanceType InstanceId, Cdd_Dma_ChannelType ChannelI
                 Cdd_Dma_ConfigPtr->chcfg[ch_idx].overflowintnotification(ch_idx);
             }
         }
+        /* TI_COVERAGE_GAP_STOP */
         else
         {
             /* Call the channel interrupt notification callback if configured */
@@ -1024,16 +1068,6 @@ LOCAL_INLINE FUNC(void, CDD_DMA_CODE) Cdd_Dma_SetPriority2(uint32 Base, uint32 S
 }
 
 #if (STD_ON == CDD_DMA_LOCK_CONFIGURATION)
-LOCAL_INLINE FUNC(void, CDD_DMA_CODE) Cdd_Dma_DmaCfgLockConfiguration(uint32 Base)
-{
-    HWREG(Base + RTDMA_O_DMACFG_LOCK) |= RTDMA_DMACFG_LOCK_LOCK;
-}
-
-LOCAL_INLINE FUNC(void, CDD_DMA_CODE) Cdd_Dma_DmaCfgUnlockConfiguration(uint32 Base)
-{
-    HWREG(Base + RTDMA_O_DMACFG_LOCK) &= ~(RTDMA_DMACFG_LOCK_LOCK);
-}
-
 LOCAL_INLINE FUNC(void, CDD_DMA_CODE) Cdd_Dma_MpuRegionLockConfiguration(uint32 Base, Cdd_Dma_MpuRegionType MpuRegion)
 {
     HWREG(Base + RTDMA_O_MPUR_LOCK((uint32)MpuRegion)) |= RTDMA_MPUR_LOCK_LOCK;
@@ -1103,6 +1137,52 @@ FUNC(boolean, CDD_DMA_CODE) Cdd_Dma_CheckMpuRegionCommit(uint32 Base, Cdd_Dma_Mp
         commit_status = TRUE;
     }
     return commit_status;
+}
+
+/* API to periodic readback of registers for CDD DMA*/
+FUNC(void, CDD_DMA_CODE)
+Cdd_Dma_PeriodicReadbackPrv(VAR(uint8, AUTOMATIC) ChannelId,
+                            P2VAR(Cdd_Dma_PeriodicReadBackDataType, AUTOMATIC, CDD_DMA_APPL_DATA) ReadBackRegisterdata)
+{
+    VAR(uint32, AUTOMATIC) channelBaseAddr;
+    VAR(uint32, AUTOMATIC) instanceBaseAddr;
+    VAR(Cdd_Dma_InstanceType, AUTOMATIC) instance;
+    VAR(uint8, AUTOMATIC) hwInstanceIdx;
+
+    /* Get channel base address */
+    channelBaseAddr = Cdd_Dma_ConfigPtr->chcfg[ChannelId].baseaddress;
+
+    /* Get instance information */
+    instance = Cdd_Dma_ConfigPtr->chcfg[ChannelId].instance;
+
+    /* Find the hardware instance index; proceed only if found */
+    if (Cdd_Dma_GetHwInstanceIndex(instance, &hwInstanceIdx) == E_OK)
+    {
+        instanceBaseAddr = Cdd_Dma_ConfigPtr->hwinstcfg[hwInstanceIdx].baseaddress;
+
+        /* Read DMA instance level registers */
+        ReadBackRegisterdata->CddDmaDmactrl = HWREG(instanceBaseAddr + RTDMA_O_DMACTRL);
+        ReadBackRegisterdata->CddDmaSwpri1  = HWREG(instanceBaseAddr + RTDMA_O_SWPRI1);
+        ReadBackRegisterdata->CddDmaSwpri2  = HWREG(instanceBaseAddr + RTDMA_O_SWPRI2);
+
+        /* Read DMA channel level registers */
+        ReadBackRegisterdata->CddDmaMode             = HWREG(channelBaseAddr + RTDMA_O_MODE);
+        ReadBackRegisterdata->CddDmaBurstSize        = HWREG(channelBaseAddr + RTDMA_O_BURST_SIZE);
+        ReadBackRegisterdata->CddDmaSrcBurstStep     = HWREG(channelBaseAddr + RTDMA_O_SRC_BURST_STEP);
+        ReadBackRegisterdata->CddDmaDstBurstStep     = HWREG(channelBaseAddr + RTDMA_O_DST_BURST_STEP);
+        ReadBackRegisterdata->CddDmaTransferSize     = HWREG(channelBaseAddr + RTDMA_O_TRANSFER_SIZE);
+        ReadBackRegisterdata->CddDmaSrcTransferStep  = HWREG(channelBaseAddr + RTDMA_O_SRC_TRANSFER_STEP);
+        ReadBackRegisterdata->CddDmaDstTransferStep  = HWREG(channelBaseAddr + RTDMA_O_DST_TRANSFER_STEP);
+        ReadBackRegisterdata->CddDmaSrcWrapSize      = HWREG(channelBaseAddr + RTDMA_O_SRC_WRAP_SIZE);
+        ReadBackRegisterdata->CddDmaSrcWrapStep      = HWREG(channelBaseAddr + RTDMA_O_SRC_WRAP_STEP);
+        ReadBackRegisterdata->CddDmaDstWrapSize      = HWREG(channelBaseAddr + RTDMA_O_DST_WRAP_SIZE);
+        ReadBackRegisterdata->CddDmaDstWrapStep      = HWREG(channelBaseAddr + RTDMA_O_DST_WRAP_STEP);
+        ReadBackRegisterdata->CddDmaBurstIntfCtrl    = HWREG(channelBaseAddr + RTDMA_O_BURST_INTF_CTRL);
+        ReadBackRegisterdata->CddDmaSrcBegAddrShadow = HWREG(channelBaseAddr + RTDMA_O_SRC_BEG_ADDR_SHADOW);
+        ReadBackRegisterdata->CddDmaSrcAddrShadow    = HWREG(channelBaseAddr + RTDMA_O_SRC_ADDR_SHADOW);
+        ReadBackRegisterdata->CddDmaDstBegAddrShadow = HWREG(channelBaseAddr + RTDMA_O_DST_BEG_ADDR_SHADOW);
+        ReadBackRegisterdata->CddDmaDstAddrShadow    = HWREG(channelBaseAddr + RTDMA_O_DST_ADDR_SHADOW);
+    }
 }
 
 #define CDD_DMA_STOP_SEC_CODE

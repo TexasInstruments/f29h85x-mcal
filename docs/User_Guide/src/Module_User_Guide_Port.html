@@ -49,7 +49,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                26.00.00
+                26.00.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -61,7 +61,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.00 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcal_release_notes.html">1. F29H85x-MCAL-SDK 26.00.01 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">2. Overview of MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">3. MCAL Configurator And EB Tresos User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">4. Getting Started With F29x MCAL</a></li>
@@ -172,35 +172,38 @@
 </tr>
 </thead>
 <tbody>
+<tr class="row-even"><td><p>API</p></td>
+<td><p>Application Programming Interface</p></td>
+</tr>
+<tr class="row-odd"><td><p>ASysCtl</p></td>
+<td><p>Analog System Control</p></td>
+</tr>
 <tr class="row-even"><td><p>AUTOSAR</p></td>
 <td><p>Automotive Open System Architecture</p></td>
 </tr>
-<tr class="row-odd"><td><p>RTE</p></td>
-<td><p>Runtime Environment</p></td>
-</tr>
-<tr class="row-even"><td><p>BSW</p></td>
+<tr class="row-odd"><td><p>BSW</p></td>
 <td><p>Basic Software</p></td>
-</tr>
-<tr class="row-odd"><td><p>GPIO</p></td>
-<td><p>General Purpose Input Output</p></td>
-</tr>
-<tr class="row-even"><td><p>MCAL</p></td>
-<td><p>Micro Controller Abstraction Layer</p></td>
-</tr>
-<tr class="row-odd"><td><p>API</p></td>
-<td><p>Application Programming Interface</p></td>
 </tr>
 <tr class="row-even"><td><p>DET</p></td>
 <td><p>Default Error Tracer</p></td>
 </tr>
-<tr class="row-odd"><td><p>HW</p></td>
-<td><p>Hardware</p></td>
+<tr class="row-odd"><td><p>GPIO</p></td>
+<td><p>General Purpose Input Output</p></td>
 </tr>
-<tr class="row-even"><td><p>SW</p></td>
-<td><p>Software</p></td>
+<tr class="row-even"><td><p>HW</p></td>
+<td><p>Hardware</p></td>
 </tr>
 <tr class="row-odd"><td><p>I/O</p></td>
 <td><p>Input/Output</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL</p></td>
+<td><p>Micro Controller Abstraction Layer</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTE</p></td>
+<td><p>Runtime Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>SW</p></td>
+<td><p>Software</p></td>
 </tr>
 </tbody>
 </table>
@@ -316,6 +319,13 @@ PORT driver module shall complete the overall configuration and initialization o
 <section id="agpios">
 <h4><span class="section-number">5.8.4.1.3. </span>AGPIOs<a class="headerlink" href="#agpios" title="Link to this heading"></a></h4>
 <p>Some GPIOs are multiplexed with analog pins and have digital input and output functionality. These are also referred to as AGPIOs. Unlike AIOs, AGPIOs have full input and output capability. By default, the AGPIOs are not connected and must be configured.</p>
+<p>The Port driver provides additional configuration for AGPIO-capable pins through the following controls:</p>
+<ul class="simple">
+<li><p><strong>IO buffer drive strength</strong> — Selects normal or high-drive strength per AGPIO pin</p></li>
+<li><p><strong>IO buffer voltage mode</strong> — Selects 3.3V or 1.35V IO buffer voltage per AGPIO pin</p></li>
+<li><p><strong>Analog GPIO input filter</strong> — Selects the input filter resistance applied globally to all AGPIO pins</p></li>
+</ul>
+<p>These settings are applied during <code class="docutils literal notranslate"><span class="pre">Port_Init()</span></code>. Once <code class="docutils literal notranslate"><span class="pre">Port_CommitConfiguration()</span></code> is called, the analog GPIO input filter and analog GPIO control settings are permanently locked for the remainder of the power cycle. Refer to the device Technical Reference Manual (TRM) for register-level details.</p>
 </section>
 <section id="input-qualification">
 <h4><span class="section-number">5.8.4.1.4. </span>Input Qualification<a class="headerlink" href="#input-qualification" title="Link to this heading"></a></h4>
@@ -352,9 +362,6 @@ Port Driver needs to be initialized as per the available pin package. Refer Devi
 <p class="admonition-title">Note</p>
 <p>Refer Device Data Sheet for details about reserved/non-configurable pins for the respective  pin package.</p>
 </div>
-<ul class="simple">
-<li><p>Lock Configuration and Lock Commit configuration as not supported for the module</p></li>
-</ul>
 </section>
 <section id="non-compliance">
 <h3><span class="section-number">5.8.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
@@ -1325,8 +1332,80 @@ The associated Port driver configuration generated source files are <strong>Port
 </tbody>
 </table>
 </section>
+<section id="portiobufferdriveconfig">
+<h5><span class="section-number">5.8.10.1.1.21. </span>PortIOBufferDriveConfig<a class="headerlink" href="#portiobufferdriveconfig" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortIOBufferDriveConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the IO buffer drive strength for AGPIO-capable pins via the IODRVSEL register bit. TRUE = high-drive strength. FALSE = normal drive strength. Only applicable to AGPIO pins.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="portiobuffermodeconfig">
+<h5><span class="section-number">5.8.10.1.1.22. </span>PortIOBufferModeConfig<a class="headerlink" href="#portiobuffermodeconfig" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortIOBufferModeConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the IO buffer voltage mode for AGPIO-capable pins via the IOMODESEL register bit. TRUE = 1.35 V mode. FALSE = 3.3 V mode. Only applicable to AGPIO pins.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="portpinmode">
-<h5><span class="section-number">5.8.10.1.1.21. </span>PortPinMode<a class="headerlink" href="#portpinmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.23. </span>PortPinMode<a class="headerlink" href="#portpinmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1374,7 +1453,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinmodechangeable">
-<h5><span class="section-number">5.8.10.1.1.22. </span>PortPinModeChangeable<a class="headerlink" href="#portpinmodechangeable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">5.8.10.1.1.24. </span>PortPinModeChangeable<a class="headerlink" href="#portpinmodechangeable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1590,7 +1669,46 @@ The associated Port driver configuration generated source files are <strong>Port
 <tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
 <td><p>false</p></td>
 </tr>
-<tr class="row-even"><td><p>Refer <a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_PortDriver.pdf">AUTOSAR_SWS_PortDriver section: 10 Configuration specification</a> for more configuration parameters details</p></td>
+</tbody>
+</table>
+</section>
+<section id="portagpiofilter">
+<h5><span class="section-number">5.8.10.1.2.6. </span>PortAGPIOFilter<a class="headerlink" href="#portagpiofilter" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortAGPIOFilter</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p><html><br>                            <h3>AGPIOFILTER - Analog GPIO input filter selection (global, applies to all AGPIO pins):</h3><br>                            <ul><br>                                <li><b>PORT_AGPIO_FILTER_0 (00):</b> Filter bypass configuration (min ACQPS = 90ns)</li><br>                                <li><b>PORT_AGPIO_FILTER_1 (01):</b> 333 Ohm filter setting (min ACQPS = 125ns)</li><br>                                <li><b>PORT_AGPIO_FILTER_2 (10):</b> 500 Ohm filter setting (min ACQPS = 160ns)</li><br>                                <li><b>PORT_AGPIO_FILTER_3 (11):</b> 1 kOhm filter setting (min ACQPS = 230ns)</li><br>                            </ul><br>                        </html></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>PORT_AGPIO_FILTER_0</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Range</strong></p></td>
+<td><p>PORT_AGPIO_FILTER_0<br>PORT_AGPIO_FILTER_1<br>PORT_AGPIO_FILTER_2<br>PORT_AGPIO_FILTER_3</p></td>
+</tr>
+<tr class="row-odd"><td><p>Refer <a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_PortDriver.pdf">AUTOSAR_SWS_PortDriver section: 10 Configuration specification</a> for more configuration parameters details</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -1775,7 +1893,7 @@ The associated Port driver configuration generated source files are <strong>Port
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 26.00.00
+       Current Version: 26.00.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

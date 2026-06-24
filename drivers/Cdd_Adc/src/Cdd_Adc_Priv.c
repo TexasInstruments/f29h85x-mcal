@@ -74,6 +74,7 @@
  *********************************************************************************************************************/
 #include "Cdd_Adc_Priv.h"
 #include "Det.h"
+#include "Mcu.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -289,37 +290,6 @@ static FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_ReadResult(uint32 ResultBase, uint8 So
  *********************************************************************************************************************/
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     Cdd_Adc_SetIntSocTrigger(uint32 Base, uint8 SocNum, Cdd_Adc_IntSocTriggerType Trigger);
-
-/* ADC global registers */
-#if (CDD_ADC_GLBSW_TRIG_API == STD_ON)
-/** \brief Global software ADC select function
- *
- * This function enables the ADC hardware units for the global software trigger
- *
- * \param[in]  AdcMask   Mask to select the corresponding instances for the global software trigger
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_GlobalSwTrigger(uint8 AdcMask);
-
-/** \brief Global software SOC select function
- *
- * This function enables triggers the software conversion for the specified SOC whose ADC hardware
- *unit is configured for the global software trigger
- *
- * \param[in]  SocMask   Mask to select the SOCs for the global software trigger. All the selected
- *SOCs in the selected hardware unit will be triggered for the ADC conversion.
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SocGlobalSwTrigger(uint32 SocMask);
-#endif
 
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
 /** \brief Select external channel for the SOC
@@ -1003,47 +973,6 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigOSDetectMode(uint32 Base, Cdd_Adc_OsDetectModeType Mode);
 #endif
 
-#if (STD_ON == CDD_ADC_TEMPERATURE_SENSOR_ENABLE)
-/** \brief Enable/disable temperature sensor
- *
- * This function enable/disable temperature sensor
- *
- * \param[in]  Mode   Enable/Disable temperature sensor
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureTempSensor(boolean Mode);
-
-/** \brief Returns lock temperature sensor function
- *
- * This function returns the temperature sensor lock status
- *
- * \pre None
- * \post None
- * \return Returns the temperature sensor lock status
- * \retval boolean - TRUE if the temperature sensor is locked
- *                  FALSE if the temperature sensor is not locked
- *********************************************************************************************************************/
-LOCAL_INLINE FUNC(boolean, CDD_ADC_CODE) Cdd_Adc_GetTempSensorLockStatus(void);
-#endif
-
-#if (STD_ON == CDD_ADC_LOCK_TEMPERATURE_SENSOR)
-/** \brief Lock temperature sensor function
- *
- * This function locks temperature sensor
- *
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_LockTempSensor(void);
-#endif
-
 /** \brief Enable/Disable ADC converter
  *
  * This function enables/disables the ADC converter
@@ -1149,22 +1078,6 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetOffsetTrim(uint32 Base);
  *
  *********************************************************************************************************************/
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetINLTrim(Cdd_Adc_HwUnitInstanceType HwIdx);
-
-/** \brief Set voltage reference for the ADC HW Unit function
- *
- * This function sets the voltage reference for the ADC HW Unit
- *
- * \param[in]  HwIdx     Numeric ID of the ADC instance
- * \param[in]  RefMode     voltage reference mode
- * \param[in]  RefVoltage     reference voltage configured for the ADC HW Unit
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- *********************************************************************************************************************/
-static FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_SetVREF(Cdd_Adc_HwUnitInstanceType HwIdx, Cdd_Adc_RefModeType RefMode, Cdd_Adc_RefVoltType RefVoltage);
 
 /** \brief Check if the group is to be retriggered or to disable the trigger
  *
@@ -1369,6 +1282,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetSocPriority(uint32 Base, Cdd_Ad
         (HWREGH(Base + ADC_O_SOCPRICTL) & (uint16)(~ADC_SOCPRICTL_SOCPRIORITY_M)) | ((uint16)PriorityMode);
 }
 
+/* Design: MCAL-31120 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_EnableAltDmaTiming(uint32 Base)
 {
     /* DMA is always triggered at tDMA regardless or whether the ADC is in early interrupt mode */
@@ -1392,26 +1306,6 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     uint32 offset = Base + ADC_O_INTSOCSEL1 + ((uint32)4U * (((uint32)SocNum) / (uint32)16U));
     HWREG(offset) = (HWREG(offset) & ~((uint32)ADC_INTSOCSEL1_SOC0_M << shift_val)) | ((uint32)Trigger << shift_val);
 }
-
-/* ADC global registers */
-#if (CDD_ADC_GLBSW_TRIG_API == STD_ON)
-
-/* Design: MCAL-31363 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_GlobalSwTrigger(uint8 AdcMask)
-{
-    uint32 addr = Cdd_Adc_ConfigPtr->glbsw_baseaddr + ASYSCTL_O_ADCSOCFRCGBSEL;
-    /* Configuring the register ADCSOCFRCGBSEL to select the ADC instances*/
-    HWREG(addr) = (uint32)AdcMask;
-}
-
-/* Design: MCAL-31364 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SocGlobalSwTrigger(uint32 SocMask)
-{
-    uint32 addr = Cdd_Adc_ConfigPtr->glbsw_baseaddr + ASYSCTL_O_ADCSOCFRCGB;
-    /* Configuring the SocMask to select the SOCs to be triggered simultaneously on differen ADCs */
-    HWREG(addr) = SocMask;
-}
-#endif
 
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
 
@@ -1841,40 +1735,6 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigOSDetectMode(uint32 Base, Cd
 }
 #endif
 
-#if (STD_ON == CDD_ADC_TEMPERATURE_SENSOR_ENABLE)
-
-/* Design: MCAL-31409,MCAL-31120 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureTempSensor(boolean Mode)
-{
-    /* Enable/Disable the temperature sensor */
-    if (TRUE == Mode)
-    {
-        HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_TSNSCTL) |= (uint16)ASYSCTL_TSNSCTL_ENABLE;
-    }
-    else
-    {
-        HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_TSNSCTL) &= (uint16)(~ASYSCTL_TSNSCTL_ENABLE);
-    }
-}
-
-/* Design: MCAL-31410 */
-LOCAL_INLINE FUNC(boolean, CDD_ADC_CODE) Cdd_Adc_GetTempSensorLockStatus(void)
-{
-    /* Enable/Disable the temperature sensor */
-    return (boolean)(HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_LOCK) & ASYSCTL_LOCK_TSNSCTL);
-}
-#endif
-
-#if (STD_ON == CDD_ADC_LOCK_TEMPERATURE_SENSOR)
-
-/* Design: MCAL-31411,MCAL-31398 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_LockTempSensor(void)
-{
-    /* Lock temperature sensor */
-    HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_LOCK) |= (uint16)ASYSCTL_LOCK_TSNSCTL;
-}
-#endif
-
 /* Design: MCAL-31412 */
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureConverter(uint32 Base, boolean Mode)
 {
@@ -1902,14 +1762,6 @@ Cdd_Adc_SetMode(Cdd_Adc_HwUnitInstanceType HwIdx, Cdd_Adc_ResolutionType Resolut
     /* Apply INL and offset trims */
     Cdd_Adc_SetINLTrim(HwIdx);
     Cdd_Adc_SetOffsetTrim(base);
-}
-
-/* Design: MCAL-31339 */
-FUNC(void, CDD_ADC_CODE) Cdd_Adc_SelectInternalTestNode(Cdd_Adc_InternalTestNodeType TestNode)
-{
-    uint32 offset = ANALOGSUBSYS_BASE + ASYSCTL_O_INTERNALTESTCTL;
-    HWREG(offset) = (HWREG(offset) & ~ASYSCTL_INTERNALTESTCTL_TESTSEL_M) | (0xA5A5UL << ASYSCTL_INTERNALTESTCTL_KEY_S) |
-                    ((uint32)TestNode << ASYSCTL_INTERNALTESTCTL_TESTSEL_S);
 }
 
 #if (STD_ON == CDD_ADC_ENABLE_PPB_API)
@@ -2308,18 +2160,6 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitInit(void)
     const Cdd_Adc_HwUnitCfgType *hwunitcfg;
     const Cdd_Adc_GroupCfgType  *group_cfg;
 
-    Cdd_Adc_SelectInternalTestNode(Cdd_Adc_ConfigPtr->test_input);
-
-#if (STD_ON == CDD_ADC_TEMPERATURE_SENSOR_ENABLE)
-    if (Cdd_Adc_GetTempSensorLockStatus() == 0U)
-    {
-        Cdd_Adc_ConfigureTempSensor(TRUE);
-#if (STD_ON == CDD_ADC_LOCK_TEMPERATURE_SENSOR)
-        Cdd_Adc_LockTempSensor();
-#endif /* #if (STD_ON == CDD_ADC_LOCK_TEMPERATURE_SENSOR) */
-    }
-#endif /* #if (STD_ON == CDD_ADC_TEMPERATURE_SENSOR_ENABLE) */
-
     /* Iterate through each ADC HW Instances */
     for (Cdd_Adc_HwUnitInstanceType hw_idx = 0U; hw_idx < CDD_ADC_HW_CNT; hw_idx++)
     {
@@ -2330,8 +2170,6 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitInit(void)
         Cdd_Adc_SetPrescaler(hwunitcfg->base_addr, hwunitcfg->prescale);
         /* Set the resolution and signal mode */
         Cdd_Adc_SetMode(hw_idx, hwunitcfg->resolution, hwunitcfg->signal_mode);
-        /* Set voltage reference mode and voltage reference*/
-        Cdd_Adc_SetVREF(hw_idx, hwunitcfg->voltrefmode, hwunitcfg->voltref);
         /* Enable ADC converter */
         Cdd_Adc_ConfigureConverter(hwunitcfg->base_addr, TRUE);
         /* Configure the interrput pulse mode */
@@ -2461,16 +2299,6 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitDeinit(void)
         Cdd_Adc_StopGlbTrig(glbswid);
     }
 #endif /* #if (STD_ON == CDD_ADC_GLBSW_TRIG_API) */
-
-#if (STD_ON == CDD_ADC_TEMPERATURE_SENSOR_ENABLE)
-    /* Disable temperature sensor if not locked. */
-    if (Cdd_Adc_GetTempSensorLockStatus() == 0U)
-    {
-        Cdd_Adc_ConfigureTempSensor(FALSE);
-    }
-#endif /* #if (STD_ON == CDD_ADC_TEMPERATURE_SENSOR_ENABLE) */
-
-    Cdd_Adc_SelectInternalTestNode(CDD_ADC_TEST_NODE_NO_CONN); /* Reset the internal test node */
 }
 #endif
 
@@ -2591,10 +2419,12 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartGlbTrig(Cdd_Adc_GlbTrigType GlbSwTrig)
     /* Set the global software trigger status to TRUE */
     Cdd_Adc_DrvObjPtr->glbsw_obj[GlbSwTrig].status = TRUE;
 
+    /* Design: MCAL-31363 */
     /* Configure the ADC instances for global software trigger */
-    Cdd_Adc_GlobalSwTrigger(glbsw.hwunit_mask);
-    /* Configure SOCs for the global software trigger */
-    Cdd_Adc_SocGlobalSwTrigger(glbsw.soc_mask);
+    Mcu_ASysCtl_ConfigADCGlobalSOC(Cdd_Adc_ConfigPtr->glbsw_baseaddr, glbsw.hwunit_mask);
+    /* Design: MCAL-31364 */
+    /* Fire the global software trigger by writing the SOC mask to ADCSOCFRCGB */
+    Mcu_ASysCtl_ForceADCGlobalSOC(Cdd_Adc_ConfigPtr->glbsw_baseaddr, glbsw.soc_mask);
 }
 
 /* Design: MCAL-31330 */
@@ -2616,10 +2446,10 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGlbTrig(Cdd_Adc_GlbTrigType GlbSwTrig)
     }
 
     Cdd_Adc_DrvObjPtr->glbsw_obj[GlbSwTrig].status = FALSE;
-    /* Configure SOCs for the global software trigger */
-    Cdd_Adc_SocGlobalSwTrigger(0U);
-    /* Configure the ADC instances for global software trigger */
-    Cdd_Adc_GlobalSwTrigger(0U);
+    /* Clear the SOC force register (ADCSOCFRCGB) to deactivate the global software trigger */
+    Mcu_ASysCtl_ForceADCGlobalSOC(Cdd_Adc_ConfigPtr->glbsw_baseaddr, 0U);
+    /* Clear the ADC instance selection for global software trigger */
+    Mcu_ASysCtl_ConfigADCGlobalSOC(Cdd_Adc_ConfigPtr->glbsw_baseaddr, (uint8)0U);
 }
 #endif
 
@@ -2782,33 +2612,6 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetOffsetTrim(uint32 Base)
      * supplied from individual registers already programmed by device_cal api.
      */
     Cdd_Adc_SelectOffsetTrimMode(Base, CDD_ADC_OFFSET_TRIM_INDIVIDUAL);
-}
-
-/* Design: MCAL-31423,MCAL-31132 */
-static FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_SetVREF(Cdd_Adc_HwUnitInstanceType HwIdx, Cdd_Adc_RefModeType RefMode, Cdd_Adc_RefVoltType RefVoltage)
-{
-    uint32 analogrefctl_addr = (ANALOGSUBSYS_BASE + ASYSCTL_O_ANAREFCTL);
-
-    /* Configure the reference mode (internal or external) */
-    if (RefMode == CDD_ADC_REFERENCE_INTERNAL)
-    {
-        HWREGH(analogrefctl_addr) &= ~(Cdd_Adc_ConfigPtr->hwunitcfg[HwIdx].analogrefsel);
-        if (RefVoltage == CDD_ADC_REFERENCE_3_3V)
-        {
-            /* Configure the reference voltage 3.3V */
-            HWREGH(analogrefctl_addr) &= ~(Cdd_Adc_ConfigPtr->hwunitcfg[HwIdx].analogrefvoltsel);
-        }
-        else
-        {
-            /* configure the reference voltage 2.5V */
-            HWREGH(analogrefctl_addr) |= (Cdd_Adc_ConfigPtr->hwunitcfg[HwIdx].analogrefvoltsel);
-        }
-    }
-    else
-    {
-        HWREGH(analogrefctl_addr) |= (Cdd_Adc_ConfigPtr->hwunitcfg[HwIdx].analogrefsel);
-    }
 }
 
 /* Design: MCAL-31422 */
@@ -3107,6 +2910,7 @@ static FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_CheckGrpIdle(VAR(Cdd_Adc_HwUni
 
 #if (STD_ON == CDD_ADC_SAFETY_CHECK_API)
 
+/* Design: MCAL-31339 */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_InitSafetyChecker(void)
 {
     const Cdd_Adc_CheckerResCfgType *checkerunit_cfg;
@@ -3285,6 +3089,7 @@ static FUNC(Std_ReturnType, CDD_ADC_CODE)
 
 #if (STD_ON == CDD_ADC_ENABLE_PPB_API)
 
+/* Design: MCAL-31307 */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_InitPpb(void)
 {
     /* Configure the PPB units */
@@ -3332,6 +3137,7 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessPpbIsr(uint8 HwUnitIndex)
 
 #if (STD_ON == CDD_ADC_TRIG_REP_ENABLE)
 
+/* Design: MCAL-31398 */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_InitTrigRep(void)
 {
     const Cdd_Adc_TrigRepCfgType *repunitcfg;

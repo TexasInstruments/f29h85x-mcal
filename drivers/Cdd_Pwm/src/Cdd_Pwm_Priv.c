@@ -73,6 +73,7 @@
  * Header Files
  *********************************************************************************************************************/
 #include "Cdd_Pwm_Priv.h"
+#include "Mcu.h"
 #if (STD_ON == CDD_PWM_ADVANCED_MODE_API)
 #if (STD_ON == CDD_PWM_HRPWM_SUPPORTED)
 #include "hw_hrpwmcal.h"
@@ -1352,9 +1353,9 @@ Cdd_Pwm_PrivGetCounterCompareValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instance
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivConfigureEpwmXLink(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId)
 {
-    uint8 hw_id = (Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].instance_id - 1U);
+    VAR(uint8, AUTOMATIC) hw_id = (Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].instance_id - 1U);
 
-    HWREG(DEVCFG_BASE + SYSCTL_O_EPWMXLINKCFG) |= ((uint32)1U << hw_id);
+    Mcu_SysCtl_ConfigEPWMXLink((uint32)1U << hw_id);
 }
 
 FUNC(boolean, CDD_PWM_CODE)
@@ -4380,7 +4381,13 @@ FUNC(Cdd_Pwm_SfoStatusType, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstan
         status = CDD_PWM_SFO_ERROR;
 
         /* Update status & assign scale factor value to HRMSTEP register */
+        /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] The False branch of (Cdd_Pwm_MEP_ScaleFactor <= 255U)
+         * occurs when HRPWM hardware calibration fails.
+         * This fault cannot be injected through software, and therefore cannot be covered in functional software
+         * testing.
+         */
         if (Cdd_Pwm_MEP_ScaleFactor <= 255U)
+        /* TI_COVERAGE_GAP_STOP */
         {
             /* Update HRMSTEP register only with DCAL result */
             HWREGH(Cdd_Pwm_HrCalBase + HRPWMCAL_O_HRMSTEP) = Cdd_Pwm_MEP_ScaleFactor;

@@ -2207,10 +2207,16 @@ Can_ProcessWakeUpPrv(Can_ControllerInstance instance,
         /* Clear the wake status */
         MCAL_LIB_REG_WRITE32(CPUSYS_BASE + SYSCTL_O_MCANWAKESTATUSCLR, clearStatus);
         /* Clear the wake status if not cleared*/
+        /* TI_COVERAGE_GAP_START [Branch Coverage] The True branch of this condition cannot be
+         * covered. SYSCTL_O_MCANWAKESTATUS is a hardware-set read-only register; the first write
+         * to SYSCTL_O_MCANWAKESTATUSCLR always clears the bit immediately. Reaching this branch
+         * requires the hardware status bit to remain set after a clear write, which is a hardware
+         * fault condition that cannot be simulated in tests. */
         if (MCAN_WAKEUP != (MCAL_LIB_REG_READ32(CPUSYS_BASE + SYSCTL_O_MCANWAKESTATUS) & wakeStatus))
         {
             MCAL_LIB_REG_WRITE32(CPUSYS_BASE + SYSCTL_O_MCANWAKESTATUSCLR, clearStatus);
         }
+        /* TI_COVERAGE_GAP_STOP */
     }
     else
     {
@@ -2496,7 +2502,11 @@ Can_HwMsgRamConfigPriv(uint32 baseAddr, P2CONST(Can_MsgRAMConfigParams, AUTOMATI
                                 (msgRAMConfigParams->txStartAddr >> ((uint32)2U)));
         MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_TXBC, MCAN_TXBC_NDTB, msgRAMConfigParams->txBufNum);
         MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_TXBC, MCAN_TXBC_TFQS, msgRAMConfigParams->txFIFOSize);
-        MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_TXBC, MCAN_TXBC_TFQM, msgRAMConfigParams->txBufMode);
+#if (CAN_CFG_MULTIPLEXED_TX == STD_ON)
+        MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_TXBC, MCAN_TXBC_TFQM, 1U);
+#else
+        MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_TXBC, MCAN_TXBC_TFQM, 0U);
+#endif
         /* Configure Tx Buffer/FIFO0/FIFO1 elements size */
         MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_TXESC, MCAN_TXESC_TBDS, elementSize);
     }
@@ -2979,22 +2989,28 @@ static FUNC(void, CAN_CODE) Can_CheckAllTxBuffers(uint32 txStat, uint32 txCancel
     VAR(uint8, AUTOMATIC) loopCnt        = (uint8)0U;
     VAR(uint32, AUTOMATIC) bitPos        = (uint32)0U;
     VAR(Can_HwHandleType, AUTOMATIC) hth = (Can_HwHandleType)0U;
+    VAR(uint32, AUTOMATIC) baseAddr      = canCntrlObj->canControllerConfig.CanControllerBaseAddress;
+    VAR(uint32, AUTOMATIC) txStatCurrent = txStat;
 
     /* Loop through all transmit buffers*/
     for (loopCnt = ((uint8)0U); loopCnt < MCAN_TX_MB_MAX_NUM; loopCnt++)
     {
         bitPos = ((uint32)1U << loopCnt);
-        /* Check if transmission is pending for this buffer.
-           TXBTO bit remains set until next TXBAR write, so we use txPendingStatus
-           to track actual pending transmissions and prevent multiple TxConfirmation calls. */
+        /* Check if transmission is pending for this buffer */
         if (bitPos == (canCntrlObj->txPendingStatus & bitPos))
         {
-            hth = canCntrlObj->canFDMsgRamConfig.canTxBufToHohMapping[loopCnt];
+            /* Mask out buffers with a new transmission request pending or undergoing arbitration. This prevents a
+               spurious TxConfirmation for a buffer whose TXBTO bit is still set in the one-shot snapshot but for which
+               a new Can_Write was issued inside a prior CanIf_TxConfirmation callback during
+               this same ISR execution. */
+            txStatCurrent = txStatCurrent & (~MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBAR));
+            txStatCurrent = txStatCurrent & (~MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBRP));
+            hth           = canCntrlObj->canFDMsgRamConfig.canTxBufToHohMapping[loopCnt];
             /* Transmission outcome scenarios in DAR (Disable Automatic Retransmission) mode:
                - TXBTO=1, TXBCF=0: Successful transmission
                - TXBTO=1, TXBCF=1: Successful transmission despite cancellation request
                - TXBTO=0, TXBCF=1: Arbitration lost or frame transmission disturbed */
-            if (bitPos == (txStat & bitPos))
+            if (bitPos == (txStatCurrent & bitPos))
             {
                 /* TXBTO is set - transmission was successful, call TxConfirmation */
                 Can_CheckAndConfirmTxBuffersPriv(canCntrlObj, canMailObj, hth, loopCnt);
@@ -3329,7 +3345,6 @@ static FUNC(void, CAN_CODE)
     msgRamConfig->configParams.txStartAddr          = ((uint32)0U);
     msgRamConfig->configParams.txBufNum             = ((uint8)0U);
     msgRamConfig->configParams.txFIFOSize           = ((uint8)0U);
-    msgRamConfig->configParams.txBufMode            = ((uint32)1U);
     msgRamConfig->configParams.txEventFIFOStartAddr = ((uint32)0U);
     msgRamConfig->configParams.txEventFIFOSize      = ((uint32)0U);
     msgRamConfig->configParams.txEventFIFOWaterMark = ((uint32)0U);
@@ -3547,6 +3562,7 @@ static FUNC(void, CAN_CODE)
 {
     VAR(uint8, AUTOMATIC) intrCnt;
     VAR(uint32, AUTOMATIC) regVal;
+    VAR(uint32, AUTOMATIC) newBits;
 
     if (CAN_BASIC == mailboxCfg->CanHandleType)
     {
@@ -3559,13 +3575,15 @@ static FUNC(void, CAN_CODE)
         if ((CAN_INTERRUPT == canControllerCfg->CanTxProcessing) ||
             ((CAN_MIXED == canControllerCfg->CanTxProcessing) && (FALSE == mailboxCfg->CanHardwareObjectUsesPolling)))
         {
-            regVal = MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBTIE);
+            newBits = (uint32)0U;
             for (intrCnt = ((uint8)0U); intrCnt < mailboxCfg->CanHwObjectCount; intrCnt++)
             {
-                regVal |= (((uint32)1U) << (msgRamConfig->txBuffNum + intrCnt));
+                newBits |= (((uint32)1U) << (msgRamConfig->txBuffNum + intrCnt));
                 msgRamConfig->canTxBufToHohMapping[(msgRamConfig->txBuffNum + intrCnt)] = htrh;
             }
-            MCAL_LIB_REG_WRITE32(baseAddr + MCAN_TXBTIE, regVal);
+            MCAL_LIB_REG_WRITE32(baseAddr + MCAN_TXBTIE, MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBTIE) | newBits);
+            /* Enable cancellation interrupt so TCF fires when bus-off cancels pending Tx */
+            MCAL_LIB_REG_WRITE32(baseAddr + MCAN_TXBCIE, MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBCIE) | newBits);
         }
     }
     else
@@ -3582,6 +3600,10 @@ static FUNC(void, CAN_CODE)
             regVal  = MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBTIE);
             regVal |= ((uint32)1U << (mailboxCfg->HwHandle));
             MCAL_LIB_REG_WRITE32(baseAddr + MCAN_TXBTIE, regVal);
+            /* Enable cancellation interrupt so TCF fires when bus-off cancels pending Tx */
+            regVal  = MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBCIE);
+            regVal |= ((uint32)1U << (mailboxCfg->HwHandle));
+            MCAL_LIB_REG_WRITE32(baseAddr + MCAN_TXBCIE, regVal);
         }
     }
 }
@@ -3826,7 +3848,13 @@ static FUNC(void, CAN_CODE) Can_WaitForTxBufCancelReqPriv(uint32 bitPos, uint32 
         {
             /*  Do Nothing */
         }
+        /* TI_COVERAGE_GAP_START [Branch Coverage] The True branch of the while condition cannot be
+         * covered. Can_GetTxBufCancelStatusPriv() returns the cancellation-acknowledged bit
+         * (TXBCF) which is always set by hardware before the first loop iteration completes.
+         * Reaching the True branch (bit not yet set, loop continues) requires the hardware to
+         * delay acknowledgement beyond one loop iteration, which cannot be simulated in tests. */
     } while ((uint32)bitPos != ((Can_GetTxBufCancelStatusPriv(baseAddr))&bitPos));
+    /* TI_COVERAGE_GAP_STOP */
 
     return;
 }

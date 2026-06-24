@@ -492,7 +492,7 @@ Target error notification callback - called on bus error conditions.
 | Std_ReturnType | **[Cdd_I2c_SetupEBDynamic](../Modules/group__CDD__I2C.md#function-cdd_i2c_setupebdynamic)**([Cdd_I2c_ChannelType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_channeltype) chId, [Cdd_I2c_AddressType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_addresstype) deviceAddress, [Cdd_I2c_DataConstPtrType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_dataconstptrtype) txDataBufferPtr, [Cdd_I2c_DataPtrType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_dataptrtype) rxDataBufferPtr, [Cdd_I2c_DataLengthType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_datalengthtype) length)| Service to setup the buffers and the length of data for the Ch specified.  |
 | Std_ReturnType | **[Cdd_I2c_AsyncTransmit](../Modules/group__CDD__I2C.md#function-cdd_i2c_asynctransmit)**([Cdd_I2c_SequenceType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_sequencetype) sequenceId)| The service conducts an asynchronous data transmission according to the parameters provided to the Cdd_I2c_SetupEB() service. The callback Cdd_I2c_SequenceErrorNotification() is called, when the asynchronous operation has finished.  |
 | Std_ReturnType | **[Cdd_I2c_Cancel](../Modules/group__CDD__I2C.md#function-cdd_i2c_cancel)**([Cdd_I2c_SequenceType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_sequencetype) sequenceId)| Cancel a transmission.  |
-| void | **[Cdd_I2c_MainFunction](../Modules/group__CDD__I2C.md#function-cdd_i2c_mainfunction)**(void )| Makes a target channel available for processing requests (addressing). When called, the target channel becomes available for starting incoming or outgoing transfers.  |
+| void | **[Cdd_I2c_MainFunction](../Modules/group__CDD__I2C.md#function-cdd_i2c_mainfunction)**(void )| Cyclic main function for polling mode operation. Iterates over all configured HW units; for each non-interrupt-mode HW unit with an active channel, calls Cdd_I2c_ProcessEvents() to advance the transfer state machine. Must be called periodically by the OS scheduler when any HW unit is configured in polling mode.  |
 | [Cdd_I2c_SequenceResultType](../Modules/group__CDD__I2C.md#enum-cdd_i2c_sequenceresulttype) | **[Cdd_I2c_GetSequenceResult](../Modules/group__CDD__I2C.md#function-cdd_i2c_getsequenceresult)**([Cdd_I2c_SequenceType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_sequencetype) sequenceId)| This service returns the current status of the given SequenceId.  |
 | [Cdd_I2c_ChannelResultType](../Modules/group__CDD__I2C.md#enum-cdd_i2c_channelresulttype) | **[Cdd_I2c_GetResult](../Modules/group__CDD__I2C.md#function-cdd_i2c_getresult)**([Cdd_I2c_ChannelType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_channeltype) chId)| This service returns the current status of the given channel.  |
 | Std_ReturnType | **[Cdd_I2c_ResetHwUnit](../Modules/group__CDD__I2C.md#function-cdd_i2c_resethwunit)**([Cdd_I2c_HwUnitType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_hwunittype) hwUnitId)| Service to reset and recover a single I2C HW unit from a bus-off condition.  |
@@ -751,7 +751,7 @@ Std_ReturnType Cdd_I2c_Cancel(
 **Brief**: 
 Cancel a transmission. 
 
-A request that is already in transmission progress, is cancelled by finishing the current sequence. This is done to achieve a stable state with no undefined data. A queued transmission request is cancelled at once.
+A request that is already in transmission progress, is cancelled by finishing the current channel transfer. This is done to achieve a stable state with no undefined data. A queued transmission request is cancelled at once.
 
 Note: This API is applicable only for controller mode.
 
@@ -790,7 +790,7 @@ void Cdd_I2c_MainFunction(
 
 
 **Brief**: 
-Makes a target channel available for processing requests (addressing). When called, the target channel becomes available for starting incoming or outgoing transfers. 
+Cyclic main function for polling mode operation. Iterates over all configured HW units; for each non-interrupt-mode HW unit with an active channel, calls Cdd_I2c_ProcessEvents() to advance the transfer state machine. Must be called periodically by the OS scheduler when any HW unit is configured in polling mode. 
 
 Note: This API is applicable only for controller mode.
 
@@ -799,9 +799,9 @@ Service ID[hex] - CDD_I2C_SID_MAIN_FUNCTION Sync/Async - Asynchronous Reentrancy
 
 **Return**: None 
 
-**Precondition**: None 
+**Precondition**: Driver must be initialized (CDD_I2C_IDLE or CDD_I2C_BUSY state) 
 
-**Postcondition**: None 
+**Postcondition**: Pending transfer events are processed for all polling-mode HW units 
 
 ### function Cdd_I2c_GetSequenceResult
 

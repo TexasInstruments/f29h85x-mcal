@@ -76,6 +76,7 @@
 #include "Fls_Ac.h"
 #include "DeviceSupport.h"
 #include "Std_Types.h"
+#include "Mcal_Lib.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -85,9 +86,18 @@
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
 #define APP_NAME       "FLS_APP"
-#define DATA_SIZE_TEST 4096U
+#define DATA_SIZE_TEST (2U * FLS_SECTOR_SIZE)
 #define Debug_AppPrint
 // #undef Debug_AppPrint
+
+/* Timing helpers */
+#define FLS_TMR_START() McalLib_GetCounterValue(&g_tmrStart)
+#define FLS_TMR_STOP(acc, cnt)            \
+    do                                    \
+    {                                     \
+        (acc) += (g_tmrEnd - g_tmrStart); \
+        (cnt)++;                          \
+    } while (0)
 /*********************************************************************************************************************
  * Local Preprocessor #define Macros
  *********************************************************************************************************************/
@@ -108,6 +118,18 @@ volatile uint32 Fls_JobDoneSuccess; /** success */
 volatile uint32 Fls_JobDoneError;   /** failed flag */
 uint32          Fls_errCnt  = 0x0U; /** error count */
 uint32          Fls_passCnt = 0x0U; /** pass count */
+
+/* Timing accumulators */
+static McalLib_TickType g_tmrStart;
+static McalLib_TickType g_tmrEnd;
+static McalLib_TickType g_wr16Ticks    = 0U;
+static McalLib_TickType g_wr2kTicks    = 0U;
+static McalLib_TickType g_secErseTicks = 0U;
+static McalLib_TickType g_bankErsTicks = 0U;
+static uint32           g_wr16Cnt      = 0U;
+static uint32           g_wr2kCnt      = 0U;
+static uint32           g_secErseCnt   = 0U;
+static uint32           g_bankErsCnt   = 0U;
 
 /* Buffer containing the known data that needs to be written to flash */
 uint8 txBuf_test[DATA_SIZE_TEST] = {0};
@@ -240,7 +262,7 @@ Std_ReturnType FlsApp(void)
 
     /********************************************************************************************************************************/
 
-    for (loopCount = 0; loopCount < 500; loopCount++)
+    for (loopCount = 0; loopCount < (FLS_TOTAL_SIZE / DATA_SIZE_TEST); loopCount++)
     {
 #if defined(Debug_AppPrint)
         AppUtils_Printf(APP_NAME ": Configured operation on flash is from 0x%x address offset till %d bytes!!\n\r",
@@ -368,6 +390,7 @@ Std_ReturnType FlsApp(void)
         }
         status = FlsApp_main_handling();
 #endif
+        FLS_TMR_START();
         while (1U)
         {
             job_accepted = Fls_Write(testAddr + 0x40, &txBuf_test[0], 16);
@@ -377,6 +400,7 @@ Std_ReturnType FlsApp(void)
             }
         }
         status = FlsApp_main_handling();
+        FLS_TMR_STOP(g_wr16Ticks, g_wr16Cnt);
 #if (STD_ON == FLS_COMPARE_API)
         while (1U)
         {
@@ -392,6 +416,7 @@ Std_ReturnType FlsApp(void)
         }
         status = FlsApp_main_handling();
 #endif
+        FLS_TMR_START();
         while (1U)
         {
             job_accepted = Fls_Write(testAddr + 0x80, &txBuf_test[0], 16);
@@ -401,6 +426,7 @@ Std_ReturnType FlsApp(void)
             }
         }
         status = FlsApp_main_handling();
+        FLS_TMR_STOP(g_wr16Ticks, g_wr16Cnt);
 
 #if (STD_ON == FLS_COMPARE_API)
         while (1U)
@@ -472,6 +498,7 @@ Std_ReturnType FlsApp(void)
         AppUtils_Printf(APP_NAME ": erase 2 sectors\n\r");
 #endif
 
+        FLS_TMR_START();
         while (1U)
         {
             job_accepted = Fls_Erase(testAddr, testSize);
@@ -481,6 +508,7 @@ Std_ReturnType FlsApp(void)
             }
         }
         status = FlsApp_main_handling();
+        FLS_TMR_STOP(g_secErseTicks, g_secErseCnt);
 
 #if defined(Debug_AppPrint)
         AppUtils_Printf(APP_NAME ": Writing 2 sectors\n\r");
@@ -557,6 +585,7 @@ Std_ReturnType FlsApp(void)
         AppUtils_Printf(APP_NAME ": Bank Erasing \n\r");
 #endif
 
+        FLS_TMR_START();
         while (1U)
         {
             job_accepted = Fls_Erase(testAddr, FLS_SECTOR_SIZE);
@@ -566,6 +595,7 @@ Std_ReturnType FlsApp(void)
             }
         }
         status = FlsApp_main_handling();
+        FLS_TMR_STOP(g_bankErsTicks, g_bankErsCnt);
 
 /********************************************************************************************************************************/
 #if (STD_ON == FLS_GET_JOB_RESULT_API)
@@ -745,6 +775,7 @@ Std_ReturnType FlsApp(void)
             }
             status = FlsApp_main_handling();
 
+            FLS_TMR_START();
             while (1U)
             {
                 job_accepted = Fls_Write(offset, &txBuf_test[0], Total_datasize);
@@ -754,9 +785,11 @@ Std_ReturnType FlsApp(void)
                 }
             }
             status = FlsApp_main_handling();
+            FLS_TMR_STOP(g_wr2kTicks, g_wr2kCnt);
 
             (void)Fls_SetEraseType(FLS_BANK_ERASE);
 
+            FLS_TMR_START();
             while (1U)
             {
                 job_accepted = Fls_Erase(offset, Total_datasize);
@@ -766,7 +799,9 @@ Std_ReturnType FlsApp(void)
                 }
             }
             status = FlsApp_main_handling();
+            FLS_TMR_STOP(g_bankErsTicks, g_bankErsCnt);
 
+            FLS_TMR_START();
             while (1U)
             {
                 job_accepted = Fls_Write(offset, &txBuf_test[0], Total_datasize);
@@ -776,6 +811,7 @@ Std_ReturnType FlsApp(void)
                 }
             }
             status = FlsApp_main_handling();
+            FLS_TMR_STOP(g_wr2kTicks, g_wr2kCnt);
 
             while (1U)
             {
@@ -816,6 +852,49 @@ Std_ReturnType FlsApp(void)
     }  // loop for debug use
 
 #if defined(Debug_AppPrint)
+    {
+        McalLib_TickType avgTicks;
+        uint32           avgUs, avgMs_x10;
+        AppUtils_Printf(APP_NAME ": \n\r");
+        AppUtils_Printf(APP_NAME ": ========== FLASH TIMING SUMMARY ==========\n\r");
+        if (g_wr16Cnt > 0U)
+        {
+            avgTicks = g_wr16Ticks / g_wr16Cnt;
+            avgUs    = (uint32)(avgTicks / 200U);
+            AppUtils_Printf(APP_NAME ": Write  16B  : avg %d us  [spec: 62 - 625 us] (%d samples)\n\r", avgUs,
+                            g_wr16Cnt);
+        }
+        if (g_wr2kCnt > 0U)
+        {
+            avgTicks  = g_wr2kTicks / g_wr2kCnt;
+            avgMs_x10 = (uint32)(avgTicks / 20000U);
+            AppUtils_Printf(APP_NAME ": Write  2KB  : avg %d.%d ms  [spec: 8 - 80 ms] (%d samples)\n\r",
+                            avgMs_x10 / 10U, avgMs_x10 % 10U, g_wr2kCnt);
+        }
+        if (g_secErseCnt > 0U)
+        {
+            avgTicks  = g_secErseTicks / g_secErseCnt;
+            avgMs_x10 = (uint32)(avgTicks / 20000U);
+            AppUtils_Printf(APP_NAME
+                            ": Erase  2KB  : avg %d.%d ms  [spec <25cyc: 15-55ms, 1000cyc: 25-130ms] (%d samples)\n\r",
+                            avgMs_x10 / 10U, avgMs_x10 % 10U, g_secErseCnt);
+        }
+        if (g_bankErsCnt > 0U)
+        {
+            avgTicks  = g_bankErsTicks / g_bankErsCnt;
+            avgMs_x10 = (uint32)(avgTicks / 20000U);
+#ifdef BUILD_DEVICE_F29P32X
+            AppUtils_Printf(APP_NAME
+                            ": Erase  Bank : avg %d.%d ms  [spec <25cyc: 18-66ms, 1000cyc: 30-157ms] (%d samples)\n\r",
+                            avgMs_x10 / 10U, avgMs_x10 % 10U, g_bankErsCnt);
+#else
+            AppUtils_Printf(APP_NAME
+                            ": Erase  Bank : avg %d.%d ms  [spec <25cyc: 21-78ms, 2000cyc: 42-310ms] (%d samples)\n\r",
+                            avgMs_x10 / 10U, avgMs_x10 % 10U, g_bankErsCnt);
+#endif
+        }
+        AppUtils_Printf(APP_NAME ": ===========================================\n\r");
+    }
     AppUtils_Printf(APP_NAME ": \n\r");
     AppUtils_Printf(APP_NAME ": ========== OVERALL TEST SUMMARY ==========\n\r");
     if (Fls_errCnt == loopCount)
@@ -839,25 +918,16 @@ Std_ReturnType FlsApp(void)
 Std_ReturnType FlsApp_main_handling(void)
 {
     Std_ReturnType retVal = E_OK;
-#if defined(Debug_AppPrint)
-    AppUtils_Printf(APP_NAME ": Job Processing in Progress.\n\r");
-#endif
     while (1U)
     {
         Fls_MainFunction();
         if (Fls_JobDoneSuccess == 1U)
         {
-#if defined(Debug_AppPrint)
-            AppUtils_Printf(APP_NAME ": Job Ends: SUCCESS \n\r");
-#endif
             retVal = E_OK;
             break;
         }
         if (Fls_JobDoneError == 1U)
         {
-#if defined(Debug_AppPrint)
-            AppUtils_Printf(APP_NAME ": Job Ends: Error \n\r");
-#endif
             retVal = E_NOT_OK;
             break;
         }
@@ -865,6 +935,16 @@ Std_ReturnType FlsApp_main_handling(void)
 
     Fls_JobDoneSuccess = 0U;
     Fls_JobDoneError   = 0U;
+#if defined(Debug_AppPrint)
+    if (retVal == E_OK)
+    {
+        AppUtils_Printf(APP_NAME ": Job Ends: SUCCESS \n\r");
+    }
+    else
+    {
+        AppUtils_Printf(APP_NAME ": Job Ends: Error \n\r");
+    }
+#endif
     return retVal;
 }
 
@@ -880,6 +960,7 @@ void SchM_Exit_Fls_FLS_EXCLUSIVE_AREA_0(void)
 
 void Fee_JobEndNotification(void)
 {
+    McalLib_GetCounterValue(&g_tmrEnd);
     Fls_JobDoneSuccess = 1U;
 #if defined(Debug_AppPrint)
     AppUtils_Printf(APP_NAME ": Job Ends: SUCCESS\n\r");

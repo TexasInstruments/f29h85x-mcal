@@ -127,11 +127,11 @@ extern "C" {
 [!LOOP "OsIsr/*"!][!//
 [!IF "OsIsrCategory = 'CATEGORY_1'"!][!//
 [!IF "node:value(InteruptPriority) < as:modconf('Os')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Os']/Os_ConfigSet/OsRtIntThreshold"!][!//
-/* Category 1 INT ISR function prototype. */
+/* Category 1 RTINT INT ISR function prototype. */
 MCAL_LIB_RTINT_ISR([!"ISRFunc"!]);
 
 [!ELSE!][!//
-/* Category 1 RTINT ISR function prototype. */
+/* Category 1 ISR function prototype. */
 MCAL_LIB_INT_ISR([!"ISRFunc"!]); 
 
 [!ENDIF!][!//

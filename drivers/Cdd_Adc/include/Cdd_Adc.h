@@ -93,7 +93,7 @@ extern "C" {
  *********************************************************************************************************************/
 /* Defines for CDD_ADC Driver version used for compatibility checks.*/
 /** \brief Driver Implementation Major Version */
-#define CDD_ADC_SW_MAJOR_VERSION (4U)
+#define CDD_ADC_SW_MAJOR_VERSION (5U)
 /** \brief Driver Implementation Minor Version */
 #define CDD_ADC_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */
@@ -231,8 +231,6 @@ extern "C" {
 #define CDD_ADC_SID_GET_TEMPERATURE_C ((uint8)0x19U)
 /** \brief Cdd_Adc_GetTemperatureK() service ID */
 #define CDD_ADC_SID_GET_TEMPERATURE_K ((uint8)0x1AU)
-/** \brief Cdd_Adc_SetInternalTestNode() service ID */
-#define CDD_ADC_SID_INTERNAL_TEST_NODE ((uint8)0x1BU)
 /** \brief Cdd_Adc_UpdateStatus() service ID */
 #define CDD_ADC_SID_UPDATE_STATUS_THROUGH_DMA ((uint8)0x1CU)
 /** \brief Cdd_Adc_ConfigurePpbNotification() API Service ID */
@@ -464,7 +462,7 @@ typedef struct Cdd_Adc_GroupCfgTag
     boolean                      dma_mode;
 } Cdd_Adc_GroupCfgType;
 
-/* Design MCAL-31427 */
+/* Design: MCAL-31423,MCAL-31427 */
 /** \brief Hardware unit config type */
 typedef struct Cdd_Adc_HwUnitCfgTag
 {
@@ -475,8 +473,7 @@ typedef struct Cdd_Adc_HwUnitCfgTag
     Cdd_Adc_ResolutionType  resolution; /*!< \brief  ADC HW Unit resolution */
     /* Design: MCAL-31130 */
     Cdd_Adc_SignalModeType  signal_mode; /*!< \brief  ADC HW Unit signal mode */
-    /* Design: MCAL-31131 */
-    Cdd_Adc_RefVoltType     voltref;     /*!< \brief  ADC HW Unit Voltage reference */
+    /* Design: MCAL-31131, MCAL-31132 */
     Cdd_Adc_RefModeType     voltrefmode; /*!< \brief  ADC HW Unit signal reference */
     /* Design: MCAL-31133 */
     /** \brief  Adc hardwrae unit Soc priority number. Based on this RoundRobin, high priority are
@@ -515,10 +512,6 @@ typedef struct Cdd_Adc_HwUnitCfgTag
     uint32        base_addr;
     /** \brief  ADC result registers base */
     uint32        result_baseaddr;
-    /** \brief  Analog reference select */
-    uint16        analogrefsel;
-    /** \brief Analog reference voltage select */
-    uint16        analogrefvoltsel;
     /** \brief Trim address */
     const uint32 *inltrimaddress;
     /** \brief INL trim values */
@@ -639,8 +632,6 @@ typedef struct Cdd_Adc_ConfigTag
     /** \brief  Trigger repeater configuration */
     Cdd_Adc_TrigRepCfgType repunitcfg[CDD_ADC_TRIG_REP_CNT];
 #endif
-    /** \brief  Input to the internal test node */
-    Cdd_Adc_InternalTestNodeType test_input;
 } Cdd_Adc_ConfigType;
 
 /*********************************************************************************************************************
@@ -1065,6 +1056,7 @@ Cdd_Adc_SetResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
                       VAR(Cdd_Adc_ResolutionType, AUTOMATIC) Resolution);
 #endif
 
+/* Design: MCAL-31409, MCAL-31410,MCAL-31411 */
 #if (STD_ON == CDD_ADC_TEMPERATURE_SENSOR_ENABLE)
 /** \brief service to convert the ADC conversion value to Celsius.
  *
@@ -1116,20 +1108,6 @@ FUNC(sint16, CDD_ADC_CODE)
 Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
                         VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) TempResult, VAR(float32, AUTOMATIC) VoltRef);
 #endif
-
-/** \brief service to set the internal test node
- *
- * This service to set the internal test node for all the hardware units
- *
- * \param[in] TestNode  Internal test node
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- *********************************************************************************************************************/
-FUNC(void, CDD_ADC_CODE)
-Cdd_Adc_SetInternalTestNode(VAR(Cdd_Adc_InternalTestNodeType, AUTOMATIC) TestNode);
 
 /** \brief service to update the group status in DMA mode for the specified group
  *

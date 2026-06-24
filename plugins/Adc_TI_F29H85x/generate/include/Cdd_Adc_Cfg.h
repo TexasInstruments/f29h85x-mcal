@@ -145,9 +145,6 @@ extern "C" {
 /* Limit check enable Api macro */
 #define CDD_ADC_ENABLE_PPB_API             [!IF "CddAdcGeneral/CddAdcPpbEnable = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
-/* Temperature Sesnor enable/disable macro */
-#define CDD_ADC_LOCK_TEMPERATURE_SENSOR     [!IF "CddAdcConfigSet/CddAdcLockTemperatureSensor = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
-
 [!NOCODE!][!VAR "count" = "num:i(0)"!]
 [!LOOP "CddAdcConfigSet/CddAdcHwUnit/*/CddAdcOpenShortDetectMode"!][!//
     [!IF "node:value(.) != 'CDD_ADC_OSDETECT_MODE_DISABLED'"!] [!VAR "count" = "num:i($count+1)"!] [!ENDIF!][!//
@@ -181,7 +178,7 @@ extern "C" {
 #define CDD_ADC_SET_RESOLUTION_API          [!IF "CddAdcGeneral/CddAdcSetResolutionApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Temperature Sensor enable/disable macro */
-#define CDD_ADC_TEMPERATURE_SENSOR_ENABLE   [!IF "CddAdcConfigSet/CddAdcEnableTemperatureSensor = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_TEMPERATURE_SENSOR_ENABLE   [!IF "node:exists(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/ASysCtl/*) and (node:value(as:modconf('ResourceAllocator')[as:path(node:dtos(.))='/TI_F29H85x/ResourceAllocator']/ResourceAllocatorGeneral/ASysCtl/*/TemperatureSensor/TemperatureSensorEnable) = 'true')"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Macro to enable/disable the trigger repeater */
 #define CDD_ADC_TRIG_REP_ENABLE             [!IF "num:i(count(CddAdcConfigSet/CddAdcHwUnit/*/CddAdcTriggerRepeater/*)) > 0"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
@@ -594,41 +591,6 @@ typedef enum
     /* Occurs at the end of the voltage conversion */
     CDD_ADC_PULSE_END_OF_CONV    = 0x04U
 }Cdd_Adc_EocPulseType;
-
-/** \brief Defines supported internal nodes that can be connected to ADC */
-typedef enum
-{
-    CDD_ADC_TEST_NODE_NO_CONN            = 0U,
-    CDD_ADC_TEST_NODE_VDDCORE            = 1U,
-    CDD_ADC_TEST_NODE_VDDA               = 2U,
-    CDD_ADC_TEST_NODE_VSSA               = 3U,
-    CDD_ADC_TEST_NODE_VREFLOA            = 4U,
-    CDD_ADC_TEST_NODE_VREFLOB            = 5U,
-    CDD_ADC_TEST_NODE_CDAC1H             = 7U,
-    CDD_ADC_TEST_NODE_CDAC1L             = 8U,
-    CDD_ADC_TEST_NODE_CDAC2H             = 9U,
-    CDD_ADC_TEST_NODE_CDAC2L             = 10U,
-    CDD_ADC_TEST_NODE_CDAC3H             = 11U,
-    CDD_ADC_TEST_NODE_CDAC3L             = 12U,
-    CDD_ADC_TEST_NODE_CDAC4H             = 13U,
-    CDD_ADC_TEST_NODE_CDAC4L             = 14U,
-    CDD_ADC_TEST_NODE_CDAC5H             = 15U,
-    CDD_ADC_TEST_NODE_CDAC5L             = 16U,
-    CDD_ADC_TEST_NODE_CDAC6H             = 17U,
-    CDD_ADC_TEST_NODE_CDAC6L             = 18U,
-    CDD_ADC_TEST_NODE_CDAC7H             = 19U,
-    CDD_ADC_TEST_NODE_CDAC7L             = 20U,
-    CDD_ADC_TEST_NODE_CDAC8H             = 21U,
-    CDD_ADC_TEST_NODE_CDAC8L             = 22U,
-    CDD_ADC_TEST_NODE_CDAC9H             = 23U,
-    CDD_ADC_TEST_NODE_CDAC9L             = 24U,
-    CDD_ADC_TEST_NODE_CDAC10H            = 25U,
-    CDD_ADC_TEST_NODE_CDAC10L            = 26U,
-    CDD_ADC_TEST_NODE_CDAC11H            = 27U,
-    CDD_ADC_TEST_NODE_CDAC11L            = 28U,
-    CDD_ADC_TEST_NODE_ENZ_CALIB_GAIN_3P3 = 29U,
-    CDD_ADC_TEST_NODE_MAX           /* Added to check the valid input to the Cdd_Adc_SetInternalTestNode API */
-}Cdd_Adc_InternalTestNodeType;
 
 #if(STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)
 /** \brief Specifies open/short circuit modes */
