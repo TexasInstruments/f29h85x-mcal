@@ -432,6 +432,8 @@ typedef struct Can_FdMsgRAMConfigObjType_s
     uint8                     rxBuffNum;
     /** \brief Rx number of FIFO elements */
     uint8                     rxFIFONum;
+    /** \brief HOH object ID of the TX FIFO HOH (set during mailbox setup) */
+    Can_HwHandleType          fifoHoh;
 } Can_FdMsgRAMConfigObjType;
 
 /*

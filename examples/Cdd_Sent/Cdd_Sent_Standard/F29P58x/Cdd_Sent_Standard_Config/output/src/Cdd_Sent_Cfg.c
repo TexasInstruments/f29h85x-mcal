@@ -168,7 +168,7 @@ CONST(Cdd_Sent_HWUnitType, CDD_SENT_CONFIG_DATA) CddSentConfig_CddSentController
     .CddSentClockTick  = (uint32 )600U,
     .CddSentCRCType  = (Cdd_SentCRCType )CDD_SENT_CRC_RECOMENDED_2010,
     .CddSentCRCWidth   = (Cdd_SentCRCWidth  )CDD_SENT_CRC_4_BIT,
-    .CddSentCRCWithStatus  = (Cdd_SentCRCWithStatus )CDD_SENT_CRC_WITH_STATUS,
+    .CddSentCRCWithStatus  = (Cdd_SentCRCWithStatus )CDD_SENT_CRC_WITHOUT_STATUS,
     .CddSentDataNibblesCount  = (Cdd_SentDataNibblesCount )CDD_SENT_6_DATA_NIBBLES,
     .CddSentFIFOTriggerLevel  = (Cdd_SentTriggerLevel )CDD_SENT_TRIGLEV6,
     .CddSentSyncTimeout   = (uint32 )0U,

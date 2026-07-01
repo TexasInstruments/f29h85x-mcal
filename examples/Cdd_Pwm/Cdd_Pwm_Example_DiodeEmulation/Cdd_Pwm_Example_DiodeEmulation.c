@@ -65,10 +65,9 @@
  *  File:       Cdd_Pwm_Example_DiodeEmulation.c
  *  Generator:  None
  *
- *  Description:  Cdd_Pwm example source file.This example demonstrates independent waveform
- *  generation on two output channels of a PWM instance using Cdd_Pwm driver.50Hz PWM waveforms
- *  with different duty cycles can be observed on the PWM1 channel output waveforms. 1KHz
- *  waveforms can be observed with the PWM2 channel output waveforms.
+ *  Description:  Cdd_Pwm example source file.This example demonstrates the diode emulation (DE)
+ *  feature of the Cdd_Pwm driver. It shows how to configure one-shot and cycle-by-cycle DE modes
+ *  and how the PWM outputs are forced to the configured polarity when DE mode is active.
  *
  * Setup required for the example:
  * Connect the GPIO pins to the logic analyzer to observe the output waveforms.

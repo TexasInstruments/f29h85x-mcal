@@ -50,6 +50,14 @@ The Flash driver updates the wait states based on the MCU system cycle, and enab
 
 The Fls_Erase, FLs_Write, Fls_Read, FLs_Compare, and Fls_BlankCheck are performed asynchronously within the FLS module’s main function. All others (Fls_Cancel, Fls_GetStatus, Fls_GetJobResult) are the synchronous functions of this module.
 
+The Fls driver can be configured to perform 8 or 16 byte programming. Accordingly, target data flash addresses need to be 64-bit or 128-bit aligned. The total size of the write job can be a multiple of this.
+
+The minimum erase size for data flash is 2KB.
+
+Only AUTOECC mode is supported i.e. Flash writes will also compute ECC and write to ECC space.
+
+The Fls driver has been tested on CPU1.
+
 ### Hardware Features
 
 #### Hardware Features Supported
@@ -902,7 +910,7 @@ Refer [AUTOSAR_SWS_FlashDriver section: 10 Configuration specification](https://
 * Purpose
   * Comprehensive flash memory driver test application that validates all FLS (Flash Driver) operations through automated testing
 * Loop Iterations
-  * Executes 500 test iterations (loopCount 0-499)
+  * Executes 64 test iterations (loopCount 0-63)
   * Each iteration advances the test address by 4096 bytes, wrapping around when reaching device memory limits
   * Address wrap around occurs at 0x1FFFF (128KB Data Flash) for F29P32x devices, 0x3FFFF (256KB Data Flash) for F29H85x devices, Resets to address 0x0 after exceeding the limit
 * Tests Per Iteration: 66 total tests
@@ -922,7 +930,7 @@ Refer [AUTOSAR_SWS_FlashDriver section: 10 Configuration specification](https://
   * 40 configuration tests (8 tests × 5 sector configurations from FLS_NUMBER_OF_SECTOR_CFG)
     * Per sector: Read, Sector Erase, BlankCheck, Write, Bank Erase, Write, Read, Compare
 * Total test executions
-  * 66 tests × 500 iterations
+  * 66 tests × 64 iterations
 * Flash Operations (per iteration)
   * Sector Erase - Fls_SetEraseType(FLS_SECTOR_ERASE) + Fls_Erase() to erase 4096-byte test sector
   * Blank Check - Fls_BlankCheck() to verify sector is properly erased
@@ -938,7 +946,7 @@ Refer [AUTOSAR_SWS_FlashDriver section: 10 Configuration specification](https://
   * Fls_passCnt - Increments on each successful job completion via callback; rolls over at 1000
   * Fls_errCnt - Increments on each job failure via callback; rolls over at 1000
   * Expected behavior: One error per iteration due to intentional Fls_Cancel() test
-  * Overall Pass Criteria: Fls_errCnt == 500 (one error per iteration for 500 iterations)  
+  * Overall Pass Criteria: Fls_errCnt == 64 (one error per iteration for 64 iterations)  
 * Callback Functionality
   * Fee_JobEndNotification() - Invoked on successful job completion; sets Fls_JobDoneSuccess flag and increments Fls_passCnt
   * Fee_JobErrorNotification() - Invoked on job failure; sets Fls_JobDoneError flag and increments Fls_errCnt

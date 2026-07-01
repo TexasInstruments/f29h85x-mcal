@@ -212,6 +212,7 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_TargetStop(Cdd_I2c_HwUnitType hwUnitI
     return retVal;
 }
 
+/* Design: MCAL-39699, MCAL-39657, MCAL-39678, MCAL-39683, MCAL-39712 */
 FUNC(Std_ReturnType, CDD_I2C_CODE)
 Cdd_I2c_TargetSubmitTxBuffer(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataConstPtrType pTxBuffer,
                              Cdd_I2c_DataLengthType txBufferSize)
@@ -256,6 +257,7 @@ Cdd_I2c_TargetSubmitTxBuffer(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataConstPtrTy
     return retVal;
 }
 
+/* Design: MCAL-39700, MCAL-39657, MCAL-39678, MCAL-39683, MCAL-39712 */
 FUNC(Std_ReturnType, CDD_I2C_CODE)
 Cdd_I2c_TargetSubmitRxBuffer(Cdd_I2c_HwUnitType hwUnitId, Cdd_I2c_DataPtrType pRxBuffer,
                              Cdd_I2c_DataLengthType rxBufferSize)

@@ -233,9 +233,12 @@ Example:
 | MCAL-38778 | Can | S3-Minor | CAN: TX cancellation interrupt (TCF) not triggered when bus-off occurs during an outstanding transmission | C29xMCAL_26.00.00 | When the CAN bus enters bus-off state while a transmission is outstanding and interrupt mode is configured, the driver may not receive the TX cancellation finished (TCF) interrupt for successfully cancelled frames. This occurs because the `TXBCIE` (TX Buffer Cancellation Finished Interrupt Enable) bits were not set alongside `TXBTIE` (TX Buffer Transmission Interrupt Enable) during driver initialization, preventing the hardware from generating the cancellation interrupt. | 1. Configure CAN TX processing in INTERRUPT mode. 2. Trigger a bus-off condition while a transmission is pending. 3. Observe that the TCF interrupt is not generated for the cancelled transmission, leaving the TX buffer in an unconfirmed state. | Updated the CAN driver initialization to set `TXBCIE` bits together with `TXBTIE` bits, ensuring that TX cancellation finished interrupts are enabled for all configured TX buffers. |
 | MCAL-37896 | Can | S3-Minor | CAN: TX buffer queue/FIFO mode not aligned with CanMultiplexedTransmission configuration | C29xMCAL_26.00.00 | The MCAN TX buffer mode register (`MCAN_TXBC_TFQM`) was hardcoded to 1 (priority-queue mode), causing the hardware to always transmit the message with the lowest CAN ID first regardless of submission order. The correct behavior is to select queue mode or FIFO mode based on the `CanMultiplexedTransmission` setting: when multiplexed transmission is enabled, priority-queue mode is appropriate; when disabled, FIFO order should be used. | 1. Disable `CanMultiplexedTransmission` in the CAN configuration. 2. Queue multiple CAN messages with different IDs in a specific order. 3. Observe that messages are transmitted by lowest CAN ID first (queue mode) instead of in submission order (FIFO mode). | Removed the hardcoded `txBufMode` field and updated the driver to configure `MCAN_TXBC_TFQM` based on the `CanMultiplexedTransmission` parameter: set to 1 (queue mode) when `CAN_CFG_MULTIPLEXED_TX` is `STD_ON`, and 0 (FIFO mode) when `STD_OFF`. |
 | MCAL-38751 | Cdd_Sent | S3-Minor | CDD SENT: Slow channel interrupt silently dropped when fast channel interrupt fires simultaneously | C29xMCAL_26.00.00 | Slow channel messages are silently lost whenever a fast channel interrupt is pending at the same time. Since the SENT hardware uses a single shared interrupt line for both fast and slow channel events, this is a normal operating condition — slow channel messages are routinely interleaved within fast channel frames. The lost interrupt cannot be retried because all interrupt flags are cleared unconditionally at the end of the ISR. | 1. Configure CDD SENT with both fast and slow channel interrupts enabled. 2. Operate the SENT bus such that a slow channel message (RSLOW_DV) and a fast channel event (FIFO trigger or MTP data valid) are pending simultaneously. 3. Observe that the slow channel notification callback is not invoked even though a slow channel message was received. | Changed the fast and slow interrupt checks in `Cdd_Sent_ProcessISR()` from an `if / else if` structure to two independent `if` checks, ensuring both fast and slow interrupts are always evaluated and processed within the same ISR invocation. The error callback is now only invoked when neither fast nor slow interrupt flags are active. |
+| MCAL-40406 | Cdd_Sent | S3-Minor | CDD SENT: `SENT_O_RCFG` register overwrite during initialization clears CRC configuration bits | C29xMCAL_26.00.00 | During `Cdd_Sent_Init`, the `SENT_O_RCFG` register was written using a plain assignment (`=`) instead of a masked field write. This overwrote all bits in the register — including the CRC configuration bits — with only the `TTCLK` field value, silently discarding any CRC settings that had been configured. | 1. Configure CDD SENT with a non-default CRC setting in `SENT_O_RCFG`. 2. Call `Cdd_Sent_Init`. 3. Read back `SENT_O_RCFG` and observe that the CRC configuration bits have been cleared. | Replaced the raw register write to `SENT_O_RCFG` with a masked field write using `McalLib_RegMFWriteRaw32`, so that only the `TTCLK` field is updated during initialization and all other register bits are preserved. |
 | MCAL-39918 | Gpt | S3-Minor | GPT: EB Tresos reports "GptClockReferencePoint has not enough children" error when creating a new Gpt configuration project | C29xMCAL_26.00.00 | Users cannot create new GPT configurations in EB Tresos due to a validation error in the plugin XDM schema. | 1. Open EB Tresos Studio. 2. Create a new EB Tresos project. 3. Add the Gpt_TI_F29H85x plugin to the project. 4. Open the Gpt module configuration editor. 5. Navigate to GptDriverConfiguration. 6. Observe the "GptClockReferencePoint has not enough children" validation error in the Problems View. | Updated the `GptClockReferencePoint` container in `Gpt.xdm` to set `VISIBLE` and `EDITABLE` attributes to `TRUE`, allowing EB Tresos to correctly display and populate the required clock reference point children and resolve the validation error. |
 | MCAL-38182 | Cdd_Ecap | S3-Minor | CDD ECAP: ECAP example has incorrect documentation for GPIO loopback connection | C29xMCAL_26.00.00 | The ECAP example configures the ECAP input pin in PORT as EPWM (GPIO0/EPWM1_A), but the ECAP module user guide incorrectly states to use GPIO1 as the ECAP input. The example runs without any external connection, but the documentation was not updated to reflect the correct GPIO pin used. | 1. Run the ECAP example with external GPIO loopback. 2. Observe that the example uses GPIO0 (EPWM1_A) as the ECAP input pin. 3. Compare with the user guide which incorrectly references GPIO1 as the ECAP input. | Updated the ECAP module user guide to correctly document GPIO0 (EPWM1_A) as the ECAP input pin used in the example, aligning the documentation with the actual PORT configuration. |
 | MCAL-38562 | Cdd_Uart | S2-Major | CDD UART: `Cdd_Uart_Deinit` sets `Cdd_Uart_IsInitialized` to FALSE even when `CDD_UART_E_BUSY` is reported | C29xMCAL_26.00.00 | When one or more UART HW units are busy (ongoing write/read transaction or non-empty FIFO), `Cdd_Uart_Deinit` reports `CDD_UART_E_BUSY` via DET but unconditionally sets `Cdd_Uart_IsInitialized = FALSE` at the end of the function. This causes the driver to appear uninitialized to all subsequent API callers even though the hardware was never properly de-initialized, preventing the application from cancelling the in-progress transaction and retrying `Cdd_Uart_Deinit`. | 1. Initialize the UART driver by calling `Cdd_Uart_Init`. 2. Start a write transaction with a large buffer (> FIFO depth of 16 bytes). 3. Call `Cdd_Uart_Deinit()` while the write is still in progress — this unconditionally sets `Cdd_Uart_IsInitialized = FALSE`. 4. Observe that any subsequent API call (e.g., `Cdd_Uart_Write`) reports `CDD_UART_E_UNINIT` even though the driver was never properly de-initialized. | Fixed `Cdd_Uart_Deinit` to preserve the initialized state (`Cdd_Uart_IsInitialized = TRUE`) when Deinit is rejected due to busy units. `Cdd_Uart_IsInitialized` is now set to FALSE only when `(FALSE == busyDetected)`, allowing the application to abort transactions and retry `Cdd_Uart_Deinit` as intended. |
+| MCAL-40452 | Can | S3-Minor | CAN: BASIC and FULL TX hardware object buffer ranges overlap when BASIC object index is lower than FULL object index | C29xMCAL_26.00.00, C29xMCAL_01.04.01, C29xMCAL_01.04.00, C29xMCAL_01.03.00, C29xMCAL_01.02.01, C29xMCAL_01.02.00 | When at least one TX hardware object of type BASIC and at least one of type FULL are configured on the same CAN controller, and the index of the BASIC object is lower than the index of the FULL object, the hardware buffer ranges allocated for the FIFO (BASIC) and dedicated (FULL) buffers overlap. When both object types are configured in interrupt mode, some buffer elements may fail to complete transmission because interrupt enable bits and buffer-to-mailbox mappings are associated with an incorrect hardware buffer range. | 1. Configure a CAN controller with at least one TX hardware object of type BASIC and at least one of type FULL, where the BASIC object index is lower than the FULL object index. 2. Configure both object types in interrupt mode. 3. Transmit messages using both BASIC and FULL objects. 4. Observe that some buffer elements fail to generate a transmission complete notification and subsequent transmissions are blocked. | Fixed the CAN driver to allocate hardware buffer indices for dedicated TX buffers and TX FIFO in software following the same order as the hardware: dedicated buffers are assigned the lower indices and the TX FIFO is assigned the higher indices. The FIFO interrupt enable bits and buffer-to-mailbox mappings are now computed based on this corrected allocation, ensuring all FIFO and dedicated buffer slots generate transmission complete interrupts without overlap. |
+| MCAL-40501 | Can | S3-Minor | CAN: TX FIFO buffer slot count mismatch in polling mode | C29xMCAL_26.00.00, C29xMCAL_01.04.01, C29xMCAL_01.04.00, C29xMCAL_01.03.00, C29xMCAL_01.02.01, C29xMCAL_01.02.00 | In polling mode, the CAN driver only polls the first entry in the TX FIFO when checking for transmission completion, regardless of how many buffer slots are configured. All remaining FIFO buffer slots are never checked, leaving them permanently marked as busy and blocking any further CAN transmissions that attempt to use those slots. | 1. Configure a CAN controller with a TX FIFO of more than one buffer slot in polling mode. 2. Transmit messages until all FIFO slots have been used at least once. 3. Observe that subsequent transmission requests are rejected with a busy status. | Fixed the CAN driver polling logic to iterate through all configured TX FIFO buffer slots when checking for transmission completion, ensuring every slot is correctly processed and released for subsequent use. |
 
 ## Known Issues And Limitations
 
@@ -271,7 +274,7 @@ Example:
     - MTP Mode with all 4 sensors connected.
   - **CDD IPC:** IPC is validated between CPU1 and CPU3. Since, CPU2 is configured in lockstep in our framework; IPC between CPU1 and CPU2 or CPU2 and CPU3 is not validated.
   - **Fls:** Timeout tests are not performed as FLASH characterization data is not yet available for this device.
-  - **Spi:** Board to board Spi communication validated upto 40MHz. 50MHz have been only tested in loopback mode.
+  - **Spi:** Board to board Spi communication validated upto 40MHz. 50MHz have been only tested in loopback mode. High-speed mode (HS Mode) has not been tested in board-to-board configuration.
 
 ### New Known Issues
 
@@ -292,7 +295,9 @@ Example:
 
 | Key | Component/s | Severity | Summary | Affected Version | Impact | Steps to Reproduce | Workaround |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| - | - | - | - | - | - | - | - |
+| MCAL-40422 | Fls | S3-Minor | Failure to claim flash semaphore should not trigger job failure | C29xMCAL_26.00.01 | Erase or Write job fails if Flash semaphore acquisition fails | Run Fls with the semaphore already owned by CPU3 or another LINK on CPU1 | Issue occurs only if semaphore is already owned by CPU3 or another LINK on CPU1. However, the failure reported is the same as a true Flash hardware failure. Therefore, the application cannot distinguish between the two. It can re-initiate the Erase or Write job with the assumption that a semaphore claim failure resulted in the job failure. If the other CPU or LINK holding the semaphore relinquishes it, the job can proceed |
+| MCAL-40515 | Cdd_Uart | S3-Minor | CDD UART: Parity type selection (ODD/EVEN) not applied to hardware — `UART_LCRH_EPS` never written | C29xMCAL_26.00.00 | When `CddUartParityModeEnable = true` is configured, the driver enables parity (`UART_LCRH_PEN`) but never writes the Even Parity Select bit (`UART_LCRH_EPS`). As a result, the hardware always uses odd parity regardless of the `CddUartParityBit` setting (`CDD_UART_PARITY_EVEN` or `CDD_UART_PARITY_ODD`). Applications that configure even parity will silently communicate with the wrong parity type, causing frame errors on the receiving peer. | 1. Configure a `CddUartConfig` instance with `CddUartParityModeEnable = true` and `CddUartParityBit = CDD_UART_PARITY_EVEN`. 2. Generate code and build. 3. Connect the UART to a peer configured for even parity. 4. Observe parity errors on the peer — the F29H85x UART transmits with odd parity (hardware reset default). | Configure the peer device to use odd parity to match the hardware default. Avoid using `CDD_UART_PARITY_EVEN` until the fix is available. |
+| MCAL-40500 | Spi | S3-Minor | SPI: `Spi_SyncTransmit()` fails at 20 MHz and above when chip select is configured as SPIX_PTE (hardware peripheral CS) | C29xMCAL_26.00.01 | When the SPI driver is configured for synchronous transmission at 20 MHz or above with the chip select pin set to SPIX_PTE (the SPI peripheral's hardware Transmit Enable / chip select signal), the transfer fails and data is not received correctly. The same baudrate and configuration works correctly when chip select is managed via a DIO (GPIO) pin instead. | 1. Configure the SPI driver with a baudrate of 20 MHz or above. 2. Set `SpiCsSelection` to the hardware CS option (SPIX_PTE) in the SPI configuration. 3. Call `Spi_SyncTransmit()` to initiate a synchronous transfer. 4. Observe that the SPI transfer fails — data is not received correctly. | Configure the chip select as a DIO (GPIO) pin (`SpiCsSelection` = `CS_VIA_GPIO`) instead of using the SPI peripheral's hardware SPIX_PTE signal. |
 
 ### Existing Known Issues
 
@@ -754,6 +759,7 @@ Can FD controller Message RAM Configuration object structure.
 |  uint8 | txFIFONum |  Tx number of FIFO elements.  |
 |  uint8 | rxBuffNum |  Rx number of Buffer elements.  |
 |  uint8 | rxFIFONum |  Rx number of FIFO elements.  |
+|  Can_HwHandleType | fifoHoh |  HOH object ID of the TX FIFO HOH (set during mailbox setup)  |
 
 
 
@@ -5983,11 +5989,11 @@ Performance is also dependent on the overall system architecture and runtime env
 |Transmission time in polling|NA|146 us|Classic CAN : 8 byte : 1 Mbps|
 |Reception time in polling |NA|142 us|Classic CAN : 8 byte : 1 Mbps|
 |Transmission time in Interrupt |NA|123 us|Classic CAN : 8 byte : 1 Mbps|
-|Reception time in Interrupt|NA|119 us|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in polling|9010|7945|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in polling|7270|5891|CAN FD : 64 byte : 5 Mbps|
-|Maximum packets Transmission per second in Interrupt|9010|8266|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in Interrupt|7270|5724|CAN FD : 64 byte : 5 Mbps|
+|Reception time in Interrupt|NA|120 us|Classic CAN : 8 byte : 1 Mbps|
+|Maximum packets Transmission per second in polling|9010|7937|Classic CAN : 8 byte : 1 Mbps|
+|Maximum packets Transmission per second in polling|7270|5885|CAN FD : 64 byte : 5 Mbps|
+|Maximum packets Transmission per second in Interrupt|9010|8271|Classic CAN : 8 byte : 1 Mbps|
+|Maximum packets Transmission per second in Interrupt|7270|5694|CAN FD : 64 byte : 5 Mbps|
 
 ### CDD SENT Driver
 
@@ -5995,56 +6001,55 @@ Performance is also dependent on the overall system architecture and runtime env
 |------|------|------|-------|
 |STANDARD MODE interrupt execution time|NA|2 us|In STANDARD MODE, the total time it takes for the Cdd_Sent module to process sensor data, send the data to the PDU router.|
 |MTP MODE interrupt execution time|NA|1 us|In MTP MODE, the total time it takes for the Cdd_Sent module to process sensor data, send the data to the PDU router.|
-|MTP MODE trigger transmit time|NA|8064 us|In MTP MODE, the total time it takes for the Cdd_Sent module to trigger the sensor, Waiting for the response, process sensor data, send the data to the PDU router.|
+|MTP MODE trigger transmit time|NA|8058 us|In MTP MODE, the total time it takes for the Cdd_Sent module to trigger the sensor, Waiting for the response, process sensor data, send the data to the PDU router.|
 
 ### LIN Driver
 
 |Performance Test|Theoretical value|Measured value|Remarks|
 |------|------|------|-------|
-|Lin Master Response Performance |845312 us|867568 us|Total time taken to send 8 Bytes of data 128 times ~ 1KB |
-|Lin Slave Response Performance |6874 us|7287 us|Total time taken to receive 8 Bytes of data|
+|Lin Master Response Performance |845312 us|867635 us|Total time taken to send 8 Bytes of data 128 times ~ 1KB |
+|Lin Slave Response Performance |6874 us|6862 us|Total time taken to receive 8 Bytes of data|
 
 ### SPI Driver
 
 |Performance Test|Theoretical value in micro seconds|Measured value in micro seconds|Remarks|
 |------|------|------|-------|
-| Transmit 112000 words with 8 bit data width | 179200 |179208|BaudRate 5MHz, Sync Transmit|
-| Transmit 112000 words with 8 bit data width | 179200 |179208|BaudRate 5MHz, Async Transmit|
-| Transmit 112000 words with 16 bit data width| 358400 |358408|BaudRate 5MHz, Sync Transmit|
-| Transmit 112000 words with 16 bit data width| 358400 |358408|BaudRate 5MHz, Async Transmit|
+| Transmit 112000 words with 8 bit data width | 179200 |179207|BaudRate 5MHz, Sync Transmit|
+| Transmit 112000 words with 8 bit data width | 179200 |179209|BaudRate 5MHz, Async Transmit|
+| Transmit 112000 words with 16 bit data width| 358400 |358407|BaudRate 5MHz, Sync Transmit|
+| Transmit 112000 words with 16 bit data width| 358400 |358409|BaudRate 5MHz, Async Transmit|
 | Transmit 112000 words with 8 bit data width | 89600 |89607|BaudRate 10MHz, Sync Transmit|
-| Transmit 112000 words with 8 bit data width | 89600 |89607|BaudRate 10MHz, Async Transmit|
-| Transmit 112000 words with 16 bit data width| 179200 |179207|BaudRate 10MHz, Sync Transmit|
-| Transmit 112000 words with 16 bit data width| 179200 |179209|BaudRate 10MHz, Async Transmit|
-| Transmit 112000 words with 8 bit data width| 17920 |23965|BaudRate 50MHz, Sync Transmit|
-| Transmit 112000 words with 8 bit data width| 17920 |29686|BaudRate 50MHz, Async Transmit|
-| Transmit 112000 words with 16 bit data width| 35880 |36463|BaudRate 50MHz, Sync Transmit|
-| Transmit 112000 words with 16 bit data width| 35840 |38379|BaudRate 50MHz, Async Transmit|
+| Transmit 112000 words with 8 bit data width | 89600 |89609|BaudRate 10MHz, Async Transmit|
+| Transmit 112000 words with 16 bit data width| 179200 |179208|BaudRate 10MHz, Sync Transmit|
+| Transmit 112000 words with 16 bit data width| 179200 |179207|BaudRate 10MHz, Async Transmit|
+| Transmit 112000 words with 8 bit data width| 17920 |23819|BaudRate 50MHz, Sync Transmit|
+| Transmit 112000 words with 8 bit data width| 17920 |29424|BaudRate 50MHz, Async Transmit|
+| Transmit 112000 words with 16 bit data width| 35880 |36475|BaudRate 50MHz, Sync Transmit|
+| Transmit 112000 words with 16 bit data width| 35840 |39660|BaudRate 50MHz, Async Transmit|
 | Transmit 56000 words with 8 bit data width | 89600 |89605|BaudRate 5MHz, Sync Transmit|
-| Transmit 56000 words with 8 bit data width | 89600 |89606|BaudRate 5MHz, Async Transmit|
-| Transmit 56000 words with 16 bit data width| 179200 |179205|BaudRate 5MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width | 89600 |89605|BaudRate 5MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 179200 |179204|BaudRate 5MHz, Sync Transmit|
 | Transmit 56000 words with 16 bit data width| 179200 |179205|BaudRate 5MHz, Async Transmit|
-| Transmit 56000 words with 8 bit data width| 44800 |44805|BaudRate 10MHz, Sync Transmit|
-| Transmit 56000 words with 8 bit data width| 44800 |44805|BaudRate 10MHz, Async Transmit|
+| Transmit 56000 words with 8 bit data width| 44800 |44804|BaudRate 10MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width| 44800 |44806|BaudRate 10MHz, Async Transmit|
 | Transmit 56000 words with 16 bit data width| 89600 |89605|BaudRate 10MHz, Sync Transmit|
-| Transmit 56000 words with 16 bit data width| 89600 |89606|BaudRate 10MHz, Async Transmit|
-| Transmit 56000 words with 8 bit data width| 8960 |11983|BaudRate 50MHz, Sync Transmit|
-| Transmit 56000 words with 8 bit data width| 8960 |14863|BaudRate 50MHz, Async Transmit|
-| Transmit 56000 words with 16 bit data width| 17920 |18232|BaudRate 50MHz, Sync Transmit|
-| Transmit 56000 words with 16 bit data width| 17920 |20036|BaudRate 50MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 89600 |89605|BaudRate 10MHz, Async Transmit|
+| Transmit 56000 words with 8 bit data width| 8960 |11910|BaudRate 50MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width| 8960 |14694|BaudRate 50MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 17920 |18239|BaudRate 50MHz, Sync Transmit|
+| Transmit 56000 words with 16 bit data width| 17920 |19799|BaudRate 50MHz, Async Transmit|
 
 ### FLS Driver
 
-|Performance Test|Theoretical value (min)| Theoretical value (max)|Measured value|Remarks|
+|Performance Test|Theoretical value (Typ)| Theoretical value (Max)|Measured value|Remarks|
 |------|------|------|-------|-------|
-|Sector erase time (2KB) |3 ms|10 ms|3.520 ms| 2048 bytes : 200Mhz|
-|Program 128-bit + 16 ECC bits|62.5 us|625 us|1649 us| 16 byte :  200Mhz|
-|Program Sector (2KB) |8 ms|80 ms|8.455 ms |2048 bytes : 200Mhz|
+|Sector erase time (2KB) |15 ms|55 ms|2.1 ms| 2048 bytes : 200Mhz|
+|Bank erase time (256KB) |21 ms|78 ms|4.7 ms| 256 kbytes : 200Mhz|
+|Program 128-bit + 16 ECC bits|62.5 us|625 us|109 us| 16 byte :  200Mhz|
+|Program Sector (2KB) |8 ms|80 ms|13.7 ms |2048 bytes : 200Mhz|
 
 ```{NOTE}
-The erase and program times are approximate due to unavailability of the flash characterization data. This table will be updated in the next release.
-
-Please note that in the Fls module, once the erase, program or read job is accepted, it is processed through Fls_MainFunction cyclically until the job is finished, thereby adding additional function call overhead time compared to theoretical value.
+In the Fls module, once the erase, program or read job is accepted, it is processed through Fls_MainFunction cyclically until the job is finished, thereby adding additional function call overhead time compared to theoretical value.
 ```
 
 ### CDD IPC Driver
@@ -6081,13 +6086,13 @@ Please note that this performance result depends on, when the remote core acknow
 
 |Performance Test|Theoretical value|Measured value|Remarks|
 |------|------|------|-------|
-|Time taken to transfer 16KB data at max throughput using 8-bit data size|164.170 us|164.555 us|16KB transfer, 8-bit word size, 200 MHz|
-|Time taken to transfer 16KB data at max throughput using 16-bit data size|82.250 us|82.640 us|16KB transfer, 16-bit word size, 200 MHz|
-|Time taken to transfer 16KB data at max throughput using 32-bit data size|41.290 us|41.675 us|16KB transfer, 32-bit word size, 200 MHz|
-|Time taken to transfer 16KB data at max throughput using 64-bit data size|20.810 us|21.215 us|16KB transfer, 64-bit word size, 200 MHz|
-|Time taken to transfer 16KB data using burst size 256 and transfer size 64 with 32-bit data size|41.290 us|41.675 us|16KB transfer, 32-bit word size, burst=256, transfer=64, 200 MHz|
-|Time taken to transfer 16KB data using burst size 128 and transfer size 128 with 32-bit data size|41.610 us|42.005 us|16KB transfer, 32-bit word size, burst=128, transfer=128, 200 MHz|
-|Time taken to transfer 16KB data using burst size 64 and transfer size 256 with 32-bit data size|42.250 us|42.650 us|16KB transfer, 32-bit word size, burst=64, transfer=256, 200 MHz|
+|Time taken to transfer 16KB data at max throughput using 8-bit data size|164.170 us|164.560 us|16KB transfer, 8-bit word size, 200 MHz|
+|Time taken to transfer 16KB data at max throughput using 16-bit data size|82.250 us|82.645 us|16KB transfer, 16-bit word size, 200 MHz|
+|Time taken to transfer 16KB data at max throughput using 32-bit data size|41.290 us|41.680 us|16KB transfer, 32-bit word size, 200 MHz|
+|Time taken to transfer 16KB data at max throughput using 64-bit data size|20.810 us|21.220 us|16KB transfer, 64-bit word size, 200 MHz|
+|Time taken to transfer 16KB data using burst size 256 and transfer size 64 with 32-bit data size|41.290 us|41.680 us|16KB transfer, 32-bit word size, burst=256, transfer=64, 200 MHz|
+|Time taken to transfer 16KB data using burst size 128 and transfer size 128 with 32-bit data size|41.610 us|42.010 us|16KB transfer, 32-bit word size, burst=128, transfer=128, 200 MHz|
+|Time taken to transfer 16KB data using burst size 64 and transfer size 256 with 32-bit data size|42.250 us|42.655 us|16KB transfer, 32-bit word size, burst=64, transfer=256, 200 MHz|
 
 ## Memory Footprints
 
@@ -6100,7 +6105,7 @@ The memory footprint values represent only the module-specific driver sections f
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
 | Can_Example_Classic_FD   | 15484    | 0    | 3668    | 220    |
- | Can_Example_Icom   | 17052    | 0    | 3996    | 556    |
+ | Can_Example_Icom   | 17036    | 0    | 3996    | 556    |
  | Can_Example_loopback   | 15452    | 0    | 3668    | 220    |
  | Can_Example_Wakeup   | 15484    | 0    | 3668    | 220    |
  
@@ -6187,8 +6192,8 @@ The memory footprint values represent only the module-specific driver sections f
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Cdd_Dma_Example_Adc_Data_Binning   | 8522    | 0    | 29    | 56    |
- | Cdd_Dma_Example_Gpt_Ping_Pong_Buffer   | 8522    | 0    | 29    | 56    |
+| Cdd_Dma_Example_Adc_Data_Binning   | 8586    | 0    | 29    | 56    |
+ | Cdd_Dma_Example_Gpt_Ping_Pong_Buffer   | 8586    | 0    | 29    | 56    |
  | Cdd_Dma_Example_Mem_Transfer   | 9228    | 0    | 29    | 56    |
  | Cdd_Dma_Example_Mem_Transfer_Mpu   | 9218    | 0    | 29    | 76    |
  
@@ -6226,9 +6231,9 @@ The memory footprint values represent only the module-specific driver sections f
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Cdd_Sent_Standard   | 4824    | 0    | 81    | 144    |
+| Cdd_Sent_Standard   | 4840    | 0    | 81    | 144    |
  | Cdd_Sent_MtpMode   | 4698    | 0    | 81    | 188    |
- | Cdd_Sent_Mtp_ExternalTrigger_Source   | 4952    | 0    | 81    | 188    |
+ | Cdd_Sent_Mtp_ExternalTrigger_Source   | 4968    | 0    | 81    | 188    |
  
 ### CDD UART
 
@@ -14008,6 +14013,14 @@ The Flash driver updates the wait states based on the MCU system cycle, and enab
 
 The Fls_Erase, FLs_Write, Fls_Read, FLs_Compare, and Fls_BlankCheck are performed asynchronously within the FLS module’s main function. All others (Fls_Cancel, Fls_GetStatus, Fls_GetJobResult) are the synchronous functions of this module.
 
+The Fls driver can be configured to perform 8 or 16 byte programming. Accordingly, target data flash addresses need to be 64-bit or 128-bit aligned. The total size of the write job can be a multiple of this.
+
+The minimum erase size for data flash is 2KB.
+
+Only AUTOECC mode is supported i.e. Flash writes will also compute ECC and write to ECC space.
+
+The Fls driver has been tested on CPU1.
+
 ### Hardware Features
 
 #### Hardware Features Supported
@@ -14857,7 +14870,7 @@ Refer [AUTOSAR_SWS_FlashDriver section: 10 Configuration specification](https://
 * Purpose
   * Comprehensive flash memory driver test application that validates all FLS (Flash Driver) operations through automated testing
 * Loop Iterations
-  * Executes 500 test iterations (loopCount 0-499)
+  * Executes 64 test iterations (loopCount 0-63)
   * Each iteration advances the test address by 4096 bytes, wrapping around when reaching device memory limits
   * Address wrap around occurs at 0x1FFFF (128KB Data Flash) for F29P32x devices, 0x3FFFF (256KB Data Flash) for F29H85x devices, Resets to address 0x0 after exceeding the limit
 * Tests Per Iteration: 66 total tests
@@ -14877,7 +14890,7 @@ Refer [AUTOSAR_SWS_FlashDriver section: 10 Configuration specification](https://
   * 40 configuration tests (8 tests × 5 sector configurations from FLS_NUMBER_OF_SECTOR_CFG)
     * Per sector: Read, Sector Erase, BlankCheck, Write, Bank Erase, Write, Read, Compare
 * Total test executions
-  * 66 tests × 500 iterations
+  * 66 tests × 64 iterations
 * Flash Operations (per iteration)
   * Sector Erase - Fls_SetEraseType(FLS_SECTOR_ERASE) + Fls_Erase() to erase 4096-byte test sector
   * Blank Check - Fls_BlankCheck() to verify sector is properly erased
@@ -14893,7 +14906,7 @@ Refer [AUTOSAR_SWS_FlashDriver section: 10 Configuration specification](https://
   * Fls_passCnt - Increments on each successful job completion via callback; rolls over at 1000
   * Fls_errCnt - Increments on each job failure via callback; rolls over at 1000
   * Expected behavior: One error per iteration due to intentional Fls_Cancel() test
-  * Overall Pass Criteria: Fls_errCnt == 500 (one error per iteration for 500 iterations)  
+  * Overall Pass Criteria: Fls_errCnt == 64 (one error per iteration for 64 iterations)  
 * Callback Functionality
   * Fee_JobEndNotification() - Invoked on successful job completion; sets Fls_JobDoneSuccess flag and increments Fls_passCnt
   * Fee_JobErrorNotification() - Invoked on job failure; sets Fls_JobDoneError flag and increments Fls_errCnt
@@ -20530,7 +20543,7 @@ SPI Example External Loopback Connections
 ##### How to run Spi_Example_External_Loopback
 
 * Build the example to generate .out.
-* Connect to CPU1 and load only the Spi_Example_External_Loopback_merged.out.
+* Connect to CPU1 and load only the Spi_Example_External_Loopback.out.
 * After the program is loaded, run CPU1.
 * CPU1 configures and releases CPU3 out of reset.
 * CPU1 pauses due to software breakpoint (EMUSTOP0).
@@ -25730,6 +25743,8 @@ This container contains the HW unit initialization parameters
 |--------|---------------|
 | **Name** | CddI2cHwUseInterrupts |
 | **Description** | Switches to activate or deactivate interrupt controlled job processing for this HW unit. Always enabled in Target mode. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | Texas Instruments |
 | **Post-build-variant-multiplicity** | false |
 | **Post-Build-Variant-Value** | false |
@@ -25743,6 +25758,8 @@ This container contains the HW unit initialization parameters
 |--------|---------------|
 | **Name** | CddI2cHwBaudrate |
 | **Description** | Channel Bit Rate (Range = 10kbps - 400kbps). Value needs to be provided in bits per second. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | Texas Instruments |
 | **Post-build-variant-multiplicity** | false |
 | **Post-Build-Variant-Value** | false |
@@ -26845,7 +26862,7 @@ The example applications demonstrates usecases of the Cdd Ipc driver APIs. The e
 
 * Build Cdd_Ipc_Example_Interrupt_C29x1 using cmake
 * Open CCS and connect to CPU1 target
-* Load the Cdd_Ipc_Example_Interrupt_C29x1_merged.out
+* Load the Cdd_Ipc_Example_Interrupt_C29x1.out
 * After the program is loaded, run CPU1
 
 ##### Sample Log of Cdd_Ipc_Example_Interrupt_C29x1
@@ -26876,7 +26893,7 @@ The example applications demonstrates usecases of the Cdd Ipc driver APIs. The e
 
 * Build Cdd_Ipc_Example_Polling_C29x1 using cmake
 * Open CCS and connect to CPU1 target
-* Load the Cdd_Ipc_Example_Polling_C29x1_merged.out
+* Load the Cdd_Ipc_Example_Polling_C29x1.out
 * After the program is loaded, run CPU1
 
 ##### Sample Log of Cdd_Ipc_Example_Polling_C29x1
@@ -26983,6 +27000,7 @@ The example applications demonstrates usecases of the Cdd Ipc driver APIs. The e
 CDD PWM driver is a Complex Device Driver used to represent an analog signal with a digital approximation. It provides services to change the duty cycle and period of the PWM/EPWM channels. It provides service to set the PWM channels in the IDLE state. Furthermore, it provides services to enable and disable notification mechanism and routines to count the edges detected.
 
 ```{figure} Assets/images/Cdd_Pwm_Autosar_MCAL.png
+:width: 100%
 :alt: CDD PWM MCAL AUTOSAR
 :align: center
 
@@ -27208,6 +27226,7 @@ The key functions of the PWM chopper submodule are:
 Additionally, this submodule provides an option to include a larger, one-shot (OSHT) pulse width before the sustaining pulses.
 
 ```{figure} Assets/images/Cdd_Pwm_Chopper.png
+:width: 100%
 :alt: Cdd Pwm Chopper Submodule Action
 :align: center
 
@@ -27237,6 +27256,7 @@ Additionally, numerous trip-zone source signals can be generated from the digita
 The power drive protection is a safety feature that is provided for the safe operation of systems such as power converters and motor drives. It can be used to inform the monitoring program of motor drive abnormalities such as over-voltage, over-current, and excessive temperature rise. If the power drive protection interrupt is unmasked, the PWM output pins will be put in a safe state immediately after the pin is driven low. An interrupt will also be generated.
 
 ```{figure} Assets/images/Cdd_Pwm_TripZone.png
+:width: 100%
 :alt: Cdd Pwm TripZone Block
 :align: center
 
@@ -27290,6 +27310,7 @@ Note: There only are allowable repetition for shadow buffer set 2 and 3
 Below is an example of XCMP mode
 
 ```{figure} Assets/images/Cdd_Pwm_XCmp_Example.png
+:width: 100%
 :alt: Cdd Pwm XCMP Example
 :align: center
 
@@ -27335,6 +27356,7 @@ To utilize the MEP capabilities effectively, the correct value for the MEP scali
 There are 3 HRPWM calibration units in the device. The calibration unit ID should be passed as a parameter to the **Cdd_Pwm_Sfo** API to select the respective calibration unit.
 
 ```{figure} Assets/images/Cdd_Pwm_Hrpwm.png
+:width: 100%
 :alt: Cdd Pwm Hrpwm Operating Logic Using MEP
 :align: center
 
@@ -27410,6 +27432,7 @@ Cdd_Pwm_DeInit API is not supported in advanced mode. Application needs to take 
  ┗ 📜CMakePresets.json
 
 ```{figure} Assets/images/Cdd_Pwm_Header_File_Structure.png
+:width: 100%
 :alt: Cdd Pwm Header File Structure
 :align: center
 
@@ -27581,6 +27604,7 @@ Both the channels under a EPWM/PWM instance share the same interrupt.
 Below image shows Cdd_Pwm driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.
 
 ```{figure} Assets/images/Cdd_Pwm_Hw_Sw_Mapping.png
+:width: 100%
 :alt: Cdd_Pwm HW/SW Mapping
 :align: center
 
@@ -28226,6 +28250,16 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 ```{literalinclude} Assets/text/Cdd_Pwm/F29H85x/Cdd_Pwm_Example_Chopper.txt
 ```
 
+##### Waveform of Cdd_Pwm_Example_Chopper example
+
+```{figure} Assets/images/Cdd_Pwm_Example_Chopper.png
+:width: 100%
+:alt: Cdd Pwm Example Chopper Waveform
+:align: center
+
+Cdd Pwm Example Chopper Waveform
+```
+
 #### Cdd_Pwm_Example_Cmpss_Trip
 
 ##### Overview Of Cdd_Pwm_Example_Cmpss_Trip
@@ -28265,6 +28299,16 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 ##### Sample Log of Cdd_Pwm_Example_Cmpss_Trip example
 
 ```{literalinclude} Assets/text/Cdd_Pwm/F29H85x/Cdd_Pwm_Example_Cmpss_Trip.txt
+```
+
+##### Waveform of Cdd_Pwm_Example_Cmpss_Trip example
+
+```{figure} Assets/images/Cdd_Pwm_Example_Cmpss_Trip.png
+:width: 100%
+:alt: Cdd Pwm Example Cmpss Trip Waveform
+:align: center
+
+Cdd Pwm Example Cmpss Trip Waveform
 ```
 
 #### Cdd_Pwm_Example_DC_EventFilter
@@ -28321,6 +28365,16 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 ```{literalinclude} Assets/text/Cdd_Pwm/F29H85x/Cdd_Pwm_Example_DC_EventFilter.txt
 ```
 
+##### Waveform of Cdd_Pwm_Example_DC_EventFilter example
+
+```{figure} Assets/images/Cdd_Pwm_Example_DC_EventFilter.png
+:width: 100%
+:alt: Cdd Pwm Example DC EventFilter Waveform
+:align: center
+
+Cdd Pwm Example DC EventFilter Waveform
+```
+
 #### Cdd_Pwm_Example_Deadband
 
 ##### Overview Of Cdd_Pwm_Example_Deadband
@@ -28365,6 +28419,16 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 ##### Sample Log of Cdd_Pwm_Example_Deadband example
 
 ```{literalinclude} Assets/text/Cdd_Pwm/F29H85x/Cdd_Pwm_Example_Deadband.txt
+```
+
+##### Waveform of Cdd_Pwm_Example_Deadband example
+
+```{figure} Assets/images/Cdd_Pwm_Example_Deadband.png
+:width: 100%
+:alt: Cdd Pwm Example Deadband Waveform
+:align: center
+
+Cdd Pwm Example Deadband Waveform
 ```
 
 #### Cdd_Pwm_Example_DiodeEmulation
@@ -28426,6 +28490,16 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 ```{literalinclude} Assets/text/Cdd_Pwm/F29H85x/Cdd_Pwm_Example_DiodeEmulation.txt
 ```
 
+##### Waveform of Cdd_Pwm_Example_DiodeEmulation example
+
+```{figure} Assets/images/Cdd_Pwm_Example_DiodeEmulation.png
+:width: 100%
+:alt: Cdd Pwm Example DiodeEmulation Waveform
+:align: center
+
+Cdd Pwm Example DiodeEmulation Waveform
+```
+
 #### Cdd_Pwm_Example_GlobalLoad_And_Link
 
 ##### Overview Of Cdd_Pwm_Example_GlobalLoad_And_Link
@@ -28477,6 +28551,16 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 ```{literalinclude} Assets/text/Cdd_Pwm/F29H85x/Cdd_Pwm_Example_GlobalLoad_And_Link.txt
 ```
 
+##### Waveform of Cdd_Pwm_Example_GlobalLoad_And_Link example
+
+```{figure} Assets/images/Cdd_Pwm_Example_GlobalLoad_And_Link.png
+:width: 100%
+:alt: Cdd Pwm Example GlobalLoad And Link Waveform
+:align: center
+
+Cdd Pwm Example GlobalLoad And Link Waveform
+```
+
 #### Cdd_Pwm_Example_Hrpwm
 
 ##### Overview Of Cdd_Pwm_Example_Hrpwm
@@ -28512,6 +28596,16 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 ##### Sample Log of Cdd_Pwm_Example_Hrpwm example
 
 ```{literalinclude} Assets/text/Cdd_Pwm/F29H85x/Cdd_Pwm_Example_Hrpwm.txt
+```
+
+##### Waveform of Cdd_Pwm_Example_Hrpwm example
+
+```{figure} Assets/images/Cdd_Pwm_Example_Hrpwm.png
+:width: 100%
+:alt: Cdd Pwm Example Hrpwm Waveform
+:align: center
+
+Cdd Pwm Example Hrpwm Waveform
 ```
 
 #### Cdd_Pwm_Example_TripZone
@@ -28569,6 +28663,16 @@ Waveforms can be observed on the configured EPWM pins
 Cdd_Pwm_Example_TripZone example executed successfully
 ```
 
+##### Waveform of Cdd_Pwm_Example_TripZone example
+
+```{figure} Assets/images/Cdd_Pwm_Example_TripZone.png
+:width: 100%
+:alt: Cdd Pwm Example TripZone Waveform
+:align: center
+
+Cdd Pwm Example TripZone Waveform
+```
+
 #### Cdd_Pwm_Example_UpCountMode
 
 ##### Overview Of Cdd_Pwm_Example_UpCountMode
@@ -28620,6 +28724,16 @@ Number of rising edges detected for EPWM1 are 322
 Number of edges detected for EPWM2 are 4465
 Waveforms can be observed on the configured EPWM pins
 Cdd_Pwm_Example_UpCountMode executed successfully
+```
+
+##### Waveform of Cdd_Pwm_Example_UpCountMode example
+
+```{figure} Assets/images/Cdd_Pwm_Example_UpCountMode.png
+:width: 100%
+:alt: Cdd Pwm Example UpCountMode Waveform
+:align: center
+
+Cdd Pwm Example UpCountMode Waveform
 ```
 
 #### Cdd_Pwm_Example_XCmp_MultipleEdges
@@ -28677,6 +28791,16 @@ Number of interrupts detected for EPWM2 are 2000
 Number of interrupts detected for EPWM3 are 2000
 Waveforms can be observed on the configured EPWM pins
 Cdd_Pwm_Example_XCmp_MultipleEdges example executed successfully
+```
+
+##### Waveform of Cdd_Pwm_Example_XCmp_MultipleEdges example
+
+```{figure} Assets/images/Cdd_Pwm_Example_XCmp_MultipleEdges.png
+:width: 100%
+:alt: Cdd Pwm Example XCmp MultipleEdges Waveform
+:align: center
+
+Cdd Pwm Example XCmp MultipleEdges Waveform
 ```
 
 #### File Structure
@@ -31267,6 +31391,8 @@ None
 * 9-bit mode data transfer
 * IrDA
 * Polling mode read
+* Stick parity
+* Even parity (parity type selection — driver always uses odd parity when parity is enabled)
 
 #### Non compliance
 

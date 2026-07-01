@@ -167,6 +167,11 @@ volatile VAR(uint8, AUTOMATIC) DmaBufferFillCount = 0U;
 /** Incremented by the GPT notification on every timer period expiry. */
 volatile VAR(uint8, AUTOMATIC) GptTriggerCount = 0U;
 
+#if (STD_ON == CDD_DMA_GET_VERSION_INFO_API)
+/*  Version info variable */
+Std_VersionInfoType Cdd_Dma_VersionInfo;
+#endif
+
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
@@ -281,6 +286,17 @@ FUNC(int, AUTOMATIC) main(void)
     AppUtils_Init(200000000U);
 
     AppUtils_Printf("Executing Cdd_Dma_Example_Gpt_Ping_Pong_Buffer example\n");
+
+#if (STD_ON == CDD_DMA_GET_VERSION_INFO_API)
+    Cdd_Dma_GetVersionInfo(&Cdd_Dma_VersionInfo);
+    AppUtils_Printf("CDD DMA MCAL Version Info\n");
+    AppUtils_Printf("---------------------\n");
+    AppUtils_Printf("Vendor ID           : %d\n", Cdd_Dma_VersionInfo.vendorID);
+    AppUtils_Printf("Module ID           : %d\n", Cdd_Dma_VersionInfo.moduleID);
+    AppUtils_Printf("SW Major Version    : %d\n", Cdd_Dma_VersionInfo.sw_major_version);
+    AppUtils_Printf("SW Minor Version    : %d\n", Cdd_Dma_VersionInfo.sw_minor_version);
+    AppUtils_Printf("SW Patch Version    : %d\n", Cdd_Dma_VersionInfo.sw_patch_version);
+#endif
 
     /* Configure DMA channel for ping-pong buffering. */
     Configure_Cdd_Dma();

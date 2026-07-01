@@ -175,7 +175,7 @@ void error(void)
 
 void Cdd_Pwm_ConfigureHw()
 {
-    /* Configure EPWM2 instance without HRPWM */
+    /* Configure EPWM1 instance without HRPWM */
     Cdd_Pwm_SetEmulationMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_EMULATION_FREE_RUN);
     Cdd_Pwm_SetClockPrescaler(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_CLOCK_DIVIDER_1,
                               CDD_PWM_HSCLOCK_DIVIDER_1);
@@ -200,7 +200,7 @@ void Cdd_Pwm_ConfigureHw()
     Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_B,
                                      CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA);
 
-    /* Configure EPWM1 instance with HRPWM enabled */
+    /* Configure EPWM2 instance with HRPWM enabled */
     Cdd_Pwm_SetEmulationMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_EMULATION_FREE_RUN);
     Cdd_Pwm_SetClockPrescaler(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_CLOCK_DIVIDER_1,
                               CDD_PWM_HSCLOCK_DIVIDER_1);

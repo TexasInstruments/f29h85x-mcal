@@ -84,7 +84,7 @@
  *  - EPWM2A is allocated XCMP1-4 and EPWM2B is allocated XCMP5-8 registers.
  *      - Configured in LOAD ONCE mode and the XCMP values are updated every period with a new shadow buffer set
  *      - Shadow level is set to 3
- *  - EPWM3A is allocated XCMP1-4 and EPWM2B is allocated XCMP5-8 registers.
+ *  - EPWM3A is allocated XCMP1-4 and EPWM3B is allocated XCMP5-8 registers.
  *      - Configured in LOAD MULTIPLE mode. Repeat count is configured for SHD buffer set 3 & 2.
  *        The SHDBUF ptr is set to 3 again after 16 periods.
  *      - Shadow level is set to 3
@@ -177,7 +177,7 @@ void Cdd_Pwm_HwUnit0Notification(void)
 
 void Cdd_Pwm_HwUnit1Notification(void)
 {
-    /* Reapeat the shadow level */
+    /* Repeat the shadow level */
     if (0U == (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1] % CDD_PWM_SHD_LEVEL))
     {
         Cdd_Pwm_SetXCmpShadowBufPtrLoadOnce(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1,
@@ -215,7 +215,7 @@ void Cdd_Pwm_HwUnit1Notification(void)
 
 void Cdd_Pwm_HwUnit2Notification(void)
 {
-    /* Reapeat the shadow level */
+    /* Repeat the shadow level */
     /* Enable start load */
 
     if (0U == Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2] % 16U)
@@ -286,7 +286,7 @@ void Cdd_Pwm_ConfigureHw()
     Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_B,
                                      CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPB);
 
-    /* Configure EPWM2 instance in LOAD MULTIPLE XCMP mode with split and shadow level enabled(repeat buffer) */
+    /* Configure EPWM2 instance in LOAD ONCE XCMP mode with split and shadow level enabled(repeat buffer) */
     Cdd_Pwm_SetClockPrescaler(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_CLOCK_DIVIDER_1,
                               CDD_PWM_HSCLOCK_DIVIDER_2);
     Cdd_Pwm_SetTimeBaseCounterMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_COUNTER_MODE_UP);

@@ -240,7 +240,8 @@ Cdd_Sent_HwInitPrv(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_CONST) Confi
     Cdd_Sent_SetCRCConfigPriv(ConfigPtr);
 
     /* Configuring Tick clock */
-    HWREG(BaseAddress + SENT_O_RCFG) = ConfigPtr->CddSentClockTick << SENT_RCFG_TTCLK_S;
+    McalLib_RegMFWriteRaw32((BaseAddress + SENT_O_RCFG), SENT_RCFG_TTCLK_M, SENT_RCFG_TTCLK_S,
+                            ConfigPtr->CddSentClockTick);
 
     /* Configuring GFlit */
     Cdd_Sent_setGFILTClockCycle(BaseAddress, ConfigPtr->CddSentGlitchFilter);

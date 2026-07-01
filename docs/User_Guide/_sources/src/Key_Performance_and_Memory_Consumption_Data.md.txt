@@ -15,11 +15,11 @@ Performance is also dependent on the overall system architecture and runtime env
 |Transmission time in polling|NA|146 us|Classic CAN : 8 byte : 1 Mbps|
 |Reception time in polling |NA|142 us|Classic CAN : 8 byte : 1 Mbps|
 |Transmission time in Interrupt |NA|123 us|Classic CAN : 8 byte : 1 Mbps|
-|Reception time in Interrupt|NA|119 us|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in polling|9010|7945|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in polling|7270|5891|CAN FD : 64 byte : 5 Mbps|
-|Maximum packets Transmission per second in Interrupt|9010|8266|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in Interrupt|7270|5724|CAN FD : 64 byte : 5 Mbps|
+|Reception time in Interrupt|NA|120 us|Classic CAN : 8 byte : 1 Mbps|
+|Maximum packets Transmission per second in polling|9010|7937|Classic CAN : 8 byte : 1 Mbps|
+|Maximum packets Transmission per second in polling|7270|5885|CAN FD : 64 byte : 5 Mbps|
+|Maximum packets Transmission per second in Interrupt|9010|8271|Classic CAN : 8 byte : 1 Mbps|
+|Maximum packets Transmission per second in Interrupt|7270|5694|CAN FD : 64 byte : 5 Mbps|
 
 ### CDD SENT Driver
 
@@ -27,56 +27,55 @@ Performance is also dependent on the overall system architecture and runtime env
 |------|------|------|-------|
 |STANDARD MODE interrupt execution time|NA|2 us|In STANDARD MODE, the total time it takes for the Cdd_Sent module to process sensor data, send the data to the PDU router.|
 |MTP MODE interrupt execution time|NA|1 us|In MTP MODE, the total time it takes for the Cdd_Sent module to process sensor data, send the data to the PDU router.|
-|MTP MODE trigger transmit time|NA|8064 us|In MTP MODE, the total time it takes for the Cdd_Sent module to trigger the sensor, Waiting for the response, process sensor data, send the data to the PDU router.|
+|MTP MODE trigger transmit time|NA|8058 us|In MTP MODE, the total time it takes for the Cdd_Sent module to trigger the sensor, Waiting for the response, process sensor data, send the data to the PDU router.|
 
 ### LIN Driver
 
 |Performance Test|Theoretical value|Measured value|Remarks|
 |------|------|------|-------|
-|Lin Master Response Performance |845312 us|867568 us|Total time taken to send 8 Bytes of data 128 times ~ 1KB |
-|Lin Slave Response Performance |6874 us|7287 us|Total time taken to receive 8 Bytes of data|
+|Lin Master Response Performance |845312 us|867635 us|Total time taken to send 8 Bytes of data 128 times ~ 1KB |
+|Lin Slave Response Performance |6874 us|6862 us|Total time taken to receive 8 Bytes of data|
 
 ### SPI Driver
 
 |Performance Test|Theoretical value in micro seconds|Measured value in micro seconds|Remarks|
 |------|------|------|-------|
-| Transmit 112000 words with 8 bit data width | 179200 |179208|BaudRate 5MHz, Sync Transmit|
-| Transmit 112000 words with 8 bit data width | 179200 |179208|BaudRate 5MHz, Async Transmit|
-| Transmit 112000 words with 16 bit data width| 358400 |358408|BaudRate 5MHz, Sync Transmit|
-| Transmit 112000 words with 16 bit data width| 358400 |358408|BaudRate 5MHz, Async Transmit|
+| Transmit 112000 words with 8 bit data width | 179200 |179207|BaudRate 5MHz, Sync Transmit|
+| Transmit 112000 words with 8 bit data width | 179200 |179209|BaudRate 5MHz, Async Transmit|
+| Transmit 112000 words with 16 bit data width| 358400 |358407|BaudRate 5MHz, Sync Transmit|
+| Transmit 112000 words with 16 bit data width| 358400 |358409|BaudRate 5MHz, Async Transmit|
 | Transmit 112000 words with 8 bit data width | 89600 |89607|BaudRate 10MHz, Sync Transmit|
-| Transmit 112000 words with 8 bit data width | 89600 |89607|BaudRate 10MHz, Async Transmit|
-| Transmit 112000 words with 16 bit data width| 179200 |179207|BaudRate 10MHz, Sync Transmit|
-| Transmit 112000 words with 16 bit data width| 179200 |179209|BaudRate 10MHz, Async Transmit|
-| Transmit 112000 words with 8 bit data width| 17920 |23965|BaudRate 50MHz, Sync Transmit|
-| Transmit 112000 words with 8 bit data width| 17920 |29686|BaudRate 50MHz, Async Transmit|
-| Transmit 112000 words with 16 bit data width| 35880 |36463|BaudRate 50MHz, Sync Transmit|
-| Transmit 112000 words with 16 bit data width| 35840 |38379|BaudRate 50MHz, Async Transmit|
+| Transmit 112000 words with 8 bit data width | 89600 |89609|BaudRate 10MHz, Async Transmit|
+| Transmit 112000 words with 16 bit data width| 179200 |179208|BaudRate 10MHz, Sync Transmit|
+| Transmit 112000 words with 16 bit data width| 179200 |179207|BaudRate 10MHz, Async Transmit|
+| Transmit 112000 words with 8 bit data width| 17920 |23819|BaudRate 50MHz, Sync Transmit|
+| Transmit 112000 words with 8 bit data width| 17920 |29424|BaudRate 50MHz, Async Transmit|
+| Transmit 112000 words with 16 bit data width| 35880 |36475|BaudRate 50MHz, Sync Transmit|
+| Transmit 112000 words with 16 bit data width| 35840 |39660|BaudRate 50MHz, Async Transmit|
 | Transmit 56000 words with 8 bit data width | 89600 |89605|BaudRate 5MHz, Sync Transmit|
-| Transmit 56000 words with 8 bit data width | 89600 |89606|BaudRate 5MHz, Async Transmit|
-| Transmit 56000 words with 16 bit data width| 179200 |179205|BaudRate 5MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width | 89600 |89605|BaudRate 5MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 179200 |179204|BaudRate 5MHz, Sync Transmit|
 | Transmit 56000 words with 16 bit data width| 179200 |179205|BaudRate 5MHz, Async Transmit|
-| Transmit 56000 words with 8 bit data width| 44800 |44805|BaudRate 10MHz, Sync Transmit|
-| Transmit 56000 words with 8 bit data width| 44800 |44805|BaudRate 10MHz, Async Transmit|
+| Transmit 56000 words with 8 bit data width| 44800 |44804|BaudRate 10MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width| 44800 |44806|BaudRate 10MHz, Async Transmit|
 | Transmit 56000 words with 16 bit data width| 89600 |89605|BaudRate 10MHz, Sync Transmit|
-| Transmit 56000 words with 16 bit data width| 89600 |89606|BaudRate 10MHz, Async Transmit|
-| Transmit 56000 words with 8 bit data width| 8960 |11983|BaudRate 50MHz, Sync Transmit|
-| Transmit 56000 words with 8 bit data width| 8960 |14863|BaudRate 50MHz, Async Transmit|
-| Transmit 56000 words with 16 bit data width| 17920 |18232|BaudRate 50MHz, Sync Transmit|
-| Transmit 56000 words with 16 bit data width| 17920 |20036|BaudRate 50MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 89600 |89605|BaudRate 10MHz, Async Transmit|
+| Transmit 56000 words with 8 bit data width| 8960 |11910|BaudRate 50MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width| 8960 |14694|BaudRate 50MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 17920 |18239|BaudRate 50MHz, Sync Transmit|
+| Transmit 56000 words with 16 bit data width| 17920 |19799|BaudRate 50MHz, Async Transmit|
 
 ### FLS Driver
 
-|Performance Test|Theoretical value (min)| Theoretical value (max)|Measured value|Remarks|
+|Performance Test|Theoretical value (Typ)| Theoretical value (Max)|Measured value|Remarks|
 |------|------|------|-------|-------|
-|Sector erase time (2KB) |3 ms|10 ms|3.520 ms| 2048 bytes : 200Mhz|
-|Program 128-bit + 16 ECC bits|62.5 us|625 us|1649 us| 16 byte :  200Mhz|
-|Program Sector (2KB) |8 ms|80 ms|8.455 ms |2048 bytes : 200Mhz|
+|Sector erase time (2KB) |15 ms|55 ms|2.1 ms| 2048 bytes : 200Mhz|
+|Bank erase time (256KB) |21 ms|78 ms|4.7 ms| 256 kbytes : 200Mhz|
+|Program 128-bit + 16 ECC bits|62.5 us|625 us|109 us| 16 byte :  200Mhz|
+|Program Sector (2KB) |8 ms|80 ms|13.7 ms |2048 bytes : 200Mhz|
 
 ```{NOTE}
-The erase and program times are approximate due to unavailability of the flash characterization data. This table will be updated in the next release.
-
-Please note that in the Fls module, once the erase, program or read job is accepted, it is processed through Fls_MainFunction cyclically until the job is finished, thereby adding additional function call overhead time compared to theoretical value.
+In the Fls module, once the erase, program or read job is accepted, it is processed through Fls_MainFunction cyclically until the job is finished, thereby adding additional function call overhead time compared to theoretical value.
 ```
 
 ### CDD IPC Driver
@@ -113,13 +112,13 @@ Please note that this performance result depends on, when the remote core acknow
 
 |Performance Test|Theoretical value|Measured value|Remarks|
 |------|------|------|-------|
-|Time taken to transfer 16KB data at max throughput using 8-bit data size|164.170 us|164.555 us|16KB transfer, 8-bit word size, 200 MHz|
-|Time taken to transfer 16KB data at max throughput using 16-bit data size|82.250 us|82.640 us|16KB transfer, 16-bit word size, 200 MHz|
-|Time taken to transfer 16KB data at max throughput using 32-bit data size|41.290 us|41.675 us|16KB transfer, 32-bit word size, 200 MHz|
-|Time taken to transfer 16KB data at max throughput using 64-bit data size|20.810 us|21.215 us|16KB transfer, 64-bit word size, 200 MHz|
-|Time taken to transfer 16KB data using burst size 256 and transfer size 64 with 32-bit data size|41.290 us|41.675 us|16KB transfer, 32-bit word size, burst=256, transfer=64, 200 MHz|
-|Time taken to transfer 16KB data using burst size 128 and transfer size 128 with 32-bit data size|41.610 us|42.005 us|16KB transfer, 32-bit word size, burst=128, transfer=128, 200 MHz|
-|Time taken to transfer 16KB data using burst size 64 and transfer size 256 with 32-bit data size|42.250 us|42.650 us|16KB transfer, 32-bit word size, burst=64, transfer=256, 200 MHz|
+|Time taken to transfer 16KB data at max throughput using 8-bit data size|164.170 us|164.560 us|16KB transfer, 8-bit word size, 200 MHz|
+|Time taken to transfer 16KB data at max throughput using 16-bit data size|82.250 us|82.645 us|16KB transfer, 16-bit word size, 200 MHz|
+|Time taken to transfer 16KB data at max throughput using 32-bit data size|41.290 us|41.680 us|16KB transfer, 32-bit word size, 200 MHz|
+|Time taken to transfer 16KB data at max throughput using 64-bit data size|20.810 us|21.220 us|16KB transfer, 64-bit word size, 200 MHz|
+|Time taken to transfer 16KB data using burst size 256 and transfer size 64 with 32-bit data size|41.290 us|41.680 us|16KB transfer, 32-bit word size, burst=256, transfer=64, 200 MHz|
+|Time taken to transfer 16KB data using burst size 128 and transfer size 128 with 32-bit data size|41.610 us|42.010 us|16KB transfer, 32-bit word size, burst=128, transfer=128, 200 MHz|
+|Time taken to transfer 16KB data using burst size 64 and transfer size 256 with 32-bit data size|42.250 us|42.655 us|16KB transfer, 32-bit word size, burst=64, transfer=256, 200 MHz|
 
 ## Memory Footprints
 
@@ -132,7 +131,7 @@ The memory footprint values represent only the module-specific driver sections f
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
 | Can_Example_Classic_FD   | 15484    | 0    | 3668    | 220    |
- | Can_Example_Icom   | 17052    | 0    | 3996    | 556    |
+ | Can_Example_Icom   | 17036    | 0    | 3996    | 556    |
  | Can_Example_loopback   | 15452    | 0    | 3668    | 220    |
  | Can_Example_Wakeup   | 15484    | 0    | 3668    | 220    |
  
@@ -219,8 +218,8 @@ The memory footprint values represent only the module-specific driver sections f
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Cdd_Dma_Example_Adc_Data_Binning   | 8522    | 0    | 29    | 56    |
- | Cdd_Dma_Example_Gpt_Ping_Pong_Buffer   | 8522    | 0    | 29    | 56    |
+| Cdd_Dma_Example_Adc_Data_Binning   | 8586    | 0    | 29    | 56    |
+ | Cdd_Dma_Example_Gpt_Ping_Pong_Buffer   | 8586    | 0    | 29    | 56    |
  | Cdd_Dma_Example_Mem_Transfer   | 9228    | 0    | 29    | 56    |
  | Cdd_Dma_Example_Mem_Transfer_Mpu   | 9218    | 0    | 29    | 76    |
  
@@ -258,9 +257,9 @@ The memory footprint values represent only the module-specific driver sections f
 
 | Examples   | .text  |  .data  |  .bss  |  .rodata  |
 | ------------ | ----------| -------- | ---------- | ---------- |
-| Cdd_Sent_Standard   | 4824    | 0    | 81    | 144    |
+| Cdd_Sent_Standard   | 4840    | 0    | 81    | 144    |
  | Cdd_Sent_MtpMode   | 4698    | 0    | 81    | 188    |
- | Cdd_Sent_Mtp_ExternalTrigger_Source   | 4952    | 0    | 81    | 188    |
+ | Cdd_Sent_Mtp_ExternalTrigger_Source   | 4968    | 0    | 81    | 188    |
  
 ### CDD UART
 

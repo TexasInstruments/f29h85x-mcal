@@ -575,7 +575,16 @@ Example:
 <td><p>1. Configure CDD SENT with both fast and slow channel interrupts enabled. 2. Operate the SENT bus such that a slow channel message (RSLOW_DV) and a fast channel event (FIFO trigger or MTP data valid) are pending simultaneously. 3. Observe that the slow channel notification callback is not invoked even though a slow channel message was received.</p></td>
 <td><p>Changed the fast and slow interrupt checks in <code class="docutils literal notranslate"><span class="pre">Cdd_Sent_ProcessISR()</span></code> from an <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">/</span> <span class="pre">else</span> <span class="pre">if</span></code> structure to two independent <code class="docutils literal notranslate"><span class="pre">if</span></code> checks, ensuring both fast and slow interrupts are always evaluated and processed within the same ISR invocation. The error callback is now only invoked when neither fast nor slow interrupt flags are active.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCAL-39918</p></td>
+<tr class="row-odd"><td><p>MCAL-40406</p></td>
+<td><p>Cdd_Sent</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>CDD SENT: <code class="docutils literal notranslate"><span class="pre">SENT_O_RCFG</span></code> register overwrite during initialization clears CRC configuration bits</p></td>
+<td><p>C29xMCAL_26.00.00</p></td>
+<td><p>During <code class="docutils literal notranslate"><span class="pre">Cdd_Sent_Init</span></code>, the <code class="docutils literal notranslate"><span class="pre">SENT_O_RCFG</span></code> register was written using a plain assignment (<code class="docutils literal notranslate"><span class="pre">=</span></code>) instead of a masked field write. This overwrote all bits in the register — including the CRC configuration bits — with only the <code class="docutils literal notranslate"><span class="pre">TTCLK</span></code> field value, silently discarding any CRC settings that had been configured.</p></td>
+<td><p>1. Configure CDD SENT with a non-default CRC setting in <code class="docutils literal notranslate"><span class="pre">SENT_O_RCFG</span></code>. 2. Call <code class="docutils literal notranslate"><span class="pre">Cdd_Sent_Init</span></code>. 3. Read back <code class="docutils literal notranslate"><span class="pre">SENT_O_RCFG</span></code> and observe that the CRC configuration bits have been cleared.</p></td>
+<td><p>Replaced the raw register write to <code class="docutils literal notranslate"><span class="pre">SENT_O_RCFG</span></code> with a masked field write using <code class="docutils literal notranslate"><span class="pre">McalLib_RegMFWriteRaw32</span></code>, so that only the <code class="docutils literal notranslate"><span class="pre">TTCLK</span></code> field is updated during initialization and all other register bits are preserved.</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL-39918</p></td>
 <td><p>Gpt</p></td>
 <td><p>S3-Minor</p></td>
 <td><p>GPT: EB Tresos reports “GptClockReferencePoint has not enough children” error when creating a new Gpt configuration project</p></td>
@@ -584,7 +593,7 @@ Example:
 <td><p>1. Open EB Tresos Studio. 2. Create a new EB Tresos project. 3. Add the Gpt_TI_F29H85x plugin to the project. 4. Open the Gpt module configuration editor. 5. Navigate to GptDriverConfiguration. 6. Observe the “GptClockReferencePoint has not enough children” validation error in the Problems View.</p></td>
 <td><p>Updated the <code class="docutils literal notranslate"><span class="pre">GptClockReferencePoint</span></code> container in <code class="docutils literal notranslate"><span class="pre">Gpt.xdm</span></code> to set <code class="docutils literal notranslate"><span class="pre">VISIBLE</span></code> and <code class="docutils literal notranslate"><span class="pre">EDITABLE</span></code> attributes to <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>, allowing EB Tresos to correctly display and populate the required clock reference point children and resolve the validation error.</p></td>
 </tr>
-<tr class="row-even"><td><p>MCAL-38182</p></td>
+<tr class="row-odd"><td><p>MCAL-38182</p></td>
 <td><p>Cdd_Ecap</p></td>
 <td><p>S3-Minor</p></td>
 <td><p>CDD ECAP: ECAP example has incorrect documentation for GPIO loopback connection</p></td>
@@ -593,7 +602,7 @@ Example:
 <td><p>1. Run the ECAP example with external GPIO loopback. 2. Observe that the example uses GPIO0 (EPWM1_A) as the ECAP input pin. 3. Compare with the user guide which incorrectly references GPIO1 as the ECAP input.</p></td>
 <td><p>Updated the ECAP module user guide to correctly document GPIO0 (EPWM1_A) as the ECAP input pin used in the example, aligning the documentation with the actual PORT configuration.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCAL-38562</p></td>
+<tr class="row-even"><td><p>MCAL-38562</p></td>
 <td><p>Cdd_Uart</p></td>
 <td><p>S2-Major</p></td>
 <td><p>CDD UART: <code class="docutils literal notranslate"><span class="pre">Cdd_Uart_Deinit</span></code> sets <code class="docutils literal notranslate"><span class="pre">Cdd_Uart_IsInitialized</span></code> to FALSE even when <code class="docutils literal notranslate"><span class="pre">CDD_UART_E_BUSY</span></code> is reported</p></td>
@@ -601,6 +610,24 @@ Example:
 <td><p>When one or more UART HW units are busy (ongoing write/read transaction or non-empty FIFO), <code class="docutils literal notranslate"><span class="pre">Cdd_Uart_Deinit</span></code> reports <code class="docutils literal notranslate"><span class="pre">CDD_UART_E_BUSY</span></code> via DET but unconditionally sets <code class="docutils literal notranslate"><span class="pre">Cdd_Uart_IsInitialized</span> <span class="pre">=</span> <span class="pre">FALSE</span></code> at the end of the function. This causes the driver to appear uninitialized to all subsequent API callers even though the hardware was never properly de-initialized, preventing the application from cancelling the in-progress transaction and retrying <code class="docutils literal notranslate"><span class="pre">Cdd_Uart_Deinit</span></code>.</p></td>
 <td><p>1. Initialize the UART driver by calling <code class="docutils literal notranslate"><span class="pre">Cdd_Uart_Init</span></code>. 2. Start a write transaction with a large buffer (&gt; FIFO depth of 16 bytes). 3. Call <code class="docutils literal notranslate"><span class="pre">Cdd_Uart_Deinit()</span></code> while the write is still in progress — this unconditionally sets <code class="docutils literal notranslate"><span class="pre">Cdd_Uart_IsInitialized</span> <span class="pre">=</span> <span class="pre">FALSE</span></code>. 4. Observe that any subsequent API call (e.g., <code class="docutils literal notranslate"><span class="pre">Cdd_Uart_Write</span></code>) reports <code class="docutils literal notranslate"><span class="pre">CDD_UART_E_UNINIT</span></code> even though the driver was never properly de-initialized.</p></td>
 <td><p>Fixed <code class="docutils literal notranslate"><span class="pre">Cdd_Uart_Deinit</span></code> to preserve the initialized state (<code class="docutils literal notranslate"><span class="pre">Cdd_Uart_IsInitialized</span> <span class="pre">=</span> <span class="pre">TRUE</span></code>) when Deinit is rejected due to busy units. <code class="docutils literal notranslate"><span class="pre">Cdd_Uart_IsInitialized</span></code> is now set to FALSE only when <code class="docutils literal notranslate"><span class="pre">(FALSE</span> <span class="pre">==</span> <span class="pre">busyDetected)</span></code>, allowing the application to abort transactions and retry <code class="docutils literal notranslate"><span class="pre">Cdd_Uart_Deinit</span></code> as intended.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-40452</p></td>
+<td><p>Can</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>CAN: BASIC and FULL TX hardware object buffer ranges overlap when BASIC object index is lower than FULL object index</p></td>
+<td><p>C29xMCAL_26.00.00, C29xMCAL_01.04.01, C29xMCAL_01.04.00, C29xMCAL_01.03.00, C29xMCAL_01.02.01, C29xMCAL_01.02.00</p></td>
+<td><p>When at least one TX hardware object of type BASIC and at least one of type FULL are configured on the same CAN controller, and the index of the BASIC object is lower than the index of the FULL object, the hardware buffer ranges allocated for the FIFO (BASIC) and dedicated (FULL) buffers overlap. When both object types are configured in interrupt mode, some buffer elements may fail to complete transmission because interrupt enable bits and buffer-to-mailbox mappings are associated with an incorrect hardware buffer range.</p></td>
+<td><p>1. Configure a CAN controller with at least one TX hardware object of type BASIC and at least one of type FULL, where the BASIC object index is lower than the FULL object index. 2. Configure both object types in interrupt mode. 3. Transmit messages using both BASIC and FULL objects. 4. Observe that some buffer elements fail to generate a transmission complete notification and subsequent transmissions are blocked.</p></td>
+<td><p>Fixed the CAN driver to allocate hardware buffer indices for dedicated TX buffers and TX FIFO in software following the same order as the hardware: dedicated buffers are assigned the lower indices and the TX FIFO is assigned the higher indices. The FIFO interrupt enable bits and buffer-to-mailbox mappings are now computed based on this corrected allocation, ensuring all FIFO and dedicated buffer slots generate transmission complete interrupts without overlap.</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL-40501</p></td>
+<td><p>Can</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>CAN: TX FIFO buffer slot count mismatch in polling mode</p></td>
+<td><p>C29xMCAL_26.00.00, C29xMCAL_01.04.01, C29xMCAL_01.04.00, C29xMCAL_01.03.00, C29xMCAL_01.02.01, C29xMCAL_01.02.00</p></td>
+<td><p>In polling mode, the CAN driver only polls the first entry in the TX FIFO when checking for transmission completion, regardless of how many buffer slots are configured. All remaining FIFO buffer slots are never checked, leaving them permanently marked as busy and blocking any further CAN transmissions that attempt to use those slots.</p></td>
+<td><p>1. Configure a CAN controller with a TX FIFO of more than one buffer slot in polling mode. 2. Transmit messages until all FIFO slots have been used at least once. 3. Observe that subsequent transmission requests are rejected with a busy status.</p></td>
+<td><p>Fixed the CAN driver polling logic to iterate through all configured TX FIFO buffer slots when checking for transmission completion, ensuring every slot is correctly processed and released for subsequent use.</p></td>
 </tr>
 </tbody>
 </table>
@@ -644,7 +671,7 @@ Example:
 </li>
 <li><p><strong>CDD IPC:</strong> IPC is validated between CPU1 and CPU3. Since, CPU2 is configured in lockstep in our framework; IPC between CPU1 and CPU2 or CPU2 and CPU3 is not validated.</p></li>
 <li><p><strong>Fls:</strong> Timeout tests are not performed as FLASH characterization data is not yet available for this device.</p></li>
-<li><p><strong>Spi:</strong> Board to board Spi communication validated upto 40MHz. 50MHz have been only tested in loopback mode.</p></li>
+<li><p><strong>Spi:</strong> Board to board Spi communication validated upto 40MHz. 50MHz have been only tested in loopback mode. High-speed mode (HS Mode) has not been tested in board-to-board configuration.</p></li>
 </ul>
 </li>
 </ul>
@@ -678,14 +705,32 @@ Example:
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>-</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
+<tr class="row-even"><td><p>MCAL-40422</p></td>
+<td><p>Fls</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>Failure to claim flash semaphore should not trigger job failure</p></td>
+<td><p>C29xMCAL_26.00.01</p></td>
+<td><p>Erase or Write job fails if Flash semaphore acquisition fails</p></td>
+<td><p>Run Fls with the semaphore already owned by CPU3 or another LINK on CPU1</p></td>
+<td><p>Issue occurs only if semaphore is already owned by CPU3 or another LINK on CPU1. However, the failure reported is the same as a true Flash hardware failure. Therefore, the application cannot distinguish between the two. It can re-initiate the Erase or Write job with the assumption that a semaphore claim failure resulted in the job failure. If the other CPU or LINK holding the semaphore relinquishes it, the job can proceed</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL-40515</p></td>
+<td><p>Cdd_Uart</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>CDD UART: Parity type selection (ODD/EVEN) not applied to hardware — <code class="docutils literal notranslate"><span class="pre">UART_LCRH_EPS</span></code> never written</p></td>
+<td><p>C29xMCAL_26.00.00</p></td>
+<td><p>When <code class="docutils literal notranslate"><span class="pre">CddUartParityModeEnable</span> <span class="pre">=</span> <span class="pre">true</span></code> is configured, the driver enables parity (<code class="docutils literal notranslate"><span class="pre">UART_LCRH_PEN</span></code>) but never writes the Even Parity Select bit (<code class="docutils literal notranslate"><span class="pre">UART_LCRH_EPS</span></code>). As a result, the hardware always uses odd parity regardless of the <code class="docutils literal notranslate"><span class="pre">CddUartParityBit</span></code> setting (<code class="docutils literal notranslate"><span class="pre">CDD_UART_PARITY_EVEN</span></code> or <code class="docutils literal notranslate"><span class="pre">CDD_UART_PARITY_ODD</span></code>). Applications that configure even parity will silently communicate with the wrong parity type, causing frame errors on the receiving peer.</p></td>
+<td><p>1. Configure a <code class="docutils literal notranslate"><span class="pre">CddUartConfig</span></code> instance with <code class="docutils literal notranslate"><span class="pre">CddUartParityModeEnable</span> <span class="pre">=</span> <span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">CddUartParityBit</span> <span class="pre">=</span> <span class="pre">CDD_UART_PARITY_EVEN</span></code>. 2. Generate code and build. 3. Connect the UART to a peer configured for even parity. 4. Observe parity errors on the peer — the F29H85x UART transmits with odd parity (hardware reset default).</p></td>
+<td><p>Configure the peer device to use odd parity to match the hardware default. Avoid using <code class="docutils literal notranslate"><span class="pre">CDD_UART_PARITY_EVEN</span></code> until the fix is available.</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL-40500</p></td>
+<td><p>Spi</p></td>
+<td><p>S3-Minor</p></td>
+<td><p>SPI: <code class="docutils literal notranslate"><span class="pre">Spi_SyncTransmit()</span></code> fails at 20 MHz and above when chip select is configured as SPIX_PTE (hardware peripheral CS)</p></td>
+<td><p>C29xMCAL_26.00.01</p></td>
+<td><p>When the SPI driver is configured for synchronous transmission at 20 MHz or above with the chip select pin set to SPIX_PTE (the SPI peripheral’s hardware Transmit Enable / chip select signal), the transfer fails and data is not received correctly. The same baudrate and configuration works correctly when chip select is managed via a DIO (GPIO) pin instead.</p></td>
+<td><p>1. Configure the SPI driver with a baudrate of 20 MHz or above. 2. Set <code class="docutils literal notranslate"><span class="pre">SpiCsSelection</span></code> to the hardware CS option (SPIX_PTE) in the SPI configuration. 3. Call <code class="docutils literal notranslate"><span class="pre">Spi_SyncTransmit()</span></code> to initiate a synchronous transfer. 4. Observe that the SPI transfer fails — data is not received correctly.</p></td>
+<td><p>Configure the chip select as a DIO (GPIO) pin (<code class="docutils literal notranslate"><span class="pre">SpiCsSelection</span></code> = <code class="docutils literal notranslate"><span class="pre">CS_VIA_GPIO</span></code>) instead of using the SPI peripheral’s hardware SPIX_PTE signal.</p></td>
 </tr>
 </tbody>
 </table>

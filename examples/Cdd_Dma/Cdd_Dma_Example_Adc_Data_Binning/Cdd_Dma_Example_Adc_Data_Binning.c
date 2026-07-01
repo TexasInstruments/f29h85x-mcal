@@ -169,9 +169,9 @@ VAR(Cdd_Adc_ValueGroupType, AUTOMATIC) Cdd_Adc_BinnedBuffer[CDD_ADC_NUM_CHANNELS
 volatile VAR(uint32, AUTOMATIC) Cdd_Adc_DmaIsrCount = 0U;
 VAR(Cdd_Dma_ChannelStatus, AUTOMATIC) dmaStatus;
 VAR(boolean, AUTOMATIC) testResult = TRUE;
-#if (STD_ON == CDD_ADC_VERSION_INFO_API)
+#if (STD_ON == CDD_DMA_GET_VERSION_INFO_API)
 /*  Version info variable */
-Std_VersionInfoType Cdd_Adc_VersionInfo;
+Std_VersionInfoType Cdd_Dma_VersionInfo;
 #endif
 
 /*********************************************************************************************************************
@@ -260,15 +260,15 @@ FUNC(int, AUTOMATIC) main(void)
     AppUtils_Init(200000000U);
     AppUtils_Printf("Executing Cdd_Dma_Example_Adc_Data_Binning example\n");
 
-#if (STD_ON == CDD_ADC_VERSION_INFO_API)
-    Cdd_Adc_GetVersionInfo(&Cdd_Adc_VersionInfo);
-    AppUtils_Printf("CDD ADC MCAL Version Info\n");
+#if (STD_ON == CDD_DMA_GET_VERSION_INFO_API)
+    Cdd_Dma_GetVersionInfo(&Cdd_Dma_VersionInfo);
+    AppUtils_Printf("CDD DMA MCAL Version Info\n");
     AppUtils_Printf("---------------------\n");
-    AppUtils_Printf("Vendor ID           : %d\n", Cdd_Adc_VersionInfo.vendorID);
-    AppUtils_Printf("Module ID           : %d\n", Cdd_Adc_VersionInfo.moduleID);
-    AppUtils_Printf("SW Major Version    : %d\n", Cdd_Adc_VersionInfo.sw_major_version);
-    AppUtils_Printf("SW Minor Version    : %d\n", Cdd_Adc_VersionInfo.sw_minor_version);
-    AppUtils_Printf("SW Patch Version    : %d\n", Cdd_Adc_VersionInfo.sw_patch_version);
+    AppUtils_Printf("Vendor ID           : %d\n", Cdd_Dma_VersionInfo.vendorID);
+    AppUtils_Printf("Module ID           : %d\n", Cdd_Dma_VersionInfo.moduleID);
+    AppUtils_Printf("SW Major Version    : %d\n", Cdd_Dma_VersionInfo.sw_major_version);
+    AppUtils_Printf("SW Minor Version    : %d\n", Cdd_Dma_VersionInfo.sw_minor_version);
+    AppUtils_Printf("SW Patch Version    : %d\n", Cdd_Dma_VersionInfo.sw_patch_version);
 #endif
 
     /* Configure DMA for data binning */

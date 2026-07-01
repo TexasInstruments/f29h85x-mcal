@@ -282,13 +282,13 @@ void CddSent_Callback(PduIdType id, const PduInfoType *PduInfoPtr)
     if (PduInfoPtr->SduLength > 2)
     {
         AppUtils_Printf("Id received  from Fast channel : %d\n", id);
-        AppUtils_Printf("Timestamp received  from Fast channel : %d\n", *data);
-        AppUtils_Printf("Data received  from Fast channel : %d\n", *(data + 1));
+        AppUtils_Printf("Timestamp received  from Fast channel : %u\n", *data);
+        AppUtils_Printf("Data received  from Fast channel : %u\n", *(data + 1));
     }
     else
     {
         AppUtils_Printf("Id received  from Slow channel : %d\n", id);
-        AppUtils_Printf("Data received  from Slow channel : %d\n", *data);
+        AppUtils_Printf("Data received  from Slow channel : %u\n", *data);
     }
 }
 

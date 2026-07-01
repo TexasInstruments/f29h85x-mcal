@@ -237,7 +237,7 @@ void Configure_Cdd_Dma()
 
 void Cdd_Pwm_ConfigureHardware()
 {
-    /* Configure PWM instance to generate 64KHz with 20% duty cycle and it triggers ADC conversion */
+    /* Configure PWM instance to generate 64KHz with 80% duty cycle and it triggers ADC conversion */
     Cdd_Pwm_SetClockPrescaler(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_CLOCK_DIVIDER_1,
                               CDD_PWM_HSCLOCK_DIVIDER_1);
     /* Set the time base counter mode to UP-COUNT mode */
@@ -311,7 +311,7 @@ int main()
         McalLib_Delay(100U);
     }
 
-    /* Disable hardware trigger after 1second */
+    /* Disable hardware trigger after 5 seconds */
     Cdd_Adc_DisableHardwareTrigger(CddAdcConf_CddAdcGroup_CddAdcGroup_0);
 
     /* Stop DMA channel */

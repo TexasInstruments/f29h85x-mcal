@@ -99,8 +99,8 @@
  * This example also makes use of the Input X-BAR. GPIO12 (the external trigger) is routed to the input X-BAR,
  * from which it is routed to TZ1.
  *
- * The TZ-Event is defined such that EPWM1 will undergo a One-Shot Trip
- *  and EPWM2 will undergo a Cycle-By-Cycle Trip.
+ * The TZ-Event is defined such that EPWM2 will undergo a One-Shot Trip
+ *  and EPWM3 will undergo a Cycle-By-Cycle Trip.
  *
  *              _____________             __________________
  *              |           |             |                |
@@ -246,7 +246,7 @@ void Cdd_Pwm_ConfigureHw(void)
                                        TRUE);
     Cdd_Pwm_ConfigureTripZoneNotification(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, TRUE);
 
-    /* Configure EPWM2 instance */
+    /* Configure EPWM3 instance */
     Cdd_Pwm_SetClockPrescaler(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_CLOCK_DIVIDER_4,
                               CDD_PWM_HSCLOCK_DIVIDER_4);
     Cdd_Pwm_SetTimeBaseCounterMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_COUNTER_MODE_UP_DOWN);

@@ -105,7 +105,7 @@ extern "C" {
 /** \brief CDD DMA developement error detection */
 #define CDD_DMA_DEV_ERROR_DETECT                 STD_ON
 /** \brief Switches the Cdd_Dma_GetVersionInfo function ON or OFF */
-#define CDD_DMA_GET_VERSION_INFO_API             STD_OFF
+#define CDD_DMA_GET_VERSION_INFO_API             STD_ON
 /** \brief Enables locking of DMA configuration registers to prevent accidental modification during runtime */
 #define CDD_DMA_LOCK_CONFIGURATION               STD_OFF
 /** \brief Macro to define the number of DMA instances configured */

@@ -197,7 +197,7 @@ void Cdd_Adc_ADCA_Grp0NotifFunc()
     Cdd_Adc_PpbValue[CddAdcConf_CddAdcPpbConfig_CddAdcPpbConfig_0] =
         Cdd_Adc_ReadPpb(CddAdcConf_CddAdcPpbConfig_CddAdcPpbConfig_0);
 
-    /* Read the values from PPB1 */
+    /* Read the values from PPB2 */
     PpbFinalValue[CddAdcConf_CddAdcPpbConfig_CddAdcPpbConfig_1] =
         Cdd_Adc_ReadPpbValue(CddAdcConf_CddAdcPpbConfig_CddAdcPpbConfig_1);
     PpbPartialValue[CddAdcConf_CddAdcPpbConfig_CddAdcPpbConfig_1] =

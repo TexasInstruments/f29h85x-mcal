@@ -458,6 +458,22 @@ static FUNC(void, CAN_CODE)
     Can_SetupRxMailboxPriv(P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC, CAN_APPL_DATA) msgRamConfig,
                            P2CONST(Can_MailboxType, AUTOMATIC, CAN_CONST) mailboxCfg);
 
+/** \brief This API sets canTxBufToHohMapping, TXBTIE and TXBCIE for TX FIFO buffers
+ *         after txBuffNum is finalized, using the correct hardware buffer index offset.
+ *
+ * \param[in] msgRamConfig Message RAM Configuration parameters.
+ * \param[in] canControllerCfg Pointer to Can controller config parameters.
+ * \param[in] baseAddr Base Address of controller.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+static FUNC(void, CAN_CODE)
+    Can_SetupFifoTxInterruptPriv(P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC, CAN_APPL_DATA) msgRamConfig,
+                                 P2CONST(Can_ControllerType, AUTOMATIC, CAN_CONST) canControllerCfg, uint32 baseAddr);
+
 /** \brief This API will configure Different sections of Message RAM.
  *
  * \param[in] msgRamConfig Message RAM Configuration parameters.
@@ -1771,8 +1787,11 @@ Can_HwUnitTxDonePollingPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DAT
     if (CAN_BASIC == canMailbox->mailBoxConfig.CanHandleType)
     {
         loopCnt = canController->canFDMsgRamConfig.txBuffNum;
+        /* Compute the end index for the FIFO buffer range.
+         * FIFO hardware buffers start at txBuffNum and span txFIFOSize slots. */
         buffNum =
-            ((canController->canFDMsgRamConfig.txBuffNum + canController->canFDMsgRamConfig.txFIFONum) & MAX_UINT8);
+            ((canController->canFDMsgRamConfig.txBuffNum + canController->canFDMsgRamConfig.configParams.txFIFOSize) &
+             MAX_UINT8);
 
         /* Check if transmission is completed for each FIFO buffer */
         for (; loopCnt < buffNum; loopCnt++)
@@ -2236,7 +2255,7 @@ Can_MsgRamConfigPriv(uint32 baseAddr, P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC
     VAR(uint8, AUTOMATIC) loopCnt;
     VAR(uint8, AUTOMATIC) txMbNum;
 
-    txMbNum = ((canFDMsgRamConfig->txBuffNum + canFDMsgRamConfig->txFIFONum) & MAX_UINT8);
+    txMbNum = ((canFDMsgRamConfig->txBuffNum + canFDMsgRamConfig->configParams.txFIFOSize) & MAX_UINT8);
 
     if (((uint8)MCAN_TX_BUFFER_MAX_NUM >= txMbNum) &&
         (((uint8)MCAN_RX_BUFFER_MAX_NUM) >= canFDMsgRamConfig->rxBuffNum) &&
@@ -3316,6 +3335,11 @@ static FUNC(void, CAN_CODE)
         }
     }
 
+    /* After all HOHs are processed, txBuffNum is final.
+     * Set canTxBufToHohMapping, TXBTIE and TXBCIE for FIFO buffers using the
+     * correct hardware buffer index offset (txBuffNum..txBuffNum+txFIFOSize-1). */
+    Can_SetupFifoTxInterruptPriv(msgRamConfig, canControllerCfg, baseAddr);
+
     msgRamConfig->configParams.lss = msgRamConfig->stdFilterNum;
     msgRamConfig->configParams.lse = msgRamConfig->extFilterNum;
 
@@ -3372,6 +3396,7 @@ static FUNC(void, CAN_CODE)
     msgRamConfig->txFIFONum = ((uint8)0U);
     msgRamConfig->rxBuffNum = ((uint8)0U);
     msgRamConfig->rxFIFONum = ((uint8)0U);
+    msgRamConfig->fifoHoh   = ((Can_HwHandleType)0xFFU);
 
     for (loopCnt = ((uint8)0U); loopCnt < (uint8)KMAX_TX_MB_PER_CONTROLLER; loopCnt++)
     {
@@ -3560,31 +3585,17 @@ static FUNC(void, CAN_CODE)
                            P2CONST(Can_ControllerType, AUTOMATIC, CAN_CONST) canControllerCfg, Can_HwHandleType htrh,
                            uint32 baseAddr)
 {
-    VAR(uint8, AUTOMATIC) intrCnt;
     VAR(uint32, AUTOMATIC) regVal;
-    VAR(uint32, AUTOMATIC) newBits;
 
     if (CAN_BASIC == mailboxCfg->CanHandleType)
     {
         /* Set Mailbox Entry */
         msgRamConfig->txFIFONum               += ((uint8)1U);
         msgRamConfig->configParams.txFIFOSize += mailboxCfg->CanHwObjectCount;
-
-        /* Prepare Transmission Interrupt Enable Mask */
-
-        if ((CAN_INTERRUPT == canControllerCfg->CanTxProcessing) ||
-            ((CAN_MIXED == canControllerCfg->CanTxProcessing) && (FALSE == mailboxCfg->CanHardwareObjectUsesPolling)))
-        {
-            newBits = (uint32)0U;
-            for (intrCnt = ((uint8)0U); intrCnt < mailboxCfg->CanHwObjectCount; intrCnt++)
-            {
-                newBits |= (((uint32)1U) << (msgRamConfig->txBuffNum + intrCnt));
-                msgRamConfig->canTxBufToHohMapping[(msgRamConfig->txBuffNum + intrCnt)] = htrh;
-            }
-            MCAL_LIB_REG_WRITE32(baseAddr + MCAN_TXBTIE, MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBTIE) | newBits);
-            /* Enable cancellation interrupt so TCF fires when bus-off cancels pending Tx */
-            MCAL_LIB_REG_WRITE32(baseAddr + MCAN_TXBCIE, MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBCIE) | newBits);
-        }
+        /* Store the FIFO HOH object ID for use in the post-loop TXBTIE/mapping setup.
+         * TXBTIE/TXBCIE and canTxBufToHohMapping are set in Can_SetupMsgRamPriv
+         * after all HOHs are processed, once txBuffNum is final. */
+        msgRamConfig->fifoHoh = mailboxCfg->CanObjectId;
     }
     else
     {
@@ -3604,6 +3615,31 @@ static FUNC(void, CAN_CODE)
             regVal  = MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBCIE);
             regVal |= ((uint32)1U << (mailboxCfg->HwHandle));
             MCAL_LIB_REG_WRITE32(baseAddr + MCAN_TXBCIE, regVal);
+        }
+    }
+}
+
+/*
+ *Design: MCAL-24226
+ */
+static FUNC(void, CAN_CODE)
+    Can_SetupFifoTxInterruptPriv(P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC, CAN_APPL_DATA) msgRamConfig,
+                                 P2CONST(Can_ControllerType, AUTOMATIC, CAN_CONST) canControllerCfg, uint32 baseAddr)
+{
+    if (msgRamConfig->txFIFONum != (uint8)0U)
+    {
+        VAR(uint32, AUTOMATIC) newBits = (uint32)0U;
+        VAR(uint8, AUTOMATIC) intrCnt;
+        for (intrCnt = ((uint8)0U); intrCnt < msgRamConfig->configParams.txFIFOSize; intrCnt++)
+        {
+            newBits |= (((uint32)1U) << (msgRamConfig->txBuffNum + intrCnt));
+            msgRamConfig->canTxBufToHohMapping[(msgRamConfig->txBuffNum + intrCnt)] = msgRamConfig->fifoHoh;
+        }
+        if ((CAN_INTERRUPT == canControllerCfg->CanTxProcessing) || (CAN_MIXED == canControllerCfg->CanTxProcessing))
+        {
+            MCAL_LIB_REG_WRITE32(baseAddr + MCAN_TXBTIE, MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBTIE) | newBits);
+            /* Enable cancellation interrupt so TCF fires when bus-off cancels pending Tx */
+            MCAL_LIB_REG_WRITE32(baseAddr + MCAN_TXBCIE, MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBCIE) | newBits);
         }
     }
 }

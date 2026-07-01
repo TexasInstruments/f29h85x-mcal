@@ -89,7 +89,7 @@
  *      - For EPWM2 enable global load and linking. TBCTR = Period is the configured global load trigger and the event
  *          prescale is configured to 7.
  *      - For EPWM3 enable linking
- *      - For EPWM7 enable linking
+ *      - For EPWM4 enable linking
  *      - Configure prescaler, compare values and action qualifier actions using linking
  *
  * Load a period value to all EPWM instances using XLINK. This period value results in 50% duty cycle for all the
@@ -97,20 +97,20 @@
  *
  * Counter compare A values are updated at 3rd period event for EPWM1 & EPWM2A channels. The configured
  * global load event prescale is 7 which is enabled only for EPWM2 instance. So, the update in the
- * compare compare values(shadow to active at 3rd period event) can be observed in only EPWM1A's output.
+ * compare A values(shadow to active at 3rd period event) can be observed in only EPWM1A's output.
  *
- * Update in the compare compare B value(shadow to active at 7rd period event) can be observed in both
+ * Update in the compare B value(shadow to active at 7th period event) can be observed in both
  * EPWM1A & EPWM2A channels.
  *
  * As a result, the duty cycle of the EPWM1A will jump from 50% to 25% and then to 20%.
- * But EPWM2A's duty cycle will jump from 50% to 20% while EPWM3 & EPWM7 instances maintain their duty cycles at 50%.
+ * But EPWM2A's duty cycle will jump from 50% to 20% while EPWM3 & EPWM4 instances maintain their duty cycles at 50%.
  *
  * Wait for 1 second and update the compare B value for all the EPWM instances using linking.
  *
- * With the latest compare B value, the duty cycle of EPWM3 & EPWM7's OUTPUT A will jump to 75%.
+ * With the latest compare B value, the duty cycle of EPWM3 & EPWM4's OUTPUT A will jump to 75%.
  * Duty cycle of EPWM1 & EPWM2's channel A will jump to 50%.
  *
- * Print the notification count to of all EPWM instances.
+ * Print the notification count of all EPWM instances.
  *
  *  EPWM waveform can be observed on the respective pins configured in EPWM mode
  * \b External \b Connections \n
@@ -244,7 +244,7 @@ void Cdd_Pwm_ConfigureHw(void)
     Cdd_Pwm_SetInterruptSource(CddPwmConf_CddPwmXlinkConfig_CddPwmXlinkConfig_0, CDD_PWM_INT_TBCTR_ZERO);
     Cdd_Pwm_SetInterruptEventCount(CddPwmConf_CddPwmXlinkConfig_CddPwmXlinkConfig_0, CDD_PWM_EVENT_COUNT);
 
-    /* Configure the XLINK memory region to write into EPWM 1,2,3 & 7 instances at the same time */
+    /* Configure the XLINK memory region to write into EPWM 1,2,3 & 4 instances at the same time */
     Cdd_Pwm_SetClockPrescaler(CddPwmConf_CddPwmXlinkConfig_CddPwmXlinkConfig_0, CDD_PWM_CLOCK_DIVIDER_4,
                               CDD_PWM_HSCLOCK_DIVIDER_8);
     Cdd_Pwm_SetTimeBaseCounterMode(CddPwmConf_CddPwmXlinkConfig_CddPwmXlinkConfig_0, CDD_PWM_COUNTER_MODE_UP);

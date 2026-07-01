@@ -250,7 +250,7 @@ void Cdd_Pwm_ConfigureHw(void)
     Cdd_Pwm_SetDigitalCompareEventSyncMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_B,
                                            CDD_PWM_DC_EVENT_1, CDD_PWM_DC_EVENT_INPUT_SYNCED);
 
-    /* Configure balking window */
+    /* Configure blanking window */
     Cdd_Pwm_SetDigitalCompareBlankingEvent(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0,
                                            CDD_PWM_DC_WINDOW_START_TBCTR_ZERO);
     Cdd_Pwm_SetDigitalCompareWindowLength(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, 6000U);
